@@ -1,0 +1,2690 @@
+[
+    {
+        "repository_name": "swift",
+        "hash": "014e312a2edb4d4b491053466b1a8f39158ca880",
+        "author": "Mark Lacey",
+        "date": "2016-03-01T14:06:49-08:00",
+        "message": "Run redundant load elimination earlier in the pipeline.\n\nDoing this earlier means that optimizations that are looking at SIL\nvalues (rather than memory) have more opportunities earlier.\n\nMinimal impact at the moment, but this may allow for removing some later\npasses that are repeated.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/014e312a2edb4d4b491053466b1a8f39158ca880",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddSSAPasses"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "01ecfdaaf0500a99a0f081760340801799fc0ec0",
+        "author": "Xi Ge",
+        "date": "2018-08-28T18:19:41-07:00",
+        "message": "IDE: use more efficient API to collect default implementations for protocol members. NFC (#19032)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IDE/IDETypeChecking.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/01ecfdaaf0500a99a0f081760340801799fc0ec0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "collectDefaultImplementationForProtocolMembers"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 7,
+        "total_changed_lines": 9,
+        "net_line_change": -5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "026904990c3553fb38123c8281fa27a80449d6ee",
+        "author": "Rintaro Ishizaki",
+        "date": "2020-07-07T15:01:22-07:00",
+        "message": "[Index] Fast path for getting value member\n\nAvoid solving constraint system if there's only one viable overload.\nThis should also avoids a crash we are seeing in\n'candidates.size() == 1' branch in the constraint system.\n\nrdar://problem/64636688",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/CSGen.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/026904990c3553fb38123c8281fa27a80449d6ee",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::resolveValueMember"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "02c3aeb717f66b40ffaa34d0fc3a687f183120cb",
+        "author": "Nadav Rotem",
+        "date": "2014-11-19T01:42:37+00:00",
+        "message": "Split the lookup node lookup cold path from the hot path.\n\nIn debug builds getGenericMetadata takes about 10% of the execution time.\nMost of this time is spent in searching the binary tree. This commit splits\nthe search into cold path and hot path, where the less likely checks are\ndone after the mode likely checks. This reduces the overall runtime of the\ntest suite in -Onone by ~1%.\n\nSwift SVN r23419",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/runtime/Concurrent.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/02c3aeb717f66b40ffaa34d0fc3a687f183120cb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 8,
+        "total_changed_lines": 15,
+        "net_line_change": -1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0412f61c3548122f4bdc4431e9b90ad8600c262e",
+        "author": "Brent Royal-Gordon",
+        "date": "2018-08-29T22:53:40-07:00",
+        "message": "[Basic] Use memcpy() for a possibly unaligned copy\n\nExponentialGrowthAppendingBinaryByteStream::writeRaw() is sometimes used for unaligned writes, so it shouldn\u2019t be casting and dereferencing pointers. Tests in Godbolt indicate that the call to memcpy() is optimized into similar instructions anyway.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/swift/Basic/ExponentialGrowthAppendingBinaryByteStream.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0412f61c3548122f4bdc4431e9b90ad8600c262e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "writeRaw"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 5,
+        "total_changed_lines": 10,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0562c31cad363f7e035099371c290bb53cf68531",
+        "author": "Pavel Yaskevich",
+        "date": "2021-06-24T15:29:01-07:00",
+        "message": "[CSSimplify] Look through optionals in contextual type while resolving a closure\n\nLet's look through all optionals associated with contextual\ntype to make it possible to infer parameter/result type of\nthe closure faster e.g.:\n\n```swift\nfunc test(_: ((Int) -> Void)?) {\n   ...\n}\n\ntest { $0 + ... }\n```\n\nIn this case dropping optionality from contextual type\n`((Int) -> Void)?` allows `resolveClosure` to infer type\nof `$0` directly (via `getContextualParamAt`) instead of\nhaving to use type variable inference mechanism.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/CSSimplify.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0562c31cad363f7e035099371c290bb53cf68531",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ConstraintSystem::resolveClosure"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 0,
+        "total_changed_lines": 16,
+        "net_line_change": 16,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "07fb2909d7f6357b2c674d52e37ca9233a85f731",
+        "author": "Mark Lacey",
+        "date": "2016-04-11T15:27:37-07:00",
+        "message": "Move DCE to later in the SSA passes.\n\nDoing it later doesn't get in the way of other optimizations, and could\nresult in removing more things that become dead in the meantime.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/07fb2909d7f6357b2c674d52e37ca9233a85f731",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddSSAPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0966cd990a744176c083d47b5eb9bec77944da53",
+        "author": "Doug Gregor",
+        "date": "2018-07-18T14:52:57-07:00",
+        "message": "[AST] Performance hack for AssociatedTypeDecl::getOverriddenDecls().\n\nThe GenericSignatureBuilder is generating a *huge* number of invocations\nof AssociatedTypeDecl::getOverriddenDecls(), causing contention in\nthe request-evaluator\u2019s core data structures and a significant\nslow-down in compile-time performance when the request-evaluator is\nhandling this computation. \n\nThose data structures need to be optimized, but in the meantime, \nintroduce a performance hack to use the cached entry without going\nthrough the request-evaluator. This will MISS dependencies and needs\nto go away quickly.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/Decl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0966cd990a744176c083d47b5eb9bec77944da53",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AssociatedTypeDecl::getOverriddenDecls"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0b6b907a0abd7613007803172b94fac43df0af3b",
+        "author": "Roman Levenstein",
+        "date": "2015-04-16T20:28:07+00:00",
+        "message": "Do not produce an intermediate cast between the same ObjC types as it will get eliminated anyways.\n\nWhen casts optimizations were lowering bridged casts from ObjC to Swift, they were producing internally an intermediate cast from an ObjC type into the expected ObjC type of a bridged cast, before converting this expected ObjC type into a Swift type. In many cases, this resulted in a useless intermediate cast where both types were the same and such a cast would be eliminated afterwards. E.g.\n\nunconditional_checked_cast A to B  // where A is ObjC type and B is a Swift type\n\nwas lowered into:\n\nunconditional_checked_cast A to B. _ObjectiveCType // Often useless as A is equal to B. _ObjectiveCType already.\nunconditional_checked_cast B._ObjectiveCType to B\n\nThis small inefficiency is fixed now. This problem was no observable from outside the optimization pass, it just required additional processing, therefore there is no test-case.\n\nSwift SVN r27370",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Utils/Local.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0b6b907a0abd7613007803172b94fac43df0af3b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "optimizeBridgedObjCToSwiftCast"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 3,
+        "total_changed_lines": 19,
+        "net_line_change": 13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0b814319cadb611d766a5e03fefd276d197fbda9",
+        "author": "Roman Levenstein",
+        "date": "2015-06-04T17:32:27+00:00",
+        "message": "Clean-up generated code at the end of the optimization pipeline.\n\nI noticed by inspection of the generated SIL code that we do not remove some dead instructions and basic blocks by the end of a pipeline.\nRunning DCE and simplify-cfg at the very end of the pipeline should take care of it.\n\nSwift SVN r29300",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0b814319cadb611d766a5e03fefd276d197fbda9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0b946658a78dcffe530e993e2e1416b07201e8b3",
+        "author": "Eli Friedman",
+        "date": "2012-05-01T02:21:11+00:00",
+        "message": "A small experiment with the potential benefits of nocapture.  Avoiding the heap allocation helps substantially, but there's still overhead because the LLVM optimizers can't see through swift_release.\n\n\n\nSwift SVN r1698",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenClosure.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0b946658a78dcffe530e993e2e1416b07201e8b3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "irgen::emitClosure"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 1,
+        "total_changed_lines": 17,
+        "net_line_change": 15,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "0f88c56b23589a0645917c60ccd2724d66ed6832",
+        "author": "Roman Levenstein",
+        "date": "2015-04-16T20:28:15+00:00",
+        "message": "If a result of unconditional_checked_cast is not used, simply remove the cast.\n\nThis is useful when performing casts optimizations as a guaranteed optimization.\n\nSwift SVN r27376",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Utils/Local.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/0f88c56b23589a0645917c60ccd2724d66ed6832",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "optimizeUnconditionalCheckedCastInst"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "126ad5ce79c63a33751f3d381f8b1153b80f98f1",
+        "author": "Rintaro Ishizaki",
+        "date": "2024-07-10T10:50:28-07:00",
+        "message": "[Macros] Optimize 'rangeContainsTokenLocWithGeneratedSource'\n\n* Early return for the direct 'true' case.\n* Instead of comparing the buffer IDs, check f the entire buffer\n  contains the target range. This keeps 'LocCache.lastBufferID' and\n  improves the hit rate.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/TypeRefinementContext.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/126ad5ce79c63a33751f3d381f8b1153b80f98f1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rangeContainsTokenLocWithGeneratedSource"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "13dad3ad4751ce2dff042208d98a92cd70a522cd",
+        "author": "Erik Eckstein",
+        "date": "2022-11-09T08:06:19+01:00",
+        "message": "PerformanceInliner: tweak the inlining heuristic for callees which return an allocated object\n\nThere are examples of such functions, which were previously captured by `isPureCall` in the inliner. But the implementation of `isPureCall` was wrong.\nWith the new (and correct) side effect analysis we need to correctly handle such functions in the inlining heuristic.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/13dad3ad4751ce2dff042208d98a92cd70a522cd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::isProfitableToInline"
+        ],
+        "added_lines": 15,
+        "deleted_lines": 0,
+        "total_changed_lines": 15,
+        "net_line_change": 15,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "1b79b742db8bba4e1b6c0687f3dbe25735a060dc",
+        "author": "Slava Pestov",
+        "date": "2018-04-16T16:18:50-07:00",
+        "message": "Mandatory Inlining: Use loadFunction() instead of linkFunction()\n\nWe only need to deserialize the function itself, not its transitive\ndependencies. Also, only deserialize a function after we've checked\nthat its transparent.\n\nFor now, this doesn't reduce the volume of SIL linking, because the\nmandatory linker pass still links everything. But we're almost\nthere.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Mandatory/MandatoryInlining.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/1b79b742db8bba4e1b6c0687f3dbe25735a060dc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getCalleeFunction"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 6,
+        "total_changed_lines": 17,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "1dc3e17f52edcd7b5cec47e29a7427f4d0d562cf",
+        "author": "Rintaro Ishizaki",
+        "date": "2018-03-12T15:03:58+09:00",
+        "message": "[Lexer] Performance improvement for Lexer::kindOfIdentifier (#15168)\n\nDon't check SIL_KEYWORDs when we're not in SIL mode.\r\nLexer::kindOfIdentifier is super hot-path because many of\r\ntokens in a swift source file are keywords or identifiers.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Parse/Lexer.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/1dc3e17f52edcd7b5cec47e29a7427f4d0d562cf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Lexer::kindOfIdentifier"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 13,
+        "total_changed_lines": 18,
+        "net_line_change": -8,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "1dd13b5d9237ad1c423c6ed9e4557fdf0c65833f",
+        "author": "Xin Tong",
+        "date": "2015-12-24T15:10:39-08:00",
+        "message": "Optimize how basic blocks are processed in DSE. I do not see a real compilation time improvement",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/DeadStoreElimination.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/1dd13b5d9237ad1c423c6ed9e4557fdf0c65833f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DSEContext::run"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 2,
+        "total_changed_lines": 14,
+        "net_line_change": 10,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "1e99e160e889f386719975b207e00b20d58ffada",
+        "author": "Nadav Rotem",
+        "date": "2015-03-28T00:20:38+00:00",
+        "message": "Remove some of the passes at the late stages of the optimization pipeline.\n\nAfter many attempts I found that the change in this commit does not regress\nthe performance of the test suite. The passes that I added in this commit come\nto replace the late 'SSAPasses' pipe. I am still not completely sure why there\nis such a strong dependency between SimplifyCFG and InstCombine.\n\nSwift SVN r26658",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/1e99e160e889f386719975b207e00b20d58ffada",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 1,
+        "total_changed_lines": 14,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "216eec2d211d5d5c541405070eea86d9aaeb0601",
+        "author": "Erik Eckstein",
+        "date": "2020-05-26T18:01:17+02:00",
+        "message": "SIL optimizer: add an additional LICM pass to the pipeline.\n\nThe COWOpts optimization relies more on LICM. This additional run of the pass ensures that there is no phase ordering issue between LICM and COWOpts",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/216eec2d211d5d5c541405070eea86d9aaeb0601",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addMidLevelFunctionPipeline"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "21ab99bf80b91a025405d9d59277839074a840d7",
+        "author": "Erik Eckstein",
+        "date": "2017-08-09T14:24:44-07:00",
+        "message": "SILOptimizer: fix performance problem in EpilogueARCAnalysis\n\nThe cache for analysis result was never set. This resulted in a pretty bad quadratic behavior.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/swift/SILOptimizer/Analysis/EpilogueARCAnalysis.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/21ab99bf80b91a025405d9d59277839074a840d7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "computeEpilogueARCInstructions"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "27b63abeda90ce194b4c9b332062e2997e99a68d",
+        "author": "Mark Lacey",
+        "date": "2016-03-01T15:30:37-08:00",
+        "message": "Move RLE after inlining.\n\nIn theory we should be able to eliminate more loads if we run this after\nthe mem2reg that is after inlining. We aren't really relying heavily on\nhaving promoted values like this prior to inlining.\n\nAgain, I see no significant performance delta, but this seems like the\nbest place to put this pass if we're only running it once per run of the\nSSA passes.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/27b63abeda90ce194b4c9b332062e2997e99a68d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddSSAPasses"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "2a8a6b04d851e7c7d1df53bc415b7c41501233ac",
+        "author": "Chris Lattner",
+        "date": "2012-08-26T17:20:23+00:00",
+        "message": "microoptimize IRGen's emitCondition a bit: instead of emitting a xor to \ninvert a condition, just output an inverted conditional branch (swap the \ntrue/false dests).\n\n\nSwift SVN r2778",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenControl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/2a8a6b04d851e7c7d1df53bc415b7c41501233ac",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IRGenFunction::emitCondition"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 7,
+        "total_changed_lines": 11,
+        "net_line_change": -3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "2b7849d9d9eecbb49e4b4e8a3f8e5f56349b7625",
+        "author": "Dmitri Gribenko",
+        "date": "2020-04-24T20:33:25+02:00",
+        "message": "Merge pull request #31272 from martinboehme/optimize-emit-clang-decl\n\n[IRGen] Check as early as possible for Clang decls we've seen before.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenClangDecl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/2b7849d9d9eecbb49e4b4e8a3f8e5f56349b7625",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IRGenModule::emitClangDecl"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "2e18d8ab49e271862cfaf9f2c4618fca7c4205d1",
+        "author": "Andrew Trick",
+        "date": "2014-05-07T06:42:44+00:00",
+        "message": "Reenable the GlobalOpt pass.\n\nDespite my comment in r17554, the pass was still disabled because of a\npotential regression. After enough inlining, _cocoaStringSubscript\naddressor is hoisted outside the string comparison, which is of course\na loop.\n\nThe regression is hard to measure, ~0.5%, so it's been decided that\nwe're going to live with it, rather than doing something nasty like\nrecognizing certain variable names. The post-WWDC fix:\n<rdar://problem/16836228> Add an @cold attribute to identify unlikely\ncode paths.\n\nSwift SVN r17609",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/2e18d8ab49e271862cfaf9f2c4618fca7c4205d1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "2f1e2a22e3c8d7a4b6bb8024ba8289f27b286fe8",
+        "author": "Nadav Rotem",
+        "date": "2013-12-27T08:11:47+00:00",
+        "message": "The call to 'isTrivial' is expensive. Make this optimization last.\n\n\n\nSwift SVN r11671",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/SILCombine.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/2f1e2a22e3c8d7a4b6bb8024ba8289f27b286fe8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILCombiner::visitCopyValueInst"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 5,
+        "total_changed_lines": 10,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "30f6faca7ba494cd496ffc3cf14854590dfdd8d7",
+        "author": "Doug Gregor",
+        "date": "2012-11-04T19:38:38+00:00",
+        "message": "When looking for a fixed type bound to a given type variable, tell\nrecursive calls (in parent constraint systems) that they don't need to\nget the representative of the type variable again, since we already\nhave it. Good for a 25% speedup in debug builds.\n\n\nSwift SVN r3111",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckConstraints.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/30f6faca7ba494cd496ffc3cf14854590dfdd8d7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getFixedType"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "392a95720225281efb983d43166f3eaa8b45b601",
+        "author": "Xin Tong",
+        "date": "2016-05-06T00:24:59-07:00",
+        "message": "Add 1 more iteration of release hoisting.\n\nI see that we go from 24.9% of time spent in SILOptimizations in stdlib compilation\nto 25.2%.\n\nThis brings back 50% of the regression for StringWithCString.\n\n  <summary>Regression (3)</summary>\n\nTEST                                                    | OLD_MIN | NEW_MIN | DELTA (%) | SPEEDUP\n---                                                     | ---     | ---     | ---       | ---\nNSError                                                 | 255     | 296     | +16.1%    | **0.86x**\nObjectiveCBridgeStubToArrayOfNSString                   | 25087   | 27733   | +10.6%    | **0.90x**\nSwiftStructuresInsertionSort                            | 4292    | 4557    | +6.2%     | **0.94x**\n\n</details>\n\n<details >\n  <summary>Improvement (7)</summary>\n\nTEST                                                    | OLD_MIN | NEW_MIN | DELTA (%) | SPEEDUP\n---                                                     | ---     | ---     | ---       | ---\nMatMul                                                  | 1135    | 1071    | -5.6%     | **1.06x**\nObjectiveCBridgeToNSArray                               | 27090   | 25566   | -5.6%     | **1.06x**\nObjectiveCBridgeFromNSArrayAnyObjectToString            | 155362  | 145067  | -6.6%     | **1.07x**\nOpenClose                                               | 47      | 44      | -6.4%     | **1.07x**\nStringHasSuffix                                         | 695     | 642     | -7.6%     | **1.08x**\nCalculator                                              | 34      | 30      | -11.8%    | **1.13x**\nStringWithCString                                       | 336135  | 164974  | -50.9%    | **2.04x**",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/392a95720225281efb983d43166f3eaa8b45b601",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddSSAPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "3998fdf0c4143e4e7022291e0ded3500789d2643",
+        "author": "Anthony Latsis",
+        "date": "2023-03-08T13:18:22+03:00",
+        "message": "DiagnosticVerifier: Optimize `CapturedFixItInfo::getLineColumnRange` for intra-line source ranges",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Frontend/DiagnosticVerifier.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/3998fdf0c4143e4e7022291e0ded3500789d2643",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CapturedFixItInfo::getLineColumnRange"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 2,
+        "total_changed_lines": 15,
+        "net_line_change": 11,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "39f50b4f09daf03fe46db5f0739d71cffa318179",
+        "author": "Nadav Rotem",
+        "date": "2014-03-09T08:26:42+00:00",
+        "message": "Encourage the inliner to inline functions that take closures as arguments. \n\n\n\nSwift SVN r14843",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/39f50b4f09daf03fe46db5f0739d71cffa318179",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::inlineCallsIntoFunction"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 2,
+        "total_changed_lines": 18,
+        "net_line_change": 14,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "3c174a9a24297f89c37e1aad5662e12a733cefb1",
+        "author": "Slava Pestov",
+        "date": "2018-12-12T00:44:40-05:00",
+        "message": "Sema: Simpler and faster handleSILGenericParams()\n\nIf we're given multiple parameter lists, we don't have to build a\ngeneric signature and environment for each one. Instead, we can\njust use a single GenericSignatureBuilder and add all of them in\none shot.\n\nOn my iMac Pro, this speeds up the parse_stdlib test from 169\nseconds to 133.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckDecl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/3c174a9a24297f89c37e1aad5662e12a733cefb1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TypeChecker::handleSILGenericParams"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 11,
+        "total_changed_lines": 17,
+        "net_line_change": -5,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "3c62cc084b0d84d3245495b64deb0c44d9596f6b",
+        "author": "Slava Pestov",
+        "date": "2018-04-16T16:20:43-07:00",
+        "message": "SIL Optimizer: Re-run predictable memory optimizations in performance pipeline",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/3c62cc084b0d84d3245495b64deb0c44d9596f6b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addSSAPasses"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "3dd77943dfc3911a7654b156a1c6117aa97d482f",
+        "author": "John McCall",
+        "date": "2012-06-05T04:50:42+00:00",
+        "message": "Change the size of a prototype type to 3 pointers rather than\na fixed size of 16 bytes.  3 pointers is the magic value in\nswift:  many, many things are better if we can handle three\npointers efficiently.\n\nSwift SVN r2147",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenProto.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/3dd77943dfc3911a7654b156a1c6117aa97d482f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getFixedBufferSize"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "3ffd0da30d23a8ddf29fe0521435ac4efa989678",
+        "author": "Anthony Latsis",
+        "date": "2020-05-18T15:10:23+03:00",
+        "message": "[NFC] AST: Push up a fast path in TypeBase::getContextSubstitutions",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/Type.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/3ffd0da30d23a8ddf29fe0521435ac4efa989678",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TypeBase::getContextSubstitutions"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 4,
+        "total_changed_lines": 8,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "422764545c720f696bf7061513eac30941d39cf4",
+        "author": "Nadav Rotem",
+        "date": "2016-02-10T00:07:42-08:00",
+        "message": "[Runtime] Improve the metadata hashing function.\n\nThe inputs to the hash function is pointers that have a predictable patten. The\nhashes that we were generating and using for the metadata caches were not very\ngood, and as a result we generated very deep search trees. A small change that\nimproved the utilization of the 'length' field and another bit-rotate round\nimproved the quality of the hash function.\n\nI am going to attach to the github commit two pictures. The first picture is the\nbinary with the old hash. The first tree is very deep and sparse. The second\npicture is with the new hash function and the tree is very wide and uniform.  I\nused the benchmark 'TypeFlood' in debug mode to generate huge amounts of\nmetadata.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/public/runtime/MetadataCache.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/422764545c720f696bf7061513eac30941d39cf4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "hash"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "42bf92a216a802b68bd071fb3f91e854be121295",
+        "author": "Andrew Trick",
+        "date": "2020-09-24T18:36:42-07:00",
+        "message": "Make bind_memory free to inline.\n\nbind_memory has no actual code size cost, and this is the only way to\nallow rebinding memory within critical standard library\ncode like SmallString without regressing performance.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Utils/SILInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/42bf92a216a802b68bd071fb3f91e854be121295",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::instructionInlineCost"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "439e86cff4e1c48f8145b1d7a6b0f008d8741f50",
+        "author": "Doug Gregor",
+        "date": "2012-11-15T06:15:18+00:00",
+        "message": "Silly micro-optimization for matching obviously-equivalent types.\n\n\nSwift SVN r3193",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckConstraints.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/439e86cff4e1c48f8145b1d7a6b0f008d8741f50",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ConstraintSystem::matchTypes"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "479893e4dbf6f5f22fdb388b9e22adf072686708",
+        "author": "Michael Gottesman",
+        "date": "2016-02-17T23:42:14-08:00",
+        "message": "[arc] We do not need to resummarize the subregion blocks of a loop when we summarize the loops ARC interesting instructions. This will save compile time.\n\nThe reason why this work is not needed is that ARC before any dataflow is\nperformed first summarizes the interesting instructions in all blocks. This\ninformation is kept up to date by the ARC optimizer as it moves around\nretains/releases.\n\nThus while performing dataflow, all we need to summarize are loops.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/ARC/ARCRegionState.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/479893e4dbf6f5f22fdb388b9e22adf072686708",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ARCRegionState::summarize"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 10,
+        "total_changed_lines": 16,
+        "net_line_change": -4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "4cefdf263ca648966e9dc4afbefc1323fb79c784",
+        "author": "Jordan Rose",
+        "date": "2013-08-19T22:45:14+00:00",
+        "message": "[ClangImporter] Don't unique selector names when doing id-style lookup.\n\nDmitri pointed out that we're just bloating the AST context's identifier\ntable and not actually saving any string comparison. StringRef's == is\npretty efficient anyway.\n\nSwift SVN r7339",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/ClangImporter/ClangImporter.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/4cefdf263ca648966e9dc4afbefc1323fb79c784",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "selectorStartsWithName"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "4d0061667ba6d9d23c452da75d2de5ccf68b2eba",
+        "author": "Stephen Lin",
+        "date": "2013-09-12T21:08:10+00:00",
+        "message": "Add a fast path in the [auto_closure] removal transformation for the no-op case\n\nSwift SVN r8164",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SIL/TypeLowering.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/4d0061667ba6d9d23c452da75d2de5ccf68b2eba",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "transformTypeForTypeLowering"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 0,
+        "total_changed_lines": 8,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "4e2cffbbed9a07ed6165d7363e3e6d03f97f6059",
+        "author": "Erik Eckstein",
+        "date": "2020-04-10T20:10:24+02:00",
+        "message": "AliasAnalysis: speed up canApplyDecrementRefCount() for large functions.\n\nThis is a workaround for some quadratic complexity in ARCSequenceOpt which calls canApplyDecrementRefCount very frequently.\n\nrdar://problem/56268570",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Analysis/AliasAnalysis.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/4e2cffbbed9a07ed6165d7363e3e6d03f97f6059",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AliasAnalysis::canApplyDecrementRefCount"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 0,
+        "total_changed_lines": 10,
+        "net_line_change": 10,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "4f058028b7047eab9d2387a0b22e31bb37ca7684",
+        "author": "Rintaro Ishizaki",
+        "date": "2018-11-02T12:03:54+09:00",
+        "message": "[Lexer] Micro optimization for getTokenAt()\n\nlex() invokes lexImpl(). It doesn't need to lex next token.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Parse/Lexer.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/4f058028b7047eab9d2387a0b22e31bb37ca7684",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Lexer::getTokenAt"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "524a6f90dd06e53599368b678140e389a58b194c",
+        "author": "Erik Eckstein",
+        "date": "2015-09-16T16:40:57+00:00",
+        "message": "SideEffectAnalysis: avoid recomputing the call graph whenever it is not there.\n\nThis avoids quadratic complexity if a function pass does invalidate the call graph.\n(which should not happen anyway, but this is another issue).\n\n\n\nSwift SVN r31993",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILAnalysis/SideEffectAnalysis.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/524a6f90dd06e53599368b678140e389a58b194c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SideEffectAnalysis::getEffects"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 2,
+        "total_changed_lines": 8,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "53aa84aee65d72252c75f82a213f258fe1c32ee6",
+        "author": "Roman Levenstein",
+        "date": "2015-08-19T00:16:36+00:00",
+        "message": "[sil-prespecialization] Whitelist the  Swift._allocateUninitializedArray\n\nWhen pre-specialization was introduced I forgot to whitelist the _allocateUninitializedArray.\n\nAs a result, the creation of an array with elements of builtin types was using a generic code. Moreover, due to use of generics, a lot of getGenericMetadata runtime calls were performed, resulting in increased memory usage.\n\nWith this change, the memory usage of a \"hello, world\" Swift-app is down to 5.7KB.\n\nSwift SVN r31322",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Utils/Generics.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/53aa84aee65d72252c75f82a213f258fe1c32ee6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::isWhitelistedSpecialization"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "54f2aa31471c1a757b8cd842c26e897b55123960",
+        "author": "Rintaro Ishizaki",
+        "date": "2018-10-19T19:21:39+09:00",
+        "message": "[CodeCompletion] Tiny optimization for unresolved member compilation\n\n* Early exit for operators\n* Early exit for equal types",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IDE/CodeCompletion.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/54f2aa31471c1a757b8cd842c26e897b55123960",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getUnresolvedMemberCompletions"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "55fe34063fe7bb081ceb33e061c1feee572c7efd",
+        "author": "Chris Lattner",
+        "date": "2013-05-22T19:59:11+00:00",
+        "message": "optimize this to use std::next\n\n\nSwift SVN r5271",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SIL/SILPrinter.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/55fe34063fe7bb081ceb33e061c1feee572c7efd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "print"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "55fec18c321b02dc7adf960fe8e552ae026c94d0",
+        "author": "Nadav Rotem",
+        "date": "2013-12-24T22:20:03+00:00",
+        "message": "Add the inliner before reg2mem to allow more opportunity of the scalar optimizers to kick-in.\n\nSwift SVN r11626",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/55fec18c321b02dc7adf960fe8e552ae026c94d0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "56dff87c74f2b71823ebc9500a2c2bcbfc81a242",
+        "author": "Michael Ilseman",
+        "date": "2016-02-09T10:11:28-08:00",
+        "message": "[SILGen] Use the more efficient lookupConformance",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILGen/SILGenFunction.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/56dff87c74f2b71823ebc9500a2c2bcbfc81a242",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILGenFunction::checkForImportedUsedConformances"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 5,
+        "total_changed_lines": 9,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "601b1e6bd4a6fb489a33b9f5ab3fbd3fb28cae1f",
+        "author": "Arnold Schwaighofer",
+        "date": "2017-04-11T10:11:17-07:00",
+        "message": "SILOptimizer: Add a zero cost for inlining const_string_literal instructions",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Utils/SILInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/601b1e6bd4a6fb489a33b9f5ab3fbd3fb28cae1f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::instructionInlineCost"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "68290c72e3115e02623a7494c5c827dda661770d",
+        "author": "Connor Wakamo",
+        "date": "2014-01-30T04:53:19+00:00",
+        "message": "[frontend] If there is a primary input, only call performTypeChecking() on the primary input.\n\nThis has the potential to significantly reduce compile times in primary file\nmode: for example, compiling Song.swift from the Name That Tune example as the\nprimary file previously took ~2.0s with a release build on my machine; with this\nchange, it now only takes ~0.8s. (The old compile time was presumably dominated\nthe time it takes to type-check AppDelegate.swift, which is a larger file.)\n\nSwift SVN r13140",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Frontend/Frontend.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/68290c72e3115e02623a7494c5c827dda661770d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompilerInstance::performParse"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 2,
+        "total_changed_lines": 8,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "6c8d6a0f45ef858d26946bd7941c0585da9331c5",
+        "author": "Egor Zhdan",
+        "date": "2022-07-29T22:28:42+01:00",
+        "message": "Merge pull request #60305 from apple/egorzhdan/cxx-namespace-perf-pt2\n\n[cxx-interop] Improve performance of importing C++ namespaces, part 2",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/ClangImporter/SwiftLookupTable.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/6c8d6a0f45ef858d26946bd7941c0585da9331c5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SwiftLookupTableWriter::populateTableWithDecl"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 13,
+        "total_changed_lines": 13,
+        "net_line_change": -13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "6e74bb154ef7c002f489994f16ace77dcab81a3f",
+        "author": "Nadav Rotem",
+        "date": "2013-12-27T07:57:48+00:00",
+        "message": "Add SILCombine after specialization and inlining to remove unused functions.\nThis removes 1000 functions from the standard library.\n\n\n\nSwift SVN r11670",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/6e74bb154ef7c002f489994f16ace77dcab81a3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "6e90172010d810b5a831b811a3deae884ff6d4de",
+        "author": "Slava Pestov",
+        "date": "2019-06-11T02:47:32-07:00",
+        "message": "AST: Remove unnecessary fast path",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/ProtocolConformance.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/6e90172010d810b5a831b811a3deae884ff6d4de",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SpecializedProtocolConformance::getWitnessDeclRef"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 5,
+        "total_changed_lines": 5,
+        "net_line_change": -5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "6fef7ee8d71effba92104ba6bf1a5df66b8d2d18",
+        "author": "Joe Groff",
+        "date": "2014-01-22T19:24:16+00:00",
+        "message": "PerformanceInliner: Returns and unreachables are free.\n\nSwift SVN r12766",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/6fef7ee8d71effba92104ba6bf1a5df66b8d2d18",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "instructionInlineCost"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "756c7f9c4979cc781a6a8ef26b9fe2e02ea72c59",
+        "author": "Erik Eckstein",
+        "date": "2020-04-07T15:00:48+02:00",
+        "message": "SILOptimizer: fix a compile time problem in the inliner\n\nWhen inlining many functions in a very large basic block, the splitting of the block at the call sites is quadratic, when traversing in forward order.\nTraversing backwards, fixes the problem.\n\nrdar://problem/56268570",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/756c7f9c4979cc781a6a8ef26b9fe2e02ea72c59",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::inlineCallsIntoFunction"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "773d8a477396d7ea1e3eddb9651d18fb13eae7c3",
+        "author": "Nadav Rotem",
+        "date": "2015-03-12T19:00:47+00:00",
+        "message": "[overflow] Enable the pass the removes overflow checks by default.\n\nWe can now remove overflow checks by analyzing control flow. For example:\n\nfunc foo(x : Int) {\n  if x > 2 {\n    x - 2 // overflow check removed\n  }\n}\n\nWe also remove overflow checks that are guarded by other (stronger) checks:\n\nfunc bar(x : Int) {\n  x + 1 // removed\n  x + 5\n  x + 2 // removed\n}\n\nWith this change we are able to remove dozens of checks from the swift standard\nlibrary. However, only the only test in the test suite that becomes faster is\nFibonacci (1.3x).\n\nSwift SVN r26054",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/773d8a477396d7ea1e3eddb9651d18fb13eae7c3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "7981630ddd455263ad000c908cbae6610c58ea17",
+        "author": "Xi Ge",
+        "date": "2017-11-02T14:04:25-07:00",
+        "message": "libSyntax: avoid copying token text when lexing token syntax nodes, NFC. (#12723)\n\nThis is likely the root cause for memory surge when we always turn on\r\nsyntax token lexing. Since the underlying buffer outlives the syntax\r\ntree, it's reasonable to refer the text instead of copying and owning it.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Parse/Lexer.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/7981630ddd455263ad000c908cbae6610c58ea17",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Lexer::fullLex"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "80a46cdae23b0c95ced9c0340577bcea6da89577",
+        "author": "Arnold Schwaighofer",
+        "date": "2015-01-20T17:00:12+00:00",
+        "message": "RefCount: Use rotate right in isUniquelyReferencedOrPinned\n\nThis generates more efficient code.\n\nSwift SVN r24555",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/shims/RefCount.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/80a46cdae23b0c95ced9c0340577bcea6da89577",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "isUniquelyReferencedOrPinned"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "818bc5885d3d4f6814168fe891ba2c5f72ccf927",
+        "author": "Andrew Trick",
+        "date": "2014-07-10T07:31:41+00:00",
+        "message": "PerformanceInliner; always inline transparent calls. Just to be sure.\n\nSwift SVN r19798",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/818bc5885d3d4f6814168fe891ba2c5f72ccf927",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::isProfitableToInline"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "824101651d06a296b71205e75222051deee27c90",
+        "author": "Slava Pestov",
+        "date": "2022-01-25T00:32:25-05:00",
+        "message": "AST: Add missing fastpath to transformRec()'s handling of SILBoxType",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/Type.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/824101651d06a296b71205e75222051deee27c90",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Type::transformRec"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "88f323320e0ab62cd31a3e2d67dd65b590fe95ff",
+        "author": "Michael Gottesman",
+        "date": "2014-01-08T03:10:41+00:00",
+        "message": "[sil-inliner] We want to always inline transparent functions if they reach the performance inliner. Make the cost of a transparent function 0.\n\nrdar://15767012\n\nSwift SVN r12037",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/88f323320e0ab62cd31a3e2d67dd65b590fe95ff",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "functionInlineCost"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "8b2221a16f0a6b97057d6b1e6ad34e2b981a9d3b",
+        "author": "Doug Gregor",
+        "date": "2012-11-14T07:10:25+00:00",
+        "message": "Put TypeVariableTypes in the constraint checker arena.\n\nSilly me. ~3% speedup and 1% memory reduction from actually puttying\ntype variables into the arena I created for them. All of the\n*structural* types involving type variables were already there.\n\n\nSwift SVN r3177",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckConstraints.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/8b2221a16f0a6b97057d6b1e6ad34e2b981a9d3b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TypeVariableType::getNew"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "8cf086935114b8c37314eef7d29a46b62c04ac52",
+        "author": "Slava Pestov",
+        "date": "2018-04-13T14:26:32-07:00",
+        "message": "Mandatory Inlining: Use loadFunction() instead of linkFunction()\n\nWe only need to deserialize the function itself, not its transitive\ndependencies. Also, only deserialize a function after we've checked\nthat its transparent.\n\nFor now, this doesn't reduce the volume of SIL linking, because the\nmandatory linker pass still links everything. But we're almost\nthere.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Mandatory/MandatoryInlining.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/8cf086935114b8c37314eef7d29a46b62c04ac52",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getCalleeFunction"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 6,
+        "total_changed_lines": 17,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "8f76815307d38fc37278521c92757ea30dde71c8",
+        "author": "Michael Gottesman",
+        "date": "2021-04-21T21:20:43-07:00",
+        "message": "[inst-opt-utils] If InstModCallback::setUseValueFunc isn't set, just call RAUW directly rather than calling the default setUseValueFunc.\n\nThis guarantees that a default InstModCallback() call to RAUW doesn't have any\noverhead.\n\nJust a little optimization I saw.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/swift/SILOptimizer/Utils/InstOptUtils.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/8f76815307d38fc37278521c92757ea30dde71c8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "replaceValueUsesWith"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "909c3b28c4b8f08f24f640f8b0003f889f557588",
+        "author": "Xin Tong",
+        "date": "2016-02-05T20:22:35-08:00",
+        "message": "Add a dead function elimination pass before we run SIL highlevel optimizations.\nI see slight compilation time improvements.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/909c3b28c4b8f08f24f640f8b0003f889f557588",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "918c36e154eaf8218727e044685dff087ad62d74",
+        "author": "Andrew Trick",
+        "date": "2018-08-30T16:34:48-07:00",
+        "message": "Guard verifyCriticalEdges with #ifndef NDEBUG.\n\nThis could noticeably improve compile time in Release builds.\n\nOnce we eliminate all calls to splitAllCriticalEdges, the we can even\nremove this verification in asserts builds since normal SIL\nverification will catch the issues.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SIL/SILVerifier.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/918c36e154eaf8218727e044685dff087ad62d74",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILFunction::verifyCriticalEdges"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "925eb2e0d9717bb9a659bb36b8bbe6831c13d428",
+        "author": "Xin Tong",
+        "date": "2016-01-26T19:45:01-08:00",
+        "message": "Correct an inefficiency in initial state of the data flow in RLE",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/RedundantLoadElimination.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/925eb2e0d9717bb9a659bb36b8bbe6831c13d428",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "init"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "946b142b335e8d97ff7b2e61f34ab7f6729e4f41",
+        "author": "Chris Lattner",
+        "date": "2012-08-05T23:53:56+00:00",
+        "message": "rename DTorFn to DtorFn to be more consistent with other names.\nTeach the optimizer that readonly/readnone functions obviously\nhave no side effect, so we don't even need to look at their bodies.\n\n\nSwift SVN r2562",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/OptimizeARC.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/946b142b335e8d97ff7b2e61f34ab7f6729e4f41",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "analyzeDestructor"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 6,
+        "total_changed_lines": 18,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "9a403a0dae282413d2a60e767956144c7c5adb08",
+        "author": "Doug Gregor",
+        "date": "2018-09-30T21:35:15-07:00",
+        "message": "[Runtime] Only cache completed type metadata for associated type witnesses.\n\nThis is the scheme used for metadata caches elsewhere, and it\neliminates the need to check the metadata state along the hot path of\nswift_getAssociatedTypeWitness().",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/public/runtime/Metadata.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/9a403a0dae282413d2a60e767956144c7c5adb08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::swift_getAssociatedTypeWitness"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 4,
+        "total_changed_lines": 17,
+        "net_line_change": 9,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "9ef9c154f6a509ecbc297322d85f6b88ec4a35bb",
+        "author": "Erik Eckstein",
+        "date": "2022-07-07T08:34:53+02:00",
+        "message": "MandatoryGenericSpecializer: run optimizations in a loop\n\nTo avoid phase ordering problems of the involved optimizations, iterate until we reach a fixed point.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/GenericSpecializer.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/9ef9c154f6a509ecbc297322d85f6b88ec4a35bb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MandatoryGenericSpecializer::run"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 3,
+        "total_changed_lines": 16,
+        "net_line_change": 10,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a194b88741ba3f479ffd8036c35bd9146c072d48",
+        "author": "Anna Zaks",
+        "date": "2013-10-04T17:56:03+00:00",
+        "message": "[SIL] Using SetVector (instead of set) might make the pass faster\n\nSince we will be processing instructions in roughly the same order as they appear in the file.\n\nSwift SVN r8922",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/ConstantPropagation.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a194b88741ba3f479ffd8036c35bd9146c072d48",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "llvm::errs"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a329c7a404d801ff583e00f70c363446ab5914e7",
+        "author": "Jordan Rose",
+        "date": "2015-05-15T01:26:09+00:00",
+        "message": "Microoptimization: get parent module from a source file instead of a decl.\n\nNot just constant-time but inlineable.\n\nNo functionality change.\n\nSwift SVN r28599",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckDecl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a329c7a404d801ff583e00f70c363446ab5914e7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "checkRedeclaration"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a617cfbabb734815b91fd483e9c381718b577afa",
+        "author": "John McCall",
+        "date": "2014-05-18T02:16:19+00:00",
+        "message": "We can compare archetypes directly with pointer equality;\nthis is both faster and correctly handles the possibility\nof a null archetype.\n\nSwift SVN r18294",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/ASTDumper.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a617cfbabb734815b91fd483e9c381718b577afa",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getCanonicalType"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a71202fbae710d3c96b0192943de08f9e5862c07",
+        "author": "Roman Levenstein",
+        "date": "2017-02-24T14:59:44-08:00",
+        "message": "[sil-performance-inliner] Do not inline generics into thunks\n\nThis allows for about 4% code size reduction on stdlib. And the performance hit is not very significant. Only 5-6 benchmarks get somewhat slower.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a71202fbae710d3c96b0192943de08f9e5862c07",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "shouldInlineGeneric"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a8fcdb8580673742c21953a6a4d30e91e620b59f",
+        "author": "Holly Borla",
+        "date": "2020-10-29T19:49:47-07:00",
+        "message": "[ConstraintSystem] Remove an unnecessary SIMD special case in\n`DisjunctionStep::shortCircuitDisjunctionAt`.\n\nThis code is unnecessary because SIMD overloads are in their own\npartition, so the short circuiting will happen automatically.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/CSStep.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a8fcdb8580673742c21953a6a4d30e91e620b59f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DisjunctionStep::shortCircuitDisjunctionAt"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 12,
+        "total_changed_lines": 12,
+        "net_line_change": -12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "a9b272552089ce4a28e1d4d8c9880237cf15ac60",
+        "author": "Kavon Farvardin",
+        "date": "2024-01-10T19:37:21-08:00",
+        "message": "[NFC] fast-path to skip a requirement scan",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/RequirementMachine/RequirementLowering.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/a9b272552089ce4a28e1d4d8c9880237cf15ac60",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rewriting::applyInverses"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "aa07bc3d908762f48fb6cb112f329113cd2e84ef",
+        "author": "Roman Levenstein",
+        "date": "2015-04-16T20:28:15+00:00",
+        "message": "Lower bridged casts always, when the outcome is not provably failing.\n\nEven when we don't know for sure if a bridged cast would succeed, we still want to lower it to produce a more efficient code that does not performs conformance checks at run-time.\n\nThis is useful when performing casts optimizations as a guaranteed optimization.\n\nSwift SVN r27377",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Utils/Local.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/aa07bc3d908762f48fb6cb112f329113cd2e84ef",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "optimizeUnconditionalCheckedCastAddrInst"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 2,
+        "total_changed_lines": 8,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "aaa60d3bd8756abdc3d37a070b7ccf2bd3d80827",
+        "author": "Arnold Schwaighofer",
+        "date": "2015-11-16T09:51:54-08:00",
+        "message": "Renable SLP vectorization\n\nThe necessary fixes are in llvm.\n\nrdar://22673382",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/IRGen.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/aaa60d3bd8756abdc3d37a070b7ccf2bd3d80827",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::performLLVMOptimizations"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "acd151f40a1d51043848aa406b5c02080f2fb421",
+        "author": "Michael Gottesman",
+        "date": "2014-01-21T17:12:11+00:00",
+        "message": "[performance-inliner] A gep of a hasOneUse gep will get folded by LLVM into one gep. In that case the second should be free.\n\nSwift SVN r12642",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/acd151f40a1d51043848aa406b5c02080f2fb421",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "instructionInlineCost"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 0,
+        "total_changed_lines": 10,
+        "net_line_change": 10,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "ae7e5b5d90eb936ddebbe519017acca95170f5a8",
+        "author": "Erik Eckstein",
+        "date": "2023-01-04T13:36:44+01:00",
+        "message": "LICM: add limits for the number of alias checks to avoid large compile times in corner cases\n\nAvoid quadratic complexity in corner cases. Usually, these limits will not be exceeded.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/LoopTransforms/LICM.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/ae7e5b5d90eb936ddebbe519017acca95170f5a8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LoopTreeOptimization::analyzeCurrentLoop"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 6,
+        "total_changed_lines": 18,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "aecb8f3c57600a8164184268f3eff77bb9ebd18c",
+        "author": "Joe Groff",
+        "date": "2021-04-13T08:04:36-07:00",
+        "message": "Merge pull request #36872 from jckarter/faster-main-exe-check-in-compat-hook\n\nCompatibility50: Use __dso_handle for cheaper main executable check.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/toolchain/Compatibility50/Overrides.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/aecb8f3c57600a8164184268f3eff77bb9ebd18c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "installGetClassHook_untrusted"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 8,
+        "total_changed_lines": 11,
+        "net_line_change": -5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "af083791e8e0321c229dc83217df97ff38788a98",
+        "author": "Doug Gregor",
+        "date": "2017-11-19T22:44:56-08:00",
+        "message": "[AST] Enable commented-out optimization for associated-type access.\n\nA while ago, we commented-out an obvious optimization when accessing the\nassociated types of a protocol conformance to get better coverage of the\ngeneral substitution path. Bring that code back, avoiding the creation of\nsubstitution maps in a few cases.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/ProtocolConformance.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/af083791e8e0321c229dc83217df97ff38788a98",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ProtocolConformanceRef::getAssociatedType"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 5,
+        "total_changed_lines": 9,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "b00dcbebbf51245a97d0c1c4f183c21e13226557",
+        "author": "Mark Lacey",
+        "date": "2016-02-24T21:54:27-08:00",
+        "message": "Remove two runs of the passes in AddSSAPasses.\n\nI measure around a 10% reduction in compile times of release no-assert\nbuilds of the stdlib and StdlibUnitTest.\n\nFor release + debug-swift builds, I see 20% reduction in stdlib compile\ntime.\n\nI saw no reproducible regressions in the benchmarks, and a few\nimprovements.\n\nThere is a small (0.1%) reduction in the libswiftCore.dylib size.\n\nBeing able to remove these is a consequence of the reordering that\nhappened in e50daa6.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/b00dcbebbf51245a97d0c1c4f183c21e13226557",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 2,
+        "total_changed_lines": 2,
+        "net_line_change": -2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "b5d83afabaa894ff068f9af7a646be9abc2041a9",
+        "author": "Adrian Prantl",
+        "date": "2024-03-05T12:16:14-08:00",
+        "message": "Avoid copy of loop temporary",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/IRGenDebugInfo.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/b5d83afabaa894ff068f9af7a646be9abc2041a9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "createParameterTypes"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "bd62e9d9e78f90e61c4a9c3cf2777b4b68438edd",
+        "author": "Michael Gottesman",
+        "date": "2014-05-08T02:33:35+00:00",
+        "message": "[load-store-opts] Keeping performing load store optimizations on a basic block until we no longer eliminate anything.\n\nSwift SVN r17670",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/LoadStoreOpts.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/bd62e9d9e78f90e61c4a9c3cf2777b4b68438edd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "llvm::dbgs"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "c09f0578a6400918282186cc43c0d7f30de4c316",
+        "author": "Slava Pestov",
+        "date": "2018-09-27T21:21:59-07:00",
+        "message": "AST: Fast path for SubstitutionMap::lookupConformance()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/SubstitutionMap.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/c09f0578a6400918282186cc43c0d7f30de4c316",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SubstitutionMap::lookupConformance"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 2,
+        "total_changed_lines": 16,
+        "net_line_change": 12,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "c220cf7bea21fb8552c110e7588460000fa7f2d2",
+        "author": "Michael Gottesman",
+        "date": "2014-01-21T19:56:13+00:00",
+        "message": "[sil-arc-opts] Teach the arc optimizer that builtins without side effects can not decrement ref counts.\n\nWe should investigate even the \"side effect\" instructions for whether or not the\nnotion of \"side effect\" is too broad like MayHaveSideEffects.\n\nSwift SVN r12652",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/ARCAnalysis.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/c220cf7bea21fb8552c110e7588460000fa7f2d2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "arc::cannotDecrementRefCount"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 0,
+        "total_changed_lines": 16,
+        "net_line_change": 16,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "c31e5c755c19f55cc56f2146133afe48de996eef",
+        "author": "Chris Lattner",
+        "date": "2013-10-29T03:06:25+00:00",
+        "message": "teach allocbox-to-stack about assign instructions, enabling it to\npromote a lot more boxes.  This is the last step to resolve\nrdar://15228172 getting us back O(n) string performance.  There is\nstill more work to do, but this is progress.\n\n\nSwift SVN r9751",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/AllocBoxToStack.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/c31e5c755c19f55cc56f2146133afe48de996eef",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "checkAllocBoxUses"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "ca04efbb4474b69858e0ccea4bea3766b283bd8e",
+        "author": "Erik Eckstein",
+        "date": "2018-06-07T13:43:34-07:00",
+        "message": "SIL optimizer: add a few cleanup passes between loop unrolling and GlobalOpt.\n\nThose are needed to fully optimize static String constants.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/ca04efbb4474b69858e0ccea4bea3766b283bd8e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addClosureSpecializePassPipeline"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "cca9ef59f1b5db240420b0df08ca5c8e32152d1d",
+        "author": "Michael Gottesman",
+        "date": "2016-02-16T18:04:11-08:00",
+        "message": "[arc] When merging ImmutablePointerSets, since they are uniqued, we can bail early on merging the same set by just performing a pointer equality.\n\nJust a drive by I noticed. Should improve compile time.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/swift/Basic/ImmutablePointerSet.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/cca9ef59f1b5db240420b0df08ca5c8e32152d1d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "cd7f205ade20915e16c70a22687af5c3c0ea8923",
+        "author": "Martin Boehme",
+        "date": "2020-04-24T17:19:19+02:00",
+        "message": "[IRGen] Check as early as possible for Clang decls we've seen before.\n\nPreviously, we were only doing this after the fast-path code that\nhandles decls without any executable code. This meant, however, that we\nwere potentially processing these decls multiple times. This is\ndefinitely inefficient; it may even be a correctness issue, depending on\nwhat amount of checking `HandleTopLevelDecl` does to see if it has\nprocessed a particular decl before (which I'm not sure about either\nway).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenClangDecl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/cd7f205ade20915e16c70a22687af5c3c0ea8923",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IRGenModule::emitClangDecl"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d1ad9e3e4d78cca96b65bb0bedd9d415e16f84ac",
+        "author": "Pavel Yaskevich",
+        "date": "2022-09-29T20:50:37-07:00",
+        "message": "[SILOptimizer] TypeWrappers: Lower assign_by_wrapper into copy_addr for address-only types",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Mandatory/RawSILInstLowering.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d1ad9e3e4d78cca96b65bb0bedd9d415e16f84ac",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "llvm::dbgs"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 4,
+        "total_changed_lines": 15,
+        "net_line_change": 7,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d1d1f4da0aee137c883334e7f5d0809c14dfb6ba",
+        "author": "Stephen Lin",
+        "date": "2013-08-15T16:22:33+00:00",
+        "message": "MandatoryInlining: move check for already-processed function to apply to top-level calls as well\n\nSwift SVN r7257",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/MandatoryInlining.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d1d1f4da0aee137c883334e7f5d0809c14dfb6ba",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "runOnFunctionRecursively"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 4,
+        "total_changed_lines": 10,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d1d584a1ef56ea4a2473275966daca6eebc6e504",
+        "author": "Bill Wendling",
+        "date": "2013-07-26T22:44:35+00:00",
+        "message": "Using an attribute builder to is more efficient than adding attributes one by one.\n\nSwift SVN r6659",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/IRGenModule.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d1d584a1ef56ea4a2473275966daca6eebc6e504",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getRuntimeFn"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d339eab30c088ae120fe5f66794ecb076867583c",
+        "author": "John McCall",
+        "date": "2018-11-08T12:19:24-05:00",
+        "message": "Don't apply the -Osize heuristic when inlining coroutines.\n\nThis is a performance hack: inlining a coroutine can promote heap\nallocations of the frame to stack allocations, which is valuable\nout of proportion to the normal weight.  There are surely more\nprincipled ways of getting this effect, though.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/Transforms/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d339eab30c088ae120fe5f66794ecb076867583c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::isProfitableToInline"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d6403d707e91fc177b267b1be79c7e875dbd5da2",
+        "author": "Joe Groff",
+        "date": "2014-01-22T21:54:57+00:00",
+        "message": "PerformanceInliner: StringLiterals are also free.\n\nSwift SVN r12788",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d6403d707e91fc177b267b1be79c7e875dbd5da2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "instructionInlineCost"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d69b6a059494dafc3ce917fa4f34959f2cf05589",
+        "author": "Pavel Yaskevich",
+        "date": "2024-12-17T11:36:39-08:00",
+        "message": "[CSOptimizer] Prefer homogeneous arithmetic operator overloads when argument(s) or result match\n\nThis is an opportunistic optimization based on the operator\nuse patterns where homogeneous operators are the most\nheavily used ones.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/CSOptimizer.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d69b6a059494dafc3ce917fa4f34959f2cf05589",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "determineBestChoicesInContext"
+        ],
+        "added_lines": 18,
+        "deleted_lines": 0,
+        "total_changed_lines": 18,
+        "net_line_change": 18,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d70136a046ce2bf436adbcd7c360d2dbfc1b9ebe",
+        "author": "Joe Groff",
+        "date": "2014-04-04T04:42:39+00:00",
+        "message": "IRGen: Don't eagerly emit protocol descriptors for imported protocols.\n\nObjC protocol descriptors are uniqued by the ObjC runtime and lazily emitted by Clang, so we shouldn't burn time eagerly emitting descriptors for every protocol in the universe. Addresses some of the performance issue in <rdar://problem/16520314>.\n\nSwift SVN r15924",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenMeta.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d70136a046ce2bf436adbcd7c360d2dbfc1b9ebe",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IRGenModule::emitProtocolDecl"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "d93cd143c5d1204bf3eddea46d83113c60e3a9a1",
+        "author": "John McCall",
+        "date": "2012-01-26T00:10:29+00:00",
+        "message": "Use llvm_unreachable to permit optimization based on\nthis case being invalid.\n\n\n\nSwift SVN r1098",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckDecl.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/d93cd143c5d1204bf3eddea46d83113c60e3a9a1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "visitArgDecl"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "db237bc7a93bf74410bfb2a734a4bd53e9689051",
+        "author": "Adrian Prantl",
+        "date": "2024-03-06T13:20:54-08:00",
+        "message": "Merge pull request #72096 from adrian-prantl/reference-loop\n\nAvoid copy of loop temporary",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/IRGenDebugInfo.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/db237bc7a93bf74410bfb2a734a4bd53e9689051",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "createParameterTypes"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "e0c4fa2d926567543656e11d269c9b73495d2ccd",
+        "author": "Erik Eckstein",
+        "date": "2020-03-23T15:53:23+01:00",
+        "message": "SILOptimizer: add a LICM pass at mid-level in the pass pipeline.\n\nIt's needed to hoist global_init calls.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/e0c4fa2d926567543656e11d269c9b73495d2ccd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addMidLevelPassPipeline"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "e46c050b8d5aca114abd1d2ec846a934983a7b48",
+        "author": "Erik Eckstein",
+        "date": "2015-02-13T12:14:14+00:00",
+        "message": "Reuse type metadata of Self in witness methods.\n\nThis reduces the size of protocoll witnesses in the dylib by 12%, resulting in an overall dylib code size reduction of 1.7%.\nAnd there are a few performance improvements for -Onone: CaptureProp: +34%, RangeAssignment: +16%.\n\n\n\nSwift SVN r25269",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/IRGen/GenProto.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/e46c050b8d5aca114abd1d2ec846a934983a7b48",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "switch"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 1,
+        "total_changed_lines": 15,
+        "net_line_change": 13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "e51626df6eb6d7a42156522aecd515f0ff34240e",
+        "author": "Roman Levenstein",
+        "date": "2017-08-22T12:45:22-07:00",
+        "message": "Run the devirtualizer after the generic specializer\n\nThis is very beneficial because many class_method/witness_method instructions may get concrete types after specialization. Doing it this way improves compilation times.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/e51626df6eb6d7a42156522aecd515f0ff34240e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addSSAPasses"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "e9b8bb855b4c7026c503164865b8617e03c3d000",
+        "author": "Xin Tong",
+        "date": "2015-12-26T12:07:35-08:00",
+        "message": "Only compute ConnectionGraph when needed. small compilation time improvement.\n\nRoughly ~2% of DSE compilation time based on milliseconds reported by Instruments.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SIL/SILValueProjection.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/e9b8bb855b4c7026c503164865b8617e03c3d000",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LSLocation::isNonEscapingLocalLSLocation"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "eb84f5e23ccf5a79dc50ec6c2a7881b87b89bc05",
+        "author": "Rintaro Ishizaki",
+        "date": "2020-07-08T10:10:40-07:00",
+        "message": "Merge pull request #32748 from rintaro/index-rdar64636688\n\n[Index] Fast path for getting value member",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/CSGen.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/eb84f5e23ccf5a79dc50ec6c2a7881b87b89bc05",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::resolveValueMember"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "edb448d0b53ec4e476c3d76d51bc1c2e3275ad20",
+        "author": "Doug Gregor",
+        "date": "2012-11-04T20:02:46+00:00",
+        "message": "Prefer solving the smallest unresolved overload sets.\n\nWhen selecting an unresolved overload set to explore, start with the\noverload set with the smallest number of overloads. This keeps the\nsolution space from branching out too quickly. It's a modest win (2%\nimprovement in number of constraint systems explored, 3% speedup), but\nthe more direct benefit is that doing the opposite (preferring the\nlargest number of overloads) causes a catastrophic blow-up in\ntype-checking time.\n\nI get the sense that there's actually a much smarter heuristic we\ncould employ, based on how likely it is that a given overload set can\nbe resolved quickly, without much further branching.\n\n\n\n\nSwift SVN r3113",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeCheckConstraints.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/edb448d0b53ec4e476c3d76d51bc1c2e3275ad20",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getNextSolutionStep"
+        ],
+        "added_lines": 18,
+        "deleted_lines": 2,
+        "total_changed_lines": 20,
+        "net_line_change": 16,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "ef5187f713f9101b1d96c7245b8a59a73f6b61d4",
+        "author": "Mark Lacey",
+        "date": "2015-05-14T06:47:40+00:00",
+        "message": "Do not allow inliner to work top-down unless we have new opportunities.\n\nWe should not repeatedly attempt to inline into the same function unless\nwe have produced new opportunities for inlining due to devirtualization\nor generic specialization.\n\nThis was a silly goof from when I integrated devirtualization and\ngeneric specialization into the inliner.\n\nThere is no reasonable test case for this. The radar has patches to the\nstdlib and perf test suite that can be used to reproduce this, but\nvariants of these patches are already in our tree and do not exhibit the\nsame behavior.\n\nThis cuts the compile time of the SuperChars benchmark from 10 minutes\nto 1.7 seconds when the patches in the radar are applied. The vast\nmajority of that improvement comes from not giving LLVM's\nCorrelatedValuePropagation a 20k basic block\nfunction (rdar://problem/20945561).\n\nUnfortuantely it looks like BinarySearch, Dictionary, PrimeNum, and\nSim2DArray suffer as a result of this change. PrimeNum is the most\nsignificant regression, running around 30% slower.\n\nI'll open radars and if time permits we can attempt to recover some of\nthat time by tweaking the inliner.\n\nFixes rdar://problem/20878612.\n\nSwift SVN r28562",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/PerformanceInliner.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/ef5187f713f9101b1d96c7245b8a59a73f6b61d4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SILPerformanceInliner::inlineDevirtualizeAndSpecialize"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "f5e78f78feba6eb5ddcda5367a52442a1d01b576",
+        "author": "Jordan Rose",
+        "date": "2014-12-04T00:34:55+00:00",
+        "message": "TypeChecker: Look up \"Bool\" more efficiently.\n\nThis is not quite the same as ASTContext::getBoolDecl because it handles\n-parse-stdlib source files that don't import the standard library, but it\nstill doesn't need to do a general lookup.\n\nNo functionality change.\n\nSwift SVN r23667",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/Sema/TypeChecker.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/f5e78f78feba6eb5ddcda5367a52442a1d01b576",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TypeChecker::lookupBoolType"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 6,
+        "total_changed_lines": 11,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "f73626eb28dadc0f5c069a8e1e56ef75a0b209c5",
+        "author": "Xin Tong",
+        "date": "2016-02-01T12:52:36-08:00",
+        "message": "Remove 4/5 runs of dead store elimination. I did not measure a real performance difference on\nmy local machine.\n\nrdar://24392141\n\nThis is going to cut compilation time spent in dead store elim by 5X\n\nThe last iteration of dead store ran just before the last iteration of arc-sequence-opt\nallows us to catch some opportunites passes like Mem2Reg can not eliminate. And this allows\nmore code motion freedom.\n\nStdlib -O after removing 4/5 dead stores.\n=========================================\n\nRunning Time\tSelf (ms)\t\tSymbol Name\n22082.0ms   37.1%\t0.0\t \t    swift::runSILOptimizationPasses(swift::SILModule&)\n21905.0ms   36.8%\t0.0\t \t     swift::SILPassManager::runOneIteration()\n17616.0ms   29.6%\t35.0\t \t      swift::SILPassManager::runFunctionPasses(llvm::ArrayRef<swift::SILFunctionTransform*>)\n16667.0ms   28.0%\t55.0\t \t       swift::SILPassManager::runPassesOnFunction(llvm::ArrayRef<swift::SILFunctionTransform*>, swift::SILFunction*)\n3063.0ms    5.1%\t7.0\t \t        (anonymous namespace)::SimplifyCFGPass::run()\n2936.0ms    4.9%\t20.0\t \t        (anonymous namespace)::ARCSequenceOpts::run()\n2343.0ms    3.9%\t3.0\t \t        (anonymous namespace)::SILCombine::run()\n1900.0ms    3.1%\t110.0\t \t        (anonymous namespace)::SILCSE::run()\n1642.0ms    2.7%\t43.0\t \t        (anonymous namespace)::RedundantLoadElimination::run()\n1113.0ms    1.8%\t6.0\t \t        (anonymous namespace)::GenericSpecializer::run()\n788.0ms    1.3%\t120.0\t \t        (anonymous namespace)::DCE::run()\n495.0ms    0.8%\t3.0\t \t        (anonymous namespace)::SILCodeMotion::run()\n304.0ms    0.5%\t1.0\t \t        (anonymous namespace)::StackPromotion::run()\n292.0ms    0.4%\t1.0\t \t        (anonymous namespace)::ConstantPropagation::run()\n269.0ms    0.4%\t5.0\t \t        (anonymous namespace)::ABCOpt::run()\n236.0ms    0.3%\t35.0\t \t        (anonymous namespace)::SILSROA::run()\n192.0ms    0.3%\t2.0\t \t        (anonymous namespace)::SILMem2Reg::run()\n146.0ms    0.2%\t65.0\t \t        (anonymous namespace)::SILLowerAggregate::run()\n132.0ms    0.2%\t5.0\t \t        (anonymous namespace)::LICM::run()\n132.0ms    0.2%\t7.0\t \t        (anonymous namespace)::DeadStoreElimination::run()\n96.0ms    0.1%\t65.0\t \t        (anonymous namespace)::Devirtualizer::run()\n67.0ms    0.1%\t59.0\t \t        (anonymous namespace)::DeadObjectElimination::run()\n62.0ms    0.1%\t44.0\t \t        (anonymous namespace)::RemovePinInsts::run()\n\nStdlibUnitTest -O after removing 4/5 dead stores.\n=================================================\n\nRunning Time\tSelf (ms)\t\tSymbol Name\n6958.0ms   26.9%\t0.0\t \t    swift::runSILOptimizationPasses(swift::SILModule&)\n6923.0ms   26.8%\t0.0\t \t     swift::SILPassManager::runOneIteration()\n5638.0ms   21.8%\t5.0\t \t      swift::SILPassManager::runFunctionPasses(llvm::ArrayRef<swift::SILFunctionTransform*>)\n5363.0ms   20.7%\t8.0\t \t       swift::SILPassManager::runPassesOnFunction(llvm::ArrayRef<swift::SILFunctionTransform*>, swift::SILFunction*)\n1535.0ms    5.9%\t1.0\t \t        (anonymous namespace)::ARCSequenceOpts::run()\n789.0ms    3.0%\t2.0\t \t        (anonymous namespace)::SimplifyCFGPass::run()\n704.0ms    2.7%\t0.0\t \t        (anonymous namespace)::SILCombine::run()\n615.0ms    2.3%\t36.0\t \t        (anonymous namespace)::SILCSE::run()\n506.0ms    1.9%\t14.0\t \t        (anonymous namespace)::RedundantLoadElimination::run()\n224.0ms    0.8%\t44.0\t \t        (anonymous namespace)::DCE::run()\n150.0ms    0.5%\t1.0\t \t        (anonymous namespace)::SILCodeMotion::run()\n113.0ms    0.4%\t1.0\t \t        (anonymous namespace)::StackPromotion::run()\n98.0ms    0.3%\t4.0\t \t        (anonymous namespace)::DeadStoreElimination::run()\n80.0ms    0.3%\t3.0\t \t        (anonymous namespace)::ABCOpt::run()\n74.0ms    0.2%\t5.0\t \t        (anonymous namespace)::LICM::run()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/f73626eb28dadc0f5c069a8e1e56ef75a0b209c5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddSSAPasses"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 1,
+        "total_changed_lines": 1,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "fb8eabe7b6d5c869b49b48c8c5dc0d82123be02c",
+        "author": "Saleem Abdulrasool",
+        "date": "2019-03-27T22:03:29-07:00",
+        "message": "AST: switch to `std::sort` from `llvm::array_pod_sort`\n\nSwap the `array_pod_sort` to `sort`.  `array_pod_sort` is meant to be\nused with POD types only.  Switching to `std:sort` should be slightly\nfaster, and more importantly, allows the emission of the warnings on\nWindows to be sorted identically to Linux and macOS.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/AST/GenericSignatureBuilder.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/fb8eabe7b6d5c869b49b48c8c5dc0d82123be02c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GenericSignatureBuilder::checkConstraintList"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "fc6cfbbf32eccf0e7e159a7a29f7cd6318f9f896",
+        "author": "Mike Ash",
+        "date": "2023-10-23T13:04:28-04:00",
+        "message": "[Runtime] Have MetadataCacheKey::operator== try memcmp before deeper comparison.\n\nExperiment shows that the vast majority (~99.99%) of keys with equal hashes have equal bytes. Fast-path that case by doing a memcmp before doing the deeper comparison.\n\nrdar://110478978",
+        "modified_files_count": 1,
+        "modified_files": [
+            "stdlib/public/runtime/MetadataCache.h"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/fc6cfbbf32eccf0e7e159a7a29f7cd6318f9f896",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 18,
+        "deleted_lines": 2,
+        "total_changed_lines": 20,
+        "net_line_change": 16,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "fd33095b9a286ae4e77d20aef49f68a8e31a26b5",
+        "author": "Michael Gottesman",
+        "date": "2014-06-05T04:59:40+00:00",
+        "message": "[g-arc-opts] Enable the Global ARC Optimizer by default.\n\nKeep in mind that there is still more work to be done in the optimizer related\nto loops, partial merging, etc. But this is the most basic multiple basic block\noptimizer that has the features we want.\n\nSwift SVN r18707",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILPasses/Passes.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/fd33095b9a286ae4e77d20aef49f68a8e31a26b5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "swift::runSILOptimizationPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "swift",
+        "hash": "ff3c7ba4a90645e12de0b91c54a5997abf04cc71",
+        "author": "Meghana Gupta",
+        "date": "2021-02-12T23:20:17-08:00",
+        "message": "[sil] Add another run of ARCSequenceOpts before inlining in function passes.\n\nThis eliminates some regressions by eliminating phase ordering in between\nARCSequenceOpts/inlining with read only functions whose read onlyness is lost\nafter inlining.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/SILOptimizer/PassManager/PassPipeline.cpp"
+        ],
+        "github_commit_url": "https://github.com/apple/swift/commit/ff3c7ba4a90645e12de0b91c54a5997abf04cc71",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addFunctionPasses"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "repository_name": "sway",
+        "hash": "cc8d318aa1ab380166aa8183dba84a8d2a9ab2aa",
+        "author": "Tudor Brindus",
+        "date": "2020-10-19T01:40:10+02:00",
+        "message": "transaction: make transaction collapsing smarter with > 2 views\n\nSway maintains a list of pending transactions, and tries to merge\nconsecutive transactions applying to the same views into one. Given\na pending transactions list on views {A, B, C} of:\n\n  A -> A' -> A'' -> B -> B' -> B''\n\nSway will collapse the transactions into just A'' -> B''. This works\nfine when doing things like resizing views by their border. However,\nwhen interactively resizing layouts like H[V[A B] C], we end up with\npending transaction lists like:\n\n  A -> B -> C -> A' -> B' -> C' -> A'' -> B'' -> C''\n\nPreviously, Sway would not be able to simplify this transaction list,\nand execute many more transactions than would be necessary (the final\nstate is determined by {A'', B'', C''}).\n\nAfter this commit, the transaction list gets simplified to A'' -> B'' ->\nC'', resolving performance problems (that were particularly noticeable\nwith high-refresh-rate mice).\n\nFixes #5736.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sway/desktop/transaction.c"
+        ],
+        "github_commit_url": "https://github.com/swaywm/sway/commit/cc8d318aa1ab380166aa8183dba84a8d2a9ab2aa",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "transaction_progress_queue"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 4,
+        "total_changed_lines": 17,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]

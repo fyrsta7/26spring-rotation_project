@@ -1,0 +1,2042 @@
+[
+    {
+        "repository_name": "php-src",
+        "hash": "02bdb521e2137509bc5a2e6abd4e31e9f14d22bc",
+        "author": "Ilia Alshanetsky",
+        "date": "2011-01-05T04:13:23+00:00",
+        "message": "Optimize unix timestamp to date-string conversion for very high year values",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/date/lib/unixtime2tm.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/02bdb521e2137509bc5a2e6abd4e31e9f14d22bc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "timelib_unixtime2gmt"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "04e0d805540abdf6890079fbdc5ae74aace52c1b",
+        "author": "Niels Dossche",
+        "date": "2024-04-02T23:00:10+02:00",
+        "message": "Optimize levenshtein a bit for memory usage (#13830)\n\nWhen all costs are equal, levenshtein fulfills the requirements\r\nof being a metric. A metric is symmetric, so we can swap the strings in\r\nthat case. Since we use rows of a partial matrix of length |string2| we\r\ncan make the choice of using string1 instead if |string1| < |string2|,\r\nwhich will optimize memory usage and CPU time.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/levenshtein.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/04e0d805540abdf6890079fbdc5ae74aace52c1b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "reference_levdist"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 0,
+        "total_changed_lines": 9,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "05a884f6393b1a19f103c2b358e736b20c0f7d46",
+        "author": "twosee",
+        "date": "2018-10-05T21:33:38+02:00",
+        "message": "Optimize MySQL statement execute without parameters",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mysqlnd/mysqlnd_ps_codec.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/05a884f6393b1a19f103c2b358e736b20c0f7d46",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mysqlnd_stmt_execute_generate_request"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "092ad3e4624f86a43648e6afb1c22ae7e3406699",
+        "author": "Alex Dowad",
+        "date": "2023-01-08T17:27:19+02:00",
+        "message": "Optimize branch structure of UTF-8 decoder routine\n\nI like the asm which gcc -O3 generates on this modified code...\nand guess what: my CPU likes it too!\n\n(The asm is noticeably tighter, without any extra operations in the\npath which dispatches to the code for decoding a 1-byte, 2-byte,\n3-byte, or 4-byte character. It's just CMP, conditional jump, CMP,\nconditional jump, CMP, conditional jump.\n\n...Though I was admittedly impressed to see gcc could implement the\nboolean expression `c >= 0xC2 && c <= 0xDF` with just 3 instructions:\nadd, CMP, then conditional jump. Pretty slick stuff there, guys.)\n\nBenchmark results:\n\nUTF-8, short - to UTF-16LE  faster by 7.36% (0.0001 vs 0.0002)\nUTF-8, short - to UTF-16BE  faster by 6.24% (0.0001 vs 0.0002)\nUTF-8, medium - to UTF-16BE faster by 4.56% (0.0003 vs 0.0003)\nUTF-8, medium - to UTF-16LE faster by 4.00% (0.0003 vs 0.0003)\nUTF-8, long - to UTF-16BE   faster by 1.02% (0.0215 vs 0.0217)\nUTF-8, long - to UTF-16LE   faster by 1.01% (0.0209 vs 0.0211)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/libmbfl/filters/mbfilter_utf8.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/092ad3e4624f86a43648e6afb1c22ae7e3406699",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mb_utf8_to_wchar"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "09ce807bf1f97c13faa735b2712251902f42b18e",
+        "author": "Sascha Schumann",
+        "date": "2001-07-21T03:26:31+00:00",
+        "message": "Drop memchr() in php_memnstr in favor of manual scanning.  This reduces\nthe complexity of the function and is about 20% faster on Linux/x86.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/php_string.h"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/09ce807bf1f97c13faa735b2712251902f42b18e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_memnstr"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 6,
+        "total_changed_lines": 18,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "0a69e142787d77ac521ab9ed81f5211a21d246fb",
+        "author": "Niels Dossche",
+        "date": "2025-01-04T14:08:33+00:00",
+        "message": "Avoid copying request strings in phar_parse_pharfile()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/phar/phar.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/0a69e142787d77ac521ab9ed81f5211a21d246fb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "phar_parse_pharfile"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "0fc3818cc51125dda211ebc5e7de8966480a76c3",
+        "author": "Dmitry Stogov",
+        "date": "2021-04-13T15:54:02+03:00",
+        "message": "Initialize fast class cache",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/zend_accelerator_util_funcs.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/0fc3818cc51125dda211ebc5e7de8966480a76c3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_accel_class_hash_copy"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "12022014fade5be728c868e4b163a64747ec02e7",
+        "author": "Rasmus Lerdorf",
+        "date": "2006-06-15T20:49:05+00:00",
+        "message": "MFH:\nI don't think the call to xmlNodeSetContentLen() is needed here and\nit is causing performance problems because it tries to parse the blob\nand create a subtree.  Because we are escaping the string anyway, we\nare never going to get a subtree, but the entity parsing that is done\nby xmlNodeSetContentLen() is killing performance on large blobs of\ntext.  On one recent example it took a couple of minutes to parse\nwhereas if we just create a text node like this and set the contents\nto the raw string it is down to milliseconds.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/soap/php_encoding.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/12022014fade5be728c868e4b163a64747ec02e7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "to_xml_string"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 4,
+        "total_changed_lines": 11,
+        "net_line_change": 3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "12790b2b354008c362e182ae327d4184ed491bc9",
+        "author": "Niels Dossche",
+        "date": "2023-09-24T22:18:32+02:00",
+        "message": "Extend C14N fast path to HTML documents too (#12293)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/node.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/12790b2b354008c362e182ae327d4184ed491bc9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dom_canonicalization"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "1388751f10799a240fa4cd62285c3b5c7acb235b",
+        "author": "Nikita Popov",
+        "date": "2017-07-20T21:41:52+02:00",
+        "message": "Use fast zpp in mb_strlen()\n\nFor short strings this function is now sufficiently fast for zpp\nto be a bottleneck.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/mbstring.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/1388751f10799a240fa4cd62285c3b5c7acb235b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 5,
+        "total_changed_lines": 14,
+        "net_line_change": 4,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "1783b0e4815714efa29294041e57290cd20e0cab",
+        "author": "Ilia Alshanetsky",
+        "date": "2006-12-21T01:16:10+00:00",
+        "message": "Optimize out zend_hash_num_elements() call",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/soap/php_sdl.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/1783b0e4815714efa29294041e57290cd20e0cab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdl_serialize_type"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "1a6f1e8c6aa7ebebe05c6edfe197ce2798beae8c",
+        "author": "Andi Gutmans",
+        "date": "2003-10-14T14:23:12+00:00",
+        "message": "- Support merging free block which was created by reallocing to smaller\n- size. This should fix some performance issues. This code is still not\n- thoroughly tested.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_mm.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/1a6f1e8c6aa7ebebe05c6edfe197ce2798beae8c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_mm_realloc"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 3,
+        "total_changed_lines": 16,
+        "net_line_change": 10,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "1af91d944aabad42014c0e34cbf54e89a87590b1",
+        "author": "Anatol Belski",
+        "date": "2015-01-15T11:18:40+01:00",
+        "message": "optimize offset computation",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_sort.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/1af91d944aabad42014c0e34cbf54e89a87590b1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_insert_sort"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 2,
+        "total_changed_lines": 10,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "1fc2ddc9966ab0951183db22ae140a8ee2691401",
+        "author": "Saki Takamachi",
+        "date": "2024-07-20T15:42:47+02:00",
+        "message": "random: Optimize `Randomizer::getBytesFromString()` (#14894)\n\nCo-authored-by: Tim D\u00fcsterhus <tim@bastelstu.be>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/random/randomizer.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/1fc2ddc9966ab0951183db22ae140a8ee2691401",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_METHOD"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "28ab2060ee4ee33d69e3d84a49970f928eb21947",
+        "author": "Dmitry Stogov",
+        "date": "2018-03-21T11:57:54+03:00",
+        "message": "Micro optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/28ab2060ee4ee33d69e3d84a49970f928eb21947",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_array_dup"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 7,
+        "total_changed_lines": 12,
+        "net_line_change": -2,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "2f1fe3209c99e7003b79974416a6069161dd835d",
+        "author": "Niels Dossche",
+        "date": "2024-02-07T18:02:42+01:00",
+        "message": "Use a direct statically-known call for decoding in the fast path",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/html_document.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/2f1fe3209c99e7003b79974416a6069161dd835d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dom_decode_encode_fast_path"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "309e66d98473ff991b259d5c1ea5b13a0ee4b921",
+        "author": "Niels Dossche",
+        "date": "2025-01-03T12:28:14+01:00",
+        "message": "Use zend_new_pair() for hrtime() (#17328)\n\nThis is a specialised optimized helper to return a pair.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/hrtime.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/309e66d98473ff991b259d5c1ea5b13a0ee4b921",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 4,
+        "total_changed_lines": 8,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "315ea609da2fd315bb76cb1275d152cfdaff607f",
+        "author": "Nikita Popov",
+        "date": "2020-06-29T09:54:31+02:00",
+        "message": "Remove restriction on method call inlining\n\nIn PHP 8, we are guaranteed that $this exists, so we no longer have\nto forbid this case.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/Optimizer/optimize_func_calls.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/315ea609da2fd315bb76cb1275d152cfdaff607f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_try_inline_call"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 7,
+        "total_changed_lines": 7,
+        "net_line_change": -7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "3185f8628f7d94c0b69671d7c58f92b5b94110b9",
+        "author": "Dmitry Stogov",
+        "date": "2017-07-19T15:41:46+03:00",
+        "message": "Convert CONCAT into FAST_CONCAT for non-object operands",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/Optimizer/dfa_pass.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/3185f8628f7d94c0b69671d7c58f92b5b94110b9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_dfa_optimize_op_array"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "31f516b4888fcf096fe0912828948bed84f2ad1c",
+        "author": "Xinchen Hui",
+        "date": "2015-05-06T14:29:19+08:00",
+        "message": "Use fast zpp for frequently used gettext(_)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/gettext/gettext.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/31f516b4888fcf096fe0912828948bed84f2ad1c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_NAMED_FUNCTION"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 5,
+        "total_changed_lines": 16,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "32cd373dfd4e5b5710929c534f960694853a02e0",
+        "author": "Nikita Popov",
+        "date": "2019-12-27T17:27:45+01:00",
+        "message": "Handle empty password fast path in caching_sha2_password\n\nIf an empty password is used, no additional packets are exchanged\nduring caching_sha2_password auth. We're only looking for an\nOK/ERR response.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mysqlnd/mysqlnd_auth.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/32cd373dfd4e5b5710929c534f960694853a02e0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mysqlnd_caching_sha2_handle_server_response"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "34087ad2b55a187bd4a0c699a4bd7898cddcb425",
+        "author": "Sterling Hughes",
+        "date": "2003-05-20T22:31:15+00:00",
+        "message": "bah humbug, use the pointer based version, which turns out to be an instruction\nfaster",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_operators.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/34087ad2b55a187bd4a0c699a4bd7898cddcb425",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_str_tolower_copy"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 7,
+        "total_changed_lines": 17,
+        "net_line_change": 3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "3434d3fc98881ee5cd45b2b57afc789fd69b810b",
+        "author": "Dmitry Stogov",
+        "date": "2014-04-17T21:15:02+04:00",
+        "message": "Optimize CASE(TRUE, X) into BOOL(X) (this pattern affects wordpress)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/Optimizer/block_pass.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/3434d3fc98881ee5cd45b2b57afc789fd69b810b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_optimize_block"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "3da6818c9e1210a76fc4cc4a1f83f66ffce76293",
+        "author": "Tim D\u00fcsterhus",
+        "date": "2024-10-10T09:19:53+02:00",
+        "message": "reflection: Use fast ZPP for ReflectionProperty::(get|set)Value() (#16329)\n\nDuring the Doctrine Core Team Meetup 2024 the Doctrine team investigated the\r\nperformance overhead of using `setRawValueWithoutLazyInitialization()` instead\r\nof `setValue()` and came to the surprising conclusion that\r\n`setRawValueWithoutLazyInitialization()` outperformed `setValue()`, despite\r\ndoing more work.\r\n\r\nThese two scripts are used as the benchmark:\r\n\r\n    <?php\r\n\r\n    class Foo\r\n    {\r\n        public $id;\r\n        public $foo1;\r\n        public $foo2;\r\n        public $foo3;\r\n        public $foo4;\r\n    }\r\n\r\n    $reflection = new ReflectionClass(Foo::class);\r\n    $properties = $reflection->getProperties();\r\n\r\n    for ($i = 0; $i < 1000000; $i++) {\r\n        $foo = new Foo();\r\n        foreach ($properties as $property) {\r\n            $property->setValue($foo, 1);\r\n        }\r\n    }\r\n\r\nand\r\n\r\n    <?php\r\n\r\n    class Foo\r\n    {\r\n        public $id;\r\n        public $foo1;\r\n        public $foo2;\r\n        public $foo3;\r\n        public $foo4;\r\n    }\r\n\r\n    $reflection = new ReflectionClass(Foo::class);\r\n    $properties = $reflection->getProperties();\r\n\r\n    for ($i = 0; $i < 1000000; $i++) {\r\n        $foo = new Foo();\r\n        foreach ($properties as $property) {\r\n            $property->setRawValueWithoutLazyInitialization($foo, 1);\r\n        }\r\n    }\r\n\r\nBenchmarking these with a current git master shows that `setValue()` is 50%\r\nslower:\r\n\r\n    $ hyperfine -L script setValue,setRawValueWithoutLazyInitialization '/tmp/php-before /tmp/test/{script}.php'\r\n    Benchmark 1: /tmp/php-before /tmp/test/setValue.php\r\n      Time (mean \u00b1 \u03c3):     216.0 ms \u00b1   5.8 ms    [User: 212.0 ms, System: 3.7 ms]\r\n      Range (min \u2026 max):   208.2 ms \u2026 225.3 ms    13 runs\r\n\r\n    Benchmark 2: /tmp/php-before /tmp/test/setRawValueWithoutLazyInitialization.php\r\n      Time (mean \u00b1 \u03c3):     145.6 ms \u00b1   3.6 ms    [User: 141.6 ms, System: 3.8 ms]\r\n      Range (min \u2026 max):   140.4 ms \u2026 152.8 ms    20 runs\r\n\r\n    Summary\r\n      /tmp/php-before /tmp/test/setRawValueWithoutLazyInitialization.php ran\r\n        1.48 \u00b1 0.05 times faster than /tmp/php-before /tmp/test/setValue.php\r\n\r\nLooking into the \u201cwhy\u201d revealed that the `setValue()` script spent quite some\r\ntime in `zend_parse_parameters()`.\r\n\r\nA 50% overhead can be significant, given that `setValue()` is commonly called\r\nseveral thousand times in a single request when using Doctrine.\r\n\r\nThis commit changes the non-static property case of `setValue()` to make use of\r\nthe fast parameter parsing API and adjusts `getValue()` for consistency.\r\n\r\nThe resulting comparison shows that both `setValue()` and\r\n`setRawValueWithoutLazyInitialization()` are now (almost) equal:\r\n\r\n    $ hyperfine -L script setValue,setRawValueWithoutLazyInitialization 'sapi/cli/php /tmp/test/{script}.php'\r\n    Benchmark 1: sapi/cli/php /tmp/test/setValue.php\r\n      Time (mean \u00b1 \u03c3):     143.0 ms \u00b1   6.4 ms    [User: 139.4 ms, System: 3.4 ms]\r\n      Range (min \u2026 max):   134.8 ms \u2026 157.7 ms    18 runs\r\n\r\n    Benchmark 2: sapi/cli/php /tmp/test/setRawValueWithoutLazyInitialization.php\r\n      Time (mean \u00b1 \u03c3):     147.0 ms \u00b1   5.5 ms    [User: 143.0 ms, System: 3.6 ms]\r\n      Range (min \u2026 max):   139.9 ms \u2026 159.8 ms    19 runs\r\n\r\n    Summary\r\n      sapi/cli/php /tmp/test/setValue.php ran\r\n        1.03 \u00b1 0.06 times faster than sapi/cli/php /tmp/test/setRawValueWithoutLazyInitialization.php",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/reflection/php_reflection.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/3da6818c9e1210a76fc4cc4a1f83f66ffce76293",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ZEND_METHOD"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 8,
+        "total_changed_lines": 16,
+        "net_line_change": 0,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "425c6f5815ea8ffbf5b73d684bd931551c200d26",
+        "author": "Nikita Popov",
+        "date": "2020-04-07T16:10:19+02:00",
+        "message": "Optimize internal name fetching in reflection\n\nDirectly fetch the name property, instead of construction the\nproperties hash table and performing a lookup in it. This is both\nslow and wastes a lot of memory.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/reflection/php_reflection.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/425c6f5815ea8ffbf5b73d684bd931551c200d26",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "42fca623263599100746ce8e02f01b8c52311987",
+        "author": "Anatol Belski",
+        "date": "2014-09-17T09:16:59+02:00",
+        "message": "improve empty string check",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/zip/lib/zip_set_name.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/42fca623263599100746ce8e02f01b8c52311987",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zip_set_name"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "442efdaaea3c1a06b01aa5f52c2ec05c3d64a0d1",
+        "author": "Xinchen Hui",
+        "date": "2015-01-19T09:10:01-05:00",
+        "message": "Optimized is_a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_builtin_functions.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/442efdaaea3c1a06b01aa5f52c2ec05c3d64a0d1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "is_a_impl"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 6,
+        "total_changed_lines": 16,
+        "net_line_change": 4,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "472a8414cc905813f676b48aedb9708f31c6a2dd",
+        "author": "Dmitry Stogov",
+        "date": "2015-08-03T15:07:26+03:00",
+        "message": "Merge branch 'fast_memcpy' of github.com:bogdanandone/php-src\n\n* 'fast_memcpy' of github.com:bogdanandone/php-src:\n  opcache: Patch SSE based fast_memcpy() implementation",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/zend_accelerator_util_funcs.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/472a8414cc905813f676b48aedb9708f31c6a2dd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "fast_memcpy"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 4,
+        "total_changed_lines": 9,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "520655608a80c4e8470416a5724c7cefa85d4ef4",
+        "author": "Andrei Zmievski",
+        "date": "2006-08-08T17:36:20+00:00",
+        "message": "Should be slightly faster to use U16_NEXT here.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_unicode.h"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/520655608a80c4e8470416a5724c7cefa85d4ef4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_get_codepoint_at"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "5c0389a6f8ed2deb29501f7f4a12ed55ff7ba59d",
+        "author": "Rasmus Lerdorf",
+        "date": "2007-05-25T09:19:05+00:00",
+        "message": "Optimize sapi_get_request_time() slightly making it use the cached time\nand also checking if there is a server_context before trying to call\nthe request_time sapi hook.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "main/SAPI.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/5c0389a6f8ed2deb29501f7f4a12ed55ff7ba59d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sapi_get_request_time"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 4,
+        "total_changed_lines": 10,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "5da2c7a6df4aeb1feb364577763539eadc9a9ccd",
+        "author": "Ilia Alshanetsky",
+        "date": "2006-12-21T01:16:36+00:00",
+        "message": "MFB: Optimize out zend_hash_num_elements() call",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/soap/php_sdl.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/5da2c7a6df4aeb1feb364577763539eadc9a9ccd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdl_serialize_type"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "62feefddc725f1948636fd47c647d8c9bf55b4bc",
+        "author": "Jeroen van Wolffelaar",
+        "date": "2001-10-05T21:58:41+00:00",
+        "message": "Fix array_search and in_array. Now binary safe, and faster (returns when\nfound, and doesn't duplicate the key each time, but only when necessary)\n\nPatch also by Edin Kadribasic",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/array.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/62feefddc725f1948636fd47c647d8c9bf55b4bc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_search_array"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "68185bafbe2c7ab025703917d259c4c19ce456eb",
+        "author": "Bogdan Andone",
+        "date": "2015-07-29T14:51:57+03:00",
+        "message": "opcache: Patch SSE based fast_memcpy() implementation\n\nUse _mm_store_si128() instead of _mm_stream_si128(). This ensures that copied memory\nis preserved in data cache, which is good as the interpretor will start to use this\ndata without the need to go back to memory. _mm_stream* is intended to be used for\nstores where we want to avoid reading data into the cache and the cache pollution;\nin our scenario it seems that preserving the data in cache has a positive impact.\n\nTests on WordPress 4.1 show ~1% performance increase with fast_memcpy() in place\nversus standard memcpy() when running php-cgi -T10000 wordpress/index.php.\n\nI also updated SW prefetching on target memory but its contribution is almost negligible.\nThe address to be prefetched will be used in a couple of cycles (at the next iteration)\nwhile the data from memory will be available in >100 cycles.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/zend_accelerator_util_funcs.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/68185bafbe2c7ab025703917d259c4c19ce456eb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "fast_memcpy"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 4,
+        "total_changed_lines": 9,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "689504556518b823ba8d375853ca79bef70a2fed",
+        "author": "Ilia Alshanetsky",
+        "date": "2006-12-30T01:57:01+00:00",
+        "message": "Simplify & optimize code\n\n# Patch by Matt Wilmas",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_operators.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/689504556518b823ba8d375853ca79bef70a2fed",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zendi_smart_strcmp"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 4,
+        "total_changed_lines": 12,
+        "net_line_change": 4,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "6acd4f7f3a24fca79e2062ba9e88b1e72635530f",
+        "author": "Alex Dowad",
+        "date": "2021-09-20T11:20:53+02:00",
+        "message": "Optimize text encoding detection for speed (eliminate Unicode property lookups)\n\n...By just testing the input codepoints if they are within a few fixed\nranges instead. This avoids hash lookups in property tables.\n\nFrom (micro-)benchmarking on my PC, this looks to be a bit less than 4x\nfaster than the existing code.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/libmbfl/mbfl/mbfilter.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/6acd4f7f3a24fca79e2062ba9e88b1e72635530f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mbfl_estimate_encoding_likelihood"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "6beee1a5bb04d399518e4e4d94a4b82d367161fd",
+        "author": "Max Kellermann",
+        "date": "2022-05-16T16:21:29+02:00",
+        "message": "Disable the read buffer in file_get_contents()\n\nThe read buffer is useless here, it only hurts performance.\n\nCloses GH-8547.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/file.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/6beee1a5bb04d399518e4e4d94a4b82d367161fd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "71d6899e535d960d9b43d75ed2b7073288c13b59",
+        "author": "Dmitry Stogov",
+        "date": "2018-11-15T18:47:23+03:00",
+        "message": "micro-optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_objects_API.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/71d6899e535d960d9b43d75ed2b7073288c13b59",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_objects_store_del"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 5,
+        "total_changed_lines": 9,
+        "net_line_change": -1,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "7e0f7b7677e2fd76e83c2b731c3c0f3bd1a7279e",
+        "author": "Tyson Andre",
+        "date": "2019-09-28T21:29:58+02:00",
+        "message": "Reduce memory used by token_get_all()\n\nAround a quarter of all strings in array tokens would have a string that's one\ncharacter long (e.g. ` `, `\\`, `1`)\n\nFor parsing a large number of php files,\nThe memory increase dropped from 378374248 to 369535688 (2.5%)\n\nCloses GH-4753.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/tokenizer/tokenizer.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/7e0f7b7677e2fd76e83c2b731c3c0f3bd1a7279e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "add_token"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "86456574bb030bbe24adcb368ff735eebdbededd",
+        "author": "George Peter Banyard",
+        "date": "2022-11-22T12:35:25+00:00",
+        "message": "Fix performance degradation introduced in c2547ab7dc67646e287d430e44798cb9f327cf21\n\nAfter discussing with someone, our current running theory is that the local\nvariable forces the compiler to reserve an additional register for the whole\nlifespan of the function. Dropping it and just loading the value should restore\nthe previous code generation.\n\nCloses GH-9876",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/86456574bb030bbe24adcb368ff735eebdbededd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_hash_find_bucket"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "8c8322f6a11e11b3c4b9d7f90e01ec95d5cf791d",
+        "author": "Niels Dossche",
+        "date": "2024-07-06T13:44:10+02:00",
+        "message": "ext/xml: Use zend_hash_find_ptr_lc() to avoid allocation in some cases (#14840)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/xml/xml.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/8c8322f6a11e11b3c4b9d7f90e01ec95d5cf791d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_xml_check_string_method_arg"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "8f02d7b7e499490312969cdfa9a3a81b9458595a",
+        "author": "Nikita Popov",
+        "date": "2022-04-18T18:30:36+02:00",
+        "message": "Remove unnecessary bailout in fcall optimization\n\nEven if we can't optimize the SEND_VAL_EX, there is no reason to\nskip the INIT_FCALL/DO_FCALL optimizations, those should be entirely\northogonal.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/Optimizer/optimize_func_calls.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/8f02d7b7e499490312969cdfa9a3a81b9458595a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_optimize_func_calls"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 4,
+        "total_changed_lines": 5,
+        "net_line_change": -3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "909f943fe504d412bf3e192182e1e941669b4fd8",
+        "author": "Dmitry Stogov",
+        "date": "2018-07-30T16:08:45+03:00",
+        "message": "Loop optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/909f943fe504d412bf3e192182e1e941669b4fd8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_hash_discard"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 5,
+        "total_changed_lines": 12,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "96d7eebce83ab8893e82426335418fc7174e57a7",
+        "author": "Ilia Alshanetsky",
+        "date": "2005-03-06T19:36:51+00:00",
+        "message": "Make html_entity_decode() 15-20% faster by avoiding pointless string\nduplication.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/html.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/96d7eebce83ab8893e82426335418fc7174e57a7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_unescape_html_entities"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 7,
+        "total_changed_lines": 18,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "9794272f3e8773f5c1048c5bd2a7db2a04f70e23",
+        "author": "Dmitry Stogov",
+        "date": "2018-02-13T00:56:48+03:00",
+        "message": "Micro optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/9794272f3e8773f5c1048c5bd2a7db2a04f70e23",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zend_hash_add_or_update_i"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 5,
+        "total_changed_lines": 11,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "9874bacbc9162a4954104447ff558c9f7a5e7692",
+        "author": "Takeshi Abe",
+        "date": "2009-02-11T16:30:48+00:00",
+        "message": "optimization via the row-major order.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/gd/libgd/gd.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/9874bacbc9162a4954104447ff558c9f7a5e7692",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gdImagePaletteCopy"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "98dbae4feb4f905cf9f429200062880e03f9fa3f",
+        "author": "Dmitry Stogov",
+        "date": "2021-10-15T12:31:33+03:00",
+        "message": "Merge branch 'PHP-8.1'\n\n* PHP-8.1:\n  Tracing JIT: Use information about really called internal function return type to improve type inference.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/jit/zend_jit_trace.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/98dbae4feb4f905cf9f429200062880e03f9fa3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_jit_trace_build_tssa"
+        ],
+        "added_lines": 20,
+        "deleted_lines": 0,
+        "total_changed_lines": 20,
+        "net_line_change": 20,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "9bbdc90ed251ec18b861a1913d01f0264e447afc",
+        "author": "Dmitry Stogov",
+        "date": "2013-10-28T13:19:08+04:00",
+        "message": "Merge branch 'PHP-5.5'\n\n* PHP-5.5:\n  Improved performance of func_get_args() by eliminating useless copying\n\nConflicts:\n\tNEWS",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_builtin_functions.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/9bbdc90ed251ec18b861a1913d01f0264e447afc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ZEND_FUNCTION"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 6,
+        "total_changed_lines": 17,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "9c283850fb36dd4fe71bf9c5699cef28da09b501",
+        "author": "Alex Dowad",
+        "date": "2023-01-05T08:04:51+02:00",
+        "message": "Optimize out another bounds check in BIG5 decoder\n\nThis gives about a 9% speed boost for BIG5 encoding conversion.\n(Not as much as I was hoping!)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/libmbfl/filters/mbfilter_big5.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/9c283850fb36dd4fe71bf9c5699cef28da09b501",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mb_big5_to_wchar"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 2,
+        "total_changed_lines": 14,
+        "net_line_change": 10,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "a0ab81a4da7069fe181e72ebdea00c17bff3c198",
+        "author": "Antony Dovgal",
+        "date": "2007-06-06T11:57:24+00:00",
+        "message": "minor optimization - make sure the objects are not the same instance before we start comparing their properties",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_operators.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/a0ab81a4da7069fe181e72ebdea00c17bff3c198",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_function"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "a0cc6d426f709bf44741cd7254221bbc6e31c6a4",
+        "author": "Dmitry Stogov",
+        "date": "2017-05-31T09:53:10+03:00",
+        "message": "New optimization pattern",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/Optimizer/pass3.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/a0cc6d426f709bf44741cd7254221bbc6e31c6a4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_optimizer_pass3"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "a35237795fd44e9c2a6fcbec5661bafabf434d52",
+        "author": "Hartmut Holzgraefe",
+        "date": "2000-06-01T11:47:48+00:00",
+        "message": "uh, off by one?!! this time it's regression-tested, fast and compact",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/string.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/a35237795fd44e9c2a6fcbec5661bafabf434d52",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 13,
+        "total_changed_lines": 19,
+        "net_line_change": -7,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "a76658b329bbbdf167172de5dc889022cdb5ef8a",
+        "author": "Alex Dowad",
+        "date": "2023-01-04T21:58:27+02:00",
+        "message": "Optimize out bounds check in UHC decoder\n\nThis gives a 25% speed boost for conversion operations on long strings\n(~10,000 codepoints). For shorter strings, the speed boost is less\n(as the input gets smaller, it is progressively swamped more and more\nby the overhead of entering and exiting the conversion function).\n\nWhen benchmarking string conversion speed, we are measuring not only\nthe speed of the decoder, but also the time which it takes to re-encode\nthe string in another encoding like UTF-8 or UTF-16. So the performance\nincrease for functions which only need to decode but not re-encode the\ninput string will be much more than 25%.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/libmbfl/filters/mbfilter_uhc.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/a76658b329bbbdf167172de5dc889022cdb5ef8a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mb_uhc_to_wchar"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 2,
+        "total_changed_lines": 14,
+        "net_line_change": 10,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "a86e6687640c3ef8c32a86034ab2cf46b9917909",
+        "author": "Niels Dossche",
+        "date": "2024-04-28T10:32:41+02:00",
+        "message": "Improve performance of text node allocation by marking the text node construction as always inline",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/html5_parser.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/a86e6687640c3ef8c32a86034ab2cf46b9917909",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "lexbor_libxml2_bridge_new_text_node_fast"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "ac0e07ecdaa1ecda91de17784d0e0348c105c435",
+        "author": "Zeev Suraski",
+        "date": "2000-05-16T15:42:16+00:00",
+        "message": "- Small optimization. Filling up the Cache helps performance.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_alloc.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/ac0e07ecdaa1ecda91de17784d0e0348c105c435",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "start_memory_manager"
+        ],
+        "added_lines": 15,
+        "deleted_lines": 0,
+        "total_changed_lines": 15,
+        "net_line_change": 15,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "af0a980f450706f9b709e220f1801a7144447b0f",
+        "author": "Dmitry Stogov",
+        "date": "2021-10-15T12:30:16+03:00",
+        "message": "Tracing JIT: Use information about really called internal function return type to improve type inference.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/opcache/jit/zend_jit_trace.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/af0a980f450706f9b709e220f1801a7144447b0f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_jit_trace_build_tssa"
+        ],
+        "added_lines": 20,
+        "deleted_lines": 0,
+        "total_changed_lines": 20,
+        "net_line_change": 20,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b05de66a3ae1bb54578f182c884f3f3cb5126503",
+        "author": "Niels Dossche",
+        "date": "2024-07-18T12:57:23+02:00",
+        "message": "Optimize ext/dom $wholeText (#15001)\n\nUse our own string builder instead of using libxml's and then having to\r\ncopy over.\r\n\r\nFor the following test:\r\n```\r\n$dom = Dom\\HTMLDocument::createEmpty();\r\n$root = $dom->appendChild($dom->createElement('root'));\r\n$root->append('abc', 'def', 'ghi');\r\n$f = $root->firstChild;\r\n\r\nfor ($i = 0; $i < 1000000; $i++)\r\n\t$f->wholeText;\r\n```\r\n\r\nThe following results were obtained on an i7-4790:\r\n```\r\nBenchmark 1: ./sapi/cli/php x.php\r\n  Time (mean \u00b1 \u03c3):      57.2 ms \u00b1   2.3 ms    [User: 53.2 ms, System: 3.4 ms]\r\n  Range (min \u2026 max):    54.7 ms \u2026  69.3 ms    52 runs\r\n\r\nBenchmark 2: ./sapi/cli/php_old x.php\r\n  Time (mean \u00b1 \u03c3):      89.4 ms \u00b1   3.4 ms    [User: 85.6 ms, System: 3.0 ms]\r\n  Range (min \u2026 max):    86.1 ms \u2026 105.8 ms    32 runs\r\n\r\nSummary\r\n  ./sapi/cli/php x.php ran\r\n    1.56 \u00b1 0.09 times faster than ./sapi/cli/php_old x.php\r\n```",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/text.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b05de66a3ae1bb54578f182c884f3f3cb5126503",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dom_text_whole_text_read"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 8,
+        "total_changed_lines": 11,
+        "net_line_change": -5,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b06311cb3d927d2f7660e39ce14acde92526998c",
+        "author": "Ilija Tovilo",
+        "date": "2024-01-30T16:31:29+01:00",
+        "message": "Improve ZEND_NEW RC inference\n\nZEND_NEW returns RC1 if the instanciated class has no constructor.\n\nCloses GH-13239",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/Optimizer/zend_inference.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b06311cb3d927d2f7660e39ce14acde92526998c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zend_update_type_info"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 0,
+        "total_changed_lines": 10,
+        "net_line_change": 10,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b06323cd6e452d15b78ab4e851acfabff607ce94",
+        "author": "Stanislav Malyshev",
+        "date": "2001-01-08T20:13:32+00:00",
+        "message": "Optimize it a bit - no need to dup empty string (which can be pretty common for .ini)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/browscap.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b06323cd6e452d15b78ab4e851acfabff607ce94",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_browscap_parser_cb"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b48f46b0923d02d30f90f40d2c2c9940b578a588",
+        "author": "Takeshi Abe",
+        "date": "2009-02-11T16:31:27+00:00",
+        "message": "MFH: optimization via the row-major order.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/gd/libgd/gd.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b48f46b0923d02d30f90f40d2c2c9940b578a588",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gdImagePaletteCopy"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b4fbf1d381d23ad3e9ad8f6df572adc1984a0a45",
+        "author": "Tyson Andre",
+        "date": "2021-03-01T09:41:13-05:00",
+        "message": "Optimize serializing class names\n\nBecause of the memcpy, compilers can't infer that ZSTR_LEN (i.e. class_name->len)\ndid not change, so they copy it out of memory into a register for the last two\naccesses.\nphp_var_serialize_string already does something similar.\n\nCloses GH-6734",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/var.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b4fbf1d381d23ad3e9ad8f6df572adc1984a0a45",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_var_serialize_class_name"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 4,
+        "total_changed_lines": 9,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "b5ca4de5252e412129702c32f9a8ae921123aaa1",
+        "author": "Sterling Hughes",
+        "date": "2003-05-21T11:48:55+00:00",
+        "message": "Bottom drawer optimization to avoid this comparison, but this OP is executed\nquite often (all of the fetch_* ops)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_execute.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/b5ca4de5252e412129702c32f9a8ae921123aaa1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_fetch_var_address"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "bbfa1b64192fe3ccd2898e6e1f997387b4f210d1",
+        "author": "Nikita Popov",
+        "date": "2017-02-25T12:55:14+01:00",
+        "message": "Improve fix for bug #73807\n\nAt least on some architectures memmove() on FreeBSD does not\nshort-curcuit if src==dst. Check for it explicitly to avoid\nquadratic copying.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "main/php_variables.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/bbfa1b64192fe3ccd2898e6e1f997387b4f210d1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "add_post_vars"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "c0c6e9944f749c791f64656e879f410f2b3016cf",
+        "author": "Rasmus Lerdorf",
+        "date": "2006-06-15T18:03:30+00:00",
+        "message": "I don't think the call to xmlNodeSetContentLen() is needed here and\nit is causing performance problems because it tries to parse the blob\nand create a subtree.  Because we are escaping the string anyway, we\nare never going to get a subtree, but the entity parsing that is done\nby xmlNodeSetContentLen() is killing performance on large blobs of\ntext.  On one recent example it took a couple of minutes to parse\nwhereas if we just create a text node like this and set the contents\nto the raw string it is down to milliseconds.  As far as I can tell\nall the tests pass with this patch.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/soap/php_encoding.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/c0c6e9944f749c791f64656e879f410f2b3016cf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "to_xml_string"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 4,
+        "total_changed_lines": 11,
+        "net_line_change": 3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "c2decc6afc594ef67bc8f21e0f8d79a8236b000e",
+        "author": "Dmitry Stogov",
+        "date": "2014-09-17T00:52:03+04:00",
+        "message": "optimized colision list traverse",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/c2decc6afc594ef67bc8f21e0f8d79a8236b000e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zend_hash_del_el"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 9,
+        "total_changed_lines": 17,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "c42d25dc33e6680426a48da7e2b41410f652e8e0",
+        "author": "Ilia Alshanetsky",
+        "date": "2006-11-30T23:51:24+00:00",
+        "message": "Small hash table optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/soap/php_sdl.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/c42d25dc33e6680426a48da7e2b41410f652e8e0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdl_serialize_type"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "c4fd954b8a3438502f6f4cf76a54fc3623255f5d",
+        "author": "Andi Gutmans",
+        "date": "2000-09-28T23:21:08+00:00",
+        "message": "- Another has optimization/fix like the hash_copy one from earlier on",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/c4fd954b8a3438502f6f4cf76a54fc3623255f5d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_hash_merge"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "c9da004a1884f54ad69b8b66e585f1ba451e84ee",
+        "author": "Dmitry Stogov",
+        "date": "2015-04-21T23:27:44+03:00",
+        "message": "Slight zend_hash_find() optimization.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/c9da004a1884f54ad69b8b66e585f1ba451e84ee",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_hash_find_bucket"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 6,
+        "total_changed_lines": 13,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "ca33ab59adc15a1bee3d77067317100cd03482b4",
+        "author": "Alex Dowad",
+        "date": "2021-09-20T11:20:53+02:00",
+        "message": "mb_detect_encoding with only one candidate encoding uses mb_check_encoding\n\n...Because it's about 5% faster.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/mbstring.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/ca33ab59adc15a1bee3d77067317100cd03482b4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 4,
+        "total_changed_lines": 13,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "cbc421e163e0afa8a04a42342fe71089b771a46f",
+        "author": "Niels Dossche",
+        "date": "2024-03-17T18:21:59+01:00",
+        "message": "Add fast path for ASCII bytes in UTF-8 validation",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/html_document.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/cbc421e163e0afa8a04a42342fe71089b771a46f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dom_decode_encode_fast_path"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 1,
+        "total_changed_lines": 10,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "cd32d5792e147c53c5bb38e7a9b228189d5d7fab",
+        "author": "Ilia Alshanetsky",
+        "date": "2011-01-05T04:13:23+00:00",
+        "message": "Optimize unix timestamp to date-string conversion for very high year values",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/date/lib/unixtime2tm.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/cd32d5792e147c53c5bb38e7a9b228189d5d7fab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "timelib_unixtime2gmt"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "d3abcae4a25dab4c34fd5f0c8d1d620b2e35fca0",
+        "author": "Max Kellermann",
+        "date": "2023-02-05T15:10:01+00:00",
+        "message": "ext/snmp: use memcpy() instead of memmove() (#10498)\n\nmemcpy() may be faster because it does not have to consider\r\noverlapping buffers.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/snmp/snmp.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/d3abcae4a25dab4c34fd5f0c8d1d620b2e35fca0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_snmp_internal"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "d86b5f01ac7089f46add60622260d6926c3977b8",
+        "author": "Nikita Popov",
+        "date": "2013-10-28T19:51:31+01:00",
+        "message": "Avoid copy in func_get_arg()\n\nComplements dmitry's change to func_get_args()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_builtin_functions.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/d86b5f01ac7089f46add60622260d6926c3977b8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ZEND_FUNCTION"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "d917484ab7678930bc6867caabed04ecec0baafc",
+        "author": "Xinchen Hui",
+        "date": "2015-01-19T08:08:35-05:00",
+        "message": "Micro optimization for array_diff",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/array.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/d917484ab7678930bc6867caabed04ecec0baafc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_FUNCTION"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "e029945a02735f83391c60d0f42db75b0c900373",
+        "author": "Antony Dovgal",
+        "date": "2007-06-06T11:57:36+00:00",
+        "message": "MFH: minor optimization - make sure the objects are not the same instance before we start comparing their properties",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_operators.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/e029945a02735f83391c60d0f42db75b0c900373",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_function"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "e4e6820d103d82bece101597cdbca06f173cd64b",
+        "author": "Nikita Popov",
+        "date": "2019-05-08T17:06:00+02:00",
+        "message": "Use fast zpp for ReflectionClass constructor\n\nAt this point zpp overhead makes up a significant part of this\nfunction.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/reflection/php_reflection.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/e4e6820d103d82bece101597cdbca06f173cd64b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "reflection_class_object_ctor"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 6,
+        "total_changed_lines": 12,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "e837a8800b44719784d75870bbf8e3ffa1a34069",
+        "author": "Alex Dowad",
+        "date": "2023-01-04T21:58:27+02:00",
+        "message": "Optimize another check out of hot path for UHC decoding\n\nThis gives about another 8-9% speed boost to UHC decoding.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/mbstring/libmbfl/filters/mbfilter_uhc.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/e837a8800b44719784d75870bbf8e3ffa1a34069",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mb_uhc_to_wchar"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "ed916214c478da36d473d425ca30e2ce7c310e87",
+        "author": "Niels Dossche",
+        "date": "2024-04-29T08:39:44+02:00",
+        "message": "Avoid additional allocation in Document\\createElementNS (#14071)\n\nFor the following benchmark code:\n```php\n$dom = DOM\\XMLDocument::createEmpty();\nfor ($i = 0; $i < 1000*100; $i++) $dom->createElementNS(\"urn:a\", \"thisisaveryverylongname\");\n```\n\nWe obtain the following on an i7-4790:\n```\nBenchmark 1: ./sapi/cli/php bench.php\n  Time (mean \u00b1 \u03c3):      34.5 ms \u00b1   1.2 ms    [User: 31.4 ms, System: 2.9 ms]\n  Range (min \u2026 max):    32.4 ms \u2026  39.3 ms    84 runs\n\nBenchmark 2: ./sapi/cli/php_old bench.php\n  Time (mean \u00b1 \u03c3):      36.6 ms \u00b1   1.6 ms    [User: 33.6 ms, System: 2.9 ms]\n  Range (min \u2026 max):    34.3 ms \u2026  45.3 ms    80 runs\n\nSummary\n  ./sapi/cli/php bench.php ran\n    1.06 \u00b1 0.06 times faster than ./sapi/cli/php_old bench.php\n```",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/document.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/ed916214c478da36d473d425ca30e2ce7c310e87",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_METHOD"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "eea3a56973eb80db93edbf4784c8f6f54cc1bb07",
+        "author": "Andi Gutmans",
+        "date": "2000-08-27T19:20:53+00:00",
+        "message": "- This should be more efficient.\n- Post 4.0.2 it's time to move the whole opened_path and virtual stuff\n- to emalloc() and friends including some alloca() improvements where\n- possible but I don't want to break anything before",
+        "modified_files_count": 1,
+        "modified_files": [
+            "main/php_virtual_cwd.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/eea3a56973eb80db93edbf4784c8f6f54cc1bb07",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "virtual_chdir_file"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "f04e5059bb3611f3fb373f7658f95b09fcee5ff3",
+        "author": "Niels Dossche",
+        "date": "2023-07-13T16:07:57+02:00",
+        "message": "Avoid allocations in DOMElement::getAttribute()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/dom/element.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/f04e5059bb3611f3fb373f7658f95b09fcee5ff3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_METHOD"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 3,
+        "total_changed_lines": 12,
+        "net_line_change": 6,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "f3d385a587c0d7ab6687f505b32a69ad66721d1b",
+        "author": "Marcus Boerger",
+        "date": "2003-11-07T11:47:50+00:00",
+        "message": "Make __autoload() faster",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_execute_API.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/f3d385a587c0d7ab6687f505b32a69ad66721d1b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zend_lookup_class"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 11,
+        "total_changed_lines": 19,
+        "net_line_change": -3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "f59daf2104a8e08a49ab9e074e5dcd30fe5f0939",
+        "author": "Anatol Belski",
+        "date": "2014-10-22T17:56:24+02:00",
+        "message": "micro optimized initial hash size calculation\n\nmost of the calls are with a size <= 8, so don't even bother any\nbitshifts. For the bigger sizes, use an intrinsic (should be extended\nwith gcc ones though).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/f59daf2104a8e08a49ab9e074e5dcd30fe5f0939",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zend_hash_init"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 4,
+        "total_changed_lines": 20,
+        "net_line_change": 12,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "f605f0b708a328a29dac894b25444c3cfb933f2d",
+        "author": "Sterling Hughes",
+        "date": "2003-06-29T01:49:10+00:00",
+        "message": "Very simple, but very effective optimization.  Provides a signifigant speed\nimprovement to matches done via '=='.  This checks that the lengths of two\nstrings are equal before performing a memcmp() on them.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_operators.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/f605f0b708a328a29dac894b25444c3cfb933f2d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_function"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "f6bffb69c55258e9e2a863c754e90c808baf6c61",
+        "author": "Rasmus Lerdorf",
+        "date": "2007-05-25T09:12:35+00:00",
+        "message": "Optimize sapi_get_request_time() slightly making it use the cached time\nand also checking if there is a server_context before trying to call\nthe request_time sapi hook.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "main/SAPI.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/f6bffb69c55258e9e2a863c754e90c808baf6c61",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sapi_get_request_time"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "fbc8f3f51dca400637d8b40901b98a16a0d68483",
+        "author": "Andi Gutmans",
+        "date": "2001-07-14T16:41:58+00:00",
+        "message": "- Faster without calling strlen()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "ext/standard/http_fopen_wrapper.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/fbc8f3f51dca400637d8b40901b98a16a0d68483",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "php_fopen_url_wrap_http"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "php-src",
+        "hash": "feb22b24cfb27f7bd7769f77d29937388a0a850c",
+        "author": "Dmitry Stogov",
+        "date": "2018-03-21T12:39:56+03:00",
+        "message": "Micro optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Zend/zend_hash.c"
+        ],
+        "github_commit_url": "https://github.com/php/php-src/commit/feb22b24cfb27f7bd7769f77d29937388a0a850c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_zend_hash_del_el_ex"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    }
+]

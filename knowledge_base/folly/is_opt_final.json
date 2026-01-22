@@ -1,0 +1,914 @@
+[
+    {
+        "repository_name": "folly",
+        "hash": "0f03916369e06c6a798314b7c82f695a5e5ff092",
+        "author": "Yedidya Feldblum",
+        "date": "2019-02-11T16:02:16-08:00",
+        "message": "Fix StaticSingletonManager inline fast path under gcc\n\nSummary: [Folly] Fix StaticSingletonManager inline fast path under gcc - code size for default-initialized `static std::atomic<...>` local is large, but when value-initialized is trivial.\n\nReviewed By: andriigrynenko\n\nDifferential Revision: D14018861\n\nfbshipit-source-id: e767ea3e46c3e3317f7b60008bc77f64edb2dea0",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/detail/StaticSingletonManager.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/0f03916369e06c6a798314b7c82f695a5e5ff092",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "create"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "13897bc4d877622981369d5e43081e5237bcd7d1",
+        "author": "Giuseppe Ottaviano",
+        "date": "2023-08-31T03:33:24-07:00",
+        "message": "Cancel the timeout in timed_wait on success\n\nSummary:\n`timed_wait` is not expected to frequently time-out, so by canceling the timer we can save a wake-up of the future timekeeper eventbase.\n\nIn reality we don't always save it because in order to cancel the timeout we have to enqueue a task in the eventbase, which also may wake it up, unless the queue is already non-empty in which case we can enjoy some batching, but on average this should be a minor improvement (and we may optimize that separately).\n\nOther timeout primitives like `folly::coro::timeout` already do this.\n\nReviewed By: dmm-fb\n\nDifferential Revision: D48832670\n\nfbshipit-source-id: c3534aa067b7e49b44954b5f81938754e2d6eefd",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/coro/TimedWait.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/13897bc4d877622981369d5e43081e5237bcd7d1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "timed_wait"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 6,
+        "total_changed_lines": 14,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "142752b48c2c345ee171041c41f0c0f58bf4a803",
+        "author": "Dave Watson",
+        "date": "2014-12-11T08:01:16-08:00",
+        "message": "Set a better default for maxReadsPerEvent\n\nSummary:\n0 (infinity) seems like a bad default for this.  Just found a 2~5% latency win in thrift by setting this to something more reasonable.  Any reason not to set a better default globally?\n\nSince this is already on for mcrouter/proxygen/thrift, the biggest change would probably be service router\n\ntests postponed longer than 20 minutes\n\nTest Plan:\nthrift perf test, multifeed canary\n\nCanary URL: https://our.intern.facebook.com/intern/feedtools/mycanary?id=davejwatson_20141208-102635_local.1418063194_d201eceec04e5e097a6dffb645a424d502db8742_\n\nReviewed By: afrind@fb.com\n\nSubscribers: doug, net-systems@, njormrod, folly-diffs@, jsedgwick, haijunz, andrewcox, alandau, fugalh\n\nFB internal diff: D1725142\n\nSignature: t1:1725142:1418066284:c2e1cbf27b0c7a98cf2395f369683bbcce4cdce4",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/async/AsyncSocket.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/142752b48c2c345ee171041c41f0c0f58bf4a803",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AsyncSocket::init"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "17054c85c2dee0e84cbee7ef28d7bae7d0b1630e",
+        "author": "Yedidya Feldblum",
+        "date": "2024-06-21T14:49:25-07:00",
+        "message": "tweak StaticMeta::get not to pass id\n\nSummary: Lets the fast path not need to save id to stack and restore it from stack to call the slow path. Saves 7 bytes (x64) in the inline path.\n\nReviewed By: Orvid\n\nDifferential Revision: D58831184\n\nfbshipit-source-id: 4f2ac91a9390ce210ce39803da3d055ec1ecc348",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/detail/ThreadLocalDetail.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/17054c85c2dee0e84cbee7ef28d7bae7d0b1630e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "18eb46b2a0f03abc2f5d2b673f41b844dc253590",
+        "author": "Stepan Palamarchuk",
+        "date": "2022-03-27T21:08:25-07:00",
+        "message": "Avoid recursive wrapping of reused buffers\n\nSummary:\nExisting reuse logic recursively wraps the tail buffers, which may result in a deep recursion on cleanup and lead to stack overflow (especially when executed on fibers).\n\nThis diff adds an optimization to avoid doing this chaining and instead always clone original `IOBuf` for the purpose of ownership.\n\nReviewed By: ot\n\nDifferential Revision: D35167875\n\nfbshipit-source-id: 824026c783f7ff19db31a06734699fd1fdea2b05",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/IOBufQueue.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/18eb46b2a0f03abc2f5d2b673f41b844dc253590",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IOBufQueue::maybeReuseTail"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 2,
+        "total_changed_lines": 12,
+        "net_line_change": 8,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "22b02d5f8cb26f973e1ac2632ac8ac4c095ab02a",
+        "author": "Alex Landau",
+        "date": "2014-11-19T12:52:23-08:00",
+        "message": "CompactProtocol: more improvements\n\nSummary:\nAdd a specialized Cursor method that reads exactly 1 byte, in\naddition to the existing one that reads into a buffer. Use it when\nreading varints and standalone bytes in a CompactProtocol struct.\n\nTest Plan:\n```\n------ old ------   ------ new ------\nBenchmark                               time/iter  iters/s  time/iter  iters/s        win\n=========================================================================================\nCompactProtocol_read_Empty                18.68ns   53.54M    13.21ns   75.69M     41.37%\nCompactProtocol_read_SmallInt             42.60ns   23.47M    29.95ns   33.39M     42.27%\nCompactProtocol_read_BigInt               83.62ns   11.96M    68.40ns   14.62M     22.24%\nCompactProtocol_read_SmallString          67.33ns   14.85M    55.62ns   17.98M     21.08%\nCompactProtocol_read_BigString           353.83ns    2.83M   330.19ns    3.03M      7.07%\nCompactProtocol_read_BigBinary           190.82ns    5.24M   182.90ns    5.47M      4.39%\nCompactProtocol_read_LargeBinary         200.95ns    4.98M   187.00ns    5.35M      7.43%\nCompactProtocol_read_Mixed               137.42ns    7.28M   102.98ns    9.71M     33.38%\nCompactProtocol_read_SmallListInt        203.98ns    4.90M   146.68ns    6.82M     39.18%\nCompactProtocol_read_BigListInt          120.50us    8.30K    71.56us   13.97K     68.31%\nCompactProtocol_read_BigListMixed          1.62ms   617.07     1.26ms   795.60     28.93%\nCompactProtocol_read_LargeListMixed      177.50ms     5.63   140.73ms     7.11     26.29%\n```\n\nReviewed By: haijunz@fb.com\n\nSubscribers: trunkagent, alandau, bmatheny, njormrod, mshneer, folly-diffs@\n\nFB internal diff: D1678077\n\nSignature: t1:1678077:1415923409:22accee6b62b6e2bf471f3758a290f71978a8c4e",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/Cursor.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/22b02d5f8cb26f973e1ac2632ac8ac4c095ab02a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "peek"
+        ],
+        "added_lines": 19,
+        "deleted_lines": 0,
+        "total_changed_lines": 19,
+        "net_line_change": 19,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "24e54548c4bdbcd78f5155026ca08b5dbb78b48d",
+        "author": "Jim Meyering",
+        "date": "2014-07-21T12:22:03-07:00",
+        "message": "folly: toLowerAscii: avoid unaligned access; also correct 3 conditions\n\nSummary:\n* folly/String.cpp (toLowerAscii): Fix two errors: the most important\nwould cause unaligned accesses.  This would cause a performance loss\nin general, but would also result in segfaults on ARM processes.\nIn addition, three conditionals were wrong, further limiting\nthe performance of this code: switch those \"<\" to \"<=\".\n\nTest Plan:\nRun this to exercise existing tests:\nfbconfig folly/test:string_test && fbmake runtests_opt\nRun this to generate timing stats (before and after this change), e.g.,\nfbconfig folly/test:string_benchmark && fbmake opt\n_bin/folly/test/string_benchmark > TIMING-toLower-old\n\nThese numbers show a 1.6% speed increase with this change:\n\n--- TIMING-toLower-old  2014-07-14 16:51:12.793523778 -0700\n+++ TIMING-toLower-new  2014-07-14 16:49:45.815119145 -0700\n@@ -1,6 +1,6 @@\n============================================================================\nfolly/test/StringBenchmark.cpp                  relative  time/iter  iters/s\n============================================================================\n-libc_tolower                                                 1.06us  941.91K\n-folly_toLowerAscii                                          89.99ns   11.11M\n+libc_tolower                                                 1.06us  941.90K\n+folly_toLowerAscii                                          88.57ns   11.29M\n============================================================================\n\nReviewed By: brianp@fb.com\n\nSubscribers:\n\nFB internal diff: D1434585\n\nTasks: 4696800\n\nBlame Revision: D1421056",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/String.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/24e54548c4bdbcd78f5155026ca08b5dbb78b48d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "toLowerAscii"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "256f284ea30eb05b1535896542a904908e099a8d",
+        "author": "Scott Pruett",
+        "date": "2022-08-01T15:31:53-07:00",
+        "message": "use co_nothrow to handle cancellation in AsyncPipe\n\nSummary:\nAsyncPipe's SmallUnboundedQueue supports cancellation of\nthe dequeue() operation which does not `throw` on its own. However,\ngiven the normal `co_await` here, dequeue() will throw on cancellation.\nThis means the caller must pay the performance penalty even for throwing\nexceptions even if they are using co_awaitTry or co_nothrow when handling\nthe generator. Given this is low-level library code we can opt for\nperformance here instead.\n\nReviewed By: iahs\n\nDifferential Revision: D38252954\n\nfbshipit-source-id: abc9e564e4147cfae0974257cac01883a78dd2aa",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/coro/AsyncPipe.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/256f284ea30eb05b1535896542a904908e099a8d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "create"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "2e29c4715e0957e44e8e3fdf8e37ca7f4526b6f3",
+        "author": "Simon_CQK",
+        "date": "2018-05-14T18:22:51-07:00",
+        "message": "Replace std::unique_lock with std::lock_guard.\n\nSummary:\nstd::lock_guard has a better performance than std::unique_lock in scoped-lock.\nCloses https://github.com/facebook/folly/pull/840\n\nReviewed By: djwatson\n\nDifferential Revision: D7888672\n\nPulled By: yfeldblum\n\nfbshipit-source-id: 391082aa79ada67a3906e828d68f8cc2a29bf22c",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/synchronization/ParkingLot.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/2e29c4715e0957e44e8e3fdf8e37ca7f4526b6f3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "wake"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "2e7df7eb8df4df4e7dd7c2bc641c64b78405ecf4",
+        "author": "Phil Willoughby",
+        "date": "2017-06-26T07:23:02-07:00",
+        "message": "Improve efficiency of trivial toDelim calls\n\nSummary:\n`toDelim` with a single parameter of the same type as the target type was\npreviously copy-constructing its result. It will now construct it with perfect\nforwarding which is more efficient if the input is a temporary.\n\nThis brings `toDelim` into line with the similar implementations of `to` and\n`tryTo`\n\nReviewed By: yfeldblum\n\nDifferential Revision: D5301427\n\nfbshipit-source-id: 843a2d93384de88cce42f26da6562a1a6ed0dc9c",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/Conv.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/2e7df7eb8df4df4e7dd7c2bc641c64b78405ecf4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 5,
+        "total_changed_lines": 11,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "2fa3a81ca7ddb0bb3e69de4b7a561afba8d07573",
+        "author": "Giuseppe Ottaviano",
+        "date": "2023-09-05T11:17:35-07:00",
+        "message": "Cancel the timeout in timed_wait on success\n\nSummary:\n`timed_wait` is not expected to frequently time-out, so by canceling the timer we can save a wake-up of the future timekeeper eventbase.\n\nIn reality we don't always save it because in order to cancel the timeout we have to enqueue a task in the eventbase, which also may wake it up, unless the queue is already non-empty in which case we can enjoy some batching, but on average this should be a minor improvement (and we may optimize that separately).\n\nOther timeout primitives like `folly::coro::timeout` already do this.\n\nReviewed By: iahs\n\nDifferential Revision: D48970885\n\nfbshipit-source-id: a9a5711dc2f80e19f8dfc6d3bea837257e2d3b18",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/coro/TimedWait.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/2fa3a81ca7ddb0bb3e69de4b7a561afba8d07573",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "timed_wait"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 6,
+        "total_changed_lines": 14,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "3b62632cd996fb22b07d9970db7cc413c3ade84c",
+        "author": "Chad Austin",
+        "date": "2019-10-15T13:15:55-07:00",
+        "message": "poll more efficiently in Subprocess::waitTimeout\n\nSummary:\nUnconditionally sleeping for 100ms in the wait polling loop has high average latency. If a process exits just after the initial wait() call, it's better to poll again sooner.\n\nStart with a 2ms sleep and double it every sleep, capping out at 100ms.\n\nReviewed By: yfeldblum, mzhaom\n\nDifferential Revision: D17769851\n\nfbshipit-source-id: efec8fdb8c2199b8db29b46b8c43fdaac56f69a8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/Subprocess.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/3b62632cd996fb22b07d9970db7cc413c3ade84c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Subprocess::waitTimeout"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 2,
+        "total_changed_lines": 9,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "3bcbf9d9106b7d486021c1d27870e2060ce3c343",
+        "author": "Nathan Bronson",
+        "date": "2018-06-22T18:25:57-07:00",
+        "message": "software prefetching for F14Value iteration\n\nSummary:\nWhen moving from chunk i to i-1 in an F14{Value,Node}{Map,Set}\niteration, this diff prefetches chunk i-2.  This code will never be run\nfor small maps and sets, since they fit in a single chunk, and it does\nnot affect the fast-path of intra-chunk operator++.\n\nReviewed By: shixiao\n\nDifferential Revision: D8395569\n\nfbshipit-source-id: 60cace5997222fd7d1fa03ffcee93f439f2fcf03",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/container/detail/F14Table.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/3bcbf9d9106b7d486021c1d27870e2060ce3c343",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "advance"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "40e49accc919ed6a583b97bb7e964a263e4eb470",
+        "author": "Matthieu Martin",
+        "date": "2019-06-03T10:34:50-07:00",
+        "message": "Avoid mutex in RequestContext setShallowCopyContext\n\nSummary:\nGrabbing the mutex of the newly created context is unecessary cost.\nfolly::Synchronized's constructor support this optimization, so it's an easy change.\n\nReviewed By: yfeldblum\n\nDifferential Revision: D15600165\n\nfbshipit-source-id: e92570a7ac7ac1e908d7c797bed6de22f940d387",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/async/Request.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/40e49accc919ed6a583b97bb7e964a263e4eb470",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RequestContext::setShallowCopyContext"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 7,
+        "total_changed_lines": 9,
+        "net_line_change": -5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "476964303e6da6913caf1a498e228bf79a748aca",
+        "author": "Max Katsev",
+        "date": "2020-02-24T18:44:15-08:00",
+        "message": "optimize small_vector::clear\n\nSummary:\nclang fails to optimize the current version even in the opt mode\n\ncode:\n```\nvoid clear(folly::small_vector<int, 5>& vec) {\n    vec.clear();\n}\n```\n\nbefore:\n\ncat_huh\n\n```\n0000000000000000 <clear(folly::small_vector<int, 5ul, void, void, void>&)>:\n   0:\t55                   \tpush   %rbp\n   1:\t48 89 e5             \tmov    %rsp,%rbp\n   4:\t41 57                \tpush   %r15\n   6:\t41 56                \tpush   %r14\n   8:\t53                   \tpush   %rbx\n   9:\t50                   \tpush   %rax\n   a:\t49 89 fe             \tmov    %rdi,%r14\n   d:\t48 8b 07             \tmov    (%rdi),%rax\n  10:\t48 8d 4f 08          \tlea    0x8(%rdi),%rcx\n  14:\t48 85 c0             \ttest   %rax,%rax\n  17:\t78 5a                \tjs     73 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x73>\n  19:\t48 89 cf             \tmov    %rcx,%rdi\n  1c:\t49 bf ff ff ff ff ff \tmovabs $0x7fffffffffffffff,%r15\n  23:\tff ff 7f\n  26:\t48 89 c3             \tmov    %rax,%rbx\n  29:\t4c 21 fb             \tand    %r15,%rbx\n  2c:\t74 3a                \tje     68 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x68>\n  2e:\t48 8d 34 9f          \tlea    (%rdi,%rbx,4),%rsi\n  32:\t48 85 c0             \ttest   %rax,%rax\n  35:\t78 53                \tjs     8a <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x8a>\n  37:\t48 8d 14 99          \tlea    (%rcx,%rbx,4),%rdx\n  3b:\t48 89 d9             \tmov    %rbx,%rcx\n  3e:\t48 29 f2             \tsub    %rsi,%rdx\n  41:\t74 0e                \tje     51 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x51>\n  43:\te8 00 00 00 00       \tcallq  48 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x48>\n  48:\t49 8b 06             \tmov    (%r14),%rax\n  4b:\t48 89 c1             \tmov    %rax,%rcx\n  4e:\t4c 21 f9             \tand    %r15,%rcx\n  51:\t48 c1 e3 02          \tshl    $0x2,%rbx\n  55:\t48 c1 fb 02          \tsar    $0x2,%rbx\n  59:\t48 29 d9             \tsub    %rbx,%rcx\n  5c:\t49 ff c7             \tinc    %r15\n  5f:\t49 21 c7             \tand    %rax,%r15\n  62:\t49 09 cf             \tor     %rcx,%r15\n  65:\t4d 89 3e             \tmov    %r15,(%r14)\n  68:\t48 83 c4 08          \tadd    $0x8,%rsp\n  6c:\t5b                   \tpop    %rbx\n  6d:\t41 5e                \tpop    %r14\n  6f:\t41 5f                \tpop    %r15\n  71:\t5d                   \tpop    %rbp\n  72:\tc3                   \tretq\n  73:\t48 8b 39             \tmov    (%rcx),%rdi\n  76:\t49 bf ff ff ff ff ff \tmovabs $0x7fffffffffffffff,%r15\n  7d:\tff ff 7f\n  80:\t48 89 c3             \tmov    %rax,%rbx\n  83:\t4c 21 fb             \tand    %r15,%rbx\n  86:\t75 a6                \tjne    2e <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x2e>\n  88:\teb de                \tjmp    68 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x68>\n  8a:\t48 8b 09             \tmov    (%rcx),%rcx\n  8d:\t48 8d 14 99          \tlea    (%rcx,%rbx,4),%rdx\n  91:\t48 89 d9             \tmov    %rbx,%rcx\n  94:\t48 29 f2             \tsub    %rsi,%rdx\n  97:\t75 aa                \tjne    43 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x43>\n  99:\teb b6                \tjmp    51 <clear(folly::small_vector<int, 5ul, void, void, void>&)+0x51>\n```\n\nafter (much better but still 3 instructions too many):\n```\n0000000000000000 <clear(folly::small_vector<int, 5ul, void, void, void>&)>:\n   0:\t55                   \tpush   %rbp\n   1:\t48 89 e5             \tmov    %rsp,%rbp\n   4:\t48 b8 00 00 00 00 00 \tmovabs $0x8000000000000000,%rax\n   b:\t00 00 80\n   e:\t48 21 07             \tand    %rax,(%rdi)\n  11:\t5d                   \tpop    %rbp\n  12:\tc3                   \tretq\n```\n\nReviewed By: ot, philippv, luciang\n\nDifferential Revision: D19890921\n\nfbshipit-source-id: 62f1b5325b4deda95976894b476849b5098fad4f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/small_vector.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/476964303e6da6913caf1a498e228bf79a748aca",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "4aa901d0f9198b17c23adce704d18d767c033533",
+        "author": "Jon Maltiel Swenson",
+        "date": "2016-04-26T18:20:24-07:00",
+        "message": "Optimize away IOBuf clones on hot path\n\nSummary:\n'get' is the most frequent memcached operation. On a get reply, we should go to heap\nas little as possible.  This diff optimizes for this scenario, where replies\nhave only one IOBuf field.\n\nReviewed By: pavlo-fb\n\nDifferential Revision: D3226592\n\nfb-gh-sync-id: 92e1a1fac5735bd268691cf11990a96ae6fa8309\nfbshipit-source-id: 92e1a1fac5735bd268691cf11990a96ae6fa8309",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/Cursor.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/4aa901d0f9198b17c23adce704d18d767c033533",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "insert"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "4e34617690866005b42031376c093b4a3fd970c3",
+        "author": "Yedidya Feldblum",
+        "date": "2023-06-08T13:41:20-07:00",
+        "message": "only accelerate 8-bit atomic-fetch-bit-op when alignment-mod-2 is known\n\nSummary: The idea is to avoid doing shifts at runtime, since the atomic-fetch-bit-op plus the extra arithmetic to do the shifts can be more expensive than is the atomic-fetch-bitwise-word-op.\n\nReviewed By: Gownta\n\nDifferential Revision: D46255258\n\nfbshipit-source-id: 0965d321e3021423c69915e9cccf2b4e1451000d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/synchronization/AtomicUtil-inl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/4e34617690866005b42031376c093b4a3fd970c3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "atomic_fetch_bit_op_native_"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "50d93463a78c16f9382e223c3eb82ddb2457dc6e",
+        "author": "Anton Likhtarov",
+        "date": "2018-09-21T12:46:30-07:00",
+        "message": "Perf: easy, don't inline the slow path of tlValue\n\nSummary: inline the small, fast path only\n\nDifferential Revision: D9982097\n\nfbshipit-source-id: f1bcbab2b444d372e178aa548175a5c27be972b6",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/settings/detail/SettingsImpl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/50d93463a78c16f9382e223c3eb82ddb2457dc6e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tlValue"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 1,
+        "total_changed_lines": 9,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "52a972a2acbfce19319769f2e213508f0553e562",
+        "author": "Orvid King",
+        "date": "2023-02-24T16:39:03-08:00",
+        "message": "Use bextr rather than bzhi in EliasFanoReader\n\nSummary: While it produces the exact same port distribution and latency on Intel systems, it's 1 cycle faster on AMD.\n\nReviewed By: philippv\n\nDifferential Revision: D43480663\n\nfbshipit-source-id: 132f4e0adf31ac12a2cfd7b9868ae33a316f9b74",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/EliasFanoCoding.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/52a972a2acbfce19319769f2e213508f0553e562",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "readLowerPart"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "535d0313371b1c8d313ec8a1cd09b940fa992397",
+        "author": "Jonathan Mendoza",
+        "date": "2022-07-12T07:10:43-07:00",
+        "message": "Optimized constexpr_clamp (#1816)\n\nSummary:\nPull Request resolved: https://github.com/facebook/folly/pull/1816\n\nThe ternary implementation emits sub-optimal ASM.\n\nhttps://godbolt.org/z/cfrod9r3b\n\nReviewed By: yfeldblum, Gownta\n\nDifferential Revision: D37739444\n\nfbshipit-source-id: de677069f1448dd0ff434044d530c562da9d1b87",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/ConstexprMath.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/535d0313371b1c8d313ec8a1cd09b940fa992397",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "constexpr_clamp"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "63b61817c5f63473b5a0f27a21d91a80be22552d",
+        "author": "Tudor Bosman",
+        "date": "2013-05-20T11:01:27-07:00",
+        "message": "convert RecordIO to pwritev\n\nSummary: zero-copy\n\nTest Plan: record_io_test\n\nReviewed By: lucian@fb.com\n\nFB internal diff: D806813",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/RecordIO.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/63b61817c5f63473b5a0f27a21d91a80be22552d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RecordIOWriter::write"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 8,
+        "total_changed_lines": 13,
+        "net_line_change": -3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "6746259314362d89f3d1d1dbfdf00c9fe18de202",
+        "author": "Yedidya Feldblum",
+        "date": "2018-01-16T09:37:12-08:00",
+        "message": "Use thread-local in RequestContext::getStaticContext\n\nSummary:\n[Folly] Use thread-local in `RequestContext::getStaticContext`.\n\n`folly::SingletonThreadLocal` uses `folly::ThreadLocal`. However, `static FOLLY_TLS` (`static __thread`) is always faster than `folly::ThreadLocal` for thread-local singletons for which iteration is not required.\n\nReviewed By: djwatson\n\nDifferential Revision: D6725091\n\nfbshipit-source-id: 9979f39677284b1051cb109b461097495d77ca17",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/async/Request.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/6746259314362d89f3d1d1dbfdf00c9fe18de202",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RequestContext::getStaticContext"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 3,
+        "total_changed_lines": 12,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "7f721452a97937211d138f8553ae36192428e4f1",
+        "author": "Matthieu Martin",
+        "date": "2018-08-07T22:21:43-07:00",
+        "message": "Request context: optimize exec_set_difference\n\nSummary: This code is hot enough that this might matter. Though likely over-optimization.\n\nReviewed By: djwatson\n\nDifferential Revision: D9197636\n\nfbshipit-source-id: d9e2a90410c03a73d1754d99c72967f5dcd96c0f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/async/Request.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/7f721452a97937211d138f8553ae36192428e4f1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "exec_set_difference"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 3,
+        "total_changed_lines": 12,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "85bc0de2fb1a3140dfc115b8126e143f722ef58c",
+        "author": "Yedidya Feldblum",
+        "date": "2021-04-01T00:00:51-07:00",
+        "message": "shrink SingletonRelaxedCounter inline slow path\n\nSummary: Persuade the compiler to emit a tail call in the `SingletonRelaxedCounter` inline slow path.\n\nDifferential Revision: D27383131\n\nfbshipit-source-id: 6f58b1eb23477c00221515d7d6e55a91668f7c84",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/SingletonRelaxedCounter.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/85bc0de2fb1a3140dfc115b8126e143f722ef58c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mutate"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 2,
+        "total_changed_lines": 11,
+        "net_line_change": 7,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "92e9607a8f6843aa02bc12a0d1b2cae1a6b697eb",
+        "author": "Yedidya Feldblum",
+        "date": "2023-07-21T16:29:53-07:00",
+        "message": "add likeliness annotation to DigestBuilder::append() hot path\n\nSummary: Summary\n\nReviewed By: luciang\n\nDifferential Revision: D47193370\n\nfbshipit-source-id: 2ee659e71832ce16d358e3444bd0e87b3fd8952f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/stats/DigestBuilder-inl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/92e9607a8f6843aa02bc12a0d1b2cae1a6b697eb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "append"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "a5709e63e29cd69e4de3e9f463747da9b644844c",
+        "author": "Nicholas Ormrod",
+        "date": "2015-03-02T19:29:36-08:00",
+        "message": "Improvement fbvector.computePushBackCapacity\n\nSummary:\nSee the github pull request at https://github.com/facebook/folly/issues/135\n\nImportant optimizations: remove one of the branches and change ##empty()## to ##capacity()==0##\n\nTest Plan:\nRan extended fbvector test suite (re-enabled in experimental/njormrod)\n\nAlso\n\nfbconfig -r folly && fbmake runtests\n\nReviewed By: markisaa@fb.com\n\nSubscribers: trunkagent, sdwilsh, njormrod, folly-diffs@, yfeldblum\n\nFB internal diff: D1869112\n\nTasks: 6338531\n\nSignature: t1:1869112:1424823901:d2d7331aef82edad1e8c159005cc1c7185550d0c",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/FBVector.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/a5709e63e29cd69e4de3e9f463747da9b644844c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "std::max"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 8,
+        "total_changed_lines": 18,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "ac009d2f1b8378edef89ba10c72a84437401b16f",
+        "author": "Yedidya Feldblum",
+        "date": "2018-09-21T23:37:50-07:00",
+        "message": "A faster empty() shortcut in IOBufCompare\n\nSummary: [Folly] A faster `empty()` shortcut in `IOBufCompare`.\n\nReviewed By: spalamarchuk\n\nDifferential Revision: D9981606\n\nfbshipit-source-id: 4a9762b83fe2f26b1387c162a1e23c201088977f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/IOBuf.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/ac009d2f1b8378edef89ba10c72a84437401b16f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "IOBufCompare::impl"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 6,
+        "total_changed_lines": 8,
+        "net_line_change": -4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "acc54b40c86ecf78d0921b5d38b1fce990f2ce90",
+        "author": "Masha Basmanova",
+        "date": "2023-05-11T03:03:31-07:00",
+        "message": "Optimize crc32 (#1997)\n\nSummary:\nPull Request resolved: https://github.com/facebook/folly/pull/1997\n\nfolly::crc32 implementation splits the buffer into unaligned head, multiple-of-16-bytes middle and unaligned tail. It uses boost to compute checksum for unaligned head and tail and SIMD for the aligned middle. We noticed that even when head and tail are empty (the buffer is fully aligned and its size is a multiple of 16), boost is still used and takes up > half of the profile.\n\n{F984595200}\n\nThe optimization is to skip boost computation when tail is empty.\n\n{F984596010}\n\nReviewed By: tonyxug, dmm-fb\n\nDifferential Revision: D45751314\n\nfbshipit-source-id: 3b0fc5e72a0ca73cefc7ba427f2348c3aa14358c",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/hash/Checksum.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/acc54b40c86ecf78d0921b5d38b1fce990f2ce90",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "crc32_hw"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "af3fa519ac83267fabc53d3799a57dab761de0bc",
+        "author": "Pavlo Kushnir",
+        "date": "2015-10-28T18:20:21-07:00",
+        "message": "Do not set startWork_ in EventBase if time measurement is disabled\n\nSummary: startWork_ is used only if enableTimeMeasurement is set. It gives ~0.5% performance win for mcrouter.\n\nReviewed By: yfeldblum\n\nDifferential Revision: D2590176\n\nfb-gh-sync-id: 07f2189ebdec751cd0d91d191d8f595780d2808a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/io/async/EventBase.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/af3fa519ac83267fabc53d3799a57dab761de0bc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "EventBase::bumpHandlingTime"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 5,
+        "total_changed_lines": 12,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "b6762ac6b9a29f66e966a1da07f5e7b3ba3551be",
+        "author": "Arthur O'Dwyer",
+        "date": "2024-02-14T13:04:56-08:00",
+        "message": "Use folly::IsRelocatable in folly::small_vector (#1934)\n\nSummary:\nThe `relocateInlineTrivial` operation here is exactly \"move-construct plus destroy,\" which is the same operation optimized into memcpy by `FBVector::make_window` and `FBVector::reserve`. So we can optimize it into memcpy here for the same set of types, namely, trivially relocatable types.\n\nThe existing `kShouldCopyInlineTrivial` is also used in the copy constructor, where we're doing \"copy-construct, do not destroy.\" I believe the place I changed in this patch is the only place where we can use true relocation.\n\nFWIW, I don't understand why this optimization can be disabled depending on the value of `hardware_constructive_interference_size`; it seems to me that no matter what your cache line size is, memcpy will always be superior to any non-trivial `std::copy`. Either both approaches will hit cache effects (and memcpy will be faster), or neither approach will hit cache effects (and memcpy will be faster). But that's tangential to this patch's purpose, so I didn't mess with it.\n\nPull Request resolved: https://github.com/facebook/folly/pull/1934\n\nReviewed By: Gownta\n\nDifferential Revision: D43401609\n\nPulled By: Orvid\n\nfbshipit-source-id: 7aa1fd922b0e60b9351fba96449e2ad38745bddf",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/small_vector.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/b6762ac6b9a29f66e966a1da07f5e7b3ba3551be",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "small_vector"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "caa3c6ee1cb3a5558e590d664c2bc2ff310f76d9",
+        "author": "Yedidya Feldblum",
+        "date": "2019-04-26T19:18:57-07:00",
+        "message": "Pass context by reference in the futures Core\n\nSummary: [Folly] Pass context by reference in the futures `Core`, saving on code size and a small on runtime performance due to code size.\n\nReviewed By: Orvid\n\nDifferential Revision: D15073282\n\nfbshipit-source-id: 7c55b9f6a55ee7ec22fde6f3ab9da232a8ee006b",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/futures/detail/Core.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/caa3c6ee1cb3a5558e590d664c2bc2ff310f76d9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "static_assert"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "dbac44302e97f6c20256f83b6c0ed26d415f1bea",
+        "author": "Yedidya Feldblum",
+        "date": "2019-04-26T19:18:57-07:00",
+        "message": "Move the context in futures Core::doCallback\n\nSummary: [Folly] Move the context in futures `Core::doCallback` to shrink code size and to improve runtime performance (fewer branches, fewer atomic RMWs, smaller code size).\n\nReviewed By: andriigrynenko\n\nDifferential Revision: D15073122\n\nfbshipit-source-id: f1b5cb01ea9ccaa69ac5b42b01a8ee5fa1badb8a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/futures/detail/Core.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/dbac44302e97f6c20256f83b6c0ed26d415f1bea",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "static_assert"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "dc5586d030effd9755e0e8cddfca46ddd7ea45eb",
+        "author": "Yedidya Feldblum",
+        "date": "2024-07-22T12:39:32-07:00",
+        "message": "let F14HashToken equality-comparison skip the tag element\n\nSummary: It only needs to compare the hash element and can skip comparing the derived tag element. The derived tag element is indended as a precomputed word to accelerate lookup but only decelerates equality-comparison.\n\nReviewed By: DenisYaroshevskiy\n\nDifferential Revision: D60044472\n\nfbshipit-source-id: 7b18667b993b817b1ce3c78667693f5f12fb48e5",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/container/detail/F14Table.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/dc5586d030effd9755e0e8cddfca46ddd7ea45eb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "dfd3d1efc03713661e50fb1aa052af85c9d8b8f6",
+        "author": "Dave Watson",
+        "date": "2018-04-10T13:40:32-07:00",
+        "message": "Sync time compare exchange\n\nSummary: Similar to D7429494, this can be a CAS and save some latency for some readers.\n\nReviewed By: magedm\n\nDifferential Revision: D7505578\n\nfbshipit-source-id: eeeb06c2969a74084edd3df26cf2d135b8b0e132",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/synchronization/Rcu-inl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/dfd3d1efc03713661e50fb1aa052af85c9d8b8f6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "retire"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "e33794f7c6728fc0748d3241a27316e62c4c1e35",
+        "author": "Milo Yip",
+        "date": "2016-09-13T11:38:29-07:00",
+        "message": "Optimize toJson() Performance\n\nSummary:\nRemoving string::reserve() which causes O(n^2) penalty.\n\nFixes #477\nCloses https://github.com/facebook/folly/pull/478\n\nReviewed By: yfeldblum\n\nDifferential Revision: D3850509\n\nPulled By: Orvid\n\nfbshipit-source-id: ecf44c35b2aedadc5385d23c325cacab1abfd02d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/json.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/e33794f7c6728fc0748d3241a27316e62c4c1e35",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "escapeString"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 1,
+        "total_changed_lines": 1,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "ea731d6b2f49e20408e2e237e9e5b9435c22967f",
+        "author": "Yedidya Feldblum",
+        "date": "2024-06-14T15:20:16-07:00",
+        "message": "let exception_wrapper::get_exception<Ex> be hinted\n\nSummary: The hinted variation is typically faster.\n\nDifferential Revision: D58537322\n\nfbshipit-source-id: a072d8b8aff313dc4e077042105db49826173bb8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/ExceptionWrapper-inl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/ea731d6b2f49e20408e2e237e9e5b9435c22967f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "exception_wrapper::get_exception"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "ec15ad3d4c82c51127282df3bafd35fb2adb96d3",
+        "author": "Yedidya Feldblum",
+        "date": "2021-06-29T14:19:56-07:00",
+        "message": "use faster impl in Singleton stack traces\n\nSummary: It's already not async-signal-safe so just use the fast version of getting the unsymbolized stack traces.\n\nReviewed By: chadaustin\n\nDifferential Revision: D29439597\n\nfbshipit-source-id: 5a727d6a1c37a1c29bce84d866bf4863774c5ff1",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/detail/SingletonStackTrace.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/ec15ad3d4c82c51127282df3bafd35fb2adb96d3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getSingletonStackTrace"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "folly",
+        "hash": "efe4f93c563a0c84c72e1c753389d0c52c4723ec",
+        "author": "Lucian Grijincu",
+        "date": "2016-02-23T02:20:24-08:00",
+        "message": "folly: symbolizer: dwarf: don't fallback to linear scan if address missing from .debug_aranges\n\nSummary:Presence of .debug_aranges implies user expects fast address lookup.\nSome addresses might not be avaialble in .debug_aranges.\n\nDon't do slow lookup in .debug_info, as it can lead to unexpected slowdowns.\n\noverride-unit-failures\n\nReviewed By: philippv\n\nDifferential Revision: D2965323\n\nfb-gh-sync-id: 405daefd57cdff4344fd231c5f5b7ff4dcd9df8c\nshipit-source-id: 405daefd57cdff4344fd231c5f5b7ff4dcd9df8c",
+        "modified_files_count": 1,
+        "modified_files": [
+            "folly/experimental/symbolizer/Dwarf.cpp"
+        ],
+        "github_commit_url": "https://github.com/facebook/folly/commit/efe4f93c563a0c84c72e1c753389d0c52c4723ec",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Dwarf::findAddress"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 8,
+        "total_changed_lines": 19,
+        "net_line_change": 3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    }
+]

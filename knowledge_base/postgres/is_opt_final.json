@@ -1,0 +1,1898 @@
+[
+    {
+        "repository_name": "postgres",
+        "hash": "03a42c9652f8cc2c447840e39418b862c48fd41d",
+        "author": "Michael Paquier",
+        "date": "2024-11-18T11:52:35+09:00",
+        "message": "Use pg_memory_is_all_zeros() in PageIsVerifiedExtended()\n\nRelying on pg_memory_is_all_zeros(), which would apply SIMD instructions\nwhen dealing with an aligned page, is proving to be at least three times\nfaster than the original size_t-based comparisons when checking if a\nBLCKSZ page is full of zeros.  Note that PageIsVerifiedExtended() is\ncalled each time a page is read from disk, and making it faster is a\ngood thing.\n\nAuthor: Bertrand Drouvot\nDiscussion: https://postgr.es/m/CAApHDvq7P-JgFhgtxUPqhavG-qSDVUhyWaEX9M8_MNorFEijZA@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/page/bufpage.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/03a42c9652f8cc2c447840e39418b862c48fd41d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PageIsVerifiedExtended"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 12,
+        "total_changed_lines": 13,
+        "net_line_change": -11,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "08cdb079d4a8a82c687321e9ffe0a3d3fbcc0551",
+        "author": "David Rowley",
+        "date": "2024-12-19T13:57:21+13:00",
+        "message": "Optimize grouping equality checks with virtual slots\n\n8f4ee9626 fixed an old Assert failure that could happen when the slot\ntype used to look up the hash table for BuildTupleHashTableExt() users\nwasn't a TTSOpsMinimalTuple slot.  The fix for that in the back branches\nhad to be to pass the TupleTableSlotOps as NULL, however in master,\nsince we have the inputOps parameter as was added by d96d1d515, we can\npass that down instead.\n\nAt least one caller uses a fixed slot that's always TTSOpsVirtual, so\npassing down inputOps for these cases allows ExecBuildGroupingEqual() to\nskip adding the EEOP_INNER_FETCHSOME ExprEvalStep.\n\nThis should increase the performance of hashed subplans very slightly.\n\nAuthor: Tom Lane, David Rowley\nDiscussion: https://postgr.es/m/2543667.1734483723@sss.pgh.pa.us",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/execGrouping.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/08cdb079d4a8a82c687321e9ffe0a3d3fbcc0551",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BuildTupleHashTableExt"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "09adc9a8c09c9640de05c7023b27fb83c761e91c",
+        "author": "Robert Haas",
+        "date": "2016-04-05T15:47:49-04:00",
+        "message": "Align all shared memory allocations to cache line boundaries.\n\nExperimentation shows this only costs about 6kB, which seems well\nworth it given the major performance effects that can be caused\nby insufficient alignment, especially on larger systems.\n\nDiscussion: 14166.1458924422@sss.pgh.pa.us",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/ipc/shmem.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/09adc9a8c09c9640de05c7023b27fb83c761e91c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ShmemAlloc"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 2,
+        "total_changed_lines": 12,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "0d1adae6f739273046705acaf5314384e8a73a18",
+        "author": "Nathan Bossart",
+        "date": "2023-12-18T10:34:33-06:00",
+        "message": "Micro-optimize datum_to_json_internal() some more.\n\nCommit dc3f9bc549 mainly targeted the JSONTYPE_NUMERIC code path.\nThis commit applies similar optimizations (e.g., removing\nunnecessary runtime calls to strlen() and palloc()) to nearby code.\n\nReviewed-by: Tom Lane\nDiscussion: https://postgr.es/m/20231208203708.GA4126315%40nathanxps13",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/adt/json.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/0d1adae6f739273046705acaf5314384e8a73a18",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "datum_to_json_internal"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 7,
+        "total_changed_lines": 16,
+        "net_line_change": 2,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "0dd6ff0ac8482f753405c5bdb091d2a8adc58e75",
+        "author": "Michael Paquier",
+        "date": "2019-02-18T09:52:02+09:00",
+        "message": "Avoid some unnecessary block reads in WAL reader\n\nWhen reading a new page internally and depending on the way the WAL\nreader facility gets used by plugins, the current implementation of the\nWAL reader may finish by reading a block multiple times while it is not\nactually necessary as the requested data length may be equal to what has\nbeen already read.  This can happen for any size, but is more likely to\nhappen at the end of a page.  This can cause performance penalties in\nplugins which rely on the block reads to be purely sequential, zlib not\nliking backward reads for example.  The new behavior also shaves some\ncycles when doing recovery.\n\nAuthor: Arthur Zakirov\nReviewed-by: Andrey Lepikhov, Michael Paquier, Grigory Smolkin\nDiscussion: https://postgr.es/m/2ddf4a32-517e-d6f4-d992-4a63b6035bfd@postgrespro.ru",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/transam/xlogreader.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/0dd6ff0ac8482f753405c5bdb091d2a8adc58e75",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ReadPageInternal"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "1058555a5eccffd17c47edf3e15dd7e26934b492",
+        "author": "Tom Lane",
+        "date": "2022-08-31T10:42:05-04:00",
+        "message": "In the Snowball dictionary, don't try to stem excessively-long words.\n\nIf the input word exceeds 1000 bytes, don't pass it to the stemmer;\njust return it as-is after case folding.  Such an input is surely\nnot a word in any human language, so whatever the stemmer might\ndo to it would be pretty dubious in the first place.  Adding this\nrestriction protects us against a known recursion-to-stack-overflow\nproblem in the Turkish stemmer, and it seems like good insurance\nagainst any other safety or performance issues that may exist in\nthe Snowball stemmers.  (I note, for example, that they contain no\nCHECK_FOR_INTERRUPTS calls, so we really don't want them running\nfor a long time.)  The threshold of 1000 bytes is arbitrary.\n\nAn alternative definition could have been to treat such words as\nstopwords, but that seems like a bigger break from the old behavior.\n\nPer report from Egor Chindyaskin and Alexander Lakhin.\nThanks to Olly Betts for the recommendation to fix it this way.\n\nDiscussion: https://postgr.es/m/1661334672.728714027@f473.i.mail.ru",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/snowball/dict_snowball.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/1058555a5eccffd17c47edf3e15dd7e26934b492",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dsnowball_lexize"
+        ],
+        "added_lines": 17,
+        "deleted_lines": 1,
+        "total_changed_lines": 18,
+        "net_line_change": 16,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "14f98e0af996beff561f66d7436c6da5d2de524d",
+        "author": "Andres Freund",
+        "date": "2023-04-01T17:50:18-07:00",
+        "message": "hio: Release extension lock before initializing page / pinning VM\n\nPageInit() while holding the extension lock is unnecessary after 0d1fe9f74e3\nstarted to use RBM_ZERO_AND_LOCK - nobody can look at the new page before we\nrelease the page lock. PageInit() zeroes the page, which isn't that cheap, so\ndeferring it until after the extension lock is released seems like a good idea.\n\nDoing visibilitymap_pin() while holding the extension lock, introduced in\n7db0cd2145f2, looks like an accident. Due to the restrictions on\nHEAP_INSERT_FROZEN it's unlikely to be a performance issue, but it still seems\nbetter to move it out.  We also are doing the visibilitymap_pin() while\nholding the buffer lock, which will be fixed in a separate commit.\n\nReviewed-by: Heikki Linnakangas <hlinnaka@iki.fi>\nDiscussion: http://postgr.es/m/419312fd-9255-078c-c3e3-f0525f911d7f@iki.fi",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/heap/hio.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/14f98e0af996beff561f66d7436c6da5d2de524d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RelationGetBufferForTuple"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 7,
+        "total_changed_lines": 14,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "1879175b18211962984e6ff0f3cba344c386b11c",
+        "author": "Tom Lane",
+        "date": "2000-03-12T19:32:06+00:00",
+        "message": "Fix performance bug in constant-expression simplifier.  After finding\nthat the inputs to a given operator can be recursively simplified to\nconstants, it was evaluating the operator using the op's *original*\n(unsimplified) arg list, so that any subexpressions had to be evaluated\nagain.  A constant subexpression at depth N got evaluated N times.\nProbably not very important in practical situations, but it made us look\nreal slow in MySQL's 'crashme' test...",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/util/clauses.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/1879175b18211962984e6ff0f3cba344c386b11c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "eval_const_expressions_mutator"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 5,
+        "total_changed_lines": 18,
+        "net_line_change": 8,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "1b9b6cc3456be0f6ab929107293b31c333270bc1",
+        "author": "Masahiko Sawada",
+        "date": "2024-10-16T12:08:05-07:00",
+        "message": "Reduce memory block size for decoded tuple storage to 8kB.\n\nCommit a4ccc1cef introduced the Generation Context and modified the\nlogical decoding process to use a Generation Context with a fixed\nblock size of 8MB for storing tuple data decoded during logical\ndecoding (i.e., rb->tup_context). Several reports have indicated that\nthe logical decoding process can be terminated due to\nout-of-memory (OOM) situations caused by excessive memory usage in\nrb->tup_context.\n\nThis issue can occur when decoding a workload involving several\nconcurrent transactions, including a long-running transaction that\nmodifies tuples. By design, the Generation Context does not free a\nmemory block until all chunks within that block are\nreleased. Consequently, if tuples modified by the long-running\ntransaction are stored across multiple memory blocks, these blocks\nremain allocated until the long-running transaction completes, leading\nto substantial memory fragmentation. The memory usage during logical\ndecoding, tracked by rb->size, does not account for memory\nfragmentation, resulting in potentially much higher memory consumption\nthan the value of the logical_decoding_work_mem parameter.\n\nVarious improvement strategies were discussed in the relevant\nthread. This change reduces the block size of the Generation Context\nused in rb->tup_context from 8MB to 8kB. This modification\nsignificantly decreases the likelihood of substantial memory\nfragmentation occurring and is relatively straightforward to\nbackport. Performance testing across multiple platforms has confirmed\nthat this change will not introduce any performance degradation that\nwould impact actual operation.\n\nBackport to all supported branches.\n\nReported-by: Alex Richman, Michael Guissine, Avi Weinberg\nReviewed-by: Amit Kapila, Fujii Masao, David Rowley\nTested-by: Hayato Kuroda, Shlok Kyal\nDiscussion: https://postgr.es/m/CAD21AoBTY1LATZUmvSXEssvq07qDZufV4AF-OHh9VD2pC0VY2A%40mail.gmail.com\nBackpatch-through: 12",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/replication/logical/reorderbuffer.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/1b9b6cc3456be0f6ab929107293b31c333270bc1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ReorderBufferAllocate"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 6,
+        "total_changed_lines": 17,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "1be203519ac4da238bf6dfe8f7015d5780723e0f",
+        "author": "Simon Riggs",
+        "date": "2013-04-07T22:37:39+01:00",
+        "message": "Tune BufferGetLSNAtomic() when checksums !enabled\n\nFrom performance analysis by Heikki Linnakangas",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/buffer/bufmgr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/1be203519ac4da238bf6dfe8f7015d5780723e0f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BufferGetLSNAtomic"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "21eb6aeb36b691b2b57d8a1445c665330b669552",
+        "author": "Tom Lane",
+        "date": "2009-02-28T03:51:05+00:00",
+        "message": "Shave a few cycles in compare_pathkeys() by checking for pointer-identical\ninput lists before we grovel through the lists.  This doesn't save much,\nbut testing shows that the case of both inputs NIL is common enough that\nit saves something.  And this is used enough to be a hotspot.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/pathkeys.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/21eb6aeb36b691b2b57d8a1445c665330b669552",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_pathkeys"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 4,
+        "total_changed_lines": 16,
+        "net_line_change": 8,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "242dfcbafac592a3f097ec2e4e36fe1b739f7f29",
+        "author": "Alvaro Herrera",
+        "date": "2020-05-15T16:50:34-04:00",
+        "message": "Avoid killing btree items that are already dead\n\n_bt_killitems marks btree items dead when a scan leaves the page where\nthey live, but it does so with only share lock (to improve concurrency).\nThis was historicall okay, since killing a dead item has no\nconsequences.  However, with the advent of data checksums and\nwal_log_hints, this action incurs a WAL full-page-image record of the\npage.  Multiple concurrent processes would write the same page several\ntimes, leading to WAL bloat.  The probability of this happening can be\nreduced by only killing items if they're not already dead, so change the\ncode to do that.\n\nThe problem could eliminated completely by having _bt_killitems upgrade\nto exclusive lock upon seeing a killable item, but that would reduce\nconcurrency so it's considered a cure worse than the disease.\n\nBackpatch all the way back to 9.5, since wal_log_hints was introduced in\n9.4.\n\nAuthor: Masahiko Sawada <masahiko.sawada@2ndquadrant.com>\nDiscussion: https://postgr.es/m/CA+fd4k6PeRj2CkzapWNrERkja5G0-6D-YQiKfbukJV+qZGFZ_Q@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/nbtree/nbtutils.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/242dfcbafac592a3f097ec2e4e36fe1b739f7f29",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_bt_killitems"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 1,
+        "total_changed_lines": 10,
+        "net_line_change": 8,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "2b1759e2675fc01d6945c9a5fa65c7d7121212f7",
+        "author": "Tom Lane",
+        "date": "2018-03-29T12:44:19-04:00",
+        "message": "Remove unnecessary BufferGetPage() calls in fsm_vacuum_page().\n\nJust noticed that these were quite redundant, since we're holding the\npage address in a local variable anyway, and we have pin on the buffer\nthroughout.\n\nAlso improve a comment.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/freespace/freespace.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/2b1759e2675fc01d6945c9a5fa65c7d7121212f7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "fsm_vacuum_page"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "2f39106a209e647d7b1895331fca115f9bb6ec8d",
+        "author": "Alexander Korotkov",
+        "date": "2018-09-22T16:22:30+03:00",
+        "message": "Replace CAS loop with single TAS in ProcArrayGroupClearXid()\n\nSingle pg_atomic_exchange_u32() is expected to be faster than loop of\npg_atomic_compare_exchange_u32().  Also, it would be consistent with\nclog group update code.\n\nDiscussion: https://postgr.es/m/CAPpHfdtxLsC-bqfxFcHswZ91OxXcZVNDBBVfg9tAWU0jvn1tQA%40mail.gmail.com\nReviewed-by: Amit Kapila",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/ipc/procarray.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/2f39106a209e647d7b1895331fca115f9bb6ec8d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ProcArrayGroupClearXid"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 8,
+        "total_changed_lines": 10,
+        "net_line_change": -6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "3454876314f0711894599f56e42ac99082b4e38f",
+        "author": "Tom Lane",
+        "date": "2013-08-21T13:38:34-04:00",
+        "message": "Fix hash table size estimation error in choose_hashed_distinct().\n\nWe should account for the per-group hashtable entry overhead when\nconsidering whether to use a hash aggregate to implement DISTINCT.  The\ncomparable logic in choose_hashed_grouping() gets this right, but I think\nI omitted it here in the mistaken belief that there would be no overhead\nif there were no aggregate functions to be evaluated.  This can result in\nmore than 2X underestimate of the hash table size, if the tuples being\naggregated aren't very wide.  Per report from Tomas Vondra.\n\nThis bug is of long standing, but per discussion we'll only back-patch into\n9.3.  Changing the estimation behavior in stable branches seems to carry too\nmuch risk of destabilizing plan choices for already-tuned applications.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/plan/planner.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/3454876314f0711894599f56e42ac99082b4e38f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "choose_hashed_distinct"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "34a84addc7208ce6e37ae2afd8f3023f0f9340a5",
+        "author": "Vadim B. Mikheev",
+        "date": "1999-05-01T15:04:46+00:00",
+        "message": "Use page-level ExtendLock lock instead of table-level -\nshould be faster.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/heap/hio.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/34a84addc7208ce6e37ae2afd8f3023f0f9340a5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RelationPutHeapTupleAtEnd"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 3,
+        "total_changed_lines": 13,
+        "net_line_change": 7,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "34ca0905706422c191b3b0afef6e1c5f54399833",
+        "author": "Tom Lane",
+        "date": "2016-11-05T13:48:11-04:00",
+        "message": "Adjust cost_merge_append() to reflect use of binaryheap_replace_first().\n\nCommit 7a2fe9bd0 improved merge append so that replacement of a tuple\ntakes log(N) operations, not twice log(N).  Since cost_merge_append knew\nabout that explicitly, we should adjust it.  This probably makes little\ndifference in practice, but the obsolete comment is confusing.\n\nIdeally this would have been put in in 9.3 with the underlying behavior\nchange; but I'm not going to back-patch it, since there's some small chance\nof changing a plan choice that somebody's optimized for.\n\nThomas Munro\n\nDiscussion: <CAEepm=0WQBSvuYcMOUj4Ga4NXpu2J=ejZcE=e=eiTjTX-6_gDw@mail.gmail.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/costsize.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/34ca0905706422c191b3b0afef6e1c5f54399833",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "cost_merge_append"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "3e63e8462f31657c8ae1c541c92daf43ede8f038",
+        "author": "Robert Haas",
+        "date": "2022-08-18T11:26:34-04:00",
+        "message": "When using the WAL-logged CREATE DATABASE strategy, bulk extend.\n\nThis should improve performance, and was suggested by Andres Freund.\nBack-patch to v15 to keep the code consistent across branches.\n\nDilip Kumar\n\nDiscussion: http://postgr.es/m/C3458199-FEDD-4356-865A-08DFAA5D4065@anarazel.de\nDiscussion: http://postgr.es/m/CAFiTN-sJ0vVpJrZ=R5M+g7Tr8=NN4wKOtrqOcDEsfFfnZgivVA@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/buffer/bufmgr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/3e63e8462f31657c8ae1c541c92daf43ede8f038",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RelationCopyStorageUsingBuffer"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "3f2adace1ec025908b5189f0773b4eaab3d228d5",
+        "author": "Heikki Linnakangas",
+        "date": "2013-07-17T20:37:09+03:00",
+        "message": "Fix end-of-loop optimization in pglz_find_match() function.\n\nAfter the recent pglz optimization patch, the next/prev pointers in the\nhash table are never NULL, INVALID_ENTRY_PTR is used to represent invalid\nentries instead. The end-of-loop check in pglz_find_match() function didn't\nget the memo. The result was the same from a correctness point of view, but\nbecause the NULL-check would never fail, the tiny optimization turned into\na pessimization.\n\nReported by Stephen Frost, using Coverity scanner.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/adt/pg_lzcompress.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/3f2adace1ec025908b5189f0773b4eaab3d228d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "pglz_find_match"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "410bed2ab8c3864d7f34f9694d080adcaf446352",
+        "author": "Tom Lane",
+        "date": "2013-04-15T12:49:29-04:00",
+        "message": "Improve GiST index search performance for trigram regex queries.\n\nThe initial coding just descended the index if any of the target trigrams\nwere possibly present at the next level down.  But actually we can apply\ntrigramsMatchGraph() so as to take advantage of AND requirements when there\nare some.  The input data might contain false positive matches, but that\ncan only result in a false positive result, not false negative, so it's\nsafe to do it this way.\n\nAlexander Korotkov",
+        "modified_files_count": 1,
+        "modified_files": [
+            "contrib/pg_trgm/trgm_gist.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/410bed2ab8c3864d7f34f9694d080adcaf446352",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gtrgm_consistent"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 7,
+        "total_changed_lines": 20,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef",
+        "author": "Andres Freund",
+        "date": "2016-09-08T17:02:43-07:00",
+        "message": "Faster PageIsVerified() for the all zeroes case.\n\nThat's primarily useful for testing very large relations, using sparse\nfiles.\n\nDiscussion: <20140331101001.GE13135@alap3.anarazel.de>\nReviewed-By: Peter Geoghegan",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/page/bufpage.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PageIsVerified"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 4,
+        "total_changed_lines": 15,
+        "net_line_change": 7,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "473411fc51157e8e825ee865c2822f976e0da5e3",
+        "author": "Peter Geoghegan",
+        "date": "2024-04-07T14:15:54-04:00",
+        "message": "Avoid extra lookups with nbtree array inequalities.\n\nnbtree index scans with SAOP inequalities (but no SAOP equalities)\nperformed extra ORDER proc lookups for any remaining equality strategy\nscan keys.  This could waste cycles, and caused assertion failures.\nKeeping around a separate ORDER proc is only necessary for a scan's\nnon-array/non-SAOP equality scan keys when the scan has at least one\nother SAOP equality strategy key (a SAOP inequality shouldn't count).\n\nTo fix, replace _bt_preprocess_array_keys_final's assertion with a test\nthat makes the function return early when the scan has no SAOP equality\nscan keys.\n\nOversight in commit 1b134ca5, which enhanced nbtree ScalarArrayOp\nexecution.\n\nReported-By: Alexander Lakhin <exclusion@gmail.com>\nDiscussion: https://postgr.es/m/0539d3d3-a402-0a49-ed5e-26429dffc4bd@gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/nbtree/nbtutils.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/473411fc51157e8e825ee865c2822f976e0da5e3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_bt_preprocess_array_keys_final"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "488f826c729bd570c36df369fa8ac90c9a5a1b46",
+        "author": "Andres Freund",
+        "date": "2024-10-08T11:37:45-04:00",
+        "message": "bufmgr: Return early in ScheduleBufferTagForWriteback() if fsync=off\n\nAs pg_flush_data() doesn't do anything with fsync disabled, there's no point\nin tracking the buffer for writeback. Arguably the better fix would be to\nchange pg_flush_data() to flush data even with fsync off, but that's a\nbehavioral change, whereas this is just a small optimization.\n\nReviewed-by: Heikki Linnakangas <hlinnaka@iki.fi>\nReviewed-by: Noah Misch <noah@leadboat.com>\nDiscussion: https://postgr.es/m/1f6b50a7-38ef-4d87-8246-786d39f46ab9@iki.fi",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/buffer/bufmgr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/488f826c729bd570c36df369fa8ac90c9a5a1b46",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ScheduleBufferTagForWriteback"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "48cc59ed24f95fa171b12ba1b461e6dc72d62b2b",
+        "author": "Noah Misch",
+        "date": "2019-10-18T20:21:10-07:00",
+        "message": "Use standard compare_exchange loop style in ProcArrayGroupClearXid().\n\nBesides style, this might improve performance in the contended case.\n\nReviewed by Amit Kapila.\n\nDiscussion: https://postgr.es/m/20191015035348.GA4166224@rfd.leadboat.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/ipc/procarray.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/48cc59ed24f95fa171b12ba1b461e6dc72d62b2b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ProcArrayGroupClearXid"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "4c83e59e01a89b0b19245b8e0317d87ae60226eb",
+        "author": "Alvaro Herrera",
+        "date": "2021-11-30T14:29:31-03:00",
+        "message": "Increase size of shared memory for pg_commit_ts\n\nLike 5364b357fb11 did for pg_commit, change the formula used to\ndetermine number of pg_commit_ts buffers, which helps performance with\nlarger servers.\n\nDiscussion: https://postgr.es/m/20210115220744.GA24457@alvherre.pgsql\nReviewed-by: Noah Misch <noah@leadboat.com>\nReviewed-by: Tomas Vondra <tomas.vondra@enterprisedb.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/transam/commit_ts.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/4c83e59e01a89b0b19245b8e0317d87ae60226eb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CommitTsShmemBuffers"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "532fe28dade9291b7a7f7de3920a4d997bbd86a1",
+        "author": "Tom Lane",
+        "date": "2012-05-26T19:09:52-04:00",
+        "message": "Prevent synchronized scanning when systable_beginscan chooses a heapscan.\n\nThe only interesting-for-performance case wherein we force heapscan here\nis when we're rebuilding the relcache init file, and the only such case\nthat is likely to be examining a catalog big enough to be syncscanned is\nRelationBuildTupleDesc.  But the early-exit optimization in that code gets\nbroken if we start the scan at a random place within the catalog, so that\nallowing syncscan is actually a big deoptimization if pg_attribute is large\n(at least for the normal case where the rows for core system catalogs have\nnever been changed since initdb).  Hence, prevent syncscan here.  Per my\ntesting pursuant to complaints from Jeff Frost and Greg Sabino Mullane,\nthough neither of them seem to have actually hit this specific problem.\n\nBack-patch to 8.3, where syncscan was introduced.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/index/genam.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/532fe28dade9291b7a7f7de3920a4d997bbd86a1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "systable_beginscan"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "56e59edd7509f8726157cd8039529fc077f57ebb",
+        "author": "Tom Lane",
+        "date": "2007-02-06T06:50:26+00:00",
+        "message": "Fix a performance regression in 8.2: optimization of MIN/MAX into indexscans\nhad stopped working for tables buried inside views or sub-selects.  This is\nbecause I had gotten rid of the simplify_jointree() preprocessing step, and\noptimize_minmax_aggregates() wasn't smart enough to deal with a non-canonical\nFromExpr.  Per gripe from Bill Howe.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/plan/planagg.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/56e59edd7509f8726157cd8039529fc077f57ebb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "optimize_minmax_aggregates"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 7,
+        "total_changed_lines": 20,
+        "net_line_change": 6,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "5d4298e75f252b162008ad0475f29349023573cb",
+        "author": "Michael Paquier",
+        "date": "2024-11-11T09:02:30+09:00",
+        "message": "pg_stat_statements: Avoid some locking during PGSS entry scans\n\nA single PGSS entry's spinlock is used to be able to modify \"counters\"\nwithout holding pgss->lock exclusively, as mentioned at the top of\npg_stat_statements.c and within pgssEntry.\n\nWithin a single pgssEntry, stats_since and minmax_stats_since are never\nmodified without holding pgss->lock exclusively, so there is no need to\nhold an entry's spinlock when reading stats_since and\nminmax_stats_since, as done when scanning all the PGSS entries for\nfunction calls of pg_stat_statements().\n\nThis also restores the consistency between the code and the comments\nabout the entry's spinlock usage.  This change is a performance\nimprovement (it can be argued that this is a logic bug), so there is no\nneed for a backpatch.  This saves two instructions from being read while\nholding an entry's spinlock.\n\nAuthor: Karina Litskevich\nReviewed-by: Michael Paquier, wenhui qiu\nDiscussion: https://postgr.es/m/CACiT8ibhCmzbcOxM0v4pRLH3abk-95LPkt7_uC2JMP+miPjxsg@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "contrib/pg_stat_statements/pg_stat_statements.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/5d4298e75f252b162008ad0475f29349023573cb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "pg_stat_statements_internal"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "5d56d07ca343a467ce74a042c22c963ea2690eaf",
+        "author": "David Rowley",
+        "date": "2024-09-19T15:20:35+12:00",
+        "message": "Optimize tuplestore usage for WITH RECURSIVE CTEs\n\nnodeRecursiveunion.c makes use of two tuplestores and, until now, would\ndelete and recreate one of these tuplestores after every recursive\niteration.\n\nHere we adjust that behavior and instead reuse one of the existing\ntuplestores and just empty it of all tuples using tuplestore_clear().\n\nThis saves some free/malloc roundtrips and has shown a 25-30% performance\nimprovement for queries that perform very little work between recursive\niterations.\n\nThis also paves the way to add some EXPLAIN ANALYZE telemetry output for\nrecursive common table expressions, similar to what was done in 1eff8279d\nand 95d6e9af0.  Previously calling tuplestore_end() would have caused\nthe maximum storage space used to be lost.\n\nReviewed-by: Tatsuo Ishii\nDiscussion: https://postgr.es/m/CAApHDvr9yW0YRiK8A2J7nvyT8g17YzbSfOviEWrghazKZbHbig@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/nodeRecursiveunion.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/5d56d07ca343a467ce74a042c22c963ea2690eaf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ExecRecursiveUnion"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 6,
+        "total_changed_lines": 19,
+        "net_line_change": 7,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "5da8bf8bbb5c119d4bd767dbdfaf10efd348c0fd",
+        "author": "Peter Geoghegan",
+        "date": "2020-07-17T09:50:48-07:00",
+        "message": "Avoid CREATE INDEX unique index deduplication.\n\nThere is no advantage to attempting deduplication for a unique index\nduring CREATE INDEX, since there cannot possibly be any duplicates.\nDoing so wastes cycles due to unnecessary copying.  Make sure that we\navoid it consistently.\n\nWe already avoided unique index deduplication in the case where there\nwere some spool2 tuples to merge.  That didn't account for the fact that\nspool2 is removed early/unset in the common case where it has no tuples\nthat need to be merged (i.e. it failed to account for the \"spool2 turns\nout to be unnecessary\" optimization in _bt_spools_heapscan()).\n\nOversight in commit 0d861bbb, which added nbtree deduplication\n\nBackpatch: 13-, where nbtree deduplication was introduced.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/nbtree/nbtsort.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/5da8bf8bbb5c119d4bd767dbdfaf10efd348c0fd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_bt_load"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "5df319f3d55d09fadb4f7e4b58c5b476a3aeceb4",
+        "author": "Andres Freund",
+        "date": "2023-03-22T09:20:34-07:00",
+        "message": "Fix memory leak and inefficiency in CREATE DATABASE ... STRATEGY WAL_LOG\n\nRelationCopyStorageUsingBuffer() did not free the strategies used to access\nthe source / target relation. They memory was released at the end of the\ntransaction, but when using a template database with a lot of relations, the\ntemporary leak can become big prohibitively big.\n\nRelationCopyStorageUsingBuffer() acquired the buffer for the target relation\nwith RBM_NORMAL, therefore requiring a read of a block guaranteed to be\nzero. Use RBM_ZERO_AND_LOCK instead.\n\nReviewed-by: Robert Haas <robertmhaas@gmail.com>\nDiscussion: https://postgr.es/m/20230321070113.o2vqqxogjykwgfrr@awork3.anarazel.de\nBackpatch: 15-, where STRATEGY WAL_LOG was introduced",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/buffer/bufmgr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/5df319f3d55d09fadb4f7e4b58c5b476a3aeceb4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RelationCopyStorageUsingBuffer"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "6301c3adabd947394682e37c933b0f3f83353b28",
+        "author": "Tom Lane",
+        "date": "2021-10-31T15:31:29-04:00",
+        "message": "Avoid O(N^2) behavior when the standby process releases many locks.\n\nWhen replaying a transaction that held many exclusive locks on the\nprimary, a standby server's startup process would expend O(N^2)\neffort on manipulating the list of locks.  This code was fine when\nwritten, but commit 1cff1b95a made repetitive list_delete_first()\ncalls inefficient, as explained in its commit message.  Fix by just\niterating the list normally, and releasing storage only when done.\n(This'd be inadequate if we needed to recover from an error occurring\npartway through; but we don't.)\n\nBack-patch to v13 where 1cff1b95a came in.\n\nNathan Bossart\n\nDiscussion: https://postgr.es/m/CD2F0E7F-9822-45EC-A411-AE56F14DEA9F@amazon.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/ipc/standby.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/6301c3adabd947394682e37c933b0f3f83353b28",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "StandbyReleaseLockList"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 4,
+        "total_changed_lines": 10,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "64919aaab45076445051245c9bcd48dd84abebe7",
+        "author": "Tom Lane",
+        "date": "2021-07-06T14:23:09-04:00",
+        "message": "Reduce the cost of planning deeply-nested views.\n\nJoel Jacobson reported that deep nesting of trivial (flattenable)\nviews results in O(N^3) growth of planning time for N-deep nesting.\nIt turns out that a large chunk of this cost comes from copying around\nthe \"subquery\" sub-tree of each view's RTE_SUBQUERY RTE.  But once we\nhave successfully flattened the subquery, we don't need that anymore,\nbecause the planner isn't going to do anything else interesting with\nthat RTE.  We already zap the subquery pointer during setrefs.c (cf.\nadd_rte_to_flat_rtable), but it's useless baggage earlier than that\ntoo.  Clearing the pointer as soon as pull_up_simple_subquery is done\nwith the RTE reduces the cost from O(N^3) to O(N^2); which is still\nnot great, but it's quite a lot better.  Further improvements will\nrequire rethinking of the RTE data structure, which is being considered\nin another thread.\n\nPatch by me; thanks to Dean Rasheed for review.\n\nDiscussion: https://postgr.es/m/797aff54-b49b-4914-9ff9-aa42564a4d7d@www.fastmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/prep/prepjointree.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/64919aaab45076445051245c9bcd48dd84abebe7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "pull_up_simple_subquery"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 4,
+        "total_changed_lines": 15,
+        "net_line_change": 7,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "660d5fb856c61df2de2cedb26249404ffc58cb89",
+        "author": "Tom Lane",
+        "date": "2016-04-10T00:24:28-04:00",
+        "message": "Further minor improvement in generic_xlog.c: always say REGBUF_STANDARD.\n\nSince we're requiring pages handled by generic_xlog.c to be standard\nformat, specify REGBUF_STANDARD when doing a full-page image, so that\nxloginsert.c can compress out the \"hole\" between pd_lower and pd_upper.\nGiven the current API in which this path will be taken only for a newly\ninitialized page, the hole is likely to be particularly large in such\ncases, so that this oversight could easily be performance-significant.\nI don't notice any particular change in the runtime of contrib/bloom's\nregression test, though.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/transam/generic_xlog.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/660d5fb856c61df2de2cedb26249404ffc58cb89",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GenericXLogFinish"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "6897f0ec024582a570868939d3f34a6853374723",
+        "author": "Alexander Korotkov",
+        "date": "2024-07-04T02:05:37+03:00",
+        "message": "Optimize memory access in GetRunningTransactionData()\n\ne85662df44 made GetRunningTransactionData() calculate the oldest running\ntransaction id within the current database.  This commit optimized this\ncalculation by performing a cheap transaction id comparison before fetching\nthe process database id, while the latter could cause extra cache misses.\n\nReported-by: Noah Misch\nDiscussion: https://postgr.es/m/20240630231816.bf.nmisch%40google.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/ipc/procarray.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/6897f0ec024582a570868939d3f34a6853374723",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetRunningTransactionData"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 6,
+        "total_changed_lines": 17,
+        "net_line_change": 5,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "695c5977c8bc115029a85dcc1821d7b0136b4e4c",
+        "author": "Thomas Munro",
+        "date": "2019-11-11T16:33:04+13:00",
+        "message": "Optimize TransactionIdIsCurrentTransactionId().\n\nIf the passed in xid is the current top transaction, we can do a fast\ncheck and exit early.  This should work well for the current heap but\nalso works very well for proposed AMs that don't use a separate xid\nfor subtransactions.\n\nAuthor: Ashwin Agrawal, based on a suggestion from Andres Freund\nReviewed-by: Thomas Munro\nDiscussion: https://postgr.es/m/CALfoeiv0k3hkEb3Oqk%3DziWqtyk2Jys1UOK5hwRBNeANT_yX%2Bng%40mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/transam/xact.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/695c5977c8bc115029a85dcc1821d7b0136b4e4c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TransactionIdIsCurrentTransactionId"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "6d842be6c11887930a0f4128fd6aa4de427cfd2a",
+        "author": "Tom Lane",
+        "date": "2018-10-03T13:05:01-04:00",
+        "message": "Provide fast path in snprintf.c for conversion specs that are just \"%s\".\n\nThis case occurs often enough (around 45% of conversion specs executed\nin our regression tests are just \"%s\") that it's worth an extra test\nper conversion spec to allow skipping all the logic associated with\nfield widths and padding when it happens.\n\nDiscussion: https://postgr.es/m/26193.1538582367@sss.pgh.pa.us",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/port/snprintf.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/6d842be6c11887930a0f4128fd6aa4de427cfd2a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dopr"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 0,
+        "total_changed_lines": 13,
+        "net_line_change": 13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "6e5d9f278c1209936d973930996857f55e119cd8",
+        "author": "Tom Lane",
+        "date": "2015-08-21T20:32:11-04:00",
+        "message": "Avoid O(N^2) behavior when enlarging SPI tuple table in spi_printtup().\n\nFor no obvious reason, spi_printtup() was coded to enlarge the tuple\npointer table by just 256 slots at a time, rather than doubling the size at\neach reallocation, as is our usual habit.  For very large SPI results, this\nmakes for O(N^2) time spent in repalloc(), which of course soon comes to\ndominate the runtime.  Use the standard doubling approach instead.\n\nThis is a longstanding performance bug, so back-patch to all active\nbranches.\n\nNeil Conway",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/spi.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/6e5d9f278c1209936d973930996857f55e119cd8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "spi_printtup"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "6fbd5cce22ebd2203d99cd7dcd179d0e1138599e",
+        "author": "Tom Lane",
+        "date": "2018-03-19T17:23:21-04:00",
+        "message": "Fix performance hazard in REFRESH MATERIALIZED VIEW CONCURRENTLY.\n\nJeff Janes discovered that commit 7ca25b7de made one of the queries run by\nREFRESH MATERIALIZED VIEW CONCURRENTLY perform badly.  The root cause is\nbad cardinality estimation for correlated quals, but a principled solution\nto that problem is some way off, especially since the planner lacks any\nstatistics about whole-row variables.  Moreover, in non-error cases this\nquery produces no rows, meaning it must be run to completion; but use of\nLIMIT 1 encourages the planner to pick a fast-start, slow-completion plan,\nexactly not what we want.  Remove the LIMIT clause, and instead rely on\nthe count parameter we pass to SPI_execute() to prevent excess work if the\nquery does return some rows.\n\nWhile we've heard no field reports of planner misbehavior with this query,\nit could be that people are having performance issues that haven't reached\nthe level of pain needed to cause a bug report.  In any case, that LIMIT\nclause can't possibly do anything helpful with any existing version of the\nplanner, and it demonstrably can cause bad choices in some cases, so\nback-patch to 9.4 where the code was introduced.\n\nThomas Munro\n\nDiscussion: https://postgr.es/m/CAMkU=1z-JoGymHneGHar1cru4F1XDfHqJDzxP_CtK5cL3DOfmg@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/commands/matview.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/6fbd5cce22ebd2203d99cd7dcd179d0e1138599e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "refresh_by_match_merge"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "70066eb1a1adb4d1ac608c1127bbb3139fa09942",
+        "author": "Tom Lane",
+        "date": "2008-01-17T21:21:50+00:00",
+        "message": "Insert into getCopyDataMessage() the same logic that already existed in the\nmain code path for enlarging libpq's input buffer in one swoop when needing to\nread a long data message.  Without this, the code will double the buffer size,\nread more data, notice it still hasn't got the whole message, and repeat till\nit finally has a large enough buffer.  Which wastes a lot of data-moving\neffort and also memory (since malloc probably can't do anything very useful\nwith the freed-up smaller buffers).  Not sure why this wasn't there already;\ncertainly the COPY data path is a place where we're quite likely to see long\ndata messages.  I'm not backpatching though, since this is just a marginal\nperformance issue rather than a real bug.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/interfaces/libpq/fe-protocol3.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/70066eb1a1adb4d1ac608c1127bbb3139fa09942",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getCopyDataMessage"
+        ],
+        "added_lines": 18,
+        "deleted_lines": 1,
+        "total_changed_lines": 19,
+        "net_line_change": 17,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "756e221db610f333649385f7fef96e7e9e23ed71",
+        "author": "Fujii Masao",
+        "date": "2022-07-26T16:00:18+09:00",
+        "message": "Reduce overhead of renaming archive status files.\n\nPresently, archive status files are durably renamed from .ready to\n.done to indicate that a file has been archived.  Persisting this\nrename to disk accounts for a significant amount of the overhead\nassociated with archiving.  While durably renaming the file\nprevents re-archiving in most cases, archive commands and libraries\nmust already gracefully handle attempts to re-archive the last\narchived file after a crash (e.g., a crash immediately after\narchive_command exits but before the server renames the status\nfile).\n\nThis change reduces the amount of overhead associated with\narchiving by using rename() instead of durable_rename() to rename\nthe archive status files.  As a consequence, the server is more\nlikely to attempt to re-archive files after a crash, but as noted\nabove, archive commands and modules are already expected to handle\nthis.  It is also possible that the server will attempt to re-\narchive files that have been removed or recycled, but the archiver\nalready handles this, too.\n\nAuthor: Nathan Bossart\nReviewed-by: Kyotaro Horiguchi, Fujii Masao\nDiscussion: https://postgr.es/m/20220222011948.GA3850532@nathanxps13",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/postmaster/pgarch.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/756e221db610f333649385f7fef96e7e9e23ed71",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "pgarch_archiveDone"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 1,
+        "total_changed_lines": 14,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "757f40345141bf31ea380128cbf2fd2dde4a2798",
+        "author": "Tom Lane",
+        "date": "1999-02-01T04:20:50+00:00",
+        "message": "Tighten coding in samekeys().  Pretty braindead change,\nbut it saves almost 10% of the runtime in Charles Hornberger's optimizer\nexample, so what the heck ...",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/util/keys.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/757f40345141bf31ea380128cbf2fd2dde4a2798",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "samekeys"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 5,
+        "total_changed_lines": 14,
+        "net_line_change": 4,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "7a80e381d16c642d00ec6146ccdf1262a159c69e",
+        "author": "Tom Lane",
+        "date": "2024-12-17T15:52:12-05:00",
+        "message": "Skip useless calculation of join RTE column names during EXPLAIN.\n\nThere's no need for set_simple_column_names() to compute unique\ncolumn names for join RTEs, because a finished plan tree will\nnot contain any join alias Vars that we could need names for.\nIts other, internal callers will not pass it any join RTEs\nanyway, so the upshot is we can just skip join RTEs here.\n\nAside from getting rid of a klugy against-its-documentation use of\nset_relation_column_names, this can speed up EXPLAIN substantially\nwhen considering many-join queries, because the upper join RTEs\ntend to have a lot of columns.\n\nSami Imseih, with cosmetic changes by me\n\nDiscussion: https://postgr.es/m/CAA5RZ0th3q-0p1pri58z9grG8r8azmEBa8o1rtkwhLmJg_cH+g@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/adt/ruleutils.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/7a80e381d16c642d00ec6146ccdf1262a159c69e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "set_simple_column_names"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 7,
+        "total_changed_lines": 16,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "8685c472235b7a5bcc786f66ba9adde44e3d670c",
+        "author": "Tom Lane",
+        "date": "2005-11-18T23:08:00+00:00",
+        "message": "Fix performance issue in exprTypmod(): for a COALESCE expression, it\nrecursed twice on its first argument, leading to exponential time spent\non a deep nest of COALESCEs ... such as a deeply nested FULL JOIN would\nproduce.  Per report from Matt Carter.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/parser/parse_expr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/8685c472235b7a5bcc786f66ba9adde44e3d670c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "exprTypmod"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 3,
+        "total_changed_lines": 14,
+        "net_line_change": 8,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "87bff68840d542011ed8f60427502fb90fdf2873",
+        "author": "Andres Freund",
+        "date": "2021-08-04T19:19:44-07:00",
+        "message": "pgbench: When using pipelining only do PQconsumeInput() when necessary.\n\nUp to now we did a PQconsumeInput() for each pipelined query, asking the OS\nfor more input - which it often won't have, as all results might already have\nbeen sent. That turns out to have a noticeable performance impact.\n\nAlvaro Herrera reviewed the idea to add the PQisBusy() check, but not this\nconcrete patch.\n\nAuthor: Andres Freund <andres@anarazel.de>\nDiscussion: https://postgr.es/m/20210720180039.23rivhdft3l4mayn@alap3.anarazel.de\nBackpatch: 14, where libpq/pgbench pipelining was introduced.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bin/pgbench/pgbench.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/87bff68840d542011ed8f60427502fb90fdf2873",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "advanceConnectionState"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 1,
+        "total_changed_lines": 9,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "8a59f336bbb8d6829e88c89896472b497d809606",
+        "author": "Tom Lane",
+        "date": "2001-07-19T21:25:37+00:00",
+        "message": "Minor performance improvement in MultiRecordFreeSpace.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/freespace/freespace.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/8a59f336bbb8d6829e88c89896472b497d809606",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MultiRecordFreeSpace"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 2,
+        "total_changed_lines": 18,
+        "net_line_change": 14,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "8aac9759bb855a9349ae39944901d25a858b4751",
+        "author": "Tom Lane",
+        "date": "2023-07-13T13:07:51-04:00",
+        "message": "Remove unnecessary pfree() in g_intbig_compress().\n\nGiST compress functions (like all GiST opclass functions) are\nsupposed to be called in short-lived memory contexts, so that\nminor memory leaks in them are not of concern, and indeed\nexplicit pfree's are likely slightly counterproductive.\nBut this one in g_intbig_compress() is more than\nslightly counterproductive, because it's guarded by\n\"if (in != DatumGetArrayTypeP(entry->key))\" which means\nthat if this test succeeds, we've detoasted the datum twice.\n(And to add insult to injury, the extra detoast result is\nleaked.)  Let's just drop the whole stanza, relying on the\nGiST temporary context mechanism to clean up in good time.\n\nThe analogous bit in g_int_compress() is\n       if (r != (ArrayType *) DatumGetPointer(entry->key))\n           pfree(r);\nwhich doesn't have the gratuitous-detoast problem so\nI left it alone.  Perhaps there is a case for removing\nunnecessary pfree's more widely, but I'm not sure if it's\nworth the code churn.\n\nThe potential extra decompress seems expensive enough to\njustify calling this a (minor) performance bug and\nback-patching.\n\nKonstantin Knizhnik, Matthias van de Meent, Tom Lane\n\nDiscussion: https://postgr.es/m/CAEze2Wi86=DxErfvf+SCB2UKmU2amKOF60BKuJOX=w-RojRn0A@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "contrib/intarray/_intbig_gist.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/8aac9759bb855a9349ae39944901d25a858b4751",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "g_intbig_compress"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 3,
+        "total_changed_lines": 3,
+        "net_line_change": -3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "8c792fe9cbe1dcfdafcdc70b961be714631324ec",
+        "author": "Bruce Momjian",
+        "date": "2005-05-25T22:59:33+00:00",
+        "message": "At the head of wchareq, length of (multibyte) character is compared by\nusing pg_mblen. Therefore, pg_mblen is executed many times, and it\nbecomes a bottleneck.\n\nThis patch makes a short cut, and reduces execution frequency of\npg_mblen by comparing the first byte first.\n\na_ogawa",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/adt/like.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/8c792fe9cbe1dcfdafcdc70b961be714631324ec",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "wchareq"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 5,
+        "total_changed_lines": 16,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "8ecbc46bdb5815a52b8a0f2c88b891ad49ce50dd",
+        "author": "Tom Lane",
+        "date": "2004-11-20T20:16:54+00:00",
+        "message": "Reduce the default size of the local lock hash table.  There's usually\nno need for it to be nearly as big as the global hash table, and since\nit's not in shared memory it can grow if it does need to be bigger.\nBy reducing the size, we speed up hash_seq_search(), which saves a\nsignificant fraction of subtransaction entry/exit overhead.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/storage/lmgr/lock.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/8ecbc46bdb5815a52b8a0f2c88b891ad49ce50dd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LockMethodTableInit"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "9155b4be9a13038d59a7a09a27b7fbce3819eb08",
+        "author": "Tomas Vondra",
+        "date": "2020-05-09T19:41:36+02:00",
+        "message": "Do no reset bounded before incremental sort rescan\n\nExecReScanIncrementalSort was resetting bounded=false, which means the\noptimization would be disabled on all rescans. This happens because\nExecSetTupleBound is called before the rescan, not after it.\n\nAuthor: James Coleman\nReviewed-by: Tomas Vondra\nDiscussion: https://postgr.es/m/20200414065336.GI1492@paquier.xyz",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/nodeIncrementalSort.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/9155b4be9a13038d59a7a09a27b7fbce3819eb08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ExecReScanIncrementalSort"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 1,
+        "total_changed_lines": 1,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "9184cc7dab0b00f6a1325a762e856ed1079327cf",
+        "author": "Tom Lane",
+        "date": "2010-02-08T16:50:21+00:00",
+        "message": "Fix serious performance bug in new implementation of VACUUM FULL:\ncluster_rel necessarily builds an all-new toast table, so it's useless to\nthen go and VACUUM FULL the toast table.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/commands/vacuum.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/9184cc7dab0b00f6a1325a762e856ed1079327cf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "vacuum_rel"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "97e971ee05d5a0f6361ea34abf27059d762045a7",
+        "author": "Andres Freund",
+        "date": "2019-09-29T15:46:17-07:00",
+        "message": "Fix determination when slot types for upper executor nodes are fixed.\n\nFor many queries the fact that the tuple descriptor from the lower\nnode was not taken into account when determining whether the type of a\nslot is fixed, lead to tuple deforming for such upper nodes not to be\nJIT accelerated.\n\nI broke this in 675af5c01e297.\n\nThere is ongoing work to enable writing regression tests for related\nbehavior (including a patch that would have detected this\nregression), by optionally showing such details in EXPLAIN. But as it\nseems unlikely that that will be suitable for stable branches, just\nmerge the fix for now.\n\nWhile it's fairly close to the 12 release window, the fact that 11\ncontinues to perform JITed tuple deforming in these cases, that\nthere's still cases where we do so in 12, and the fact that the\nperformance regression can be sizable, weigh in favor of fixing it\nnow.\n\nAuthor: Andres Freund\nDiscussion: https://postgr.es/m/20190927072053.njf6prdl3vb7y7qb@alap3.anarazel.de\nBackpatch: 12-, where 675af5c01e297 was merged.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/execExpr.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/97e971ee05d5a0f6361ea34abf27059d762045a7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ExecComputeSlotInfo"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "984d56b80f5a945db2bfa80499b5ed913848242b",
+        "author": "Tom Lane",
+        "date": "2010-07-29T19:23:20+00:00",
+        "message": "Fix another longstanding problem in copy_relation_data: it was blithely\nassuming that a local char[] array would be aligned on at least a word\nboundary.  There are architectures on which that is pretty much guaranteed to\nNOT be the case ... and those arches also don't like non-aligned memory\naccesses, meaning that log_newpage() would crash if it ever got invoked.\nEven on Intel-ish machines there's a potential for a large performance penalty\nfrom doing I/O to an inadequately aligned buffer.  So palloc it instead.\n\nBackpatch to 8.0 --- 7.4 doesn't have this code.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/commands/tablecmds.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/984d56b80f5a945db2bfa80499b5ed913848242b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "copy_relation_data"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 3,
+        "total_changed_lines": 17,
+        "net_line_change": 11,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "9caf042088e7416ed612e52519ee15f0717e86a7",
+        "author": "Robert Haas",
+        "date": "2023-09-07T13:51:35-04:00",
+        "message": "Reorder tests in get_cheapest_path_for_pathkeys().\n\nChecking parallel safety should be even cheaper than cost comparison, so\ndo that first.\n\nAlso make some minor, related comment improvements.\n\nRichard Guo, reviewed by Aleksander Alekseev, Andy Fan, and me.\n\nDiscussion: http://postgr.es/m/CAMbWs4-KE2wf4QPj_Sr5mX4QFtBNNKGmxK=+e=KZEGUjdG33=g@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/pathkeys.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/9caf042088e7416ed612e52519ee15f0717e86a7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get_cheapest_path_for_pathkeys"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 4,
+        "total_changed_lines": 10,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "9f3bd2994c30df430c1aef5a8d6893ce61ee3f43",
+        "author": "Tom Lane",
+        "date": "2007-10-08T22:07:16+00:00",
+        "message": "Faster test for overflow in str2txid, from Marko.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "contrib/txid/txid.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/9f3bd2994c30df430c1aef5a8d6893ce61ee3f43",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "str2txid"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 4,
+        "total_changed_lines": 11,
+        "net_line_change": 3,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ac88807f9b227ddcd92b8be9a053094837c1b99a",
+        "author": "Andres Freund",
+        "date": "2019-09-29T16:24:32-07:00",
+        "message": "jit: Re-allow JIT compilation of execGrouping.c hashtable comparisons.\n\nIn the course of 5567d12ce03, 356687bd8 and 317ffdfeaac, I changed\nBuildTupleHashTable[Ext]'s call to ExecBuildGroupingEqual to not pass\nin the parent node, but NULL. Which in turn prevents the tuple\nequality comparator from being JIT compiled.  While that fixes\nbug #15486, it is not actually necessary after all of the above commits,\nas we don't re-build the comparator when using the new\nBuildTupleHashTableExt() interface (as the content of the hashtable\nare reset, but the TupleHashTable itself is not).\n\nTherefore re-allow jit compilation for callers that use\nBuildTupleHashTableExt with a separate context for \"metadata\" and\ncontent.\n\nAs in the previous commit, there's ongoing work to make this easier to\ntest to prevent such regressions in the future, but that\ninfrastructure is not going to be backpatchable.\n\nThe performance impact of not JIT compiling hashtable equality\ncomparators can be substantial e.g. for aggregation queries that\naggregate a lot of input rows to few output rows (when there are a lot\nof output groups, there will be fewer comparisons).\n\nAuthor: Andres Freund\nDiscussion: https://postgr.es/m/20190927072053.njf6prdl3vb7y7qb@alap3.anarazel.de\nBackpatch: 11, just as 5567d12ce03",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/execGrouping.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ac88807f9b227ddcd92b8be9a053094837c1b99a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BuildTupleHashTableExt"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 1,
+        "total_changed_lines": 13,
+        "net_line_change": 11,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "adeee974866085db84b860c1f397dd7c6b136a0a",
+        "author": "Robert Haas",
+        "date": "2015-11-18T08:25:33-05:00",
+        "message": "Fix dumb bug in tqueue.c\n\nWhen I wrote this code originally, the intention was to recompute the\nremapinfo only when the tupledesc changes.  This presumably only\nhappens once per query, but I copied the design pattern from other\nDestReceivers.  However, due to a silly oversight on my part,\ntqueue->tupledesc never got set, leading to recomputation for every\ntuple.\n\nThis should improve the performance of parallel scans that return a\nsignificant number of tuples.\n\nReport by Amit Kapila; patch by me, reviewed by him.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/tqueue.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/adeee974866085db84b860c1f397dd7c6b136a0a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tqueueReceiveSlot"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 4,
+        "total_changed_lines": 8,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "b2f6f749c7a5936adbb555e248e8e4df35c00a4a",
+        "author": "Andres Freund",
+        "date": "2015-07-07T13:12:46+02:00",
+        "message": "Fix logical decoding bug leading to inefficient reopening of files.\n\nWhen spilling transaction data to disk a simple typo caused the output\nfile to be closed and reopened for every serialized change. That happens\nto not have a huge impact on linux, which is why it probably wasn't\nnoticed so far, but on windows that appears to trigger actual disk\nwrites after every change. Not fun.\n\nThe bug fortunately does not have any impact besides speed. A change\ncould end up being in the wrong segment (last instead of next), but\nsince we read all files to the end, that's just ugly, not really\nproblematic. It's not a problem to upgrade, since transaction spill\nfiles do not persist across restarts.\n\nBug: #13484\nReported-By: Olivier Gosseaume\nDiscussion: 20150703090217.1190.63940@wrigleys.postgresql.org\n\nBackpatch to 9.4, where logical decoding was added.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/replication/logical/reorderbuffer.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/b2f6f749c7a5936adbb555e248e8e4df35c00a4a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ReorderBufferSerializeTXN"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "b56fb691b0033f9b86e0552bd5adfd485f05eef6",
+        "author": "Heikki Linnakangas",
+        "date": "2016-10-06T09:46:40+03:00",
+        "message": "Fix excessive memory consumption in the new sort pre-reading code.\n\nLogicalTapeRewind() should not allocate large read buffer, if the tape\nis completely empty. The calling code relies on that, for its\ncalculation of how much memory to allocate for the read buffers. That\nlead to massive overallocation of memory, if maxTapes was high, but\nonly a few tapes were actually used.\n\nReported by Tomas Vondra\n\nDiscussion: <7303da46-daf7-9c68-3cc1-9f83235cf37e@2ndquadrant.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/sort/logtape.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/b56fb691b0033f9b86e0552bd5adfd485f05eef6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LogicalTapeRewind"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 3,
+        "total_changed_lines": 11,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "b619852086ed2b5df76631f5678f60d3bebd3745",
+        "author": "Michael Paquier",
+        "date": "2024-02-09T09:30:53+09:00",
+        "message": "Improve COPY TO performance when server and client encodings match\n\nThis commit fixes an oversight introduced in c61a2f58418e, where COPY TO\nwould attempt to do encoding conversions even if the encodings of the\nclient and the server matched for multi-byte encodings.  All conversions\ngo through pg_any_to_server() that makes the conversion a no-op when the\nencodings of the client and the server match, even for multi-byte\nencodings.\n\nThe logic was fine, but setting CopyToStateData->need_transcoding would\ncause strlen() to be called for nothing for each attribute of all the\nrows copied, and that was showing high in some profiles (more attributes\nmake that easier to reach).  This change improves the runtime of some\nworst-case COPY TO queries by 15%~ (number present at least here).\n\nThis is a performance improvement, so no backpatch is done out of\ncaution as this is not a regression.\n\nReported-by: Andres Freund\nAnalyzed-by: Andres Freund\nAuthor: Michael Paquier\nReviewed-by: Heikki Linnakangas\nDiscussion: https://postgr.es/m/20240206020504.edijzczkgd25ek6z@awork3.anarazel.de",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/commands/copyto.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/b619852086ed2b5df76631f5678f60d3bebd3745",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BeginCopyTo"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 6,
+        "total_changed_lines": 14,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "b773987fc2609a9db6be864a2c71969f2cb3f511",
+        "author": "Tom Lane",
+        "date": "2006-06-09T19:46:09+00:00",
+        "message": "Repair remarkably-inefficient query for dumping large object comments: it\nwas invoking obj_description() for each large object chunk, instead of once\nper large object.  This code is new as of 8.1, which may explain why the\nproblem hadn't been noticed already.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bin/pg_dump/pg_dump.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/b773987fc2609a9db6be864a2c71969f2cb3f511",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dumpBlobComments"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "bacf7b2086d971e8b3f65eea00b5550db6fa9614",
+        "author": "Tom Lane",
+        "date": "2008-09-10T17:01:07+00:00",
+        "message": "Avoid using sprintf() for a simple octal conversion in PQescapeByteaInternal.\nImproves performance, per suggestion from Rudolf Leitgeb (bug #4414).\nThe backend did this right already, but not libpq.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/interfaces/libpq/fe-exec.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/bacf7b2086d971e8b3f65eea00b5550db6fa9614",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PQescapeByteaInternal"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "bc7fcab5e36b9597857fa7e3fa6d9ba54aaea167",
+        "author": "Robert Haas",
+        "date": "2015-12-23T14:06:52-05:00",
+        "message": "Read from the same worker repeatedly until it returns no tuple.\n\nThe original coding read tuples from workers in round-robin fashion,\nbut performance testing shows that it works much better to read enough\nto empty one queue before moving on to the next.  I believe the\nreason for this is that, with the old approach, we could easily wake\nup a worker repeatedly to write only one new tuple into the shm_mq\neach time.  With this approach, by the time the process gets scheduled,\nit has a decent chance of being able to fill the entire buffer in\none go.\n\nPatch by me.  Dilip Kumar helped with performance testing.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/executor/nodeGather.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/bc7fcab5e36b9597857fa7e3fa6d9ba54aaea167",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gather_readnext"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 4,
+        "total_changed_lines": 14,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "bf0b6ac43c5d5eb7458e0aa4bf5f45c566f7c7d1",
+        "author": "Tom Lane",
+        "date": "2008-09-12T14:56:13+00:00",
+        "message": "Skip opfamily check in eclass_matches_any_index() when the index isn't a\nbtree.  We can't easily tell whether clauses generated from the equivalence\nclass could be used with such an index, so just assume that they might be.\nThis bit of over-optimization prevented use of non-btree indexes for nestloop\ninner indexscans, in any case where the join uses an equality operator that\nis also a btree operator --- which in particular is typically true for hash\nindexes.  Noted while trying to test the current hash index patch.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/indxpath.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/bf0b6ac43c5d5eb7458e0aa4bf5f45c566f7c7d1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "eclass_matches_any_index"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 2,
+        "total_changed_lines": 15,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "bfd17f94b6f9215fac28a0008de72294756b7f01",
+        "author": "Tom Lane",
+        "date": "2009-04-01T18:54:27+00:00",
+        "message": "Improve pg_dump's query for retrieving BLOB comments to be more efficient\nwhen there are many blobs and not so many comments.  Tamas Vincze",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bin/pg_dump/pg_dump.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/bfd17f94b6f9215fac28a0008de72294756b7f01",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dumpBlobComments"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 2,
+        "total_changed_lines": 10,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "bfd4567b88496bf9669658e5ab381b296dd9ffe1",
+        "author": "Fujii Masao",
+        "date": "2021-08-30T21:35:24+09:00",
+        "message": "pgbench: Avoid unnecessary measurement of connection delays.\n\nCommit 547f04e734 changed pgbench so that it used the measurement result\nof connection delays in its benchmark report only when -C/--connect option\nis specified. But previously those delays were unnecessarily measured\neven when that option is not specified. Which was a waste of cycles.\nThis commit improves pgbench so that it avoids such unnecessary measurement.\n\nBack-patch to v14 where commit 547f04e734 first appeared.\n\nAuthor: Yugo Nagata\nReviewed-by: Fabien COELHO, Asif Rehman, Fujii Masao\nDiscussion: https://postgr.es/m/20210614151155.a393bc7d8fed183e38c9f52a@sraoss.co.jp",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bin/pgbench/pgbench.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/bfd4567b88496bf9669658e5ab381b296dd9ffe1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "threadRun"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 8,
+        "total_changed_lines": 9,
+        "net_line_change": -7,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "cc9daa09eee927c17b9409ff42fc7a0b7d6fbd9a",
+        "author": "Richard Guo",
+        "date": "2024-07-30T15:46:39+09:00",
+        "message": "Short-circuit sort_inner_and_outer if there are no mergejoin clauses\n\nIn sort_inner_and_outer, we create mergejoin join paths by explicitly\nsorting both relations on each possible ordering of the available\nmergejoin clauses.  However, if there are no available mergejoin\nclauses, we can skip this process entirely.\n\nThis patch introduces a check for mergeclause_list at the beginning of\nsort_inner_and_outer and exits the function if it is found to be\nempty.  This might help skip all the statements that come before the\ncall to select_outer_pathkeys_for_merge, including the build of\nUniquePaths in the case of JOIN_UNIQUE_OUTER or JOIN_UNIQUE_INNER.\n\nI doubt there's any measurable performance improvement, but throughout\nthe run of the regression tests, sort_inner_and_outer is called a\ntotal of 44,424 times.  Among these calls, there are 11,064 instances\nwhere mergeclause_list is found to be empty, which accounts for\napproximately one-fourth.  I think this suggests that implementing\nthis shortcut is worthwhile.\n\nAuthor: Richard Guo\nReviewed-by: Ashutosh Bapat\nDiscussion: https://postgr.es/m/CAMbWs48RKiZGFEd5A0JtztRY5ZdvVvNiHh0AKeuoz21F+0dVjQ@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/joinpath.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/cc9daa09eee927c17b9409ff42fc7a0b7d6fbd9a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sort_inner_and_outer"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ce42efaa2696fa74dffcbaa7d25c4ef00e93e1c0",
+        "author": "Stephen Frost",
+        "date": "2021-08-27T19:23:14-04:00",
+        "message": "Use maintenance_io_concurrency for ANALYZE prefetch\n\nWhen prefetching pages for ANALYZE, we should be using\nmaintenance_io_concurrenty (by calling\nget_tablespace_maintenance_io_concurrency(), not\nget_tablespace_io_concurrency()).\n\nANALYZE prefetching was introduced in c6fc50c, so back-patch to 14.\n\nBackpatch-through: 14\nReported-By: Egor Rogov\nDiscussion: https://postgr.es/m/9beada99-34ce-8c95-fadb-451768d08c64%40postgrespro.ru",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/commands/analyze.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ce42efaa2696fa74dffcbaa7d25c4ef00e93e1c0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "acquire_sample_rows"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "d17b6df239e6eebf288969e931cdbe8076d1fe12",
+        "author": "Heikki Linnakangas",
+        "date": "2015-02-17T22:33:38+02:00",
+        "message": "Fix knn-GiST queue comparison function to return heap tuples first.\n\nThe part of the comparison function that was supposed to keep heap tuples\nahead of index items was backwards. It would not lead to incorrect results,\nbut it is more efficient to return heap tuples first, before scanning more\nindex pages, when both have the same distance.\n\nAlexander Korotkov",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/gist/gistscan.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/d17b6df239e6eebf288969e931cdbe8076d1fe12",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "pairingheap_GISTSearchItem_cmp"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "d7e0e61d847d929dd3df67ecf16519beca990d69",
+        "author": "Thomas G. Lockhart",
+        "date": "1997-12-04T23:28:20+00:00",
+        "message": "Run through toupper() conversion in the forward direction.\n Most processors should optimize this a bit better wrt cache prefetch.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/interfaces/libpq/fe-exec.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/d7e0e61d847d929dd3df67ecf16519beca990d69",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PQprint"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "e94c1a55dada49772622d2be2d17a2a9973b2661",
+        "author": "Tom Lane",
+        "date": "2021-09-26T14:24:03-04:00",
+        "message": "Avoid unnecessary division in interval_cmp_value().\n\nSplitting the time field into days and microseconds is pretty\nuseless when we're just going to recombine those values.\nIt's unclear if anyone will notice the speedup in real-world\ncases, but a cycle shaved is a cycle earned.\n\nDiscussion: https://postgr.es/m/2629129.1632675713@sss.pgh.pa.us",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/adt/timestamp.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/e94c1a55dada49772622d2be2d17a2a9973b2661",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "interval_cmp_value"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 8,
+        "total_changed_lines": 13,
+        "net_line_change": -3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ea7dace2aa21e79a7a8eb23c493bcd2057d9bd7e",
+        "author": "Tom Lane",
+        "date": "2020-03-07T13:31:17-05:00",
+        "message": "Simplify/speed up assertion cross-check in ginCompressPostingList().\n\nI noticed while testing some other stuff that the CHECK_ENCODING_ROUNDTRIP\nlogic in ginCompressPostingList could account for over 50% of the runtime\nof an INSERT with a GIN index.  While that's not relevant to production\nperformance, it's still kind of annoying in a debug build.  Replacing\nthe loop around short memcmp's with one long memcmp works just as well\nand is significantly faster, at least on my machine.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/access/gin/ginpostinglist.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ea7dace2aa21e79a7a8eb23c493bcd2057d9bd7e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ginCompressPostingList"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ed5699dd1b883e193930448b7ad532e233de0bd7",
+        "author": "Bruce Momjian",
+        "date": "2012-11-06T14:28:57-05:00",
+        "message": "In pg_upgrade, set synchronous_commit=off for the new cluster, to\nimprove performance when restoring the schema from the old cluster.\n\nBackpatch to 9.2.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "contrib/pg_upgrade/server.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ed5699dd1b883e193930448b7ad532e233de0bd7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "start_postmaster"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 3,
+        "total_changed_lines": 11,
+        "net_line_change": 5,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ee01d848f39400c8524c66944ada6fde47894978",
+        "author": "Heikki Linnakangas",
+        "date": "2013-09-30T16:54:03+03:00",
+        "message": "In bms_add_member(), use repalloc() if the bms needs to be enlarged.\n\nPreviously bms_add_member() would palloc a whole-new copy of the existing\nset, copy the words, and pfree the old one. repalloc() is potentially much\nfaster, and more importantly, this is less surprising if CurrentMemoryContext\nis not the same as the context the old set is in. bms_add_member() still\nallocates a new bitmapset in CurrentMemoryContext if NULL is passed as\nargument, but that is a lot less likely to induce bugs.\n\nNicholas White.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/nodes/bitmapset.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ee01d848f39400c8524c66944ada6fde47894978",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "bms_add_member"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 10,
+        "total_changed_lines": 19,
+        "net_line_change": -1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "f0bfc02001c5f9a78fb3a5f72b97ffb35d526ec6",
+        "author": "Tom Lane",
+        "date": "2006-03-02T21:56:14+00:00",
+        "message": "Remove unnecessary lo_lseek call in lo_open.  Apparently there was once\na need for it back in the neolithic era, but it's certainly dead code in\nany PG release we would recognize as such.  Since it forces an additional\nnetwork round trip to the backend, getting rid of it should provide some\nsmall performance improvement for large-object-using clients.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/interfaces/libpq/fe-lobj.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/f0bfc02001c5f9a78fb3a5f72b97ffb35d526ec6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "lo_open"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 6,
+        "total_changed_lines": 7,
+        "net_line_change": -5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "f48b4f892f76ee2b34968013c8ea67b1dfd4fa26",
+        "author": "David Rowley",
+        "date": "2023-03-22T08:44:54+13:00",
+        "message": "Correct Memoize's estimated cache hit ratio calculation\n\nAs demonstrated by David Johnston, the Memoize cache hit ratio calculation\nwasn't quite correct.\n\nThis change only affects the estimated hit ratio when the estimated number\nof entries to cache is estimated not to fit inside the cache.  For\nexample, if we expect 2000 distinct cache key values and only expect to be\nable to cache 1000 of those at once due to memory constraints, with an\nestimate of 10000 calls, if we could store all entries then the hit ratio\nshould be 80% to account for the first 2000 of the 10000 calls to be a\ncache miss due to the value not being cached yet.  If we can only store\n1000 entries for each of the 2000 distinct possible values at once then\nthe 80% should be reduced by half to make the final estimate of 40%.\nPreviously, the calculation would have produced an estimated hit ratio of\n30%, which wasn't correct.\n\nApply to master only so as not to destabilize plans in the back branches.\n\nReported-by: David G. Johnston\nDiscussion: https://postgr.es/m/CAKFQuwZEmcNk3YQo2Xj4EDUOdY6qakad31rOD1Vc4q1_s68-Ew@mail.gmail.com\nDiscussion: https://postgr.es/m/CAApHDvrV44LwiF4W_qf_RpbGYWSgp1kF=cZr+kTRRaALUfmXqw@mail.gmail.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/costsize.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/f48b4f892f76ee2b34968013c8ea67b1dfd4fa26",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "cost_memoize_rescan"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "fa86238f1eac5b1bfb3887d2deb138f53da82c9b",
+        "author": "Tom Lane",
+        "date": "2019-02-20T20:53:17-05:00",
+        "message": "Speed up match_eclasses_to_foreign_key_col() when there are many ECs.\n\nCheck ec_relids before bothering to iterate through the EC members.\nOn a perhaps extreme, but still real-world, query in which\nmatch_eclasses_to_foreign_key_col() accounts for the bulk of the\nplanner's runtime, this saves nearly 40% of the runtime.  It's a bit\nof a stopgap fix, but it's simple enough to be back-patched to 9.6\nwhere this code came in; so let's do that.\n\nDavid Rowley\n\nDiscussion: https://postgr.es/m/6970.1545327857@sss.pgh.pa.us",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/path/equivclass.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/fa86238f1eac5b1bfb3887d2deb138f53da82c9b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "match_eclasses_to_foreign_key_col"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 0,
+        "total_changed_lines": 8,
+        "net_line_change": 8,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ff28809feb442eabd303955277f05cd16d9c6d8a",
+        "author": "Thomas Munro",
+        "date": "2020-09-19T15:53:06+12:00",
+        "message": "Code review for dynahash change.\n\nCommit be0a6666 left behind a comment about the order of some tests that\ndidn't make sense without the expensive division, and in fact we might\nas well change the order to one that fails more cheaply most of the time\nas a micro-optimization.  Also, remove the \"+ 1\" applied to max_bucket,\nto drop an instruction and match the original behavior.  Per review\nfrom Tom Lane.\n\nDiscussion: https://postgr.es/m/VI1PR0701MB696044FC35013A96FECC7AC8F62D0%40VI1PR0701MB6960.eurprd07.prod.outlook.com",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/utils/hash/dynahash.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ff28809feb442eabd303955277f05cd16d9c6d8a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "hash_search_with_hash_value"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "postgres",
+        "hash": "ff72280c9ee35bf67c9b711837594fde29b86c4d",
+        "author": "Tom Lane",
+        "date": "2008-03-27T19:06:14+00:00",
+        "message": "When we have successfully optimized a MIN or MAX aggregate into an indexscan,\nthe query result must be exactly one row (since we don't do this when there's\nany GROUP BY).  Therefore any ORDER BY or DISTINCT attached to the query is\nuseless and can be dropped.  Aside from saving useless cycles, this protects\nus against problems with matching the hacked-up tlist entries to sort clauses,\nas seen in a bug report from Taiki Yamaguchi.  We might need to work harder\nif we ever try to optimize grouped queries with this approach, but this\nsolution will do for now.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/backend/optimizer/plan/planner.c"
+        ],
+        "github_commit_url": "https://github.com/postgres/postgres/commit/ff72280c9ee35bf67c9b711837594fde29b86c4d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grouping_planner"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 1,
+        "total_changed_lines": 13,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]

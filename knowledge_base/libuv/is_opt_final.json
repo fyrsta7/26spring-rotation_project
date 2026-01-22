@@ -1,0 +1,146 @@
+[
+    {
+        "repository_name": "libuv",
+        "hash": "3909e7f6c67ec36d4f1be027ed383e0b2109f48d",
+        "author": "Ben Noordhuis",
+        "date": "2018-12-04T17:08:20+01:00",
+        "message": "linux: get rid of strncpy() call\n\nWhile correctly used, it looks suspect and is slightly less efficient\nbecause the string is scanned twice for its terminating nul byte.\n\nPR-URL: https://github.com/libuv/libuv/pull/2065\nReviewed-By: Refael Ackermann <refack@gmail.com>\nReviewed-By: Richard Lau <riclau@uk.ibm.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/unix/linux-inotify.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/3909e7f6c67ec36d4f1be027ed383e0b2109f48d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "uv_fs_event_start"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "libuv",
+        "hash": "3d9c1ebfeb3fe37a368fd8ab7e94ebcf411878ab",
+        "author": "Ben Noordhuis",
+        "date": "2012-07-02T04:30:48+02:00",
+        "message": "unix: speed up uv_async_send() some more\n\nUse atomic compare-and-swap to detect if we've been preempted by another thread\nand therefore can avoid making the expensive write() syscall.\n\nSpeeds up the heavily contended case by about 1-2% and has little if any impact\non the non-contended case. I wasn't able to measure the difference at any rate.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/unix/async.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/3d9c1ebfeb3fe37a368fd8ab7e94ebcf411878ab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "uv_async_send"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 1,
+        "total_changed_lines": 12,
+        "net_line_change": 10,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "libuv",
+        "hash": "4c87666a9363ab01010c426e1b7dfb432dec844e",
+        "author": "Ben Noordhuis",
+        "date": "2012-06-29T03:18:09+02:00",
+        "message": "unix: speed up uv_async_send()\n\nDon't make a syscall when the handle is already pending.\n\nSpeeds up the async_pummel benchmark by about 13%.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/unix/async.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/4c87666a9363ab01010c426e1b7dfb432dec844e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "uv_async_send"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "libuv",
+        "hash": "c252bcb3f02d2faf54f8a241c60f36d97495bcbc",
+        "author": "Ben Noordhuis",
+        "date": "2012-11-15T01:02:07+01:00",
+        "message": "bench: fix loop starvation bug\n\nDon't keep writing until the write queue fills up. On fast systems (mine), that\nnever happens - the data is sent out as fast as the benchmark generates it.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "test/benchmark-pump.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/c252bcb3f02d2faf54f8a241c60f36d97495bcbc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "do_write"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 5,
+        "total_changed_lines": 8,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "libuv",
+        "hash": "dc559a5ce69cef28e1c73a3782c17b5801989e67",
+        "author": "Ben Noordhuis",
+        "date": "2012-12-18T15:44:21+01:00",
+        "message": "unix: disable relaxed accept() by default\n\nDon't use the relaxed accept() algorithm introduced in be2a217 unless\nexplicitly requested. It causes a 50+% performance drop on some node.js\nbenchmarks:\n\n  $ alias bench='out/Release/node benchmark/http_simple_auto.js \\\n    -c 10 -n 50000 bytes/1 2>&1 | grep Req'\n\n  $ UV_TCP_SINGLE_ACCEPT=0 bench\n  Requests per second:    12331.84 [#/sec] (mean)\n\n  $ UV_TCP_SINGLE_ACCEPT=1 bench\n  Requests per second:    3944.63 [#/sec] (mean)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/unix/tcp.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/dc559a5ce69cef28e1c73a3782c17b5801989e67",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "uv_tcp_listen"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "libuv",
+        "hash": "f6a02fbe763aec5d290aa9d9509aeec5348c7792",
+        "author": "Ben Noordhuis",
+        "date": "2012-06-29T02:23:47+02:00",
+        "message": "linux: don't use accept4() syscall after ENOSYS\n\nRepeatedly calling the syscall when it's not supported has a small but\nmeasurable performance impact.\n\nBesides, it's a silly thing to do.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/unix/core.c"
+        ],
+        "github_commit_url": "https://github.com/libuv/libuv/commit/f6a02fbe763aec5d290aa9d9509aeec5348c7792",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "uv__accept"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 0,
+        "total_changed_lines": 8,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]

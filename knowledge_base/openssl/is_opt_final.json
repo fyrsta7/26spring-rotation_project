@@ -1,0 +1,290 @@
+[
+    {
+        "repository_name": "openssl",
+        "hash": "06b9ff06cc7fdd8f51abb92aaac39d3988a7090e",
+        "author": "Matt Caswell",
+        "date": "2015-11-20T23:35:19+00:00",
+        "message": "Swap to using _longjmp/_setjmp instead of longjmp/setjmp\n\n_longjmp/_setjmp do not manipulate the signal mask whilst\nlongjmp/setjmp may do. Online sources suggest this could result\nin a significant speed up in the context switching.\n\nReviewed-by: Rich Salz <rsalz@openssl.org>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/async/arch/async_posix.h"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/06b9ff06cc7fdd8f51abb92aaac39d3988a7090e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "async_fibre_swapcontext"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "07f9c81d20f2c972dd454e2343634586d3aa88a1",
+        "author": "Pauli",
+        "date": "2023-05-01T17:14:42+10:00",
+        "message": "provider_core: sort provider stack on find\n\nAdding all providers is quadratic time because each provider is checked\nfor being in the stack before adding it.  However, this is an improvement\nover the older O(n^2 log n) code where each find also sorted the stack.\n\nReviewed-by: Tomas Mraz <tomas@openssl.org>\nReviewed-by: Todd Short <todd.short@me.com>\n(Merged from https://github.com/openssl/openssl/pull/20842)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/provider_core.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/07f9c81d20f2c972dd454e2343634586d3aa88a1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ossl_provider_find"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 4,
+        "total_changed_lines": 5,
+        "net_line_change": -3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "0b6956b4747e6f42427863f8a78f8939a86fb175",
+        "author": "Richard Levitte",
+        "date": "2003-10-15T09:00:14+00:00",
+        "message": "Correct serious bug in AES-CBC decryption when the message length isn't\na multiple of AES_BLOCK_SIZE.\nOptimize decryption of all complete blocks in AES-CBC by removing an\nunnecessary memcpy().\n\nThe error was notified by James Fernandes <jf210032@exchange.DAYTONOH.NCR.com>.\nThe unnecessary memcpy() was found as an effect of investigating that error.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/aes/aes_cbc.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/0b6956b4747e6f42427863f8a78f8939a86fb175",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AES_cbc_encrypt"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 5,
+        "total_changed_lines": 9,
+        "net_line_change": -1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "2cc3f68cde77af23c61fbad65470602ee86f2575",
+        "author": "Andy Polyakov",
+        "date": "2018-11-21T19:22:19+01:00",
+        "message": "rsa/rsa_ossl.c: cache MONT_CTX for public modulus earlier.\n\nBlinding is performed more efficiently and securely if MONT_CTX for public\nmodulus is available by the time blinding parameter are instantiated. So\nmake sure it's the case.\n\nReviewed-by: Matt Caswell <matt@openssl.org>\nReviewed-by: Richard Levitte <levitte@openssl.org>\n(Merged from https://github.com/openssl/openssl/pull/7586)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/rsa/rsa_ossl.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/2cc3f68cde77af23c61fbad65470602ee86f2575",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rsa_ossl_private_encrypt"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 7,
+        "total_changed_lines": 12,
+        "net_line_change": -2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "9dde17e8b43980d193dd7c117edeca9c602c41ab",
+        "author": "Geoff Thorpe",
+        "date": "2003-11-13T15:03:14+00:00",
+        "message": "This rewrites two \"for\" loops in BN_rshift() - equality with zero is\ngenerally a more efficient comparison than comparing two integers, and the\nfirst of these two loops was off-by-one (copying one too many values). This\nchange also removes a superfluous assignment that would set an unused word\nto zero (and potentially allow an overrun in some cases).\n\nSubmitted by: Nils Larsch\nReviewed by: Geoff Thorpe",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/bn/bn_shift.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/9dde17e8b43980d193dd7c117edeca9c602c41ab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BN_rshift"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "b6cafbd7d840f4e315c3a066ab742c893bc4d41a",
+        "author": "Bodo M\u00f6ller",
+        "date": "2000-11-29T09:57:13+00:00",
+        "message": "Make BN_mod_inverse a little faster",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/bn/bn_gcd.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/b6cafbd7d840f4e315c3a066ab742c893bc4d41a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BN_mod_inverse"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 5,
+        "total_changed_lines": 10,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "b916940752e4de5922553b1cf482687dfc653f7a",
+        "author": "Tomas Mraz",
+        "date": "2024-07-16T15:36:46+02:00",
+        "message": "Optimization of ossl_ec_key_public_check()\n\nWe can do just the quick check if cofactor == 1 as the\nfact that the point is on the curve already implies\nthat order * point = infinity.\n\nFixes #21833\n\nReviewed-by: Neil Horman <nhorman@openssl.org>\nReviewed-by: Paul Dale <ppzgs1@gmail.com>\n(Merged from https://github.com/openssl/openssl/pull/24816)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/ec/ec_key.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/b916940752e4de5922553b1cf482687dfc653f7a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ossl_ec_key_public_check"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "c943ca5404a9297cbe57aecb538b17fb06d98969",
+        "author": "Andy Polyakov",
+        "date": "2007-06-20T17:36:39+00:00",
+        "message": "Optimize OPENSSL_cleanse.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/mem_clr.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/c943ca5404a9297cbe57aecb538b17fb06d98969",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "OPENSSL_cleanse"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 5,
+        "total_changed_lines": 11,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "d5d007abe357ce4bea5390bf3a872dc85497da38",
+        "author": "Lutz J\u00e4nicke",
+        "date": "2002-04-18T11:54:06+00:00",
+        "message": "Optimize: better shortcut evaluation (\"Howard Chu\" <hyc@highlandsun.com>).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/objects/obj_dat.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/d5d007abe357ce4bea5390bf3a872dc85497da38",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "OBJ_obj2txt"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "d6e4056805f54bb1a0ef41fa3a6a35b70c94edba",
+        "author": "Rose",
+        "date": "2023-12-22T14:45:55+01:00",
+        "message": "Optimize circular buffer to avoid modulo\n\nCLA: trivial\n\nAvoid doing the division via modulo where possible.\n\nReviewed-by: Matt Caswell <matt@openssl.org>\nReviewed-by: Matthias St. Pierre <Matthias.St.Pierre@ncp-e.com>\nReviewed-by: Tomas Mraz <tomas@openssl.org>\n(Merged from https://github.com/openssl/openssl/pull/23097)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/bio/bio_dump.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/d6e4056805f54bb1a0ef41fa3a6a35b70c94edba",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BIO_hex_string"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "e73fc81345ae2cdcc4be55768345d8a00fed6453",
+        "author": "Richard Levitte",
+        "date": "2021-04-30T11:15:00+02:00",
+        "message": "STORE: Use the 'expect' param to limit the amount of decoders used\n\nIn the provider file: scheme loader implementation, the OSSL_DECODER_CTX\nwas set up with all sorts of implementations, even if the caller has\ndeclared a limited expectation on what should be loaded, which means\nthat even though a certificate is expected, all the diverse decoders\nto produce an EVP_PKEY are added to the decoding change.\n\nThis optimization looks more closely at the expected type, and only\nadds the EVP_PKEY related decoder implementations to the chain if\nthere is no expectation, or if the expectation is one of\nOSSL_STORE_INFO_PARAMS, OSSL_STORE_INFO_PUBKEY, OSSL_STORE_INFO_PKEY.\n\nReviewed-by: Tomas Mraz <tomas@openssl.org>\n(Merged from https://github.com/openssl/openssl/pull/15066)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "providers/implementations/storemgmt/file_store.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/e73fc81345ae2cdcc4be55768345d8a00fed6453",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "file_setup_decoders"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 4,
+        "total_changed_lines": 14,
+        "net_line_change": 6,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "openssl",
+        "hash": "ea5817854cf67b89c874101f209f06ae016fd333",
+        "author": "Tom Cosgrove",
+        "date": "2024-11-22T14:56:04+01:00",
+        "message": "Enable AES and SHA3 optimisations on Apple Silicon M4-based macOS systems\n\nAES gets a performance enhancement of 7-33%.\n\nTested on an M4 Pro, but the CPU cores are the same on M4 and M4 Max.\n\nChange-Id: I634c03f1d2b50fa5f8ca97dd65975e49d970c72b\n\nReviewed-by: Paul Dale <ppzgs1@gmail.com>\nReviewed-by: Kurt Roeckx <kurt@roeckx.be>\n(Merged from https://github.com/openssl/openssl/pull/25940)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "crypto/armcap.c"
+        ],
+        "github_commit_url": "https://github.com/openssl/openssl/commit/ea5817854cf67b89c874101f209f06ae016fd333",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "OPENSSL_cpuid_setup"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    }
+]

@@ -1,0 +1,482 @@
+[
+    {
+        "repository_name": "grpc",
+        "hash": "04f4054546ccc794fa59e8e989bba14142d50495",
+        "author": "Jan Tattermusch",
+        "date": "2015-11-03T11:12:52-08:00",
+        "message": "use QueryPerformanceCounter as precise clock for windows",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/support/time_win32.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/04f4054546ccc794fa59e8e989bba14142d50495",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gpr_now"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "0f8265a622a6b0afbde10dd6e2d4dc39e8016975",
+        "author": "Yang Gao",
+        "date": "2015-09-25T16:49:28-07:00",
+        "message": "Merge pull request #3480 from ctiller/no-alloc\n\nFast path for proto serialization for small protos",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cpp/proto/proto_utils.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/0f8265a622a6b0afbde10dd6e2d4dc39e8016975",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SerializeProto"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 4,
+        "total_changed_lines": 17,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "1027149f8dd7e11b69dd399cd854aab3fea2f6e3",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2019-02-26T17:39:38-05:00",
+        "message": "Run run_after_write closures in h2 once write action is done.\n\nWe flush these closures only when the connection goes IDLE.\nThis will cause no completion being sent, if we have a continuous\nstream of bytes that never stops, causing a memory bloat because\nwe never call the callbacks of the ops.\n\nFor example, we use 100s of GiB of memory after a minute of exchanging\n1MiB RPCs with callback API.\n\nThis patch runs the closures when we have done running\none write action.\n\nAfter this change memory remains stable for the 1MiB benchmark.\nQPS is increased by 200 QPS (520 -> 749), and latency is dropped\nby 70ms, because we were basically page-faulting on every RPC.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/ext/transport/chttp2/transport/chttp2_transport.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/1027149f8dd7e11b69dd399cd854aab3fea2f6e3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "write_action_end_locked"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 0,
+        "total_changed_lines": 11,
+        "net_line_change": 11,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "1ef80f46bd9176b8411196b864fd174a2c007bf2",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2019-05-03T19:31:26-04:00",
+        "message": "Merge pull request #18953 from soheilhy/ref-fix\n\nAvoid copy on slice_ref.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/slice/slice_internal.h"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/1ef80f46bd9176b8411196b864fd174a2c007bf2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_slice_ref_internal"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "213d2744b543cf8593838a5eb995bf9c7924c7d5",
+        "author": "Craig Tiller",
+        "date": "2017-09-13T15:22:14-07:00",
+        "message": "Only use fast path for short items",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/iomgr/executor.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/213d2744b543cf8593838a5eb995bf9c7924c7d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "executor_push"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "311f7f1eaf2a11b09fa15fea3d26eab07fe23239",
+        "author": "ncteisen",
+        "date": "2017-02-17T16:29:28-08:00",
+        "message": "Speed up copy_error_and_unref",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/iomgr/error.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/311f7f1eaf2a11b09fa15fea3d26eab07fe23239",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GPR_TIMER_BEGIN"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "3b23fe62cac979a4120bc5f8909414c45805230e",
+        "author": "AJ Heller",
+        "date": "2023-08-23T13:38:06-07:00",
+        "message": "[EventEngine] Wake thread pool workers on locally queued work (#34140)\n\nThis WorkStealingThreadPool change improves the (lagging)\r\n`cpp_protobuf_async_streaming_qps_unconstrained_secure` 32-core\r\nbenchmark.\r\n\r\nBaseline OriginalThreadPool QPS: 830k\r\nPrevious average WorkStealingThreadPool QPS: 755k\r\nNew WorkStealingThreadPool average (2 runs) QPS: 850k",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/event_engine/thread_pool/work_stealing_thread_pool.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/3b23fe62cac979a4120bc5f8909414c45805230e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WorkStealingThreadPoolImpl::Run"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "450196ae3f3457b8dfbef7d3c2f332b3d5ad5305",
+        "author": "Steven Wang",
+        "date": "2023-03-30T22:02:13+00:00",
+        "message": "[PHP] A trivial performace improvement for the PHP extension. (#31722)\n\nPerf shows that the memory are accessed twice for call->wrapped in\r\nstartBatch. If we assign call->wrapped to a variable and then use it in\r\nstartBatch, only one memory access is needed. Then, the second\r\nattempting to get the value of call->wrapped will be done via register.\r\n\r\n\r\n\r\n\r\n<!--\r\n\r\nIf you know who should review your pull request, please assign it to\r\nthat\r\nperson, otherwise the pull request would get assigned randomly.\r\n\r\nIf your pull request is for a specific language, please add the\r\nappropriate\r\nlang label.\r\n\r\n-->",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/php/ext/grpc/call.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/450196ae3f3457b8dfbef7d3c2f332b3d5ad5305",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PHP_GRPC_MAKE_STD_ZVAL"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "926bbe3a2e3f94eec591fbf19795a28f598806c1",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2019-05-01T16:51:07-04:00",
+        "message": "Add a fast path in grpc_error_get_status() for GRPC_ERROR_NONE.\n\nIn most of the cases, as we hope, RPCs shouldn't have errors.\nBut, in grpc_error_get_status() we treat GRPC_ERROR_NONE\nsimilar to other errors, and waste quite a few cycles.\n\nThis patch is part of a larger performance improvements.\nOn client side, this particular code path accounts for 0.5%+.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/transport/error_utils.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/926bbe3a2e3f94eec591fbf19795a28f598806c1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_error_get_status"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 0,
+        "total_changed_lines": 12,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "93dc228a8a795a9b3820a0ce0f57277408694b6b",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2019-05-03T16:47:16-04:00",
+        "message": "Avoid copy on slice_ref.\n\nThis was accidentially added in PR #18407",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/slice/slice_internal.h"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/93dc228a8a795a9b3820a0ce0f57277408694b6b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_slice_ref_internal"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "b90f0e66e503a8fc675c1cdf3a4301b28a27d62e",
+        "author": "yang-g",
+        "date": "2017-11-09T09:54:54-08:00",
+        "message": "relax for inlined bytes to avoid allocation",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/grpc++/impl/codegen/proto_utils.h"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/b90f0e66e503a8fc675c1cdf3a4301b28a27d62e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GenericSerialize"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 3,
+        "total_changed_lines": 11,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "bab124f7c17f593f67445eb985a482afb00908d5",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2018-11-06T10:06:28-05:00",
+        "message": "Merge pull request #17109 from soheilhy/worktree-call-relayout\n\nOptimize `grpc_call_stack_init` for cache coherency.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/channel/channel_stack.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/bab124f7c17f593f67445eb985a482afb00908d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_call_stack_init"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 4,
+        "total_changed_lines": 9,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "bdffdc04f840f340409177de628e3885c81cff6d",
+        "author": "Craig Tiller",
+        "date": "2015-11-06T16:05:30-08:00",
+        "message": "Merge pull request #4031 from jtattermusch/win_precise_clock\n\nUse QueryPerformanceCounter as precise clock for windows",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/support/time_win32.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/bdffdc04f840f340409177de628e3885c81cff6d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "gpr_now"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "c8d5db17173318ff5efe3e0721bca3340251f738",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2018-10-11T15:27:27-04:00",
+        "message": "Update TCP read estimates as soon as we read the whole buffer.\n\nIf we have a continous stream of bytes on the socket, we will\nnever grow the buffer, because we will never get EAGAIN, and\ncall finish. This is a serious performance issue, which can\nbe misued.\n\nAs soon as we have a full buffer, update the estimate.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/iomgr/tcp_posix.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/c8d5db17173318ff5efe3e0721bca3340251f738",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tcp_do_read"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "cb7bf8a0571def53a538fb8b34f53f98fdb5611a",
+        "author": "Craig Tiller",
+        "date": "2015-10-09T16:18:15-07:00",
+        "message": "Set current worker for longer\n\n==> Less self kicking\n==> Double performance for sync_unary_ping_pong_test on my machine",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/iomgr/pollset_posix.c"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/cb7bf8a0571def53a538fb8b34f53f98fdb5611a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_pollset_work"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "cc5dc5bbafd4ef3f54b655bf98afcc3b71435ef2",
+        "author": "Craig Tiller",
+        "date": "2015-09-24T17:02:22-07:00",
+        "message": "Fast path for proto serialization for small protos",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cpp/proto/proto_utils.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/cc5dc5bbafd4ef3f54b655bf98afcc3b71435ef2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SerializeProto"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 4,
+        "total_changed_lines": 17,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "d66408ba5a23bdaac9a9764cc28ffe13edbfafea",
+        "author": "murgatroid99",
+        "date": "2015-02-13T10:40:07-08:00",
+        "message": "Improved memory management",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/node/ext/call.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/d66408ba5a23bdaac9a9764cc28ffe13edbfafea",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "NanScope"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "d926b04ced131550755663d0d96ca67894d62a1e",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2018-11-05T18:29:41-05:00",
+        "message": "Optimize `grpc_call_stack_init` for cache coherency.\n\nMake sure call_element[0..count] is filled before actually calling\n`init_call_elem` of the filters, because they would trash the cache.\n\nThis improves BM_StreamingPingPong<TCP, ...> by 3%.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/channel/channel_stack.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/d926b04ced131550755663d0d96ca67894d62a1e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_call_stack_init"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 4,
+        "total_changed_lines": 9,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "e26af337263d0be3d16bb4abe36d9cb53b54c717",
+        "author": "Soheil Hassas Yeganeh",
+        "date": "2019-05-02T13:34:03-04:00",
+        "message": "Merge pull request #18927 from soheilhy/transport-error\n\nAdd a fast path in grpc_error_get_status() for GRPC_ERROR_NONE.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/core/lib/transport/error_utils.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/e26af337263d0be3d16bb4abe36d9cb53b54c717",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "grpc_error_get_status"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 0,
+        "total_changed_lines": 12,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "grpc",
+        "hash": "f77ab15c571e0778a9726b9097c2b68609aef040",
+        "author": "vjpai",
+        "date": "2015-07-14T11:51:39-07:00",
+        "message": "Use rvalue ref return to avoid copy",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/compiler/objective_c_generator.cc"
+        ],
+        "github_commit_url": "https://github.com/grpc/grpc/commit/f77ab15c571e0778a9726b9097c2b68609aef040",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetMethodVars"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]

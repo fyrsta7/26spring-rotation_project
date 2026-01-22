@@ -1,0 +1,1586 @@
+[
+    {
+        "repository_name": "bitcoin",
+        "hash": "00897d0677c2cb6609b90d52b89907c8b50d6de0",
+        "author": "Antoine Poinsot",
+        "date": "2022-07-26T13:02:48+02:00",
+        "message": "script: actually trigger the optimization in BuildScript\n\nThe counter is an optimization over calling `ret.empty()`. It was\nsuggested that the compiler would realize `cnt` is only `0` on the first\niteration, and not actually emit the check and conditional.\n\nThis optimization was actually not triggered at all, since we\nincremented `cnt` at the beginning of the first iteration. Fix it by\nincrementing at the end instead.\n\nThis was reported by Github user \"Janus\".",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/script/script.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/00897d0677c2cb6609b90d52b89907c8b50d6de0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BuildScript"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "026c5f7617a1a8753ff295a4b5cc1c079e8c3d79",
+        "author": "gavinandresen",
+        "date": "2010-11-16T02:32:36+00:00",
+        "message": "Re-open debug.log every ten minutes instead of every printf; fixes performance problem with Mac FileVault.\n\ngit-svn-id: https://bitcoin.svn.sourceforge.net/svnroot/bitcoin/trunk@181 1a98c847-1fd6-4fd8-948a-caf3550aa51b",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/026c5f7617a1a8753ff295a4b5cc1c079e8c3d79",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "OutputDebugStringF"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 5,
+        "total_changed_lines": 19,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "02c57b521a9e7afd4416cd027a8b397f202b08a8",
+        "author": "Suhas Daftuar",
+        "date": "2017-03-03T13:33:42-05:00",
+        "message": "Optimize GetWitnessHash() for non-segwit transactions",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/primitives/transaction.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/02c57b521a9e7afd4416cd027a8b397f202b08a8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CTransaction::GetWitnessHash"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "03d49d0f25ab5660524d5ddd171de677a808b984",
+        "author": "Roman Zeyde",
+        "date": "2024-08-25T09:23:49+03:00",
+        "message": "http: set TCP_NODELAY when creating HTTP server\n\nOtherwise, the default HTTP server config may result in high latency.\n\n[1] https://www.extrahop.com/blog/tcp-nodelay-nagle-quickack-best-practices\n[2] https://eklitzke.org/the-caveats-of-tcp-nodelay",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/httpserver.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/03d49d0f25ab5660524d5ddd171de677a808b984",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "HTTPBindAddresses"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "07f64177a49f1b6b4d486d10cf67fddfa3c995eb",
+        "author": "L\u0151rinc",
+        "date": "2024-06-05T13:18:13+02:00",
+        "message": "Reduce memory copying operations in bech32 encode\n\nHere I've reduced the memory reallocations and copying operations in bech32 encode, making it ~15% faster.\n\nmake && ./src/bench/bench_bitcoin --filter='Bech32Encode' --min-time=1000\n\nBefore:\n\n|             ns/byte |              byte/s |    err% |     total | benchmark\n|--------------------:|--------------------:|--------:|----------:|:----------\n|               19.97 |       50,074,562.72 |    0.1% |      1.06 | `Bech32Encode`\nAfter:\n\n|             ns/byte |              byte/s |    err% |     total | benchmark\n|--------------------:|--------------------:|--------:|----------:|:----------\n|               17.33 |       57,687,668.20 |    0.1% |      1.10 | `Bech32Encode`\n\nCo-authored-by: josibake <josibake@protonmail.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bech32.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/07f64177a49f1b6b4d486d10cf67fddfa3c995eb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Encode"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 7,
+        "total_changed_lines": 14,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "0a5dc030b92a78147787f158d6a5de234ffa8ba4",
+        "author": "Hennadii Stepanov",
+        "date": "2023-01-18T15:47:06+00:00",
+        "message": "clang-tidy: Fix `performance-move-const-arg` in headers\n\nSee https://clang.llvm.org/extra/clang-tidy/checks/performance/move-const-arg.html",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/fs.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/0a5dc030b92a78147787f158d6a5de234ffa8ba4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "0c6487c74f8c5ba6de5e4aad44c89be5fbdbe942",
+        "author": "Wladimir J. van der Laan",
+        "date": "2019-04-15T13:52:17+02:00",
+        "message": "Merge #15751: Speed up deriveaddresses for large ranges\n\n41a46cbb31f1622f7d1ff54c7a1c1ca701c1e754 Speed up deriveaddresses for large ranges (Pieter Wuille)\n\nPull request description:\n\n  `deriveaddresses` dumps all generated addresses into a single `FlatSigningProvider`, which is also used for looking up information for future derivations. @achow101 points out that the growing data structures may unnecessary increase lookup time for later derivations.\n\n  Fix this by separating the provider used for lookups (`key_provider`) and the one we dump things into.\n\n  This gives a 10x speedup for a range of 7000 elements, and probably a larger speedup for larger ranges.\n\nACKs for commit 41a46c:\n  achow101:\n    Regardless, I do think this is a good change, so utACK 41a46cbb31f1622f7d1ff54c7a1c1ca701c1e754\n  fanquake:\n    tACK 41a46cb\n  meshcollider:\n    utACK https://github.com/bitcoin/bitcoin/pull/15751/commits/41a46cbb31f1622f7d1ff54c7a1c1ca701c1e754\n\nTree-SHA512: a1b894ce9d5195d8f9760f44acc6d67a90bb259283fd8c1524c38a222fe53e8c1d35b6653a508b121b7ad91e155c97d26c658f6bdcebf6c360546931e4a26a22",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rpc/misc.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/0c6487c74f8c5ba6de5e4aad44c89be5fbdbe942",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "std::runtime_error"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "0d4cb48ef1b916679d9fad9f247a297c85c7fedf",
+        "author": "Matt Corallo",
+        "date": "2016-06-19T23:06:55-07:00",
+        "message": "Use vTxHashes to optimize InitData significantly",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/blockencodings.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/0d4cb48ef1b916679d9fad9f247a297c85c7fedf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "PartiallyDownloadedBlock::InitData"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "1403d181c106bc271ad2522adebde07c7850069b",
+        "author": "Martin Leitner-Ankerl",
+        "date": "2023-08-03T10:31:33+02:00",
+        "message": "refactor: use fold expressions instead of recursive calls in UnserializeMany()\n\nInstead of recursively calling `UnserializeMany` and peeling off one\nargument at a time, use a fold expression. This simplifies the code,\nmakes it most likely faster because it reduces the number of function\ncalls, and compiles faster because there are fewer template\ninstantiations.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/serialize.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/1403d181c106bc271ad2522adebde07c7850069b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "UnserializeMany"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 9,
+        "total_changed_lines": 12,
+        "net_line_change": -6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "159ed95f7452ab5454e9d660f6f095b8476b1eed",
+        "author": "Jiaxing Wang",
+        "date": "2016-09-15T17:39:54+08:00",
+        "message": "base58: Improve DecodeBase58 performance.\n\nImprove DecodeBase58 performance the same way as commit 3252208 did\nfor EncodeBase58.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/base58.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/159ed95f7452ab5454e9d660f6f095b8476b1eed",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DecodeBase58"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "18bacec6c2c8493fd6b7011778446b3c7473bb25",
+        "author": "Alex Morcos",
+        "date": "2017-06-27T14:14:15-04:00",
+        "message": "Make check to distinguish between orphan txs and old txs more efficient.\n\nChecking for the existence in the CCoinsViewCache of the outputs of a new tx\nwill result in a disk hit for every output since they will not be found.  On the\nother hand if those outputs exist already, then the inputs must also have been\nmissing, so we can move this check inside the input existence check so in the\ncommon case of a new tx it doesn't need to run.\n\nThe purpose of the check is to avoid spamming the orphanMap with slightly old\ntxs which we have already seen in a block, but it is already only optimistic\n(depending on the outputs not being spent), so make it even more efficient by\nonly checking the cache and not the entire pcoinsTip.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/validation.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/18bacec6c2c8493fd6b7011778446b3c7473bb25",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AcceptToMemoryPoolWorker"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 12,
+        "total_changed_lines": 20,
+        "net_line_change": -4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "1cc0e96e9cc7aa094ddee9fe5b192b3ac1a59da8",
+        "author": "Pieter Wuille",
+        "date": "2015-03-26T11:06:27-07:00",
+        "message": "Trivial optimization: use GetAncestor to compute new target",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/pow.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/1cc0e96e9cc7aa094ddee9fe5b192b3ac1a59da8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetNextWorkRequired"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "1ed859e90e18384376e3a1ff0cb76f3e9ab11c2d",
+        "author": "W. J. van der Laan",
+        "date": "2021-05-19T10:07:53+02:00",
+        "message": "Merge bitcoin/bitcoin#21173: util: faster HexStr => 13% faster blockToJSON\n\n74bf850ac47735f2ef4306059d3e664d40cac85e faster HexStr => 13% faster blockToJSON (Martin Ankerl)\n\nPull request description:\n\n  `std::string`'s push_back is rather slow because it needs to check & update the string size. For\n  `HexStr` the output string size is already easily know, so we can initially create the string with\n  the correct size and then just assign the data.\n\n  `HexStr` is heavily usd in `blockToJSON`, so this change is a noticeable benefit. Benchmark on an i7-8700 @3.2GHz:\n\n  * 71,315,461.00 ns/op master\n  * 62,842,490.00 ns/op this commit\n\n  So this little change makes `blockToJSON` about ~13% faster.\n\nACKs for top commit:\n  laanwj:\n    Code review ACK 74bf850ac47735f2ef4306059d3e664d40cac85e\n  theStack:\n    re-ACK 74bf850ac47735f2ef4306059d3e664d40cac85e\n\nTree-SHA512: fc99105123edc11f4e40ed77aea80cf7f32e49c53369aa364b38395dcb48575e15040b0489ed30d0fe857c032a04e225c33e9d95cdfa109a3cb5a6ec9a972415",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/util/strencodings.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/1ed859e90e18384376e3a1ff0cb76f3e9ab11c2d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "HexStr"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 6,
+        "total_changed_lines": 13,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "273d02580aa736b7ccea8fce51d90541665fdbd1",
+        "author": "Pieter Wuille",
+        "date": "2018-12-12T14:22:12-08:00",
+        "message": "Use a FastRandomContext in LimitOrphanTxSize",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/net_processing.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/273d02580aa736b7ccea8fce51d90541665fdbd1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LimitOrphanTxSize"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "2d16fb7a2b6a9e5a2535295d2de03e27c2438d1f",
+        "author": "MarcoFalke",
+        "date": "2019-05-15T11:32:29-04:00",
+        "message": "Merge #14984: rpc: Speedup getrawmempool when verbose=true\n\n2d5cf4c41d rpc: Speedup getrawmempool when verbose=true (Jo\u00e3o Barbosa)\n\nPull request description:\n\n  Instead of calling `pushKV(hash, info)`, which incurs in duplicate key checks, call `__pushKV` which (currently) doesn't.\n\n  Improves RPC `getrawmempool` and REST `/rest/mempool/contents.json`.\n\n  Fixes #14765.\n\nACKs for commit 2d5cf4:\n\nTree-SHA512: c3e91371bb41f39e79dcef820815e1dc27fb689ca3c4bf3a00467d2215b3baecd44d9792f7a481577a5b7ae1fc6cbaa07b1cd62123b845082eba65b35c2b3ca5",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rpc/blockchain.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/2d16fb7a2b6a9e5a2535295d2de03e27c2438d1f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MempoolToJSON"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "2d5cf4c41d86f2bdd1df99edc130ade1d093258f",
+        "author": "Jo\u00e3o Barbosa",
+        "date": "2019-03-08T15:50:18+00:00",
+        "message": "rpc: Speedup getrawmempool when verbose=true\n\nCo-Authored-By: MarcoFalke <falke.marco@gmail.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rpc/blockchain.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/2d5cf4c41d86f2bdd1df99edc130ade1d093258f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MempoolToJSON"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "2e2648a9021dfbb6e17dfa81472f057dacbc34e0",
+        "author": "Fabian Jahr",
+        "date": "2021-04-19T20:28:46+02:00",
+        "message": "crypto: Make MuHash Remove method efficient\n\nDivision of MuHash objects are very expensive and multiplication relatively cheap. The whole idea of introducing and tracking numerator and denominators seperately as a representation of the internal state was so that divisions would be rare. So using divison in the Remove method did not make any sense and was just a silly mistake which is corrected here.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/crypto/muhash.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/2e2648a9021dfbb6e17dfa81472f057dacbc34e0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MuHash3072::Remove"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "32ebde46123046d5dd41789b40578d2d43f1e7ef",
+        "author": "Gavin Andresen",
+        "date": "2011-10-06T07:54:50-07:00",
+        "message": "Merge pull request #564 from luke-jr/optimize_remove_CheckWork_delay\n\nRemove 2 second sleep from CheckWork",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/32ebde46123046d5dd41789b40578d2d43f1e7ef",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CheckWork"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 1,
+        "total_changed_lines": 1,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "380e1f44e8ed8652600c9cacf29506270588f14e",
+        "author": "Ava Chow",
+        "date": "2024-11-14T16:36:33-05:00",
+        "message": "Merge bitcoin/bitcoin#30349: benchmark: Improve SipHash_32b accuracy to avoid potential optimization issues\n\n42066f45ff5d48e78a317eda63c035809bd657c6 Refactor SipHash_32b benchmark to improve accuracy and avoid optimization issues (L\u0151rinc)\n\nPull request description:\n\n  This PR stems from the discussions in https://github.com/bitcoin/bitcoin/pull/30317#discussion_r1649187336\n\n  The previous benchmark for `SipHash` was slightly less accurate in representing real-world usage and allowed for potential compiler optimizations that could invalidate the benchmark.\n  This change aims to ensure the benchmark produces more realistic results.\n\n  By modifying the initial values and only incrementing the bytes of `val`, the benchmark should reflects a more typical usage patterns - and prevent the compiler from optimizing away the calculations.\n\n  -------\n\n  On my M1 processor the benchmark's speed changed significantly (but the CI seems to produce the same result as before):\n\n  > cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCH=ON && cmake --build build -j10 &&\n  ./build/src/bench/bench_bitcoin --filter=SipHash_32b --min-time=1000\n\n  Before:\n  |               ns/op |                op/s |    err% |     total | benchmark\n  |--------------------:|--------------------:|--------:|----------:|:----------\n  |               35.15 |       28,445,856.66 |    0.2% |      1.10 | `SipHash_32b`\n\n  After (note that only the benchmark changed):\n  |               ns/op |                op/s |    err% |     total | benchmark\n  |--------------------:|--------------------:|--------:|----------:|:----------\n  |               22.05 |       45,350,886.64 |    0.3% |      1.10 | `SipHash_32b`\n\nACKs for top commit:\n  maflcko:\n    review ACK 42066f45ff5d48e78a317eda63c035809bd657c6\n  achow101:\n    ACK 42066f45ff5d48e78a317eda63c035809bd657c6\n  hodlinator:\n    ACK 42066f45ff5d48e78a317eda63c035809bd657c6\n\nTree-SHA512: 6bbe9d725d4c3396642e55ce48c31baa5339e56838d6d5fb377fb1069daa9292375e7020ceff7da0d78befffc1e984f717b5232217fe911989613480adaa937e",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bench/crypto_hash.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/380e1f44e8ed8652600c9cacf29506270588f14e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SipHash_32b"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 4,
+        "total_changed_lines": 14,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "3d3d8ae3a0a93621044ab0b889bad082cc91d016",
+        "author": "MarcoFalke",
+        "date": "2018-06-07T10:20:07-04:00",
+        "message": "Merge #13404: [tests] speed up of tx_validationcache_tests by reusing of CTransaction.\n\nebebedce20 speed up of tx_validationcache_tests by reusing of CTransaction. (lucash.dev@gmail.com)\n\nPull request description:\n\n  The code was converting CMutableTransaction to CTransaction multiple times, which implies recalculating the hash multiple times. This commit fixes this by reusing a single CTransaction.\n\n  Run-time results:\n  ```\n  Before:  6.7s\n  After: 5.5s\n  --------------\n  Saved: 1.2s\n  ```\n  This PR was split from #13050. Also, see #10026.\n\nTree-SHA512: 61fb81972a08299085a7d3d0060485b265aefc7a4f82ab548e5f94371c8643cfb97bf0ef34f4e1211bf853d0217fa1c3338e4117f36fda1b37d203f690e86d60",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/test/txvalidationcache_tests.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/3d3d8ae3a0a93621044ab0b889bad082cc91d016",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ValidateCheckInputsForAllFlags"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "41a46cbb31f1622f7d1ff54c7a1c1ca701c1e754",
+        "author": "Pieter Wuille",
+        "date": "2019-04-04T13:12:21-07:00",
+        "message": "Speed up deriveaddresses for large ranges",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rpc/misc.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/41a46cbb31f1622f7d1ff54c7a1c1ca701c1e754",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "std::runtime_error"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "4fbae77929e6344bc49ab60af10a9c5ff21d2cdf",
+        "author": "Marcos Mayorga",
+        "date": "2017-04-28T09:33:34+01:00",
+        "message": "Improved efficiency in COutPoint constructors",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/primitives/transaction.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/4fbae77929e6344bc49ab60af10a9c5ff21d2cdf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "COutPoint"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "5215c80edcd031acf3911e8d824a843f817c6900",
+        "author": "MacroFake",
+        "date": "2022-07-30T17:49:02+02:00",
+        "message": "Merge bitcoin/bitcoin#25709: script: actually trigger the optimization in BuildScript\n\n00897d0677c2cb6609b90d52b89907c8b50d6de0 script: actually trigger the optimization in BuildScript (Antoine Poinsot)\n\nPull request description:\n\n  The counter is an optimization over calling `ret.empty()`. It was\n  suggested that the compiler would realize `cnt` is only `0` on the first\n  iteration, and not actually emit the check and conditional.\n\n  This optimization was actually not triggered at all, since we\n  incremented `cnt` at the beginning of the first iteration. Fix it by\n  incrementing at the end instead.\n\n  This was reported by Github user \"Janus\".\n\n  Fixes #25682. Note this does *not* change semantics. It only allows the optimization of moving instead of copying on first `CScript` element to actually be reachable.\n\nACKs for top commit:\n  sipa:\n    utACK 00897d0677c2cb6609b90d52b89907c8b50d6de0\n  MarcoFalke:\n    review ACK 00897d0677c2cb6609b90d52b89907c8b50d6de0\n\nTree-SHA512: b575bd444b0cd2fe754ec5f3e2f3f53d2696d5dcebedcace1e38be372c82365e75938dfe185429ed5a83efe1a395e204bfb33efe56c10defc5811eaee50580e3",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/script/script.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/5215c80edcd031acf3911e8d824a843f817c6900",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BuildScript"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "54c6f3c1da01090aee9691a2c2bee0984a054ce8",
+        "author": "glozow",
+        "date": "2021-10-04T15:00:28+01:00",
+        "message": "[mempool] speed up check() by using coins cache and iterating in topo order\n\nNo behavior changes.\n\nBefore, we're always adding transactions to the \"check later\" queue if\nthey have any parents in the mempool. But there's no reason to do this\nif all of its inputs are already available from mempoolDuplicate.\nInstead, check for inputs, and only mark fDependsWait=true if the\nparents haven't been processed yet.\n\nReduce the amount of \"check later\" transactions by looking at\nancestors before descendants. Do this by iterating through them in\nascending order by ancestor count. This works because a child will\nalways have more in-mempool ancestors than its parent.\n\nWe should never have any entries in the \"check later\" queue\nafter this commit.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/txmempool.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/54c6f3c1da01090aee9691a2c2bee0984a054ce8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CTxMemPool::check"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 2,
+        "total_changed_lines": 8,
+        "net_line_change": 4,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "5ecd14a31cad496e58fbc4aca9af0e9a001689d5",
+        "author": "fanquake",
+        "date": "2023-02-15T16:10:46+00:00",
+        "message": "Merge bitcoin/bitcoin#26844: Net: Pass `MSG_MORE` flag when sending non-final network messages (round 2)\n\n691eaf8873fe2f189153ca637506a0291504c97a Pass MSG_MORE flag when sending non-final network messages (Matt Whitlock)\n\nPull request description:\n\n  **N.B.:** This is my second attempt at introducing this optimization. #12519 (2018) was closed in deference to switching to doing gathering socket writes using `sendmsg(2)`, which I agree would have superior performance due to fewer syscalls, but that work was apparently abandoned in late 2018. Ever since, Bitcoin Core has continued writing tons of runt packets to the wire. Can we proceed with my halfway solution for now?\n\n  ----\n\n  Since Nagle's algorithm is disabled, each and every call to `send(2)` can potentially generate a separate TCP segment on the wire. This is especially inefficient when sending the tiny header preceding each message payload.\n\n  Linux implements a `MSG_MORE` flag that tells the kernel not to push the passed data immediately to the connected peer but rather to collect it in the socket's internal transmit buffer where it can be combined with data from successive calls to `send(2)`. Where available, specify this flag when calling `send(2)` in `CConnman::SocketSendData(CNode &)` if the data buffer being sent is not the last one in `node.vSendMsg`.\n\nACKs for top commit:\n  sipa:\n    ACK 691eaf8873fe2f189153ca637506a0291504c97a\n  vasild:\n    ACK 691eaf8873fe2f189153ca637506a0291504c97a\n\nTree-SHA512: 9a7f46bc12edbf78d488f05d1c46760110a24c95af74b627d2604fcd198fa3f511c5956bac36d0034e88c632d432f7d394147e667a11b027af0a30f70a546d70",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/net.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/5ecd14a31cad496e58fbc4aca9af0e9a001689d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CConnman::SocketSendData"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "5fa7b07565d2c7c1edfb9a2f8c1af42d039d99ee",
+        "author": "Wladimir J. van der Laan",
+        "date": "2016-11-07T11:51:04+01:00",
+        "message": "Merge #8736: base58: Improve DecodeBase58 performance.\n\ne892dc1 Use prefix operator in for loop of DecodeBase58. (Jiaxing Wang)\n159ed95 base58: Improve DecodeBase58 performance. (Jiaxing Wang)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/base58.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/5fa7b07565d2c7c1edfb9a2f8c1af42d039d99ee",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DecodeBase58"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "6015df5b855fe600cf0b7a6e1782cb70315cc1b4",
+        "author": "Wladimir J. van der Laan",
+        "date": "2017-03-07T11:03:32+01:00",
+        "message": "Merge #9912: Optimize GetWitnessHash() for non-segwit transactions\n\n02c57b5 Optimize GetWitnessHash() for non-segwit transactions (Suhas Daftuar)\n\nTree-SHA512: 405d07c11930f3432ae25b11232466a30ba2339be98e0fb5149934d792e014f504fedbe62b9c8e5febbbdad459bd1573ea896e527b9aa591926bbc774b895e6a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/primitives/transaction.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/6015df5b855fe600cf0b7a6e1782cb70315cc1b4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CTransaction::GetWitnessHash"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "66270a416edb1610f276124483feceef9cba93ff",
+        "author": "Pieter Wuille",
+        "date": "2017-07-14T11:54:50-07:00",
+        "message": "Merge #10557: Make check to distinguish between orphan txs and old txs more efficient.\n\n18bacec6c Make check to distinguish between orphan txs and old txs more efficient. (Alex Morcos)\n\nTree-SHA512: b6b4bad89aa561975dce7b68b2fdad5623af5ebcb9c38fd6a72b5f6d0544ed441df4865591ac018f7ae0df9b5c60820cb4d9e55664f5667c9268458df70fd554",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/validation.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/66270a416edb1610f276124483feceef9cba93ff",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AcceptToMemoryPoolWorker"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 12,
+        "total_changed_lines": 20,
+        "net_line_change": -4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "6754e1928b008fb05ebf77cb695346e7ef0861a6",
+        "author": "fanquake",
+        "date": "2021-05-12T11:03:04+10:00",
+        "message": "Merge bitcoin/bitcoin#21922: fuzz: Avoid timeout in EncodeBase58\n\nfaa0d94a7d9cdd10e81ee231a7b06d4b14b37e13 fuzz: Avoid timeout in EncodeBase58 (MarcoFalke)\n\nPull request description:\n\n  The complexity is O(N^2), so limit the size.\n\n  Hopefully fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=34126\n\n  Oss-Fuzz testcase for `rpc` fuzzer: https://github.com/bitcoin/bitcoin/files/6461382/clusterfuzz-testcase-minimized-rpc-4831734974775296.log\n\nACKs for top commit:\n  practicalswift:\n    cr ACK faa0d94a7d9cdd10e81ee231a7b06d4b14b37e13: patch looks correct\n  sipa:\n    utACK faa0d94a7d9cdd10e81ee231a7b06d4b14b37e13\n\nTree-SHA512: 57ad9de8d811b828982d09a586782fc8a62fa3685590301d58120e2249caa30a9dccd3abe0b47e00ea8482de705fe0edbed298ab8761ea0d29496b50ed2db5d7",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/test/fuzz/rpc.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/6754e1928b008fb05ebf77cb695346e7ef0861a6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ConsumeScalarRPCArgument"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "67d99900b0d770038c9c5708553143137b124a6c",
+        "author": "Martin Ankerl",
+        "date": "2019-09-25T20:56:38+02:00",
+        "message": "make SaltedOutpointHasher noexcept\n\nIf the hash is not noexcept, unorderd_map has to assume that it can throw an exception. Thus when rehashing care needs to be taken. libstdc++ solves this by simply caching the hash value, which increases memory of each node by 8 bytes. Adding noexcept prevents this caching. In my experiments with -reindex-chainstate -stopatheight=594000, memory usage has decreased by 9.4% while runtime has increased by 1.6% due to additional hashing. Additionally, memusage::DynamicUsage() is now more accurate and does not underestimate.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/coins.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/67d99900b0d770038c9c5708553143137b124a6c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "operator"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 1,
+        "total_changed_lines": 10,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "691eaf8873fe2f189153ca637506a0291504c97a",
+        "author": "Matt Whitlock",
+        "date": "2023-01-07T14:11:07-05:00",
+        "message": "Pass MSG_MORE flag when sending non-final network messages\n\nSince Nagle's algorithm is disabled, each and every call to send(2) can potentially generate a separate TCP segment on the wire. This is especially inefficient when sending the tiny header preceding each message payload.\n\nLinux implements a MSG_MORE flag that tells the kernel not to push the passed data immediately to the connected peer but rather to collect it in the socket's internal transmit buffer where it can be combined with data from successive calls to send(2). Where available, specify this flag when calling send(2) in CConnman::SocketSendData(CNode &) if the data buffer being sent is not the last one in node.vSendMsg.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/net.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/691eaf8873fe2f189153ca637506a0291504c97a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CConnman::SocketSendData"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "6b9405e3191206f1cda626423aab6a453980ab05",
+        "author": "Wladimir J. van der Laan",
+        "date": "2019-09-30T09:47:28+02:00",
+        "message": "Merge #16957: 9% less memory: make SaltedOutpointHasher noexcept\n\n67d99900b0d770038c9c5708553143137b124a6c make SaltedOutpointHasher noexcept (Martin Ankerl)\n\nPull request description:\n\n  If the hash is not `noexcept`, `unorderd_map` has to assume that it can throw an exception. Thus when rehashing care needs to be taken. libstdc++ solves this by simply caching the hash value, which increases memory of each node by 8 bytes. Adding `noexcept` prevents this caching. In my experiments with `-reindex-chainstate -stopatheight=594000`, memory usage (maximum resident set size) has decreased by 9.4% while runtime has increased by 1.6% due to additional hashing. Additionally, memusage::DynamicUsage() is now more accurate and does not underestimate.\n\n  |                                       | runtime h:mm:ss | max RSS kbyte |\n  |---------------------------------------|-----------------|--------------|\n  | master                                |         4:13:59 |      7696728 |\n  | 2019-09-SaltedOutpointHasher-noexcept |         4:18:11 |      6971412 |\n  | change                                |          +1.65% |       -9,42% |\n\n  Comparison of progress masters vs. 2019-09-SaltedOutpointHasher-noexcept\n  ![out](https://user-images.githubusercontent.com/14386/65541887-69424e00-df0e-11e9-8644-b3a068ed8c3f.png)\n\nACKs for top commit:\n  jamesob:\n    Tested ACK https://github.com/bitcoin/bitcoin/pull/16957/commits/67d99900b0d770038c9c5708553143137b124a6c\n\nTree-SHA512: 9c44e3cca993b5a564dd61ebd2926b9c4a238609ea4d283514c018236f977d935e35a384dd4696486fd3d78781dd2ba190bb72596e20a5e931042fa465872a0b",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/coins.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/6b9405e3191206f1cda626423aab6a453980ab05",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "operator"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 2,
+        "total_changed_lines": 12,
+        "net_line_change": 8,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "710a7136f93133bf256d37dc8c8faf5a6b9ba89d",
+        "author": "Jo\u00e3o Barbosa",
+        "date": "2019-04-22T10:00:07+01:00",
+        "message": "rpc: Speedup getaddressesbylabel",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet/rpcwallet.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/710a7136f93133bf256d37dc8c8faf5a6b9ba89d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getaddressesbylabel"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 1,
+        "total_changed_lines": 13,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "74bf850ac47735f2ef4306059d3e664d40cac85e",
+        "author": "Martin Ankerl",
+        "date": "2021-02-16T07:33:55+01:00",
+        "message": "faster HexStr => 13% faster blockToJSON\n\n`std::string`'s push_back is rather slow because it needs to check & update the string size. For\n`HexStr` the output string size is already easily know, so we can initially create the string with\nthe correct size and then just assign the data.\n\n`HexStr` is heavily usd in `blockToJSON`, so this change is a noticeable benefit. Benchmark on an i7-8700 @3.2GHz:\n\n* 71,315,461.00 ns/op master\n* 62,842,490.00 ns/op this commit\n\nSo this little change makes `blockToJSON` about ~13% faster.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/util/strencodings.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/74bf850ac47735f2ef4306059d3e664d40cac85e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "HexStr"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 5,
+        "total_changed_lines": 11,
+        "net_line_change": 1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "8ae973c00cfb02161bb2c2a6c839e510cd409278",
+        "author": "Wladimir J. van der Laan",
+        "date": "2014-06-26T15:15:17+02:00",
+        "message": "Allocate more space if necessary in RandSeedAddPerfMon\n\nCurrently we use a fixed buffer of 250000 bytes to request\nHKEY_PERFORMANCE_DATA. In many cases this is not enough, causing the\nentropy collection to be skipped.\n\nUse a loop that grows the buffer as specified in the RegQueryValueEx\ndocumentation:\nhttp://msdn.microsoft.com/en-us/library/windows/desktop/ms724911%28v=vs.85%29.aspx\n\n(as the size of the performance data can differ for every call, the\nnormal solution of requesting the size then allocating that can't work)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/util.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/8ae973c00cfb02161bb2c2a6c839e510cd409278",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RandAddSeedPerfmon"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 2,
+        "total_changed_lines": 13,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "8da9dd0725ea90b1fd085d9551177fe62d7a9ba2",
+        "author": "Jeff Garzik",
+        "date": "2013-06-10T09:38:13-04:00",
+        "message": "Wallet: optimize rescan to skip blocks prior to birthday",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/8da9dd0725ea90b1fd085d9551177fe62d7a9ba2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CWallet::ScanForWalletTransactions"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "9189f5fe4df1ac7ea6ca75ceada867beafda90a9",
+        "author": "phantomcircuit",
+        "date": "2014-09-02T21:25:53-07:00",
+        "message": "remove useless millisleep\n\nreduces time to service requests improving performance",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/net.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/9189f5fe4df1ac7ea6ca75ceada867beafda90a9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ThreadSocketHandler"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 2,
+        "total_changed_lines": 2,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "9237bdaac196951a437accaefa65638149b25978",
+        "author": "MarcoFalke",
+        "date": "2022-01-31T08:58:23+01:00",
+        "message": "Merge bitcoin/bitcoin#24179: fuzz: Speed up script fuzz target\n\nfa6842978d01f6707564a841303033d7bfbabb3b fuzz: Speed up script fuzz target (MarcoFalke)\n\nPull request description:\n\n  Currently the script fuzz target takes the longest time (5000 seconds, aka 80 minutes, see https://cirrus-ci.com/task/5651378755338240?logs=ci#L4501).\n\n  Fix this by making it twice as fast.\n\n  Instead of running all possible combinations for all fuzz inputs, consume a bool and decide at runtime which path to take.\n\n  I moved the new calls to the end to not invalidate existing fuzz inputs.\n\nACKs for top commit:\n  prusnak:\n    ACK fa6842978d01f6707564a841303033d7bfbabb3b\n\nTree-SHA512: 5e408255f96f9e92e472f4e8a8a0f8d8814bad444ac0ff7d5db5ed84a59a861135ffe5e04d81f479b0695cb17e4d7af005734959dd4aa9328bdc5acc98f36665",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/test/fuzz/script.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/9237bdaac196951a437accaefa65638149b25978",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "fuzzed_data_provider"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 11,
+        "total_changed_lines": 19,
+        "net_line_change": -3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "94c307b3c0746a08c6135ff38d6f1ad1ed6693bb",
+        "author": "Ava Chow",
+        "date": "2024-09-03T17:27:50-04:00",
+        "message": "Merge bitcoin/bitcoin#30675: http: set TCP_NODELAY when creating HTTP server\n\n03d49d0f25ab5660524d5ddd171de677a808b984 http: set TCP_NODELAY when creating HTTP server (Roman Zeyde)\n\nPull request description:\n\n  Otherwise, the default HTTP server config may result in high latency, due to Nagle's algorithm (on the server) and delayed ACK (on the client):\n\n  [1] https://www.extrahop.com/blog/tcp-nodelay-nagle-quickack-best-practices\n  [2] https://eklitzke.org/the-caveats-of-tcp-nodelay\n\n  Without the fix, fetching a small block takes ~40ms (when connection keep-alive is enabled):\n  ```\n  $ ab -k -c 1 -n 100 http://localhost:8332/rest/block/00000000000002b5898f7cdc80d9c84e9747bc6b9388cc989971d443f05713ee.bin\n\n  Server Software:\n  Server Hostname:        localhost\n  Server Port:            8332\n\n  Document Path:          /rest/block/00000000000002b5898f7cdc80d9c84e9747bc6b9388cc989971d443f05713ee.bin\n  Document Length:        25086 bytes\n\n  Concurrency Level:      1\n  Time taken for tests:   4.075 seconds\n  Complete requests:      100\n  Failed requests:        0\n  Keep-Alive requests:    100\n  Total transferred:      2519200 bytes\n  HTML transferred:       2508600 bytes\n  Requests per second:    24.54 [#/sec] (mean)\n  Time per request:       40.747 [ms] (mean)\n  Time per request:       40.747 [ms] (mean, across all concurrent requests)\n  Transfer rate:          603.76 [Kbytes/sec] received\n\n  Connection Times (ms)\n                min  mean[+/-sd] median   max\n  Connect:        0    0   0.0      0       0\n  Processing:     0   41   4.1     41      42\n  Waiting:        0    0   0.1      0       1\n  Total:          0   41   4.1     41      42\n\n  Percentage of the requests served within a certain time (ms)\n    50%     41\n    66%     41\n    75%     41\n    80%     41\n    90%     42\n    95%     42\n    98%     42\n    99%     42\n   100%     42 (longest request)\n  ```\n\n  With the fix, it takes ~0.2ms:\n  ```\n  $ ab -k -c 1 -n 1000 http://localhost:8332/rest/block/00000000000002b5898f7cdc80d9c84e9747bc6b9388cc989971d443f05713ee.bin\n\n  Benchmarking localhost (be patient)\n  Completed 100 requests\n  Completed 200 requests\n  Completed 300 requests\n  Completed 400 requests\n  Completed 500 requests\n  Completed 600 requests\n  Completed 700 requests\n  Completed 800 requests\n  Completed 900 requests\n  Completed 1000 requests\n  Finished 1000 requests\n\n  Server Software:\n  Server Hostname:        localhost\n  Server Port:            8332\n\n  Document Path:          /rest/block/00000000000002b5898f7cdc80d9c84e9747bc6b9388cc989971d443f05713ee.bin\n  Document Length:        25086 bytes\n\n  Concurrency Level:      1\n  Time taken for tests:   0.194 seconds\n  Complete requests:      1000\n  Failed requests:        0\n  Keep-Alive requests:    1000\n  Total transferred:      25192000 bytes\n  HTML transferred:       25086000 bytes\n  Requests per second:    5147.05 [#/sec] (mean)\n  Time per request:       0.194 [ms] (mean)\n  Time per request:       0.194 [ms] (mean, across all concurrent requests)\n  Transfer rate:          126625.50 [Kbytes/sec] received\n\n  Connection Times (ms)\n                min  mean[+/-sd] median   max\n  Connect:        0    0   0.0      0       0\n  Processing:     0    0   0.0      0       0\n  Waiting:        0    0   0.0      0       0\n  Total:          0    0   0.0      0       0\n\n  Percentage of the requests served within a certain time (ms)\n    50%      0\n    66%      0\n    75%      0\n    80%      0\n    90%      0\n    95%      0\n    98%      0\n    99%      0\n   100%      0 (longest request)\n  ```\n\nACKs for top commit:\n  achow101:\n    ACK 03d49d0f25ab5660524d5ddd171de677a808b984\n  theStack:\n    re-ACK 03d49d0f25ab5660524d5ddd171de677a808b984\n  tdb3:\n    ACK 03d49d0f25ab5660524d5ddd171de677a808b984\n\nTree-SHA512: bbf3d78b8521f569430850ec4315a75711303547df1a3de213a4ad34c9700105e374e0a649352fd05f8e4badb5b59debd3720e1c5d392c5113d7816648f7fcaa",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/httpserver.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/94c307b3c0746a08c6135ff38d6f1ad1ed6693bb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "HTTPBindAddresses"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "9a1ad2c5cbdfa3114d05df57103c34f72e087f26",
+        "author": "Pieter Wuille",
+        "date": "2018-07-13T20:16:41-07:00",
+        "message": "Merge #11658: During IBD, when doing pruning, prune 10% extra to avoid pruning again soon after\n\nac51a26bdc During IBD, when doing pruning, prune 10% extra to avoid pruning again soon after (Luke Dashjr)\n\nPull request description:\n\n  Pruning forces a chainstate flush, which can defeat the dbcache and harm performance significantly.\n\n  Alternative to #11359\n\nTree-SHA512: 631e4e8f94f5699e98a2eff07204aa2b3b2325b2d92e8236b8c8d6a6730737a346e0ad86024e705f5a665b25e873ab0970ce7396740328a437c060f99e9ba4d9",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/validation.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/9a1ad2c5cbdfa3114d05df57103c34f72e087f26",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FindFilesToPrune"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 0,
+        "total_changed_lines": 9,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "9c137aaccf8900138f40fc9fecbc00b11828223a",
+        "author": "Jeff Garzik",
+        "date": "2012-05-21T12:38:45-04:00",
+        "message": "BDB: restore DB_PRIVATE flag to environment\n\nSatoshi's commits fdbf76d and c8ad9b8 (SVN import) removed the\nDB_PRIVATE flag from the environment.  In part, this enables processes\nother than bitcoind to examine the active database environment.\n\nHowever, this incurs a slight performance penalty versus working\nentirely within application memory (DB_PRIVATE).  Because bitcointools\nand other direct-BDB-accessing tools are not used by the vast\nmajority of users, prefer to default with DB_PRIVATE with the option\nof disabling it if needed via -privdb=0.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/9c137aaccf8900138f40fc9fecbc00b11828223a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CDB::CDB"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "9e697172542e2b01517e4025df2c23d0ed5447f4",
+        "author": "Alex Morcos",
+        "date": "2016-01-07T16:31:12-05:00",
+        "message": "Make wallet descendant searching more efficient",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet/wallet.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/9e697172542e2b01517e4025df2c23d0ed5447f4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CWallet::MarkConflicted"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 5,
+        "total_changed_lines": 10,
+        "net_line_change": 0,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "a25945318fdc2890a141a28843c2c5af251c9605",
+        "author": "Wladimir J. van der Laan",
+        "date": "2019-10-28T12:55:04+01:00",
+        "message": "Merge #17250: Avoid unused call to GuessVerificationProgress in NotifyHeaderTip\n\nfa398091b7ad683dfd3cd3c2cd030eaf9f336737 Avoid unused call to GuessVerificationProgress in NotifyHeaderTip (MarcoFalke)\n\nPull request description:\n\n  `GuessVerificationProgress` for a header (not a block) is always 0 because the number of txs in the block can not be determined from the header alone. Anyway, this result was never used, so we can optimize this call by hardcoding 0.\n\n  This is the next commit in a series of changes toward removing nChainTx (see #14863, #13875)\n\nACKs for top commit:\n  promag:\n    Code review ACK fa398091b7ad683dfd3cd3c2cd030eaf9f336737, missed that.\n  laanwj:\n    ACK fa398091b7ad683dfd3cd3c2cd030eaf9f336737\n\nTree-SHA512: 11016f8dbb1af1cf75241948d1ad35eac0c79d1311cd0db8c6ec806df2a9e3dc5f998dbd66ccbad5d84564e6cec7fe21ce7a2a13c2b34c746e2d3b31aa1db53a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/interfaces/node.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/a25945318fdc2890a141a28843c2c5af251c9605",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "handleNotifyHeaderTip"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "a2929a26f5cf3501804fd12071dd6cf6b464a545",
+        "author": "Pieter Wuille",
+        "date": "2016-11-07T13:56:27-08:00",
+        "message": "Make CSerAction's ForRead() constexpr\n\nThe CSerAction's ForRead() method does not depend on any runtime\ndata, so guarantee that requests to it can be optimized out by\nmaking it constexpr.\n\nSuggested by Cory Fields.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/serialize.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/a2929a26f5cf3501804fd12071dd6cf6b464a545",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ForRead"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "a60ab0ba89289433563c4c0993904acbca8c99ff",
+        "author": "Gregory Maxwell",
+        "date": "2014-03-28T09:58:40-07:00",
+        "message": "Make GetAvailableCredit run GetHash() only once per transaction.\n\nThis makes the first getbalance/getinfo 63x faster on my wallet.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/a60ab0ba89289433563c4c0993904acbca8c99ff",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetAvailableCredit"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ac51a26bdc69dc35e1f4f89b62c3134047e93bc1",
+        "author": "Luke Dashjr",
+        "date": "2017-11-11T09:05:48+00:00",
+        "message": "During IBD, when doing pruning, prune 10% extra to avoid pruning again soon after\n\nPruning forces a chainstate flush, which can defeat the dbcache and harm performance significantly.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/validation.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ac51a26bdc69dc35e1f4f89b62c3134047e93bc1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FindFilesToPrune"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 0,
+        "total_changed_lines": 9,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "bd08a008b42dac921bd9c031637e378899c1cd1d",
+        "author": "Martin Leitner-Ankerl",
+        "date": "2023-08-03T10:30:02+02:00",
+        "message": "refactor: use fold expressions instead of recursive calls in SerializeMany()\n\nInstead of recursively calling `SerializeMany` and peeling off one\nargument at a time, use a fold expression. This simplifies the code,\nmakes it most likely faster because it reduces the number of function\ncalls, and compiles faster because there are fewer template\ninstantiations.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/serialize.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/bd08a008b42dac921bd9c031637e378899c1cd1d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SerializeMany"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 9,
+        "total_changed_lines": 12,
+        "net_line_change": -6,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "bf0a510981ddc28c754881ca21c50ab18e5f2b59",
+        "author": "Russell Yanofsky",
+        "date": "2020-05-01T06:59:09-04:00",
+        "message": "gui: Avoid wallet tryGetBalances calls before TransactionChanged or BlockTip notifications\n\ninterfaces::Wallet::tryGetBalances was recently updated in\nhttps://github.com/bitcoin/bitcoin/pull/18160 to avoid computing balances\ninternally, but this not efficient as it could be with #10102 because\ntryGetBalances is an interprocess call.\n\nImplementing the TransactionChanged / BlockTip check outside of tryGetBalances\nalso allows tryGetBalances to be simplified in next commit 'Revert \"gui: Avoid\nWallet::GetBalance in WalletModel::pollBalanceChanged\"'.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/qt/walletmodel.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/bf0a510981ddc28c754881ca21c50ab18e5f2b59",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WalletModel::pollBalanceChanged"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "c2a4724642400bc9200aeef4c725b5c07eee9d90",
+        "author": "Pieter Wuille",
+        "date": "2016-06-06T02:02:24+02:00",
+        "message": "Optimization: use usec in expiration and reuse nNow",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/c2a4724642400bc9200aeef4c725b5c07eee9d90",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SendMessages"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "c33c11ebacb93d74370f44f6c24d447da88648f4",
+        "author": "Pieter Wuille",
+        "date": "2015-08-26T01:59:09+02:00",
+        "message": "Improve addrman Select() performance when buckets are nearly empty",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/addrman.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/c33c11ebacb93d74370f44f6c24d447da88648f4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CAddrMan::Select_"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 4,
+        "total_changed_lines": 12,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "cccf73db0483cc3945bf8389ce197df35e931e16",
+        "author": "Robert McLaughlin",
+        "date": "2016-11-01T21:04:26-04:00",
+        "message": "trivial: fix bloom filter init to isEmpty = true\n\nFixes newly initialized bloom filters being\nconstructed with isEmpty(false), which still\nworks but loses the possible speedup when\nchecking for key membership in an empty filter.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bloom.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/cccf73db0483cc3945bf8389ce197df35e931e16",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CBloomFilter::CBloomFilter"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "cd14d210c4156a0a17450d3d451a92ae3938b019",
+        "author": "MarcoFalke",
+        "date": "2019-04-23T10:59:41-04:00",
+        "message": "Merge #15463: rpc: Speedup getaddressesbylabel\n\n710a7136f9 rpc: Speedup getaddressesbylabel (Jo\u00e3o Barbosa)\n\nPull request description:\n\n  Fixes #15447. Same approach of #14984, this change avoids duplicate key check when building the JSON response in memory.\n\nACKs for commit 710a71:\n  MarcoFalke:\n    utACK 710a7136f93133bf256d37dc8c8faf5a6b9ba89d\n  ryanofsky:\n    utACK 710a7136f93133bf256d37dc8c8faf5a6b9ba89d. Just new comments and assert since last review.\n\nTree-SHA512: 77c95df9ff3793e348619aa070e6fd36df9da1b461d708ab146652cb3699f1a472ef6eb38dafdb8374375cbc97daef07635fcb0501961f167a023309513742e2",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet/rpcwallet.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/cd14d210c4156a0a17450d3d451a92ae3938b019",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getaddressesbylabel"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 1,
+        "total_changed_lines": 13,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "d1d7775587473410a107e7079616b9ecaae8dd06",
+        "author": "Patrick Strateman",
+        "date": "2016-04-21T17:24:36-07:00",
+        "message": "Improve worst-case behavior of CScript::FindAndDelete\n\nThanks to Sergio Lerner for identifying this issue and suggesting this kind of solution.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/script/script.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/d1d7775587473410a107e7079616b9ecaae8dd06",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FindAndDelete"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 2,
+        "total_changed_lines": 13,
+        "net_line_change": 9,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "e2b3fb349ed99f05ea518c7eb260db606350a2b5",
+        "author": "Matt Corallo",
+        "date": "2016-11-09T11:28:41-08:00",
+        "message": "Optimize vInOutPoints insertion a bit",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/e2b3fb349ed99f05ea518c7eb260db606350a2b5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CheckTransaction"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "e4bbd3d230f22401ba0a0a72c8ed41ee1bd098a0",
+        "author": "Pieter Wuille",
+        "date": "2017-05-01T16:40:43-07:00",
+        "message": "Merge #10292: Improved efficiency in COutPoint constructors\n\n4fbae77 Improved efficiency in COutPoint constructors (Marcos Mayorga)\n\nTree-SHA512: 1e402d5021a47724b6159af90955f1a5932c383f48e3e704f1c9a52daa18d2dce5d8e1fcd02fae6977eab04ab83fa22872110b821d4c6593d940d9642abc9bcd",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/primitives/transaction.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/e4bbd3d230f22401ba0a0a72c8ed41ee1bd098a0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "COutPoint"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "e66630cc87c017f40ec29f6c1edf2ed5a286e49d",
+        "author": "Andrew Chow",
+        "date": "2022-03-21T17:44:54-04:00",
+        "message": "Merge bitcoin/bitcoin#13226: Optimize SelectCoinsBnB by tracking the selection by index rather than by position\n\n9d2005285c77f6c4148bccfa0b8b9135abfa021c doc: Revise comments and whitespace to clarify (Ben Woosley)\ndef43a4d888b4a21c082404d1b25707c481d7625 refactor: Rename i to curr_try in SelectCoinsBnB (Ben Woosley)\n1dd092367789749527777ac2b256e639f5706584 refactor: Track BnB selection by index (Ben Woosley)\n\nPull request description:\n\n  This is prompted by #13167 and presented as a friendly alternative to it.\n\n  IMO you can improve code readability and performance by about 20% by tracking the selected utxos by index, rather than by position. This reduces the storage access complexity from roughly O(utxo_size) to O(selection_size).\n\n  On my machine (median of 5 trials):\n  ```\n  BnBExhaustion, 5, 650, 2.2564, 0.000672999, 0.000711565, 0.000693112 - master\n  BnBExhaustion, 5, 650, 1.76232, 0.000528563, 0.000568806, 0.000539147 - this PR\n  ```\n\nACKs for top commit:\n  achow101:\n    reACK 9d2005285c77f6c4148bccfa0b8b9135abfa021c\n  glozow:\n    code review ACK 9d2005285c77f6c4148bccfa0b8b9135abfa021c\n  Xekyo:\n    reACK 9d2005285c77f6c4148bccfa0b8b9135abfa021c\n\nTree-SHA512: 453ea11ad58c48928dc76956e3e98916f6924e95510eb02fe89a899ff102fe9cc08a04d557f381ad0218a210275e5383101d971c1ffad38b06b1c57d81144315",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet/coinselection.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/e66630cc87c017f40ec29f6c1edf2ed5a286e49d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SelectCoinsBnB"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 4,
+        "total_changed_lines": 6,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "e6a4d48a9bff0bdbcca3a13de59b5e6e683a6aac",
+        "author": "Wladimir J. van der Laan",
+        "date": "2016-04-14T17:54:42+02:00",
+        "message": "Merge #7874: Improve AlreadyHave\n\nc6cb6f7 Avoid unnecessary database access for unknown transactions (Alex Morcos)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/e6a4d48a9bff0bdbcca3a13de59b5e6e683a6aac",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AlreadyHave"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "e9b4780b292122fd727426471f025ec3d3eb7b08",
+        "author": "Pieter Wuille",
+        "date": "2016-06-06T02:02:23+02:00",
+        "message": "Optimization: don't check the mempool at all if no mempool req ever",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/e9b4780b292122fd727426471f025ec3d3eb7b08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ProcessGetData"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ea100c73fae8a134c6ae2f1e39f557448734e012",
+        "author": "Wladimir J. van der Laan",
+        "date": "2014-08-11T08:43:06+02:00",
+        "message": "Reduce maximum coinscache size during verification\n\nDue to growing coinsviewcaches, the memory usage with checklevel=3\n(and standard settings for dbcache) could be up to 500MiB on a\n64-bit system. This is about twice the peak during reindexing,\nunnecessarily extending bitcoind's memory envelope.\n\nThis commit reduces the maximum total size of the caches used during\nverification to just nCoinCacheSize, which should be the limit.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ea100c73fae8a134c6ae2f1e39f557448734e012",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CVerifyDB::VerifyDB"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ea19c2bc3f2281ad319457c6fa518bff96af13e3",
+        "author": "Wladimir J. van der Laan",
+        "date": "2015-08-26T17:58:40+02:00",
+        "message": "Merge pull request #6530\n\nc33c11e Improve addrman Select() performance when buckets are nearly empty (Pieter Wuille)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/addrman.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ea19c2bc3f2281ad319457c6fa518bff96af13e3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CAddrMan::Select_"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 4,
+        "total_changed_lines": 12,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "eb4df9a628bdcdd1333c7fa4fb23c73df9642902",
+        "author": "MarcoFalke",
+        "date": "2021-05-21T09:03:25+02:00",
+        "message": "Merge bitcoin/bitcoin#22004: fuzz: Speed up transaction fuzz target\n\nbbbb51877a96c3473aeea5914f751eec7835b5c4 fuzz: Speed up transaction fuzz target (MarcoFalke)\n\nPull request description:\n\n  `hashBlock` and `include_addresses` are orthogonal, so no need to do an exhaustive \"search\".\n\n  Might fix https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=34491\n\nACKs for top commit:\n  practicalswift:\n    cr ACK bbbb51877a96c3473aeea5914f751eec7835b5c4: patch looks correct, and `TxToUniv` surprisingly wide in the `transaction_fuzz_target` flame graph! Putting it on a diet makes sense.\n\nTree-SHA512: 1e7c30c7fecf96364a9a1597c0a22139389fdeb67db59f3c2c6fc088196e3332877b2865991a957980d542f99a2f48cc066dd7cc16c695a5113190fe06205089",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/test/fuzz/transaction.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/eb4df9a628bdcdd1333c7fa4fb23c73df9642902",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ds"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 5,
+        "total_changed_lines": 7,
+        "net_line_change": -3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ebebedce2094ac202bdfdf4b13fed562d35d161d",
+        "author": "lucash.dev@gmail.com",
+        "date": "2018-06-06T06:50:25-07:00",
+        "message": "speed up of tx_validationcache_tests by reusing of CTransaction.\n\nThe code was converting CMutableTransaction to CTransaction multiple times, which implies recalculating the hash multiple times. This commit fixes this by reusing a single CTransaction.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/test/txvalidationcache_tests.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ebebedce2094ac202bdfdf4b13fed562d35d161d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ValidateCheckInputsForAllFlags"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ed79e4f497a9a7747b006a5cb04d4173a6bbc1c5",
+        "author": "Jonas Schnelli",
+        "date": "2017-03-24T10:54:48+01:00",
+        "message": "Optimize GetOldestKeyPoolTime(), return as soon as we have both oldest keys",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/wallet/wallet.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ed79e4f497a9a7747b006a5cb04d4173a6bbc1c5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CWallet::GetOldestKeyPoolTime"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 3,
+        "total_changed_lines": 12,
+        "net_line_change": 6,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "ee1d6e4ed0a931defc6f6273cc67a0a3e980940f",
+        "author": "Gavin Andresen",
+        "date": "2011-09-26T06:21:13-07:00",
+        "message": "Merge pull request #492 from gavinandresen/fasterinitialdownload\n\nSkip verifying transaction signatures during initial block-chain download",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/main.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/ee1d6e4ed0a931defc6f6273cc67a0a3e980940f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CTransaction::ConnectInputs"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 3,
+        "total_changed_lines": 13,
+        "net_line_change": 7,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "f33b717a85363e067316c133a542559d2f4aaeca",
+        "author": "Jim Posen",
+        "date": "2018-08-25T10:02:37-07:00",
+        "message": "blockfilter: Optimization on compilers with int128 support.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/blockfilter.cpp"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/f33b717a85363e067316c133a542559d2f4aaeca",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MapIntoRange"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "bitcoin",
+        "hash": "fa2bac08c22182e738a8cabf1b24a9dbf3b092d2",
+        "author": "MarcoFalke",
+        "date": "2023-12-11T17:41:54+01:00",
+        "message": "refactor: Avoid copy/move in fs.h\n\nThe operator accepts a const& reference, so no copy or move is needed.\nSee https://en.cppreference.com/w/cpp/filesystem/path/append",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/util/fs.h"
+        ],
+        "github_commit_url": "https://github.com/bitcoin/bitcoin/commit/fa2bac08c22182e738a8cabf1b24a9dbf3b092d2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "unknown_function"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    }
+]

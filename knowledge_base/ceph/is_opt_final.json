@@ -1,0 +1,146 @@
+[
+    {
+        "repository_name": "ceph",
+        "hash": "247ace17086ddddd6b7bda44a067d4b1eaa238fd",
+        "author": "NitzanMordhai",
+        "date": "2023-12-21T10:08:53+00:00",
+        "message": "mgr/BaseMgrModule: Optimize CPython Call in Finish Function\n\nRemove CPython overhead packing tuple during the 'finish' function to\nimprove memory consumption when we deal with long-string outputs.\nWhen modules like Restful return large amounts of output the use\nof PyObject_CallFunction without createing PyObject will reduce the\ntime the memory held by the mgr.\n\nFixes: https://tracker.ceph.com/issues/59580\nSigned-off-by: Nitzan Mordechai <nmordech@redhat.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/mgr/BaseMgrModule.cc"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/247ace17086ddddd6b7bda44a067d4b1eaa238fd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MonCommandCompletion::finish"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 14,
+        "total_changed_lines": 19,
+        "net_line_change": -9,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "ceph",
+        "hash": "26bb7bc6e6827a3db7611218f4b23b15feb42648",
+        "author": "Casey Bodley",
+        "date": "2023-05-16T08:27:29-04:00",
+        "message": "rgw: use string_view to parse Accept header\n\navoid copying the header into a separate buffer to do comparisons\n\nFixes: https://tracker.ceph.com/issues/59490\n\nSigned-off-by: Casey Bodley <cbodley@redhat.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rgw/rgw_rest.cc"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/26bb7bc6e6827a3db7611218f4b23b15feb42648",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RGWHandler_REST::allocate_formatter"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 9,
+        "total_changed_lines": 16,
+        "net_line_change": -2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "ceph",
+        "hash": "27feea13ff0fe9690bc099e3692ffbd5db5e51e4",
+        "author": "Max Kellermann",
+        "date": "2024-10-18T09:49:40+02:00",
+        "message": "MDS/CDir: return as early as possible from CDir::should_split_fast()\n\nAll we want to know is whether we're above the `fast_limit`; if we're\nabove that, we don't need to know how many exactly.\n\nBy returning early instead of iterating over all entries, a lot of CPU\ntime can be saved.  In a microbenchmark where `fio` was used to create\nthousands of files, the CPU usage of `CDir::should_split_fast()` went\nfrom 6% to less than 1% in the `perf report`.\n\nSigned-off-by: Max Kellermann <max.kellermann@ionos.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/mds/CDir.cc"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/27feea13ff0fe9690bc099e3692ffbd5db5e51e4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CDir::should_split_fast"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "ceph",
+        "hash": "601bcc9db3a1fb8b6798eb528f9b15d7d5388ea4",
+        "author": "Patrick Donnelly",
+        "date": "2023-08-01T11:16:00-04:00",
+        "message": "mds: optimize segment lookup\n\nSigned-off-by: Patrick Donnelly <pdonnell@redhat.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/mds/MDLog.h"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/601bcc9db3a1fb8b6798eb528f9b15d7d5388ea4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "ceph",
+        "hash": "7ba05a29163e1a81fb449e3231200e0bf55c1200",
+        "author": "Casey Bodley",
+        "date": "2023-09-22T15:27:40-04:00",
+        "message": "rgw: s3website doesn't prefetch for web_dir() check\n\nthis function only needs to check for existence of the given path.\nthe sal::Object is destroyed before the function returns, so it's\nwasteful to prefetch its data\n\nFixes: https://tracker.ceph.com/issues/62938\n\nSigned-off-by: Casey Bodley <cbodley@redhat.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rgw/rgw_rest_s3.cc"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/7ba05a29163e1a81fb449e3231200e0bf55c1200",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RGWHandler_REST_S3Website::web_dir"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 1,
+        "total_changed_lines": 1,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "ceph",
+        "hash": "e21cfa770570f7e7410b830b11edee17e80dead2",
+        "author": "Xuehan Xu",
+        "date": "2023-07-24T09:43:37+08:00",
+        "message": "crimson/net: set TCP_NODELAY according to ms_tcp_nodelay\n\nThere are cases in which we need low latency of an individual op, like\nupdating RBD image's object map which would block other ops for a\nobject not created yet. We need to make sure the rbd-object-map-update\nlike ops have as low latency as possible\n\nFixes: https://tracker.ceph.com/issues/62098\nSigned-off-by: Xuehan Xu <xuxuehan@qianxin.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/crimson/net/Socket.cc"
+        ],
+        "github_commit_url": "https://github.com/ceph/ceph/commit/e21cfa770570f7e7410b830b11edee17e80dead2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Socket::Socket"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    }
+]

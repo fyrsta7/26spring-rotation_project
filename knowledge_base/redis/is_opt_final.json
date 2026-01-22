@@ -1,0 +1,1994 @@
+[
+    {
+        "repository_name": "redis",
+        "hash": "003cc8a4f575cdff6a79ce5c856bf0e24fe497df",
+        "author": "antirez",
+        "date": "2013-08-27T09:31:55+02:00",
+        "message": "Only run the fast active expire cycle if master & enabled.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/003cc8a4f575cdff6a79ce5c856bf0e24fe497df",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "beforeSleep"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "009db6764504746d64fef7e6ccf661f7882bd72e",
+        "author": "antirez",
+        "date": "2011-04-15T18:08:24+02:00",
+        "message": "addReplyLongLong optimized to return shared objects when the value to reply is 0 or 1",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/009db6764504746d64fef7e6ccf661f7882bd72e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addReplyLongLong"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "04056b767fbcdc1df6fc536467234c04d88bee9d",
+        "author": "sundb",
+        "date": "2020-11-30T23:03:53+02:00",
+        "message": "BITOP speedup when or/and output is 0/255, stop processing further keys (#8110)\n\nwhen performing the and operation, if the output is 0, we can jump out of the loop.\r\nwhen performing an or operation, if the output is 0xff, we can jump out of the loop.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bitops.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/04056b767fbcdc1df6fc536467234c04d88bee9d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "bitopCommand"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 2,
+        "total_changed_lines": 15,
+        "net_line_change": 11,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "077f9654264d601a87b801f219e27b6097e9c861",
+        "author": "antirez",
+        "date": "2020-03-27T16:35:03+01:00",
+        "message": "Precise timeouts: fast exit for clientsHandleShortTimeout().",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/server.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/077f9654264d601a87b801f219e27b6097e9c861",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "clientsHandleShortTimeout"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "0a942f17516c034a7868bbc68243b5f8a8d06f8d",
+        "author": "Salvatore Sanfilippo",
+        "date": "2017-04-18T10:56:57+02:00",
+        "message": "Merge pull request #3949 from spinlock/unstable-rdb-encoding\n\nrdb: saving skiplist in reversed order to accelerate the deserialisation process",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rdb.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/0a942f17516c034a7868bbc68243b5f8a8d06f8d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rdbSaveObject"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 8,
+        "total_changed_lines": 17,
+        "net_line_change": 1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "11b3325e9999721d35ec64afac7b917664f6291b",
+        "author": "Qu Chen",
+        "date": "2020-12-17T21:58:58+02:00",
+        "message": "Not over-allocate client query buffer when reading large objects. (#5954)\n\nIn response to large client query buffer optimization introduced in 1898e6c. The calculation of the amount of\r\nremaining bytes we need to write to the query buffer was calculated wrong, as a result we are unnecessarily\r\ngrowing the client query buffer by sdslen(c->querybuf) always. This fix corrects that behavior.\r\n\r\nPlease note the previous behavior prior to the before-mentioned change was correctly calculating the remaining\r\nadditional bytes, and this change makes that calculate to be consistent.\r\n\r\nUseful context, the argument of size `ll` starts at qb_pos (which is now the beginning of the sds), but much of it\r\nmay have already been read from the socket, so we only need to grow the sds for the remainder of it.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/11b3325e9999721d35ec64afac7b917664f6291b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "processMultibulkBuffer"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1222b6087385aa431a412a9e9b59cf29ce55210e",
+        "author": "judeng",
+        "date": "2023-04-16T13:02:47+03:00",
+        "message": "improve performance of keys command by using static objects (#12036)\n\nImprove performance by avoiding redundancy memory malloc/free",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1222b6087385aa431a412a9e9b59cf29ce55210e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "keysCommand"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 5,
+        "total_changed_lines": 9,
+        "net_line_change": -1,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "137fd86a6133b4a83c2a95215241c9906ec6877f",
+        "author": "Dvir Volk",
+        "date": "2016-05-19T13:51:55+03:00",
+        "message": "optimized amFree even further",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/module.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/137fd86a6133b4a83c2a95215241c9906ec6877f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "autoMemoryFreed"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 4,
+        "total_changed_lines": 13,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "15b993f1ef6ec436c1c2f411232b27d150a6c168",
+        "author": "Yanqi Lv",
+        "date": "2023-12-08T17:48:52+08:00",
+        "message": "Optimize dictExpand of empty dict (#12847)\n\nIf a dict is empty before `dictExpand`, we don't need to do rehashing\r\nactually. We can just create a new dict and set it as ht_table[0] to\r\nskip incremental rehashing and free the memory quickly.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/15b993f1ef6ec436c1c2f411232b27d150a6c168",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_dictExpand"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 0,
+        "total_changed_lines": 11,
+        "net_line_change": 11,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "16559b461521625271430d7d4926b632f3a326dd",
+        "author": "antirez",
+        "date": "2014-10-03T12:11:13+01:00",
+        "message": "INCR: Modify incremented object in-place when possible.\n\nHowever we don't try to do this if the integer is already inside a range\nrepresentable with a shared integer.\n\nThe performance gain appears to be around ~15% in micro benchmarks,\nhowever in the long run this also helps to improve locality, so should\nhave more, hard to measure, benefits.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/16559b461521625271430d7d4926b632f3a326dd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "incrDecrCommand"
+        ],
+        "added_lines": 15,
+        "deleted_lines": 5,
+        "total_changed_lines": 20,
+        "net_line_change": 10,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "181300d4a7506f7214538178ed79b8f57a49be8a",
+        "author": "Brochen",
+        "date": "2014-12-10T11:19:13+08:00",
+        "message": "Update sds.c\n\nin the case (all chars of the string s found in 'cset' ),\r\nline[573] will no more do the same thing line[572] did.\r\nthis will be more faster especially in the case that the string s is very long and all chars of string s found in 'cset'",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/181300d4a7506f7214538178ed79b8f57a49be8a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdstrim"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1b6bdff48dcc333affab02b945821eb865529de2",
+        "author": "zhaozhao.zz",
+        "date": "2023-08-05T10:00:54+03:00",
+        "message": "optimize the check of kill pubsub clients after modifying ACL rules (#12457)\n\nif there are no subscribers, we can ignore the operation",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/acl.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1b6bdff48dcc333affab02b945821eb865529de2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ACLKillPubsubClientsIfNeeded"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1bcf67a75f775b342653505465b5e8ee03974809",
+        "author": "antirez",
+        "date": "2015-02-11T10:52:26+01:00",
+        "message": "dict.c: dictGetRandomKeys() optimization for big->small table case.\n\nRelated to issue #2306.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1bcf67a75f775b342653505465b5e8ee03974809",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dictGetRandomKeys"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 1,
+        "total_changed_lines": 9,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1bd0b54957ea71ac69d30d91806936161ac2b65f",
+        "author": "zhaozhao.zz",
+        "date": "2023-11-27T12:12:12+08:00",
+        "message": "Optimize the efficiency of active expiration when databases exceeds 16. (#12738)\n\nCurrently, when the number of databases exceeds 16,\r\nthe efficiency of cleaning expired keys is relatively low.\r\n\r\nThe reason is that by default only 16 databases are scanned when\r\nattempting to clean expired keys (CRON_DBS_PER_CALL is 16). But users\r\nmay set databases higher than 16, such as 256, but it does not\r\nnecessarily mean that all 256 databases have expiration time set. If\r\nonly one database has expiration time set, this database needs 16\r\nactiveExpireCycle rounds in order to be scanned once, and 15 of those\r\nrounds are meaningless.\r\n\r\nTo optimize the efficiency of expiration in such scenarios, we use dbs_per_call\r\nto control the number of databases with expired keys being scanned.\r\n\r\nAdditionally, add a condition to limit the maximum number of rounds\r\nto server.dbnum to prevent excessive spinning. This ensures that even if\r\nonly one database has expired keys, it can be triggered within a single cron job.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/expire.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1bd0b54957ea71ac69d30d91806936161ac2b65f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "activeExpireCycle"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 1,
+        "total_changed_lines": 10,
+        "net_line_change": 8,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1e4ba6e7e64afa5e94987c09ac69469209791203",
+        "author": "antirez",
+        "date": "2014-05-07T16:12:32+02:00",
+        "message": "Scripting: Use faster API for Lua client c->argv creation.\n\nReplace the three calls to Lua API lua_tostring, lua_lua_strlen,\nand lua_isstring, with a single call to lua_tolstring.\n\n~ 5% consistent speed gain measured.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1e4ba6e7e64afa5e94987c09ac69469209791203",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "luaRedisGenericCommand"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "1f7d2c1e27a5378c5db438cb9d1a00fc30f1d598",
+        "author": "antirez",
+        "date": "2013-03-09T11:48:54+01:00",
+        "message": "Optimize inner loop of activeExpireCycle() for no-expires case.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/1f7d2c1e27a5378c5db438cb9d1a00fc30f1d598",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "activeExpireCycle"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "20d286f77eabccd657be66d3193556ea7ebe4d26",
+        "author": "Shuning",
+        "date": "2022-10-18T13:55:49+03:00",
+        "message": "keyIsExpired checks server.loading before calling getExpire (#11393)\n\nSeems excessive to call getExpire if we don't need it.\r\nThis can maybe have some speedup on AOF file loading (saving a dictFind call)\r\n\r\nCo-authored-by: lvshuning <lvshuning@meituan.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/20d286f77eabccd657be66d3193556ea7ebe4d26",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "keyIsExpired"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "227b4293647d51244771d16f0ad14bc94a2b3ad9",
+        "author": "antirez",
+        "date": "2012-08-21T17:31:44+02:00",
+        "message": "redis-benchmark: disable big buffer cleanup in hiredis context.\n\nThis new hiredis features allows us to reuse a previous context reader\nbuffer even if already very big in order to maximize performances with\nbig payloads (Usually hiredis re-creates buffers when they are too big\nand unused in order to save memory).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis-benchmark.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/227b4293647d51244771d16f0ad14bc94a2b3ad9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "createClient"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "23ec36909e54a23d90a36f3426bd4ca6b4e643a6",
+        "author": "spinlock",
+        "date": "2017-04-17T13:22:34+08:00",
+        "message": "rdb: saving skiplist in reversed order to accelerate the deserialisation process",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/rdb.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/23ec36909e54a23d90a36f3426bd4ca6b4e643a6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rdbSaveObject"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 7,
+        "total_changed_lines": 15,
+        "net_line_change": 1,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "252981914f8f3e5b6891ee14fcc3ac20f59ac262",
+        "author": "yoav-steinberg",
+        "date": "2021-10-11T13:09:18+03:00",
+        "message": "XADD - skip rewrite the id arg if it was given and is valid. (#9599)\n\nWhen calling `XADD` with a predefined id (instead of `*`) there's no need to run\r\nthe code which replaces the supplied id with itself. Only when we pass a wildcard\r\nid we need to do this.\r\nFor apps which always supply their own id this is a slight optimization.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_stream.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/252981914f8f3e5b6891ee14fcc3ac20f59ac262",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "xaddCommand"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "2fe9b7989792d1a722d5863734e379c15d57b56a",
+        "author": "Salvatore Sanfilippo",
+        "date": "2016-06-23T08:59:38+02:00",
+        "message": "Merge pull request #3244 from dvirsky/optimize_autoMemoryFreed\n\nOptimized autoMemoryFreed loop",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/module.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/2fe9b7989792d1a722d5863734e379c15d57b56a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "autoMemoryFreed"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 4,
+        "total_changed_lines": 16,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "2fec7d9c6c630db3bcb13a07a08c39404abad447",
+        "author": "Oran Agra",
+        "date": "2019-06-02T15:27:38+03:00",
+        "message": "Jemalloc: Avoid blocking on background thread lock for stats.\n\nBackground threads may run for a long time, especially when the # of dirty pages\nis high.  Avoid blocking stats calls because of this (which may cause latency\nspikes).\n\nsee https://github.com/jemalloc/jemalloc/issues/1502\n\ncherry picked from commit 1a71533511027dbe3f9d989659efeec446915d6b",
+        "modified_files_count": 1,
+        "modified_files": [
+            "deps/jemalloc/src/background_thread.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/2fec7d9c6c630db3bcb13a07a08c39404abad447",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "background_thread_stats_read"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "343d3bd287b701ff3900527b5c920092f66fb592",
+        "author": "antirez",
+        "date": "2012-05-24T15:19:58+02:00",
+        "message": "popcount() optimization for speed.\n\nWe run the array by 32 bit words instead of processing it byte per byte.\nIf the code is compiled using GCC __builtin_popcount() builtin function\nis used instead.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bitop.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/343d3bd287b701ff3900527b5c920092f66fb592",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "popcount"
+        ],
+        "added_lines": 18,
+        "deleted_lines": 2,
+        "total_changed_lines": 20,
+        "net_line_change": 16,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "34d5804d4c85d077b6af6265ebd86f35ecca89de",
+        "author": "antirez",
+        "date": "2017-11-03T10:19:27+01:00",
+        "message": "SDS: improve sdsRemoveFreeSpace() to avoid useless data copy.\n\nSince SDS v2, we no longer have a single header, so the function to\nrewrite the SDS in terms of the minimum space required, instead of just\nusing realloc() and let the underlying allocator decide what to do,\nwas doing an allocation + copy every time the minimum possible header\nneeded to represent the string was different than the current one.\nThis could be often a bit wasteful, because if we go, for instance, from\nthe 32 bit fields header to the 16 bit fields header, the overhead of\nthe header is normally very small. With this commit we call realloc\ninstead, unless the change in header size is very significant in relation\nto the string length.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/34d5804d4c85d077b6af6265ebd86f35ecca89de",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdsRemoveFreeSpace"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 5,
+        "total_changed_lines": 17,
+        "net_line_change": 7,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "38b2e65e15b5be11ebefbaedeb761ece2066c747",
+        "author": "antirez",
+        "date": "2013-08-27T12:15:13+02:00",
+        "message": "tryObjectEncoding(): optimize sds strings if possible.\n\nWhen no encoding is possible, at least try to reallocate the sds string\nwith one that does not waste memory (with free space at the end of the\nbuffer) when the string is large enough.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/object.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/38b2e65e15b5be11ebefbaedeb761ece2066c747",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tryObjectEncoding"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 1,
+        "total_changed_lines": 17,
+        "net_line_change": 15,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "3c68de9b0107a0a15eef09edf86464d1434048e7",
+        "author": "antirez",
+        "date": "2010-02-02T12:05:15+01:00",
+        "message": "faster Set loading time from .rdb file resizing the hash table to the right size before loading elements",
+        "modified_files_count": 1,
+        "modified_files": [
+            "redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/3c68de9b0107a0a15eef09edf86464d1434048e7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "40531be0e338556df5510f49f4472ea50713962f",
+        "author": "antirez",
+        "date": "2011-05-25T12:32:48+02:00",
+        "message": "call lua_gc() for incremental garbage collection. Likely there is to tune this at some point.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/40531be0e338556df5510f49f4472ea50713962f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "evalCommand"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "40abeb1f40fecbb772630a7e9d8d4bb82f7d11a1",
+        "author": "antirez",
+        "date": "2014-05-07T16:12:32+02:00",
+        "message": "Scripting: simpler reply buffer creation in luaRedisGenericCommand().\n\nIt if faster to just create the string with a single sdsnewlen() call.\nIf c->bufpos is zero, the call will simply be like sdsemtpy().",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/40abeb1f40fecbb772630a7e9d8d4bb82f7d11a1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "luaRedisGenericCommand"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 5,
+        "total_changed_lines": 7,
+        "net_line_change": -3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "40e6131ba53c001d8fa2e4ba9ddda6925a6db73b",
+        "author": "Brennan",
+        "date": "2023-05-18T09:25:56+03:00",
+        "message": "Prevent repetitive backlog trimming (#12155)\n\nWhen `replicationFeedSlaves()` serializes a command, it repeatedly calls\r\n`feedReplicationBuffer()` to feed it to the replication backlog piece by piece.\r\nIt is unnecessary to call `incrementalTrimReplicationBacklog()` for every small\r\namount of data added with `feedReplicationBuffer()` as the chance of the conditions\r\nbeing met for trimming are very low and these frequent calls add up to a notable\r\nperformance cost. Instead, we will only attempt trimming when a new block is added\r\nto the replication backlog.\r\n\r\nUsing redis-benchmark to saturate a local redis server indicated a performance\r\nimprovement of around 3-3.5% for 100 byte SET commands with this change.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/replication.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/40e6131ba53c001d8fa2e4ba9ddda6925a6db73b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "feedReplicationBuffer"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 6,
+        "total_changed_lines": 12,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "423565f7849a955cba4cce1cd1162e86c36319a3",
+        "author": "lyq2333",
+        "date": "2023-11-30T13:50:09+08:00",
+        "message": "Optimize CPU cache efficiency on dict while rehashing in dictTwoPhaseUnlinkFind (#12818)\n\nIn #5692, we optimize CPU cache efficiency on dict while rehashing but\r\nmissed the modification in dictTwoPhaseUnlinkFind.\r\n\r\nThis PR supplements it.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/423565f7849a955cba4cce1cd1162e86c36319a3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "463476933c47541c307eca47fd85e0ed4cb4f3e9",
+        "author": "Binbin",
+        "date": "2023-11-22T11:33:26+02:00",
+        "message": "Optimize dict expand check, move allow check after the thresholds check (#12789)\n\ndictExpandAllowed (for the main db dict and the expire dict) seems to\r\ninvolve a few function calls and memory accesses, and we can do it only\r\nafter the thresholds checks and can get some performance improvements.\r\n\r\nA simple benchmark test: there are 11032768 fixed keys in the database,\r\nstart a redis-server with `--maxmemory big_number --save \"\"`,\r\nstart a redis-benchmark with `-P 100 -r 1000000000 -t set -n 5000000`,\r\ncollect `throughput summary: n requests per second` result.\r\n\r\nAfter five rounds of testing:\r\n```\r\nunstable     this PR\r\n848032.56    897988.56\r\n854408.69    913408.88\r\n858663.94    914076.81\r\n871839.56    916758.31\r\n882612.56    920640.75\r\n```\r\n\r\nWe can see a 5% performance improvement in general condition.\r\nBut note we'll still hit the degradation when we over the thresholds.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/463476933c47541c307eca47fd85e0ed4cb4f3e9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_dictExpandIfNeeded"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "46b07cbb5c52a6a9321ab8c2134d3c6be9ddae86",
+        "author": "Dvir Volk",
+        "date": "2016-05-19T12:16:14+03:00",
+        "message": "Optimized autoMemoryFreed loop",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/module.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/46b07cbb5c52a6a9321ab8c2134d3c6be9ddae86",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "autoMemoryFreed"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "48c49c485155ba9e4a7851fd1644c171674c6f0f",
+        "author": "antirez",
+        "date": "2014-05-07T16:12:32+02:00",
+        "message": "Scripting: cache argv in luaRedisGenericCommand().\n\n~ 4% consistently measured speed improvement.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/48c49c485155ba9e4a7851fd1644c171674c6f0f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "luaRedisGenericCommand"
+        ],
+        "added_lines": 15,
+        "deleted_lines": 4,
+        "total_changed_lines": 19,
+        "net_line_change": 11,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "4a64286c363267acff39b1f2ec9d4b47640871c0",
+        "author": "antirez",
+        "date": "2014-02-11T10:09:17+01:00",
+        "message": "Cluster: configEpoch assignment in SETNODE improved.\n\nAvoid to trash a configEpoch for every slot migrated if this node has\nalready the max configEpoch across the cluster.\n\nStill work to do in this area but this avoids both ending with a very\nhigh configEpoch without any reason and to flood the system with fsyncs.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cluster.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/4a64286c363267acff39b1f2ec9d4b47640871c0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "clusterCommand"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "4befe73b60f7e02dd304ea0c19febce8fea0bd13",
+        "author": "antirez",
+        "date": "2013-08-06T12:59:04+02:00",
+        "message": "activeExpireCycle(): fix about fast cycle early start.\n\nWe don't want to repeat a fast cycle too soon, the previous code was\nbroken, we need to wait two times the period *since* the start of the\nprevious cycle in order to avoid there is an even space between cycles:\n\n.-> start                   .-> second start\n|                           |\n+-------------+-------------+--------------+\n| first cycle |    pause    | second cycle |\n+-------------+-------------+--------------+\n\nThe second and first start must be PERIOD*2 useconds apart hence the *2\nin the new code.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/4befe73b60f7e02dd304ea0c19febce8fea0bd13",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "activeExpireCycle"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "4f427bc298b0cfc45bd25381cd04df86868c0843",
+        "author": "antirez",
+        "date": "2015-02-11T10:52:26+01:00",
+        "message": "dict.c: don't try buckets that are empty for sure in dictGetRandomKey().\n\nThis is very similar to the optimization applied to dictGetRandomKeys,\nbut applied to the single key variant.\n\nRelated to issue #2306.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/4f427bc298b0cfc45bd25381cd04df86868c0843",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dictGetRandomKey"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "4f56f035a70293be6fbc20a0545c1be53a131e7c",
+        "author": "antirez",
+        "date": "2015-02-27T16:09:17+01:00",
+        "message": "String: use new sdigits10() API in stringObjectLen().\n\nShould be much faster, and regardless, the code is more obvious now\ncompared to generating a string just to get the return value of the\nll2stirng() function.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/object.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/4f56f035a70293be6fbc20a0545c1be53a131e7c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "stringObjectLen"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "51829ed3f09bb4381f075900521bcaafee8819bb",
+        "author": "Aman Gupta",
+        "date": "2009-05-17T12:25:05-07:00",
+        "message": "Optimize SDIFF to return as soon as the result set is empty",
+        "modified_files_count": 1,
+        "modified_files": [
+            "redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/51829ed3f09bb4381f075900521bcaafee8819bb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sunionDiffGenericCommand"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "5317a582cf1a50f7be077e333eac3694d76a8d76",
+        "author": "antirez",
+        "date": "2014-03-29T12:17:56+01:00",
+        "message": "Remove a few useless operations from hllCount() fast path.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/hyperloglog.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/5317a582cf1a50f7be077e333eac3694d76a8d76",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "hllCount"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 4,
+        "total_changed_lines": 8,
+        "net_line_change": 0,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "5ea3c3db15ad2b67ae3c027ba8f10f3ea19d18f9",
+        "author": "zhaozhao.zz",
+        "date": "2021-07-06T15:01:37+08:00",
+        "message": "a little optimization in touchAllWatchedKeysInDb (#9200)\n\ntouch keys only if the key is in one of the dbs,\r\nin case rewind the list when the key doesn't exist.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/multi.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/5ea3c3db15ad2b67ae3c027ba8f10f3ea19d18f9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "touchAllWatchedKeysInDb"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 8,
+        "total_changed_lines": 16,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "6c7847a18373e6757d2cd2bf21ad4c9272163f29",
+        "author": "Salvatore Sanfilippo",
+        "date": "2018-06-14T13:32:00+02:00",
+        "message": "Merge pull request #5018 from soloestoy/optimize-reply\n\noptimize reply list memory usage",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/6c7847a18373e6757d2cd2bf21ad4c9272163f29",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_addReplyStringToList"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "6dcc6898beaadac39a8eb758cbf27e2aa5386831",
+        "author": "WuYunlong",
+        "date": "2020-08-08T22:11:14+03:00",
+        "message": "Optimize calls to mstime in trackInstantaneousMetric() (#6472)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/server.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/6dcc6898beaadac39a8eb758cbf27e2aa5386831",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "trackInstantaneousMetric"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "76fda9f8e10eb9cf1299fa6ca04f60d79462759e",
+        "author": "antirez",
+        "date": "2014-05-07T16:12:32+02:00",
+        "message": "Scripting: don't call lua_gc() after Lua script run.\n\nCalling lua_gc() after every script execution is too expensive, and\napparently does not make the execution smoother: the same peak latency\nwas measured before and after the commit.\n\nThis change accounts for scripts execution speedup in the order of 10%.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/76fda9f8e10eb9cf1299fa6ca04f60d79462759e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "evalGenericCommand"
+        ],
+        "added_lines": 17,
+        "deleted_lines": 1,
+        "total_changed_lines": 18,
+        "net_line_change": 16,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "7cfeb8cccf945e5de7210d8bd5a398acfd0959d8",
+        "author": "antirez",
+        "date": "2011-09-14T15:10:28+02:00",
+        "message": "Optimize LRANGE to scan the list starting from the head or the tail in order to traverse the minimal number of elements. Thanks to Didier Spezia for noticing the problem and providing a patch.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_list.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/7cfeb8cccf945e5de7210d8bd5a398acfd0959d8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "lrangeCommand"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 1,
+        "total_changed_lines": 7,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "7f88923b40cf3d7730ab3e1843d42afc58840cb3",
+        "author": "Kamil Cudnik",
+        "date": "2021-09-09T12:47:26+03:00",
+        "message": "Lua: Use all characters to calculate string hash (#9449)\n\nFor a lot of long strings which have same prefix which extends beyond\r\nhashing limit, there will be many hash collisions which result in\r\nperformance degradation using commands like KEYS",
+        "modified_files_count": 1,
+        "modified_files": [
+            "deps/lua/src/lstring.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/7f88923b40cf3d7730ab3e1843d42afc58840cb3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "luaS_newlstr"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "80e87a461a7d2ee54430127bdb6ac014778c54c5",
+        "author": "antirez",
+        "date": "2011-07-22T12:11:40+02:00",
+        "message": "Close the listening sockets. Apparently this allows faster restarts.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/80e87a461a7d2ee54430127bdb6ac014778c54c5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "prepareForShutdown"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "828ae842b95654f66b03e786588c97d7a0c386a2",
+        "author": "ZheNing Hu",
+        "date": "2021-04-25T10:53:53+03:00",
+        "message": "Improve ziplistRandomPairs code logic (#8851)\n\nAfter sorting, each item in picks is sorted according\r\nto its index.\r\n\r\nIn the original code logic, we traverse from the first\r\nelement of ziplist until `zipindex == picks[pickindex].index`.\r\n\r\nWe may be able to start directly in `picks[0].index`,\r\nthis will bring small performance improvement.\r\n\r\nSigned-off-by: ZheNing Hu <adlternative@gmail.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/ziplist.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/828ae842b95654f66b03e786588c97d7a0c386a2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ziplistRandomPairs"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "8811d49009fd0bbf8ce0877e6d5bf3e54c29e85a",
+        "author": "antirez",
+        "date": "2013-08-27T12:36:52+02:00",
+        "message": "Remove useful check from tryObjectEncoding().\n\nWe are sure the string is large, since when the sds optimization branch\nis entered it means that it was not possible to encode it as EMBSTR for\nsize concerns.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/object.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/8811d49009fd0bbf8ce0877e6d5bf3e54c29e85a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tryObjectEncoding"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "884ca601b21ec6ef4d216ae850c0cf503f762623",
+        "author": "judeng",
+        "date": "2023-01-03T09:37:47+02:00",
+        "message": "Optimize the performance of msetnx command by call lookupkey only once (#11594)\n\nThis is a small addition to #9640\r\nIt improves performance by avoiding double lookup of the the key.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/884ca601b21ec6ef4d216ae850c0cf503f762623",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "msetGenericCommand"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "88cd9ebc0964c9daf32d97631b5eeba5fd0e8b09",
+        "author": "antirez",
+        "date": "2015-02-11T10:52:26+01:00",
+        "message": "dict.c: dictGetRandomKeys() visit pattern optimization.\n\nWe use the invariant that the original table ht[0] is never populated up\nto the index before the current rehashing index.\n\nRelated to issue #2306.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/dict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/88cd9ebc0964c9daf32d97631b5eeba5fd0e8b09",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "dictGetRandomKeys"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "88e66ecf946f720db76b06dfb1a27834d16b7d61",
+        "author": "antirez",
+        "date": "2020-04-01T23:45:07+02:00",
+        "message": "LCS: 7x speedup by accessing the array with better locality.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/88e66ecf946f720db76b06dfb1a27834d16b7d61",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "lcsCommand"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "8c096b16a1ab942413020c91138398d8a23bd64e",
+        "author": "antirez",
+        "date": "2010-05-12T15:07:39+02:00",
+        "message": "If a float can be casted to a long long without rounding loss, we can use the integer conversion function to write the score on disk. This is a seriuous speedup",
+        "modified_files_count": 1,
+        "modified_files": [
+            "redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/8c096b16a1ab942413020c91138398d8a23bd64e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "rdbSaveDoubleValue"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "8f7bf2841a4a793a02a01d5c4c887a7770aa5e45",
+        "author": "antirez",
+        "date": "2017-04-14T10:43:53+02:00",
+        "message": "Cluster: decrease ping/pong traffic by trusting other nodes reports.\n\nCluster of bigger sizes tend to have a lot of traffic in the cluster bus\njust for failure detection: a node will try to get a ping reply from\nanother node no longer than when the half the node timeout would elapsed,\nin order to avoid a false positive.\n\nHowever this means that if we have N nodes and the node timeout is set\nto, for instance M seconds, we'll have to ping N nodes every M/2\nseconds. This N*M/2 pings will receive the same number of pongs, so\na total of N*M packets per node. However given that we have a total of N\nnodes doing this, the total number of messages will be N*N*M.\n\nIn a 100 nodes cluster with a timeout of 60 seconds, this translates\nto a total of 100*100*30 packets per second, summing all the packets\nexchanged by all the nodes.\n\nThis is, as you can guess, a lot... So this patch changes the\nimplementation in a very simple way in order to trust the reports of\nother nodes: if a node A reports a node B as alive at least up to\na given time, we update our view accordingly.\n\nThe problem with this approach is that it could result into a subset of\nnodes being able to reach a given node X, and preventing others from\ndetecting that is actually not reachable from the majority of nodes.\nSo the above algorithm is refined by trusting other nodes only if we do\nnot have currently a ping pending for the node X, and if there are no\nfailure reports for that node.\n\nSince each node, anyway, pings 10 other nodes every second (one node\nevery 100 milliseconds), anyway eventually even trusting the other nodes\nreports, we will detect if a given node is down from our POV.\n\nNow to understand the number of packets that the cluster would exchange\nfor failure detection with the patch, we can start considering the\nrandom PINGs that the cluster sent anyway as base line:\nEach node sends 10 packets per second, so the total traffic if no\nadditioal packets would be sent, including PONG packets, would be:\n\n    Total messages per second = N*10*2\n\nHowever by trusting other nodes gossip sections will not AWALYS prevent\npinging nodes for the \"half timeout reached\" rule all the times. The\nmath involved in computing the actual rate as N and M change is quite\ncomplex and depends also on another parameter, which is the number of\nentries in the gossip section of PING and PONG packets. However it is\npossible to compare what happens in cluster of different sizes\nexperimentally. After applying this patch a very important reduction in\nthe number of packets exchanged is trivial to observe, without apparent\nimpacts on the failure detection performances.\n\nActual numbers with different cluster sizes should be published in the\nReids Cluster documentation in the future.\n\nRelated to #3929.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cluster.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/8f7bf2841a4a793a02a01d5c4c887a7770aa5e45",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "clusterProcessGossipSection"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 0,
+        "total_changed_lines": 13,
+        "net_line_change": 13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "92ab77f8d5ae12e938a07be2280d558360c25e09",
+        "author": "antirez",
+        "date": "2013-08-08T14:33:14+02:00",
+        "message": "redis-benchmark: replace snprintf()+memcpy with faster code.\n\nThis change was profiler-driven, but the actual effect is hard to\nmeasure in real-world redis benchmark runs.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis-benchmark.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/92ab77f8d5ae12e938a07be2280d558360c25e09",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "randomizeClientKey"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 5,
+        "total_changed_lines": 15,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "9555f8f21b9f1780de307c19da268ef63f7c2ae9",
+        "author": "antirez",
+        "date": "2012-03-14T10:13:23+01:00",
+        "message": "sds.c new function sdsRemoveFreeSpace().\n\nThe new function is used in order to resize the string allocation so\nthat only the minimal allocation possible is used, removing all the free\nspace at the end of the string normally used to improve efficiency of\nconcatenation operations.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/9555f8f21b9f1780de307c19da268ef63f7c2ae9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdsMakeRoomFor"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 0,
+        "total_changed_lines": 12,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "963002d71e64ffd1491b398eea3f57a34d928464",
+        "author": "zhaozhao.zz",
+        "date": "2018-06-13T20:35:40+08:00",
+        "message": "optimize reply list memory usage",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/963002d71e64ffd1491b398eea3f57a34d928464",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_addReplyStringToList"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "99c93f34a76fd7b64847bdbb5b8828f3bb5ea09e",
+        "author": "antirez",
+        "date": "2015-05-04T12:50:44+02:00",
+        "message": "Sentinel: remove useless sentinelFlushConfig() call\n\nTo rewrite the config in the loop that adds slaves back after a master\nreset, in order to handle switching to another master, is useless: it\njust adds latency since there is an fsync call in the inner loop,\nwithout providing any additional guarantee, but the contrary, since if\nafter the first loop iteration the server crashes we end with just a\nsingle slave entry losing all the other informations.\n\nIt is wiser to rewrite the config at the end when the full new\nstate is configured.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sentinel.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/99c93f34a76fd7b64847bdbb5b8828f3bb5ea09e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sentinelResetMasterAndChangeAddress"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 4,
+        "total_changed_lines": 5,
+        "net_line_change": -3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "a15742a41b30b742d58f4ed260a4a36f02bdd9ac",
+        "author": "antirez",
+        "date": "2010-12-10T17:23:38+01:00",
+        "message": "dont take the fast path for INCR if the resulting integer will fit into a shared integer range",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/a15742a41b30b742d58f4ed260a4a36f02bdd9ac",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "incrDecrCommand"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "a317f55d25a69b55c07a49dde20989f1ac8aefe0",
+        "author": "Salvatore Sanfilippo",
+        "date": "2018-07-16T12:39:38+02:00",
+        "message": "Merge pull request #5131 from soloestoy/optimize-xdel\n\nStreams: free lp if all elements are deleted",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_stream.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/a317f55d25a69b55c07a49dde20989f1ac8aefe0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "streamIteratorRemoveEntry"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 4,
+        "total_changed_lines": 13,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "a9caca0424197e1b43cc98c5106cca5c86e3ac34",
+        "author": "antirez",
+        "date": "2014-03-24T09:44:11+01:00",
+        "message": "sdscatvprintf(): guess buflen using format length.\n\nsdscatvprintf() uses a loop where it tries to output the formatted\nstring in a buffer of the initial length, if there was not enough room,\na buffer of doubled size is tried and so forth.\n\nThe initial guess for the buffer length was very poor, an hardcoded\n\"16\". This caused the printf to be processed multiple times without a\ngood reason. Given that printf functions are already not fast, the\noverhead was significant.\n\nThe new heuristic is to use a buffer 4 times the length of the format\nbuffer, and 32 as minimal size. This appears to be a good balance for\ntypical uses of the function inside the Redis code base.\n\nThis change improved INFO command performances 3 times.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/a9caca0424197e1b43cc98c5106cca5c86e3ac34",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdscatvprintf"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "afd9e3ed3ff9ead46a233d11b45780b7585b00a3",
+        "author": "judeng",
+        "date": "2023-01-22T09:16:17+02:00",
+        "message": "Optimize the performance of sdscatrepr in printable characters (#11725)\n\nsdscatrepr is not the hot path in redis, but it's still useful to have make it less wasteful.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/afd9e3ed3ff9ead46a233d11b45780b7585b00a3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdscatrepr"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "b215a496a4fcab6b198ce4344b4c1b94c5b1eb12",
+        "author": "antirez",
+        "date": "2010-12-10T17:03:38+01:00",
+        "message": "faster INCR doing far less allocation in common cases",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/b215a496a4fcab6b198ce4344b4c1b94c5b1eb12",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "incrDecrCommand"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 1,
+        "total_changed_lines": 17,
+        "net_line_change": 15,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "b3624f5a160c2a3372ef1a0ab1858a804b7cbfc0",
+        "author": "antirez",
+        "date": "2012-05-14T16:04:41+02:00",
+        "message": "activeExpireCycle(): better precision in max time used.\n\nactiveExpireCycle() can consume no more than a few milliseconds per\niteration. This commit improves the precision of the check for the time\nelapsed in two ways:\n\n1) We check every 16 iterations instead of the main loop instead of 256.\n2) We reset iterations at the start of the function and not every time\n   we switch to the next database, so the check is correctly performed\n   every 16 iterations.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/b3624f5a160c2a3372ef1a0ab1858a804b7cbfc0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "activeExpireCycle"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "b8d743e1813abbf3d55e92e9945dc47da3ef7836",
+        "author": "antirez",
+        "date": "2011-11-02T16:52:45+01:00",
+        "message": "sdsIncrLen() / sdsMakeRoomFor() used to avoid copying to intermediate buffer while reading the client query.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/b8d743e1813abbf3d55e92e9945dc47da3ef7836",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "readQueryFromClient"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "c09b5941ce31be3cb08818533917afdeaf799575",
+        "author": "sundb",
+        "date": "2020-11-09T21:48:56-08:00",
+        "message": "optimization src/adlist.c:listJoin()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/adlist.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/c09b5941ce31be3cb08818533917afdeaf799575",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "listJoin"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 3,
+        "total_changed_lines": 7,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "c3fb48da8b76ee143d1c380ccf9899752607c5d5",
+        "author": "filipe oliveira",
+        "date": "2022-12-09T12:06:25+02:00",
+        "message": "Reduce rewriteClientCommandVector usage on EXPIRE command  (#11602)\n\nThere is overhead on Redis 7.0 EXPIRE command that is not present on 6.2.7. \r\n\r\nWe could see that on the unstable profile there are around 7% of CPU cycles\r\nspent on rewriteClientCommandVector that are not present on 6.2.7.\r\nThis was introduced in #8474.\r\nThis PR reduces the overhead by using 2X rewriteClientCommandArgument instead of\r\nrewriteClientCommandVector. In this scenario rewriteClientCommandVector creates 4 arguments.\r\nthe above usage of rewriteClientCommandArgument reduces the overhead in half.\r\n\r\nThis PR should also improve PEXPIREAT performance by avoiding at all\r\nrewriteClientCommandArgument usage. \r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/expire.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/c3fb48da8b76ee143d1c380ccf9899752607c5d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "expireGenericCommand"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 4,
+        "total_changed_lines": 17,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "c426bbf3a54939775fceac1a318f2fa22778ee08",
+        "author": "Oran Agra",
+        "date": "2019-11-14T09:46:46+02:00",
+        "message": "Slightly more efficient RM_ReplyWithEmptyString\n\ntrimming talk about RESP protocol from API docs (should be independent to that anyway)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/module.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/c426bbf3a54939775fceac1a318f2fa22778ee08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "RM_ReplyWithEmptyString"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "c49955fd77e037cf2343bb664afe2332c6f5713e",
+        "author": "antirez",
+        "date": "2014-05-07T16:12:32+02:00",
+        "message": "Scripting: replace tolower() with faster code in evalGenericCommand().\n\nThe function showed up consuming a non trivial amount of time in the\nprofiler output. After this change benchmarking gives a 6% speed\nimprovement that can be consistently measured.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/scripting.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/c49955fd77e037cf2343bb664afe2332c6f5713e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "evalGenericCommand"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "c98d4f56756f5fba18a9035aab34a853b4fae574",
+        "author": "Sun He",
+        "date": "2014-12-03T10:07:58+08:00",
+        "message": "bitops.c/bitopCommand: skip short minlen for FAST PATH",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/bitops.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/c98d4f56756f5fba18a9035aab34a853b4fae574",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "bitopCommand"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "cf0a909e2df02f7f17e173f3cae473f6df7bdff2",
+        "author": "Igor",
+        "date": "2021-03-25T07:16:03-07:00",
+        "message": "Introduce fast path to bypass expensive serveClientsBlockedOnKeyByModule call (#8689)\n\nIntroduce fast path to bypass expensive serveClientsBlockedOnKeyByModule call",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/blocked.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/cf0a909e2df02f7f17e173f3cae473f6df7bdff2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "serveClientsBlockedOnKeyByModule"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "d6f4c262a1854dffa2d6987cdae0de01837139f8",
+        "author": "antirez",
+        "date": "2010-05-16T00:59:08+02:00",
+        "message": "faster INCR with very little efforts...",
+        "modified_files_count": 1,
+        "modified_files": [
+            "redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/d6f4c262a1854dffa2d6987cdae0de01837139f8",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "incrDecrCommand"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "dd071ff6c95cbb7427e5f0c3a6ca84e3c672d87a",
+        "author": "zhaozhao.zz",
+        "date": "2018-07-25T18:13:34+08:00",
+        "message": "optimize flushdb, avoid useless loops",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/dd071ff6c95cbb7427e5f0c3a6ca84e3c672d87a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "emptyDb"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "e52a036ac636b182fff37fdb1c7177fe48d08f03",
+        "author": "Salvatore Sanfilippo",
+        "date": "2018-07-24T17:24:37+02:00",
+        "message": "Merge pull request #5154 from trevor211/optimizeMigrate\n\nDo not migrate already expired keys.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cluster.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/e52a036ac636b182fff37fdb1c7177fe48d08f03",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "migrateCommand"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 3,
+        "total_changed_lines": 10,
+        "net_line_change": 4,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "e67d06ee6be9c93fe626ad19f11b2d572d58a0ba",
+        "author": "Mingyi Kang",
+        "date": "2022-09-07T22:35:25-05:00",
+        "message": "Optimize setGenericCommand(): no need to remove the expiration entry when 'expire' is not NULL (#11244)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_string.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/e67d06ee6be9c93fe626ad19f11b2d572d58a0ba",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "setGenericCommand"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "ea31a4eae3c667ffb8c33241c5de699652710394",
+        "author": "spinlock",
+        "date": "2017-07-05T14:25:05+00:00",
+        "message": "Optimize addReplyBulkSds for better performance",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/ea31a4eae3c667ffb8c33241c5de699652710394",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "addReplyBulkSds"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f0fab99d6fd7b4310f03a2c84b465fae98d31bc0",
+        "author": "Huang Zhw",
+        "date": "2021-09-23T17:12:11+03:00",
+        "message": "Minor optimize getMaxmemoryState, when server.maxmemory is not set (#9533)\n\nMinor optimize getMaxmemoryState, when server.maxmemory is not set,\r\ndon't count AOF and replicas buffers.\r\n\r\nCo-authored-by: Viktor S\u00f6derqvist <viktor@zuiderkwast.se>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/evict.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f0fab99d6fd7b4310f03a2c84b465fae98d31bc0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getMaxmemoryState"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 10,
+        "total_changed_lines": 17,
+        "net_line_change": -3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f1c9a203b2eda46c2980582d3bdb12b6e66f4aaf",
+        "author": "Matt Stancliff",
+        "date": "2014-02-28T17:47:41-05:00",
+        "message": "Force INFO used_memory_peak to match peak memory\n\nused_memory_peak only updates in serverCron every server.hz,\nbut Redis can use more memory and a user can request memory\nINFO before used_memory_peak gets updated in the next\ncron run.\n\nThis patch updates used_memory_peak to the current\nmemory usage if the current memory usage is higher\nthan the recorded used_memory_peak value.\n\n(And it only calls zmalloc_used_memory() once instead of\ntwice as it was doing before.)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/redis.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f1c9a203b2eda46c2980582d3bdb12b6e66f4aaf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "genRedisInfoString"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 2,
+        "total_changed_lines": 9,
+        "net_line_change": 5,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f2d59c4f91ef4ca1555abd04673d729f9d6f4af1",
+        "author": "Chen Tianjie",
+        "date": "2023-12-07T19:48:15+08:00",
+        "message": "Avoid unnecessary slot computing in KEYS command. (#12843)\n\nIf not in cluster mode, there is no need to compute slot.\r\n\r\nA bit optimization for #12754",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f2d59c4f91ef4ca1555abd04673d729f9d6f4af1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "keysCommand"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f35abe2ff5d7f0389991aee1d6b4ccec8cb8ecf9",
+        "author": "antirez",
+        "date": "2014-07-01T17:12:09+02:00",
+        "message": "Latency monitor: don't add new samples in the same second.\n\nInstead we update the old sample with the new latency if it is greater.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/latency.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f35abe2ff5d7f0389991aee1d6b4ccec8cb8ecf9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "latencyAddSample"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 0,
+        "total_changed_lines": 11,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f49f0a6f729720cc1462d30d036c8ba2baef361b",
+        "author": "antirez",
+        "date": "2019-10-02T11:30:20+02:00",
+        "message": "SDS: make sdscatfmt() faster by pre-allocating a bit.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sds.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f49f0a6f729720cc1462d30d036c8ba2baef361b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sdscatfmt"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "f5160ed0aa3aa6f9cff9dad5f595ab0927a66406",
+        "author": "tzongw",
+        "date": "2021-10-06T10:15:03+03:00",
+        "message": "improve latency when a client is unblocked by module timer (#9593)\n\nScenario:\r\n1. client block on command `XREAD BLOCK 0 STREAMS mystream  $`\r\n2. in a module, calling `XADD mystream * field value` via lua from a timer callback\r\n3. client will receive response after some latency up to 100ms\r\n\r\nReason:\r\nWhen `XADD` signal the key `mystream` as ready, `beforeSleep` in next eventloop will call\r\n`handleClientsBlockedOnKeys` to unblock the client and add pending data to write but not\r\nactually install a write handler, so next redis will block in `aeApiPoll` up to 100ms given `hz`\r\nconfig as default 10, pending data will be sent in another next eventloop by\r\n`handleClientsWithPendingWritesUsingThreads`.\r\n\r\nCalling `handleClientsBlockedOnKeys` before `handleClientsWithPendingWritesUsingThreads`\r\nin `beforeSleep` solves the problem.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/server.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/f5160ed0aa3aa6f9cff9dad5f595ab0927a66406",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "beforeSleep"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 5,
+        "total_changed_lines": 10,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "fe408ad23f69f2c9a416fcc8cebe8d98f15574b4",
+        "author": "Salvatore Sanfilippo",
+        "date": "2018-07-25T16:30:11+02:00",
+        "message": "Merge pull request #4852 from soloestoy/optimize-flushall\n\noptimize flushdb, avoid useless loops",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/db.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/fe408ad23f69f2c9a416fcc8cebe8d98f15574b4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "emptyDb"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "redis",
+        "hash": "feb032fd42d24959c0ba141d8fb5d621f0570345",
+        "author": "Henry",
+        "date": "2022-03-02T10:40:39+02:00",
+        "message": "A faster and more robust code of zslRandomLevel using RAND_MAX (#5539)\n\n1. since ZSKIPLIST_P is float, using it directly inside the condition used to causes floating point code to be used (gcc/x86)\r\n2. In some operating system(eg.Windows), the largest value returned from random() is 0x7FFF(15bit), so after bitwise AND with 0xFFFF, the probability of the less operation returning true in the while loop's condition is no more equal to ZSKIPLIST_P.\r\n3. In case some library has random() returning int in range [0~ZSKIPLIST_P*65535], the while loop will be an infinite loop.\r\n4. on Linux where RAND_MAX is higher than 0xFFFF, this change actually improves precision (despite not matching the result against a float value)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/t_zset.c"
+        ],
+        "github_commit_url": "https://github.com/redis/redis/commit/feb032fd42d24959c0ba141d8fb5d621f0570345",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "zslRandomLevel"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]

@@ -1,0 +1,98 @@
+[
+    {
+        "repository_name": "valkey",
+        "hash": "3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+        "author": "Binbin",
+        "date": "2024-03-13T08:30:20+02:00",
+        "message": "Add KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires kvstore (#13072)\n\nCurrently (following #11695, and #12822), keys kvstore and expires\r\nkvstore both flag with ON_DEMAND, it means that a cluster node will\r\nonly allocate a dict when the slot is assigned to it and populated,\r\nbut on the other hand, when the slot is unassigned, the dict will\r\nremain allocated.\r\n\r\nWe considered releasing the dict when the slot is unassigned, but it\r\ncauses complications on replicas. On the other hand, from benchmarks\r\nwe conducted, it looks like the performance impact of releasing the\r\ndict when it becomes empty and re-allocate it when a key is added\r\nagain, isn't huge.\r\n\r\nThis PR add KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires\r\nkvstore.\r\n\r\nThe impact is about about 2% performance drop, for this hopefully\r\nuncommon scenario.\r\n\r\n---------\r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/server.c"
+        ],
+        "github_commit_url": "https://github.com/valkey-io/valkey/commit/3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "initServer"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 3,
+        "total_changed_lines": 11,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "valkey",
+        "hash": "3cca26881a1d9631a614352fc812e75d6ba2710b",
+        "author": "uriyage",
+        "date": "2024-07-23T22:24:41-07:00",
+        "message": "Improve CPU usage in tests with IO threads (#823)\n\nCurrently, when running tests with IO threads, we set the\r\n`events-per-io-thread` config to 0. This activated IO threads 100% of\r\nthe time, regardless of the number of IO events.\r\n\r\nThis is causing issues with tests running multiple server instances, as\r\nit drained machine CPU resources. As a result, tests could have very\r\nlong runtimes, especially on limited instances.\r\nFor example, in\r\nhttps://github.com/valkey-io/valkey/actions/runs/10066315827/job/27827426986?pr=804,\r\nthe `Cluster consistency during live resharding` test ran for 1 hour and\r\n41 minutes.\r\n\r\nThis PR addresses the issue by:\r\n1. Deactivating IO threads when there are no IO events\r\n2. Continuing to offload all IO events to IO threads\r\n\r\nTested on 16 cores instance, after implementing these changes, the\r\nruntime for the `Cluster consistency during live resharding` test\r\ndropped from 7 minutes an 14 seconds to 3 minutes and 28 seconds.\r\n\r\nSigned-off-by: Uri Yagelnik <uriy@amazon.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/io_threads.c"
+        ],
+        "github_commit_url": "https://github.com/valkey-io/valkey/commit/3cca26881a1d9631a614352fc812e75d6ba2710b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "adjustIOThreadsByEventLoad"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "valkey",
+        "hash": "9c60fcdae241a7e1dedc2f51d19491d168d66b9b",
+        "author": "Lipeng Zhu",
+        "date": "2024-10-25T11:13:28+02:00",
+        "message": "Do security attack check only when command not found to reduce the critical path (#1212)\n\nWhen explored the cycles distribution for main thread with io-threads\r\nenabled. We found this security attack check takes significant time in\r\nmain thread, **~3%** cycles were used to do the commands security check\r\nin main thread.\r\n\r\nThis patch try to completely avoid doing it in the hot path. We can do\r\nit only after we looked up the command and it wasn't found, just before\r\nwe call commandCheckExistence.\r\n\r\n---------\r\n\r\nSigned-off-by: Lipeng Zhu <lipeng.zhu@intel.com>\r\nCo-authored-by: Wangyang Guo <wangyang.guo@intel.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/server.c"
+        ],
+        "github_commit_url": "https://github.com/valkey-io/valkey/commit/9c60fcdae241a7e1dedc2f51d19491d168d66b9b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "processCommand"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 6,
+        "total_changed_lines": 13,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "valkey",
+        "hash": "c419524c05d7544636d5bc0cc0cb333052b0a517",
+        "author": "muelstefamzn",
+        "date": "2024-10-23T16:56:32-07:00",
+        "message": "Trim free space from inline command argument strings to avoid excess memory usage (#1213)\n\nThe command argument strings created while parsing inline commands (see\r\n`processInlineBuffer()`) can contain free capacity. Since some commands\r\n,such as `SET`, store these strings in the database, that free capacity\r\nincreases the memory usage. In the worst case, it could double the\r\nmemory usage.\r\n\r\nThis only occurs if the inline command format is used. The argument\r\nstrings are built by appending character by character in\r\n`sdssplitargs()`. Regular RESP commands are not affected.\r\n\r\nThis change trims the strings within `processInlineBuffer()`.\r\n\r\n### Why `trimStringObjectIfNeeded()` within `object.c` is not solving\r\nthis?\r\n\r\nWhen the command argument string is packed into an object,\r\n`trimStringObjectIfNeeded()` is called.\r\n\r\nThis does only trim the string if it is larger than\r\n`PROTO_MBULK_BIG_ARG` (32kB), as only strings larger than this would\r\never need trimming if the command it sent using the bulk string format.\r\n\r\nWe could modify this condition, but that would potentially have a\r\nperformance impact on commands using the bulk format. Since those make\r\nup for the vast majority of executed commands, limiting this change to\r\ninline commands seems prudent.\r\n\r\n### Experiment Results\r\n\r\n* 1 million `SET [key] [value]` commands\r\n* Random keys (16 bytes)\r\n* 600 bytes values\r\n\r\nMemory usage without this change:\r\n\r\n```\r\nused_memory:1089327888\r\nused_memory_human:1.01G\r\nused_memory_rss:1131696128\r\nused_memory_rss_human:1.05G\r\nused_memory_peak:1089348264\r\nused_memory_peak_human:1.01G\r\nused_memory_peak_perc:100.00%\r\nused_memory_overhead:49302800\r\nused_memory_startup:911808\r\nused_memory_dataset:1040025088\r\nused_memory_dataset_perc:95.55%\r\n```\r\n\r\nMemory usage with this change:\r\n```\r\nused_memory:705327888\r\nused_memory_human:672.65M\r\nused_memory_rss:718802944\r\nused_memory_rss_human:685.50M\r\nused_memory_peak:705348256\r\nused_memory_peak_human:672.67M\r\nused_memory_peak_perc:100.00%\r\nused_memory_overhead:49302800\r\nused_memory_startup:911808\r\nused_memory_dataset:656025088\r\nused_memory_dataset_perc:93.13%\r\n```\r\n\r\nIf the same experiment is repeated using the normal RESP array of bulk\r\nstring format (`*3\\r\\n$3\\r\\nSET\\r\\n...`) then the memory usage is 672MB\r\nwith and without of this change.\r\n\r\nIf a replica is attached, its memory usage is 672MB with and without\r\nthis change, since the replication link never uses inline commands.\r\n\r\nSigned-off-by: Stefan Mueller <muelstef@amazon.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/networking.c"
+        ],
+        "github_commit_url": "https://github.com/valkey-io/valkey/commit/c419524c05d7544636d5bc0cc0cb333052b0a517",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "processInlineBuffer"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 0,
+        "total_changed_lines": 2,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    }
+]

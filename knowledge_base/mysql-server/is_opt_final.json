@@ -1,0 +1,1490 @@
+[
+    {
+        "repository_name": "mysql-server",
+        "hash": "01b78ef942d6d22ce9975afee31772705007a41c",
+        "author": "Marek Szymczak",
+        "date": "2022-11-24T00:20:25+01:00",
+        "message": "Bug#34449016 since 8.0.23+ CREATE USER became slower\n\nProblem\n=======\nCreation of 20k users with the IP in the hostname takes over 10 hours comparing\nto 12 minutes before the WL#14074.\n\nAnalysis\n========\nWL#14074 changed the way ip_mask value of the ACL_HOST_AND_IP sturcture is set, when\nthe IP is used in the hostname part. Previously it was set, only when the mask value\nwas provided. Because of this bug, IP provided with the host name was treated\nas the wildcarded hostname. The algorithm for building a structure that keeps all\nwildcards is performance costly.\n\nFix\n===\nA host part of the user account is treated as a wildcard, only if the mask is not\n255.255.255.255.\n\nChange-Id: I6e07f0cc73911951485024bda152920e87c485f9",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/auth/sql_auth_cache.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/01b78ef942d6d22ce9975afee31772705007a41c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "has_wildcard"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "02b00b15476536619a95252c06133c36d3f7fc9a",
+        "author": "Marc Alff",
+        "date": "2015-07-30T11:17:50+02:00",
+        "message": "Bug#21528683 SLOWDOWN CAUSED BY MEMSET IN SQL_DIGEST_STORAGE.RESET()\n\nBefore this fix, an unnecessary memset was called in\nsql_digest_storage.memset().\n\nThis affected:\n- the server under normal operations,\n  when collecting digests for a query,\n  with typically an extra memset(1024) for each query.\n\n- the performance_schema.events_statements_current,\n  _history and _history_long tables, during a SELECT,\n  with typically an extra memset(1024*1024) for each row.\n\nThis memset is un necessary, because the code making\ncopies of struct sql_digest_storage, or computing md5 of it,\nis already only using the first m_byte_counts initialized bytes\nand not the full array.\n\nThe fix is to simply remove the memset().",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_digest.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/02b00b15476536619a95252c06133c36d3f7fc9a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "reset"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "078fc08a7fcf61636f59a5735d7ac8f67232d3c7",
+        "author": "Bin Su",
+        "date": "2018-03-26T15:20:16+08:00",
+        "message": "BUG#27211287 - MYSQL SCALABILITY IMPROVEMENT PATCH: OPTIMIZED AWAY EXCESSIVE CONDITION\n\ntrx_set_rw_mode() currently has an invalid checking for trx->read_only\nwhich has been already checked by the caller. And from customer's testing,\nthis can give scalability improvement in OLTP index updates benchmark.\n\nRB: 19234\nReviewed-by: Sunny Bains <sunny.bains@oracle.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/trx/trx0trx.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/078fc08a7fcf61636f59a5735d7ac8f67232d3c7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "trx_set_rw_mode"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "0c5ad2d6cb5ec43194ab4348cd6f15a484bb2969",
+        "author": "heikki@hundin.mysql.fi",
+        "date": "2002-06-22T23:31:51+03:00",
+        "message": "os0sync.c:\n  Initing a mutex with MY_MUTEX_INIT_FAST may relieve thread thrashing on Linux",
+        "modified_files_count": 1,
+        "modified_files": [
+            "innobase/os/os0sync.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/0c5ad2d6cb5ec43194ab4348cd6f15a484bb2969",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "os_fast_mutex_init"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "0ff4fa2acea6d4f488a280d69f452b0bb9f8ec9b",
+        "author": "Steinar H. Gunderson",
+        "date": "2016-10-14T10:16:18+02:00",
+        "message": "Bug #24823885: PERFORMANCE REGRESSION WHEN CHANGING CHARACTER SET TO UTF8MB4\n\nMake the heap storage engine check the hash value before doing a full compare\n(if the hash is different, compare cannot possibly be equal). This takes away\nessentially all compares from duplicate checking in the heap storage engine.\n\nsysbench result goes from 3903 to 5527 tps (+41.6%).\n\nChange-Id: I8d72aa521f41f98b25ef6be4aa469f1a90214389",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/heap/hp_write.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/0ff4fa2acea6d4f488a280d69f452b0bb9f8ec9b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "hp_write_key"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "2cac65ab72e367ec335911faacfdf933724215fd",
+        "author": "serg@serg.mysql.com",
+        "date": "2002-03-13T13:17:11+00:00",
+        "message": "optimization fix for bulk insert code",
+        "modified_files_count": 1,
+        "modified_files": [
+            "myisam/mi_write.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/2cac65ab72e367ec335911faacfdf933724215fd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "_mi_init_bulk_insert"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "308c8d5010bd6c5c119b171ec254a04d177032ea",
+        "author": "Steinar H. Gunderson",
+        "date": "2019-11-11T12:58:05+01:00",
+        "message": "Bug #30483025: EXPLAIN ANALYZE HAS HIGH OVERHEAD ON CERTAIN LINUX PLATFORMS\n\nCertain Linux platforms compile libstdc++ with _GLIBCXX_USE_CLOCK_GETTIME_SYSCALL,\nwhich makes std::chrono::steady_clock::now() use a syscall instead of calling\nclock_gettime() (which uses vDSO), to avoid linking in -lrt. (This became\nobsolete with glibc 2.17, which moved clock_gettime() from librt to libc.) This\ncauses significant overhead in getting the clock, which we do all the time in\nEXPLAIN ANALYZE. Work around it by calling clock_gettime() manually; we already\nlink to -lrt. Certain Linux distributions are still much faster than others,\nbut at least the overhead is reduced.\n\nWe might theoretically get a different epoch from regular std::steady_clock\nfrom doing this, but we only ever compare these now() values to each other, so\nany offset will be canceled out.\n\nBackport to 8.0.\n\nChange-Id: I16b2b950435af32edbbf81c41b08d9a2320ec461",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/timing_iterator.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/308c8d5010bd6c5c119b171ec254a04d177032ea",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "now"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 0,
+        "total_changed_lines": 8,
+        "net_line_change": 8,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "35f13013f592ec92700f857f3fa925b4cd9a8d2d",
+        "author": "Jan Kneschke",
+        "date": "2023-09-20T12:43:43+02:00",
+        "message": "Bug#35814434 memory-usage increases with connection-sharing and benchmarking\n\nWhen benchmarking mysqlrouter with connection-sharing enabled,\nthe RES of the mysqlrouter process increases over time even though it\nstays more-or-less constant when running the connection-sharing\ndisabled.\n\nASAN reports no memory leaks.\n\nUsing \"valgring --tool=massif\", it is seen that the \"timer_ops\" are\nallocated a lot and not destroyed fast enough. Those timer_ops are\nfrom Timer.async_wait() and are already cancel()ed, but their result\nis not yet delivered to the async-callers.\n\nCancelled timers are expected to be handled with the highest priority,\nbut here they are handled only if there is no other work.\n\nChange\n======\n\n- treat \"expired timer\" and \"cancelled timer\" as \"execute now\".\n\nChange-Id: I76868b52850f81cbcc3f189e6128e4ff98063299",
+        "modified_files_count": 1,
+        "modified_files": [
+            "router/src/harness/include/mysql/harness/net_ts/io_context.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/35f13013f592ec92700f857f3fa925b4cd9a8d2d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "io_context::do_one"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "3c19ebf5f9ed8d72cdcc0f3ef49c6851398f0b53",
+        "author": "Steinar H. Gunderson",
+        "date": "2018-10-17T15:39:27+02:00",
+        "message": "Bug #28796107: CONTRIBUTION: ITEM_CMP_TYPE: CODE SHORTCUT PATH\n\nMake the first test in item_cmp_type() faster.\n\nContribution by Daniel Black. Some small style modifications.\n\nChange-Id: I44f43fcc7911ddb79923f556fe6f535825b6c33b",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/item.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/3c19ebf5f9ed8d72cdcc0f3ef49c6851398f0b53",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "item_cmp_type"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 6,
+        "total_changed_lines": 14,
+        "net_line_change": 2,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "3cb16e9c3879d1790159d2856cb7aa0bd3d201fd",
+        "author": "Jon Olav Hauglid",
+        "date": "2015-03-20T11:39:28+01:00",
+        "message": "Bug#20742269: DO NORMAL FSYNC ON OS X\n\nStop using fcntl() with the OS X specific F_FULLFSYNC flag and\ninstead do normal fsync(). Since InnoDB always uses fsync() and\nmore and more system tables are being moved to InnoDB, the possible\ndurability gain is slim to none. This also makes OS X behave similar\nto other platforms.\n\nThe gain: Doing normal fsync() is significantly faster than using\nF_FULLFSYNC. E.g the main.m_i_db test shows 2X-8X improvement with\nthis patch (depending on SSD or normal disk).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "mysys/my_sync.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/3cb16e9c3879d1790159d2856cb7aa0bd3d201fd",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "my_sync"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 10,
+        "total_changed_lines": 10,
+        "net_line_change": -10,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "490f74226dc225baa30c319e29783ad377b9865f",
+        "author": "Kristofer \u00c4lvring",
+        "date": "2017-11-27T15:46:05+01:00",
+        "message": "Bug#27136346 SYSBENCH CONNECT TEST SHOWS -95% REGRESSION FOR NON-ROOT VS ROOT USER\n\nNone root users experienced a 95% drop in CPU utilization due to a cache\nwhich is suppose to store database privileges based on user name and host\nfor fast acccess. The cache is protected be a rw lock that needs to be\nchecked for success. The check was inveresed so it reported failure\non success and vice versa which ultimately caused the performance issues\nas a write lock was taken 10 times for every connection attempt by\ninternal system processes.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/auth/sql_auth_cache.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/490f74226dc225baa30c319e29783ad377b9865f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "insert_entry_in_db_cache"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "4a14fb77732a8e9cb2bed1ac70bfa6004644bdab",
+        "author": "Steinar H. Gunderson",
+        "date": "2017-02-08T16:53:37+01:00",
+        "message": "Bug #24823885: PERFORMANCE REGRESSION WHEN CHANGING CHARACTER SET TO UTF8MB4\n\nPost-push fix: Add a missing inline declaration that would cause performance\nregressions on the string length microbenchmark with -O2 (instead of -O3).\n\nChange-Id: I6a576557606ff1aafed1f51340b578028c80227e",
+        "modified_files_count": 1,
+        "modified_files": [
+            "strings/ctype-utf8.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/4a14fb77732a8e9cb2bed1ac70bfa6004644bdab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "my_valid_mbcharlen_utf8mb4"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "4b491cb78830d898a761e67f9cb9e1e109fb07ab",
+        "author": "monty@narttu.mysql.fi",
+        "date": "2003-10-07T13:26:56+03:00",
+        "message": "Simple optimization",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_select.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/4b491cb78830d898a761e67f9cb9e1e109fb07ab",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "test_if_skip_sort_order"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 1,
+        "total_changed_lines": 4,
+        "net_line_change": 2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "4b65730222b1a46acd7713b91169d7aada469bad",
+        "author": "Frazer Clement",
+        "date": "2021-04-20T00:42:02+01:00",
+        "message": "Bug #32655988 NDB : NDBINFO CLUSTER_LOCKS PERFORMANCE\n\nThe generic ndbinfo_send_scan_break() function has an optimised\npath added for the case when no rows have been returned by the\nNdbInfo scan prior to the break.\n\nIn this case, ndbinfo_send_scan_break() is treated more like a\nrequest for a CONTINUEB - causing a real time break to occur, but\ncontinuing with the scan as soon as possible, rather than asking\nthe requesting API to continue the scan.\n\nThis change improves the performance of scanning the NdbInfo\nacc_operations table underlying the NdbInfo cluster_locks view.\n\nThe acc_operations scan involves searching a sparsely populated data\nstructure, and may commonly require multiple ndbinfo_send_scan_break()\ncalls with no rows returned.\n\nWith this change, scan breaks taken to avoid using cpu without a break\ndo not involve inter-node or inter-thread messaging, and\ntherefore cluster_locks scan performance is improved.\n\nApproved by : Maitrayi Sabaratnam <maitrayi.sabaratnam@oracle.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/ndb/src/kernel/vm/SimulatedBlock.cpp"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/4b65730222b1a46acd7713b91169d7aada469bad",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SimulatedBlock::ndbinfo_send_scan_break"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 2,
+        "total_changed_lines": 16,
+        "net_line_change": 12,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "4fb6ed1c78d920901ee9ea60c1a5dc0305ae6abf",
+        "author": "Jan Kneschke",
+        "date": "2019-05-18T08:28:18+02:00",
+        "message": "Bug#29798420 optimize setting socket non-blocking [1/3]\n\ndon't call fcntl(..., F_SETFL, ...) if flags didn't change\n\nRB: 22141",
+        "modified_files_count": 1,
+        "modified_files": [
+            "router/src/harness/src/socket_operations.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/4fb6ed1c78d920901ee9ea60c1a5dc0305ae6abf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SocketOperations::set_socket_blocking"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "515bb158763bf53c4bbac5472ccc3e30154bd6d6",
+        "author": "Knut Anders Hatlen",
+        "date": "2022-03-15T10:56:58+01:00",
+        "message": "Bug#33811009: Hang in BuildInterestingOrders : Hypergraph optimizer [2/6, inner loop]\n\nWhen the NFSM has lots of states, it spends a very long time in\nLogicalOrderings::PruneNFSM(). Most of the time is spent in the\nimplementation of the Floyd-Warshall algorithm, calculating which\nother states can be reached from each state.\n\nThe current implementation executes the body of the inner loop exactly\nN\u00b3 times (where N is the number of states in the NFSM). We can however\ntake advantage of that the graph is usually quite sparse, and lift the\ncheck for whether k is reachable from i up to the second loop. This\navoids executing the inner loop completely in the relatively common\ncase that i and k are not connected, and the performance is pushed\ndown towards N\u00b2 for sparse graphs.\n\nMicrobenchmark results:\n\nGCC 10.2.1:\n\nBM_BuildInterestingOrders1             1 399 ->       1 318 ns/iter  [  +6.2%]\nBM_BuildInterestingOrders2             9 362 ->       6 696 ns/iter  [ +39.8%]\nBM_BuildInterestingOrders4           669 317 ->     315 487 ns/iter  [+112.2%]\nBM_BuildInterestingOrders8       499 720 382 ->   7 924 003 ns/iter  [ +6206%]\nBM_BuildInterestingOrders16   23 080 089 848 ->  78 133 229 ns/iter  [+29439%]\nBM_BuildInterestingOrders32  450 186 564 135 -> 669 891 523 ns/iter  [+67103%]\n\nClang 13.0.1:\n\nBM_BuildInterestingOrders1             1 373 ->       1 328 ns/iter  [  +3.4%]\nBM_BuildInterestingOrders2             9 439 ->       6 082 ns/iter  [ +55.2%]\nBM_BuildInterestingOrders4           656 854 ->     244 578 ns/iter  [+168.6%]\nBM_BuildInterestingOrders8       502 370 404 ->   3 889 175 ns/iter  [+12817%]\nBM_BuildInterestingOrders16   21 207 415 958 ->  43 054 805 ns/iter  [+49157%]\nBM_BuildInterestingOrders32  444 936 655 838 -> 477 947 216 ns/iter  [+92993%]\n\nChange-Id: I9bef736271d647a3e0b27ee171f10cca8803290f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/join_optimizer/interesting_orders.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/515bb158763bf53c4bbac5472ccc3e30154bd6d6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LogicalOrderings::PruneNFSM"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 4,
+        "total_changed_lines": 10,
+        "net_line_change": 2,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "53b86f0dd10e80fd8346b619481d03557668452d",
+        "author": "marko",
+        "date": "2008-01-04T14:01:45+00:00",
+        "message": "branches/zip: btr_cur_mark_extern_inherited_fields():\nAdd a call to rec_offs_any_extern() as an optimization.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "btr/btr0cur.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/53b86f0dd10e80fd8346b619481d03557668452d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "btr_cur_mark_extern_inherited_fields"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 0,
+        "total_changed_lines": 6,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "60a4c082402196cf331cc463bf32d0a7db8cc88e",
+        "author": "Steinar H. Gunderson",
+        "date": "2018-03-20T10:24:25+01:00",
+        "message": "WL #11590: More flexible filesort [patch 10/10, Item_func_between]\n\nSmall optimization in Item_func_between, which for some reason started\nshowing up more in the profiles after the previous patches.\ncompare_between_int_result() is only used once per instantiation,\nso there's nothing to win by not inlining it.\n\nChange-Id: I1eb504b69e857063366466234f9968f6096cd77a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/item_cmpfunc.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/60a4c082402196cf331cc463bf32d0a7db8cc88e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_between_int_result"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "60e4835bb9660085869f1d439663e4f5fd3090ae",
+        "author": "Jan Kneschke",
+        "date": "2023-09-15T14:37:26+02:00",
+        "message": "Bug#35814434 memory-usage increases with connection-sharing and benchmarking\n\nWhen benchmarking mysqlrouter with connection-sharing enabled,\nthe RES of the mysqlrouter process increases over time even though it\nstays more-or-less constant when running the connection-sharing\ndisabled.\n\nASAN reports no memory leaks.\n\nUsing \"valgring --tool=massif\", it is seen that the \"timer_ops\" are\nallocated a lot and not destroyed fast enough. Those timer_ops are\nfrom Timer.async_wait() and are already cancel()ed, but their result\nis not yet delivered to the async-callers.\n\nCancelled timers are expected to be handled with the highest priority,\nbut here they are handled only if there is no other work.\n\nChange\n======\n\n- treat \"expired timer\" and \"cancelled timer\" as \"execute now\".\n\nChange-Id: I76868b52850f81cbcc3f189e6128e4ff98063299",
+        "modified_files_count": 1,
+        "modified_files": [
+            "router/src/harness/include/mysql/harness/net_ts/io_context.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/60e4835bb9660085869f1d439663e4f5fd3090ae",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "io_context::do_one"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "63dc0b198a7f736b91cd3d081940a95899cbacb5",
+        "author": "Chaithra Gopalareddy",
+        "date": "2013-10-09T12:54:21+05:30",
+        "message": "Bug#16894092: PERFORMANCE REGRESSION IN 5.6.6+ FOR INSERT\n              INTO .... SELECT ... FROM\n\nProblem:\nThe performance regression is related to writing the temporary table\ninto MyISAM. If we configure tmp_table_size and max_heap_table_size\nsufficiently high (in this case setting them to 96M) in order to ensure that\nthe temporary table can be stored in the Memory engine, the performance\nregression is no longer present.\nRegression source was found to be WL#6071.\n\nAnalysis:\nWhile creating temporary table, a random scan is initialized.\nThis initialization internally frees buffers in case of myisam.\nAs a result writes/reads happen to disk rather than\ncache. And hence the performance hit when we try to create\ntmp table in myisam.\n\nSolution:\nInitialize the scan without freeing buffers which can be done\nby calling ha_rnd_init(1).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_executor.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/63dc0b198a7f736b91cd3d081940a95899cbacb5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "QEP_tmp_table::prepare_tmp_table"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "6782982254ebe3fa1c085a127bac3b1f36c87d41",
+        "author": "vva@eagle.mysql.r18.ru",
+        "date": "2004-07-09T20:39:50+05:00",
+        "message": "added an optimization in mysql_create_db (sql_db.cc)\n\nas after effect of fix for Bug #4378 \n'\"create database IF NOT EXISTS thing\" returns an error' \n\n(avoided an unpack_dirname and \n changed strcat into strmake)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_db.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/6782982254ebe3fa1c085a127bac3b1f36c87d41",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mysql_create_db"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "6c22152594c5e59f2142fe2115a19024aff010f9",
+        "author": "Steinar H. Gunderson",
+        "date": "2020-09-04T19:20:03+02:00",
+        "message": "WL #13459: Optimize hash table in hash join [patch 1/9, reserve()]\n\nString::reserve() gets called a lot, but nearly always fast-exits out.\nAvoid an out-of-line function call by inlining the test.\n\nChange-Id: I539009edff7905e5d083d8b070ec1e1048a945e8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/sql_string.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/6c22152594c5e59f2142fe2115a19024aff010f9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "reserve"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 1,
+        "total_changed_lines": 5,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "765d800c79ae4bfaafd1a9da48592124f3c44298",
+        "author": "Jan Kneschke",
+        "date": "2023-09-20T15:54:16+02:00",
+        "message": "Bug#35814434 memory-usage increases with connection-sharing and benchmarking\n\nWhen benchmarking mysqlrouter with connection-sharing enabled,\nthe RES of the mysqlrouter process increases over time even though it\nstays more-or-less constant when running the connection-sharing\ndisabled.\n\nASAN reports no memory leaks.\n\nUsing \"valgring --tool=massif\", it is seen that the \"timer_ops\" are\nallocated a lot and not destroyed fast enough. Those timer_ops are\nfrom Timer.async_wait() and are already cancel()ed, but their result\nis not yet delivered to the async-callers.\n\nCancelled timers are expected to be handled with the highest priority,\nbut here they are handled only if there is no other work.\n\nChange\n======\n\n- treat \"expired timer\" and \"cancelled timer\" as \"execute now\".\n\nChange-Id: I76868b52850f81cbcc3f189e6128e4ff98063299",
+        "modified_files_count": 1,
+        "modified_files": [
+            "router/src/harness/include/mysql/harness/net_ts/io_context.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/765d800c79ae4bfaafd1a9da48592124f3c44298",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "io_context::do_one"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "77e78b4487eaa9464495a5832bf70f3557da66d9",
+        "author": "Jorgen Loland",
+        "date": "2013-10-30T10:09:54+01:00",
+        "message": "Bug#17560636: FIND_BEST_REF(): COST FOR CLUSTERED PK IS \n              CALCULATED AS IF NOT COVERING\n\nOptimize_table_order::find_best_ref() iterates through all \npossible ways to access all usable keys for a table. The index \naccess strategy with lowest cost is chosen. However, if a \nclustered primary key is applicable, it is considered to be \ncovering only if all columns required for the query are in\nthe primary key definition. The result is that the cost for \nclustered primary keys is calculated as though a random read \nneeds to take place for each estimated row. This is incorrect \nwhen clustered primary keys are read since the data can be \nread from the index without going to \"the table\".\n\nThe fix is to let handler::read_time() calculate the cost \ninstead of assuming that there will be a cost of 1 x #row. \nhandler::read_time() is capable of handling the distinction\nbetween reading the clustered index and another index.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_planner.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/77e78b4487eaa9464495a5832bf70f3557da66d9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Optimize_table_order::find_best_ref"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 0,
+        "total_changed_lines": 12,
+        "net_line_change": 12,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "78e067e69ab7afa9f02b03e1c3f398e4da4d7377",
+        "author": "Kailasnath Nagarkar",
+        "date": "2018-08-30T17:19:34+05:30",
+        "message": "Bug #27659490 : SELECT USING DYNAMIC RANGE AND INDEX\n                MERGE USE TOO MUCH MEMORY(OOM)\n\nIssue:\nWhile creating a handler object, index-merge access\ncreates it in statement MEM_ROOT.\nHowever when this is used with \"Dynamic range access method\",\nas range optimizer gets invoked multiple times, mysql ends up\nconsuming a lot of memory.\n\nSolution:\nInstead of using statement MEM_ROOT to allocate the handler\nobject, use the local MEM_ROOT of the range optimizer which\ngets destroyed at the end of range optimizer's  usage.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/opt_range.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/78e067e69ab7afa9f02b03e1c3f398e4da4d7377",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "QUICK_ROR_UNION_SELECT::reset"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 2,
+        "total_changed_lines": 15,
+        "net_line_change": 11,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "793e8e74ff6e34274a093638d5abe0c988f1394c",
+        "author": "Xing Zhang",
+        "date": "2017-07-10T11:18:04+08:00",
+        "message": "Bug #26286790: PERFORMANCE ISSUE OF EXPLICIT COLLATE CLAUSE\n\nOrdering by a varchar field with explicit collation is much slower than it\nwith implicit collation, even if the explicit collation is same as the\nimplicit one. A certain sorting with implicit collation needs 0.5 sec, but\nthe sorting with explicit collation needs about 1 min.\n\nCause:\nA item is created for the field with explict collation, and filesort treats\nits weight buffer length is fixed. But for the field with implicit\ncollation, filesort treats its weight buffer length is variable. This\ncauses there are much more chunks is created and needed to merge when doing\nfilesort for the field with explicit collation. It consumes a lot of time.\n\nFix:\nAll new UCA collations we added don't need padding spaces anymore, so we\nlet filesort know that the weight buffer length of the item is variable.\n\nResult:\nwithout this patch, time used to sorting reporter's data needs 0.51 sec and\n58.73 sec.\nWith this patch, time used to sorting reporter's data needs 0.54 sec and\n0.76 sec.\n\nChange-Id: I5394faabf6325ff43f71ae6076dedebd3d75c105",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/filesort.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/793e8e74ff6e34274a093638d5abe0c988f1394c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sortlength"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "7a1c7f9127b9129fd3b9195ce9bf9d1172c64165",
+        "author": "Jan Kneschke",
+        "date": "2023-09-19T16:13:11+02:00",
+        "message": "Bug#35821804 speed up event-polling with linux-epoll\n\nIf a single event is returned by epoll:wait(), currently 8192 events are\ncopied (which amounts to 8k * 12b = 98304 bytes), but only one is checked.\n\nOnly the actually changed/read events should be copied.\n\nChange\n======\n\n- copy only the events that are returned by epoll::wait()\n- don't initialize the whole 'evs' array as it is write-only.\n\nChange-Id: Ic0672977e93cd6303b2284331adb30581ddde483",
+        "modified_files_count": 1,
+        "modified_files": [
+            "router/src/harness/include/mysql/harness/net_ts/impl/linux_epoll_io_service.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/7a1c7f9127b9129fd3b9195ce9bf9d1172c64165",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "epoll::wait"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 2,
+        "total_changed_lines": 5,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "7b66953beb0fd1bfc2044ac6c97dfd036af9d616",
+        "author": "Bin Su",
+        "date": "2018-03-26T15:10:25+08:00",
+        "message": "BUG#27211287 - MYSQL SCALABILITY IMPROVEMENT PATCH: OPTIMIZED AWAY EXCESSIVE CONDITION\n\ntrx_set_rw_mode() currently has an invalid checking for trx->read_only\nwhich has been already checked by the caller. And from customer's testing,\nthis can give scalability improvement in OLTP index updates benchmark.\n\nRB: 19234\nReviewed-by: Sunny Bains <sunny.bains@oracle.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/trx/trx0trx.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/7b66953beb0fd1bfc2044ac6c97dfd036af9d616",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "trx_set_rw_mode"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "7be1beb2d39db12d192110325958fd820c1fff8f",
+        "author": "heikki@hundin.mysql.fi",
+        "date": "2003-07-06T18:01:51+03:00",
+        "message": "row0mysql.c:\n  Fix performance bug: if there were thousands of tables, DROP TABLE could take as much as a second CPU time",
+        "modified_files_count": 1,
+        "modified_files": [
+            "innobase/row/row0mysql.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/7be1beb2d39db12d192110325958fd820c1fff8f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "row_drop_table_for_mysql"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "7d20bb998efce7f1d1d1350abe57900028fe98fe",
+        "author": "Tatjana Azundris Nuernberg",
+        "date": "2013-01-09T08:01:07+00:00",
+        "message": "Bug#16038776: PREPARED STATEMENT IS VERY SLOW WHILE BINLOG WAS ENABLED\n\nOptimization: Substituting the param_markers (the ? bindings\nin a prepared statement) for logging is costly, so if the only\nlog that's open is the binlog, require that we be in SBL mode\nas a condition of substitution. If we're in RBL mode, we won't\nsee the statement, so there's little point in fixing it up.\nThis holds for DML; DDL will still go through substitution in\ncase SBL logging is forced for that statement. (Overhead for\ndynamic SQL (as opposed to PS with many substitutions) is\ncomparatively low, anyway.)\n\nAdapted from a submission, extended, and verified by test suite.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_prepare.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/7d20bb998efce7f1d1d1350abe57900028fe98fe",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Prepared_statement::setup_set_params"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 1,
+        "total_changed_lines": 6,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "7ea41389855985c56b5562e04f47eb0212e5f927",
+        "author": "Steinar H. Gunderson",
+        "date": "2019-11-05T14:14:52+01:00",
+        "message": "Bug #30483025: EXPLAIN ANALYZE HAS HIGH OVERHEAD ON CERTAIN LINUX PLATFORMS\n\nCertain Linux platforms compile libstdc++ with _GLIBCXX_USE_CLOCK_GETTIME_SYSCALL,\nwhich makes std::chrono::steady_clock::now() use a syscall instead of calling\nclock_gettime() (which uses vDSO), to avoid linking in -lrt. (This became\nobsolete with glibc 2.17, which moved clock_gettime() from librt to libc.) This\ncauses significant overhead in getting the clock, which we do all the time in\nEXPLAIN ANALYZE. Work around it by calling clock_gettime() manually; we already\nlink to -lrt. Certain Linux distributions are still much faster than others,\nbut at least the overhead is reduced.\n\nWe might theoretically get a different epoch from regular std::steady_clock\nfrom doing this, but we only ever compare these now() values to each other, so\nany offset will be canceled out.\n\nChange-Id: Ie355ec075fafd03e2479cb636d62b84a987b13e8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/timing_iterator.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/7ea41389855985c56b5562e04f47eb0212e5f927",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "now"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 0,
+        "total_changed_lines": 8,
+        "net_line_change": 8,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "825d2f17b5a8da202a6575c73e5d93eeaa2ef729",
+        "author": "Steinar H. Gunderson",
+        "date": "2016-11-21T12:11:02+01:00",
+        "message": "Bug #24823885: PERFORMANCE REGRESSION WHEN CHANGING CHARACTER SET TO UTF8MB4\n\nWhen copying variable-length multibyte strings around, don't bother counting up\nall the characters if there's guaranteed to be no truncation anyway.\nThis takes about 2.2% of CPU time in sysbench with utf8mb4 with\n--oltp-use-varchar-for-char. (This is too small of a difference that I can\nreliably measure it in my local sysbench runs, but I've run perf and verified\nthat my_well_formed_len_utf8mb4 disappears from the profile.)\n\nChange-Id: I86c9054a5bbcc8c9f2c6151d5dbcfb90b8258d22",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/field_conv.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/825d2f17b5a8da202a6575c73e5d93eeaa2ef729",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get_varstring_copy_length"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 0,
+        "total_changed_lines": 9,
+        "net_line_change": 9,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "853fe3537f9ea6a8ce7fe871168afde3d17b2163",
+        "author": "marko",
+        "date": "2007-01-31T14:28:37+00:00",
+        "message": "branches/zip: btr_search_guess_on_hash(): Eliminate two local variables\nand optimize one test.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "btr/btr0sea.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/853fe3537f9ea6a8ce7fe871168afde3d17b2163",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "btr_search_guess_on_hash"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 13,
+        "total_changed_lines": 16,
+        "net_line_change": -10,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "86e93ea198c9b27a1e764f75702ab7a31df9c5c2",
+        "author": "Mauritz Sundell",
+        "date": "2019-01-08T23:14:05+01:00",
+        "message": "Fixup: WL#9756 misc. using prefetch.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/ndb/src/kernel/blocks/dbtc/DbtcMain.cpp"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/86e93ea198c9b27a1e764f75702ab7a31df9c5c2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Dbtc::packLqhkeyreq040Lab"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "8a5c24536c774789a956db3a91782206c4e85b7b",
+        "author": "brian@zim.(none)",
+        "date": "2005-09-07T10:30:06-07:00",
+        "message": "Small tweak for random read performance (we shouldn't always tell the OS that we will be doing a linear scan).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/examples/ha_tina.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/8a5c24536c774789a956db3a91782206c4e85b7b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ha_tina::rnd_init"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "8bc2fbb0f8e60d18bf3b4c0b131efbc781f1b4e3",
+        "author": "heikki@hundin.mysql.fi",
+        "date": "2005-07-02T00:39:47+03:00",
+        "message": "row0sel.c:\n  Optimize speed: no need to keep track of set new rec locks in a consistent read",
+        "modified_files_count": 1,
+        "modified_files": [
+            "innobase/row/row0sel.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/8bc2fbb0f8e60d18bf3b4c0b131efbc781f1b4e3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "row_search_for_mysql"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 3,
+        "total_changed_lines": 14,
+        "net_line_change": 8,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "8fd1171af59caf3dbe65aad83b0a9038ee564106",
+        "author": "Kristofer \u00c4lvring",
+        "date": "2017-11-01T10:33:32+01:00",
+        "message": "Bug#26679935 THE RW LOCK IN CHECK_GRANT IS TAKEN EVEN IF THE SESSION HAS ACTIVE ROLES.\n\nIf active roles are used, then the acl cache lock which protects the\nglobal acl cache doesn't need to be taken during check_grant().\nBy relaxing the lock we gain some performance and scale out capability.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/auth/sql_authorization.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/8fd1171af59caf3dbe65aad83b0a9038ee564106",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "check_grant"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 2,
+        "total_changed_lines": 7,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "90032c100751d4a864f371dd451fda7d8b12022d",
+        "author": "Anurag Shekhar",
+        "date": "2009-08-24T13:15:51+05:30",
+        "message": "Bug #44723 Larger read_buffer_size values can cause performance \n         decrease for INSERTs\n\n\nBulk inserts (multiple row, CREATE ... SELECT, INSERT ... SELECT) into\nMyISAM tables were performed inefficiently. This was mainly affecting\nuse cases where read_buffer_size was considerably large (>256K) and low\nnumber of rows was inserted (e.g. 30-100).\n\nThe problem was that during I/O cache initialization (this happens\nbefore each bulk insert) allocated I/O buffer was unnecessarily\ninitialized to '\\0'.\n\nThis was happening because of mess in flag values. MyISAM informs I/O\ncache to wait for free space (if out of disk space) by passing\nMY_WAIT_IF_FULL flag. Since MY_WAIT_IF_FULL and MY_ZEROFILL have the\nsame values, memory allocator was initializing memory to '\\0'.\n\nThe performance gain provided with this patch may only be visible with\nnon-debug binaries, since safemalloc always initializes allocated memory\nto 0xA5A5...",
+        "modified_files_count": 1,
+        "modified_files": [
+            "mysys/mf_iocache.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/90032c100751d4a864f371dd451fda7d8b12022d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "init_io_cache"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 4,
+        "total_changed_lines": 11,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "999b2eaa849a0c98121c47c780394faf71781f3a",
+        "author": "Olav Sandstaa",
+        "date": "2012-07-23T11:22:50+02:00",
+        "message": "Fix for Bug#13464493 19 X HIGHER THAN EXPECTED EXEC. TIME FOR \n                     MYSQL_BENCH/COUNT_DISTINCT_KEY_PREFIX\n\nThe cause for the increased execution time is that the optimizer\nselects to use a full index scan instead of a loose index scan for the\nquery. This performance regression was introduced by the fix for Bug\n12540545. \n\nBefore the fix Bug 12540545, the query would be executed as a loose\nindex scan using either the primary key or the secondary key depending\nstatistical data from the storage engine. The choice of whether to use\nthe primary key or the secondary key for the loose index scan is done\nin get_best_group_min_max() and is based on the estimated cost for\nusing each of the indexes. Both estimated cost and actual execution\ntime is almost similar for these two access strategies, and small\nvariations in the statistical data determined which index that was\nchosen.\n\nAfter the fix for Bug 12540545, the optimizer does the same cost based\nchoice between whether using primary or secondary key for loose index\nscan. If the choice is that the secondary key has lowest cost, then\nthe query is still run as a loose index scan. If the choice is that\nthe primary key has lowest cost, this is selected as candidate for\ndoing loose index scan, but a new criteria added in the fix for Bug\n12540545 checks whether this is a clustered key, and if it is, then it\nwill not be selected for use in loose index scan. In this case\nget_best_group_min_max() will return NULL and the range optimizer will\ndo a full index scan.\n\nThe fix for this problem is to do the test for whether the index is a\nclustered primary index before it takes part in the cost based\ndecision for which index that gives the lowest cost estimate for loose\nindex scan.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/opt_range.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/999b2eaa849a0c98121c47c780394faf71781f3a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get_best_group_min_max"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 7,
+        "total_changed_lines": 15,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "9de19063988b1e0843242a96c580a58a5d2b7fde",
+        "author": "Andrei Elkin",
+        "date": "2015-09-25T14:01:23+03:00",
+        "message": "Bug #21865901   MTS COORDINATOR AND WORKER THREAD SYNCHRONIZATION LIMITS PARALLELISM\n\nIn LC (Logical Clock) MTS mode, Coordinator thread distributes transactions to\nworkers respecting at most one transaction to a Worker at a time constrain.\nThe rule was introduced yet by wl6314 and not been revised since that time.\nA part of the rule implementation involved my_sleep() on the Coordinator side\nwith the idea the Coordinator to have a nap while every Worker is busy.\n\nThis has turned out to be costly for overall slave applier performance and\nmy_sleep() is replaced with sched_yield(), except Windows where the latter\nis not defined.\n\nNotice with this method a potential excessive busy-waiting by\nCoordinator, e.g when all Workers are busy to process big\ntransactions, happens only when the yielded thread's CPU is not requested by\nany other user thread.\nOtherwise there should be no negative cost for this operation except\na Worker can become available sooner than Coordinator gets rescheduled.\nby OS.\n\nThere're still few alternatives to the current solution, declined\ndue to either higher risks or rather significant complexity.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/rpl_mts_submode.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/9de19063988b1e0843242a96c580a58a5d2b7fde",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Mts_submode_logical_clock::get_least_occupied_worker"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 2,
+        "total_changed_lines": 14,
+        "net_line_change": 10,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "9f639c4404147f61fe6c8304da05fc741f4c2b72",
+        "author": "Marko M\u00e4kel\u00e4",
+        "date": "2012-05-29T15:48:55+03:00",
+        "message": "WL#6255 and WL#5526 performance tweak:\n\nbtr_cur_pessimistic_delete(): Skip locking when flags are set.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/btr/btr0cur.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/9f639c4404147f61fe6c8304da05fc741f4c2b72",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "btr_cur_pessimistic_delete"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "a38073dc88f3efb5b799e3a09cf4ee59d111a85a",
+        "author": "Ajo Robert",
+        "date": "2023-05-31T01:51:15+00:00",
+        "message": "Bug#34758905 Range analysis for IN list has O(n^2) runtime complexity\n\nDuring optimization, range SEL_TREE creation uses different logic\nbased on the LHS of the IN predicate. For a field item, each RHS\nvalue is added to an OR tree to create the necessary expression. In\nthe case of a row item comparison, a DNF expression is needed. A DNF\nexpression is created by adding an AND tree with column values to an\nOR  tree for each set of RHS values. Instead of adding each new AND\ntree to the OR tree, the OR tree is added to the AND tree causing\nexponential time during the tree merge.\n\nSolution: Change the tree joining the order. Instead of adding OR\ntree to the AND tree, add AND tree to the OR tree.\n\nChange-Id: I93503f3a8e3d6fd181aa40364d24f2868f294168",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/opt_range.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/a38073dc88f3efb5b799e3a09cf4ee59d111a85a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get_func_mm_tree_from_in_predicate"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "aea6bd5081a4785593512467f504bcf8242ce5be",
+        "author": "magnus.blaudd@oracle.com",
+        "date": "2013-08-13T12:02:43+02:00",
+        "message": "Bug#17030614 WASTED WORK IN METHOD CPCD::FINDUNIQUEID()\n\n - break for loop when it's been determined that the currently tested id is not unique\n - also fix wasted work for the case where id is 0, can the tool be improved to also\n  detect such a case?",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/ndb/src/cw/cpcd/CPCD.cpp"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/aea6bd5081a4785593512467f504bcf8242ce5be",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CPCD::findUniqueId"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 1,
+        "total_changed_lines": 9,
+        "net_line_change": 7,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "b23ee1324989e7b5597b19e01ef1c8f79cfd8c8d",
+        "author": "Jan Wedvik",
+        "date": "2012-09-21T09:13:57+02:00",
+        "message": "This is a fix for Bug#14644936 \"INEFFICIENT AND INCORRECT \nEXECUTION OF PUSHABLE OUTER JOINS\".\n\nThis fix copies code from join_read_always_key(). This\nnew code checks if the key value that has been built for\naccess to the next table contains NULL values. If so, there\nis no need to scan the next table as this would have retuned \nzero matching rows.\n\n(There will be a regression test in a separate commit on a cluster branch,\nas this bug can only be reproduced there.)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_executor.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/b23ee1324989e7b5597b19e01ef1c8f79cfd8c8d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "join_read_linked_first"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 0,
+        "total_changed_lines": 7,
+        "net_line_change": 7,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "b88a47db3e045843324e890a9006a0040a98fe42",
+        "author": "ingo@mysql.com",
+        "date": "2004-08-09T11:39:26+02:00",
+        "message": "bug#4497 - Serious regression if disk based TMP table is used.\nSolved performance problems by enabling write buffer.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_select.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/b88a47db3e045843324e890a9006a0040a98fe42",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "create_myisam_from_heap"
+        ],
+        "added_lines": 14,
+        "deleted_lines": 0,
+        "total_changed_lines": 14,
+        "net_line_change": 14,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "b908f410fbe1c9e27042fb40950398baca0e7db7",
+        "author": "heikki@donna.mysql.fi",
+        "date": "2002-01-30T14:10:26+02:00",
+        "message": "ha_innobase.cc:\n  Assume selectivity of any key prefix is better than 1 / 100, regardless of what the estimator returns; this balances the pessimistic assumption of the optimizer thatany secondary key access to the full row incurs a page read from disk",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/ha_innobase.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/b908f410fbe1c9e27042fb40950398baca0e7db7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ha_innobase::info"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 0,
+        "total_changed_lines": 16,
+        "net_line_change": 16,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "bfc42f437371d38d57ac4c13ccad65ceb47cce4b",
+        "author": "Ajo Robert",
+        "date": "2023-05-31T14:05:14+02:00",
+        "message": "Bug#34758905 Range analysis for IN list has O(n^2) runtime complexity\n\nDuring optimization, range SEL_TREE creation uses different logic\nbased on the LHS of the IN predicate. For a field item, each RHS\nvalue is added to an OR tree to create the necessary expression. In\nthe case of a row item comparison, a DNF expression is needed. A DNF\nexpression is created by adding an AND tree with column values to an\nOR  tree for each set of RHS values. Instead of adding each new AND\ntree to the OR tree, the OR tree is added to the AND tree causing\nexponential time during the tree merge.\n\nSolution: Change the tree joining the order. Instead of adding OR\ntree to the AND tree, add AND tree to the OR tree.\n\nChange-Id: I93503f3a8e3d6fd181aa40364d24f2868f294168",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/range_optimizer/range_analysis.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/bfc42f437371d38d57ac4c13ccad65ceb47cce4b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "if"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "c146d6cadee7a890805bf3152c8dc2870d06b118",
+        "author": "Steinar H. Gunderson",
+        "date": "2021-10-29T12:57:58+02:00",
+        "message": "Bug #33517637: Speed up microbenchmarks in debug mode\n\nRunning microbenchmarks in debug mode is pointless, but since we run\nmicrobenchmarks as regular tests (because we don't have the full Google\nmicrobenchmark framework, and haven't made a separate registration\nframework), at least 100+100 iterations of each test (and minimum one\nsecond) are run anyway. This wastes time when running unit tests (both\nfor people and on automated builds), so reduce the number of iterations\nto a minimal number. This way, we can still check that the test doesn't\ncrash, but we don't need to wait for it.\n\nChange-Id: I34e6bd6078ef0ef6384474e0d525bd461f116be8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "unittest/gunit/benchmark.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/c146d6cadee7a890805bf3152c8dc2870d06b118",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "internal_do_microbenchmark"
+        ],
+        "added_lines": 10,
+        "deleted_lines": 1,
+        "total_changed_lines": 11,
+        "net_line_change": 9,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "c48dedf4f951d91cb70a5f7c64c06dd6d74b196c",
+        "author": "John David Duncan",
+        "date": "2012-03-14T20:21:12-07:00",
+        "message": "Revsion 3634 (Nov 7, 2011; 7.2.2) introduced a major performance regression\nin memcached.  The symptom of this was a decline in throughput as memslap\nconnections increase from 4 to 6.  The cause seems to be a change in which\nSimpleRead PK reads are executed NoCommit rather than Commit; this patch \nfixes it.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/ndb/memcache/src/ndb_worker.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/c48dedf4f951d91cb70a5f7c64c06dd6d74b196c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WorkerStep1::do_read"
+        ],
+        "added_lines": 11,
+        "deleted_lines": 3,
+        "total_changed_lines": 14,
+        "net_line_change": 8,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "c54a40ee843b63315abe3a87cb4875e260327799",
+        "author": "Daniel Blanchard",
+        "date": "2017-05-22T13:40:58+01:00",
+        "message": "Bug #24823885: PERFORMANCE REGRESSION WHEN CHANGING CHARACTER SET TO\nUTF8MB4\n\nPost-push fix: Improve performance of my_charpos_mb4 for single byte per\ncharacter strings.\n\nMicrobenchmarks (64bit Intel Xeon CPU E5-2690 2.89GHz MSVC 2015)\n\n  BM_SimpleUTF8MB4            249 ns/iter [  +3.2%]\n  BM_UTF8MB4StringLength       14 ns/iter [+428.6%]\n  BM_MixedUTF8MB4             390 ns/iter [  -0.3%]\n  BM_MixedUTF8MB4_AS_CS      1276 ns/iter [   0.0%]\n  BM_JapaneseUTF8MB4         1229 ns/iter [  -2.4%]\n  BM_NewlineFilledUTF8MB4     371 ns/iter [   0.0%]\n  BM_HashSimpleUTF8MB4        345 ns/iter [  +0.9%]\n  BM_Hungarian_AS_CS         6236 ns/iter [  -0.2%]\n\nChange-Id: Ib09a6679b0d8c5ea6583d8a61216184c0f9004cd",
+        "modified_files_count": 1,
+        "modified_files": [
+            "strings/ctype-utf8.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/c54a40ee843b63315abe3a87cb4875e260327799",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "my_well_formed_len_utf8mb4"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 3,
+        "total_changed_lines": 19,
+        "net_line_change": 13,
+        "modified_code_blocks": 5,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "c6c2478f8c97b7e2a3c3c1cc055799dc0be1ed1c",
+        "author": "heikki@hundin.mysql.fi",
+        "date": "2004-01-13T04:10:20+02:00",
+        "message": "row0sel.c:\n  Improve previous push: save 1000 bytes of thread stack in non-error cases",
+        "modified_files_count": 1,
+        "modified_files": [
+            "innobase/row/row0sel.c"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/c6c2478f8c97b7e2a3c3c1cc055799dc0be1ed1c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "row_search_for_mysql"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 2,
+        "total_changed_lines": 6,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "cc5d67bf401dae6441928da6b5d95de5936a58e7",
+        "author": "Vasil Dimov",
+        "date": "2010-12-16T18:28:32+02:00",
+        "message": "Remove stats locking from ha_innobase::info()\n\nThis is a workaround for\n\"Bug#58974 ha_innobase:info() tries to lock some latches even if\nHA_STATUS_NO_LOCK is given\"\nto get into 5.6.1 because those locks are hurting performance badly.\n\nA better solution which does not allow inconsistent stats to be read\ninto ha_innobase::stats is being baked in rb://540. Those locks were\nintroduced recently. Before that the race has always exited. It is not a\nbig problem to read inconsistent stats for a single query. The stats are\njust an estimates.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/handler/ha_innodb.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/cc5d67bf401dae6441928da6b5d95de5936a58e7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ha_innobase::info_low"
+        ],
+        "added_lines": 0,
+        "deleted_lines": 8,
+        "total_changed_lines": 8,
+        "net_line_change": -8,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "cca78162778c8913934cc7c80ded2446fdfeb27c",
+        "author": "Mikael Ronstr\u00f6m",
+        "date": "2018-09-07T13:30:18+02:00",
+        "message": "WL#11722: Step 24\n-----------------\nBased upon data from perf it was seen that the CPU stalled\nextensively around calls to scanCheck. To handle this the\nscanCheck method was inlined and this showed a 3% performance\nimprovement in the scan filtering benchmark.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/ndb/src/kernel/blocks/dbtux/DbtuxScan.cpp"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/cca78162778c8913934cc7c80ded2446fdfeb27c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Dbtux::scanCheck"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "cf16aeca967da46eda64ac7f10453227b5b2fc18",
+        "author": "Knut Anders Hatlen",
+        "date": "2022-09-27T12:23:47+02:00",
+        "message": "WL#14843: Simplified hypergraph optimizer for simple queries [5/6, finalize]\n\nDrop plan finalization for point select. There are no temporary tables\nthat must be created or any final rewriting of expressions to perform\nfor such simple queries.\n\nMicrobenchmark results (AMD EPYC 2.25GHz):\n\nGCC 11.2.1:\nBM_FindBestQueryPlanPointSelect       1937 -> 1869 ns/iter [+3.6%]\n\nClang 14.0.0:\nBM_FindBestQueryPlanPointSelect       2064 -> 2018 ns/iter [+2.3%]\n\nChange-Id: I513cc5d3ea843787e2ee02d6fb94442dd2bcb84a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/join_optimizer/finalize_plan.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/cf16aeca967da46eda64ac7f10453227b5b2fc18",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FinalizePlanForQueryBlock"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 2,
+        "total_changed_lines": 8,
+        "net_line_change": 4,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "d05c82db6db304286ad533df9d75c628b22e729f",
+        "author": "marko",
+        "date": "2007-06-13T09:02:58+00:00",
+        "message": "create_table_def(): Eliminate the inline function call to dict_table_is_comp()\nthat was introduced in r1571.  Inlining is disabled in ha_innodb.cc.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "handler/ha_innodb.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/d05c82db6db304286ad533df9d75c628b22e729f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "create_table_def"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 2,
+        "total_changed_lines": 3,
+        "net_line_change": -1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "dc77b4564da015a38dd6351f75006547b6646d6e",
+        "author": "Pedro Figueiredo",
+        "date": "2019-02-04T13:16:15+00:00",
+        "message": "BUG#29304076 OPTIMIZE ROW UNPACKING BY NOT COMPUTING FUNCTIONAL INDEXES FOR THE BEFORE-IMAGE\n\nDescription\n-----------\n\nIn RBR, when unpacking a row for an `Update` or `Delete` event, the applier\ndeserializes the before-image and the after-image. During this process, for\nboth images, if the target table has functional indexes, the applier tries to\ncompute the index value. This is unnecessary for the before-image since those\nvalues aren't used.\n\nAnalysis\n--------\n\nRow unpacking could be optimized by not calculating values for functional\nindexes when upacking the before-image parte of the row.\n\nFix\n---\n\nTest if it is the before-image that is being unpacked and if so, don't compute\nfunctional indexes values.\n\nReviewBoard: 21416\nReviewed-by: Sven Sandberg <sven.sandberg@oracle.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/log_event.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/dc77b4564da015a38dd6351f75006547b6646d6e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Rows_log_event::unpack_current_row"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 1,
+        "total_changed_lines": 3,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "dc9d0a3c3a1fa59b0df3fd40c9aaf87c4044b063",
+        "author": "Neeraj Bisht",
+        "date": "2013-04-30T14:54:09+05:30",
+        "message": "Bug#16346367 : QUERY PROC RE-EXECUTE OF STORED ROUTINE, INEFFICIENT QUERY PLAN\n\nProblem:-\nIn derived tables implementation, We only get to use indexes on derived tables \non the first execution of a procedure and  in later execution we are not able \nto use indexes.\n\n\nAnalysis:-\nIn case of derived tables, we call add_key_field() to add new fake keys for \nrange optimizer. To choose the best key to read data. After creating the actual \nkeys from this fake keys. \nWe set the variable in TABLE_LIST::derived_keys_ready, to show that actual \nkeys are created.\nThis table_list is maintained in the memory after our exection is completed.                       \nSo when we call our procedure second time, this TABLE_LIST::derived_keys_ready \nis already set and we assume that actual keys are already being created, but we \nwill not find any key, which cause change in query execution plan.\n\nSolution:-\nReset the TABLE_LIST::derived_keys_ready at the time JOIN_TAB::cleanup.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_select.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/dc9d0a3c3a1fa59b0df3fd40c9aaf87c4044b063",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "JOIN_TAB::cleanup"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 0,
+        "total_changed_lines": 5,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "e88bd2613e16ed1476ef426e2c0d53d9ffd8566e",
+        "author": "Jon Olav Hauglid",
+        "date": "2011-10-27T14:13:46+02:00",
+        "message": "Bug#13251277 CHECK_GRANT SHOULDN'T LOCK/UNLOCK LOCK_GRANT\n             WITHOUT NEEDING TO\n\nThe problem was that check_table_access() was called for each\nstored routine instruction even if the instruction did not use\nany tables. This is a performance problem since\ncheck_table_access() causes the LOCK_grant rw lock to be taken\n(by calling check_grant()). For example, it caused up to 20 %\nslowdown in a simple stored routine calculating Fibonacci's\nnumbers.\n\nThis patch fixes the problem by changing the code so that\ncheck_table_access() is only called for stored routine\ninstructions that actually use tables.\n\nThe patch doesn't contain a test case since it is hard to test\nfor performance improvements in our test framework.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sp_head.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/e88bd2613e16ed1476ef426e2c0d53d9ffd8566e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "sp_lex_keeper::reset_lex_and_exec_core"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 4,
+        "total_changed_lines": 13,
+        "net_line_change": 5,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "e942cd2612a7a8cf6bdf4a5b56a618eeb939050d",
+        "author": "Krunal Bauskar krunal.bauskar@oracle.com",
+        "date": "2014-05-07T14:09:15+05:30",
+        "message": "- WL#7682: Optimizing InnoDB temporary tables.\n  - Removed redundant initialization to fix performance drop.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/include/mtr0mtr.h"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/e942cd2612a7a8cf6bdf4a5b56a618eeb939050d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "mtr_t"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 3,
+        "total_changed_lines": 4,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "f44d0e5e84cece26c81517dd9ade073a342732a2",
+        "author": "Jorgen Loland",
+        "date": "2013-05-02T09:36:04+02:00",
+        "message": "Bug#16697792: POOR EXECUTION PLAN WHEN ORDER BY WITH LIMIT X\n\nWhen we have a LIMIT that is lower than the row estimate on \nthe first table, the optimizer checks whether or not it's \npossible to switch to an index that provides correct ordering.\nIf there is, execution can be short-cut'ed immediately after\nfinding 'limit' number of records. The optimizer (in \nmake_join_select()) will in such cases go through all ORDER BY\nitems and make note of all indexes that can be used to \nprovide ordering for that item and then run the range optimizer\nto see if changing index makes sense.\n\nThat happens for this bug too. make_join_select() looks at \nthe ORDER BY clause and finds indexes that cover the fields.\nThe range optimizer is then run to see if those indexes are\nuseful. In the bug, the indexes with that index number may not\nbe used, so range access is discarded. The problem is that the \nfirst table - the one we run range optimizer for - is not the \nsame table referred to in the ORDER BY clause. Thus, the range \noptimizer will check if an index in a different table is \nuseful.\n\nThe fix is to check if the fields in the ORDER BY clause are \nfrom the table being analyzed, and leave the query plan as \nearlier computed if any of them belong to a different table.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/sql_optimizer.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/f44d0e5e84cece26c81517dd9ade073a342732a2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "make_join_select"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 1,
+        "total_changed_lines": 14,
+        "net_line_change": 12,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "fe20e7a88dc99faf5147a43060fd5222736d1a0c",
+        "author": "Kevin Lewis",
+        "date": "2018-10-22T10:33:14-07:00",
+        "message": "Bug#28813453: INNODB: ADJUST THE CALCULATION FOR DML DELAY TO REDUCE PURGE LAGGING\n\nThis adjustment is requested by Dimitri Kravtchuk.  As always, this change is\nwell tested.\n\n\"Historically, we used 5ms as the minimal delay for purge lagging\n\"workaround\", while on todays systems things are going much faster, and 5ms\nis too big -- it should be rather 5 usec now.\"\n\"With sleeps starting from 5ms we're sleeping too much, so the impact on TPS\nbecomes much bigger than it should be\"\n\nPatch approved by Dimitri on RB#20753",
+        "modified_files_count": 1,
+        "modified_files": [
+            "storage/innobase/trx/trx0purge.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/fe20e7a88dc99faf5147a43060fd5222736d1a0c",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "trx_purge_dml_delay"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 5,
+        "total_changed_lines": 8,
+        "net_line_change": -2,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mysql-server",
+        "hash": "fe9d5a26c801d0d9660a42028b397aa5fd56d503",
+        "author": "Andrei Elkin",
+        "date": "2015-09-25T13:52:25+02:00",
+        "message": "Bug #21865901   MTS COORDINATOR AND WORKER THREAD SYNCHRONIZATION LIMITS PARALLELISM\n\nIn LC (Logical Clock) MTS mode, Coordinator thread distributes transactions to\nworkers respecting at most one transaction to a Worker at a time constrain.\nThe rule was introduced yet by wl6314 and not been revised since that time.\nA part of the rule implementation involved my_sleep() on the Coordinator side\nwith the idea the Coordinator to have a nap while every Worker is busy.\n\nThis has turned out to be costly for overall slave applier performance and\nmy_sleep() is replaced with sched_yield(), except Windows where the latter\nis not defined.\n\nNotice with this method a potential excessive busy-waiting by\nCoordinator, e.g when all Workers are busy to process big\ntransactions, happens only when the yielded thread's CPU is not requested by\nany other user thread.\nOtherwise there should be no negative cost for this operation except\na Worker can become available sooner than Coordinator gets rescheduled.\nby OS.\n\nThere're still few alternatives to the current solution, declined\ndue to either higher risks or rather significant complexity.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "sql/rpl_mts_submode.cc"
+        ],
+        "github_commit_url": "https://github.com/mysql/mysql-server/commit/fe9d5a26c801d0d9660a42028b397aa5fd56d503",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Mts_submode_logical_clock::get_least_occupied_worker"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 2,
+        "total_changed_lines": 14,
+        "net_line_change": 10,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    }
+]

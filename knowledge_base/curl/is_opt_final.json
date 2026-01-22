@@ -1,0 +1,386 @@
+[
+    {
+        "repository_name": "curl",
+        "hash": "01c2b397aa58a8727f3b12ca0808dc602fc4901e",
+        "author": "Daniel Stenberg",
+        "date": "2010-06-17T15:19:30+02:00",
+        "message": "multi: call the progress function only once and allow abort\n\n1) no need to call the progress function twice when in the\nCURLM_STATE_TOOFAST state.\n\n2) Make sure that the progress callback's return code is\nacknowledged when used",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/multi.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/01c2b397aa58a8727f3b12ca0808dc602fc4901e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "multi_runsingle"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "2b34d4e1f750c2b7db466e85abe582191f439109",
+        "author": "Daniel Stenberg",
+        "date": "2002-06-14T12:05:20+00:00",
+        "message": "- Yarram Sunil found out that the SocketIsDead() function performed a lot\n  faster on Windows when removing the 1 microsecond timeout.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/url.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/2b34d4e1f750c2b7db466e85abe582191f439109",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SocketIsDead"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "3bd7f2800063ce0ec9452d74c071bfd5d3367bff",
+        "author": "Lauri Kasanen",
+        "date": "2015-11-02T22:57:13+01:00",
+        "message": "rawstr: Speed up Curl_raw_toupper by 40%\n\nRationale: when starting up a curl-using app, all cookies from the jar\nare checked against each other. This was causing a startup delay in the\nFifth browser.\n\nAll tests pass.\n\nSigned-off-by: Lauri Kasanen <cand@gmx.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/rawstr.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/3bd7f2800063ce0ec9452d74c071bfd5d3367bff",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Curl_raw_toupper"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 1,
+        "total_changed_lines": 8,
+        "net_line_change": 6,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "3d5732d4e051c503af0b000e1cc81cbcf04490a4",
+        "author": "Daniel Stenberg",
+        "date": "2002-02-18T23:12:37+00:00",
+        "message": "Rick Richardson's getaddrinfo() usage fix to speed up name resolves",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/hostip.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/3d5732d4e051c503af0b000e1cc81cbcf04490a4",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Curl_getaddrinfo"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "458c70db6a8e51e6f47313ac91da736cfe8d3fbb",
+        "author": "Gerome Fournier",
+        "date": "2023-08-27T17:55:05+02:00",
+        "message": "tool_paramhlp: improve str2num(): avoid unnecessary call to strlen()\n\nCloses #11742",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/tool_paramhlp.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/458c70db6a8e51e6f47313ac91da736cfe8d3fbb",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "getnum"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "4d28a59fc2b21fd7cbf54e48e9c28018b991c987",
+        "author": "Daniel Stenberg",
+        "date": "2012-04-17T00:45:20+02:00",
+        "message": "-# progress meter: avoid superfluous updates and duplicate lines\n\nBy comparing if a different \"progress point\" is reached or not since the\nprevious update, the progress function callback for this now avoids many\nsuperfluous screen updates. This has the nice side-effect that it fixes\na problem that causes a second progress meter line.\n\nThe second line output happened because when we use the -# progress\nmeter, we force a newline output after the transfer in the main loop in\ncurl, but when libcurl calls the progress callback from\ncurl_easy_cleanup() it would then output the progress display\nagain. Possibly the naive newline output is wrong but this optimization\nwas suitable anyway...\n\nReported by: Daniel Theron\nBug: http://curl.haxx.se/bug/view.cgi?id=3517418",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/tool_cb_prg.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/4d28a59fc2b21fd7cbf54e48e9c28018b991c987",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "tool_progress_cb"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "62a018762e081a679534a19c3b41fcf597de64ec",
+        "author": "Marc Hoersken",
+        "date": "2014-12-26T10:15:33+01:00",
+        "message": "sockfilt.c: Replace 100ms sleep with thread throttle\n\nImproves performance of test cases 574 and 575 by 50%.\n\nA value of zero causes the thread to relinquish the remainder\nof its time slice to any other thread of equal priority that is\nready to run. If there are no other threads of equal priority\nready to run, the function returns immediately, and the thread\ncontinues execution.\n\nhttp://msdn.microsoft.com/library/windows/desktop/ms686307.aspx",
+        "modified_files_count": 1,
+        "modified_files": [
+            "tests/server/sockfilt.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/62a018762e081a679534a19c3b41fcf597de64ec",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "select_ws_wait_thread"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 3,
+        "total_changed_lines": 6,
+        "net_line_change": 0,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "86f266b00495277d3c797ecb565f21d60ac38332",
+        "author": "Fabian Frank",
+        "date": "2014-02-16T23:30:21+01:00",
+        "message": "axtls: call ssl_read repeatedly\n\nPerform more work in between sleeps. This is work around the\nfact that axtls does not expose any knowledge about when work needs\nto be performed. Depending on connection and how often perform is\nbeing called this can save ~25% of time on SSL handshakes (measured\non 20ms latency connection calling perform roughly every 10ms).",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/vtls/axtls.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/86f266b00495277d3c797ecb565f21d60ac38332",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Curl_axtls_connect_nonblocking"
+        ],
+        "added_lines": 9,
+        "deleted_lines": 8,
+        "total_changed_lines": 17,
+        "net_line_change": 1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "8f384577b8398d3b0d32792150a98afd3721c74e",
+        "author": "Daniel Gustafsson",
+        "date": "2022-10-24T11:31:08+02:00",
+        "message": "cookies: optimize control character check\n\nWhen checking for invalid octets the strcspn() call will return the\nposition of the first found invalid char or the first NULL byte.\nThis means that we can check the indicated position in the search-\nstring saving a strlen() call.\n\nCloses: #9736\nReviewed-by: Jay Satiro <raysatiro@yahoo.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/cookie.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/8f384577b8398d3b0d32792150a98afd3721c74e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "invalid_octets"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 3,
+        "total_changed_lines": 5,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "913b80d5fdf9735594d58e8211d01c22e0a5fe3b",
+        "author": "Tatsuhiro Tsujikawa",
+        "date": "2022-04-05T16:47:18+02:00",
+        "message": "ngtcp2: make curl 1ms faster\n\nPass 0 for an already expired timer.\n\nCloses #8678",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/vquic/ngtcp2.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/913b80d5fdf9735594d58e8211d01c22e0a5fe3b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ng_flush_egress"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "93844f64efcf8c5a291b26dc43b4d6057240a27b",
+        "author": "Dan Fandrich",
+        "date": "2007-05-01T20:50:50+00:00",
+        "message": "Use memcpy instead of strcpy to improve performance.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/strdup.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/93844f64efcf8c5a291b26dc43b4d6057240a27b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "curlx_strdup"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "9f77771ff9708629cc9866909e3d0883028bca63",
+        "author": "Daniel Stenberg",
+        "date": "2001-10-01T23:25:26+00:00",
+        "message": "faster bailout on timeouts",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/connect.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/9f77771ff9708629cc9866909e3d0883028bca63",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Curl_connecthost"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 0,
+        "total_changed_lines": 4,
+        "net_line_change": 4,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "c175d184a2c254765d1a0d66978de4886b0a2ece",
+        "author": "Tatsuhiro Tsujikawa",
+        "date": "2015-05-20T22:43:37+02:00",
+        "message": "http2: Faster http2 upload\n\nPreviously, when we send all given buffer in data_source_callback, we\nreturn NGHTTP2_ERR_DEFERRED, and nghttp2 library removes this stream\ntemporarily for writing.  This itself is good.  If this is the sole\nstream in the session, nghttp2_session_want_write() returns zero,\nwhich means that libcurl does not check writeability of the underlying\nsocket.  This leads to very slow upload, because it seems curl only\nupload 16k something per 1 second.  To fix this, if we still have data\nto send, call nghttp2_session_resume_data after nghttp2_session_send.\nThis makes nghttp2_session_want_write() returns nonzero (if connection\nwindow still opens), and as a result, socket writeability is checked,\nand upload speed becomes normal.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/http2.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/c175d184a2c254765d1a0d66978de4886b0a2ece",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "http2_send"
+        ],
+        "added_lines": 13,
+        "deleted_lines": 0,
+        "total_changed_lines": 13,
+        "net_line_change": 13,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "d60b1b37a1682dee3a53bc6e15b44ecab9811297",
+        "author": "Daniel Stenberg",
+        "date": "2020-02-16T22:52:41+01:00",
+        "message": "multi: if Curl_readwrite sets 'comeback' use expire, not loop\n\nOtherwise, a very fast single transfer ricks starving out other\nconcurrent transfers.\n\nCloses #4927",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/multi.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/d60b1b37a1682dee3a53bc6e15b44ecab9811297",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "multi_runsingle"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 2,
+        "total_changed_lines": 9,
+        "net_line_change": 5,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "dda418266c99ceab368d723facb52069cbb9c8d5",
+        "author": "Paul Dreik",
+        "date": "2019-09-15T23:27:45+02:00",
+        "message": "doh: fix undefined behaviour and open up for gcc and clang optimization\n\nThe undefined behaviour is annoying when running fuzzing with\nsanitizers. The codegen is the same, but the meaning is now not up for\ndispute. See https://cppinsights.io/s/516a2ff4\n\nBy incrementing the pointer first, both gcc and clang recognize this as\na bswap and optimizes it to a single instruction.  See\nhttps://godbolt.org/z/994Zpx\n\nCloses #4350",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/doh.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/dda418266c99ceab368d723facb52069cbb9c8d5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get32bit"
+        ],
+        "added_lines": 8,
+        "deleted_lines": 2,
+        "total_changed_lines": 10,
+        "net_line_change": 6,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "curl",
+        "hash": "fc8ad0b23c9fd922ebdb89348d467df037da1775",
+        "author": "Daniel Stenberg",
+        "date": "2023-01-31T22:42:21+01:00",
+        "message": "escape: use table lookup when adding %-codes to output\n\nOn my dev host, this code runs 7.8 times faster.\n\nCloses #10377",
+        "modified_files_count": 1,
+        "modified_files": [
+            "lib/escape.c"
+        ],
+        "github_commit_url": "https://github.com/curl/curl/commit/fc8ad0b23c9fd922ebdb89348d467df037da1775",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "curl_easy_escape"
+        ],
+        "added_lines": 6,
+        "deleted_lines": 3,
+        "total_changed_lines": 9,
+        "net_line_change": 3,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    }
+]

@@ -1,0 +1,314 @@
+[
+    {
+        "repository_name": "serenity",
+        "hash": "053853dca02afa8d413d45f7f98a4ab8a5fd7adf",
+        "author": "Holger Hans Peter Freyther",
+        "date": "2024-07-29T07:59:13-04:00",
+        "message": "LibWeb/DOM: Avoid repeated calls to Node::navigable\n\nMinor optimization to avoid looking up the navigable during a\nlayout operation.\n\n(cherry picked from commit 02ba51f203ecab23deadc0ab62a2e9587113459d)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/DOM/Document.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/053853dca02afa8d413d45f7f98a4ab8a5fd7adf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Document::update_layout"
+        ],
+        "added_lines": 4,
+        "deleted_lines": 7,
+        "total_changed_lines": 11,
+        "net_line_change": -3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "34ae4521ffaa4c14029e6fa873c68b82ece6759d",
+        "author": "Hermes Junior",
+        "date": "2024-11-12T19:57:55-05:00",
+        "message": "LibJS: Correctly return cached value for global var bindings\n\nWhen the cached value was not an accessor, it was simply ignored.\nThis is the value we really want, so we can just return it.\nShows up to 5x improvements on some benchmarks,\nand 1.4x in general js-benchmarks.\n\n(cherry picked from commit 77a46ab1b8d13f35b11a7bd08459752912dca1bf)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibJS/Bytecode/Interpreter.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/34ae4521ffaa4c14029e6fa873c68b82ece6759d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "get_global"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 0,
+        "total_changed_lines": 1,
+        "net_line_change": 1,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "3539a491a236c358090d3d5cb37b409494f6145d",
+        "author": "Matthew Olsson",
+        "date": "2024-11-04T13:15:58-05:00",
+        "message": "LibWeb: Avoid copy when creating EasingStyleValue\n\n(cherry picked from commit 815a87100ec472436929720f7d40e4741e5c4100)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/CSS/StyleValues/EasingStyleValue.h"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/3539a491a236c358090d3d5cb37b409494f6145d",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "EasingStyleValue"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "36f87b9a56017f0561edbb14a8a2a5cad2a0ce52",
+        "author": "Jelle Raaijmakers",
+        "date": "2024-12-21T14:58:20-05:00",
+        "message": "LibWeb: Resolve performance FIXME in Node::is_equal_node()\n\n(cherry picked from commit f29457b61ecd5b7d4a27414259010eb7e1ae6d2c)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/DOM/Node.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/36f87b9a56017f0561edbb14a8a2a5cad2a0ce52",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Node::is_equal_node"
+        ],
+        "added_lines": 7,
+        "deleted_lines": 8,
+        "total_changed_lines": 15,
+        "net_line_change": -1,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "4ce5aeb3124a4d0741dd80efc09b87ce1dd6637e",
+        "author": "Andreas Kling",
+        "date": "2024-07-21T12:37:05-04:00",
+        "message": "LibWeb: Skip CSS tokenizer filtering when string has no '\\r' or '\\f'\n\nWhen loading a canned version of reddit.com, we end up parsing many many\nshadow tree style sheets of roughly ~170 KiB text each.\n\nNone of them have '\\r' or '\\f', yet we spend 2-3 ms for each sheet just\nlooping over and reconstructing the text to see if we need to normalize\nany newlines.\n\nThis patch makes the common case faster in two ways:\n\n- We use TextCodec::Decoder::to_utf8() instead of process()\n  This way, we do a one-shot fast validation and conversion to UTF-8,\n  instead of using the generic code-point-at-a-time callback API.\n\n- We scan for '\\r' and '\\f' before filtering, and if neither is present,\n  we simply use the unfiltered string.\n\nWith these changes, we now spend 0 ms in the filtering function for the\nvast majority of style sheets I've seen so far.\n\n(cherry picked from commit dba6216caa71796f25831908035cd9eb0fb54715)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/CSS/Parser/Tokenizer.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/4ce5aeb3124a4d0741dd80efc09b87ce1dd6637e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Tokenizer::tokenize"
+        ],
+        "added_lines": 16,
+        "deleted_lines": 3,
+        "total_changed_lines": 19,
+        "net_line_change": 13,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "6a9222ffd3b4a3098d2d646fd17f10adc8e6e84e",
+        "author": "Shannon Booth",
+        "date": "2024-10-16T23:56:40-04:00",
+        "message": "AK: Add fast-path in from_utf8_with_replacement_character for utf-8\n\nThis ports the same optimization which was made in\n1a46d8df5fc81eb2c320d5c8a5597285d3d8fb3a to this function as well.\n\n(cherry picked from commit 1e8cc97b731871409316c121e637c32806135122)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "AK/String.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/6a9222ffd3b4a3098d2d646fd17f10adc8e6e84e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "String::from_utf8_with_replacement_character"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "7021616873158231badce53e3fea2f826458673a",
+        "author": "Andreas Kling",
+        "date": "2024-07-27T15:13:16-04:00",
+        "message": "LibTextCodec: Use String::from_utf8() when decoding UTF-8 to UTF-8\n\nThis way, we still perform UTF-8 validation, but don't go through the\nslow generic code path that rebuilds the decoded string one code point\nat a time.\n\nThis was a bottleneck when loading a canned copy of reddit.com, which\nended up being ~120 MiB large.\n\n- Time spent decoding UTF-8 before this change: 1192 ms\n- Time spent decoding UTF-8 after this change:  154 ms\n\nThat's still a long time, but 7.7x faster is nothing to sneeze at! :^)\n\nNote that if the input fails UTF-8 validation, we still fall back to\nthe slow path and insert replacement characters per the WHATWG Encoding\nspec: https://encoding.spec.whatwg.org/#utf-8-decode\n\n(cherry picked from commit 1a46d8df5fc81eb2c320d5c8a5597285d3d8fb3a)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibTextCodec/Decoder.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/7021616873158231badce53e3fea2f826458673a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "UTF8Decoder::to_utf8"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 0,
+        "total_changed_lines": 3,
+        "net_line_change": 3,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "716bf5cb7aa1188efab65e8db9188dcb2bc6c644",
+        "author": "Tim Ledbetter",
+        "date": "2024-11-01T09:38:01-04:00",
+        "message": "LibWeb: Elide boundary checks when constructing find in page ranges\n\nPreviously, unnecessary boundary checks were being done when\nconstructing the range objects used to represent find in page matches.\nThese checks are no longer performed leading to a significant speedup\nwhen performing find in page queries on pages containing a lot of text.\n\n(cherry picked from commit e76ad9492e0992f9a6d821240bea2b62f27a03c8)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/DOM/Document.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/716bf5cb7aa1188efab65e8db9188dcb2bc6c644",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Document::find_matching_text"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 4,
+        "total_changed_lines": 5,
+        "net_line_change": -3,
+        "modified_code_blocks": 4,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "7bf0f0e908574af28df61ac71925166daef4fc8a",
+        "author": "Andreas Kling",
+        "date": "2024-10-30T22:17:22-04:00",
+        "message": "LibWeb: Include immediate child (>) combinator in ancestor filter\n\nBefore this change, the ancestor filter would only reject rules that\nrequired a certain set of descendant strings (class, ID or tag name)\nto be present in the current element's ancestor chain.\n\nAn immediate child is also a descendant, so we can include this\nrelationship in the ancestor filter as well.\n\nThis substantially improves the efficiency of the ancestor filter on\nwebsites using Tailwind CSS.\n\nFor example, https://tailwindcss.com/ itself goes from full style\nupdates taking ~1400ms to ~350ms. Still *way* too long, but a huge\nimprovement nonetheless.\n\n(cherry picked from commit 34fdd0d44fcf916540ea66ba9c895ba005a54b9a)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/CSS/Selector.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/7bf0f0e908574af28df61ac71925166daef4fc8a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Selector::collect_ancestor_hashes"
+        ],
+        "added_lines": 1,
+        "deleted_lines": 1,
+        "total_changed_lines": 2,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "8691d1b8852fbcc3c3809273a7a4b271f33ce5f2",
+        "author": "Ali Mohammad Pur",
+        "date": "2024-06-19T15:45:02+02:00",
+        "message": "LibCrypto: Milk some more performance out of galois_multiply()\n\nThis simple change makes AES-GCM 5% faster :^)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibCrypto/Authentication/GHash.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/8691d1b8852fbcc3c3809273a7a4b271f33ce5f2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "galois_multiply"
+        ],
+        "added_lines": 2,
+        "deleted_lines": 2,
+        "total_changed_lines": 4,
+        "net_line_change": 0,
+        "modified_code_blocks": 1,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "b57e502d212dd5e9d9eed211d0088aef359facbc",
+        "author": "Andreas Kling",
+        "date": "2024-11-12T07:14:25-05:00",
+        "message": "AK: Add ASCII fast path in StringBuilder::append(Utf16View)\n\nAnd let's at least try to pre-allocate an appropriate amount of\nbuffer space in the builder instead of appending and growing one\ncode point at a time.\n\n(cherry picked from commit b6e28ff80779520ccb49e6c15ae1866bbc8713a7)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "AK/StringBuilder.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/b57e502d212dd5e9d9eed211d0088aef359facbc",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "StringBuilder::try_append"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 0,
+        "total_changed_lines": 12,
+        "net_line_change": 12,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "ba6d3aaece45081ca70d7ef6e13f022e78eb6b16",
+        "author": "Andreas Kling",
+        "date": "2024-10-11T20:25:41-04:00",
+        "message": "LibWeb: Only recompute `before` and `after` pseudo element styles\n\nBefore this change, we would go through every known pseudo element and\ncompute style for it whenever recomputing the style of an element.\n\nThis led to disastrous performance on pages with selectors like\n`::selection` or `::placeholder`, as they'd effectively match every\nsingle element and thus we'd compute multiple additional styles for\nevery element in the DOM.\n\nThe fix is simple: only recompute `before` and `after` pseudo element\nstyles, since those are the only two pseudo elements that generate\n*new* nodes -- other pseudo elements refer to (possibly) existing\nnodes or concepts within the DOM (or internal shadow DOM).\n\nThis makes style updates take ~40ms on our GitHub repo instead of\n~220ms. It's still slower than it should be, but a huge improvement.\n\n(cherry picked from commit 62083bf586a816eea61db4a09a60cc6474585444)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Userland/Libraries/LibWeb/DOM/Element.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/ba6d3aaece45081ca70d7ef6e13f022e78eb6b16",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Element::recompute_style"
+        ],
+        "added_lines": 5,
+        "deleted_lines": 3,
+        "total_changed_lines": 8,
+        "net_line_change": 2,
+        "modified_code_blocks": 3,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "serenity",
+        "hash": "de1ecc17ce4f0e2b285194593d530d3c8f085f56",
+        "author": "Jonne Ransijn",
+        "date": "2024-11-12T07:14:25-05:00",
+        "message": "AK: Add ASCII fast path for `Utf8View::contains`\n\nThis also makes `Utf8View::trim` significantly faster, since most\nstrings start and end with ASCII.\n\n(cherry picked from commit 7f3269fb025051c3eb2794b15e785b85b0ce37f3)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "AK/Utf8View.cpp"
+        ],
+        "github_commit_url": "https://github.com/SerenityOS/serenity/commit/de1ecc17ce4f0e2b285194593d530d3c8f085f56",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Utf8View::contains"
+        ],
+        "added_lines": 12,
+        "deleted_lines": 3,
+        "total_changed_lines": 15,
+        "net_line_change": 9,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true"
+    }
+]
