@@ -1,0 +1,32 @@
+diff --git a/src/backend/access/heap/hio.c b/src/backend/access/heap/hio.c
+index e152807d2d..7479212d4e 100644
+--- a/src/backend/access/heap/hio.c
++++ b/src/backend/access/heap/hio.c
+@@ -623,6 +623,13 @@ loop:
+ 	 */
+ 	buffer = ReadBufferBI(relation, P_NEW, RBM_ZERO_AND_LOCK, bistate);
+ 
++	/*
++	 * Release the file-extension lock; it's now OK for someone else to extend
++	 * the relation some more.
++	 */
++	if (needLock)
++		UnlockRelationForExtension(relation, ExclusiveLock);
++
+ 	/*
+ 	 * We need to initialize the empty new page.  Double-check that it really
+ 	 * is empty (this should never happen, but if it does we don't want to
+@@ -647,13 +654,6 @@ loop:
+ 		visibilitymap_pin(relation, BufferGetBlockNumber(buffer), vmbuffer);
+ 	}
+ 
+-	/*
+-	 * Release the file-extension lock; it's now OK for someone else to extend
+-	 * the relation some more.
+-	 */
+-	if (needLock)
+-		UnlockRelationForExtension(relation, ExclusiveLock);
+-
+ 	/*
+ 	 * Lock the other buffer. It's guaranteed to be of a lower page number
+ 	 * than the new page. To conform with the deadlock prevent rules, we ought

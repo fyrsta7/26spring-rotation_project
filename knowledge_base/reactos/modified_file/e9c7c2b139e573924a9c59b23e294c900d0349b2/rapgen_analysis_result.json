@@ -1,0 +1,2229 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/reactos/modified_file/e9c7c2b139e573924a9c59b23e294c900d0349b2",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/reactos/modified_file/e9c7c2b139e573924a9c59b23e294c900d0349b2/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/reactos/modified_file/e9c7c2b139e573924a9c59b23e294c900d0349b2/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/reactos/modified_file/e9c7c2b139e573924a9c59b23e294c900d0349b2/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 180,
+          "old_api": "ASSERT",
+          "new_api": "Intsafe_CanOffsetPointer",
+          "old_text": "ASSERT(ImageSectionObject)",
+          "new_text": "Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize)",
+          "old_line_content": "    ASSERT(ImageSectionObject);",
+          "new_line_content": "    ASSERT(Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize));",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "Intsafe_CanOffsetPointer",
+          "new_api": "ASSERT",
+          "old_text": "Intsafe_CanOffsetPointer(FileHeader, pidhDosHeader->e_lfanew)",
+          "new_text": "ASSERT(sizeof(IMAGE_NT_HEADERS32) <= sizeof(IMAGE_NT_HEADERS64))",
+          "old_line_content": "\tASSERT(Intsafe_CanOffsetPointer(FileHeader, pidhDosHeader->e_lfanew));",
+          "new_line_content": "    ASSERT(sizeof(IMAGE_NT_HEADERS32) <= sizeof(IMAGE_NT_HEADERS64));",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew)",
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": "PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew)",
+          "new_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS64)",
+          "old_line_content": "\tpinhNtHeader = (PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew);",
+          "new_line_content": "    ASSERT(TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) == TYPE_ALIGNMENT(IMAGE_NT_HEADERS64));",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": "NT_SUCCESS",
+          "new_api": "ASSERT",
+          "old_text": "NT_SUCCESS(nStatus)",
+          "new_text": "ASSERT(pBuffer)",
+          "old_line_content": "\tif(!NT_SUCCESS(nStatus))",
+          "new_line_content": "\tASSERT(pBuffer);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": "DIE",
+          "new_api": "ASSERT",
+          "old_text": "DIE((\"ReadFile failed, status %08X\\n\", nStatus))",
+          "new_text": "ASSERT(cbReadSize > 0)",
+          "old_line_content": "\t    DIE((\"ReadFile failed, status %08X\\n\", nStatus));",
+          "new_line_content": "\tASSERT(cbReadSize > 0);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": "DIE",
+          "new_api": "FIELD_OFFSET",
+          "old_text": "DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature))",
+          "new_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "old_line_content": "\t    DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature));",
+          "new_line_content": "\tif(!Intsafe_AddULong32(&cbNtHeaderSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": "FIELD_OFFSET",
+          "new_api": "DIE",
+          "old_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "new_text": "DIE((\"The NT header is too large, SizeOfOptionalHeader is %X\\n\", pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "old_line_content": "\tif(!Intsafe_AddULong32(&cbOptHeaderOffsetSize, pidhDosHeader->e_lfanew, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "new_line_content": "\t    DIE((\"The NT header is too large, SizeOfOptionalHeader is %X\\n\", pinhNtHeader->FileHeader.SizeOfOptionalHeader));",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "DIE",
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": "DIE((\"Unrecognized optional header, Magic is %X\\n\", piohOptHeader->Magic))",
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, FileAlignment)",
+          "old_line_content": "\t    DIE((\"Unrecognized optional header, Magic is %X\\n\", piohOptHeader->Magic));",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, FileAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SectionAlignment)",
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, FileAlignment)",
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SectionAlignment));",
+          "new_line_content": "        RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, FileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": "DIE",
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": "DIE((\"ImageBase is not aligned on a 64KB boundary\"))",
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MajorSubsystemVersion)",
+          "old_line_content": "\tDIE((\"ImageBase is not aligned on a 64KB boundary\"));",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MajorSubsystemVersion));",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Subsystem)",
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Subsystem)",
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Subsystem));",
+          "new_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Subsystem))",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "FIELD_OFFSET",
+          "new_api": "DIE",
+          "old_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "new_text": "DIE((\"Offset overflow\\n\"))",
+          "old_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffset, pidhDosHeader->e_lfanew, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "new_line_content": "\tDIE((\"Offset overflow\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "Intsafe_AddULong32",
+          "new_api": "Intsafe_CanMulULong32",
+          "old_text": "Intsafe_AddULong32(&cbSectionHeadersOffset, cbSectionHeadersOffset, pinhNtHeader->FileHeader.SizeOfOptionalHeader)",
+          "new_text": "Intsafe_CanMulULong32(pinhNtHeader->FileHeader.NumberOfSections, sizeof(IMAGE_SECTION_HEADER))",
+          "old_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffset, cbSectionHeadersOffset, pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "new_line_content": "    ASSERT(Intsafe_CanMulULong32(pinhNtHeader->FileHeader.NumberOfSections, sizeof(IMAGE_SECTION_HEADER)));",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "Intsafe_CanMulULong32",
+          "new_api": "DIE",
+          "old_text": "Intsafe_CanMulULong32(pinhNtHeader->FileHeader.NumberOfSections, sizeof(IMAGE_SECTION_HEADER))",
+          "new_text": "DIE((\"Section headers too large\\n\"))",
+          "old_line_content": "    ASSERT(Intsafe_CanMulULong32(pinhNtHeader->FileHeader.NumberOfSections, sizeof(IMAGE_SECTION_HEADER)));",
+          "new_line_content": "\tDIE((\"Section headers too large\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "DIE",
+          "new_api": "AlignUp",
+          "old_text": "DIE((\"The section headers overflow SizeOfHeaders\\n\"))",
+          "new_text": "AlignUp(&cbHeadersSize, cbSectionHeadersOffsetSize, nFileAlignment)",
+          "old_line_content": "\t    DIE((\"The section headers overflow SizeOfHeaders\\n\"));",
+          "new_line_content": "    else if(!AlignUp(&cbHeadersSize, cbSectionHeadersOffsetSize, nFileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "DIE",
+          "new_api": "ExFreePool",
+          "old_text": "DIE((\"Overflow aligning the size of headers\\n\"))",
+          "new_text": "ExFreePool(pBuffer)",
+          "old_line_content": "\tDIE((\"Overflow aligning the size of headers\\n\"));",
+          "new_line_content": "\tExFreePool(pBuffer);",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "NT_SUCCESS",
+          "new_api": "ASSERT",
+          "old_text": "NT_SUCCESS(nStatus)",
+          "new_text": "ASSERT(pBuffer)",
+          "old_line_content": "\tif(!NT_SUCCESS(nStatus))",
+          "new_line_content": "\tASSERT(pBuffer);",
+          "content_same": false
+        },
+        {
+          "line": 533,
+          "old_api": "DIE",
+          "new_api": "ASSERT",
+          "old_text": "DIE((\"ReadFile failed with status %08X\\n\", nStatus))",
+          "new_text": "ASSERT(cbReadSize > 0)",
+          "old_line_content": "\t    DIE((\"ReadFile failed with status %08X\\n\", nStatus));",
+          "new_line_content": "\tASSERT(cbReadSize > 0);",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "AlignUp",
+          "new_api": "DIE",
+          "old_text": "AlignUp(&nFileSizeOfHeaders, cbHeadersSize, nFileAlignment)",
+          "new_text": "DIE((\"Cannot align the size of the section headers\\n\"))",
+          "old_line_content": "    if(!AlignUp(&nFileSizeOfHeaders, cbHeadersSize, nFileAlignment))",
+          "new_line_content": "\tDIE((\"Cannot align the size of the section headers\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": "ASSERT",
+          "new_api": "Intsafe_CanAddLong64",
+          "old_text": "ASSERT(pssSegments[i].FileOffset == 0)",
+          "new_text": "Intsafe_CanAddLong64(pssSegments[i].FileOffset, pssSegments[i].RawLength)",
+          "old_line_content": "\t    ASSERT(pssSegments[i].FileOffset == 0);",
+          "new_line_content": "\tASSERT(Intsafe_CanAddLong64(pssSegments[i].FileOffset, pssSegments[i].RawLength));",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "old_line_content": "     * the buffer doesn't contain the section headers, or the alignment is wrong:",
+          "new_line_content": "       (UINT_PTR)pishSectionHeaders % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "ReadFileCb",
+          "old_text": null,
+          "new_text": "ReadFileCb(File, &lnOffset, cbSectionHeadersSize, &pData, &pBuffer, &cbReadSize)",
+          "old_line_content": "",
+          "new_line_content": "\tnStatus = ReadFileCb(File, &lnOffset, cbSectionHeadersSize, &pData, &pBuffer, &cbReadSize);",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": null,
+          "new_api": "NT_SUCCESS",
+          "old_text": null,
+          "new_text": "NT_SUCCESS(nStatus)",
+          "old_line_content": "",
+          "new_line_content": "\tif(!NT_SUCCESS(nStatus))",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"ReadFile failed with status %08X\\n\", nStatus))",
+          "old_line_content": "\t/* read the header from the file */",
+          "new_line_content": "\t    DIE((\"ReadFile failed with status %08X\\n\", nStatus));",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(pData)",
+          "old_line_content": "",
+          "new_line_content": "\tASSERT(pData);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The file doesn't contain all of the section headers\\n\"))",
+          "old_line_content": "\tnStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "new_line_content": "\t    DIE((\"The file doesn't contain all of the section headers\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "old_line_content": "",
+          "new_line_content": "\tif((UINT_PTR)pishSectionHeaders % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "old_line_content": "",
+          "new_line_content": "\t    ASSERT((UINT_PTR)pBuffer % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) == 0);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "RtlMoveMemory",
+          "old_text": null,
+          "new_text": "RtlMoveMemory(pBuffer, pData, cbReadSize)",
+          "old_line_content": "\t/* object still not aligned: copy it to the beginning of the buffer */",
+          "new_line_content": "\t    RtlMoveMemory(pBuffer, pData, cbReadSize);",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": null,
+          "new_api": "AllocateSegmentsCb",
+          "old_text": null,
+          "new_text": "AllocateSegmentsCb(ImageSectionObject->NrSegments)",
+          "old_line_content": "",
+          "new_line_content": "    ImageSectionObject->Segments = AllocateSegmentsCb(ImageSectionObject->NrSegments);",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"AllocateSegments failed\\n\"))",
+          "old_line_content": "    nStatus = STATUS_INSUFFICIENT_RESOURCES;",
+          "new_line_content": "\tDIE((\"AllocateSegments failed\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": null,
+          "new_api": "AlignUp",
+          "old_text": null,
+          "new_text": "AlignUp(&nFileSizeOfHeaders, cbHeadersSize, nFileAlignment)",
+          "old_line_content": "\tpssSegments = ImageSectionObject->Segments;",
+          "new_line_content": "    if(!AlignUp(&nFileSizeOfHeaders, cbHeadersSize, nFileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Cannot align the size of the section headers\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\tDIE((\"Cannot align the size of the section headers\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": null,
+          "new_api": "AlignUp",
+          "old_text": null,
+          "new_text": "AlignUp(&nPrevVirtualEndOfSegment, cbHeadersSize, nSectionAlignment)",
+          "old_line_content": "",
+          "new_line_content": "    if(!AlignUp(&nPrevVirtualEndOfSegment, cbHeadersSize, nSectionAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": null,
+          "new_api": "IsAligned",
+          "old_text": null,
+          "new_text": "IsAligned(pishSectionHeaders[i].VirtualAddress, nSectionAlignment)",
+          "old_line_content": "    {",
+          "new_line_content": "\tif(!IsAligned(pishSectionHeaders[i].VirtualAddress, nSectionAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"VirtualAddress[%u] is not aligned\\n\", i))",
+          "old_line_content": "\tULONG nCharacteristics;",
+          "new_line_content": "\t    DIE((\"VirtualAddress[%u] is not aligned\\n\", i));",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": null,
+          "new_api": "IsAligned",
+          "old_text": null,
+          "new_text": "IsAligned(pishSectionHeaders[i].SizeOfRawData, nFileAlignment)",
+          "old_line_content": "#if 0\t    ",
+          "new_line_content": "\t    if(!IsAligned(pishSectionHeaders[i].SizeOfRawData, nFileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"SizeOfRawData[%u] is not aligned\\n\", i))",
+          "old_line_content": "\t    /* Yes, this should be a multiple of FileAlignment, but there's",
+          "new_line_content": "\t\tDIE((\"SizeOfRawData[%u] is not aligned\\n\", i));",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(pssSegments[i].FileOffset == 0)",
+          "old_line_content": "\t    pssSegments[i].RawLength = pishSectionHeaders[i].SizeOfRawData;",
+          "new_line_content": "\t    ASSERT(pssSegments[i].FileOffset == 0);",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(pssSegments[i].RawLength == 0)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t    ASSERT(pssSegments[i].RawLength == 0);",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": null,
+          "new_api": "IsPowerOf2",
+          "old_text": null,
+          "new_text": "IsPowerOf2(Alignment)",
+          "old_line_content": "}",
+          "new_line_content": "    ASSERT(IsPowerOf2(Alignment));",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "ModPow2",
+          "old_text": null,
+          "new_text": "ModPow2(Address, Alignment)",
+          "old_line_content": "}",
+          "new_line_content": "    return ModPow2(Address, Alignment) == 0;",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": null,
+          "new_api": "ModPow2",
+          "old_text": null,
+          "new_text": "ModPow2(Address, Alignment)",
+          "old_line_content": "}",
+          "new_line_content": "    ULONG nExcess = ModPow2(Address, Alignment);",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "Intsafe_AddULong32",
+          "old_text": null,
+          "new_text": "Intsafe_AddULong32(AlignedAddress, Address, Alignment - nExcess)",
+          "old_line_content": "\t*AlignedAddress = Address;",
+          "new_line_content": "\treturn Intsafe_AddULong32(AlignedAddress, Address, Alignment - nExcess);",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "AlignUp",
+          "old_text": null,
+          "new_text": "AlignUp(&pssSegments[i].Length, pssSegments[i].Length, nSectionAlignment)",
+          "old_line_content": "\t    pssSegments[i].Length = pishSectionHeaders[i].SizeOfRawData;",
+          "new_line_content": "\tif(!AlignUp(&pssSegments[i].Length, pssSegments[i].Length, nSectionAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Cannot align the virtual size of section %u\\n\", i))",
+          "old_line_content": "\telse",
+          "new_line_content": "\t    DIE((\"Cannot align the virtual size of section %u\\n\", i));",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": null,
+          "new_api": "IsAligned",
+          "old_text": null,
+          "new_text": "IsAligned(pssSegments[i].Length, nSectionAlignment)",
+          "old_line_content": "",
+          "new_line_content": "\tASSERT(IsAligned(pssSegments[i].Length, nSectionAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Virtual size of section %u is null\\n\", i))",
+          "old_line_content": "",
+          "new_line_content": "\t    DIE((\"Virtual size of section %u is null\\n\", i));",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": null,
+          "new_api": "Intsafe_AddULong32",
+          "old_text": null,
+          "new_text": "Intsafe_AddULong32(&nPrevVirtualEndOfSegment, pssSegments[i].VirtualAddress, pssSegments[i].Length)",
+          "old_line_content": "\tpssSegments[i].VirtualAddress = pishSectionHeaders[i].VirtualAddress;",
+          "new_line_content": "\tif(!Intsafe_AddULong32(&nPrevVirtualEndOfSegment, pssSegments[i].VirtualAddress, pssSegments[i].Length))",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The image is larger than 4GB\\n\"))",
+          "old_line_content": "\tpssSegments[i].Characteristics = pishSectionHeaders[i].Characteristics;",
+          "new_line_content": "\t    DIE((\"The image is larger than 4GB\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "ExFreePool",
+          "old_text": null,
+          "new_text": "ExFreePool(pBuffer)",
+          "old_line_content": "    nStatus = STATUS_ROS_EXEFMT_LOADED_FORMAT | EXEFMT_LOADED_PE32;",
+          "new_line_content": "\tExFreePool(pBuffer);",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(FileHeader)",
+          "old_line_content": "    ULONG nPrevVirtualEndOfSegment = 0;",
+          "new_line_content": "    ASSERT(FileHeader);",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(FileHeaderSize > 0)",
+          "old_line_content": "    ULONG nFileSizeOfHeaders = 0;",
+          "new_line_content": "    ASSERT(FileHeaderSize > 0);",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(File)",
+          "old_line_content": "    ULONG i;",
+          "new_line_content": "    ASSERT(File);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(ImageSectionObject)",
+          "old_line_content": "",
+          "new_line_content": "    ASSERT(ImageSectionObject);",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_DOS_HEADER)",
+          "old_line_content": "",
+          "new_line_content": "    ASSERT(((UINT_PTR)FileHeader % TYPE_ALIGNMENT(IMAGE_DOS_HEADER)) == 0);",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Too small to be an MZ executable, size is %lu\\n\", FileHeaderSize))",
+          "old_line_content": "    nStatus = STATUS_ROS_EXEFMT_UNKNOWN_FORMAT;",
+          "new_line_content": "\tDIE((\"Too small to be an MZ executable, size is %lu\\n\", FileHeaderSize));",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": null,
+          "new_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "old_text": null,
+          "new_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)",
+          "old_line_content": "",
+          "new_line_content": "    if(!Intsafe_AddULong32(&cbFileHeaderOffsetSize, pidhDosHeader->e_lfanew, RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)))",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew))",
+          "old_line_content": "    /* NT HEADER */",
+          "new_line_content": "\tDIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew));",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": null,
+          "new_api": "Intsafe_CanOffsetPointer",
+          "old_text": null,
+          "new_text": "Intsafe_CanOffsetPointer(FileHeader, pidhDosHeader->e_lfanew)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tASSERT(Intsafe_CanOffsetPointer(FileHeader, pidhDosHeader->e_lfanew));",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew)",
+          "old_text": null,
+          "new_text": "PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew)",
+          "old_line_content": "\t * we already know that Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize),",
+          "new_line_content": "\tpinhNtHeader = (PVOID)((UINT_PTR)FileHeader + pidhDosHeader->e_lfanew);",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "old_text": null,
+          "new_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS64, FileHeader)",
+          "old_line_content": "    }",
+          "new_line_content": "    ASSERT(RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader) == RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS64, FileHeader));",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "FIELD_OFFSET",
+          "old_text": null,
+          "new_text": "FIELD_OFFSET(IMAGE_NT_HEADERS64, OptionalHeader)",
+          "old_line_content": "",
+          "new_line_content": "    ASSERT(FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader) == FIELD_OFFSET(IMAGE_NT_HEADERS64, OptionalHeader));",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "old_line_content": "     * the buffer doesn't contain the NT file header, or the alignment is wrong: we",
+          "new_line_content": "       (UINT_PTR)pinhNtHeader % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": null,
+          "new_api": "ReadFileCb",
+          "old_text": null,
+          "new_text": "ReadFileCb(File, &lnOffset, sizeof(IMAGE_NT_HEADERS64), &pData, &pBuffer, &cbReadSize)",
+          "old_line_content": "\tcbNtHeaderSize = 0;",
+          "new_line_content": "\tnStatus = ReadFileCb(File, &lnOffset, sizeof(IMAGE_NT_HEADERS64), &pData, &pBuffer, &cbReadSize);",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": null,
+          "new_api": "NT_SUCCESS",
+          "old_text": null,
+          "new_text": "NT_SUCCESS(nStatus)",
+          "old_line_content": "",
+          "new_line_content": "\tif(!NT_SUCCESS(nStatus))",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"ReadFile failed, status %08X\\n\", nStatus))",
+          "old_line_content": "\t/* read the header from the file */",
+          "new_line_content": "\t    DIE((\"ReadFile failed, status %08X\\n\", nStatus));",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "ASSERT",
+          "old_text": null,
+          "new_text": "ASSERT(pData)",
+          "old_line_content": "",
+          "new_line_content": "\tASSERT(pData);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": null,
+          "new_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "old_text": null,
+          "new_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)",
+          "old_line_content": "",
+          "new_line_content": "\tif(cbReadSize < RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader))",
+          "content_same": false
+        },
+        {
+          "line": 257,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The file doesn't contain the PE file header\\n\"))",
+          "old_line_content": "\tnStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "new_line_content": "\t    DIE((\"The file doesn't contain the PE file header\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "old_line_content": "",
+          "new_line_content": "\tif((UINT_PTR)pinhNtHeader % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": null,
+          "new_api": "TYPE_ALIGNMENT",
+          "old_text": null,
+          "new_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "old_line_content": "",
+          "new_line_content": "\t    ASSERT((UINT_PTR)pBuffer % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) == 0);",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "RtlMoveMemory",
+          "old_text": null,
+          "new_text": "RtlMoveMemory(pBuffer, pData, cbReadSize)",
+          "old_line_content": "\t/* object still not aligned: copy it to the beginning of the buffer */",
+          "new_line_content": "\t    RtlMoveMemory(pBuffer, pData, cbReadSize);",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature))",
+          "old_line_content": "\t/* invalid NT header */",
+          "new_line_content": "\t    DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature));",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The full NT header is too large\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\t    DIE((\"The full NT header is too large\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature))",
+          "old_line_content": "\tnStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "new_line_content": "\t    DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature));",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "FIELD_OFFSET",
+          "old_text": null,
+          "new_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "old_line_content": "\t/* don't trust an invalid NT header */",
+          "new_line_content": "\tif(!Intsafe_AddULong32(&cbOptHeaderOffsetSize, pidhDosHeader->e_lfanew, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew))",
+          "old_line_content": "\tif(pinhNtHeader->Signature != IMAGE_NT_SIGNATURE)",
+          "new_line_content": "\t    DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew));",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "Intsafe_AddULong32",
+          "old_text": null,
+          "new_text": "Intsafe_AddULong32(&cbOptHeaderOffsetSize, cbOptHeaderOffsetSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader)",
+          "old_line_content": "",
+          "new_line_content": "\tif(!Intsafe_AddULong32(&cbOptHeaderOffsetSize, cbOptHeaderOffsetSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Magic)",
+          "old_line_content": "    cbOptHeaderSize = pinhNtHeader->FileHeader.SizeOfOptionalHeader;",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Magic));",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Magic)",
+          "old_line_content": "    nStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "new_line_content": "    if(!RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Magic))",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The optional header doesn't contain the Magic field, SizeOfOptionalHeader is %X\\n\", cbOptHeaderSize))",
+          "old_line_content": "",
+          "new_line_content": "\tDIE((\"The optional header doesn't contain the Magic field, SizeOfOptionalHeader is %X\\n\", cbOptHeaderSize));",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Unrecognized optional header, Magic is %X\\n\", piohOptHeader->Magic))",
+          "old_line_content": "\tcase IMAGE_NT_OPTIONAL_HDR64_MAGIC:",
+          "new_line_content": "\t    DIE((\"Unrecognized optional header, Magic is %X\\n\", piohOptHeader->Magic));",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SectionAlignment)",
+          "old_line_content": "\tdefault:",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SectionAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SectionAlignment)",
+          "old_line_content": "",
+          "new_line_content": "    if (RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SectionAlignment) &&",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Sections aren't page-aligned and the file alignment isn't the same\\n\"))",
+          "old_line_content": "\t/* See [1], section 3.4.2 */",
+          "new_line_content": "\t\tDIE((\"Sections aren't page-aligned and the file alignment isn't the same\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The section alignment is smaller than the file alignment\\n\"))",
+          "old_line_content": "\t    if(piohOptHeader->FileAlignment != piohOptHeader->SectionAlignment)",
+          "new_line_content": "\t    DIE((\"The section alignment is smaller than the file alignment\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "IsPowerOf2",
+          "old_text": null,
+          "new_text": "IsPowerOf2(nFileAlignment)",
+          "old_line_content": "",
+          "new_line_content": "\tif(!IsPowerOf2(nSectionAlignment) || !IsPowerOf2(nFileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The section alignment (%u) and file alignment (%u) aren't both powers of 2\\n\", nSectionAlignment, nFileAlignment))",
+          "old_line_content": "\tnSectionAlignment = piohOptHeader->SectionAlignment;",
+          "new_line_content": "\t    DIE((\"The section alignment (%u) and file alignment (%u) aren't both powers of 2\\n\", nSectionAlignment, nFileAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "IsPowerOf2",
+          "old_text": null,
+          "new_text": "IsPowerOf2(nSectionAlignment)",
+          "old_line_content": "\tnSectionAlignment = PAGE_SIZE;",
+          "new_line_content": "    ASSERT(IsPowerOf2(nSectionAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "IsPowerOf2",
+          "old_text": null,
+          "new_text": "IsPowerOf2(nFileAlignment)",
+          "old_line_content": "\tnFileAlignment = PAGE_SIZE;",
+          "new_line_content": "    ASSERT(IsPowerOf2(nFileAlignment));",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, ImageBase)",
+          "old_line_content": "    {",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, ImageBase))",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackReserve)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackReserve))",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackCommit)",
+          "old_line_content": "",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackCommit))",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, ImageBase)",
+          "old_line_content": "\t    const IMAGE_OPTIONAL_HEADER64 * pioh64OptHeader;",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, ImageBase))",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"ImageBase exceeds the address space\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\t\t    DIE((\"ImageBase exceeds the address space\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackReserve)",
+          "old_line_content": "",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackReserve))",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"SizeOfStackReserve exceeds the address space\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\t\t    DIE((\"SizeOfStackReserve exceeds the address space\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackCommit)",
+          "old_line_content": "",
+          "new_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackCommit))",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"SizeOfStackCommit exceeds the address space\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\t\t    DIE((\"SizeOfStackCommit exceeds the address space\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"ImageBase is not aligned on a 64KB boundary\"))",
+          "old_line_content": "    }",
+          "new_line_content": "\tDIE((\"ImageBase is not aligned on a 64KB boundary\"));",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Subsystem)",
+          "old_line_content": "    /* [1], section 3.4.2 */",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Subsystem));",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MinorSubsystemVersion)",
+          "old_line_content": "    if((ULONG_PTR)ImageSectionObject->ImageBase % 0x10000)",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MinorSubsystemVersion));",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MajorSubsystemVersion)",
+          "old_line_content": "    {",
+          "new_line_content": "\t   RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MajorSubsystemVersion))",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, AddressOfEntryPoint)",
+          "old_line_content": "\t    ImageSectionObject->MajorSubsystemVersion = piohOptHeader->MajorSubsystemVersion;",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, AddressOfEntryPoint));",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, AddressOfEntryPoint)",
+          "old_line_content": "    }",
+          "new_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, AddressOfEntryPoint))",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfCode)",
+          "old_line_content": "\tImageSectionObject->EntryPoint = piohOptHeader->ImageBase + ",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfCode));",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfCode)",
+          "old_line_content": "    }",
+          "new_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfCode))",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Too many sections, NumberOfSections is %u\\n\", pinhNtHeader->FileHeader.NumberOfSections))",
+          "old_line_content": "    nStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "new_line_content": "\tDIE((\"Too many sections, NumberOfSections is %u\\n\", pinhNtHeader->FileHeader.NumberOfSections));",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": null,
+          "new_api": "FIELD_OFFSET",
+          "old_text": null,
+          "new_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "old_line_content": "     */",
+          "new_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffset, pidhDosHeader->e_lfanew, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "content_same": false
+        },
+        {
+          "line": 464,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Offset overflow\\n\"))",
+          "old_line_content": "    ImageSectionObject->NrSegments = pinhNtHeader->FileHeader.NumberOfSections + 1;",
+          "new_line_content": "\tDIE((\"Offset overflow\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": null,
+          "new_api": "Intsafe_AddULong32",
+          "old_text": null,
+          "new_text": "Intsafe_AddULong32(&cbSectionHeadersOffset, cbSectionHeadersOffset, pinhNtHeader->FileHeader.SizeOfOptionalHeader)",
+          "old_line_content": "    /* file offset for the section headers */",
+          "new_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffset, cbSectionHeadersOffset, pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": null,
+          "new_api": "Intsafe_AddULong32",
+          "old_text": null,
+          "new_text": "Intsafe_AddULong32(&cbSectionHeadersOffsetSize, cbSectionHeadersOffset, cbSectionHeadersSize)",
+          "old_line_content": "    /* size of the section headers */",
+          "new_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffsetSize, cbSectionHeadersOffset, cbSectionHeadersSize))",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "PEFMT_FIELDS_EQUAL",
+          "old_text": null,
+          "new_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfHeaders)",
+          "old_line_content": "",
+          "new_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfHeaders));",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "RTL_CONTAINS_FIELD",
+          "old_text": null,
+          "new_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfHeaders)",
+          "old_line_content": "",
+          "new_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfHeaders))",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"The section headers overflow SizeOfHeaders\\n\"))",
+          "old_line_content": "//\tif(!IsAligned(piohOptHeader->SizeOfHeaders, nFileAlignment))",
+          "new_line_content": "\t    DIE((\"The section headers overflow SizeOfHeaders\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "DIE",
+          "old_text": null,
+          "new_text": "DIE((\"Overflow aligning the size of headers\\n\"))",
+          "old_line_content": "",
+          "new_line_content": "\tDIE((\"Overflow aligning the size of headers\\n\"));",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": null,
+          "new_api": "Intsafe_CanOffsetPointer",
+          "old_text": null,
+          "new_text": "Intsafe_CanOffsetPointer(FileHeader, cbSectionHeadersOffset)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tASSERT(Intsafe_CanOffsetPointer(FileHeader, cbSectionHeadersOffset));",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset)",
+          "old_text": null,
+          "new_text": "PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset)",
+          "old_line_content": "\t * we already know that Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize),",
+          "new_line_content": "\tpishSectionHeaders = (PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 513,
+          "old_api": "Intsafe_CanOffsetPointer",
+          "new_api": null,
+          "old_text": "Intsafe_CanOffsetPointer(FileHeader, cbSectionHeadersOffset)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(Intsafe_CanOffsetPointer(FileHeader, cbSectionHeadersOffset));",
+          "new_line_content": "    /*",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": "PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset)",
+          "new_api": null,
+          "old_text": "PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset)",
+          "new_text": null,
+          "old_line_content": "\tpishSectionHeaders = (PVOID)((UINT_PTR)FileHeader + cbSectionHeadersOffset);",
+          "new_line_content": "     * the buffer doesn't contain the section headers, or the alignment is wrong:",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "new_text": null,
+          "old_line_content": "       (UINT_PTR)pishSectionHeaders % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) != 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "ReadFileCb",
+          "new_api": null,
+          "old_text": "ReadFileCb(File, &lnOffset, cbSectionHeadersSize, &pData, &pBuffer, &cbReadSize)",
+          "new_text": null,
+          "old_line_content": "\tnStatus = ReadFileCb(File, &lnOffset, cbSectionHeadersSize, &pData, &pBuffer, &cbReadSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(pData)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(pData);",
+          "new_line_content": "\tnStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(pBuffer)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(pBuffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(cbReadSize > 0)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(cbReadSize > 0);",
+          "new_line_content": "\t/* the buffer doesn't contain all the section headers */",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The file doesn't contain all of the section headers\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The file doesn't contain all of the section headers\\n\"));",
+          "new_line_content": "\t/* object still not aligned: copy it to the beginning of the buffer */",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "new_text": null,
+          "old_line_content": "\tif((UINT_PTR)pishSectionHeaders % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) != 0)",
+          "new_line_content": "\t    pishSectionHeaders = pBuffer;",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_SECTION_HEADER)",
+          "new_text": null,
+          "old_line_content": "\t    ASSERT((UINT_PTR)pBuffer % TYPE_ALIGNMENT(IMAGE_SECTION_HEADER) == 0);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "RtlMoveMemory",
+          "new_api": null,
+          "old_text": "RtlMoveMemory(pBuffer, pData, cbReadSize)",
+          "new_text": null,
+          "old_line_content": "\t    RtlMoveMemory(pBuffer, pData, cbReadSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": "AllocateSegmentsCb",
+          "new_api": null,
+          "old_text": "AllocateSegmentsCb(ImageSectionObject->NrSegments)",
+          "new_text": null,
+          "old_line_content": "    ImageSectionObject->Segments = AllocateSegmentsCb(ImageSectionObject->NrSegments);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"AllocateSegments failed\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"AllocateSegments failed\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Cannot align the size of the section headers\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Cannot align the size of the section headers\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": "AlignUp",
+          "new_api": null,
+          "old_text": "AlignUp(&nPrevVirtualEndOfSegment, cbHeadersSize, nSectionAlignment)",
+          "new_text": null,
+          "old_line_content": "    if(!AlignUp(&nPrevVirtualEndOfSegment, cbHeadersSize, nSectionAlignment))",
+          "new_line_content": "    pssSegments[0].Protection = PAGE_READONLY;",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Cannot align the size of the section headers\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Cannot align the size of the section headers\\n\"));",
+          "new_line_content": "    pssSegments[0].Length = nPrevVirtualEndOfSegment;",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": "IsAligned",
+          "new_api": null,
+          "old_text": "IsAligned(pishSectionHeaders[i].VirtualAddress, nSectionAlignment)",
+          "new_text": null,
+          "old_line_content": "\tif(!IsAligned(pishSectionHeaders[i].VirtualAddress, nSectionAlignment))",
+          "new_line_content": "\tif(pishSectionHeaders[i].VirtualAddress != nPrevVirtualEndOfSegment)",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Memory gap between section %u and the previous\\n\", i))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"Memory gap between section %u and the previous\\n\", i));",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "IsAligned",
+          "new_api": null,
+          "old_text": "IsAligned(pishSectionHeaders[i].SizeOfRawData, nFileAlignment)",
+          "new_text": null,
+          "old_line_content": "\t    if(!IsAligned(pishSectionHeaders[i].SizeOfRawData, nFileAlignment))",
+          "new_line_content": "//\t    if(!IsAligned(pishSectionHeaders[i].PointerToRawData, nFileAlignment))",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"SizeOfRawData[%u] is not aligned\\n\", i))",
+          "new_text": null,
+          "old_line_content": "\t\tDIE((\"SizeOfRawData[%u] is not aligned\\n\", i));",
+          "new_line_content": "//\t\tDIE((\"PointerToRawData[%u] is not aligned\\n\", i));",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(pssSegments[i].RawLength == 0)",
+          "new_text": null,
+          "old_line_content": "\t    ASSERT(pssSegments[i].RawLength == 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "Intsafe_CanAddLong64",
+          "new_api": null,
+          "old_text": "Intsafe_CanAddLong64(pssSegments[i].FileOffset, pssSegments[i].RawLength)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(Intsafe_CanAddLong64(pssSegments[i].FileOffset, pssSegments[i].RawLength));",
+          "new_line_content": "\t/* no explicit protection */",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": "IsPowerOf2",
+          "new_api": null,
+          "old_text": "IsPowerOf2(Alignment)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(IsPowerOf2(Alignment));",
+          "new_line_content": "static __inline BOOLEAN IsAligned(IN ULONG Address, IN ULONG Alignment)",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": "ModPow2",
+          "new_api": null,
+          "old_text": "ModPow2(Address, Alignment)",
+          "new_text": null,
+          "old_line_content": "    return ModPow2(Address, Alignment) == 0;",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "ModPow2",
+          "new_api": null,
+          "old_text": "ModPow2(Address, Alignment)",
+          "new_text": null,
+          "old_line_content": "    ULONG nExcess = ModPow2(Address, Alignment);",
+          "new_line_content": "\t*AlignedAddress = Address;",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "Intsafe_AddULong32",
+          "new_api": null,
+          "old_text": "Intsafe_AddULong32(AlignedAddress, Address, Alignment - nExcess)",
+          "new_text": null,
+          "old_line_content": "\treturn Intsafe_AddULong32(AlignedAddress, Address, Alignment - nExcess);",
+          "new_line_content": " ( \\",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "AlignUp",
+          "new_api": null,
+          "old_text": "AlignUp(&pssSegments[i].Length, pssSegments[i].Length, nSectionAlignment)",
+          "new_text": null,
+          "old_line_content": "\tif(!AlignUp(&pssSegments[i].Length, pssSegments[i].Length, nSectionAlignment))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Cannot align the virtual size of section %u\\n\", i))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"Cannot align the virtual size of section %u\\n\", i));",
+          "new_line_content": "\tif(pssSegments[i].Length == 0)",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": "IsAligned",
+          "new_api": null,
+          "old_text": "IsAligned(pssSegments[i].Length, nSectionAlignment)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(IsAligned(pssSegments[i].Length, nSectionAlignment));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Virtual size of section %u is null\\n\", i))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"Virtual size of section %u is null\\n\", i));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": "Intsafe_AddULong32",
+          "new_api": null,
+          "old_text": "Intsafe_AddULong32(&nPrevVirtualEndOfSegment, pssSegments[i].VirtualAddress, pssSegments[i].Length)",
+          "new_text": null,
+          "old_line_content": "\tif(!Intsafe_AddULong32(&nPrevVirtualEndOfSegment, pssSegments[i].VirtualAddress, pssSegments[i].Length))",
+          "new_line_content": "    /* spare our caller some work in validating the segments */",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The image is larger than 4GB\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The image is larger than 4GB\\n\"));",
+          "new_line_content": "    *Flags = EXEFMT_LOAD_ASSUME_SEGMENTS_SORTED | EXEFMT_LOAD_ASSUME_SEGMENTS_NO_OVERLAP;",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": "ExFreePool",
+          "new_api": null,
+          "old_text": "ExFreePool(pBuffer)",
+          "new_text": null,
+          "old_line_content": "\tExFreePool(pBuffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(File)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(File);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(ReadFileCb)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(ReadFileCb);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "Intsafe_CanOffsetPointer",
+          "new_api": null,
+          "old_text": "Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(Intsafe_CanOffsetPointer(FileHeader, FileHeaderSize));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(EXEFMT_LOAD_HEADER_SIZE >= sizeof(IMAGE_DOS_HEADER))",
+          "new_text": null,
+          "old_line_content": "    ASSERT(EXEFMT_LOAD_HEADER_SIZE >= sizeof(IMAGE_DOS_HEADER));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_DOS_HEADER)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(((UINT_PTR)FileHeader % TYPE_ALIGNMENT(IMAGE_DOS_HEADER)) == 0);",
+          "new_line_content": "    pBuffer = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Not a Windows executable, e_lfanew is %d\\n\", pidhDosHeader->e_lfanew))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Not a Windows executable, e_lfanew is %d\\n\", pidhDosHeader->e_lfanew));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "new_api": null,
+          "old_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)",
+          "new_text": null,
+          "old_line_content": "    if(!Intsafe_AddULong32(&cbFileHeaderOffsetSize, pidhDosHeader->e_lfanew, RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)))",
+          "new_line_content": "\tpinhNtHeader = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew));",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(sizeof(IMAGE_NT_HEADERS32) <= sizeof(IMAGE_NT_HEADERS64))",
+          "new_text": null,
+          "old_line_content": "    ASSERT(sizeof(IMAGE_NT_HEADERS32) <= sizeof(IMAGE_NT_HEADERS64));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS64)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) == TYPE_ALIGNMENT(IMAGE_NT_HEADERS64));",
+          "new_line_content": "    /*",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "new_api": null,
+          "old_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS64, FileHeader)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader) == RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS64, FileHeader));",
+          "new_line_content": "     * the buffer doesn't contain the NT file header, or the alignment is wrong: we",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "FIELD_OFFSET",
+          "new_api": null,
+          "old_text": "FIELD_OFFSET(IMAGE_NT_HEADERS64, OptionalHeader)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader) == FIELD_OFFSET(IMAGE_NT_HEADERS64, OptionalHeader));",
+          "new_line_content": "     * need to read the header from the file",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "new_text": null,
+          "old_line_content": "       (UINT_PTR)pinhNtHeader % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) != 0)",
+          "new_line_content": "\tPVOID pData;",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "ReadFileCb",
+          "new_api": null,
+          "old_text": "ReadFileCb(File, &lnOffset, sizeof(IMAGE_NT_HEADERS64), &pData, &pBuffer, &cbReadSize)",
+          "new_text": null,
+          "old_line_content": "\tnStatus = ReadFileCb(File, &lnOffset, sizeof(IMAGE_NT_HEADERS64), &pData, &pBuffer, &cbReadSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(pData)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(pData);",
+          "new_line_content": "\tnStatus = STATUS_INVALID_IMAGE_FORMAT;",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(pBuffer)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(pBuffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(cbReadSize > 0)",
+          "new_text": null,
+          "old_line_content": "\tASSERT(cbReadSize > 0);",
+          "new_line_content": "\t/* the buffer doesn't contain the file header */",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "RTL_SIZEOF_THROUGH_FIELD",
+          "new_api": null,
+          "old_text": "RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader)",
+          "new_text": null,
+          "old_line_content": "\tif(cbReadSize < RTL_SIZEOF_THROUGH_FIELD(IMAGE_NT_HEADERS32, FileHeader))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The file doesn't contain the PE file header\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The file doesn't contain the PE file header\\n\"));",
+          "new_line_content": "\t/* object still not aligned: copy it to the beginning of the buffer */",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "new_text": null,
+          "old_line_content": "\tif((UINT_PTR)pinhNtHeader % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) != 0)",
+          "new_line_content": "\t    pinhNtHeader = pBuffer;",
+          "content_same": false
+        },
+        {
+          "line": 268,
+          "old_api": "TYPE_ALIGNMENT",
+          "new_api": null,
+          "old_text": "TYPE_ALIGNMENT(IMAGE_NT_HEADERS32)",
+          "new_text": null,
+          "old_line_content": "\t    ASSERT((UINT_PTR)pBuffer % TYPE_ALIGNMENT(IMAGE_NT_HEADERS32) == 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "RtlMoveMemory",
+          "new_api": null,
+          "old_text": "RtlMoveMemory(pBuffer, pData, cbReadSize)",
+          "new_text": null,
+          "old_line_content": "\t    RtlMoveMemory(pBuffer, pData, cbReadSize);",
+          "new_line_content": "\t/* invalid NT header */",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "FIELD_OFFSET",
+          "new_api": null,
+          "old_text": "FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)",
+          "new_text": null,
+          "old_line_content": "\tif(!Intsafe_AddULong32(&cbNtHeaderSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader, FIELD_OFFSET(IMAGE_NT_HEADERS32, OptionalHeader)))",
+          "new_line_content": "\tif(cbReadSize < cbNtHeaderSize)",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The file doesn't contain the full NT header\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The file doesn't contain the full NT header\\n\"));",
+          "new_line_content": "\tULONG cbOptHeaderOffsetSize = 0;",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The file isn't a PE executable, Signature is %X\\n\", pinhNtHeader->Signature));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The DOS stub is too large, e_lfanew is %X\\n\", pidhDosHeader->e_lfanew));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "Intsafe_AddULong32",
+          "new_api": null,
+          "old_text": "Intsafe_AddULong32(&cbOptHeaderOffsetSize, cbOptHeaderOffsetSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader)",
+          "new_text": null,
+          "old_line_content": "\tif(!Intsafe_AddULong32(&cbOptHeaderOffsetSize, cbOptHeaderOffsetSize, pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "new_line_content": "\tif(cbOptHeaderOffsetSize > FileHeaderSize)",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The NT header is too large, SizeOfOptionalHeader is %X\\n\", pinhNtHeader->FileHeader.SizeOfOptionalHeader))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The NT header is too large, SizeOfOptionalHeader is %X\\n\", pinhNtHeader->FileHeader.SizeOfOptionalHeader));",
+          "new_line_content": "\t    goto l_ReadHeaderFromFile;",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Magic)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, Magic));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Magic)",
+          "new_text": null,
+          "old_line_content": "    if(!RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, Magic))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The optional header doesn't contain the Magic field, SizeOfOptionalHeader is %X\\n\", cbOptHeaderSize))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"The optional header doesn't contain the Magic field, SizeOfOptionalHeader is %X\\n\", cbOptHeaderSize));",
+          "new_line_content": "    switch(piohOptHeader->Magic)",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, FileAlignment)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, FileAlignment));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SectionAlignment)",
+          "new_text": null,
+          "old_line_content": "    if (RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SectionAlignment) &&",
+          "new_line_content": "\tif(piohOptHeader->SectionAlignment < PAGE_SIZE)",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, FileAlignment)",
+          "new_text": null,
+          "old_line_content": "        RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, FileAlignment))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Sections aren't page-aligned and the file alignment isn't the same\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t\tDIE((\"Sections aren't page-aligned and the file alignment isn't the same\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The section alignment is smaller than the file alignment\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The section alignment is smaller than the file alignment\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "IsPowerOf2",
+          "new_api": null,
+          "old_text": "IsPowerOf2(nFileAlignment)",
+          "new_text": null,
+          "old_line_content": "\tif(!IsPowerOf2(nSectionAlignment) || !IsPowerOf2(nFileAlignment))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"The section alignment (%u) and file alignment (%u) aren't both powers of 2\\n\", nSectionAlignment, nFileAlignment))",
+          "new_text": null,
+          "old_line_content": "\t    DIE((\"The section alignment (%u) and file alignment (%u) aren't both powers of 2\\n\", nSectionAlignment, nFileAlignment));",
+          "new_line_content": "\tnSectionAlignment = PAGE_SIZE;",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "IsPowerOf2",
+          "new_api": null,
+          "old_text": "IsPowerOf2(nSectionAlignment)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(IsPowerOf2(nSectionAlignment));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "IsPowerOf2",
+          "new_api": null,
+          "old_text": "IsPowerOf2(nFileAlignment)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(IsPowerOf2(nFileAlignment));",
+          "new_line_content": "\t/* PE32 */",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, ImageBase)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, ImageBase))",
+          "new_line_content": "\t\tImageSectionObject->StackReserve = piohOptHeader->SizeOfStackReserve;",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackReserve)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackReserve))",
+          "new_line_content": "\t\tImageSectionObject->StackCommit = piohOptHeader->SizeOfStackCommit;",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackCommit)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfStackCommit))",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, ImageBase)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, ImageBase))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"ImageBase exceeds the address space\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t\t    DIE((\"ImageBase exceeds the address space\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackReserve)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackReserve))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"SizeOfStackReserve exceeds the address space\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t\t    DIE((\"SizeOfStackReserve exceeds the address space\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackCommit)",
+          "new_text": null,
+          "old_line_content": "\t    if(RTL_CONTAINS_FIELD(pioh64OptHeader, cbOptHeaderSize, SizeOfStackCommit))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"SizeOfStackCommit exceeds the address space\\n\"))",
+          "new_text": null,
+          "old_line_content": "\t\t    DIE((\"SizeOfStackCommit exceeds the address space\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MinorSubsystemVersion)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MinorSubsystemVersion));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MajorSubsystemVersion)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, MajorSubsystemVersion));",
+          "new_line_content": "\tImageSectionObject->Subsystem = piohOptHeader->Subsystem;",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MinorSubsystemVersion)",
+          "new_text": null,
+          "old_line_content": "\tif(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MinorSubsystemVersion) &&",
+          "new_line_content": "\t    ImageSectionObject->MajorSubsystemVersion = piohOptHeader->MajorSubsystemVersion;",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MajorSubsystemVersion)",
+          "new_text": null,
+          "old_line_content": "\t   RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, MajorSubsystemVersion))",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, AddressOfEntryPoint)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, AddressOfEntryPoint));",
+          "new_line_content": "\tImageSectionObject->EntryPoint = piohOptHeader->ImageBase + ",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, AddressOfEntryPoint)",
+          "new_text": null,
+          "old_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, AddressOfEntryPoint))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfCode)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfCode));",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 444,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfCode)",
+          "new_text": null,
+          "old_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfCode))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Too many sections, NumberOfSections is %u\\n\", pinhNtHeader->FileHeader.NumberOfSections))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Too many sections, NumberOfSections is %u\\n\", pinhNtHeader->FileHeader.NumberOfSections));",
+          "new_line_content": "     * the benefit of the dynamic loader (to locate exports, defaults for thread",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Offset overflow\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Offset overflow\\n\"));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Offset overflow\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Offset overflow\\n\"));",
+          "new_line_content": "    cbSectionHeadersSize = pinhNtHeader->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "Intsafe_AddULong32",
+          "new_api": null,
+          "old_text": "Intsafe_AddULong32(&cbSectionHeadersOffsetSize, cbSectionHeadersOffset, cbSectionHeadersSize)",
+          "new_text": null,
+          "old_line_content": "    if(!Intsafe_AddULong32(&cbSectionHeadersOffsetSize, cbSectionHeadersOffset, cbSectionHeadersSize))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "DIE",
+          "new_api": null,
+          "old_text": "DIE((\"Section headers too large\\n\"))",
+          "new_text": null,
+          "old_line_content": "\tDIE((\"Section headers too large\\n\"));",
+          "new_line_content": "    /* size of the executable's headers */",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": "PEFMT_FIELDS_EQUAL",
+          "new_api": null,
+          "old_text": "PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfHeaders)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(PEFMT_FIELDS_EQUAL(IMAGE_OPTIONAL_HEADER32, IMAGE_OPTIONAL_HEADER64, SizeOfHeaders));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "RTL_CONTAINS_FIELD",
+          "new_api": null,
+          "old_text": "RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfHeaders)",
+          "new_text": null,
+          "old_line_content": "    if(RTL_CONTAINS_FIELD(piohOptHeader, cbOptHeaderSize, SizeOfHeaders))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": "AlignUp",
+          "new_api": null,
+          "old_text": "AlignUp(&cbHeadersSize, cbSectionHeadersOffsetSize, nFileAlignment)",
+          "new_text": null,
+          "old_line_content": "    else if(!AlignUp(&cbHeadersSize, cbSectionHeadersOffsetSize, nFileAlignment))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "ExFreePool",
+          "new_api": null,
+          "old_text": "ExFreePool(pBuffer)",
+          "new_text": null,
+          "old_line_content": "\tExFreePool(pBuffer);",
+          "new_line_content": "    /* WARNING: piohOptHeader IS NO LONGER USABLE */",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 20,
+      "total_additions": 99,
+      "total_deletions": 99,
+      "total_api_changes": 218
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 218,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          106,
+          107,
+          108,
+          109,
+          110,
+          111
+        ]
+      }
+    },
+    "api_calls_before": 161,
+    "api_calls_after": 161,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 6,
+      "total_diff_lines": 20
+    }
+  }
+}

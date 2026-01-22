@@ -1,0 +1,24 @@
+diff --git a/src/compiler/ast-graph-builder.cc b/src/compiler/ast-graph-builder.cc
+index 61c433821aa..77ad611b70c 100644
+--- a/src/compiler/ast-graph-builder.cc
++++ b/src/compiler/ast-graph-builder.cc
+@@ -3893,10 +3893,15 @@ Node* AstGraphBuilder::TryLoadDynamicVariable(
+       fast_block.BreakUnless(check, BranchHint::kTrue);
+     }
+ 
+-    // Fast case, because variable is not shadowed. Perform global slot load.
+-    Node* fast = BuildGlobalLoad(name, feedback, typeof_mode);
+-    states.AddToNode(fast, bailout_id, combine);
+-    environment()->Push(fast);
++    // Fast case, because variable is not shadowed.
++    if (Node* constant = TryLoadGlobalConstant(name)) {
++      environment()->Push(constant);
++    } else {
++      // Perform global slot load.
++      Node* fast = BuildGlobalLoad(name, feedback, typeof_mode);
++      states.AddToNode(fast, bailout_id, combine);
++      environment()->Push(fast);
++    }
+     slow_block.Break();
+     environment()->Pop();
+     fast_block.EndBlock();

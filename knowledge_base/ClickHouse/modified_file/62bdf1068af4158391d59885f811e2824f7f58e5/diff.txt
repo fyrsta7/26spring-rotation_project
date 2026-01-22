@@ -1,0 +1,19 @@
+diff --git a/src/AggregateFunctions/AggregateFunctionGroupBitmapData.h b/src/AggregateFunctions/AggregateFunctionGroupBitmapData.h
+index 7ea1ebe7749..dda75896ae8 100644
+--- a/src/AggregateFunctions/AggregateFunctionGroupBitmapData.h
++++ b/src/AggregateFunctions/AggregateFunctionGroupBitmapData.h
+@@ -151,10 +151,12 @@ public:
+         }
+         else if (BitmapKind::Bitmap == kind)
+         {
+-            auto size = roaring_bitmap->getSizeInBytes();
++            std::shared_ptr<RoaringBitmap> bitmap = std::make_shared<RoaringBitmap>(*roaring_bitmap);
++            bitmap->runOptimize();
++            auto size = bitmap->getSizeInBytes();
+             writeVarUInt(size, out);
+             std::unique_ptr<char[]> buf(new char[size]);
+-            roaring_bitmap->write(buf.get());
++            bitmap->write(buf.get());
+             out.write(buf.get(), size);
+         }
+     }

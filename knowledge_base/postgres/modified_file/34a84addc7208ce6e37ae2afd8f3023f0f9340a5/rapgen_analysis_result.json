@@ -1,0 +1,510 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/34a84addc7208ce6e37ae2afd8f3023f0f9340a5",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/34a84addc7208ce6e37ae2afd8f3023f0f9340a5/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/34a84addc7208ce6e37ae2afd8f3023f0f9340a5/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/34a84addc7208ce6e37ae2afd8f3023f0f9340a5/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 134,
+          "old_api": "BufferGetPage",
+          "new_api": "ReadBuffer",
+          "old_text": "BufferGetPage(buffer)",
+          "new_text": "ReadBuffer(relation, lastblock)",
+          "old_line_content": "\t\tpageHeader = (Page) BufferGetPage(buffer);",
+          "new_line_content": "\t\tbuffer = ReadBuffer(relation, lastblock);",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "BufferGetPageSize",
+          "new_api": "BufferGetPage",
+          "old_text": "BufferGetPageSize(buffer)",
+          "new_text": "BufferGetPage(buffer)",
+          "old_line_content": "\t\tPageInit(pageHeader, BufferGetPageSize(buffer), 0);",
+          "new_line_content": "\t\tpageHeader = (Page) BufferGetPage(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "LockBuffer",
+          "new_api": "ReleaseAndReadBuffer",
+          "old_text": "LockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE)",
+          "new_text": "ReleaseAndReadBuffer(buffer, relation, P_NEW)",
+          "old_line_content": "\tLockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE);",
+          "new_line_content": "\t\tbuffer = ReleaseAndReadBuffer(buffer, relation, P_NEW);",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "DOUBLEALIGN",
+          "new_api": "BufferGetPageSize",
+          "old_text": "DOUBLEALIGN(tuple->t_len)",
+          "new_text": "BufferGetPageSize(buffer)",
+          "old_line_content": "\tlen = (unsigned) DOUBLEALIGN(tuple->t_len); /* be conservative */",
+          "new_line_content": "\t\tPageInit(pageHeader, BufferGetPageSize(buffer), 0);",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": "PageGetFreeSpace",
+          "new_api": "DOUBLEALIGN",
+          "old_text": "PageGetFreeSpace(pageHeader)",
+          "new_text": "DOUBLEALIGN(tuple->t_len)",
+          "old_line_content": "\tif (len > PageGetFreeSpace(pageHeader))",
+          "new_line_content": "\tlen = (unsigned) DOUBLEALIGN(tuple->t_len); /* be conservative */",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "elog",
+          "new_api": "LockBuffer",
+          "old_text": "elog(ERROR, \"Tuple is too big: size %d\", len)",
+          "new_text": "LockBuffer(buffer, BUFFER_LOCK_UNLOCK)",
+          "old_line_content": "\t\t\telog(ERROR, \"Tuple is too big: size %d\", len);",
+          "new_line_content": "\t\tLockBuffer(buffer, BUFFER_LOCK_UNLOCK);",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": "UnlockRelation",
+          "new_api": "BufferGetPageSize",
+          "old_text": "UnlockRelation(relation, ExtendLock)",
+          "new_text": "BufferGetPageSize(buffer)",
+          "old_line_content": "\t\tUnlockRelation(relation, ExtendLock);",
+          "new_line_content": "\t\tPageInit(pageHeader, BufferGetPageSize(buffer), 0);",
+          "content_same": false
+        },
+        {
+          "line": 164,
+          "old_api": "PageAddItem",
+          "new_api": "PageGetFreeSpace",
+          "old_text": "PageAddItem((Page) pageHeader, (Item) tuple->t_data,\n\t\t\t\t\t\t tuple->t_len, InvalidOffsetNumber, LP_USED)",
+          "new_text": "PageGetFreeSpace(pageHeader)",
+          "old_line_content": "\toffnum = PageAddItem((Page) pageHeader, (Item) tuple->t_data,",
+          "new_line_content": "\t\tif (len > PageGetFreeSpace(pageHeader))",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": "ItemPointerSet",
+          "new_api": "PageGetItem",
+          "old_text": "ItemPointerSet(&tuple->t_self, lastblock, offnum)",
+          "new_text": "PageGetItem((Page) pageHeader, itemId)",
+          "old_line_content": "\tItemPointerSet(&tuple->t_self, lastblock, offnum);",
+          "new_line_content": "\titem = PageGetItem((Page) pageHeader, itemId);",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "LockBuffer",
+          "new_api": "BufferGetBlockNumber",
+          "old_text": "LockBuffer(buffer, BUFFER_LOCK_UNLOCK)",
+          "new_text": "BufferGetBlockNumber(buffer)",
+          "old_line_content": "\tLockBuffer(buffer, BUFFER_LOCK_UNLOCK);",
+          "new_line_content": "\tlastblock = BufferGetBlockNumber(buffer);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 160,
+          "old_api": null,
+          "new_api": "LockBuffer",
+          "old_text": null,
+          "new_text": "LockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE)",
+          "old_line_content": "",
+          "new_line_content": "\t\tLockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": null,
+          "new_api": "BufferGetPage",
+          "old_text": null,
+          "new_text": "BufferGetPage(buffer)",
+          "old_line_content": "\tif (!relation->rd_myxactonly)",
+          "new_line_content": "\t\tpageHeader = (Page) BufferGetPage(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": null,
+          "new_api": "RelationGetNumberOfBlocks",
+          "old_text": null,
+          "new_text": "RelationGetNumberOfBlocks(relation)",
+          "old_line_content": "\t\t * There was IF instead of ASSERT here ?!",
+          "new_line_content": "\tlastblock = RelationGetNumberOfBlocks(relation);",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": null,
+          "new_api": "LockPage",
+          "old_text": null,
+          "new_text": "LockPage(relation, 0, ExtendLock)",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\tLockPage(relation, 0, ExtendLock);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"Tuple is too big: size %d\", len)",
+          "old_line_content": "\t\t\t\t\t\t tuple->t_len, InvalidOffsetNumber, LP_USED);",
+          "new_line_content": "\t\t\telog(ERROR, \"Tuple is too big: size %d\", len);",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": null,
+          "new_api": "UnlockPage",
+          "old_text": null,
+          "new_text": "UnlockPage(relation, 0, ExtendLock)",
+          "old_line_content": "",
+          "new_line_content": "\t\tUnlockPage(relation, 0, ExtendLock);",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": null,
+          "new_api": "PageIsNew",
+          "old_text": null,
+          "new_text": "PageIsNew((PageHeader) pageHeader)",
+          "old_line_content": "",
+          "new_line_content": "\t\tAssert(PageIsNew((PageHeader) pageHeader));",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "PageAddItem",
+          "old_text": null,
+          "new_text": "PageAddItem((Page) pageHeader, (Item) tuple->t_data,\n\t\t\t\t\t\t tuple->t_len, InvalidOffsetNumber, LP_USED)",
+          "old_line_content": "",
+          "new_line_content": "\toffnum = PageAddItem((Page) pageHeader, (Item) tuple->t_data,",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId((Page) pageHeader, offnum)",
+          "old_line_content": "\t/* return an accurate tuple */",
+          "new_line_content": "\titemId = PageGetItemId((Page) pageHeader, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": null,
+          "new_api": "ReadBuffer",
+          "old_text": null,
+          "new_text": "ReadBuffer(relation, lastblock - 1)",
+          "old_line_content": "\t * Note that this is true if the above returned a bogus page, which it",
+          "new_line_content": "\t\tbuffer = ReadBuffer(relation, lastblock - 1);",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": null,
+          "new_api": "LockBuffer",
+          "old_text": null,
+          "new_text": "LockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE)",
+          "old_line_content": "\t */",
+          "new_line_content": "\tLockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": null,
+          "new_api": "BufferGetPage",
+          "old_text": null,
+          "new_text": "BufferGetPage(buffer)",
+          "old_line_content": "",
+          "new_line_content": "\tpageHeader = (Page) BufferGetPage(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": null,
+          "new_api": "ItemPointerSet",
+          "old_text": null,
+          "new_text": "ItemPointerSet(&((HeapTupleHeader) item)->t_ctid, lastblock, offnum)",
+          "old_line_content": "",
+          "new_line_content": "\tItemPointerSet(&((HeapTupleHeader) item)->t_ctid, lastblock, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": null,
+          "new_api": "ItemPointerSet",
+          "old_text": null,
+          "new_text": "ItemPointerSet(&tuple->t_self, lastblock, offnum)",
+          "old_line_content": "",
+          "new_line_content": "\tItemPointerSet(&tuple->t_self, lastblock, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "LockBuffer",
+          "old_text": null,
+          "new_text": "LockBuffer(buffer, BUFFER_LOCK_UNLOCK)",
+          "old_line_content": "",
+          "new_line_content": "\tLockBuffer(buffer, BUFFER_LOCK_UNLOCK);",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": null,
+          "new_api": "WriteBuffer",
+          "old_text": null,
+          "new_text": "WriteBuffer(buffer)",
+          "old_line_content": "",
+          "new_line_content": "\tWriteBuffer(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "PageGetFreeSpace",
+          "old_text": null,
+          "new_text": "PageGetFreeSpace(pageHeader)",
+          "old_line_content": "",
+          "new_line_content": "\tif (len > PageGetFreeSpace(pageHeader))",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": null,
+          "new_api": "ReleaseAndReadBuffer",
+          "old_text": null,
+          "new_text": "ReleaseAndReadBuffer(buffer, relation, P_NEW)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tbuffer = ReleaseAndReadBuffer(buffer, relation, P_NEW);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 128,
+          "old_api": "BufferGetPage",
+          "new_api": null,
+          "old_text": "BufferGetPage(buffer)",
+          "new_text": null,
+          "old_line_content": "\t\tpageHeader = (Page) BufferGetPage(buffer);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "PageIsNew",
+          "new_api": null,
+          "old_text": "PageIsNew((PageHeader) pageHeader)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(PageIsNew((PageHeader) pageHeader));",
+          "new_line_content": "\tif (lastblock == 0)",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "ReleaseAndReadBuffer",
+          "new_api": null,
+          "old_text": "ReleaseAndReadBuffer(buffer, relation, P_NEW)",
+          "new_text": null,
+          "old_line_content": "\t\tbuffer = ReleaseAndReadBuffer(buffer, relation, P_NEW);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId((Page) pageHeader, offnum)",
+          "new_text": null,
+          "old_line_content": "\titemId = PageGetItemId((Page) pageHeader, offnum);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "PageGetItem",
+          "new_api": null,
+          "old_text": "PageGetItem((Page) pageHeader, itemId)",
+          "new_text": null,
+          "old_line_content": "\titem = PageGetItem((Page) pageHeader, itemId);",
+          "new_line_content": "\tif (!relation->rd_myxactonly)",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": "ReadBuffer",
+          "new_api": null,
+          "old_text": "ReadBuffer(relation, lastblock - 1)",
+          "new_text": null,
+          "old_line_content": "\t\tbuffer = ReadBuffer(relation, lastblock - 1);",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "BufferGetBlockNumber",
+          "new_api": null,
+          "old_text": "BufferGetBlockNumber(buffer)",
+          "new_text": null,
+          "old_line_content": "\tlastblock = BufferGetBlockNumber(buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "ItemPointerSet",
+          "new_api": null,
+          "old_text": "ItemPointerSet(&((HeapTupleHeader) item)->t_ctid, lastblock, offnum)",
+          "new_text": null,
+          "old_line_content": "\tItemPointerSet(&((HeapTupleHeader) item)->t_ctid, lastblock, offnum);",
+          "new_line_content": "\t\t\t\t\t\t tuple->t_len, InvalidOffsetNumber, LP_USED);",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "RelationGetNumberOfBlocks",
+          "new_api": null,
+          "old_text": "RelationGetNumberOfBlocks(relation)",
+          "new_text": null,
+          "old_line_content": "\tlastblock = RelationGetNumberOfBlocks(relation);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": "WriteBuffer",
+          "new_api": null,
+          "old_text": "WriteBuffer(buffer)",
+          "new_text": null,
+          "old_line_content": "\tWriteBuffer(buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "LockRelation",
+          "new_api": null,
+          "old_text": "LockRelation(relation, ExtendLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLockRelation(relation, ExtendLock);",
+          "new_line_content": "\t * Actually, we lock _relation_ here, not page, but I believe",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "LockBuffer",
+          "new_api": null,
+          "old_text": "LockBuffer(buffer, BUFFER_LOCK_UNLOCK)",
+          "new_text": null,
+          "old_line_content": "\t\tLockBuffer(buffer, BUFFER_LOCK_UNLOCK);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "ReleaseAndReadBuffer",
+          "new_api": null,
+          "old_text": "ReleaseAndReadBuffer(buffer, relation, P_NEW)",
+          "new_text": null,
+          "old_line_content": "\t\tbuffer = ReleaseAndReadBuffer(buffer, relation, P_NEW);",
+          "new_line_content": "\t * Note that this is true if the above returned a bogus page, which it",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "LockBuffer",
+          "new_api": null,
+          "old_text": "LockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\t\tLockBuffer(buffer, BUFFER_LOCK_EXCLUSIVE);",
+          "new_line_content": "\t * will do for a completely empty relation.",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "BufferGetPage",
+          "new_api": null,
+          "old_text": "BufferGetPage(buffer)",
+          "new_text": null,
+          "old_line_content": "\t\tpageHeader = (Page) BufferGetPage(buffer);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": "BufferGetPageSize",
+          "new_api": null,
+          "old_text": "BufferGetPageSize(buffer)",
+          "new_text": null,
+          "old_line_content": "\t\tPageInit(pageHeader, BufferGetPageSize(buffer), 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": "PageGetFreeSpace",
+          "new_api": null,
+          "old_text": "PageGetFreeSpace(pageHeader)",
+          "new_text": null,
+          "old_line_content": "\t\tif (len > PageGetFreeSpace(pageHeader))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "ReadBuffer",
+          "new_api": null,
+          "old_text": "ReadBuffer(relation, lastblock)",
+          "new_text": null,
+          "old_line_content": "\t\tbuffer = ReadBuffer(relation, lastblock);",
+          "new_line_content": "\t * work properly.",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 10,
+      "total_additions": 18,
+      "total_deletions": 18,
+      "total_api_changes": 46
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 46,
+        "non_api_lines": 7,
+        "non_api_line_numbers": [
+          10,
+          113,
+          115,
+          116,
+          117,
+          118,
+          119
+        ]
+      }
+    },
+    "api_calls_before": 45,
+    "api_calls_after": 45,
+    "diff_info": {
+      "added_lines": 10,
+      "removed_lines": 3,
+      "total_diff_lines": 40
+    }
+  }
+}

@@ -1,0 +1,32 @@
+diff --git a/src/code-stub-assembler.cc b/src/code-stub-assembler.cc
+index 76d705f51bf..50dca95d627 100644
+--- a/src/code-stub-assembler.cc
++++ b/src/code-stub-assembler.cc
+@@ -6775,12 +6775,12 @@ TNode<String> CodeStubAssembler::SubString(TNode<String> string,
+          &original_string_or_invalid_length);
+ 
+   // A real substring (substr_length < string_length).
++  Label empty(this);
++  GotoIf(IntPtrEqual(substr_length, IntPtrConstant(0)), &empty);
+ 
+   Label single_char(this);
+   GotoIf(IntPtrEqual(substr_length, IntPtrConstant(1)), &single_char);
+ 
+-  // TODO(jgruber): Add an additional case for substring of length == 0?
+-
+   // Deal with different string types: update the index if necessary
+   // and extract the underlying string.
+ 
+@@ -6855,6 +6855,12 @@ TNode<String> CodeStubAssembler::SubString(TNode<String> string,
+     Goto(&end);
+   }
+ 
++  BIND(&empty);
++  {
++    var_result = EmptyStringConstant();
++    Goto(&end);
++  }
++
+   // Substrings of length 1 are generated through CharCodeAt and FromCharCode.
+   BIND(&single_char);
+   {

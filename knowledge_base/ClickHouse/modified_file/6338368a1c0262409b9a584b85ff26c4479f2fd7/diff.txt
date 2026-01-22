@@ -1,0 +1,25 @@
+diff --git a/src/Disks/IO/CachedReadBufferFromRemoteFS.cpp b/src/Disks/IO/CachedReadBufferFromRemoteFS.cpp
+index 541d03f5c20..1cb6354d38c 100644
+--- a/src/Disks/IO/CachedReadBufferFromRemoteFS.cpp
++++ b/src/Disks/IO/CachedReadBufferFromRemoteFS.cpp
+@@ -282,6 +282,20 @@ SeekableReadBufferPtr CachedReadBufferFromRemoteFS::getReadBufferForFileSegment(
+             }
+             case FileSegment::State::PARTIALLY_DOWNLOADED:
+             {
++                if (file_segment->getDownloadOffset() > file_offset_of_buffer_end)
++                {
++                    ///                      segment{k} state: PARTIALLY_DOWNLOADED
++                    /// cache:           [______|___________
++                    ///                         ^
++                    ///                         download_offset (in progress)
++                    /// requested_range:    [__________]
++                    ///                     ^
++                    ///                     file_offset_of_buffer_end
++
++                    read_type = ReadType::CACHED;
++                    return getCacheReadBuffer(range.left);
++                }
++
+                 auto downloader_id = file_segment->getOrSetDownloader();
+                 if (downloader_id == file_segment->getCallerId())
+                 {

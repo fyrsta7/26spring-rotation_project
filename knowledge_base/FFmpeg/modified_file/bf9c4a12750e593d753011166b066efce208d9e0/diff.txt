@@ -1,0 +1,20 @@
+diff --git a/libavcodec/g729dec.c b/libavcodec/g729dec.c
+index 67054b71df..16869e0df8 100644
+--- a/libavcodec/g729dec.c
++++ b/libavcodec/g729dec.c
+@@ -332,11 +332,14 @@ static int16_t g729d_voice_decision(int onset, int prev_voice_decision, const in
+ 
+ static int32_t scalarproduct_int16_c(const int16_t * v1, const int16_t * v2, int order)
+ {
+-    int res = 0;
++    int64_t res = 0;
+ 
+     while (order--)
+         res += *v1++ * *v2++;
+ 
++    if      (res > INT32_MAX) return INT32_MAX;
++    else if (res < INT32_MIN) return INT32_MIN;
++
+     return res;
+ }
+ 

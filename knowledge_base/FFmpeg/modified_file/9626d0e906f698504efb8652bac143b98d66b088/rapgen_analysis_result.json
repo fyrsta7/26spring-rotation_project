@@ -1,0 +1,1667 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/9626d0e906f698504efb8652bac143b98d66b088",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/9626d0e906f698504efb8652bac143b98d66b088/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/9626d0e906f698504efb8652bac143b98d66b088/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/9626d0e906f698504efb8652bac143b98d66b088/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 143,
+          "old_api": "av_buffer_alloc",
+          "new_api": "FFALIGN",
+          "old_text": "av_buffer_alloc(frame->linesize[i] * h + 16)",
+          "new_text": "FFALIGN(frame->height, 32)",
+          "old_line_content": "        frame->buf[i] = av_buffer_alloc(frame->linesize[i] * h + 16);",
+          "new_line_content": "        int h = FFALIGN(frame->height, 32);",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "CHECK_CHANNELS_CONSISTENCY",
+          "new_api": "av_sample_fmt_is_planar",
+          "old_text": "CHECK_CHANNELS_CONSISTENCY(frame)",
+          "new_text": "av_sample_fmt_is_planar(frame->format)",
+          "old_line_content": "    CHECK_CHANNELS_CONSISTENCY(frame);",
+          "new_line_content": "    int planar   = av_sample_fmt_is_planar(frame->format);",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "av_freep",
+          "new_api": "av_mallocz",
+          "old_text": "av_freep(&frame->extended_buf)",
+          "new_text": "av_mallocz((planes - AV_NUM_DATA_POINTERS) *\n                                          sizeof(*frame->extended_buf))",
+          "old_line_content": "            av_freep(&frame->extended_buf);",
+          "new_line_content": "        frame->extended_buf  = av_mallocz((planes - AV_NUM_DATA_POINTERS) *",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": "AVERROR",
+          "new_api": "FFMIN",
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": "FFMIN(planes, AV_NUM_DATA_POINTERS)",
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "    for (i = 0; i < FFMIN(planes, AV_NUM_DATA_POINTERS); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": "AVERROR",
+          "new_api": "get_video_buffer",
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": "get_video_buffer(frame, align)",
+          "old_line_content": "    return AVERROR(EINVAL);",
+          "new_line_content": "        return get_video_buffer(frame, align);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "av_image_copy",
+          "new_api": "CHECK_CHANNELS_CONSISTENCY",
+          "old_text": "av_image_copy(dst->data, dst->linesize, src->data, src->linesize,\n                          dst->format, dst->width, dst->height)",
+          "new_text": "CHECK_CHANNELS_CONSISTENCY(src)",
+          "old_line_content": "            av_image_copy(dst->data, dst->linesize, src->data, src->linesize,",
+          "new_line_content": "            CHECK_CHANNELS_CONSISTENCY(src);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "AVERROR",
+          "new_api": "CHECK_CHANNELS_CONSISTENCY",
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": "CHECK_CHANNELS_CONSISTENCY(src)",
+          "old_line_content": "            ret = AVERROR(ENOMEM);",
+          "new_line_content": "        CHECK_CHANNELS_CONSISTENCY(src);",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "FF_ARRAY_ELEMS",
+          "new_api": "av_freep",
+          "old_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "new_text": "av_freep(&frame->side_data[i])",
+          "old_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf); i++)",
+          "new_line_content": "        av_freep(&frame->side_data[i]);",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": "av_freep",
+          "new_api": "FF_ARRAY_ELEMS",
+          "old_text": "av_freep(&frame->extended_buf)",
+          "new_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "old_line_content": "    av_freep(&frame->extended_buf);",
+          "new_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf); i++)",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "av_dict_free",
+          "new_api": "av_buffer_unref",
+          "old_text": "av_dict_free(&frame->metadata)",
+          "new_text": "av_buffer_unref(&frame->buf[i])",
+          "old_line_content": "    av_dict_free(&frame->metadata);",
+          "new_line_content": "        av_buffer_unref(&frame->buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "get_frame_defaults",
+          "new_api": "av_freep",
+          "old_text": "get_frame_defaults(frame)",
+          "new_text": "av_freep(&frame->extended_buf)",
+          "old_line_content": "    get_frame_defaults(frame);",
+          "new_line_content": "    av_freep(&frame->extended_buf);",
+          "content_same": false
+        },
+        {
+          "line": 375,
+          "old_api": "av_buffer_is_writable",
+          "new_api": "FF_ARRAY_ELEMS",
+          "old_text": "av_buffer_is_writable(frame->extended_buf[i])",
+          "new_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "old_line_content": "        ret &= !!av_buffer_is_writable(frame->extended_buf[i]);",
+          "new_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf); i++)",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "av_image_copy",
+          "new_api": "CHECK_CHANNELS_CONSISTENCY",
+          "old_text": "av_image_copy(tmp.data, tmp.linesize, frame->data, frame->linesize,\n                      frame->format, frame->width, frame->height)",
+          "new_text": "CHECK_CHANNELS_CONSISTENCY(&tmp)",
+          "old_line_content": "        av_image_copy(tmp.data, tmp.linesize, frame->data, frame->linesize,",
+          "new_line_content": "        CHECK_CHANNELS_CONSISTENCY(&tmp);",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "av_frame_copy_props",
+          "new_api": "av_image_copy",
+          "old_text": "av_frame_copy_props(&tmp, frame)",
+          "new_text": "av_image_copy(tmp.data, tmp.linesize, frame->data, frame->linesize,\n                      frame->format, frame->width, frame->height)",
+          "old_line_content": "    ret = av_frame_copy_props(&tmp, frame);",
+          "new_line_content": "        av_image_copy(tmp.data, tmp.linesize, frame->data, frame->linesize,",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": "av_frame_new_side_data",
+          "new_api": "memcpy",
+          "old_text": "av_frame_new_side_data(dst, sd_src->type,\n                                                         sd_src->size)",
+          "new_text": "memcpy(dst->error, src->error, sizeof(dst->error))",
+          "old_line_content": "        AVFrameSideData *sd_dst = av_frame_new_side_data(dst, sd_src->type,",
+          "new_line_content": "    memcpy(dst->error, src->error, sizeof(dst->error));",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "av_freep",
+          "new_api": "av_frame_new_side_data",
+          "old_text": "av_freep(&dst->side_data[i]->data)",
+          "new_text": "av_frame_new_side_data(dst, sd_src->type,\n                                                         sd_src->size)",
+          "old_line_content": "                av_freep(&dst->side_data[i]->data);",
+          "new_line_content": "        AVFrameSideData *sd_dst = av_frame_new_side_data(dst, sd_src->type,",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "AVERROR",
+          "new_api": "av_freep",
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": "av_freep(&dst->side_data[i])",
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "                av_freep(&dst->side_data[i]);",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "av_dict_copy",
+          "new_api": "av_freep",
+          "old_text": "av_dict_copy(&sd_dst->metadata, sd_src->metadata, 0)",
+          "new_text": "av_freep(&dst->side_data)",
+          "old_line_content": "        av_dict_copy(&sd_dst->metadata, sd_src->metadata, 0);",
+          "new_line_content": "            av_freep(&dst->side_data);",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "av_malloc",
+          "new_api": "av_mallocz",
+          "old_text": "av_malloc(size)",
+          "new_text": "av_mallocz(sizeof(*ret))",
+          "old_line_content": "    ret->data = av_malloc(size);",
+          "new_line_content": "    ret = av_mallocz(sizeof(*ret));",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 256,
+          "old_api": null,
+          "new_api": "av_samples_copy",
+          "old_text": null,
+          "new_text": "av_samples_copy(dst->extended_data, src->extended_data, 0, 0,\n                            dst->nb_samples, ch, dst->format)",
+          "old_line_content": "                          dst->format, dst->width, dst->height);",
+          "new_line_content": "            av_samples_copy(dst->extended_data, src->extended_data, 0, 0,",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": null,
+          "new_api": "FF_ARRAY_ELEMS",
+          "old_text": null,
+          "new_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "old_line_content": "    }",
+          "new_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf) && frame->buf[i]; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": null,
+          "new_api": "av_image_fill_linesizes",
+          "old_text": null,
+          "new_text": "av_image_fill_linesizes(frame->linesize, frame->format,\n                                          FFALIGN(frame->width, i))",
+          "old_line_content": "                                      frame->width);",
+          "new_line_content": "            ret = av_image_fill_linesizes(frame->linesize, frame->format,",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "FFALIGN",
+          "old_text": null,
+          "new_text": "FFALIGN(frame->width, i)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "                                          FFALIGN(frame->width, i));",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "av_image_copy",
+          "old_text": null,
+          "new_text": "av_image_copy(dst->data, dst->linesize, src->data, src->linesize,\n                          dst->format, dst->width, dst->height)",
+          "old_line_content": "    }",
+          "new_line_content": "            av_image_copy(dst->data, dst->linesize, src->data, src->linesize,",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "",
+          "new_line_content": "        return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": null,
+          "new_api": "av_frame_is_writable",
+          "old_text": null,
+          "new_text": "av_frame_is_writable(frame)",
+          "old_line_content": "    tmp.format         = frame->format;",
+          "new_line_content": "    if (av_frame_is_writable(frame))",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": null,
+          "new_api": "FF_ARRAY_ELEMS",
+          "old_text": null,
+          "new_text": "FF_ARRAY_ELEMS(src->buf)",
+          "old_line_content": "        if (!dst->buf[i]) {",
+          "new_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(src->buf); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(&tmp, 0, sizeof(tmp))",
+          "old_line_content": "    tmp.channels       = frame->channels;",
+          "new_line_content": "    memset(&tmp, 0, sizeof(tmp));",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": null,
+          "new_api": "av_buffer_ref",
+          "old_text": null,
+          "new_text": "av_buffer_ref(src->buf[i])",
+          "old_line_content": "        }",
+          "new_line_content": "        dst->buf[i] = av_buffer_ref(src->buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "",
+          "new_line_content": "            ret = AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": null,
+          "new_api": "FF_CEIL_RSHIFT",
+          "old_text": null,
+          "new_text": "FF_CEIL_RSHIFT(h, desc->log2_chroma_h)",
+          "old_line_content": "            goto fail;",
+          "new_line_content": "            h = FF_CEIL_RSHIFT(h, desc->log2_chroma_h);",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": null,
+          "new_api": "av_frame_get_buffer",
+          "old_text": null,
+          "new_text": "av_frame_get_buffer(&tmp, 32)",
+          "old_line_content": "    if (tmp.nb_samples) {",
+          "new_line_content": "    ret = av_frame_get_buffer(&tmp, 32);",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(frame->linesize[i] * h + 16)",
+          "old_line_content": "        frame->data[i] = frame->buf[i]->data;",
+          "new_line_content": "        frame->buf[i] = av_buffer_alloc(frame->linesize[i] * h + 16);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "av_mallocz",
+          "old_text": null,
+          "new_text": "av_mallocz(sizeof(*dst->extended_buf) *\n                                       src->nb_extended_buf)",
+          "old_line_content": "            goto fail;",
+          "new_line_content": "        dst->extended_buf = av_mallocz(sizeof(*dst->extended_buf) *",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": null,
+          "new_api": "av_realloc",
+          "old_text": null,
+          "new_text": "av_realloc(frame->side_data,\n                     (frame->nb_side_data + 1) * sizeof(*frame->side_data))",
+          "old_line_content": "    frame->side_data = tmp;",
+          "new_line_content": "    tmp = av_realloc(frame->side_data,",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "",
+          "new_line_content": "            ret = AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&frame->buf[1])",
+          "old_line_content": "        frame->data[1] = frame->buf[1]->data;",
+          "new_line_content": "        av_buffer_unref(&frame->buf[1]);",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(1024)",
+          "old_line_content": "    }",
+          "new_line_content": "        frame->buf[1] = av_buffer_alloc(1024);",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": null,
+          "new_api": "av_samples_copy",
+          "old_text": null,
+          "new_text": "av_samples_copy(tmp.extended_data, frame->extended_data, 0, 0,\n                        frame->nb_samples, ch, frame->format)",
+          "old_line_content": "                      frame->format, frame->width, frame->height);",
+          "new_line_content": "        av_samples_copy(tmp.extended_data, frame->extended_data, 0, 0,",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "av_buffer_ref",
+          "old_text": null,
+          "new_text": "av_buffer_ref(src->extended_buf[i])",
+          "old_line_content": "            }",
+          "new_line_content": "            dst->extended_buf[i] = av_buffer_ref(src->extended_buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "    }",
+          "new_line_content": "                ret = AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "av_frame_copy_props",
+          "old_text": null,
+          "new_text": "av_frame_copy_props(&tmp, frame)",
+          "old_line_content": "    }",
+          "new_line_content": "    ret = av_frame_copy_props(&tmp, frame);",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": null,
+          "new_api": "av_malloc",
+          "old_text": null,
+          "new_text": "av_malloc(size)",
+          "old_line_content": "    }",
+          "new_line_content": "    ret->data = av_malloc(size);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&ret)",
+          "old_line_content": "    ret->size = size;",
+          "new_line_content": "        av_freep(&ret);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(frame)",
+          "old_line_content": "static int get_audio_buffer(AVFrame *frame, int align)",
+          "new_line_content": "    av_frame_unref(frame);",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "{",
+          "new_line_content": "    return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(frame)",
+          "old_line_content": "        frame->extended_data = frame->data;",
+          "new_line_content": "    av_frame_unref(frame);",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "",
+          "new_line_content": "            ret = AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "CHECK_CHANNELS_CONSISTENCY",
+          "old_text": null,
+          "new_text": "CHECK_CHANNELS_CONSISTENCY(frame)",
+          "old_line_content": "                                         align);",
+          "new_line_content": "    CHECK_CHANNELS_CONSISTENCY(frame);",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "av_malloc",
+          "old_text": null,
+          "new_text": "av_malloc(sizeof(*dst->extended_data) * ch)",
+          "old_line_content": "        }",
+          "new_line_content": "        dst->extended_data = av_malloc(sizeof(*dst->extended_data) * ch);",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": null,
+          "new_api": "av_samples_get_buffer_size",
+          "old_text": null,
+          "new_text": "av_samples_get_buffer_size(&frame->linesize[0], channels,\n                                         frame->nb_samples, frame->format,\n                                         align)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = av_samples_get_buffer_size(&frame->linesize[0], channels,",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "    } else",
+          "new_line_content": "            ret = AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dst->data,     src->data,     sizeof(src->data))",
+          "old_line_content": "",
+          "new_line_content": "    memcpy(dst->data,     src->data,     sizeof(src->data));",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": null,
+          "new_api": "av_mallocz",
+          "old_text": null,
+          "new_text": "av_mallocz(planes *\n                                          sizeof(*frame->extended_data))",
+          "old_line_content": "        if (!frame->extended_data || !frame->extended_buf) {",
+          "new_line_content": "        frame->extended_data = av_mallocz(planes *",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dst->linesize, src->linesize, sizeof(src->linesize))",
+          "old_line_content": "fail:",
+          "new_line_content": "    memcpy(dst->linesize, src->linesize, sizeof(src->linesize));",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&frame->extended_data)",
+          "old_line_content": "        frame->nb_extended_buf = planes - AV_NUM_DATA_POINTERS;",
+          "new_line_content": "            av_freep(&frame->extended_data);",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&frame->extended_buf)",
+          "old_line_content": "    } else",
+          "new_line_content": "            av_freep(&frame->extended_buf);",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "        frame->extended_data = frame->data;",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(dst)",
+          "old_line_content": "AVFrame *av_frame_clone(AVFrame *src)",
+          "new_line_content": "    av_frame_unref(dst);",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": null,
+          "new_api": "av_frame_alloc",
+          "old_text": null,
+          "new_text": "av_frame_alloc()",
+          "old_line_content": "",
+          "new_line_content": "    AVFrame *ret = av_frame_alloc();",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(frame->linesize[0])",
+          "old_line_content": "        }",
+          "new_line_content": "        frame->buf[i] = av_buffer_alloc(frame->linesize[0]);",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(frame)",
+          "old_line_content": "    }",
+          "new_line_content": "            av_frame_unref(frame);",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "    for (i = 0; i < planes - AV_NUM_DATA_POINTERS; i++) {",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": null,
+          "new_api": "av_frame_ref",
+          "old_text": null,
+          "new_text": "av_frame_ref(ret, src)",
+          "old_line_content": "}",
+          "new_line_content": "    if (av_frame_ref(ret, src) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&ret)",
+          "old_line_content": "",
+          "new_line_content": "        av_frame_free(&ret);",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": null,
+          "new_api": "av_dict_copy",
+          "old_text": null,
+          "new_text": "av_dict_copy(&dst->metadata, src->metadata, 0)",
+          "old_line_content": "    for (i = 0; i < src->nb_side_data; i++) {",
+          "new_line_content": "    av_dict_copy(&dst->metadata, src->metadata, 0);",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(frame->linesize[0])",
+          "old_line_content": "        }",
+          "new_line_content": "        frame->extended_buf[i] = av_buffer_alloc(frame->linesize[0]);",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(frame)",
+          "old_line_content": "    }",
+          "new_line_content": "            av_frame_unref(frame);",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "    return 0;",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": null,
+          "new_api": "av_dict_free",
+          "old_text": null,
+          "new_text": "av_dict_free(&frame->side_data[i]->metadata)",
+          "old_line_content": "",
+          "new_line_content": "        av_dict_free(&frame->side_data[i]->metadata);",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "av_dict_free",
+          "old_text": null,
+          "new_text": "av_dict_free(&dst->side_data[i]->metadata)",
+          "old_line_content": "        }",
+          "new_line_content": "                av_dict_free(&dst->side_data[i]->metadata);",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&frame->side_data)",
+          "old_line_content": "    for (i = 0; i < frame->nb_extended_buf; i++)",
+          "new_line_content": "    av_freep(&frame->side_data);",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "    }",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(sd_dst->data, sd_src->data, sd_src->size)",
+          "old_line_content": "    dst->qscale_table = NULL;",
+          "new_line_content": "        memcpy(sd_dst->data, sd_src->data, sd_src->size);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "    else if (frame->nb_samples > 0 && frame->channel_layout)",
+          "new_line_content": "        return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&frame->extended_buf[i])",
+          "old_line_content": "",
+          "new_line_content": "        av_buffer_unref(&frame->extended_buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": null,
+          "new_api": "av_dict_free",
+          "old_text": null,
+          "new_text": "av_dict_free(&frame->metadata)",
+          "old_line_content": "}",
+          "new_line_content": "    av_dict_free(&frame->metadata);",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&frame->qp_table_buf)",
+          "old_line_content": "",
+          "new_line_content": "    av_buffer_unref(&frame->qp_table_buf);",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "av_dict_copy",
+          "old_text": null,
+          "new_text": "av_dict_copy(&sd_dst->metadata, sd_src->metadata, 0)",
+          "old_line_content": "    dst->qstride      = 0;",
+          "new_line_content": "        av_dict_copy(&sd_dst->metadata, sd_src->metadata, 0);",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "get_audio_buffer",
+          "old_text": null,
+          "new_text": "get_audio_buffer(frame, align)",
+          "old_line_content": "",
+          "new_line_content": "        return get_audio_buffer(frame, align);",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "get_frame_defaults",
+          "old_text": null,
+          "new_text": "get_frame_defaults(frame)",
+          "old_line_content": "{",
+          "new_line_content": "    get_frame_defaults(frame);",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "{",
+          "new_line_content": "    return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "av_buffer_ref",
+          "old_text": null,
+          "new_text": "av_buffer_ref(src->qp_table_buf)",
+          "old_line_content": "            dst->qscale_type  = src->qscale_type;",
+          "new_line_content": "        dst->qp_table_buf = av_buffer_ref(src->qp_table_buf);",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": null,
+          "new_api": "av_buffer_is_writable",
+          "old_text": null,
+          "new_text": "av_buffer_is_writable(frame->buf[i])",
+          "old_line_content": "    return ret;",
+          "new_line_content": "            ret &= !!av_buffer_is_writable(frame->buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(src, 0, sizeof(*src))",
+          "old_line_content": "int av_frame_is_writable(AVFrame *frame)",
+          "new_line_content": "    memset(src, 0, sizeof(*src));",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "get_frame_defaults",
+          "old_text": null,
+          "new_text": "get_frame_defaults(src)",
+          "old_line_content": "{",
+          "new_line_content": "    get_frame_defaults(src);",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": null,
+          "new_api": "CHECK_CHANNELS_CONSISTENCY",
+          "old_text": null,
+          "new_text": "CHECK_CHANNELS_CONSISTENCY(frame)",
+          "old_line_content": "",
+          "new_line_content": "        CHECK_CHANNELS_CONSISTENCY(frame);",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": null,
+          "new_api": "av_frame_copy_props",
+          "old_text": null,
+          "new_text": "av_frame_copy_props(dst, src)",
+          "old_line_content": "    /* duplicate the frame data if it's not refcounted */",
+          "new_line_content": "    ret = av_frame_copy_props(dst, src);",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "av_frame_get_buffer",
+          "old_text": null,
+          "new_text": "av_frame_get_buffer(dst, 32)",
+          "old_line_content": "        if (src->nb_samples) {",
+          "new_line_content": "        ret = av_frame_get_buffer(dst, 32);",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "av_sample_fmt_is_planar",
+          "old_text": null,
+          "new_text": "av_sample_fmt_is_planar(frame->format)",
+          "old_line_content": "    if (plane < 0 || plane >= planes || !frame->extended_data[plane])",
+          "new_line_content": "        planes = av_sample_fmt_is_planar(frame->format) ? channels : 1;",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "av_buffer_is_writable",
+          "old_text": null,
+          "new_text": "av_buffer_is_writable(frame->extended_buf[i])",
+          "old_line_content": "",
+          "new_line_content": "        ret &= !!av_buffer_is_writable(frame->extended_buf[i]);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 129,
+          "old_api": "av_image_fill_linesizes",
+          "new_api": null,
+          "old_text": "av_image_fill_linesizes(frame->linesize, frame->format,\n                                      frame->width)",
+          "new_text": null,
+          "old_line_content": "        ret = av_image_fill_linesizes(frame->linesize, frame->format,",
+          "new_line_content": "        for(i=1; i<=align; i+=i) {",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(EINVAL);",
+          "new_line_content": "    AVFrame tmp;",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": "av_frame_is_writable",
+          "new_api": null,
+          "old_text": "av_frame_is_writable(frame)",
+          "new_text": null,
+          "old_line_content": "    if (av_frame_is_writable(frame))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "FF_ARRAY_ELEMS",
+          "new_api": null,
+          "old_text": "FF_ARRAY_ELEMS(src->buf)",
+          "new_text": null,
+          "old_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(src->buf); i++) {",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "FFALIGN",
+          "new_api": null,
+          "old_text": "FFALIGN(frame->linesize[i], align)",
+          "new_text": null,
+          "old_line_content": "            frame->linesize[i] = FFALIGN(frame->linesize[i], align);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(&tmp, 0, sizeof(tmp))",
+          "new_text": null,
+          "old_line_content": "    memset(&tmp, 0, sizeof(tmp));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "av_buffer_ref",
+          "new_api": null,
+          "old_text": "av_buffer_ref(src->buf[i])",
+          "new_text": null,
+          "old_line_content": "        dst->buf[i] = av_buffer_ref(src->buf[i]);",
+          "new_line_content": "    /* ref the buffers */",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            ret = AVERROR(ENOMEM);",
+          "new_line_content": "        if (!src->buf[i])",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": "FF_CEIL_RSHIFT",
+          "new_api": null,
+          "old_text": "FF_CEIL_RSHIFT(h, desc->log2_chroma_h)",
+          "new_text": null,
+          "old_line_content": "            h = FF_CEIL_RSHIFT(h, desc->log2_chroma_h);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": "av_frame_get_buffer",
+          "new_api": null,
+          "old_text": "av_frame_get_buffer(&tmp, 32)",
+          "new_text": null,
+          "old_line_content": "    ret = av_frame_get_buffer(&tmp, 32);",
+          "new_line_content": "    tmp.height         = frame->height;",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": "av_mallocz",
+          "new_api": null,
+          "old_text": "av_mallocz(sizeof(*dst->extended_buf) *\n                                       src->nb_extended_buf)",
+          "new_text": null,
+          "old_line_content": "        dst->extended_buf = av_mallocz(sizeof(*dst->extended_buf) *",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "av_realloc",
+          "new_api": null,
+          "old_text": "av_realloc(frame->side_data,\n                     (frame->nb_side_data + 1) * sizeof(*frame->side_data))",
+          "new_text": null,
+          "old_line_content": "    tmp = av_realloc(frame->side_data,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            ret = AVERROR(ENOMEM);",
+          "new_line_content": "    if (src->extended_buf) {",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&frame->buf[1])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&frame->buf[1]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "av_buffer_alloc",
+          "new_api": null,
+          "old_text": "av_buffer_alloc(1024)",
+          "new_text": null,
+          "old_line_content": "        frame->buf[1] = av_buffer_alloc(1024);",
+          "new_line_content": "        frame->data[i] = frame->buf[i]->data;",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "CHECK_CHANNELS_CONSISTENCY",
+          "new_api": null,
+          "old_text": "CHECK_CHANNELS_CONSISTENCY(&tmp)",
+          "new_text": null,
+          "old_line_content": "        CHECK_CHANNELS_CONSISTENCY(&tmp);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "av_samples_copy",
+          "new_api": null,
+          "old_text": "av_samples_copy(tmp.extended_data, frame->extended_data, 0, 0,\n                        frame->nb_samples, ch, frame->format)",
+          "new_text": null,
+          "old_line_content": "        av_samples_copy(tmp.extended_data, frame->extended_data, 0, 0,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "av_mallocz",
+          "new_api": null,
+          "old_text": "av_mallocz(sizeof(*ret))",
+          "new_text": null,
+          "old_line_content": "    ret = av_mallocz(sizeof(*ret));",
+          "new_line_content": "    if (!tmp)",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": "av_buffer_ref",
+          "new_api": null,
+          "old_text": "av_buffer_ref(src->extended_buf[i])",
+          "new_text": null,
+          "old_line_content": "            dst->extended_buf[i] = av_buffer_ref(src->extended_buf[i]);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "                ret = AVERROR(ENOMEM);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(&tmp)",
+          "new_text": null,
+          "old_line_content": "        av_frame_unref(&tmp);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&ret)",
+          "new_text": null,
+          "old_line_content": "        av_freep(&ret);",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(frame)",
+          "new_text": null,
+          "old_line_content": "    av_frame_unref(frame);",
+          "new_line_content": "    frame->extended_data = frame->data;",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "    return AVERROR(ENOMEM);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "            ret = AVERROR(EINVAL);",
+          "new_line_content": "    if (src->extended_data != src->data) {",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "av_sample_fmt_is_planar",
+          "new_api": null,
+          "old_text": "av_sample_fmt_is_planar(frame->format)",
+          "new_text": null,
+          "old_line_content": "    int planar   = av_sample_fmt_is_planar(frame->format);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": "CHECK_CHANNELS_CONSISTENCY",
+          "new_api": null,
+          "old_text": "CHECK_CHANNELS_CONSISTENCY(src)",
+          "new_text": null,
+          "old_line_content": "        CHECK_CHANNELS_CONSISTENCY(src);",
+          "new_line_content": "        if (!ch) {",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "av_malloc",
+          "new_api": null,
+          "old_text": "av_malloc(sizeof(*dst->extended_data) * ch)",
+          "new_text": null,
+          "old_line_content": "        dst->extended_data = av_malloc(sizeof(*dst->extended_data) * ch);",
+          "new_line_content": "            goto fail;",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "av_samples_get_buffer_size",
+          "new_api": null,
+          "old_text": "av_samples_get_buffer_size(&frame->linesize[0], channels,\n                                         frame->nb_samples, frame->format,\n                                         align)",
+          "new_text": null,
+          "old_line_content": "        ret = av_samples_get_buffer_size(&frame->linesize[0], channels,",
+          "new_line_content": "    int ret, i;",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst->extended_data, src->extended_data, sizeof(*src->extended_data) * ch)",
+          "new_text": null,
+          "old_line_content": "        memcpy(dst->extended_data, src->extended_data, sizeof(*src->extended_data) * ch);",
+          "new_line_content": "        if (!dst->extended_data) {",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "av_mallocz",
+          "new_api": null,
+          "old_text": "av_mallocz(planes *\n                                          sizeof(*frame->extended_data))",
+          "new_text": null,
+          "old_line_content": "        frame->extended_data = av_mallocz(planes *",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst->linesize, src->linesize, sizeof(src->linesize))",
+          "new_text": null,
+          "old_line_content": "    memcpy(dst->linesize, src->linesize, sizeof(src->linesize));",
+          "new_line_content": "    } else",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "av_mallocz",
+          "new_api": null,
+          "old_text": "av_mallocz((planes - AV_NUM_DATA_POINTERS) *\n                                          sizeof(*frame->extended_buf))",
+          "new_text": null,
+          "old_line_content": "        frame->extended_buf  = av_mallocz((planes - AV_NUM_DATA_POINTERS) *",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&frame->extended_data)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&frame->extended_data);",
+          "new_line_content": "                                          sizeof(*frame->extended_data));",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(dst)",
+          "new_text": null,
+          "old_line_content": "    av_frame_unref(dst);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "                                          sizeof(*frame->extended_buf));",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "av_frame_alloc",
+          "new_api": null,
+          "old_text": "av_frame_alloc()",
+          "new_text": null,
+          "old_line_content": "    AVFrame *ret = av_frame_alloc();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(planes, AV_NUM_DATA_POINTERS)",
+          "new_text": null,
+          "old_line_content": "    for (i = 0; i < FFMIN(planes, AV_NUM_DATA_POINTERS); i++) {",
+          "new_line_content": "        frame->nb_extended_buf = planes - AV_NUM_DATA_POINTERS;",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": "av_buffer_alloc",
+          "new_api": null,
+          "old_text": "av_buffer_alloc(frame->linesize[0])",
+          "new_text": null,
+          "old_line_content": "        frame->buf[i] = av_buffer_alloc(frame->linesize[0]);",
+          "new_line_content": "    } else",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(frame)",
+          "new_text": null,
+          "old_line_content": "            av_frame_unref(frame);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": "av_frame_ref",
+          "new_api": null,
+          "old_text": "av_frame_ref(ret, src)",
+          "new_text": null,
+          "old_line_content": "    if (av_frame_ref(ret, src) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(&ret)",
+          "new_text": null,
+          "old_line_content": "        av_frame_free(&ret);",
+          "new_line_content": "    if (!ret)",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "av_dict_copy",
+          "new_api": null,
+          "old_text": "av_dict_copy(&dst->metadata, src->metadata, 0)",
+          "new_text": null,
+          "old_line_content": "    av_dict_copy(&dst->metadata, src->metadata, 0);",
+          "new_line_content": "    dst->coded_picture_number = src->coded_picture_number;",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst->error, src->error, sizeof(dst->error))",
+          "new_text": null,
+          "old_line_content": "    memcpy(dst->error, src->error, sizeof(dst->error));",
+          "new_line_content": "    dst->decode_error_flags  = src->decode_error_flags;",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": "av_buffer_alloc",
+          "new_api": null,
+          "old_text": "av_buffer_alloc(frame->linesize[0])",
+          "new_text": null,
+          "old_line_content": "        frame->extended_buf[i] = av_buffer_alloc(frame->linesize[0]);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(frame)",
+          "new_text": null,
+          "old_line_content": "            av_frame_unref(frame);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "    for (i = 0; i < planes - AV_NUM_DATA_POINTERS; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&frame->side_data[i]->data)",
+          "new_text": null,
+          "old_line_content": "        av_freep(&frame->side_data[i]->data);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "av_dict_free",
+          "new_api": null,
+          "old_text": "av_dict_free(&frame->side_data[i]->metadata)",
+          "new_text": null,
+          "old_line_content": "        av_dict_free(&frame->side_data[i]->metadata);",
+          "new_line_content": "    int i;",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&frame->side_data[i])",
+          "new_text": null,
+          "old_line_content": "        av_freep(&frame->side_data[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&dst->side_data[i])",
+          "new_text": null,
+          "old_line_content": "                av_freep(&dst->side_data[i]);",
+          "new_line_content": "                                                         sd_src->size);",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": "av_dict_free",
+          "new_api": null,
+          "old_text": "av_dict_free(&dst->side_data[i]->metadata)",
+          "new_text": null,
+          "old_line_content": "                av_dict_free(&dst->side_data[i]->metadata);",
+          "new_line_content": "        if (!sd_dst) {",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&frame->buf[i])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&frame->buf[i]);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(sd_dst->data, sd_src->data, sd_src->size)",
+          "new_text": null,
+          "old_line_content": "        memcpy(sd_dst->data, sd_src->data, sd_src->size);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(EINVAL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&frame->extended_buf[i])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&frame->extended_buf[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": "get_video_buffer",
+          "new_api": null,
+          "old_text": "get_video_buffer(frame, align)",
+          "new_text": null,
+          "old_line_content": "        return get_video_buffer(frame, align);",
+          "new_line_content": "    if (frame->format < 0)",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&frame->qp_table_buf)",
+          "new_text": null,
+          "old_line_content": "    av_buffer_unref(&frame->qp_table_buf);",
+          "new_line_content": "    for (i = 0; i < frame->nb_extended_buf; i++)",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "get_audio_buffer",
+          "new_api": null,
+          "old_text": "get_audio_buffer(frame, align)",
+          "new_text": null,
+          "old_line_content": "        return get_audio_buffer(frame, align);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": "av_buffer_ref",
+          "new_api": null,
+          "old_text": "av_buffer_ref(src->qp_table_buf)",
+          "new_text": null,
+          "old_line_content": "        dst->qp_table_buf = av_buffer_ref(src->qp_table_buf);",
+          "new_line_content": "    dst->qscale_table = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(src, 0, sizeof(*src))",
+          "new_text": null,
+          "old_line_content": "    memset(src, 0, sizeof(*src));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "get_frame_defaults",
+          "new_api": null,
+          "old_text": "get_frame_defaults(src)",
+          "new_text": null,
+          "old_line_content": "    get_frame_defaults(src);",
+          "new_line_content": "    *dst = *src;",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": "av_frame_copy_props",
+          "new_api": null,
+          "old_text": "av_frame_copy_props(dst, src)",
+          "new_text": null,
+          "old_line_content": "    ret = av_frame_copy_props(dst, src);",
+          "new_line_content": "    dst->channels       = src->channels;",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "FF_ARRAY_ELEMS",
+          "new_api": null,
+          "old_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "new_text": null,
+          "old_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf); i++)",
+          "new_line_content": "    /* assume non-refcounted frames are not writable */",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": "av_frame_get_buffer",
+          "new_api": null,
+          "old_text": "av_frame_get_buffer(dst, 32)",
+          "new_text": null,
+          "old_line_content": "        ret = av_frame_get_buffer(dst, 32);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": "av_buffer_is_writable",
+          "new_api": null,
+          "old_text": "av_buffer_is_writable(frame->buf[i])",
+          "new_text": null,
+          "old_line_content": "            ret &= !!av_buffer_is_writable(frame->buf[i]);",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": "CHECK_CHANNELS_CONSISTENCY",
+          "new_api": null,
+          "old_text": "CHECK_CHANNELS_CONSISTENCY(frame)",
+          "new_text": null,
+          "old_line_content": "        CHECK_CHANNELS_CONSISTENCY(frame);",
+          "new_line_content": "    if (frame->nb_samples) {",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "av_sample_fmt_is_planar",
+          "new_api": null,
+          "old_text": "av_sample_fmt_is_planar(frame->format)",
+          "new_text": null,
+          "old_line_content": "        planes = av_sample_fmt_is_planar(frame->format) ? channels : 1;",
+          "new_line_content": "        int channels = frame->channels;",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": "CHECK_CHANNELS_CONSISTENCY",
+          "new_api": null,
+          "old_text": "CHECK_CHANNELS_CONSISTENCY(src)",
+          "new_text": null,
+          "old_line_content": "            CHECK_CHANNELS_CONSISTENCY(src);",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "av_samples_copy",
+          "new_api": null,
+          "old_text": "av_samples_copy(dst->extended_data, src->extended_data, 0, 0,\n                            dst->nb_samples, ch, dst->format)",
+          "new_text": null,
+          "old_line_content": "            av_samples_copy(dst->extended_data, src->extended_data, 0, 0,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "FF_ARRAY_ELEMS",
+          "new_api": null,
+          "old_text": "FF_ARRAY_ELEMS(frame->buf)",
+          "new_text": null,
+          "old_line_content": "    for (i = 0; i < FF_ARRAY_ELEMS(frame->buf) && frame->buf[i]; i++) {",
+          "new_line_content": "    if (plane < 0 || plane >= planes || !frame->extended_data[plane])",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 19,
+      "total_additions": 72,
+      "total_deletions": 71,
+      "total_api_changes": 162
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 162,
+        "non_api_lines": 4,
+        "non_api_line_numbers": [
+          136,
+          132,
+          133,
+          134
+        ]
+      }
+    },
+    "api_calls_before": 109,
+    "api_calls_after": 110,
+    "diff_info": {
+      "added_lines": 8,
+      "removed_lines": 4,
+      "total_diff_lines": 24
+    }
+  }
+}

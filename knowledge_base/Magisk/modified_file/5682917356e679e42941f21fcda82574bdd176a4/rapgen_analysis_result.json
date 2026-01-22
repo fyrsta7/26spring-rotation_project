@@ -1,0 +1,2432 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/Magisk/modified_file/5682917356e679e42941f21fcda82574bdd176a4",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/Magisk/modified_file/5682917356e679e42941f21fcda82574bdd176a4/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/Magisk/modified_file/5682917356e679e42941f21fcda82574bdd176a4/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/Magisk/modified_file/5682917356e679e42941f21fcda82574bdd176a4/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 142,
+          "old_api": "ZopfliDeflate",
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": "ZopfliDeflate(&zo, 2, 1, nullptr, 0, &bp, &out, &outsize)",
+          "new_text": "ZOPFLI_APPEND_DATA(3, &out, &outsize)",
+          "old_line_content": "        ZopfliDeflate(&zo, 2, 1, nullptr, 0, &bp, &out, &outsize);",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(3, &out, &outsize);  /* OS follows Unix conventions. */",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": "ZopfliDeflate",
+          "old_text": "ZOPFLI_APPEND_DATA((crcvalue >> 8) % 256, &out, &outsize)",
+          "new_text": "ZopfliDeflate(&zo, 2, 1, nullptr, 0, &bp, &out, &outsize)",
+          "old_line_content": "        ZOPFLI_APPEND_DATA((crcvalue >> 8) % 256, &out, &outsize);",
+          "new_line_content": "        ZopfliDeflate(&zo, 2, 1, nullptr, 0, &bp, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": "bwrite",
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": "bwrite(out, outsize)",
+          "new_text": "ZOPFLI_APPEND_DATA((in_size >> 8) % 256, &out, &outsize)",
+          "old_line_content": "        bwrite(out, outsize);",
+          "new_line_content": "        ZOPFLI_APPEND_DATA((in_size >> 8) % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": "free",
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": "free(out)",
+          "new_text": "ZOPFLI_APPEND_DATA((in_size >> 16) % 256, &out, &outsize)",
+          "old_line_content": "        free(out);",
+          "new_line_content": "        ZOPFLI_APPEND_DATA((in_size >> 16) % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "ZopfliDeflatePart",
+          "new_api": "crc32_z",
+          "old_text": "ZopfliDeflatePart(&zo, 2, 0, buf, offset, end_offset, &bp, &out, &outsize)",
+          "new_text": "crc32_z(crcvalue, buf, len)",
+          "old_line_content": "            ZopfliDeflatePart(&zo, 2, 0, buf, offset, end_offset, &bp, &out, &outsize);",
+          "new_line_content": "        crcvalue = crc32_z(crcvalue, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "bwrite",
+          "new_api": "ZopfliDeflatePart",
+          "old_text": "bwrite(out, outsize - 1)",
+          "new_text": "ZopfliDeflatePart(&zo, 2, 0, buf, offset, end_offset, &bp, &out, &outsize)",
+          "old_line_content": "                ret += bwrite(out, outsize - 1);",
+          "new_line_content": "            ZopfliDeflatePart(&zo, 2, 0, buf, offset, end_offset, &bp, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "BZ2_bzCompressEnd",
+          "new_api": "BZ2_bzDecompressEnd",
+          "old_text": "BZ2_bzCompressEnd(&strm)",
+          "new_text": "BZ2_bzDecompressEnd(&strm)",
+          "old_line_content": "                BZ2_bzCompressEnd(&strm);",
+          "new_line_content": "                BZ2_bzDecompressEnd(&strm);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": "LOGW",
+          "new_api": "BZ2_bzCompress",
+          "old_text": "LOGW(\"bzip2 %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code)",
+          "new_text": "BZ2_bzCompress(&strm, flush)",
+          "old_line_content": "                LOGW(\"bzip2 %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code);",
+          "new_line_content": "                    code = BZ2_bzCompress(&strm, flush);",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": "lzma_lzma_preset",
+          "new_api": "std::move(base)",
+          "old_text": "lzma_lzma_preset(&opt, 9)",
+          "new_text": "std::move(base)",
+          "old_line_content": "        lzma_lzma_preset(&opt, 9);",
+          "new_line_content": "        cpr_stream(std::move(base)), mode(mode), strm(LZMA_STREAM_INIT), outbuf{0} {",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "LOGE",
+          "new_api": "lzma_alone_encoder",
+          "old_text": "LOGE(\"LZMA initialization failed (%d)\\n\", code)",
+          "new_text": "lzma_alone_encoder(&strm, &opt)",
+          "old_line_content": "            LOGE(\"LZMA initialization failed (%d)\\n\", code);",
+          "new_line_content": "                code = lzma_alone_encoder(&strm, &opt);",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": "LZ4F_freeDecompressionContext",
+          "new_api": "LZ4F_createDecompressionContext",
+          "old_text": "LZ4F_freeDecompressionContext(ctx)",
+          "new_text": "LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION)",
+          "old_line_content": "        LZ4F_freeDecompressionContext(ctx);",
+          "new_line_content": "        LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION);",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "LZ4F_compressUpdate",
+          "new_api": "reinterpret_cast<const uint8_t *>(buf)",
+          "old_text": "LZ4F_compressUpdate(ctx, outbuf, outCapacity, inbuf, read, nullptr)",
+          "new_text": "reinterpret_cast<const uint8_t *>(buf)",
+          "old_line_content": "            write = LZ4F_compressUpdate(ctx, outbuf, outCapacity, inbuf, read, nullptr);",
+          "new_line_content": "        auto inbuf = reinterpret_cast<const uint8_t *>(buf);",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": "LZ4_decompress_safe",
+          "new_api": "memcpy",
+          "old_text": "LZ4_decompress_safe(buf, out_buf, block_sz, LZ4_UNCOMPRESSED)",
+          "new_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "old_line_content": "                int write = LZ4_decompress_safe(buf, out_buf, block_sz, LZ4_UNCOMPRESSED);",
+          "new_line_content": "                memcpy(buf + buf_off, inbuf, consumed);",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "bwrite",
+          "new_api": "LOGW",
+          "old_text": "bwrite(outbuf, written)",
+          "new_text": "LOGW(\"LZ4HC compression failure\\n\")",
+          "old_line_content": "        bwrite(outbuf, written);",
+          "new_line_content": "            LOGW(\"LZ4HC compression failure\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": "fprintf",
+          "new_api": "fread",
+          "old_text": "fprintf(stderr, \"Detected format: [%s]\\n\", fmt2name[type])",
+          "new_text": "fread(buf, 1, sizeof(buf), in_fp)",
+          "old_line_content": "            fprintf(stderr, \"Detected format: [%s]\\n\", fmt2name[type]);",
+          "new_line_content": "    while ((len = fread(buf, 1, sizeof(buf), in_fp))) {",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "COMPRESSED",
+          "new_api": "check_fmt",
+          "old_text": "COMPRESSED(type)",
+          "new_text": "check_fmt(buf, len)",
+          "old_line_content": "            if (!COMPRESSED(type))",
+          "new_line_content": "            format_t type = check_fmt(buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "xfopen",
+          "new_api": "fprintf",
+          "old_text": "xfopen(outfile, \"we\")",
+          "new_text": "fprintf(stderr, \"Decompressing to [%s]\\n\", outfile)",
+          "old_line_content": "            FILE *out_fp = outfile == \"-\"sv ? stdout : xfopen(outfile, \"we\");",
+          "new_line_content": "                    fprintf(stderr, \"Decompressing to [%s]\\n\", outfile);",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "write",
+          "new_api": "xfopen",
+          "old_text": "strm->write(buf, len)",
+          "new_text": "xfopen(outfile, \"we\")",
+          "old_line_content": "        if (strm->write(buf, len) < 0)",
+          "new_line_content": "            FILE *out_fp = outfile == \"-\"sv ? stdout : xfopen(outfile, \"we\");",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": "LOGE",
+          "new_api": "make_unique<fp_stream>(out_fp)",
+          "old_text": "LOGE(\"Decompression error!\\n\")",
+          "new_text": "make_unique<fp_stream>(out_fp)",
+          "old_line_content": "            LOGE(\"Decompression error!\\n\");",
+          "new_line_content": "            strm = get_decoder(type, make_unique<fp_stream>(out_fp));",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "reset",
+          "new_api": "write",
+          "old_text": "strm.reset(nullptr)",
+          "new_text": "strm->write(buf, len)",
+          "old_line_content": "    strm.reset(nullptr);",
+          "new_line_content": "        if (strm->write(buf, len) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": "fclose",
+          "new_api": "LOGE",
+          "old_text": "fclose(in_fp)",
+          "new_text": "LOGE(\"Decompression error!\\n\")",
+          "old_line_content": "    fclose(in_fp);",
+          "new_line_content": "            LOGE(\"Decompression error!\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "unlink",
+          "new_api": "reset",
+          "old_text": "unlink(infile)",
+          "new_text": "strm.reset(nullptr)",
+          "old_line_content": "        unlink(infile);",
+          "new_line_content": "    strm.reset(nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "xfopen",
+          "new_api": "data",
+          "old_text": "xfopen(outfile, \"we\")",
+          "new_text": "tmp.data()",
+          "old_line_content": "        out_fp = outfile == \"-\"sv ? stdout : xfopen(outfile, \"we\");",
+          "new_line_content": "            fprintf(stderr, \"Compressing to [%s]\\n\", tmp.data());",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "fread",
+          "new_api": "make_unique<fp_stream>(out_fp)",
+          "old_text": "fread(buf, 1, sizeof(buf), in_fp)",
+          "new_text": "make_unique<fp_stream>(out_fp)",
+          "old_line_content": "    while ((len = fread(buf, 1, sizeof(buf), in_fp))) {",
+          "new_line_content": "    auto strm = get_encoder(fmt, make_unique<fp_stream>(out_fp));",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": "reset",
+          "new_api": "write",
+          "old_text": "strm.reset(nullptr)",
+          "new_text": "strm->write(buf, len)",
+          "old_line_content": "    strm.reset(nullptr);",
+          "new_line_content": "        if (strm->write(buf, len) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": "fclose",
+          "new_api": "LOGE",
+          "old_text": "fclose(in_fp)",
+          "new_text": "LOGE(\"Compression error!\\n\")",
+          "old_line_content": "    fclose(in_fp);",
+          "new_line_content": "            LOGE(\"Compression error!\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "unlink",
+          "new_api": "reset",
+          "old_text": "unlink(infile)",
+          "new_text": "strm.reset(nullptr)",
+          "old_line_content": "        unlink(infile);",
+          "new_line_content": "    strm.reset(nullptr);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "LZ4_decompress_safe",
+          "old_text": null,
+          "new_text": "LZ4_decompress_safe(buf, out_buf, block_sz, LZ4_UNCOMPRESSED)",
+          "old_line_content": "                }",
+          "new_line_content": "                int write = LZ4_decompress_safe(buf, out_buf, block_sz, LZ4_UNCOMPRESSED);",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "LOGW",
+          "old_text": null,
+          "new_text": "LOGW(\"LZ4HC decompression failure (%d)\\n\", write)",
+          "old_line_content": "",
+          "new_line_content": "                    LOGW(\"LZ4HC decompression failure (%d)\\n\", write);",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(out_buf, write)",
+          "old_line_content": "                block_sz = 0;",
+          "new_line_content": "                ret += bwrite(out_buf, write);",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf + buf_off, inbuf, size)",
+          "old_line_content": "        }",
+          "new_line_content": "                memcpy(buf + buf_off, inbuf, size);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "explicit",
+          "old_text": null,
+          "new_text": "explicit",
+          "old_line_content": "    ssize_t write(const void *in, size_t size) override {",
+          "new_line_content": "    explicit LZ4_encoder(stream_ptr &&base, bool lg) :",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "        size_t ret = 0;",
+          "new_line_content": "        cpr_stream(std::move(base)), outbuf(new char[LZ4_COMPRESSED]),",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(\"\\x02\\x21\\x4c\\x18\", 4)",
+          "old_line_content": "            return 0;",
+          "new_line_content": "            ret += bwrite(\"\\x02\\x21\\x4c\\x18\", 4);",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "old_line_content": "",
+          "new_line_content": "                memcpy(buf + buf_off, inbuf, consumed);",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": null,
+          "new_api": "write_block",
+          "old_text": null,
+          "new_text": "write_block()",
+          "old_line_content": "",
+          "new_line_content": "                if (int written = write_block(); written < 0)",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf + buf_off, inbuf, size)",
+          "old_line_content": "        } while (size != 0);",
+          "new_line_content": "                memcpy(buf + buf_off, inbuf, size);",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": null,
+          "new_api": "write_block",
+          "old_text": null,
+          "new_text": "write_block()",
+          "old_line_content": "        delete[] buf;",
+          "new_line_content": "            write_block();",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(&in_total, sizeof(in_total))",
+          "old_line_content": "",
+          "new_line_content": "            bwrite(&in_total, sizeof(in_total));",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "LZ4_compress_HC",
+          "old_text": null,
+          "new_text": "LZ4_compress_HC(buf, outbuf, buf_off, LZ4_COMPRESSED, LZ4HC_CLEVEL_MAX)",
+          "old_line_content": "        }",
+          "new_line_content": "        int written = LZ4_compress_HC(buf, outbuf, buf_off, LZ4_COMPRESSED, LZ4HC_CLEVEL_MAX);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(&written, sizeof(written))",
+          "old_line_content": "};",
+          "new_line_content": "        bwrite(&written, sizeof(written));",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, written)",
+          "old_line_content": "",
+          "new_line_content": "        bwrite(outbuf, written);",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "        default:",
+          "new_line_content": "            return make_unique<LZ4_encoder>(std::move(base), true);",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "    }",
+          "new_line_content": "            return make_unique<zopfli_encoder>(std::move(base));",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "stream_ptr get_decoder(format_t type, stream_ptr &&base) {",
+          "new_line_content": "            return make_unique<gz_encoder>(std::move(base));",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(31, &out, &outsize)",
+          "old_line_content": "        /* MTIME */",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(31, &out, &outsize);  /* ID1 */",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "        case LZ4_LG:",
+          "new_line_content": "            return make_unique<bz_decoder>(std::move(base));",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "        case ZOPFLI:",
+          "new_line_content": "            return make_unique<LZ4F_decoder>(std::move(base));",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(0, &out, &outsize)",
+          "old_line_content": "",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(0, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(0, &out, &outsize)",
+          "old_line_content": "    }",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(0, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(2, &out, &outsize)",
+          "old_line_content": "    ~zopfli_encoder() override {",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(2, &out, &outsize);  /* XFL, 2 indicates best compression. */",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "void decompress(char *infile, const char *outfile) {",
+          "new_line_content": "            return make_unique<gz_decoder>(std::move(base));",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(crcvalue % 256, &out, &outsize)",
+          "old_line_content": "",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(crcvalue % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA((crcvalue >> 8) % 256, &out, &outsize)",
+          "old_line_content": "        /* ISIZE */",
+          "new_line_content": "        ZOPFLI_APPEND_DATA((crcvalue >> 8) % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "xfopen",
+          "old_text": null,
+          "new_text": "xfopen(infile, \"re\")",
+          "old_line_content": "    size_t len;",
+          "new_line_content": "    FILE *in_fp = in_std ? stdin : xfopen(infile, \"re\");",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(in_size % 256, &out, &outsize)",
+          "old_line_content": "",
+          "new_line_content": "        ZOPFLI_APPEND_DATA(in_size % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA((in_size >> 24) % 256, &out, &outsize)",
+          "old_line_content": "    }",
+          "new_line_content": "        ZOPFLI_APPEND_DATA((in_size >> 24) % 256, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 671,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf(stderr, \"Detected format: [%s]\\n\", fmt2name[type])",
+          "old_line_content": "",
+          "new_line_content": "            fprintf(stderr, \"Detected format: [%s]\\n\", fmt2name[type]);",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(out, outsize)",
+          "old_line_content": "private:",
+          "new_line_content": "        bwrite(out, outsize);",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(out)",
+          "old_line_content": "    ZopfliOptions zo;",
+          "new_line_content": "        free(out);",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "COMPRESSED",
+          "old_text": null,
+          "new_text": "COMPRESSED(type)",
+          "old_line_content": "            * <path>.[ext], or '-'. Outfile will be either <path> or '-'.",
+          "new_line_content": "            if (!COMPRESSED(type))",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": null,
+          "new_api": "LOGE",
+          "old_text": null,
+          "new_text": "LOGE(\"Input file is not a supported compressed type!\\n\")",
+          "old_line_content": "            * If the input does not have proper format, abort */",
+          "new_line_content": "                LOGE(\"Input file is not a supported compressed type!\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "strrchr",
+          "old_text": null,
+          "new_text": "strrchr(infile, '.')",
+          "old_line_content": "                    // Strip out extension and remove input",
+          "new_line_content": "                    ext = strrchr(infile, '.');",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(out)",
+          "old_line_content": "",
+          "new_line_content": "        free(out);",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(ext, fmt2ext[type])",
+          "old_line_content": "                    *ext = '\\0';",
+          "new_line_content": "                    if (ext == nullptr || strcmp(ext, fmt2ext[type]) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "LOGE",
+          "old_text": null,
+          "new_text": "LOGE(\"Input file is not a supported type!\\n\")",
+          "old_line_content": "                    rm_in = true;",
+          "new_line_content": "                        LOGE(\"Input file is not a supported type!\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "std::min(len, offset + ZOPFLI_CHUNK)",
+          "old_text": null,
+          "new_text": "std::min(len, offset + ZOPFLI_CHUNK)",
+          "old_line_content": "                // The last byte is not complete",
+          "new_line_content": "            size_t end_offset = std::min(len, offset + ZOPFLI_CHUNK);",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(out, outsize - 1)",
+          "old_line_content": "            } else {",
+          "new_line_content": "                ret += bwrite(out, outsize - 1);",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "ZOPFLI_APPEND_DATA",
+          "old_text": null,
+          "new_text": "ZOPFLI_APPEND_DATA(b, &out, &outsize)",
+          "old_line_content": "            }",
+          "new_line_content": "                ZOPFLI_APPEND_DATA(b, &out, &outsize);",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": null,
+          "new_api": "fclose",
+          "old_text": null,
+          "new_text": "fclose(in_fp)",
+          "old_line_content": "}",
+          "new_line_content": "    fclose(in_fp);",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(out, outsize)",
+          "old_line_content": "",
+          "new_line_content": "                ret += bwrite(out, outsize);",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "free_out",
+          "old_text": null,
+          "new_text": "free_out()",
+          "old_line_content": "        return ret;",
+          "new_line_content": "                free_out();",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "unlink",
+          "old_text": null,
+          "new_text": "unlink(infile)",
+          "old_line_content": "    format_t fmt = name2fmt[method];",
+          "new_line_content": "        unlink(infile);",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": null,
+          "new_api": "LOGE",
+          "old_text": null,
+          "new_text": "LOGE(\"Unknown compression method: [%s]\\n\", method)",
+          "old_line_content": "",
+          "new_line_content": "        LOGE(\"Unknown compression method: [%s]\\n\", method);",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "write(buf, len, BZ_RUN)",
+          "old_line_content": "        switch(mode) {",
+          "new_line_content": "        return len ? write(buf, len, BZ_RUN) : 0;",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": null,
+          "new_api": "xfopen",
+          "old_text": null,
+          "new_text": "xfopen(infile, \"re\")",
+          "old_line_content": "        if (in_std) {",
+          "new_line_content": "    FILE *in_fp = in_std ? stdin : xfopen(infile, \"re\");",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "write(nullptr, 0, BZ_FINISH)",
+          "old_line_content": "    }",
+          "new_line_content": "                write(nullptr, 0, BZ_FINISH);",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": null,
+          "new_api": "BZ2_bzCompressEnd",
+          "old_text": null,
+          "new_text": "BZ2_bzCompressEnd(&strm)",
+          "old_line_content": "",
+          "new_line_content": "                BZ2_bzCompressEnd(&strm);",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "tmp.data()",
+          "old_line_content": "    } else {",
+          "new_line_content": "            out_fp = xfopen(tmp.data(), \"we\");",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": null,
+          "new_api": "xfopen",
+          "old_text": null,
+          "new_text": "xfopen(outfile, \"we\")",
+          "old_line_content": "",
+          "new_line_content": "        out_fp = outfile == \"-\"sv ? stdout : xfopen(outfile, \"we\");",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "                break;",
+          "new_line_content": "        cpr_stream(std::move(base)), mode(mode), strm{}, outbuf{0} {",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": null,
+          "new_api": "fread",
+          "old_text": null,
+          "new_text": "fread(buf, 1, sizeof(buf), in_fp)",
+          "old_line_content": "",
+          "new_line_content": "    while ((len = fread(buf, 1, sizeof(buf), in_fp))) {",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": null,
+          "new_api": "BZ2_bzDecompressInit",
+          "old_text": null,
+          "new_text": "BZ2_bzDecompressInit(&strm, 0, 0)",
+          "old_line_content": "                break;",
+          "new_line_content": "                BZ2_bzDecompressInit(&strm, 0, 0);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "BZ2_bzCompressInit",
+          "old_text": null,
+          "new_text": "BZ2_bzCompressInit(&strm, 9, 0, 0)",
+          "old_line_content": "",
+          "new_line_content": "                BZ2_bzCompressInit(&strm, 9, 0, 0);",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "fclose",
+          "old_text": null,
+          "new_text": "fclose(in_fp)",
+          "old_line_content": "}",
+          "new_line_content": "    fclose(in_fp);",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": null,
+          "new_api": "unlink",
+          "old_text": null,
+          "new_text": "unlink(infile)",
+          "old_line_content": "",
+          "new_line_content": "        unlink(infile);",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": null,
+          "new_api": "BZ2_bzDecompress",
+          "old_text": null,
+          "new_text": "BZ2_bzDecompress(&strm)",
+          "old_line_content": "                    break;",
+          "new_line_content": "                    code = BZ2_bzDecompress(&strm);",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": null,
+          "new_api": "LOGW",
+          "old_text": null,
+          "new_text": "LOGW(\"bzip2 %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code)",
+          "old_line_content": "        } while (strm.avail_out == 0);",
+          "new_line_content": "                LOGW(\"bzip2 %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code);",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, sizeof(outbuf) - strm.avail_out)",
+          "old_line_content": "};",
+          "new_line_content": "            ret += bwrite(outbuf, sizeof(outbuf) - strm.avail_out);",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit bz_decoder(stream_ptr &&base) : bz_strm(DECODE, std::move(base)) {};",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit bz_encoder(stream_ptr &&base) : bz_strm(ENCODE, std::move(base)) {};",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "write(nullptr, 0, LZMA_FINISH)",
+          "old_line_content": "protected:",
+          "new_line_content": "        write(nullptr, 0, LZMA_FINISH);",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": null,
+          "new_api": "lzma_end",
+          "old_text": null,
+          "new_text": "lzma_end(&strm)",
+          "old_line_content": "    enum mode_t {",
+          "new_line_content": "        lzma_end(&strm);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "lzma_lzma_preset",
+          "old_text": null,
+          "new_text": "lzma_lzma_preset(&opt, 9)",
+          "old_line_content": "        };",
+          "new_line_content": "        lzma_lzma_preset(&opt, 9);",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "lzma_auto_decoder",
+          "old_text": null,
+          "new_text": "lzma_auto_decoder(&strm, UINT64_MAX, 0)",
+          "old_line_content": "                break;",
+          "new_line_content": "                code = lzma_auto_decoder(&strm, UINT64_MAX, 0);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "lzma_stream_encoder",
+          "old_text": null,
+          "new_text": "lzma_stream_encoder(&strm, filters, LZMA_CHECK_CRC32)",
+          "old_line_content": "                break;",
+          "new_line_content": "                code = lzma_stream_encoder(&strm, filters, LZMA_CHECK_CRC32);",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": null,
+          "new_api": "LOGE",
+          "old_text": null,
+          "new_text": "LOGE(\"LZMA initialization failed (%d)\\n\", code)",
+          "old_line_content": "private:",
+          "new_line_content": "            LOGE(\"LZMA initialization failed (%d)\\n\", code);",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": null,
+          "new_api": "lzma_code",
+          "old_text": null,
+          "new_text": "lzma_code(&strm, flush)",
+          "old_line_content": "            }",
+          "new_line_content": "            int code = lzma_code(&strm, flush);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "LOGW",
+          "old_text": null,
+          "new_text": "LOGW(\"LZMA %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code)",
+          "old_line_content": "        } while (strm.avail_out == 0);",
+          "new_line_content": "                LOGW(\"LZMA %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, sizeof(outbuf) - strm.avail_out)",
+          "old_line_content": "};",
+          "new_line_content": "            ret += bwrite(outbuf, sizeof(outbuf) - strm.avail_out);",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit lzma_decoder(stream_ptr &&base) : lzma_strm(DECODE, std::move(base)) {}",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit xz_encoder(stream_ptr &&base) : lzma_strm(ENCODE_XZ, std::move(base)) {}",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit lzma_encoder(stream_ptr &&base) : lzma_strm(ENCODE_LZMA, std::move(base)) {}",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "explicit",
+          "old_text": null,
+          "new_text": "explicit",
+          "old_line_content": "",
+          "new_line_content": "    explicit LZ4F_decoder(stream_ptr &&base) :",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "    ~LZ4F_decoder() override {",
+          "new_line_content": "        cpr_stream(std::move(base)), ctx(nullptr), outbuf(nullptr), outCapacity(0) {",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": null,
+          "new_api": "LZ4F_freeDecompressionContext",
+          "old_text": null,
+          "new_text": "LZ4F_freeDecompressionContext(ctx)",
+          "old_line_content": "    ssize_t write(const void *buf, size_t len) override {",
+          "new_line_content": "        LZ4F_freeDecompressionContext(ctx);",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "reinterpret_cast<const uint8_t *>(buf)",
+          "old_text": null,
+          "new_text": "reinterpret_cast<const uint8_t *>(buf)",
+          "old_line_content": "        LZ4F_errorCode_t code;",
+          "new_line_content": "        auto inbuf = reinterpret_cast<const uint8_t *>(buf);",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": null,
+          "new_api": "read_header",
+          "old_text": null,
+          "new_text": "read_header(inbuf, len)",
+          "old_line_content": "            read = len;",
+          "new_line_content": "            read_header(inbuf, len);",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": null,
+          "new_api": "LZ4F_decompress",
+          "old_text": null,
+          "new_text": "LZ4F_decompress(ctx, outbuf, &write, inbuf, &read, nullptr)",
+          "old_line_content": "            }",
+          "new_line_content": "            code = LZ4F_decompress(ctx, outbuf, &write, inbuf, &read, nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": null,
+          "new_api": "LZ4F_isError",
+          "old_text": null,
+          "new_text": "LZ4F_isError(code)",
+          "old_line_content": "            len -= read;",
+          "new_line_content": "            if (LZ4F_isError(code)) {",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": null,
+          "new_api": "LZ4F_getErrorName",
+          "old_text": null,
+          "new_text": "LZ4F_getErrorName(code)",
+          "old_line_content": "            inbuf += read;",
+          "new_line_content": "                LOGW(\"LZ4F decode error: %s\\n\", LZ4F_getErrorName(code));",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, write)",
+          "old_line_content": "",
+          "new_line_content": "            ret += bwrite(outbuf, write);",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": null,
+          "new_api": "LZ4F_getFrameInfo",
+          "old_text": null,
+          "new_text": "LZ4F_getFrameInfo(ctx, &info, in, &read)",
+          "old_line_content": "            case LZ4F_max256KB: outCapacity = 1 << 18; break;",
+          "new_line_content": "        LZ4F_getFrameInfo(ctx, &info, in, &read);",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": null,
+          "new_api": "explicit",
+          "old_text": null,
+          "new_text": "explicit",
+          "old_line_content": "",
+          "new_line_content": "    explicit LZ4F_encoder(stream_ptr &&base) :",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "    ssize_t write(const void *buf, size_t len) override {",
+          "new_line_content": "        cpr_stream(std::move(base)), ctx(nullptr), outbuf(nullptr), outCapacity(0) {",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": null,
+          "new_api": "LZ4F_createCompressionContext",
+          "old_text": null,
+          "new_text": "LZ4F_createCompressionContext(&ctx, LZ4F_VERSION)",
+          "old_line_content": "        size_t ret = 0;",
+          "new_line_content": "        LZ4F_createCompressionContext(&ctx, LZ4F_VERSION);",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": null,
+          "new_api": "write_header",
+          "old_text": null,
+          "new_text": "write_header()",
+          "old_line_content": "        size_t read, write;",
+          "new_line_content": "            ret += write_header();",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "LZ4F_compressUpdate",
+          "old_text": null,
+          "new_text": "LZ4F_compressUpdate(ctx, outbuf, outCapacity, inbuf, read, nullptr)",
+          "old_line_content": "            }",
+          "new_line_content": "            write = LZ4F_compressUpdate(ctx, outbuf, outCapacity, inbuf, read, nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": null,
+          "new_api": "LZ4F_isError",
+          "old_text": null,
+          "new_text": "LZ4F_isError(write)",
+          "old_line_content": "            len -= read;",
+          "new_line_content": "            if (LZ4F_isError(write)) {",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": null,
+          "new_api": "LZ4F_getErrorName",
+          "old_text": null,
+          "new_text": "LZ4F_getErrorName(write)",
+          "old_line_content": "            inbuf += read;",
+          "new_line_content": "                LOGW(\"LZ4F encode error: %s\\n\", LZ4F_getErrorName(write));",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, write)",
+          "old_line_content": "",
+          "new_line_content": "            ret += bwrite(outbuf, write);",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": null,
+          "new_api": "LZ4F_compressEnd",
+          "old_text": null,
+          "new_text": "LZ4F_compressEnd(ctx, outbuf, outCapacity, nullptr)",
+          "old_line_content": "    }",
+          "new_line_content": "        size_t len = LZ4F_compressEnd(ctx, outbuf, outCapacity, nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, len)",
+          "old_line_content": "",
+          "new_line_content": "        bwrite(outbuf, len);",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": null,
+          "new_api": "LZ4F_freeCompressionContext",
+          "old_text": null,
+          "new_text": "LZ4F_freeCompressionContext(ctx)",
+          "old_line_content": "private:",
+          "new_line_content": "        LZ4F_freeCompressionContext(ctx);",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "            .frameInfo = {",
+          "new_line_content": "    static constexpr size_t BLOCK_SZ = 1 << 22;",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "LZ4F_compressBound",
+          "old_text": null,
+          "new_text": "LZ4F_compressBound(BLOCK_SZ, &prefs)",
+          "old_line_content": "    }",
+          "new_line_content": "        outCapacity = LZ4F_compressBound(BLOCK_SZ, &prefs);",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "LZ4F_compressBegin",
+          "old_text": null,
+          "new_text": "LZ4F_compressBegin(ctx, outbuf, outCapacity, &prefs)",
+          "old_line_content": "",
+          "new_line_content": "        size_t write = LZ4F_compressBegin(ctx, outbuf, outCapacity, &prefs);",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": null,
+          "new_api": "bwrite",
+          "old_text": null,
+          "new_text": "bwrite(outbuf, write)",
+          "old_line_content": "class LZ4_decoder : public cpr_stream {",
+          "new_line_content": "        return bwrite(outbuf, write);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "explicit",
+          "old_text": null,
+          "new_text": "explicit",
+          "old_line_content": "    ~LZ4_decoder() override {",
+          "new_line_content": "    explicit LZ4_decoder(stream_ptr &&base) :",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": null,
+          "new_api": "std::move(base)",
+          "old_text": null,
+          "new_text": "std::move(base)",
+          "old_line_content": "        delete[] out_buf;",
+          "new_line_content": "        cpr_stream(std::move(base)), out_buf(new char[LZ4_UNCOMPRESSED]),",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": null,
+          "new_api": "static_cast<const char *>(in)",
+          "old_text": null,
+          "new_text": "static_cast<const char *>(in)",
+          "old_line_content": "            size -= 4;",
+          "new_line_content": "        auto inbuf = static_cast<const char *>(in);",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "old_line_content": "                    consumed = size;",
+          "new_line_content": "                    memcpy(buf + buf_off, inbuf, consumed);",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf + buf_off, inbuf, size)",
+          "old_line_content": "            } else if (buf_off + size >= block_sz) {",
+          "new_line_content": "                    memcpy(buf + buf_off, inbuf, size);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 516,
+          "old_api": "LOGW",
+          "new_api": null,
+          "old_text": "LOGW(\"LZ4HC decompression failure (%d)\\n\", write)",
+          "new_text": null,
+          "old_line_content": "                    LOGW(\"LZ4HC decompression failure (%d)\\n\", write);",
+          "new_line_content": "                size -= consumed;",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(out_buf, write)",
+          "new_text": null,
+          "old_line_content": "                ret += bwrite(out_buf, write);",
+          "new_line_content": "                if (write < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf + buf_off, inbuf, size)",
+          "new_text": null,
+          "old_line_content": "                memcpy(buf + buf_off, inbuf, size);",
+          "new_line_content": "                buf_off = 0;",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "explicit",
+          "new_api": null,
+          "old_text": "explicit",
+          "new_text": null,
+          "old_line_content": "    explicit LZ4_encoder(stream_ptr &&base, bool lg) :",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), outbuf(new char[LZ4_COMPRESSED]),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(\"\\x02\\x21\\x4c\\x18\", 4)",
+          "new_text": null,
+          "old_line_content": "            ret += bwrite(\"\\x02\\x21\\x4c\\x18\", 4);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "new_text": null,
+          "old_line_content": "                memcpy(buf + buf_off, inbuf, consumed);",
+          "new_line_content": "        size_t consumed;",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "write_block",
+          "new_api": null,
+          "old_text": "write_block()",
+          "new_text": null,
+          "old_line_content": "                if (int written = write_block(); written < 0)",
+          "new_line_content": "                inbuf += consumed;",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf + buf_off, inbuf, size)",
+          "new_text": null,
+          "old_line_content": "                memcpy(buf + buf_off, inbuf, size);",
+          "new_line_content": "                // Reset buffer",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": "write_block",
+          "new_api": null,
+          "old_text": "write_block()",
+          "new_text": null,
+          "old_line_content": "            write_block();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(&in_total, sizeof(in_total))",
+          "new_text": null,
+          "old_line_content": "            bwrite(&in_total, sizeof(in_total));",
+          "new_line_content": "    ~LZ4_encoder() override {",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "LZ4_compress_HC",
+          "new_api": null,
+          "old_text": "LZ4_compress_HC(buf, outbuf, buf_off, LZ4_COMPRESSED, LZ4HC_CLEVEL_MAX)",
+          "new_text": null,
+          "old_line_content": "        int written = LZ4_compress_HC(buf, outbuf, buf_off, LZ4_COMPRESSED, LZ4HC_CLEVEL_MAX);",
+          "new_line_content": "    int buf_off;",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": "LOGW",
+          "new_api": null,
+          "old_text": "LOGW(\"LZ4HC compression failure\\n\")",
+          "new_text": null,
+          "old_line_content": "            LOGW(\"LZ4HC compression failure\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 607,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(&written, sizeof(written))",
+          "new_text": null,
+          "old_line_content": "        bwrite(&written, sizeof(written));",
+          "new_line_content": "        if (written == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<xz_encoder>(std::move(base));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<lzma_encoder>(std::move(base));",
+          "new_line_content": "    switch (type) {",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<gz_encoder>(std::move(base));",
+          "new_line_content": "        case ZOPFLI:",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<lzma_decoder>(std::move(base));",
+          "new_line_content": "stream_ptr get_decoder(format_t type, stream_ptr &&base) {",
+          "content_same": false
+        },
+        {
+          "line": 128,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(139, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(139, &out, &outsize); /* ID2 */",
+          "new_line_content": "        zo.numiterations = 1;",
+          "content_same": false
+        },
+        {
+          "line": 129,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(8, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(8, &out, &outsize);   /* CM */",
+          "new_line_content": "        zo.blocksplitting = 0;",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(0, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(0, &out, &outsize);   /* FLG */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<bz_decoder>(std::move(base));",
+          "new_line_content": "        case XZ:",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(31, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(31, &out, &outsize);  /* ID1 */",
+          "new_line_content": "        // Speed things up a bit, this still leads to better compression than zlib",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "            return make_unique<LZ4_decoder>(std::move(base));",
+          "new_line_content": "        case LZ4:",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(0, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(0, &out, &outsize);",
+          "new_line_content": "        /* MTIME */",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(crcvalue % 256, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA(crcvalue % 256, &out, &outsize);",
+          "new_line_content": "    ~zopfli_encoder() override {",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "xfopen",
+          "new_api": null,
+          "old_text": "xfopen(infile, \"re\")",
+          "new_text": null,
+          "old_line_content": "    FILE *in_fp = in_std ? stdin : xfopen(infile, \"re\");",
+          "new_line_content": "void decompress(char *infile, const char *outfile) {",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA((crcvalue >> 16) % 256, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA((crcvalue >> 16) % 256, &out, &outsize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA((crcvalue >> 24) % 256, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA((crcvalue >> 24) % 256, &out, &outsize);",
+          "new_line_content": "        /* CRC */",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": "fread",
+          "new_api": null,
+          "old_text": "fread(buf, 1, sizeof(buf), in_fp)",
+          "new_text": null,
+          "old_line_content": "    while ((len = fread(buf, 1, sizeof(buf), in_fp))) {",
+          "new_line_content": "    stream_ptr strm;",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA((in_size >> 16) % 256, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA((in_size >> 16) % 256, &out, &outsize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA((in_size >> 24) % 256, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "        ZOPFLI_APPEND_DATA((in_size >> 24) % 256, &out, &outsize);",
+          "new_line_content": "        /* ISIZE */",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "check_fmt",
+          "new_api": null,
+          "old_text": "check_fmt(buf, len)",
+          "new_text": null,
+          "old_line_content": "            format_t type = check_fmt(buf, len);",
+          "new_line_content": "    char buf[4096];",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "LOGE",
+          "new_api": null,
+          "old_text": "LOGE(\"Input file is not a supported compressed type!\\n\")",
+          "new_text": null,
+          "old_line_content": "                LOGE(\"Input file is not a supported compressed type!\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "strrchr",
+          "new_api": null,
+          "old_text": "strrchr(infile, '.')",
+          "new_text": null,
+          "old_line_content": "                    ext = strrchr(infile, '.');",
+          "new_line_content": "            char *ext = nullptr;",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(out)",
+          "new_text": null,
+          "old_line_content": "        free(out);",
+          "new_line_content": "    unsigned long crcvalue;",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(ext, fmt2ext[type])",
+          "new_text": null,
+          "old_line_content": "                    if (ext == nullptr || strcmp(ext, fmt2ext[type]) != 0)",
+          "new_line_content": "            if (outfile == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "LOGE",
+          "new_api": null,
+          "old_text": "LOGE(\"Input file is not a supported type!\\n\")",
+          "new_text": null,
+          "old_line_content": "                        LOGE(\"Input file is not a supported type!\\n\");",
+          "new_line_content": "                outfile = infile;",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": "fprintf",
+          "new_api": null,
+          "old_text": "fprintf(stderr, \"Decompressing to [%s]\\n\", outfile)",
+          "new_text": null,
+          "old_line_content": "                    fprintf(stderr, \"Decompressing to [%s]\\n\", outfile);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "crc32_z",
+          "new_api": null,
+          "old_text": "crc32_z(crcvalue, buf, len)",
+          "new_text": null,
+          "old_line_content": "        crcvalue = crc32_z(crcvalue, buf, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "std::min(len, offset + ZOPFLI_CHUNK)",
+          "new_api": null,
+          "old_text": "std::min(len, offset + ZOPFLI_CHUNK)",
+          "new_text": null,
+          "old_line_content": "            size_t end_offset = std::min(len, offset + ZOPFLI_CHUNK);",
+          "new_line_content": "        in_size += len;",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "make_unique<fp_stream>(out_fp)",
+          "new_api": null,
+          "old_text": "make_unique<fp_stream>(out_fp)",
+          "new_text": null,
+          "old_line_content": "            strm = get_decoder(type, make_unique<fp_stream>(out_fp));",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "free_out",
+          "new_api": null,
+          "old_text": "free_out()",
+          "new_text": null,
+          "old_line_content": "                free_out();",
+          "new_line_content": "            if (bp) {",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "ZOPFLI_APPEND_DATA",
+          "new_api": null,
+          "old_text": "ZOPFLI_APPEND_DATA(b, &out, &outsize)",
+          "new_text": null,
+          "old_line_content": "                ZOPFLI_APPEND_DATA(b, &out, &outsize);",
+          "new_line_content": "                // The last byte is not complete",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(out, outsize)",
+          "new_text": null,
+          "old_line_content": "                ret += bwrite(out, outsize);",
+          "new_line_content": "                uint8_t b = out[outsize - 1];",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": "LOGE",
+          "new_api": null,
+          "old_text": "LOGE(\"Unknown compression method: [%s]\\n\", method)",
+          "new_text": null,
+          "old_line_content": "        LOGE(\"Unknown compression method: [%s]\\n\", method);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "write(buf, len, BZ_RUN)",
+          "new_text": null,
+          "old_line_content": "        return len ? write(buf, len, BZ_RUN) : 0;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": "xfopen",
+          "new_api": null,
+          "old_text": "xfopen(infile, \"re\")",
+          "new_text": null,
+          "old_line_content": "    FILE *in_fp = in_std ? stdin : xfopen(infile, \"re\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "BZ2_bzDecompressEnd",
+          "new_api": null,
+          "old_text": "BZ2_bzDecompressEnd(&strm)",
+          "new_text": null,
+          "old_line_content": "                BZ2_bzDecompressEnd(&strm);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "write(nullptr, 0, BZ_FINISH)",
+          "new_text": null,
+          "old_line_content": "                write(nullptr, 0, BZ_FINISH);",
+          "new_line_content": "            case DECODE:",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "tmp.data()",
+          "new_text": null,
+          "old_line_content": "            out_fp = xfopen(tmp.data(), \"we\");",
+          "new_line_content": "            /* If user does not provide outfile and infile is not",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "tmp.data()",
+          "new_text": null,
+          "old_line_content": "            fprintf(stderr, \"Compressing to [%s]\\n\", tmp.data());",
+          "new_line_content": "             * STDIN, output to <infile>.[ext] */",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": "make_unique<fp_stream>(out_fp)",
+          "new_api": null,
+          "old_text": "make_unique<fp_stream>(out_fp)",
+          "new_text": null,
+          "old_line_content": "    auto strm = get_encoder(fmt, make_unique<fp_stream>(out_fp));",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), mode(mode), strm{}, outbuf{0} {",
+          "new_line_content": "        ENCODE",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "strm->write(buf, len)",
+          "new_text": null,
+          "old_line_content": "        if (strm->write(buf, len) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "BZ2_bzDecompressInit",
+          "new_api": null,
+          "old_text": "BZ2_bzDecompressInit(&strm, 0, 0)",
+          "new_text": null,
+          "old_line_content": "                BZ2_bzDecompressInit(&strm, 0, 0);",
+          "new_line_content": "    bz_strm(mode_t mode, stream_ptr &&base) :",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "LOGE",
+          "new_api": null,
+          "old_text": "LOGE(\"Compression error!\\n\")",
+          "new_text": null,
+          "old_line_content": "            LOGE(\"Compression error!\\n\");",
+          "new_line_content": "    char buf[4096];",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "BZ2_bzCompressInit",
+          "new_api": null,
+          "old_text": "BZ2_bzCompressInit(&strm, 9, 0, 0)",
+          "new_text": null,
+          "old_line_content": "                BZ2_bzCompressInit(&strm, 9, 0, 0);",
+          "new_line_content": "            case DECODE:",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "BZ2_bzDecompress",
+          "new_api": null,
+          "old_text": "BZ2_bzDecompress(&strm)",
+          "new_text": null,
+          "old_line_content": "                    code = BZ2_bzDecompress(&strm);",
+          "new_line_content": "            strm.avail_out = sizeof(outbuf);",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "BZ2_bzCompress",
+          "new_api": null,
+          "old_text": "BZ2_bzCompress(&strm, flush)",
+          "new_text": null,
+          "old_line_content": "                    code = BZ2_bzCompress(&strm, flush);",
+          "new_line_content": "                case DECODE:",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, sizeof(outbuf) - strm.avail_out)",
+          "new_text": null,
+          "old_line_content": "            ret += bwrite(outbuf, sizeof(outbuf) - strm.avail_out);",
+          "new_line_content": "            if (code < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "    explicit bz_decoder(stream_ptr &&base) : bz_strm(DECODE, std::move(base)) {};",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "    explicit bz_encoder(stream_ptr &&base) : bz_strm(ENCODE, std::move(base)) {};",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "write(buf, len, LZMA_RUN)",
+          "new_text": null,
+          "old_line_content": "        return len ? write(buf, len, LZMA_RUN) : 0;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "lzma_end",
+          "new_api": null,
+          "old_text": "lzma_end(&strm)",
+          "new_text": null,
+          "old_line_content": "        lzma_end(&strm);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), mode(mode), strm(LZMA_STREAM_INIT), outbuf{0} {",
+          "new_line_content": "        ENCODE_LZMA",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "lzma_auto_decoder",
+          "new_api": null,
+          "old_text": "lzma_auto_decoder(&strm, UINT64_MAX, 0)",
+          "new_text": null,
+          "old_line_content": "                code = lzma_auto_decoder(&strm, UINT64_MAX, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "lzma_stream_encoder",
+          "new_api": null,
+          "old_text": "lzma_stream_encoder(&strm, filters, LZMA_CHECK_CRC32)",
+          "new_text": null,
+          "old_line_content": "                code = lzma_stream_encoder(&strm, filters, LZMA_CHECK_CRC32);",
+          "new_line_content": "            case DECODE:",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "lzma_alone_encoder",
+          "new_api": null,
+          "old_text": "lzma_alone_encoder(&strm, &opt)",
+          "new_text": null,
+          "old_line_content": "                code = lzma_alone_encoder(&strm, &opt);",
+          "new_line_content": "            case ENCODE_XZ:",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "lzma_code",
+          "new_api": null,
+          "old_text": "lzma_code(&strm, flush)",
+          "new_text": null,
+          "old_line_content": "            int code = lzma_code(&strm, flush);",
+          "new_line_content": "        strm.avail_in = len;",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "LOGW",
+          "new_api": null,
+          "old_text": "LOGW(\"LZMA %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code)",
+          "new_text": null,
+          "old_line_content": "                LOGW(\"LZMA %s failed (%d)\\n\", mode ? \"encode\" : \"decode\", code);",
+          "new_line_content": "            strm.avail_out = sizeof(outbuf);",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, sizeof(outbuf) - strm.avail_out)",
+          "new_text": null,
+          "old_line_content": "            ret += bwrite(outbuf, sizeof(outbuf) - strm.avail_out);",
+          "new_line_content": "            if (code != LZMA_OK && code != LZMA_STREAM_END) {",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "    explicit lzma_decoder(stream_ptr &&base) : lzma_strm(DECODE, std::move(base)) {}",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "    explicit xz_encoder(stream_ptr &&base) : lzma_strm(ENCODE_XZ, std::move(base)) {}",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "    explicit lzma_encoder(stream_ptr &&base) : lzma_strm(ENCODE_LZMA, std::move(base)) {}",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "explicit",
+          "new_api": null,
+          "old_text": "explicit",
+          "new_text": null,
+          "old_line_content": "    explicit LZ4F_decoder(stream_ptr &&base) :",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), ctx(nullptr), outbuf(nullptr), outCapacity(0) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": "LZ4F_createDecompressionContext",
+          "new_api": null,
+          "old_text": "LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION)",
+          "new_text": null,
+          "old_line_content": "        LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION);",
+          "new_line_content": "class LZ4F_decoder : public cpr_stream {",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": "reinterpret_cast<const uint8_t *>(buf)",
+          "new_api": null,
+          "old_text": "reinterpret_cast<const uint8_t *>(buf)",
+          "new_text": null,
+          "old_line_content": "        auto inbuf = reinterpret_cast<const uint8_t *>(buf);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": "read_header",
+          "new_api": null,
+          "old_text": "read_header(inbuf, len)",
+          "new_text": null,
+          "old_line_content": "            read_header(inbuf, len);",
+          "new_line_content": "    ssize_t write(const void *buf, size_t len) override {",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "LZ4F_decompress",
+          "new_api": null,
+          "old_text": "LZ4F_decompress(ctx, outbuf, &write, inbuf, &read, nullptr)",
+          "new_text": null,
+          "old_line_content": "            code = LZ4F_decompress(ctx, outbuf, &write, inbuf, &read, nullptr);",
+          "new_line_content": "        LZ4F_errorCode_t code;",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": "LZ4F_isError",
+          "new_api": null,
+          "old_text": "LZ4F_isError(code)",
+          "new_text": null,
+          "old_line_content": "            if (LZ4F_isError(code)) {",
+          "new_line_content": "        do {",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": "LZ4F_getErrorName",
+          "new_api": null,
+          "old_text": "LZ4F_getErrorName(code)",
+          "new_text": null,
+          "old_line_content": "                LOGW(\"LZ4F decode error: %s\\n\", LZ4F_getErrorName(code));",
+          "new_line_content": "            read = len;",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, write)",
+          "new_text": null,
+          "old_line_content": "            ret += bwrite(outbuf, write);",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": "LZ4F_getFrameInfo",
+          "new_api": null,
+          "old_text": "LZ4F_getFrameInfo(ctx, &info, in, &read)",
+          "new_text": null,
+          "old_line_content": "        LZ4F_getFrameInfo(ctx, &info, in, &read);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": "explicit",
+          "new_api": null,
+          "old_text": "explicit",
+          "new_text": null,
+          "old_line_content": "    explicit LZ4F_encoder(stream_ptr &&base) :",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), ctx(nullptr), outbuf(nullptr), outCapacity(0) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": "LZ4F_createCompressionContext",
+          "new_api": null,
+          "old_text": "LZ4F_createCompressionContext(&ctx, LZ4F_VERSION)",
+          "new_text": null,
+          "old_line_content": "        LZ4F_createCompressionContext(&ctx, LZ4F_VERSION);",
+          "new_line_content": "class LZ4F_encoder : public cpr_stream {",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "write_header",
+          "new_api": null,
+          "old_text": "write_header()",
+          "new_text": null,
+          "old_line_content": "            ret += write_header();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "reinterpret_cast<const uint8_t *>(buf)",
+          "new_api": null,
+          "old_text": "reinterpret_cast<const uint8_t *>(buf)",
+          "new_text": null,
+          "old_line_content": "        auto inbuf = reinterpret_cast<const uint8_t *>(buf);",
+          "new_line_content": "        if (!outbuf)",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "LZ4F_isError",
+          "new_api": null,
+          "old_text": "LZ4F_isError(write)",
+          "new_text": null,
+          "old_line_content": "            if (LZ4F_isError(write)) {",
+          "new_line_content": "        size_t read, write;",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": "LZ4F_getErrorName",
+          "new_api": null,
+          "old_text": "LZ4F_getErrorName(write)",
+          "new_text": null,
+          "old_line_content": "                LOGW(\"LZ4F encode error: %s\\n\", LZ4F_getErrorName(write));",
+          "new_line_content": "        do {",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, write)",
+          "new_text": null,
+          "old_line_content": "            ret += bwrite(outbuf, write);",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 444,
+          "old_api": "LZ4F_compressEnd",
+          "new_api": null,
+          "old_text": "LZ4F_compressEnd(ctx, outbuf, outCapacity, nullptr)",
+          "new_text": null,
+          "old_line_content": "        size_t len = LZ4F_compressEnd(ctx, outbuf, outCapacity, nullptr);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, len)",
+          "new_text": null,
+          "old_line_content": "        bwrite(outbuf, len);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 446,
+          "old_api": "LZ4F_freeCompressionContext",
+          "new_api": null,
+          "old_text": "LZ4F_freeCompressionContext(ctx)",
+          "new_text": null,
+          "old_line_content": "        LZ4F_freeCompressionContext(ctx);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "    static constexpr size_t BLOCK_SZ = 1 << 22;",
+          "new_line_content": "    LZ4F_compressionContext_t ctx;",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": "LZ4F_compressBound",
+          "new_api": null,
+          "old_text": "LZ4F_compressBound(BLOCK_SZ, &prefs)",
+          "new_text": null,
+          "old_line_content": "        outCapacity = LZ4F_compressBound(BLOCK_SZ, &prefs);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "LZ4F_compressBegin",
+          "new_api": null,
+          "old_text": "LZ4F_compressBegin(ctx, outbuf, outCapacity, &prefs)",
+          "new_text": null,
+          "old_line_content": "        size_t write = LZ4F_compressBegin(ctx, outbuf, outCapacity, &prefs);",
+          "new_line_content": "            .autoFlush = 1,",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "bwrite",
+          "new_api": null,
+          "old_text": "bwrite(outbuf, write)",
+          "new_text": null,
+          "old_line_content": "        return bwrite(outbuf, write);",
+          "new_line_content": "        };",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "explicit",
+          "new_api": null,
+          "old_text": "explicit",
+          "new_text": null,
+          "old_line_content": "    explicit LZ4_decoder(stream_ptr &&base) :",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "std::move(base)",
+          "new_api": null,
+          "old_text": "std::move(base)",
+          "new_text": null,
+          "old_line_content": "        cpr_stream(std::move(base)), out_buf(new char[LZ4_UNCOMPRESSED]),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": "static_cast<const char *>(in)",
+          "new_api": null,
+          "old_text": "static_cast<const char *>(in)",
+          "new_text": null,
+          "old_line_content": "        auto inbuf = static_cast<const char *>(in);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "new_text": null,
+          "old_line_content": "                    memcpy(buf + buf_off, inbuf, consumed);",
+          "new_line_content": "        for (size_t consumed; size != 0;) {",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(&block_sz, buf, sizeof(block_sz))",
+          "new_text": null,
+          "old_line_content": "                    memcpy(&block_sz, buf, sizeof(block_sz));",
+          "new_line_content": "            if (block_sz == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf + buf_off, inbuf, consumed)",
+          "new_text": null,
+          "old_line_content": "                memcpy(buf + buf_off, inbuf, consumed);",
+          "new_line_content": "                inbuf += consumed;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 27,
+      "total_additions": 106,
+      "total_deletions": 106,
+      "total_api_changes": 239
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 239,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 202,
+    "api_calls_after": 202,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 0,
+      "total_diff_lines": 16
+    }
+  }
+}

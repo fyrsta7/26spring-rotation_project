@@ -1,0 +1,14 @@
+diff --git a/lib/SILOptimizer/PassManager/PassPipeline.cpp b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+index f3777fbe810..88d484c3a07 100644
+--- a/lib/SILOptimizer/PassManager/PassPipeline.cpp
++++ b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+@@ -233,6 +233,9 @@ void addSSAPasses(SILPassPipelinePlan &P, OptimizationLevelKind OpLevel) {
+   // current function (after optimizing any new callees).
+   P.addDevirtualizer();
+   P.addGenericSpecializer();
++  // Run devirtualizer after the specializer, because many
++  // class_method/witness_method instructions may use concrete types now.
++  P.addDevirtualizer();
+ 
+   switch (OpLevel) {
+   case OptimizationLevelKind::HighLevel:

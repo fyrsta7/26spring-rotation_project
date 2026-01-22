@@ -1,0 +1,816 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/taichi/modified_file/b6c481ceaed54a364620931f66ce62a203518957",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/taichi/modified_file/b6c481ceaed54a364620931f66ce62a203518957/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/taichi/modified_file/b6c481ceaed54a364620931f66ce62a203518957/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/taichi/modified_file/b6c481ceaed54a364620931f66ce62a203518957/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 32,
+          "old_api": "arch_is_cpu",
+          "new_api": "stmt->dest->is<ThreadLocalPtrStmt>()",
+          "old_text": "arch_is_cpu(current_offloaded->device)",
+          "new_text": "stmt->dest->is<ThreadLocalPtrStmt>()",
+          "old_line_content": "      if (arch_is_cpu(current_offloaded->device) &&",
+          "new_line_content": "      if (stmt->dest->is<ThreadLocalPtrStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 51,
+          "old_api": "empty",
+          "new_api": "has_flag",
+          "old_text": "loop_unique_ptr_[snode]->indices.empty()",
+          "new_text": "current_offloaded->mem_access_opt.has_flag(\n                  snode, SNodeAccessFlag::block_local)",
+          "old_line_content": "              loop_unique_ptr_[snode]->indices.empty()) {",
+          "new_line_content": "          if (current_offloaded->mem_access_opt.has_flag(",
+          "content_same": false
+        },
+        {
+          "line": 65,
+          "old_api": "dest->indices[0]->is<MeshIndexConversionStmt>()",
+          "new_api": "idx->as<MeshIndexConversionStmt>()",
+          "old_text": "dest->indices[0]->is<MeshIndexConversionStmt>()",
+          "new_text": "idx->as<MeshIndexConversionStmt>()",
+          "old_line_content": "                dest->indices[0]->is<MeshIndexConversionStmt>()) {",
+          "new_line_content": "                idx = idx->as<MeshIndexConversionStmt>()->idx;",
+          "content_same": false
+        },
+        {
+          "line": 67,
+          "old_api": "idx->is<MeshIndexConversionStmt>()",
+          "new_api": "idx->is<LoopIndexStmt>()",
+          "old_text": "idx->is<MeshIndexConversionStmt>()",
+          "new_text": "idx->is<LoopIndexStmt>()",
+          "old_line_content": "              while (idx->is<MeshIndexConversionStmt>()) {  // special case: l2g",
+          "new_line_content": "              if (idx->is<LoopIndexStmt>() &&",
+          "content_same": false
+        },
+        {
+          "line": 69,
+          "old_api": "idx->as<MeshIndexConversionStmt>()",
+          "new_api": "stmt->dest->as<GlobalPtrStmt>()",
+          "old_text": "idx->as<MeshIndexConversionStmt>()",
+          "new_text": "stmt->dest->as<GlobalPtrStmt>()",
+          "old_line_content": "                idx = idx->as<MeshIndexConversionStmt>()->idx;",
+          "new_line_content": "                  loop_unique_ptr_[stmt->dest->as<GlobalPtrStmt>()->snode] !=",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "atomic_to_binary_op_type",
+          "new_api": "VecStatement",
+          "old_text": "atomic_to_binary_op_type(stmt->op_type)",
+          "new_text": "VecStatement()",
+          "old_line_content": "      auto bin_type = atomic_to_binary_op_type(stmt->op_type);",
+          "new_line_content": "      auto new_stmts = VecStatement();",
+          "content_same": false
+        },
+        {
+          "line": 129,
+          "old_api": "VecStatement",
+          "new_api": "new_stmts.push_back<BinaryOpStmt>(bin_type, load, val)",
+          "old_text": "VecStatement()",
+          "new_text": "new_stmts.push_back<BinaryOpStmt>(bin_type, load, val)",
+          "old_line_content": "      auto new_stmts = VecStatement();",
+          "new_line_content": "        auto bin = new_stmts.push_back<BinaryOpStmt>(bin_type, load, val);",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "new_stmts.push_back<LocalLoadStmt>(ptr)",
+          "new_api": "new_stmts.push_back<GlobalLoadStmt>(ptr)",
+          "old_text": "new_stmts.push_back<LocalLoadStmt>(ptr)",
+          "new_text": "new_stmts.push_back<GlobalLoadStmt>(ptr)",
+          "old_line_content": "        load = new_stmts.push_back<LocalLoadStmt>(ptr);",
+          "new_line_content": "        load = new_stmts.push_back<GlobalLoadStmt>(ptr);",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "new_stmts.push_back<LocalStoreStmt>(ptr, bin)",
+          "new_api": "new_stmts.push_back<GlobalStoreStmt>(ptr, bin)",
+          "old_text": "new_stmts.push_back<LocalStoreStmt>(ptr, bin)",
+          "new_text": "new_stmts.push_back<GlobalStoreStmt>(ptr, bin)",
+          "old_line_content": "        new_stmts.push_back<LocalStoreStmt>(ptr, bin);",
+          "new_line_content": "        new_stmts.push_back<GlobalStoreStmt>(ptr, bin);",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "std::move(uniquely_accessed_pointers.second)",
+          "new_api": "accept",
+          "old_text": "std::move(uniquely_accessed_pointers.second)",
+          "new_text": "stmt->body->accept(this)",
+          "old_line_content": "      loop_unique_arr_ptr_ = std::move(uniquely_accessed_pointers.second);",
+          "new_line_content": "      stmt->body->accept(this);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 128,
+          "old_api": null,
+          "new_api": "new_stmts.push_back<LocalLoadStmt>(ptr)",
+          "old_text": null,
+          "new_text": "new_stmts.push_back<LocalLoadStmt>(ptr)",
+          "old_line_content": "",
+          "new_line_content": "        load = new_stmts.push_back<LocalLoadStmt>(ptr);",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": null,
+          "new_api": "new_stmts.push_back<LocalStoreStmt>(ptr, bin)",
+          "old_text": null,
+          "new_text": "new_stmts.push_back<LocalStoreStmt>(ptr, bin)",
+          "old_line_content": "      Stmt *load;",
+          "new_line_content": "        new_stmts.push_back<LocalStoreStmt>(ptr, bin);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "replace_usages_with",
+          "old_text": null,
+          "new_text": "stmt->replace_usages_with(load)",
+          "old_line_content": "      // into ???, because $f is a store stmt that doesn't have a return",
+          "new_line_content": "      stmt->replace_usages_with(load);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "std::move(new_stmts)",
+          "old_text": null,
+          "new_text": "std::move(new_stmts)",
+          "old_line_content": "      // value. The correct thing is to replace |stmt| $d with the loaded",
+          "new_line_content": "      modifier.replace_with(stmt, std::move(new_stmts),",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": null,
+          "new_api": "irpass::analysis::gather_uniquely_accessed_pointers(stmt)",
+          "old_text": null,
+          "new_text": "irpass::analysis::gather_uniquely_accessed_pointers(stmt)",
+          "old_line_content": "    if (stmt->task_type == OffloadedTaskType::range_for ||",
+          "new_line_content": "          irpass::analysis::gather_uniquely_accessed_pointers(stmt);",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": null,
+          "new_api": "std::move(uniquely_accessed_pointers.first)",
+          "old_text": null,
+          "new_text": "std::move(uniquely_accessed_pointers.first)",
+          "old_line_content": "        stmt->task_type == OffloadedTaskType::mesh_for ||",
+          "new_line_content": "      loop_unique_ptr_ = std::move(uniquely_accessed_pointers.first);",
+          "content_same": false
+        },
+        {
+          "line": 42,
+          "old_api": null,
+          "new_api": "stmt->dest->is<GlobalPtrStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->is<GlobalPtrStmt>()",
+          "old_line_content": "      if (!demote &&",
+          "new_line_content": "        if (stmt->dest->is<GlobalPtrStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": null,
+          "new_api": "std::move(uniquely_accessed_pointers.second)",
+          "old_text": null,
+          "new_text": "std::move(uniquely_accessed_pointers.second)",
+          "old_line_content": "        stmt->task_type == OffloadedTaskType::struct_for) {",
+          "new_line_content": "      loop_unique_arr_ptr_ = std::move(uniquely_accessed_pointers.second);",
+          "content_same": false
+        },
+        {
+          "line": 44,
+          "old_api": null,
+          "new_api": "stmt->dest->as<GlobalPtrStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->as<GlobalPtrStmt>()",
+          "old_line_content": "           current_offloaded->task_type == OffloadedTaskType::mesh_for ||",
+          "new_line_content": "          auto dest = stmt->dest->as<GlobalPtrStmt>();",
+          "content_same": false
+        },
+        {
+          "line": 47,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "loop_unique_ptr_[snode]->indices.empty()",
+          "old_line_content": "          demote = true;",
+          "new_line_content": "              loop_unique_ptr_[snode]->indices.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 53,
+          "old_api": null,
+          "new_api": "has_flag",
+          "old_text": null,
+          "new_text": "current_offloaded->mem_access_opt.has_flag(\n                  snode, SNodeAccessFlag::mesh_local)",
+          "old_line_content": "            demote = false;",
+          "new_line_content": "              current_offloaded->mem_access_opt.has_flag(",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": null,
+          "new_api": "accept",
+          "old_text": null,
+          "new_text": "node->accept(&demoter)",
+          "old_line_content": "  static bool run(IRNode *node) {",
+          "new_line_content": "      node->accept(&demoter);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "modify_ir",
+          "old_text": null,
+          "new_text": "demoter.modifier.modify_ir()",
+          "old_line_content": "    DemoteAtomics demoter;",
+          "new_line_content": "      if (demoter.modifier.modify_ir()) {",
+          "content_same": false
+        },
+        {
+          "line": 60,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "dest->indices.size()",
+          "old_line_content": "            demote = false;",
+          "new_line_content": "            if (dest->indices.size() == 1 &&",
+          "content_same": false
+        },
+        {
+          "line": 61,
+          "old_api": null,
+          "new_api": "dest->indices[0]->is<MeshIndexConversionStmt>()",
+          "old_text": null,
+          "new_text": "dest->indices[0]->is<MeshIndexConversionStmt>()",
+          "old_line_content": "          }",
+          "new_line_content": "                dest->indices[0]->is<MeshIndexConversionStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 62,
+          "old_api": null,
+          "new_api": "dest->indices[0]->as<MeshIndexConversionStmt>()",
+          "old_text": null,
+          "new_text": "dest->indices[0]->as<MeshIndexConversionStmt>()",
+          "old_line_content": "          // demote from-end atomics",
+          "new_line_content": "              auto idx = dest->indices[0]->as<MeshIndexConversionStmt>()->idx;",
+          "content_same": false
+        },
+        {
+          "line": 63,
+          "old_api": null,
+          "new_api": "idx->is<MeshIndexConversionStmt>()",
+          "old_text": null,
+          "new_text": "idx->is<MeshIndexConversionStmt>()",
+          "old_line_content": "          if (current_offloaded->task_type == OffloadedTaskType::mesh_for) {",
+          "new_line_content": "              while (idx->is<MeshIndexConversionStmt>()) {  // special case: l2g",
+          "content_same": false
+        },
+        {
+          "line": 68,
+          "old_api": null,
+          "new_api": "is_mesh_index",
+          "old_text": null,
+          "new_text": "idx->as<LoopIndexStmt>()->is_mesh_index()",
+          "old_line_content": "                                                            // + g2r",
+          "new_line_content": "                  idx->as<LoopIndexStmt>()->is_mesh_index() &&",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": null,
+          "new_api": "DemoteAtomics::run(root)",
+          "old_text": null,
+          "new_text": "DemoteAtomics::run(root)",
+          "old_line_content": "namespace irpass {",
+          "new_line_content": "  bool modified = DemoteAtomics::run(root);",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": null,
+          "new_api": "type_check",
+          "old_text": null,
+          "new_text": "type_check(root, config)",
+          "old_line_content": "",
+          "new_line_content": "  type_check(root, config);",
+          "content_same": false
+        },
+        {
+          "line": 75,
+          "old_api": null,
+          "new_api": "stmt->dest->is<ExternalPtrStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->is<ExternalPtrStmt>()",
+          "old_line_content": "                demote = true;",
+          "new_line_content": "        } else if (stmt->dest->is<ExternalPtrStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 76,
+          "old_api": null,
+          "new_api": "stmt->dest->as<ExternalPtrStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->as<ExternalPtrStmt>()",
+          "old_line_content": "              }",
+          "new_line_content": "          ExternalPtrStmt *dest_ptr = stmt->dest->as<ExternalPtrStmt>();",
+          "content_same": false
+        },
+        {
+          "line": 78,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "dest_ptr->indices.empty()",
+          "old_line_content": "          }",
+          "new_line_content": "          if (dest_ptr->indices.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 81,
+          "old_api": null,
+          "new_api": "dest_ptr->base_ptr->as<ArgLoadStmt>()",
+          "old_text": null,
+          "new_text": "dest_ptr->base_ptr->as<ArgLoadStmt>()",
+          "old_line_content": "          demote = true;",
+          "new_line_content": "          ArgLoadStmt *arg_load_stmt = dest_ptr->base_ptr->as<ArgLoadStmt>();",
+          "content_same": false
+        },
+        {
+          "line": 91,
+          "old_api": null,
+          "new_api": "stmt->dest->is<AllocaStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->is<AllocaStmt>()",
+          "old_line_content": "          // TODO: Is BLS / Mem Access Opt a thing for any_arr?",
+          "new_line_content": "    if (stmt->dest->is<AllocaStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 93,
+          "old_api": null,
+          "new_api": "stmt->dest->as<AllocaStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->as<AllocaStmt>()",
+          "old_line_content": "      }",
+          "new_line_content": "      if (!stmt->dest->as<AllocaStmt>()->is_shared) {",
+          "content_same": false
+        },
+        {
+          "line": 98,
+          "old_api": null,
+          "new_api": "stmt->dest->is<MatrixPtrStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->is<MatrixPtrStmt>()",
+          "old_line_content": "        demote = true;",
+          "new_line_content": "    if (stmt->dest->is<MatrixPtrStmt>() &&",
+          "content_same": false
+        },
+        {
+          "line": 99,
+          "old_api": null,
+          "new_api": "stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()",
+          "old_line_content": "        is_local = true;",
+          "new_line_content": "        stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()) {",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": null,
+          "new_api": "stmt->dest->cast<MatrixPtrStmt>()\n               ->origin->as<AllocaStmt>()",
+          "old_text": null,
+          "new_text": "stmt->dest->cast<MatrixPtrStmt>()\n               ->origin->as<AllocaStmt>()",
+          "old_line_content": "    }",
+          "new_line_content": "      if (!stmt->dest->cast<MatrixPtrStmt>()",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": null,
+          "new_api": "stmt->dest->ret_type->cast<PointerType>()",
+          "old_text": null,
+          "new_text": "stmt->dest->ret_type->cast<PointerType>()",
+          "old_line_content": "        is_local = true;",
+          "new_line_content": "    if (auto dest_pointer_type = stmt->dest->ret_type->cast<PointerType>()) {",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": null,
+          "new_api": "get_pointee_type",
+          "old_text": null,
+          "new_text": "dest_pointer_type->get_pointee_type()->is<QuantFloatType>()",
+          "old_line_content": "      }",
+          "new_line_content": "      if (dest_pointer_type->get_pointee_type()->is<QuantFloatType>()) {",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": null,
+          "new_api": "TI_WARN",
+          "old_text": null,
+          "new_text": "TI_WARN(\n            \"AtomicOp on QuantFloatType is not supported. \"\n            \"Demoting to non-atomic RMW.\\n{}\",\n            stmt->tb)",
+          "old_line_content": "    }",
+          "new_line_content": "        TI_WARN(",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": null,
+          "new_api": "atomic_to_binary_op_type",
+          "old_text": null,
+          "new_text": "atomic_to_binary_op_type(stmt->op_type)",
+          "old_line_content": "    }",
+          "new_line_content": "      auto bin_type = atomic_to_binary_op_type(stmt->op_type);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 136,
+          "old_api": "new_stmts.push_back<GlobalLoadStmt>(ptr)",
+          "new_api": null,
+          "old_text": "new_stmts.push_back<GlobalLoadStmt>(ptr)",
+          "new_text": null,
+          "old_line_content": "        load = new_stmts.push_back<GlobalLoadStmt>(ptr);",
+          "new_line_content": "      // For a taichi program like `c = ti.atomic_add(a, b)`, the IR looks",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": "new_stmts.push_back<BinaryOpStmt>(bin_type, load, val)",
+          "new_api": null,
+          "old_text": "new_stmts.push_back<BinaryOpStmt>(bin_type, load, val)",
+          "new_text": null,
+          "old_line_content": "        auto bin = new_stmts.push_back<BinaryOpStmt>(bin_type, load, val);",
+          "new_line_content": "      // like the following",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": "new_stmts.push_back<GlobalStoreStmt>(ptr, bin)",
+          "new_api": null,
+          "old_text": "new_stmts.push_back<GlobalStoreStmt>(ptr, bin)",
+          "new_text": null,
+          "old_line_content": "        new_stmts.push_back<GlobalStoreStmt>(ptr, bin);",
+          "new_line_content": "      //",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": "replace_usages_with",
+          "new_api": null,
+          "old_text": "stmt->replace_usages_with(load)",
+          "new_text": null,
+          "old_line_content": "      stmt->replace_usages_with(load);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": "std::move(new_stmts)",
+          "new_api": null,
+          "old_text": "std::move(new_stmts)",
+          "new_text": null,
+          "old_line_content": "      modifier.replace_with(stmt, std::move(new_stmts),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 36,
+          "old_api": "stmt->dest->is<ThreadLocalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->is<ThreadLocalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "      if (stmt->dest->is<ThreadLocalPtrStmt>()) {",
+          "new_line_content": "        demote = true;",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "irpass::analysis::gather_uniquely_accessed_pointers(stmt)",
+          "new_api": null,
+          "old_text": "irpass::analysis::gather_uniquely_accessed_pointers(stmt)",
+          "new_text": null,
+          "old_line_content": "          irpass::analysis::gather_uniquely_accessed_pointers(stmt);",
+          "new_line_content": "    // We don't need to visit TLS/BLS prologues/epilogues.",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": "std::move(uniquely_accessed_pointers.first)",
+          "new_api": null,
+          "old_text": "std::move(uniquely_accessed_pointers.first)",
+          "new_text": null,
+          "old_line_content": "      loop_unique_ptr_ = std::move(uniquely_accessed_pointers.first);",
+          "new_line_content": "    if (stmt->body) {",
+          "content_same": false
+        },
+        {
+          "line": 46,
+          "old_api": "stmt->dest->is<GlobalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->is<GlobalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "        if (stmt->dest->is<GlobalPtrStmt>()) {",
+          "new_line_content": "          if (loop_unique_ptr_[snode] == nullptr ||",
+          "content_same": false
+        },
+        {
+          "line": 48,
+          "old_api": "stmt->dest->as<GlobalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->as<GlobalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "          auto dest = stmt->dest->as<GlobalPtrStmt>();",
+          "new_line_content": "            // not uniquely accessed",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": "accept",
+          "new_api": null,
+          "old_text": "stmt->body->accept(this)",
+          "new_text": null,
+          "old_line_content": "      stmt->body->accept(this);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 55,
+          "old_api": "has_flag",
+          "new_api": null,
+          "old_text": "current_offloaded->mem_access_opt.has_flag(\n                  snode, SNodeAccessFlag::block_local)",
+          "new_text": null,
+          "old_line_content": "          if (current_offloaded->mem_access_opt.has_flag(",
+          "new_line_content": "            // BLS does not support write access yet so we keep atomic_adds.",
+          "content_same": false
+        },
+        {
+          "line": 57,
+          "old_api": "has_flag",
+          "new_api": null,
+          "old_text": "current_offloaded->mem_access_opt.has_flag(\n                  snode, SNodeAccessFlag::mesh_local)",
+          "new_text": null,
+          "old_line_content": "              current_offloaded->mem_access_opt.has_flag(",
+          "new_line_content": "          }",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "accept",
+          "new_api": null,
+          "old_text": "node->accept(&demoter)",
+          "new_text": null,
+          "old_line_content": "      node->accept(&demoter);",
+          "new_line_content": "        break;",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "modify_ir",
+          "new_api": null,
+          "old_text": "demoter.modifier.modify_ir()",
+          "new_text": null,
+          "old_line_content": "      if (demoter.modifier.modify_ir()) {",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 64,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "dest->indices.size()",
+          "new_text": null,
+          "old_line_content": "            if (dest->indices.size() == 1 &&",
+          "new_line_content": "                                                            // + g2r",
+          "content_same": false
+        },
+        {
+          "line": 66,
+          "old_api": "dest->indices[0]->as<MeshIndexConversionStmt>()",
+          "new_api": null,
+          "old_text": "dest->indices[0]->as<MeshIndexConversionStmt>()",
+          "new_text": null,
+          "old_line_content": "              auto idx = dest->indices[0]->as<MeshIndexConversionStmt>()->idx;",
+          "new_line_content": "              }",
+          "content_same": false
+        },
+        {
+          "line": 71,
+          "old_api": "idx->is<LoopIndexStmt>()",
+          "new_api": null,
+          "old_text": "idx->is<LoopIndexStmt>()",
+          "new_text": null,
+          "old_line_content": "              if (idx->is<LoopIndexStmt>() &&",
+          "new_line_content": "                demote = true;",
+          "content_same": false
+        },
+        {
+          "line": 72,
+          "old_api": "is_mesh_index",
+          "new_api": null,
+          "old_text": "idx->as<LoopIndexStmt>()->is_mesh_index()",
+          "new_text": null,
+          "old_line_content": "                  idx->as<LoopIndexStmt>()->is_mesh_index() &&",
+          "new_line_content": "              }",
+          "content_same": false
+        },
+        {
+          "line": 73,
+          "old_api": "stmt->dest->as<GlobalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->as<GlobalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "                  loop_unique_ptr_[stmt->dest->as<GlobalPtrStmt>()->snode] !=",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "DemoteAtomics::run(root)",
+          "new_api": null,
+          "old_text": "DemoteAtomics::run(root)",
+          "new_text": null,
+          "old_line_content": "  bool modified = DemoteAtomics::run(root);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": "type_check",
+          "new_api": null,
+          "old_text": "type_check(root, config)",
+          "new_text": null,
+          "old_line_content": "  type_check(root, config);",
+          "new_line_content": "}  // namespace irpass",
+          "content_same": false
+        },
+        {
+          "line": 79,
+          "old_api": "stmt->dest->is<ExternalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->is<ExternalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "        } else if (stmt->dest->is<ExternalPtrStmt>()) {",
+          "new_line_content": "            demote = false;",
+          "content_same": false
+        },
+        {
+          "line": 80,
+          "old_api": "stmt->dest->as<ExternalPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->as<ExternalPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "          ExternalPtrStmt *dest_ptr = stmt->dest->as<ExternalPtrStmt>();",
+          "new_line_content": "          }",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "dest_ptr->indices.empty()",
+          "new_text": null,
+          "old_line_content": "          if (dest_ptr->indices.empty()) {",
+          "new_line_content": "          int arg_id = arg_load_stmt->arg_id;",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": "dest_ptr->base_ptr->as<ArgLoadStmt>()",
+          "new_api": null,
+          "old_text": "dest_ptr->base_ptr->as<ArgLoadStmt>()",
+          "new_text": null,
+          "old_line_content": "          ArgLoadStmt *arg_load_stmt = dest_ptr->base_ptr->as<ArgLoadStmt>();",
+          "new_line_content": "            demote = false;",
+          "content_same": false
+        },
+        {
+          "line": 95,
+          "old_api": "stmt->dest->is<AllocaStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->is<AllocaStmt>()",
+          "new_text": null,
+          "old_line_content": "    if (stmt->dest->is<AllocaStmt>()) {",
+          "new_line_content": "        is_local = true;",
+          "content_same": false
+        },
+        {
+          "line": 97,
+          "old_api": "stmt->dest->as<AllocaStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->as<AllocaStmt>()",
+          "new_text": null,
+          "old_line_content": "      if (!stmt->dest->as<AllocaStmt>()->is_shared) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": "stmt->dest->is<MatrixPtrStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->is<MatrixPtrStmt>()",
+          "new_text": null,
+          "old_line_content": "    if (stmt->dest->is<MatrixPtrStmt>() &&",
+          "new_line_content": "               ->origin->as<AllocaStmt>()",
+          "content_same": false
+        },
+        {
+          "line": 103,
+          "old_api": "stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()",
+          "new_text": null,
+          "old_line_content": "        stmt->dest->cast<MatrixPtrStmt>()->origin->is<AllocaStmt>()) {",
+          "new_line_content": "               ->is_shared) {",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": "stmt->dest->cast<MatrixPtrStmt>()\n               ->origin->as<AllocaStmt>()",
+          "new_api": null,
+          "old_text": "stmt->dest->cast<MatrixPtrStmt>()\n               ->origin->as<AllocaStmt>()",
+          "new_text": null,
+          "old_line_content": "      if (!stmt->dest->cast<MatrixPtrStmt>()",
+          "new_line_content": "        is_local = true;",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": "stmt->dest->ret_type->cast<PointerType>()",
+          "new_api": null,
+          "old_text": "stmt->dest->ret_type->cast<PointerType>()",
+          "new_text": null,
+          "old_line_content": "    if (auto dest_pointer_type = stmt->dest->ret_type->cast<PointerType>()) {",
+          "new_line_content": "            \"Demoting to non-atomic RMW.\\n{}\",",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "get_pointee_type",
+          "new_api": null,
+          "old_text": "dest_pointer_type->get_pointee_type()->is<QuantFloatType>()",
+          "new_text": null,
+          "old_line_content": "      if (dest_pointer_type->get_pointee_type()->is<QuantFloatType>()) {",
+          "new_line_content": "            stmt->tb);",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": "TI_WARN",
+          "new_api": null,
+          "old_text": "TI_WARN(\n            \"AtomicOp on QuantFloatType is not supported. \"\n            \"Demoting to non-atomic RMW.\\n{}\",\n            stmt->tb)",
+          "new_text": null,
+          "old_line_content": "        TI_WARN(",
+          "new_line_content": "        demote = true;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 10,
+      "total_additions": 33,
+      "total_deletions": 34,
+      "total_api_changes": 77
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 77,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          33,
+          34,
+          35
+        ]
+      }
+    },
+    "api_calls_before": 50,
+    "api_calls_after": 49,
+    "diff_info": {
+      "added_lines": 0,
+      "removed_lines": 4,
+      "total_diff_lines": 16
+    }
+  }
+}

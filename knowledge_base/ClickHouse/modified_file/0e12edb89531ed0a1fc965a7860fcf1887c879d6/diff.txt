@@ -1,0 +1,16 @@
+diff --git a/src/Interpreters/InterpreterSelectWithUnionQuery.cpp b/src/Interpreters/InterpreterSelectWithUnionQuery.cpp
+index 378cb943c04..e667029dcda 100644
+--- a/src/Interpreters/InterpreterSelectWithUnionQuery.cpp
++++ b/src/Interpreters/InterpreterSelectWithUnionQuery.cpp
+@@ -271,6 +271,11 @@ QueryPipeline InterpreterSelectWithUnionQuery::executeWithProcessors()
+     {
+         auto common_header = getCommonHeaderForUnion(headers);
+         main_pipeline.unitePipelines(std::move(pipelines), common_header);
++
++        // nested queries can force 1 thread (due to simplicity)
++        // but in case of union this cannot be done.
++        UInt64 max_threads = context->getSettingsRef().max_threads;
++        main_pipeline.setMaxThreads(std::min(nested_interpreters.size(), max_threads));
+     }
+ 
+     main_pipeline.addInterpreterContext(context);

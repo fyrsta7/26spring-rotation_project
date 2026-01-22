@@ -1,0 +1,522 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/3f76c8d7fd11a48c8bbb6e4d0b5f074672ab021a",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/3f76c8d7fd11a48c8bbb6e4d0b5f074672ab021a/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/3f76c8d7fd11a48c8bbb6e4d0b5f074672ab021a/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/3f76c8d7fd11a48c8bbb6e4d0b5f074672ab021a/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 159,
+          "old_api": "getFullTableName",
+          "new_api": "NetException",
+          "old_text": "remote_table_id.getFullTableName()",
+          "new_text": "NetException(\n        \"All attempts to get table structure failed. Log: \\n\\n\" + fail_messages + \"\\n\",\n        ErrorCodes::NO_REMOTE_SHARD_AVAILABLE)",
+          "old_line_content": "    auto query = \"DESC TABLE \" + remote_table_id.getFullTableName();",
+          "new_line_content": "    throw NetException(",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "read",
+          "new_api": "std::make_shared<DataTypeString>()",
+          "old_text": "executor.read()",
+          "new_text": "std::make_shared<DataTypeString>()",
+          "old_line_content": "        while (auto block = executor.read())",
+          "new_line_content": "        { ColumnString::create(), std::make_shared<DataTypeString>(), \"type\" },",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "get<const String &>(name_col[i])",
+          "new_api": "setPoolMode",
+          "old_text": "get<const String &>(name_col[i])",
+          "new_text": "executor.setPoolMode(PoolMode::GET_ONE)",
+          "old_line_content": "                auto name = get<const String &>(name_col[i]);",
+          "new_line_content": "        executor.setPoolMode(PoolMode::GET_ONE);",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": "get<const String &>(type_col[i])",
+          "new_api": "setMainTable",
+          "old_text": "get<const String &>(type_col[i])",
+          "new_text": "executor.setMainTable(remote_table_id)",
+          "old_line_content": "                auto type_name = get<const String &>(type_col[i]);",
+          "new_line_content": "        executor.setMainTable(remote_table_id);",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": "isObject",
+          "new_api": "read",
+          "old_text": "isObject(storage_column->type)",
+          "new_text": "executor.read()",
+          "old_line_content": "                if (storage_column && isObject(storage_column->type))",
+          "new_line_content": "        while (auto block = executor.read())",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": "execute_query_on_shard",
+          "new_api": "tryGetPhysical",
+          "old_text": "execute_query_on_shard(shard_info)",
+          "new_text": "storage_columns.tryGetPhysical(name)",
+          "old_line_content": "        auto res = execute_query_on_shard(shard_info);",
+          "new_line_content": "                auto storage_column = storage_columns.tryGetPhysical(name);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 129,
+          "old_api": null,
+          "new_api": "isLocal",
+          "old_text": null,
+          "new_text": "shard_info.isLocal()",
+          "old_line_content": "        {",
+          "new_line_content": "        if(shard_info.isLocal()){",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "res.empty()",
+          "old_line_content": "",
+          "new_line_content": "            if (res.empty())",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": null,
+          "new_api": "getStructureOfRemoteTableInShard",
+          "old_text": null,
+          "new_text": "getStructureOfRemoteTableInShard(cluster, shard_info, table_id, context, table_func_ptr)",
+          "old_line_content": "            fail_messages += fail_message + '\\n';",
+          "new_line_content": "            const auto & res = getStructureOfRemoteTableInShard(cluster, shard_info, table_id, context, table_func_ptr);",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "res.empty()",
+          "old_line_content": "",
+          "new_line_content": "            if (res.empty())",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": null,
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": null,
+          "new_text": "getCurrentExceptionMessage(false)",
+          "old_line_content": "    const Cluster & cluster,",
+          "new_line_content": "            std::string fail_message = getCurrentExceptionMessage(false);",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": null,
+          "new_api": "getShardsInfo",
+          "old_text": null,
+          "new_text": "cluster.getShardsInfo()",
+          "old_line_content": "",
+          "new_line_content": "    const auto & shards_info = cluster.getShardsInfo();",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "getFullTableName",
+          "old_text": null,
+          "new_text": "remote_table_id.getFullTableName()",
+          "old_line_content": "    auto execute_query_on_shard = [&](const auto & shard_info)",
+          "new_line_content": "    auto query = \"DESC TABLE \" + remote_table_id.getFullTableName();",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "getSettingsRef",
+          "old_text": null,
+          "new_text": "context->getSettingsRef()",
+          "old_line_content": "        /// Execute remote query without restrictions (because it's not real user query, but part of implementation)",
+          "new_line_content": "    auto new_context = ClusterProxy::updateSettingsForCluster(cluster, context, context->getSettingsRef());",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "setSetting",
+          "old_text": null,
+          "new_text": "new_context->setSetting(\"describe_extend_object_types\", true)",
+          "old_line_content": "        RemoteQueryExecutor executor(shard_info.pool, query, sample_block, new_context);",
+          "new_line_content": "    new_context->setSetting(\"describe_extend_object_types\", true);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": null,
+          "new_api": "std::make_shared<DataTypeString>()",
+          "old_text": null,
+          "new_text": "std::make_shared<DataTypeString>()",
+          "old_line_content": "        ColumnsDescription res;",
+          "new_line_content": "        { ColumnString::create(), std::make_shared<DataTypeString>(), \"name\" },",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "getByName",
+          "old_text": null,
+          "new_text": "block.getByName(\"name\")",
+          "old_line_content": "            }",
+          "new_line_content": "            const auto & name_col = *block.getByName(\"name\").column;",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "getByName",
+          "old_text": null,
+          "new_text": "block.getByName(\"type\")",
+          "old_line_content": "        }",
+          "new_line_content": "            const auto & type_col = *block.getByName(\"type\").column;",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "name_col.size()",
+          "old_line_content": "        return res;",
+          "new_line_content": "            size_t size = name_col.size();",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": null,
+          "new_api": "get<const String &>(name_col[i])",
+          "old_text": null,
+          "new_text": "get<const String &>(name_col[i])",
+          "old_line_content": "    ColumnsDescriptionByShardNum columns;",
+          "new_line_content": "                auto name = get<const String &>(name_col[i]);",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": null,
+          "new_api": "get<const String &>(type_col[i])",
+          "old_text": null,
+          "new_text": "get<const String &>(type_col[i])",
+          "old_line_content": "    for (const auto & shard_info : shards_info)",
+          "new_line_content": "                auto type_name = get<const String &>(type_col[i]);",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": null,
+          "new_api": "isObject",
+          "old_text": null,
+          "new_text": "isObject(storage_column->type)",
+          "old_line_content": "",
+          "new_line_content": "                if (storage_column && isObject(storage_column->type))",
+          "content_same": false
+        },
+        {
+          "line": 205,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "DataTypeFactory::instance().get(type_name)",
+          "old_line_content": "        /// Expect at least some columns.",
+          "new_line_content": "                    res.add(ColumnDescription(std::move(name), DataTypeFactory::instance().get(type_name)));",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "execute_query_on_shard",
+          "old_text": null,
+          "new_text": "execute_query_on_shard(shard_info)",
+          "old_line_content": "}",
+          "new_line_content": "        auto res = execute_query_on_shard(shard_info);",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "res.empty()",
+          "old_line_content": "",
+          "new_line_content": "        if (!res.empty())",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "std::move(res)",
+          "old_text": null,
+          "new_text": "std::move(res)",
+          "old_line_content": "",
+          "new_line_content": "            columns.emplace(shard_info.shard_num, std::move(res));",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "columns.empty()",
+          "old_line_content": "",
+          "new_line_content": "    if (columns.empty())",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "NetException",
+          "old_text": null,
+          "new_text": "NetException(\"All attempts to get table structure failed\", ErrorCodes::NO_REMOTE_SHARD_AVAILABLE)",
+          "old_line_content": "",
+          "new_line_content": "        throw NetException(\"All attempts to get table structure failed\", ErrorCodes::NO_REMOTE_SHARD_AVAILABLE);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 134,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "res.empty()",
+          "new_text": null,
+          "old_line_content": "            if (res.empty())",
+          "new_line_content": "            return res;",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": null,
+          "old_text": "getCurrentExceptionMessage(false)",
+          "new_text": null,
+          "old_line_content": "            std::string fail_message = getCurrentExceptionMessage(false);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "NetException",
+          "new_api": null,
+          "old_text": "NetException(\n        \"All attempts to get table structure failed. Log: \\n\\n\" + fail_messages + \"\\n\",\n        ErrorCodes::NO_REMOTE_SHARD_AVAILABLE)",
+          "new_text": null,
+          "old_line_content": "    throw NetException(",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "getShardsInfo",
+          "new_api": null,
+          "old_text": "cluster.getShardsInfo()",
+          "new_text": null,
+          "old_line_content": "    const auto & shards_info = cluster.getShardsInfo();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": "getSettingsRef",
+          "new_api": null,
+          "old_text": "context->getSettingsRef()",
+          "new_text": null,
+          "old_line_content": "    auto new_context = ClusterProxy::updateSettingsForCluster(cluster, context, context->getSettingsRef());",
+          "new_line_content": "        ErrorCodes::NO_REMOTE_SHARD_AVAILABLE);",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": "setSetting",
+          "new_api": null,
+          "old_text": "new_context->setSetting(\"describe_extend_object_types\", true)",
+          "new_text": null,
+          "old_line_content": "    new_context->setSetting(\"describe_extend_object_types\", true);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "std::make_shared<DataTypeString>()",
+          "new_api": null,
+          "old_text": "std::make_shared<DataTypeString>()",
+          "new_text": null,
+          "old_line_content": "        { ColumnString::create(), std::make_shared<DataTypeString>(), \"name\" },",
+          "new_line_content": "    const ColumnsDescription & storage_columns,",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "std::make_shared<DataTypeString>()",
+          "new_api": null,
+          "old_text": "std::make_shared<DataTypeString>()",
+          "new_text": null,
+          "old_line_content": "        { ColumnString::create(), std::make_shared<DataTypeString>(), \"type\" },",
+          "new_line_content": "    ContextPtr context)",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "setPoolMode",
+          "new_api": null,
+          "old_text": "executor.setPoolMode(PoolMode::GET_ONE)",
+          "new_text": null,
+          "old_line_content": "        executor.setPoolMode(PoolMode::GET_ONE);",
+          "new_line_content": "    /// Expect only needed columns from the result of DESC TABLE.",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "setMainTable",
+          "new_api": null,
+          "old_text": "executor.setMainTable(remote_table_id)",
+          "new_text": null,
+          "old_line_content": "        executor.setMainTable(remote_table_id);",
+          "new_line_content": "    Block sample_block",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "getByName",
+          "new_api": null,
+          "old_text": "block.getByName(\"name\")",
+          "new_text": null,
+          "old_line_content": "            const auto & name_col = *block.getByName(\"name\").column;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": "getByName",
+          "new_api": null,
+          "old_text": "block.getByName(\"type\")",
+          "new_text": null,
+          "old_line_content": "            const auto & type_col = *block.getByName(\"type\").column;",
+          "new_line_content": "    auto execute_query_on_shard = [&](const auto & shard_info)",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "name_col.size()",
+          "new_text": null,
+          "old_line_content": "            size_t size = name_col.size();",
+          "new_line_content": "        /// Execute remote query without restrictions (because it's not real user query, but part of implementation)",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "tryGetPhysical",
+          "new_api": null,
+          "old_text": "storage_columns.tryGetPhysical(name)",
+          "new_text": null,
+          "old_line_content": "                auto storage_column = storage_columns.tryGetPhysical(name);",
+          "new_line_content": "        ColumnsDescription res;",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "DataTypeFactory::instance().get(type_name)",
+          "new_text": null,
+          "old_line_content": "                    res.add(ColumnDescription(std::move(name), DataTypeFactory::instance().get(type_name)));",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "res.empty()",
+          "new_text": null,
+          "old_line_content": "        if (!res.empty())",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "std::move(res)",
+          "new_api": null,
+          "old_text": "std::move(res)",
+          "new_text": null,
+          "old_line_content": "            columns.emplace(shard_info.shard_num, std::move(res));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "columns.empty()",
+          "new_text": null,
+          "old_line_content": "    if (columns.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "NetException",
+          "new_api": null,
+          "old_text": "NetException(\"All attempts to get table structure failed\", ErrorCodes::NO_REMOTE_SHARD_AVAILABLE)",
+          "new_text": null,
+          "old_line_content": "        throw NetException(\"All attempts to get table structure failed\", ErrorCodes::NO_REMOTE_SHARD_AVAILABLE);",
+          "new_line_content": "    ColumnsDescriptionByShardNum columns;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 22,
+      "total_deletions": 19,
+      "total_api_changes": 47
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 12,
+        "api_related_lines": 47,
+        "non_api_lines": 9,
+        "non_api_line_numbers": [
+          128,
+          130,
+          132,
+          133,
+          135,
+          136,
+          125,
+          126,
+          127
+        ]
+      }
+    },
+    "api_calls_before": 79,
+    "api_calls_after": 82,
+    "diff_info": {
+      "added_lines": 12,
+      "removed_lines": 0,
+      "total_diff_lines": 24
+    }
+  }
+}

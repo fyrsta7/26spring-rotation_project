@@ -1,0 +1,2276 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/3e86228fad309b54869bf2a3314756933ba74e43",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/3e86228fad309b54869bf2a3314756933ba74e43/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/3e86228fad309b54869bf2a3314756933ba74e43/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/3e86228fad309b54869bf2a3314756933ba74e43/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1310,
+          "old_api": "mp_input_parse_cmd",
+          "new_api": "read_cmd",
+          "old_text": "mp_input_parse_cmd(cmd)",
+          "new_text": "read_cmd(&cmd_fds[i], &cmd)",
+          "old_line_content": "\t    mp_cmd_t *ret = mp_input_parse_cmd(cmd);",
+          "new_line_content": "        while ((r = read_cmd(&cmd_fds[i], &cmd)) >= 0) {",
+          "content_same": false
+        },
+        {
+          "line": 1311,
+          "old_api": "talloc_free",
+          "new_api": "mp_input_parse_cmd",
+          "old_text": "talloc_free(cmd)",
+          "new_text": "mp_input_parse_cmd(cmd)",
+          "old_line_content": "\t    talloc_free(cmd);",
+          "new_line_content": "\t    mp_cmd_t *ret = mp_input_parse_cmd(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1384,
+          "old_api": "mp_cmd_free",
+          "new_api": "get_queued_cmd",
+          "old_text": "mp_cmd_free(ret)",
+          "new_text": "get_queued_cmd(ictx, 0)",
+          "old_line_content": "      mp_cmd_free(ret);",
+          "new_line_content": "          ret = get_queued_cmd(ictx, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1409,
+          "old_api": "talloc_strdup",
+          "new_api": "talloc_memdup",
+          "old_text": "talloc_strdup(ret, cmd->name)",
+          "new_text": "talloc_memdup(NULL, cmd, sizeof(mp_cmd_t))",
+          "old_line_content": "  ret->name = talloc_strdup(ret, cmd->name);",
+          "new_line_content": "  ret = talloc_memdup(NULL, cmd, sizeof(mp_cmd_t));",
+          "content_same": false
+        },
+        {
+          "line": 1438,
+          "old_api": "strtol",
+          "new_api": "strncasecmp",
+          "old_text": "strtol(name, NULL, 16)",
+          "new_text": "strncasecmp(\"0x\", name, 2)",
+          "old_line_content": "        return strtol(name, NULL, 16) + modifiers;",
+          "new_line_content": "    else if (len > 2 && strncasecmp(\"0x\", name, 2) == 0)",
+          "content_same": false
+        },
+        {
+          "line": 1519,
+          "old_api": "talloc_strdup",
+          "new_api": "talloc_free",
+          "old_text": "talloc_strdup(bind_section->cmd_binds, cmd)",
+          "new_text": "talloc_free(bind->cmd)",
+          "old_line_content": "  bind->cmd = talloc_strdup(bind_section->cmd_binds, cmd);",
+          "new_line_content": "  talloc_free(bind->cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1520,
+          "old_api": "memcpy",
+          "new_api": "talloc_strdup",
+          "old_text": "memcpy(bind->input,keys,(MP_MAX_KEY_DOWN+1)*sizeof(int))",
+          "new_text": "talloc_strdup(bind_section->cmd_binds, cmd)",
+          "old_line_content": "  memcpy(bind->input,keys,(MP_MAX_KEY_DOWN+1)*sizeof(int));",
+          "new_line_content": "  bind->cmd = talloc_strdup(bind_section->cmd_binds, cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1548,
+          "old_api": "close",
+          "new_api": "strerror",
+          "old_text": "close(fd)",
+          "new_text": "strerror(errno)",
+          "old_line_content": "\tclose(fd);",
+          "new_line_content": "\tmp_tmsg(MSGT_INPUT,MSGL_ERR,\"Error while reading input config file %s: %s\\n\",file,strerror(errno));",
+          "content_same": false
+        },
+        {
+          "line": 1560,
+          "old_api": "close",
+          "new_api": "mp_msg",
+          "old_text": "close(fd)",
+          "new_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Input config file %s parsed: %d binds\\n\",file,n_binds)",
+          "old_line_content": "      close(fd);",
+          "new_line_content": "      mp_msg(MSGT_INPUT,MSGL_V,\"Input config file %s parsed: %d binds\\n\",file,n_binds);",
+          "content_same": false
+        },
+        {
+          "line": 1575,
+          "old_api": "memmove",
+          "new_api": "strlen",
+          "old_text": "memmove(buffer,iter,r+1)",
+          "new_text": "strlen(iter)",
+          "old_line_content": "      memmove(buffer,iter,r+1);",
+          "new_line_content": "      r = strlen(iter);",
+          "content_same": false
+        },
+        {
+          "line": 1614,
+          "old_api": "mp_tmsg",
+          "new_api": "get_input_from_name",
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unknown key '%s'\\n\",name)",
+          "new_text": "get_input_from_name(name,keys)",
+          "old_line_content": "\t  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unknown key '%s'\\n\",name);",
+          "new_line_content": "\tif (!get_input_from_name(name,keys)) {",
+          "content_same": false
+        },
+        {
+          "line": 1615,
+          "old_api": "close",
+          "new_api": "mp_tmsg",
+          "old_text": "close(fd)",
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unknown key '%s'\\n\",name)",
+          "old_line_content": "\t  close(fd);",
+          "new_line_content": "\t  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unknown key '%s'\\n\",name);",
+          "content_same": false
+        },
+        {
+          "line": 1629,
+          "old_api": "mp_tmsg",
+          "new_api": "get_key_name",
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"No command found for key %s\", key_buf)",
+          "new_text": "get_key_name(keys[0])",
+          "old_line_content": "\tmp_tmsg(MSGT_INPUT,MSGL_ERR,\"No command found for key %s\", key_buf);",
+          "new_line_content": "        char *key_buf  = get_key_name(keys[0]);",
+          "content_same": false
+        },
+        {
+          "line": 1630,
+          "old_api": "talloc_free",
+          "new_api": "mp_tmsg",
+          "old_text": "talloc_free(key_buf)",
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"No command found for key %s\", key_buf)",
+          "old_line_content": "        talloc_free(key_buf);",
+          "new_line_content": "\tmp_tmsg(MSGT_INPUT,MSGL_ERR,\"No command found for key %s\", key_buf);",
+          "content_same": false
+        },
+        {
+          "line": 1633,
+          "old_api": "mp_msg",
+          "new_api": "get_key_name",
+          "old_text": "mp_msg(MSGT_INPUT,MSGL_ERR,\"-%s\", key_buf)",
+          "new_text": "get_key_name(keys[i])",
+          "old_line_content": "            mp_msg(MSGT_INPUT,MSGL_ERR,\"-%s\", key_buf);",
+          "new_line_content": "            char *key_buf  = get_key_name(keys[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1634,
+          "old_api": "talloc_free",
+          "new_api": "mp_msg",
+          "old_text": "talloc_free(key_buf)",
+          "new_text": "mp_msg(MSGT_INPUT,MSGL_ERR,\"-%s\", key_buf)",
+          "old_line_content": "            talloc_free(key_buf);",
+          "new_line_content": "            mp_msg(MSGT_INPUT,MSGL_ERR,\"-%s\", key_buf);",
+          "content_same": false
+        },
+        {
+          "line": 1649,
+          "old_api": "close",
+          "new_api": "mp_tmsg",
+          "old_text": "close(fd)",
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for command %s\\n\",buffer)",
+          "old_line_content": "\t  close(fd);",
+          "new_line_content": "\t  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for command %s\\n\",buffer);",
+          "content_same": false
+        },
+        {
+          "line": 1674,
+          "old_api": "close",
+          "new_api": "mp_tmsg",
+          "old_text": "close(fd)",
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"What are we doing here?\\n\")",
+          "old_line_content": "  close(fd);",
+          "new_line_content": "  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"What are we doing here?\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1675,
+          "old_api": "mp_input_set_section",
+          "new_api": "close",
+          "old_text": "mp_input_set_section(ictx, NULL)",
+          "new_text": "close(fd)",
+          "old_line_content": "  mp_input_set_section(ictx, NULL);",
+          "new_line_content": "  close(fd);",
+          "content_same": false
+        },
+        {
+          "line": 1690,
+          "old_api": "get_bind_section",
+          "new_api": "talloc_strdup",
+          "old_text": "get_bind_section(ictx, ictx->section)",
+          "new_text": "talloc_strdup(ictx, \"default\")",
+          "old_line_content": "    if ((bind_section = get_bind_section(ictx, ictx->section)))",
+          "new_line_content": "        ictx->section = talloc_strdup(ictx, \"default\");",
+          "content_same": false
+        },
+        {
+          "line": 1729,
+          "old_api": "mp_msg",
+          "new_api": "parse_config",
+          "old_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Falling back on default (hardcoded) input config\\n\")",
+          "new_text": "parse_config(ictx, file)",
+          "old_line_content": "      mp_msg(MSGT_INPUT,MSGL_V,\"Falling back on default (hardcoded) input config\\n\");",
+          "new_line_content": "    if (!parse_config(ictx, file))",
+          "content_same": false
+        },
+        {
+          "line": 1769,
+          "old_api": "mp_tmsg",
+          "new_api": "mp_input_ar_init",
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\")",
+          "new_text": "mp_input_ar_init()",
+          "old_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\");",
+          "new_line_content": "    if(mp_input_ar_init() < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1801,
+          "old_api": "strerror",
+          "new_api": "mp_tmsg",
+          "old_text": "strerror(errno)",
+          "new_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Can't open %s: %s\\n\",\n              input_conf->in_file, strerror(errno))",
+          "old_line_content": "              input_conf->in_file, strerror(errno));",
+          "new_line_content": "      mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Can't open %s: %s\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1836,
+          "old_api": "exit",
+          "new_api": "printf",
+          "old_text": "exit(0)",
+          "new_text": "printf(\"%s\\n\",key_names[i].name)",
+          "old_line_content": "  exit(0);",
+          "new_line_content": "    printf(\"%s\\n\",key_names[i].name);",
+          "content_same": false
+        },
+        {
+          "line": 1889,
+          "old_api": "mp_cmd_free",
+          "new_api": "mp_input_get_cmd",
+          "old_text": "mp_cmd_free(cmd)",
+          "new_text": "mp_input_get_cmd(ictx, time, 0)",
+          "old_line_content": "  mp_cmd_free(cmd);",
+          "new_line_content": "  cmd = mp_input_get_cmd(ictx, time, 0);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1539,
+          "old_api": null,
+          "new_api": "mp_msg",
+          "old_text": null,
+          "new_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Parsing input config file %s\\n\",file)",
+          "old_line_content": "",
+          "new_line_content": "  mp_msg(MSGT_INPUT,MSGL_V,\"Parsing input config file %s\\n\",file);",
+          "content_same": false
+        },
+        {
+          "line": 1544,
+          "old_api": null,
+          "new_api": "read",
+          "old_text": null,
+          "new_text": "read(fd,buffer+bs,BS_MAX-1-bs)",
+          "old_line_content": "      if(r < 0) {",
+          "new_line_content": "      r = read(fd,buffer+bs,BS_MAX-1-bs);",
+          "content_same": false
+        },
+        {
+          "line": 1549,
+          "old_api": null,
+          "new_api": "close",
+          "old_text": null,
+          "new_text": "close(fd)",
+          "old_line_content": "\treturn 0;",
+          "new_line_content": "\tclose(fd);",
+          "content_same": false
+        },
+        {
+          "line": 1561,
+          "old_api": null,
+          "new_api": "close",
+          "old_text": null,
+          "new_text": "close(fd)",
+          "old_line_content": "      return 1;",
+          "new_line_content": "      close(fd);",
+          "content_same": false
+        },
+        {
+          "line": 1576,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,iter,r+1)",
+          "old_line_content": "      bs = r+1;",
+          "new_line_content": "      memmove(buffer,iter,r+1);",
+          "content_same": false
+        },
+        {
+          "line": 1585,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(SPACE_CHAR,iter[0])",
+          "old_line_content": "\t/* NOTHING */;",
+          "new_line_content": "      for(  ; iter[0] != '\\0' && strchr(SPACE_CHAR,iter[0]) != NULL ; iter++)",
+          "content_same": false
+        },
+        {
+          "line": 1596,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(SPACE_CHAR,end[0])",
+          "old_line_content": "\t/*NOTHING */;",
+          "new_line_content": "      for(end = iter; end[0] != '\\0' && strchr(SPACE_CHAR,end[0]) == NULL ; end++)",
+          "content_same": false
+        },
+        {
+          "line": 1601,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unfinished binding %s\\n\",iter)",
+          "old_line_content": "\t  else",
+          "new_line_content": "\t    mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unfinished binding %s\\n\",iter);",
+          "content_same": false
+        },
+        {
+          "line": 1603,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for this key name: %s\\n\",iter)",
+          "old_line_content": "\t  return 0;",
+          "new_line_content": "\t    mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for this key name: %s\\n\",iter);",
+          "content_same": false
+        },
+        {
+          "line": 1606,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,iter,end-iter)",
+          "old_line_content": "\tbs = end-iter;",
+          "new_line_content": "\tmemmove(buffer,iter,end-iter);",
+          "content_same": false
+        },
+        {
+          "line": 1612,
+          "old_api": null,
+          "new_api": "strncpy",
+          "old_text": null,
+          "new_text": "strncpy(name,iter,end-iter)",
+          "old_line_content": "\tname[end-iter] = '\\0';",
+          "new_line_content": "\tstrncpy(name,iter,end-iter);",
+          "content_same": false
+        },
+        {
+          "line": 1616,
+          "old_api": null,
+          "new_api": "close",
+          "old_text": null,
+          "new_text": "close(fd)",
+          "old_line_content": "\t  return 0;",
+          "new_line_content": "\t  close(fd);",
+          "content_same": false
+        },
+        {
+          "line": 1621,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,end,bs - (end-buffer))",
+          "old_line_content": "      bs -= end-buffer;",
+          "new_line_content": "\tmemmove(buffer,end,bs - (end-buffer));",
+          "content_same": false
+        },
+        {
+          "line": 1631,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(key_buf)",
+          "old_line_content": "\tfor(i = 1; keys[i] != 0 ; i++) {",
+          "new_line_content": "        talloc_free(key_buf);",
+          "content_same": false
+        },
+        {
+          "line": 1635,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(key_buf)",
+          "old_line_content": "        }",
+          "new_line_content": "            talloc_free(key_buf);",
+          "content_same": false
+        },
+        {
+          "line": 1637,
+          "old_api": null,
+          "new_api": "mp_msg",
+          "old_text": null,
+          "new_text": "mp_msg(MSGT_INPUT,MSGL_ERR,\"\\n\")",
+          "old_line_content": "\tkeys[0] = 0;",
+          "new_line_content": "        mp_msg(MSGT_INPUT,MSGL_ERR,\"\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1640,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,iter,bs- (iter-buffer))",
+          "old_line_content": "\t  bs -= (iter-buffer);",
+          "new_line_content": "\t  memmove(buffer,iter,bs- (iter-buffer));",
+          "content_same": false
+        },
+        {
+          "line": 1650,
+          "old_api": null,
+          "new_api": "close",
+          "old_text": null,
+          "new_text": "close(fd)",
+          "old_line_content": "\t  return 0;",
+          "new_line_content": "\t  close(fd);",
+          "content_same": false
+        },
+        {
+          "line": 1653,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,iter,end - iter)",
+          "old_line_content": "\tbs = end - iter;",
+          "new_line_content": "\tmemmove(buffer,iter,end - iter);",
+          "content_same": false
+        },
+        {
+          "line": 1659,
+          "old_api": null,
+          "new_api": "strncpy",
+          "old_text": null,
+          "new_text": "strncpy(cmd,iter,end-iter)",
+          "old_line_content": "\tcmd[end-iter] = '\\0';",
+          "new_line_content": "\tstrncpy(cmd,iter,end-iter);",
+          "content_same": false
+        },
+        {
+          "line": 1662,
+          "old_api": null,
+          "new_api": "bind_keys",
+          "old_text": null,
+          "new_text": "bind_keys(ictx, keys,cmd)",
+          "old_line_content": "\tn_binds++;",
+          "new_line_content": "\tbind_keys(ictx, keys,cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1668,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(buffer,end,bs-(end-buffer))",
+          "old_line_content": "      bs -= (end-buffer);",
+          "new_line_content": "\tmemmove(buffer,end,bs-(end-buffer));",
+          "content_same": false
+        },
+        {
+          "line": 1676,
+          "old_api": null,
+          "new_api": "mp_input_set_section",
+          "old_text": null,
+          "new_text": "mp_input_set_section(ictx, NULL)",
+          "old_line_content": "  return 0;",
+          "new_line_content": "  mp_input_set_section(ictx, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1686,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(ictx->section)",
+          "old_line_content": "    if (name)",
+          "new_line_content": "    talloc_free(ictx->section);",
+          "content_same": false
+        },
+        {
+          "line": 1688,
+          "old_api": null,
+          "new_api": "talloc_strdup",
+          "old_text": null,
+          "new_text": "talloc_strdup(ictx, name)",
+          "old_line_content": "    else",
+          "new_line_content": "        ictx->section = talloc_strdup(ictx, name);",
+          "content_same": false
+        },
+        {
+          "line": 1691,
+          "old_api": null,
+          "new_api": "get_bind_section",
+          "old_text": null,
+          "new_text": "get_bind_section(ictx, ictx->section)",
+          "old_line_content": "        ictx->cmd_binds = bind_section->cmd_binds;",
+          "new_line_content": "    if ((bind_section = get_bind_section(ictx, ictx->section)))",
+          "content_same": false
+        },
+        {
+          "line": 1693,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(ictx->section, \"default\")",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (strcmp(ictx->section, \"default\") == 0)",
+          "content_same": false
+        },
+        {
+          "line": 1695,
+          "old_api": null,
+          "new_api": "get_bind_section",
+          "old_text": null,
+          "new_text": "get_bind_section(ictx, NULL)",
+          "old_line_content": "        ictx->cmd_binds_default = bind_section->cmd_binds;",
+          "new_line_content": "    if ((bind_section = get_bind_section(ictx, NULL)))",
+          "content_same": false
+        },
+        {
+          "line": 1706,
+          "old_api": null,
+          "new_api": "talloc_ptrtype",
+          "old_text": null,
+          "new_text": "talloc_ptrtype(NULL, ictx)",
+          "old_line_content": "    *ictx = (struct input_ctx){",
+          "new_line_content": "    struct input_ctx *ictx = talloc_ptrtype(NULL, ictx);",
+          "content_same": false
+        },
+        {
+          "line": 1716,
+          "old_api": null,
+          "new_api": "get_path",
+          "old_text": null,
+          "new_text": "get_path(config_file)",
+          "old_line_content": "  if(!file)",
+          "new_line_content": "  file = config_file[0] != '/' ? get_path(config_file) : config_file;",
+          "content_same": false
+        },
+        {
+          "line": 1720,
+          "old_api": null,
+          "new_api": "parse_config",
+          "old_text": null,
+          "new_text": "parse_config(ictx, file)",
+          "old_line_content": "    // free file if it was allocated by get_path(),",
+          "new_line_content": "  if (!parse_config(ictx, file)) {",
+          "content_same": false
+        },
+        {
+          "line": 1725,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(file)",
+          "old_line_content": "    }",
+          "new_line_content": "      free(file);",
+          "content_same": false
+        },
+        {
+          "line": 1730,
+          "old_api": null,
+          "new_api": "mp_msg",
+          "old_text": null,
+          "new_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Falling back on default (hardcoded) input config\\n\")",
+          "old_line_content": "  }",
+          "new_line_content": "      mp_msg(MSGT_INPUT,MSGL_V,\"Falling back on default (hardcoded) input config\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1736,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(file)",
+          "old_line_content": "  }",
+          "new_line_content": "      free(file);",
+          "content_same": false
+        },
+        {
+          "line": 1741,
+          "old_api": null,
+          "new_api": "mp_input_joystick_init",
+          "old_text": null,
+          "new_text": "mp_input_joystick_init(input_conf->js_dev)",
+          "old_line_content": "    if(fd < 0)",
+          "new_line_content": "    int fd = mp_input_joystick_init(input_conf->js_dev);",
+          "content_same": false
+        },
+        {
+          "line": 1743,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init input joystick\\n\")",
+          "old_line_content": "    else",
+          "new_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init input joystick\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1745,
+          "old_api": null,
+          "new_api": "mp_input_add_key_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_key_fd(ictx, fd, 1, mp_input_joystick_read,\n                            (mp_close_func_t)close,NULL)",
+          "old_line_content": "                            (mp_close_func_t)close,NULL);",
+          "new_line_content": "        mp_input_add_key_fd(ictx, fd, 1, mp_input_joystick_read,",
+          "content_same": false
+        },
+        {
+          "line": 1752,
+          "old_api": null,
+          "new_api": "mp_input_lirc_init",
+          "old_text": null,
+          "new_text": "mp_input_lirc_init()",
+          "old_line_content": "    if(fd > 0)",
+          "new_line_content": "    int fd = mp_input_lirc_init();",
+          "content_same": false
+        },
+        {
+          "line": 1754,
+          "old_api": null,
+          "new_api": "mp_input_add_cmd_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_cmd_fd(ictx, fd, 0, mp_input_lirc_read,\n                            mp_input_lirc_close)",
+          "old_line_content": "                            mp_input_lirc_close);",
+          "new_line_content": "        mp_input_add_cmd_fd(ictx, fd, 0, mp_input_lirc_read,",
+          "content_same": false
+        },
+        {
+          "line": 1761,
+          "old_api": null,
+          "new_api": "lircc_init",
+          "old_text": null,
+          "new_text": "lircc_init(\"mplayer\", NULL)",
+          "old_line_content": "    if(fd >= 0)",
+          "new_line_content": "    int fd = lircc_init(\"mplayer\", NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1763,
+          "old_api": null,
+          "new_api": "mp_input_add_cmd_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_cmd_fd(ictx, fd, 1, NULL, (mp_close_func_t)lircc_cleanup)",
+          "old_line_content": "  }",
+          "new_line_content": "        mp_input_add_cmd_fd(ictx, fd, 1, NULL, (mp_close_func_t)lircc_cleanup);",
+          "content_same": false
+        },
+        {
+          "line": 1770,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\")",
+          "old_line_content": "    else",
+          "new_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1772,
+          "old_api": null,
+          "new_api": "mp_input_add_key_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_key_fd(ictx, -1, 0, mp_input_ar_read, mp_input_ar_close,\n                            NULL)",
+          "old_line_content": "                            NULL);",
+          "new_line_content": "        mp_input_add_key_fd(ictx, -1, 0, mp_input_ar_read, mp_input_ar_close,",
+          "content_same": false
+        },
+        {
+          "line": 1779,
+          "old_api": null,
+          "new_api": "mp_input_appleir_init",
+          "old_text": null,
+          "new_text": "mp_input_appleir_init(input_conf->ar_dev)",
+          "old_line_content": "    if(fd < 0)",
+          "new_line_content": "    int fd = mp_input_appleir_init(input_conf->ar_dev);",
+          "content_same": false
+        },
+        {
+          "line": 1781,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\")",
+          "old_line_content": "    else",
+          "new_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1783,
+          "old_api": null,
+          "new_api": "mp_input_add_key_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_key_fd(ictx, fd, 1, mp_input_appleir_read,\n                            (mp_close_func_t)close, NULL)",
+          "old_line_content": "                            (mp_close_func_t)close, NULL);",
+          "new_line_content": "        mp_input_add_key_fd(ictx, fd, 1, mp_input_appleir_read,",
+          "content_same": false
+        },
+        {
+          "line": 1794,
+          "old_api": null,
+          "new_api": "S_ISFIFO",
+          "old_text": null,
+          "new_text": "S_ISFIFO(st.st_mode)",
+          "old_line_content": "      mode = O_RDWR;",
+          "new_line_content": "    if (stat(input_conf->in_file, &st) == 0 && S_ISFIFO(st.st_mode))",
+          "content_same": false
+        },
+        {
+          "line": 1283,
+          "old_api": null,
+          "new_api": "key",
+          "old_text": null,
+          "new_text": "key_fds[i].read_func.key(key_fds[i].ctx,\n                                                key_fds[i].fd)",
+          "old_line_content": "\tif (code >= 0) {",
+          "new_line_content": "        while ((code = key_fds[i].read_func.key(key_fds[i].ctx,",
+          "content_same": false
+        },
+        {
+          "line": 1796,
+          "old_api": null,
+          "new_api": "open",
+          "old_text": null,
+          "new_text": "open(input_conf->in_file, mode)",
+          "old_line_content": "    if(in_file_fd >= 0)",
+          "new_line_content": "    int in_file_fd = open(input_conf->in_file, mode);",
+          "content_same": false
+        },
+        {
+          "line": 1285,
+          "old_api": null,
+          "new_api": "interpret_key",
+          "old_text": null,
+          "new_text": "interpret_key(ictx, code)",
+          "old_line_content": "\t    if (ret)",
+          "new_line_content": "\t    mp_cmd_t *ret = interpret_key(ictx, code);",
+          "content_same": false
+        },
+        {
+          "line": 1798,
+          "old_api": null,
+          "new_api": "mp_input_add_cmd_fd",
+          "old_text": null,
+          "new_text": "mp_input_add_cmd_fd(ictx, in_file_fd, 1, NULL,\n                          (mp_close_func_t)close)",
+          "old_line_content": "                          (mp_close_func_t)close);",
+          "new_line_content": "      mp_input_add_cmd_fd(ictx, in_file_fd, 1, NULL,",
+          "content_same": false
+        },
+        {
+          "line": 1290,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on key input file descriptor %d\\n\",\n\t\t   key_fds[i].fd)",
+          "old_line_content": "\t\t   key_fds[i].fd);",
+          "new_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on key input file descriptor %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1802,
+          "old_api": null,
+          "new_api": "strerror",
+          "old_text": null,
+          "new_text": "strerror(errno)",
+          "old_line_content": "  }",
+          "new_line_content": "              input_conf->in_file, strerror(errno));",
+          "content_same": false
+        },
+        {
+          "line": 1293,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Dead key input on file descriptor %d\\n\",\n\t\t   key_fds[i].fd)",
+          "old_line_content": "\t\t   key_fds[i].fd);",
+          "new_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Dead key input on file descriptor %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1298,
+          "old_api": null,
+          "new_api": "check_autorepeat",
+          "old_text": null,
+          "new_text": "check_autorepeat(ictx)",
+          "old_line_content": "    if (autorepeat_cmd)",
+          "new_line_content": "    mp_cmd_t *autorepeat_cmd = check_autorepeat(ictx);",
+          "content_same": false
+        },
+        {
+          "line": 1304,
+          "old_api": null,
+          "new_api": "FD_ISSET",
+          "old_text": null,
+          "new_text": "FD_ISSET(cmd_fds[i].fd, &fds)",
+          "old_line_content": "\t    !cmd_fds[i].got_cmd)",
+          "new_line_content": "\tif (!cmd_fds[i].no_select && !FD_ISSET(cmd_fds[i].fd, &fds) &&",
+          "content_same": false
+        },
+        {
+          "line": 1816,
+          "old_api": null,
+          "new_api": "close_func",
+          "old_text": null,
+          "new_text": "ictx->key_fds[i].close_func(ictx->key_fds[i].fd)",
+          "old_line_content": "  }",
+          "new_line_content": "          ictx->key_fds[i].close_func(ictx->key_fds[i].fd);",
+          "content_same": false
+        },
+        {
+          "line": 1821,
+          "old_api": null,
+          "new_api": "close_func",
+          "old_text": null,
+          "new_text": "ictx->cmd_fds[i].close_func(ictx->cmd_fds[i].fd)",
+          "old_line_content": "  }",
+          "new_line_content": "          ictx->cmd_fds[i].close_func(ictx->cmd_fds[i].fd);",
+          "content_same": false
+        },
+        {
+          "line": 1823,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(ictx)",
+          "old_line_content": "}",
+          "new_line_content": "  talloc_free(ictx);",
+          "content_same": false
+        },
+        {
+          "line": 1312,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(cmd)",
+          "old_line_content": "\t    if (ret)",
+          "new_line_content": "\t    talloc_free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1828,
+          "old_api": null,
+          "new_api": "m_config_register_options",
+          "old_text": null,
+          "new_text": "m_config_register_options(cfg,mp_input_opts)",
+          "old_line_content": "}",
+          "new_line_content": "  m_config_register_options(cfg,mp_input_opts);",
+          "content_same": false
+        },
+        {
+          "line": 1317,
+          "old_api": null,
+          "new_api": "mp_tmsg",
+          "old_text": null,
+          "new_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on command file descriptor %d\\n\",\n\t\t   cmd_fds[i].fd)",
+          "old_line_content": "\t\t   cmd_fds[i].fd);",
+          "new_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on command file descriptor %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1834,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"\\n\")",
+          "old_line_content": "  for(i= 0; key_names[i].name != NULL ; i++)",
+          "new_line_content": "  printf(\"\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1837,
+          "old_api": null,
+          "new_api": "exit",
+          "old_text": null,
+          "new_text": "exit(0)",
+          "old_line_content": "}",
+          "new_line_content": "  exit(0);",
+          "content_same": false
+        },
+        {
+          "line": 1847,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"%-20.20s\",cmd->name)",
+          "old_line_content": "    for(j= 0 ; j < MP_CMD_MAX_ARGS && cmd->args[j].type != -1 ; j++) {",
+          "new_line_content": "    printf(\"%-20.20s\",cmd->name);",
+          "content_same": false
+        },
+        {
+          "line": 1863,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\" [%s]\",type)",
+          "old_line_content": "      else",
+          "new_line_content": "\tprintf(\" [%s]\",type);",
+          "content_same": false
+        },
+        {
+          "line": 1865,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\" %s\",type)",
+          "old_line_content": "    }",
+          "new_line_content": "\tprintf(\" %s\",type);",
+          "content_same": false
+        },
+        {
+          "line": 1867,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"\\n\")",
+          "old_line_content": "  }",
+          "new_line_content": "    printf(\"\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1869,
+          "old_api": null,
+          "new_api": "exit",
+          "old_text": null,
+          "new_text": "exit(0)",
+          "old_line_content": "}",
+          "new_line_content": "  exit(0);",
+          "content_same": false
+        },
+        {
+          "line": 1365,
+          "old_api": null,
+          "new_api": "mp_input_parse_cmd",
+          "old_text": null,
+          "new_text": "mp_input_parse_cmd(\"quit 1\")",
+          "old_line_content": "  while(1) {",
+          "new_line_content": "    return mp_input_parse_cmd(\"quit 1\");",
+          "content_same": false
+        },
+        {
+          "line": 1878,
+          "old_api": null,
+          "new_api": "mp_input_get_cmd",
+          "old_text": null,
+          "new_text": "mp_input_get_cmd(ictx, time, 1)",
+          "old_line_content": "    return 0;",
+          "new_line_content": "  if ((cmd = mp_input_get_cmd(ictx, time, 1)) == NULL)",
+          "content_same": false
+        },
+        {
+          "line": 1368,
+          "old_api": null,
+          "new_api": "get_queued_cmd",
+          "old_text": null,
+          "new_text": "get_queued_cmd(ictx, peek_only)",
+          "old_line_content": "    if(ret) break;",
+          "new_line_content": "    ret = get_queued_cmd(ictx, peek_only);",
+          "content_same": false
+        },
+        {
+          "line": 1371,
+          "old_api": null,
+          "new_api": "read_events",
+          "old_text": null,
+          "new_text": "read_events(ictx, time)",
+          "old_line_content": "    if (!ret) {",
+          "new_line_content": "    ret = read_events(ictx, time);",
+          "content_same": false
+        },
+        {
+          "line": 1374,
+          "old_api": null,
+          "new_api": "get_queued_cmd",
+          "old_text": null,
+          "new_text": "get_queued_cmd(ictx, peek_only)",
+          "old_line_content": "    }",
+          "new_line_content": "\tret = get_queued_cmd(ictx, peek_only);",
+          "content_same": false
+        },
+        {
+          "line": 1890,
+          "old_api": null,
+          "new_api": "mp_cmd_free",
+          "old_text": null,
+          "new_text": "mp_cmd_free(cmd)",
+          "old_line_content": "  return 0;",
+          "new_line_content": "  mp_cmd_free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1381,
+          "old_api": null,
+          "new_api": "filter",
+          "old_text": null,
+          "new_text": "cf->filter(ret, cf->ctx)",
+          "old_line_content": "      if (peek_only && from_queue)",
+          "new_line_content": "    if (cf->filter(ret, cf->ctx)) {",
+          "content_same": false
+        },
+        {
+          "line": 1385,
+          "old_api": null,
+          "new_api": "mp_cmd_free",
+          "old_text": null,
+          "new_text": "mp_cmd_free(ret)",
+          "old_line_content": "      return NULL;",
+          "new_line_content": "      mp_cmd_free(ret);",
+          "content_same": false
+        },
+        {
+          "line": 1391,
+          "old_api": null,
+          "new_api": "mp_input_queue_cmd",
+          "old_text": null,
+          "new_text": "mp_input_queue_cmd(ictx, ret)",
+          "old_line_content": "",
+          "new_line_content": "      mp_input_queue_cmd(ictx, ret);",
+          "content_same": false
+        },
+        {
+          "line": 1398,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(cmd)",
+          "old_line_content": "}",
+          "new_line_content": "    talloc_free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1406,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(cmd != NULL)",
+          "old_line_content": "#endif",
+          "new_line_content": "  assert(cmd != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1410,
+          "old_api": null,
+          "new_api": "talloc_strdup",
+          "old_text": null,
+          "new_text": "talloc_strdup(ret, cmd->name)",
+          "old_line_content": "  for(i = 0;  i < MP_CMD_MAX_ARGS && cmd->args[i].type != -1; i++) {",
+          "new_line_content": "  ret->name = talloc_strdup(ret, cmd->name);",
+          "content_same": false
+        },
+        {
+          "line": 1413,
+          "old_api": null,
+          "new_api": "talloc_strdup",
+          "old_text": null,
+          "new_text": "talloc_strdup(ret, cmd->args[i].v.s)",
+          "old_line_content": "  }",
+          "new_line_content": "        ret->args[i].v.s = talloc_strdup(ret, cmd->args[i].v.s);",
+          "content_same": false
+        },
+        {
+          "line": 1423,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(name, '+')",
+          "old_line_content": "        for (struct mp_key_name *m = modifier_names; m->name; m++)",
+          "new_line_content": "    while (p = strchr(name, '+')) {",
+          "content_same": false
+        },
+        {
+          "line": 1425,
+          "old_api": null,
+          "new_api": "BSTR",
+          "old_text": null,
+          "new_text": "BSTR(m->name)",
+          "old_line_content": "                modifiers |= m->key;",
+          "new_line_content": "            if (!bstrcasecmp(BSTR(m->name), (struct bstr){name, p - name})) {",
+          "content_same": false
+        },
+        {
+          "line": 1429,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(name, \"+\")",
+          "old_line_content": "            return '+' + modifiers;",
+          "new_line_content": "        if (!strcmp(name, \"+\"))",
+          "content_same": false
+        },
+        {
+          "line": 1435,
+          "old_api": null,
+          "new_api": "strlen",
+          "old_text": null,
+          "new_text": "strlen(name)",
+          "old_line_content": "    if (len == 1)   // Direct key code",
+          "new_line_content": "    int len = strlen(name);",
+          "content_same": false
+        },
+        {
+          "line": 1439,
+          "old_api": null,
+          "new_api": "strtol",
+          "old_text": null,
+          "new_text": "strtol(name, NULL, 16)",
+          "old_line_content": "",
+          "new_line_content": "        return strtol(name, NULL, 16) + modifiers;",
+          "content_same": false
+        },
+        {
+          "line": 1442,
+          "old_api": null,
+          "new_api": "strcasecmp",
+          "old_text": null,
+          "new_text": "strcasecmp(key_names[i].name, name)",
+          "old_line_content": "            return key_names[i].key + modifiers;",
+          "new_line_content": "        if (strcasecmp(key_names[i].name, name) == 0)",
+          "content_same": false
+        },
+        {
+          "line": 1455,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(ptr,'-')",
+          "old_line_content": "    if(end && end[1] != '\\0') {",
+          "new_line_content": "  for(end = strchr(ptr,'-') ; ptr != NULL ; end = strchr(ptr,'-')) {",
+          "content_same": false
+        },
+        {
+          "line": 1461,
+          "old_api": null,
+          "new_api": "mp_input_get_key_from_name",
+          "old_text": null,
+          "new_text": "mp_input_get_key_from_name(ptr)",
+          "old_line_content": "    if(keys[n] < 0) {",
+          "new_line_content": "    keys[n] = mp_input_get_key_from_name(ptr);",
+          "content_same": false
+        },
+        {
+          "line": 1488,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(cmd != NULL)",
+          "old_line_content": "#endif",
+          "new_line_content": "  assert(cmd != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1491,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(cmd,'}')",
+          "old_line_content": "    *p=0;",
+          "new_line_content": "  if(*cmd=='{' && (p=strchr(cmd,'}'))) {",
+          "content_same": false
+        },
+        {
+          "line": 1496,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(SPACE_CHAR,cmd[0])",
+          "old_line_content": "      /* NOTHING */;",
+          "new_line_content": "    for(  ; cmd[0] != '\\0' && strchr(SPACE_CHAR,cmd[0]) != NULL ; cmd++)",
+          "content_same": false
+        },
+        {
+          "line": 1499,
+          "old_api": null,
+          "new_api": "get_bind_section",
+          "old_text": null,
+          "new_text": "get_bind_section(ictx, section)",
+          "old_line_content": "",
+          "new_line_content": "  bind_section = get_bind_section(ictx, section);",
+          "content_same": false
+        },
+        {
+          "line": 1513,
+          "old_api": null,
+          "new_api": "talloc_realloc",
+          "old_text": null,
+          "new_text": "talloc_realloc(bind_section,\n                                               bind_section->cmd_binds,\n                                               mp_cmd_bind_t, i + 2)",
+          "old_line_content": "                                               bind_section->cmd_binds,",
+          "new_line_content": "      bind_section->cmd_binds = talloc_realloc(bind_section,",
+          "content_same": false
+        },
+        {
+          "line": 1516,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(&bind_section->cmd_binds[i],0,2*sizeof(mp_cmd_bind_t))",
+          "old_line_content": "    bind = &bind_section->cmd_binds[i];",
+          "new_line_content": "    memset(&bind_section->cmd_binds[i],0,2*sizeof(mp_cmd_bind_t));",
+          "content_same": false
+        },
+        {
+          "line": 1521,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(bind->input,keys,(MP_MAX_KEY_DOWN+1)*sizeof(int))",
+          "old_line_content": "}",
+          "new_line_content": "  memcpy(bind->input,keys,(MP_MAX_KEY_DOWN+1)*sizeof(int));",
+          "content_same": false
+        },
+        {
+          "line": 1532,
+          "old_api": null,
+          "new_api": "open",
+          "old_text": null,
+          "new_text": "open(file,O_RDONLY)",
+          "old_line_content": "",
+          "new_line_content": "  fd = open(file,O_RDONLY);",
+          "content_same": false
+        },
+        {
+          "line": 1535,
+          "old_api": null,
+          "new_api": "strerror",
+          "old_text": null,
+          "new_text": "strerror(errno)",
+          "old_line_content": "    return 0;",
+          "new_line_content": "    mp_msg(MSGT_INPUT,MSGL_V,\"Can't open input config file %s: %s\\n\",file,strerror(errno));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1538,
+          "old_api": "mp_msg",
+          "new_api": null,
+          "old_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Parsing input config file %s\\n\",file)",
+          "new_text": null,
+          "old_line_content": "  mp_msg(MSGT_INPUT,MSGL_V,\"Parsing input config file %s\\n\",file);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1543,
+          "old_api": "read",
+          "new_api": null,
+          "old_text": "read(fd,buffer+bs,BS_MAX-1-bs)",
+          "new_text": null,
+          "old_line_content": "      r = read(fd,buffer+bs,BS_MAX-1-bs);",
+          "new_line_content": "      if(bs > 0) bs--;",
+          "content_same": false
+        },
+        {
+          "line": 1547,
+          "old_api": "strerror",
+          "new_api": null,
+          "old_text": "strerror(errno)",
+          "new_text": null,
+          "old_line_content": "\tmp_tmsg(MSGT_INPUT,MSGL_ERR,\"Error while reading input config file %s: %s\\n\",file,strerror(errno));",
+          "new_line_content": "\t  continue;",
+          "content_same": false
+        },
+        {
+          "line": 1559,
+          "old_api": "mp_msg",
+          "new_api": null,
+          "old_text": "mp_msg(MSGT_INPUT,MSGL_V,\"Input config file %s parsed: %d binds\\n\",file,n_binds)",
+          "new_text": null,
+          "old_line_content": "      mp_msg(MSGT_INPUT,MSGL_V,\"Input config file %s parsed: %d binds\\n\",file,n_binds);",
+          "new_line_content": "    if(bs <= 1) {",
+          "content_same": false
+        },
+        {
+          "line": 1574,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(iter)",
+          "new_text": null,
+          "old_line_content": "      r = strlen(iter);",
+          "new_line_content": "      iter++;",
+          "content_same": false
+        },
+        {
+          "line": 1584,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(SPACE_CHAR,iter[0])",
+          "new_text": null,
+          "old_line_content": "      for(  ; iter[0] != '\\0' && strchr(SPACE_CHAR,iter[0]) != NULL ; iter++)",
+          "new_line_content": "      // Jump beginning space",
+          "content_same": false
+        },
+        {
+          "line": 1595,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(SPACE_CHAR,end[0])",
+          "new_text": null,
+          "old_line_content": "      for(end = iter; end[0] != '\\0' && strchr(SPACE_CHAR,end[0]) == NULL ; end++)",
+          "new_line_content": "      // Find the end of the key code name",
+          "content_same": false
+        },
+        {
+          "line": 1600,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unfinished binding %s\\n\",iter)",
+          "new_text": null,
+          "old_line_content": "\t    mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Unfinished binding %s\\n\",iter);",
+          "new_line_content": "\t  if(eof && (buffer-iter) == bs)",
+          "content_same": false
+        },
+        {
+          "line": 1602,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for this key name: %s\\n\",iter)",
+          "new_text": null,
+          "old_line_content": "\t    mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for this key name: %s\\n\",iter);",
+          "new_line_content": "\t  else",
+          "content_same": false
+        },
+        {
+          "line": 1605,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(buffer,iter,end-iter)",
+          "new_text": null,
+          "old_line_content": "\tmemmove(buffer,iter,end-iter);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 1611,
+          "old_api": "strncpy",
+          "new_api": null,
+          "old_text": "strncpy(name,iter,end-iter)",
+          "new_text": null,
+          "old_line_content": "\tstrncpy(name,iter,end-iter);",
+          "new_line_content": "\tchar name[end-iter+1];",
+          "content_same": false
+        },
+        {
+          "line": 1613,
+          "old_api": "get_input_from_name",
+          "new_api": null,
+          "old_text": "get_input_from_name(name,keys)",
+          "new_text": null,
+          "old_line_content": "\tif (!get_input_from_name(name,keys)) {",
+          "new_line_content": "\tname[end-iter] = '\\0';",
+          "content_same": false
+        },
+        {
+          "line": 1620,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(buffer,end,bs - (end-buffer))",
+          "new_text": null,
+          "old_line_content": "\tmemmove(buffer,end,bs - (end-buffer));",
+          "new_line_content": "      if( bs > (end-buffer))",
+          "content_same": false
+        },
+        {
+          "line": 1628,
+          "old_api": "get_key_name",
+          "new_api": null,
+          "old_text": "get_key_name(keys[0])",
+          "new_text": null,
+          "old_line_content": "        char *key_buf  = get_key_name(keys[0]);",
+          "new_line_content": "\tint i;",
+          "content_same": false
+        },
+        {
+          "line": 1632,
+          "old_api": "get_key_name",
+          "new_api": null,
+          "old_text": "get_key_name(keys[i])",
+          "new_text": null,
+          "old_line_content": "            char *key_buf  = get_key_name(keys[i]);",
+          "new_line_content": "\tfor(i = 1; keys[i] != 0 ; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1636,
+          "old_api": "mp_msg",
+          "new_api": null,
+          "old_text": "mp_msg(MSGT_INPUT,MSGL_ERR,\"\\n\")",
+          "new_text": null,
+          "old_line_content": "        mp_msg(MSGT_INPUT,MSGL_ERR,\"\\n\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1639,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(buffer,iter,bs- (iter-buffer))",
+          "new_text": null,
+          "old_line_content": "\t  memmove(buffer,iter,bs- (iter-buffer));",
+          "new_line_content": "\tif(iter > buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 1648,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for command %s\\n\",buffer)",
+          "new_text": null,
+          "old_line_content": "\t  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Buffer is too small for command %s\\n\",buffer);",
+          "new_line_content": "\tif(iter == buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 1652,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(buffer,iter,end - iter)",
+          "new_text": null,
+          "old_line_content": "\tmemmove(buffer,iter,end - iter);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 1658,
+          "old_api": "strncpy",
+          "new_api": null,
+          "old_text": "strncpy(cmd,iter,end-iter)",
+          "new_text": null,
+          "old_line_content": "\tstrncpy(cmd,iter,end-iter);",
+          "new_line_content": "\tchar cmd[end-iter+1];",
+          "content_same": false
+        },
+        {
+          "line": 1661,
+          "old_api": "bind_keys",
+          "new_api": null,
+          "old_text": "bind_keys(ictx, keys,cmd)",
+          "new_text": null,
+          "old_line_content": "\tbind_keys(ictx, keys,cmd);",
+          "new_line_content": "\t//printf(\"Set bind %d => %s\\n\",keys[0],cmd);",
+          "content_same": false
+        },
+        {
+          "line": 1667,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(buffer,end,bs-(end-buffer))",
+          "new_text": null,
+          "old_line_content": "\tmemmove(buffer,end,bs-(end-buffer));",
+          "new_line_content": "      if(bs > (end-buffer))",
+          "content_same": false
+        },
+        {
+          "line": 1673,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"What are we doing here?\\n\")",
+          "new_text": null,
+          "old_line_content": "  mp_tmsg(MSGT_INPUT,MSGL_ERR,\"What are we doing here?\\n\");",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1685,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(ictx->section)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(ictx->section);",
+          "new_line_content": "    ictx->cmd_binds_default = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 1687,
+          "old_api": "talloc_strdup",
+          "new_api": null,
+          "old_text": "talloc_strdup(ictx, name)",
+          "new_text": null,
+          "old_line_content": "        ictx->section = talloc_strdup(ictx, name);",
+          "new_line_content": "    if (name)",
+          "content_same": false
+        },
+        {
+          "line": 1689,
+          "old_api": "talloc_strdup",
+          "new_api": null,
+          "old_text": "talloc_strdup(ictx, \"default\")",
+          "new_text": null,
+          "old_line_content": "        ictx->section = talloc_strdup(ictx, \"default\");",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 1692,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(ictx->section, \"default\")",
+          "new_text": null,
+          "old_line_content": "    if (strcmp(ictx->section, \"default\") == 0)",
+          "new_line_content": "        ictx->cmd_binds = bind_section->cmd_binds;",
+          "content_same": false
+        },
+        {
+          "line": 1694,
+          "old_api": "get_bind_section",
+          "new_api": null,
+          "old_text": "get_bind_section(ictx, NULL)",
+          "new_text": null,
+          "old_line_content": "    if ((bind_section = get_bind_section(ictx, NULL)))",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 1705,
+          "old_api": "talloc_ptrtype",
+          "new_api": null,
+          "old_text": "talloc_ptrtype(NULL, ictx)",
+          "new_text": null,
+          "old_line_content": "    struct input_ctx *ictx = talloc_ptrtype(NULL, ictx);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1715,
+          "old_api": "get_path",
+          "new_api": null,
+          "old_text": "get_path(config_file)",
+          "new_text": null,
+          "old_line_content": "  file = config_file[0] != '/' ? get_path(config_file) : config_file;",
+          "new_line_content": "  char *config_file = input_conf->config_file;",
+          "content_same": false
+        },
+        {
+          "line": 1719,
+          "old_api": "parse_config",
+          "new_api": null,
+          "old_text": "parse_config(ictx, file)",
+          "new_text": null,
+          "old_line_content": "  if (!parse_config(ictx, file)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1724,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(file)",
+          "new_text": null,
+          "old_line_content": "      free(file);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1728,
+          "old_api": "parse_config",
+          "new_api": null,
+          "old_text": "parse_config(ictx, file)",
+          "new_text": null,
+          "old_line_content": "    if (!parse_config(ictx, file))",
+          "new_line_content": "    file = MPLAYER_CONFDIR \"/input.conf\";",
+          "content_same": false
+        },
+        {
+          "line": 1735,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(file)",
+          "new_text": null,
+          "old_line_content": "      free(file);",
+          "new_line_content": "    if( file != config_file)",
+          "content_same": false
+        },
+        {
+          "line": 1740,
+          "old_api": "mp_input_joystick_init",
+          "new_api": null,
+          "old_text": "mp_input_joystick_init(input_conf->js_dev)",
+          "new_text": null,
+          "old_line_content": "    int fd = mp_input_joystick_init(input_conf->js_dev);",
+          "new_line_content": "  if (input_conf->use_joystick) {",
+          "content_same": false
+        },
+        {
+          "line": 1742,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init input joystick\\n\")",
+          "new_text": null,
+          "old_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init input joystick\\n\");",
+          "new_line_content": "    if(fd < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1744,
+          "old_api": "mp_input_add_key_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_key_fd(ictx, fd, 1, mp_input_joystick_read,\n                            (mp_close_func_t)close,NULL)",
+          "new_text": null,
+          "old_line_content": "        mp_input_add_key_fd(ictx, fd, 1, mp_input_joystick_read,",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 1751,
+          "old_api": "mp_input_lirc_init",
+          "new_api": null,
+          "old_text": "mp_input_lirc_init()",
+          "new_text": null,
+          "old_line_content": "    int fd = mp_input_lirc_init();",
+          "new_line_content": "  if (input_conf->use_lirc) {",
+          "content_same": false
+        },
+        {
+          "line": 1753,
+          "old_api": "mp_input_add_cmd_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_cmd_fd(ictx, fd, 0, mp_input_lirc_read,\n                            mp_input_lirc_close)",
+          "new_text": null,
+          "old_line_content": "        mp_input_add_cmd_fd(ictx, fd, 0, mp_input_lirc_read,",
+          "new_line_content": "    if(fd > 0)",
+          "content_same": false
+        },
+        {
+          "line": 1760,
+          "old_api": "lircc_init",
+          "new_api": null,
+          "old_text": "lircc_init(\"mplayer\", NULL)",
+          "new_text": null,
+          "old_line_content": "    int fd = lircc_init(\"mplayer\", NULL);",
+          "new_line_content": "  if (input_conf->use_lircc) {",
+          "content_same": false
+        },
+        {
+          "line": 1762,
+          "old_api": "mp_input_add_cmd_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_cmd_fd(ictx, fd, 1, NULL, (mp_close_func_t)lircc_cleanup)",
+          "new_text": null,
+          "old_line_content": "        mp_input_add_cmd_fd(ictx, fd, 1, NULL, (mp_close_func_t)lircc_cleanup);",
+          "new_line_content": "    if(fd >= 0)",
+          "content_same": false
+        },
+        {
+          "line": 1768,
+          "old_api": "mp_input_ar_init",
+          "new_api": null,
+          "old_text": "mp_input_ar_init()",
+          "new_text": null,
+          "old_line_content": "    if(mp_input_ar_init() < 0)",
+          "new_line_content": "  if (input_conf->use_ar) {",
+          "content_same": false
+        },
+        {
+          "line": 1771,
+          "old_api": "mp_input_add_key_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_key_fd(ictx, -1, 0, mp_input_ar_read, mp_input_ar_close,\n                            NULL)",
+          "new_text": null,
+          "old_line_content": "        mp_input_add_key_fd(ictx, -1, 0, mp_input_ar_read, mp_input_ar_close,",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 1778,
+          "old_api": "mp_input_appleir_init",
+          "new_api": null,
+          "old_text": "mp_input_appleir_init(input_conf->ar_dev)",
+          "new_text": null,
+          "old_line_content": "    int fd = mp_input_appleir_init(input_conf->ar_dev);",
+          "new_line_content": "  if (input_conf->use_ar) {",
+          "content_same": false
+        },
+        {
+          "line": 1780,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\")",
+          "new_text": null,
+          "old_line_content": "      mp_tmsg(MSGT_INPUT,MSGL_ERR,\"Can't init Apple Remote.\\n\");",
+          "new_line_content": "    if(fd < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1782,
+          "old_api": "mp_input_add_key_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_key_fd(ictx, fd, 1, mp_input_appleir_read,\n                            (mp_close_func_t)close, NULL)",
+          "new_text": null,
+          "old_line_content": "        mp_input_add_key_fd(ictx, fd, 1, mp_input_appleir_read,",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 1793,
+          "old_api": "S_ISFIFO",
+          "new_api": null,
+          "old_text": "S_ISFIFO(st.st_mode)",
+          "new_text": null,
+          "old_line_content": "    if (stat(input_conf->in_file, &st) == 0 && S_ISFIFO(st.st_mode))",
+          "new_line_content": "    // API works, using RDONLY should be ok.",
+          "content_same": false
+        },
+        {
+          "line": 1282,
+          "old_api": "key",
+          "new_api": null,
+          "old_text": "key_fds[i].read_func.key(key_fds[i].ctx, key_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "\tint code = key_fds[i].read_func.key(key_fds[i].ctx, key_fds[i].fd);",
+          "new_line_content": "        int code;",
+          "content_same": false
+        },
+        {
+          "line": 1795,
+          "old_api": "open",
+          "new_api": null,
+          "old_text": "open(input_conf->in_file, mode)",
+          "new_text": null,
+          "old_line_content": "    int in_file_fd = open(input_conf->in_file, mode);",
+          "new_line_content": "      mode = O_RDWR;",
+          "content_same": false
+        },
+        {
+          "line": 1284,
+          "old_api": "interpret_key",
+          "new_api": null,
+          "old_text": "interpret_key(ictx, code)",
+          "new_text": null,
+          "old_line_content": "\t    mp_cmd_t *ret = interpret_key(ictx, code);",
+          "new_line_content": "                                                key_fds[i].fd)) >= 0) {",
+          "content_same": false
+        },
+        {
+          "line": 1797,
+          "old_api": "mp_input_add_cmd_fd",
+          "new_api": null,
+          "old_text": "mp_input_add_cmd_fd(ictx, in_file_fd, 1, NULL,\n                          (mp_close_func_t)close)",
+          "new_text": null,
+          "old_line_content": "      mp_input_add_cmd_fd(ictx, in_file_fd, 1, NULL,",
+          "new_line_content": "    if(in_file_fd >= 0)",
+          "content_same": false
+        },
+        {
+          "line": 1800,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Can't open %s: %s\\n\",\n              input_conf->in_file, strerror(errno))",
+          "new_text": null,
+          "old_line_content": "      mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Can't open %s: %s\\n\",",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 1289,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on key input file descriptor %d\\n\",\n\t\t   key_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on key input file descriptor %d\\n\",",
+          "new_line_content": "        if (code == MP_INPUT_ERROR)",
+          "content_same": false
+        },
+        {
+          "line": 1292,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Dead key input on file descriptor %d\\n\",\n\t\t   key_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Dead key input on file descriptor %d\\n\",",
+          "new_line_content": "\telse if (code == MP_INPUT_DEAD) {",
+          "content_same": false
+        },
+        {
+          "line": 1297,
+          "old_api": "check_autorepeat",
+          "new_api": null,
+          "old_text": "check_autorepeat(ictx)",
+          "new_text": null,
+          "old_line_content": "    mp_cmd_t *autorepeat_cmd = check_autorepeat(ictx);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1303,
+          "old_api": "FD_ISSET",
+          "new_api": null,
+          "old_text": "FD_ISSET(cmd_fds[i].fd, &fds)",
+          "new_text": null,
+          "old_line_content": "\tif (!cmd_fds[i].no_select && !FD_ISSET(cmd_fds[i].fd, &fds) &&",
+          "new_line_content": "#ifdef HAVE_POSIX_SELECT",
+          "content_same": false
+        },
+        {
+          "line": 1815,
+          "old_api": "close_func",
+          "new_api": null,
+          "old_text": "ictx->key_fds[i].close_func(ictx->key_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "          ictx->key_fds[i].close_func(ictx->key_fds[i].fd);",
+          "new_line_content": "      if (ictx->key_fds[i].close_func)",
+          "content_same": false
+        },
+        {
+          "line": 1308,
+          "old_api": "read_cmd",
+          "new_api": null,
+          "old_text": "read_cmd(&cmd_fds[i], &cmd)",
+          "new_text": null,
+          "old_line_content": "\tint r = read_cmd(&cmd_fds[i], &cmd);",
+          "new_line_content": "\tchar *cmd;",
+          "content_same": false
+        },
+        {
+          "line": 1820,
+          "old_api": "close_func",
+          "new_api": null,
+          "old_text": "ictx->cmd_fds[i].close_func(ictx->cmd_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "          ictx->cmd_fds[i].close_func(ictx->cmd_fds[i].fd);",
+          "new_line_content": "      if (ictx->cmd_fds[i].close_func)",
+          "content_same": false
+        },
+        {
+          "line": 1822,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(ictx)",
+          "new_text": null,
+          "old_line_content": "  talloc_free(ictx);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1827,
+          "old_api": "m_config_register_options",
+          "new_api": null,
+          "old_text": "m_config_register_options(cfg,mp_input_opts)",
+          "new_text": null,
+          "old_line_content": "  m_config_register_options(cfg,mp_input_opts);",
+          "new_line_content": "mp_input_register_options(m_config_t* cfg) {",
+          "content_same": false
+        },
+        {
+          "line": 1316,
+          "old_api": "mp_tmsg",
+          "new_api": null,
+          "old_text": "mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on command file descriptor %d\\n\",\n\t\t   cmd_fds[i].fd)",
+          "new_text": null,
+          "old_line_content": "\t    mp_tmsg(MSGT_INPUT, MSGL_ERR, \"Error on command file descriptor %d\\n\",",
+          "new_line_content": "        if (r == MP_INPUT_ERROR)",
+          "content_same": false
+        },
+        {
+          "line": 1833,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"\\n\")",
+          "new_text": null,
+          "old_line_content": "  printf(\"\\n\");",
+          "new_line_content": "  int i;",
+          "content_same": false
+        },
+        {
+          "line": 1835,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"%s\\n\",key_names[i].name)",
+          "new_text": null,
+          "old_line_content": "    printf(\"%s\\n\",key_names[i].name);",
+          "new_line_content": "  for(i= 0; key_names[i].name != NULL ; i++)",
+          "content_same": false
+        },
+        {
+          "line": 1846,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"%-20.20s\",cmd->name)",
+          "new_text": null,
+          "old_line_content": "    printf(\"%-20.20s\",cmd->name);",
+          "new_line_content": "  for(i = 0; (cmd = &mp_cmds[i])->name != NULL ; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1862,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\" [%s]\",type)",
+          "new_text": null,
+          "old_line_content": "\tprintf(\" [%s]\",type);",
+          "new_line_content": "      if(j+1 > cmd->nargs)",
+          "content_same": false
+        },
+        {
+          "line": 1864,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\" %s\",type)",
+          "new_text": null,
+          "old_line_content": "\tprintf(\" %s\",type);",
+          "new_line_content": "      else",
+          "content_same": false
+        },
+        {
+          "line": 1866,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"\\n\")",
+          "new_text": null,
+          "old_line_content": "    printf(\"\\n\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1868,
+          "old_api": "exit",
+          "new_api": null,
+          "old_text": "exit(0)",
+          "new_text": null,
+          "old_line_content": "  exit(0);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1364,
+          "old_api": "mp_input_parse_cmd",
+          "new_api": null,
+          "old_text": "mp_input_parse_cmd(\"quit 1\")",
+          "new_text": null,
+          "old_line_content": "    return mp_input_parse_cmd(\"quit 1\");",
+          "new_line_content": "  if (async_quit_request)",
+          "content_same": false
+        },
+        {
+          "line": 1877,
+          "old_api": "mp_input_get_cmd",
+          "new_api": null,
+          "old_text": "mp_input_get_cmd(ictx, time, 1)",
+          "new_text": null,
+          "old_line_content": "  if ((cmd = mp_input_get_cmd(ictx, time, 1)) == NULL)",
+          "new_line_content": "  mp_cmd_t* cmd;",
+          "content_same": false
+        },
+        {
+          "line": 1367,
+          "old_api": "get_queued_cmd",
+          "new_api": null,
+          "old_text": "get_queued_cmd(ictx, peek_only)",
+          "new_text": null,
+          "old_line_content": "    ret = get_queued_cmd(ictx, peek_only);",
+          "new_line_content": "    from_queue = 1;",
+          "content_same": false
+        },
+        {
+          "line": 1370,
+          "old_api": "read_events",
+          "new_api": null,
+          "old_text": "read_events(ictx, time)",
+          "new_text": null,
+          "old_line_content": "    ret = read_events(ictx, time);",
+          "new_line_content": "    from_queue = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1373,
+          "old_api": "get_queued_cmd",
+          "new_api": null,
+          "old_text": "get_queued_cmd(ictx, peek_only)",
+          "new_text": null,
+          "old_line_content": "\tret = get_queued_cmd(ictx, peek_only);",
+          "new_line_content": "\tfrom_queue = 1;",
+          "content_same": false
+        },
+        {
+          "line": 1888,
+          "old_api": "mp_input_get_cmd",
+          "new_api": null,
+          "old_text": "mp_input_get_cmd(ictx, time, 0)",
+          "new_text": null,
+          "old_line_content": "  cmd = mp_input_get_cmd(ictx, time, 0);",
+          "new_line_content": "  // remove the cmd from the queue",
+          "content_same": false
+        },
+        {
+          "line": 1380,
+          "old_api": "filter",
+          "new_api": null,
+          "old_text": "cf->filter(ret, cf->ctx)",
+          "new_text": null,
+          "old_line_content": "    if (cf->filter(ret, cf->ctx)) {",
+          "new_line_content": "  for(cf = cmd_filters ; cf ; cf = cf->next) {",
+          "content_same": false
+        },
+        {
+          "line": 1383,
+          "old_api": "get_queued_cmd",
+          "new_api": null,
+          "old_text": "get_queued_cmd(ictx, 0)",
+          "new_text": null,
+          "old_line_content": "          ret = get_queued_cmd(ictx, 0);",
+          "new_line_content": "        // The filter ate the cmd, so we remove it from queue",
+          "content_same": false
+        },
+        {
+          "line": 1390,
+          "old_api": "mp_input_queue_cmd",
+          "new_api": null,
+          "old_text": "mp_input_queue_cmd(ictx, ret)",
+          "new_text": null,
+          "old_line_content": "      mp_input_queue_cmd(ictx, ret);",
+          "new_line_content": "  if (!from_queue && peek_only)",
+          "content_same": false
+        },
+        {
+          "line": 1397,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(cmd)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(cmd);",
+          "new_line_content": "mp_cmd_free(mp_cmd_t* cmd) {",
+          "content_same": false
+        },
+        {
+          "line": 1405,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(cmd != NULL)",
+          "new_text": null,
+          "old_line_content": "  assert(cmd != NULL);",
+          "new_line_content": "#ifdef MP_DEBUG",
+          "content_same": false
+        },
+        {
+          "line": 1408,
+          "old_api": "talloc_memdup",
+          "new_api": null,
+          "old_text": "talloc_memdup(NULL, cmd, sizeof(mp_cmd_t))",
+          "new_text": null,
+          "old_line_content": "  ret = talloc_memdup(NULL, cmd, sizeof(mp_cmd_t));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1412,
+          "old_api": "talloc_strdup",
+          "new_api": null,
+          "old_text": "talloc_strdup(ret, cmd->args[i].v.s)",
+          "new_text": null,
+          "old_line_content": "        ret->args[i].v.s = talloc_strdup(ret, cmd->args[i].v.s);",
+          "new_line_content": "    if(cmd->args[i].type == MP_CMD_ARG_STRING && cmd->args[i].v.s != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 1422,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(name, '+')",
+          "new_text": null,
+          "old_line_content": "    while (p = strchr(name, '+')) {",
+          "new_line_content": "    const char *p;",
+          "content_same": false
+        },
+        {
+          "line": 1424,
+          "old_api": "BSTR",
+          "new_api": null,
+          "old_text": "BSTR(m->name)",
+          "new_text": null,
+          "old_line_content": "            if (!bstrcasecmp(BSTR(m->name), (struct bstr){name, p - name})) {",
+          "new_line_content": "        for (struct mp_key_name *m = modifier_names; m->name; m++)",
+          "content_same": false
+        },
+        {
+          "line": 1428,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(name, \"+\")",
+          "new_text": null,
+          "old_line_content": "        if (!strcmp(name, \"+\"))",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1434,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(name)",
+          "new_text": null,
+          "old_line_content": "    int len = strlen(name);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1437,
+          "old_api": "strncasecmp",
+          "new_api": null,
+          "old_text": "strncasecmp(\"0x\", name, 2)",
+          "new_text": null,
+          "old_line_content": "    else if (len > 2 && strncasecmp(\"0x\", name, 2) == 0)",
+          "new_line_content": "        return (unsigned char)name[0] + modifiers;",
+          "content_same": false
+        },
+        {
+          "line": 1441,
+          "old_api": "strcasecmp",
+          "new_api": null,
+          "old_text": "strcasecmp(key_names[i].name, name)",
+          "new_text": null,
+          "old_line_content": "        if (strcasecmp(key_names[i].name, name) == 0)",
+          "new_line_content": "    for (int i = 0; key_names[i].name != NULL; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1454,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(ptr,'-')",
+          "new_text": null,
+          "old_line_content": "  for(end = strchr(ptr,'-') ; ptr != NULL ; end = strchr(ptr,'-')) {",
+          "new_line_content": "  n = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1460,
+          "old_api": "mp_input_get_key_from_name",
+          "new_api": null,
+          "old_text": "mp_input_get_key_from_name(ptr)",
+          "new_text": null,
+          "old_line_content": "    keys[n] = mp_input_get_key_from_name(ptr);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1486,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(keys != NULL)",
+          "new_text": null,
+          "old_line_content": "  assert(keys != NULL);",
+          "new_line_content": "#ifdef MP_DEBUG",
+          "content_same": false
+        },
+        {
+          "line": 1490,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(cmd,'}')",
+          "new_text": null,
+          "old_line_content": "  if(*cmd=='{' && (p=strchr(cmd,'}'))) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1495,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(SPACE_CHAR,cmd[0])",
+          "new_text": null,
+          "old_line_content": "    for(  ; cmd[0] != '\\0' && strchr(SPACE_CHAR,cmd[0]) != NULL ; cmd++)",
+          "new_line_content": "    // Jump beginning space",
+          "content_same": false
+        },
+        {
+          "line": 1498,
+          "old_api": "get_bind_section",
+          "new_api": null,
+          "old_text": "get_bind_section(ictx, section)",
+          "new_text": null,
+          "old_line_content": "  bind_section = get_bind_section(ictx, section);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1512,
+          "old_api": "talloc_realloc",
+          "new_api": null,
+          "old_text": "talloc_realloc(bind_section,\n                                               bind_section->cmd_binds,\n                                               mp_cmd_bind_t, i + 2)",
+          "new_text": null,
+          "old_line_content": "      bind_section->cmd_binds = talloc_realloc(bind_section,",
+          "new_line_content": "  if(!bind) {",
+          "content_same": false
+        },
+        {
+          "line": 1515,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(&bind_section->cmd_binds[i],0,2*sizeof(mp_cmd_bind_t))",
+          "new_text": null,
+          "old_line_content": "    memset(&bind_section->cmd_binds[i],0,2*sizeof(mp_cmd_bind_t));",
+          "new_line_content": "                                               mp_cmd_bind_t, i + 2);",
+          "content_same": false
+        },
+        {
+          "line": 1518,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(bind->cmd)",
+          "new_text": null,
+          "old_line_content": "  talloc_free(bind->cmd);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1531,
+          "old_api": "open",
+          "new_api": null,
+          "old_text": "open(file,O_RDONLY)",
+          "new_text": null,
+          "old_line_content": "  fd = open(file,O_RDONLY);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1534,
+          "old_api": "strerror",
+          "new_api": null,
+          "old_text": "strerror(errno)",
+          "new_text": null,
+          "old_line_content": "    mp_msg(MSGT_INPUT,MSGL_V,\"Can't open input config file %s: %s\\n\",file,strerror(errno));",
+          "new_line_content": "  if(fd < 0) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 25,
+      "total_additions": 99,
+      "total_deletions": 99,
+      "total_api_changes": 223
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 10,
+        "api_related_lines": 223,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          1288,
+          1315,
+          1309
+        ]
+      }
+    },
+    "api_calls_before": 244,
+    "api_calls_after": 244,
+    "diff_info": {
+      "added_lines": 7,
+      "removed_lines": 6,
+      "total_diff_lines": 41
+    }
+  }
+}

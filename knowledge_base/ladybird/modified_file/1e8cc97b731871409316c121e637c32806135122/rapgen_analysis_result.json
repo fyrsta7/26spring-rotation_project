@@ -1,0 +1,1934 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/1e8cc97b731871409316c121e637c32806135122",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/1e8cc97b731871409316c121e637c32806135122/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/1e8cc97b731871409316c121e637c32806135122/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/1e8cc97b731871409316c121e637c32806135122/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 49,
+          "old_api": "length",
+          "new_api": "Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\")",
+          "old_text": "view.length()",
+          "new_text": "Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\")",
+          "old_line_content": "    TRY(result.replace_with_new_string(view.length(), [&](Bytes buffer) {",
+          "new_line_content": "        return Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\");",
+          "content_same": false
+        },
+        {
+          "line": 68,
+          "old_api": "length_in_code_units",
+          "new_api": "endianness",
+          "old_text": "utf16.length_in_code_units()",
+          "new_text": "[&]() {\n        switch (utf16.endianness()) {\n        case Endianness::Host:\n            return simdutf::utf8_length_from_utf16(utf16.char_data(), utf16.length_in_code_units());\n        case Endianness::Big:\n            return simdutf::utf8_length_from_utf16be(utf16.char_data(), utf16.length_in_code_units());\n        case Endianness::Little:\n            return simdutf::utf8_length_from_utf16le(utf16.char_data(), utf16.length_in_code_units());\n        }\n        VERIFY_NOT_REACHED();\n    }()",
+          "old_line_content": "            return simdutf::utf8_length_from_utf16(utf16.char_data(), utf16.length_in_code_units());",
+          "new_line_content": "    auto utf8_length = [&]() {",
+          "content_same": false
+        },
+        {
+          "line": 77,
+          "old_api": "replace_with_new_string",
+          "new_api": "VERIFY_NOT_REACHED",
+          "old_text": "result.replace_with_new_string(utf8_length, [&](Bytes buffer) -> ErrorOr<void> {\n        [[maybe_unused]] auto result = [&]() {\n            switch (utf16.endianness()) {\n            case Endianness::Host:\n                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Big:\n                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Little:\n                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            }\n            VERIFY_NOT_REACHED();\n        }();\n        ASSERT(result == buffer.size());\n\n        return {};\n    })",
+          "new_text": "VERIFY_NOT_REACHED()",
+          "old_line_content": "    TRY(result.replace_with_new_string(utf8_length, [&](Bytes buffer) -> ErrorOr<void> {",
+          "new_line_content": "        VERIFY_NOT_REACHED();",
+          "content_same": false
+        },
+        {
+          "line": 81,
+          "old_api": "data",
+          "new_api": "endianness",
+          "old_text": "buffer.data()",
+          "new_text": "[&]() {\n            switch (utf16.endianness()) {\n            case Endianness::Host:\n                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Big:\n                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Little:\n                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            }\n            VERIFY_NOT_REACHED();\n        }()",
+          "old_line_content": "                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "new_line_content": "        [[maybe_unused]] auto result = [&]() {",
+          "content_same": false
+        },
+        {
+          "line": 103,
+          "old_api": "Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\")",
+          "new_api": "replace_with_new_string",
+          "old_text": "Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\")",
+          "new_text": "result.replace_with_new_string(byte_count, [&](Bytes buffer) -> ErrorOr<void> {\n        TRY(stream.read_until_filled(buffer));\n        if (!Utf8View { StringView { buffer } }.validate())\n            return Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\");\n        return {};\n    })",
+          "old_line_content": "            return Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\");",
+          "new_line_content": "    TRY(result.replace_with_new_string(byte_count, [&](Bytes buffer) -> ErrorOr<void> {",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": "replace_with_string_builder",
+          "new_api": "Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\")",
+          "old_text": "result.replace_with_string_builder(builder)",
+          "new_text": "Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\")",
+          "old_line_content": "    result.replace_with_string_builder(builder);",
+          "new_line_content": "        return Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\");",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": "data",
+          "new_api": "fill",
+          "old_text": "code_point_as_utf8.data()",
+          "new_text": "buffer.fill(code_point_as_utf8[0])",
+          "old_line_content": "                memcpy(buffer.data() + (i * code_point_byte_length), code_point_as_utf8.data(), code_point_byte_length);",
+          "new_line_content": "            buffer.fill(code_point_as_utf8[0]);",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "has_flag",
+          "new_api": "is_empty",
+          "old_text": "has_flag(split_behavior, SplitBehavior::KeepEmpty)",
+          "new_text": "is_empty()",
+          "old_line_content": "    bool keep_empty = has_flag(split_behavior, SplitBehavior::KeepEmpty);",
+          "new_line_content": "    if (is_empty())",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "size",
+          "new_api": "has_flag",
+          "old_text": "result.size()",
+          "new_text": "has_flag(split_behavior, SplitBehavior::KeepEmpty)",
+          "old_line_content": "    for (auto it = code_points().begin(); it != code_points().end() && (result.size() + 1) != limit; ++it) {",
+          "new_line_content": "    bool keep_empty = has_flag(split_behavior, SplitBehavior::KeepEmpty);",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "iterator_offset",
+          "new_api": "size",
+          "old_text": "code_points().iterator_offset(it)",
+          "new_text": "result.size()",
+          "old_line_content": "            size_t substring_length = code_points().iterator_offset(it) - substring_start;",
+          "new_line_content": "    for (auto it = code_points().begin(); it != code_points().end() && (result.size() + 1) != limit; ++it) {",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": "underlying_code_point_length_in_bytes",
+          "new_api": "iterator_offset",
+          "old_text": "it.underlying_code_point_length_in_bytes()",
+          "new_text": "code_points().iterator_offset(it)",
+          "old_line_content": "            substring_start = code_points().iterator_offset(it) + it.underlying_code_point_length_in_bytes();",
+          "new_line_content": "            size_t substring_length = code_points().iterator_offset(it) - substring_start;",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": "byte_length",
+          "new_api": "underlying_code_point_length_in_bytes",
+          "old_text": "code_points().byte_length()",
+          "new_text": "it.underlying_code_point_length_in_bytes()",
+          "old_line_content": "    size_t tail_length = code_points().byte_length() - substring_start;",
+          "new_line_content": "            substring_start = code_points().iterator_offset(it) + it.underlying_code_point_length_in_bytes();",
+          "content_same": false
+        },
+        {
+          "line": 205,
+          "old_api": "end",
+          "new_api": "byte_length",
+          "old_text": "code_points.end()",
+          "new_text": "code_points.byte_length()",
+          "old_line_content": "    for (auto it = code_points.iterator_at_byte_offset(from_byte_offset); it != code_points.end(); ++it) {",
+          "new_line_content": "    if (from_byte_offset >= code_points.byte_length())",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "characters_without_null_termination",
+          "new_api": "length",
+          "old_text": "memmem_optional(\n        view.characters_without_null_termination() + from_byte_offset, view.length() - from_byte_offset,\n        substring.characters_without_null_termination(), substring.length())",
+          "new_text": "view.length()",
+          "old_line_content": "    auto index = memmem_optional(",
+          "new_line_content": "    if (from_byte_offset >= view.length())",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "has_value",
+          "new_api": "length",
+          "old_text": "index.has_value()",
+          "new_text": "view.length()",
+          "old_line_content": "    if (index.has_value())",
+          "new_line_content": "        view.characters_without_null_termination() + from_byte_offset, view.length() - from_byte_offset,",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": "try_ensure_capacity",
+          "new_api": "length",
+          "old_text": "code_points.try_ensure_capacity(code_point_length)",
+          "new_text": "code_points().length()",
+          "old_line_content": "    TRY(code_points.try_ensure_capacity(code_point_length));",
+          "new_line_content": "    auto code_point_length = code_points().length();",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": "unchecked_append",
+          "new_api": "try_ensure_capacity",
+          "old_text": "code_points.unchecked_append(code_point)",
+          "new_text": "code_points.try_ensure_capacity(code_point_length)",
+          "old_line_content": "        code_points.unchecked_append(code_point);",
+          "new_line_content": "    TRY(code_points.try_ensure_capacity(code_point_length));",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "StringBuilder::create(code_point_length * sizeof(u32))",
+          "new_api": "code_points",
+          "old_text": "StringBuilder::create(code_point_length * sizeof(u32))",
+          "new_text": "this->code_points()",
+          "old_line_content": "    auto builder = TRY(StringBuilder::create(code_point_length * sizeof(u32)));",
+          "new_line_content": "    for (auto code_point : this->code_points())",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "is_empty",
+          "new_api": "unchecked_append",
+          "old_text": "code_points.is_empty()",
+          "new_text": "code_points.unchecked_append(code_point)",
+          "old_line_content": "    while (!code_points.is_empty())",
+          "new_line_content": "        code_points.unchecked_append(code_point);",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "to_string",
+          "new_api": "is_empty",
+          "old_text": "builder.to_string()",
+          "new_text": "code_points.is_empty()",
+          "old_line_content": "    return builder.to_string();",
+          "new_line_content": "    while (!code_points.is_empty())",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "begin",
+          "new_api": "is_empty",
+          "old_text": "code_points().begin()",
+          "new_text": "is_empty()",
+          "old_line_content": "    return *code_points().begin() == code_point;",
+          "new_line_content": "    if (is_empty())",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": "bytes",
+          "new_api": "Error::from_errno(EOVERFLOW)",
+          "old_text": "input.bytes().size()",
+          "new_text": "Error::from_errno(EOVERFLOW)",
+          "old_line_content": "    size_t input_size = input.bytes().size();",
+          "new_line_content": "        return Error::from_errno(EOVERFLOW);",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "slice",
+          "new_api": "bytes",
+          "old_text": "buffer.slice(i * input_size, input_size)",
+          "new_text": "input.bytes().first()",
+          "old_line_content": "                input.bytes().copy_to(buffer.slice(i * input_size, input_size));",
+          "new_line_content": "            buffer.fill(input.bytes().first());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 25,
+          "old_api": null,
+          "new_api": "validate",
+          "old_text": null,
+          "new_text": "Utf8View(view).validate()",
+          "old_line_content": "    StringBuilder builder;",
+          "new_line_content": "    if (Utf8View(view).validate())",
+          "content_same": false
+        },
+        {
+          "line": 26,
+          "old_api": null,
+          "new_api": "bytes",
+          "old_text": null,
+          "new_text": "view.bytes()",
+          "old_line_content": "",
+          "new_line_content": "        return String::from_utf8_without_validation(view.bytes());",
+          "content_same": false
+        },
+        {
+          "line": 31,
+          "old_api": null,
+          "new_api": "append_code_point",
+          "old_text": null,
+          "new_text": "builder.append_code_point(c)",
+          "old_line_content": "}",
+          "new_line_content": "        builder.append_code_point(c);",
+          "content_same": false
+        },
+        {
+          "line": 33,
+          "old_api": null,
+          "new_api": "to_string_without_validation",
+          "old_text": null,
+          "new_text": "builder.to_string_without_validation()",
+          "old_line_content": "String String::from_utf8_without_validation(ReadonlyBytes bytes)",
+          "new_line_content": "    return builder.to_string_without_validation();",
+          "content_same": false
+        },
+        {
+          "line": 39,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "bytes.size()",
+          "old_line_content": "    }));",
+          "new_line_content": "    MUST(result.replace_with_new_string(bytes.size(), [&](Bytes buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 40,
+          "old_api": null,
+          "new_api": "copy_to",
+          "old_text": null,
+          "new_text": "bytes.copy_to(buffer)",
+          "old_line_content": "    return result;",
+          "new_line_content": "        bytes.copy_to(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 48,
+          "old_api": null,
+          "new_api": "validate",
+          "old_text": null,
+          "new_text": "Utf8View { view }.validate()",
+          "old_line_content": "    String result;",
+          "new_line_content": "    if (!Utf8View { view }.validate())",
+          "content_same": false
+        },
+        {
+          "line": 52,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "view.length()",
+          "old_line_content": "    }));",
+          "new_line_content": "    TRY(result.replace_with_new_string(view.length(), [&](Bytes buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 53,
+          "old_api": null,
+          "new_api": "bytes",
+          "old_text": null,
+          "new_text": "view.bytes().copy_to(buffer)",
+          "old_line_content": "    return result;",
+          "new_line_content": "        view.bytes().copy_to(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 61,
+          "old_api": null,
+          "new_api": "validate",
+          "old_text": null,
+          "new_text": "utf16.validate()",
+          "old_line_content": "        return String {};",
+          "new_line_content": "    if (!utf16.validate())",
+          "content_same": false
+        },
+        {
+          "line": 62,
+          "old_api": null,
+          "new_api": "Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\")",
+          "old_text": null,
+          "new_text": "Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\")",
+          "old_line_content": "",
+          "new_line_content": "        return Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\");",
+          "content_same": false
+        },
+        {
+          "line": 63,
+          "old_api": null,
+          "new_api": "is_empty",
+          "old_text": null,
+          "new_text": "utf16.is_empty()",
+          "old_line_content": "    String result;",
+          "new_line_content": "    if (utf16.is_empty())",
+          "content_same": false
+        },
+        {
+          "line": 69,
+          "old_api": null,
+          "new_api": "endianness",
+          "old_text": null,
+          "new_text": "utf16.endianness()",
+          "old_line_content": "        case Endianness::Big:",
+          "new_line_content": "        switch (utf16.endianness()) {",
+          "content_same": false
+        },
+        {
+          "line": 71,
+          "old_api": null,
+          "new_api": "length_in_code_units",
+          "old_text": null,
+          "new_text": "utf16.length_in_code_units()",
+          "old_line_content": "        case Endianness::Little:",
+          "new_line_content": "            return simdutf::utf8_length_from_utf16(utf16.char_data(), utf16.length_in_code_units());",
+          "content_same": false
+        },
+        {
+          "line": 73,
+          "old_api": null,
+          "new_api": "length_in_code_units",
+          "old_text": null,
+          "new_text": "utf16.length_in_code_units()",
+          "old_line_content": "        }",
+          "new_line_content": "            return simdutf::utf8_length_from_utf16be(utf16.char_data(), utf16.length_in_code_units());",
+          "content_same": false
+        },
+        {
+          "line": 75,
+          "old_api": null,
+          "new_api": "length_in_code_units",
+          "old_text": null,
+          "new_text": "utf16.length_in_code_units()",
+          "old_line_content": "    }();",
+          "new_line_content": "            return simdutf::utf8_length_from_utf16le(utf16.char_data(), utf16.length_in_code_units());",
+          "content_same": false
+        },
+        {
+          "line": 80,
+          "old_api": null,
+          "new_api": "replace_with_new_string",
+          "old_text": null,
+          "new_text": "result.replace_with_new_string(utf8_length, [&](Bytes buffer) -> ErrorOr<void> {\n        [[maybe_unused]] auto result = [&]() {\n            switch (utf16.endianness()) {\n            case Endianness::Host:\n                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Big:\n                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Little:\n                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            }\n            VERIFY_NOT_REACHED();\n        }();\n        ASSERT(result == buffer.size());\n\n        return {};\n    })",
+          "old_line_content": "            case Endianness::Host:",
+          "new_line_content": "    TRY(result.replace_with_new_string(utf8_length, [&](Bytes buffer) -> ErrorOr<void> {",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": null,
+          "new_api": "endianness",
+          "old_text": null,
+          "new_text": "utf16.endianness()",
+          "old_line_content": "            case Endianness::Big:",
+          "new_line_content": "            switch (utf16.endianness()) {",
+          "content_same": false
+        },
+        {
+          "line": 84,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buffer.data()",
+          "old_line_content": "            case Endianness::Little:",
+          "new_line_content": "                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "content_same": false
+        },
+        {
+          "line": 86,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buffer.data()",
+          "old_line_content": "            }",
+          "new_line_content": "                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "content_same": false
+        },
+        {
+          "line": 88,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buffer.data()",
+          "old_line_content": "        }();",
+          "new_line_content": "                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "content_same": false
+        },
+        {
+          "line": 90,
+          "old_api": null,
+          "new_api": "VERIFY_NOT_REACHED",
+          "old_text": null,
+          "new_text": "VERIFY_NOT_REACHED()",
+          "old_line_content": "",
+          "new_line_content": "            VERIFY_NOT_REACHED();",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "buffer.size()",
+          "old_line_content": "    }));",
+          "new_line_content": "        ASSERT(result == buffer.size());",
+          "content_same": false
+        },
+        {
+          "line": 104,
+          "old_api": null,
+          "new_api": "read_until_filled",
+          "old_text": null,
+          "new_text": "stream.read_until_filled(buffer)",
+          "old_line_content": "        return {};",
+          "new_line_content": "        TRY(stream.read_until_filled(buffer));",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": null,
+          "new_api": "validate",
+          "old_text": null,
+          "new_text": "Utf8View { StringView { buffer } }.validate()",
+          "old_line_content": "    }));",
+          "new_line_content": "        if (!Utf8View { StringView { buffer } }.validate())",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": null,
+          "new_api": "Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\")",
+          "old_text": null,
+          "new_text": "Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\")",
+          "old_line_content": "    return result;",
+          "new_line_content": "            return Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\");",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": null,
+          "new_api": "string_view",
+          "old_text": null,
+          "new_text": "builder.string_view()",
+          "old_line_content": "    String result;",
+          "new_line_content": "    if (!Utf8View { builder.string_view() }.validate())",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "replace_with_string_builder",
+          "old_text": null,
+          "new_text": "result.replace_with_string_builder(builder)",
+          "old_line_content": "",
+          "new_line_content": "    result.replace_with_string_builder(builder);",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": null,
+          "new_api": "replace_with_string_builder",
+          "old_text": null,
+          "new_text": "result.replace_with_string_builder(builder)",
+          "old_line_content": "",
+          "new_line_content": "    result.replace_with_string_builder(builder);",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "is_unicode",
+          "old_text": null,
+          "new_text": "is_unicode(code_point)",
+          "old_line_content": "    size_t i = 0;",
+          "new_line_content": "    VERIFY(is_unicode(code_point));",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {\n        code_point_as_utf8[i++] = static_cast<u8>(byte);\n    })",
+          "old_text": null,
+          "new_text": "UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {\n        code_point_as_utf8[i++] = static_cast<u8>(byte);\n    })",
+          "old_line_content": "",
+          "new_line_content": "    size_t code_point_byte_length = UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": null,
+          "new_api": "static_cast<u8>(byte)",
+          "old_text": null,
+          "new_text": "static_cast<u8>(byte)",
+          "old_line_content": "    auto total_byte_count = code_point_byte_length * count;",
+          "new_line_content": "        code_point_as_utf8[i++] = static_cast<u8>(byte);",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": null,
+          "new_api": "replace_with_new_string",
+          "old_text": null,
+          "new_text": "result.replace_with_new_string(total_byte_count, [&](Bytes buffer) {\n        if (code_point_byte_length == 1) {\n            buffer.fill(code_point_as_utf8[0]);\n        } else {\n            for (i = 0; i < count; ++i)\n                memcpy(buffer.data() + (i * code_point_byte_length), code_point_as_utf8.data(), code_point_byte_length);\n        }\n        return ErrorOr<void> {};\n    })",
+          "old_line_content": "        } else {",
+          "new_line_content": "    TRY(result.replace_with_new_string(total_byte_count, [&](Bytes buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "code_point_as_utf8.data()",
+          "old_line_content": "    }));",
+          "new_line_content": "                memcpy(buffer.data() + (i * code_point_byte_length), code_point_as_utf8.data(), code_point_byte_length);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "bytes",
+          "old_text": null,
+          "new_text": "bytes()",
+          "old_line_content": "bool String::is_empty() const",
+          "new_line_content": "    return StringView(bytes());",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "bytes().size()",
+          "old_line_content": "ErrorOr<String> String::vformatted(StringView fmtstr, TypeErasedFormatParams& params)",
+          "new_line_content": "    return bytes().size() == 0;",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": null,
+          "new_api": "vformat",
+          "old_text": null,
+          "new_text": "vformat(builder, fmtstr, params)",
+          "old_line_content": "",
+          "new_line_content": "    TRY(vformat(builder, fmtstr, params));",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": null,
+          "new_api": "to_string",
+          "old_text": null,
+          "new_text": "builder.to_string()",
+          "old_line_content": "ErrorOr<Vector<String>> String::split(u32 separator, SplitBehavior split_behavior) const",
+          "new_line_content": "    return builder.to_string();",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "split_limit",
+          "old_text": null,
+          "new_text": "split_limit(separator, 0, split_behavior)",
+          "old_line_content": "ErrorOr<Vector<String>> String::split_limit(u32 separator, size_t limit, SplitBehavior split_behavior) const",
+          "new_line_content": "    return split_limit(separator, 0, split_behavior);",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "substring_from_byte_offset_with_shared_superstring",
+          "old_text": null,
+          "new_text": "substring_from_byte_offset_with_shared_superstring(substring_start, substring_length)",
+          "old_line_content": "    }",
+          "new_line_content": "                TRY(result.try_append(TRY(substring_from_byte_offset_with_shared_superstring(substring_start, substring_length))));",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "byte_length",
+          "old_text": null,
+          "new_text": "code_points().byte_length()",
+          "old_line_content": "    return result;",
+          "new_line_content": "    size_t tail_length = code_points().byte_length() - substring_start;",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": null,
+          "new_api": "substring_from_byte_offset_with_shared_superstring",
+          "old_text": null,
+          "new_text": "substring_from_byte_offset_with_shared_superstring(substring_start, tail_length)",
+          "old_line_content": "",
+          "new_line_content": "        TRY(result.try_append(TRY(substring_from_byte_offset_with_shared_superstring(substring_start, tail_length))));",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": null,
+          "new_api": "code_points",
+          "old_text": null,
+          "new_text": "this->code_points()",
+          "old_line_content": "",
+          "new_line_content": "    auto code_points = this->code_points();",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "code_points.end()",
+          "old_line_content": "    }",
+          "new_line_content": "    for (auto it = code_points.iterator_at_byte_offset(from_byte_offset); it != code_points.end(); ++it) {",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "byte_offset_of",
+          "old_text": null,
+          "new_text": "code_points.byte_offset_of(it)",
+          "old_line_content": "    return {};",
+          "new_line_content": "            return code_points.byte_offset_of(it);",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "",
+          "new_line_content": "    auto view = bytes_as_string_view();",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "characters_without_null_termination",
+          "old_text": null,
+          "new_text": "memmem_optional(\n        view.characters_without_null_termination() + from_byte_offset, view.length() - from_byte_offset,\n        substring.characters_without_null_termination(), substring.length())",
+          "old_line_content": "",
+          "new_line_content": "    auto index = memmem_optional(",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "substring.length()",
+          "old_line_content": "        return *index + from_byte_offset;",
+          "new_line_content": "        substring.characters_without_null_termination(), substring.length());",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "has_value",
+          "old_text": null,
+          "new_text": "index.has_value()",
+          "old_line_content": "}",
+          "new_line_content": "    if (index.has_value())",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "other.data({})",
+          "old_line_content": "bool String::operator==(StringView other) const",
+          "new_line_content": "    return static_cast<StringBase const&>(*this) == other.data({});",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "ErrorOr<String> String::substring_from_byte_offset(size_t start, size_t byte_count) const",
+          "new_line_content": "    return bytes_as_string_view() == other;",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": null,
+          "new_api": "substring_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().substring_view(start, byte_count)",
+          "old_line_content": "ErrorOr<String> String::substring_from_byte_offset(size_t start) const",
+          "new_line_content": "    return String::from_utf8(bytes_as_string_view().substring_view(start, byte_count));",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().length()",
+          "old_line_content": "",
+          "new_line_content": "    VERIFY(start <= bytes_as_string_view().length());",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().length()",
+          "old_line_content": "ErrorOr<String> String::substring_from_byte_offset_with_shared_superstring(size_t start, size_t byte_count) const",
+          "new_line_content": "    return substring_from_byte_offset(start, bytes_as_string_view().length() - start);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": null,
+          "new_api": "StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)",
+          "old_text": null,
+          "new_text": "StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)",
+          "old_line_content": "ErrorOr<String> String::substring_from_byte_offset_with_shared_superstring(size_t start) const",
+          "new_line_content": "    return String { TRY(StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)) };",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().length()",
+          "old_line_content": "",
+          "new_line_content": "    VERIFY(start <= bytes_as_string_view().length());",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().length()",
+          "old_line_content": "bool String::operator==(char const* c_string) const",
+          "new_line_content": "    return substring_from_byte_offset_with_shared_superstring(start, bytes_as_string_view().length() - start);",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "u32 String::ascii_case_insensitive_hash() const",
+          "new_line_content": "    return bytes_as_string_view() == c_string;",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "bytes().size()",
+          "old_line_content": "Utf8View String::code_points() const&",
+          "new_line_content": "    return case_insensitive_string_hash(reinterpret_cast<char const*>(bytes().data()), bytes().size());",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "ErrorOr<void> Formatter<String>::format(FormatBuilder& builder, String const& utf8_string)",
+          "new_line_content": "    return Utf8View(bytes_as_string_view());",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "utf8_string.bytes_as_string_view()",
+          "old_line_content": "ErrorOr<String> String::replace(StringView needle, StringView replacement, ReplaceMode replace_mode) const",
+          "new_line_content": "    return Formatter<StringView>::format(builder, utf8_string.bytes_as_string_view());",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": null,
+          "new_api": "StringUtils::replace(*this, needle, replacement, replace_mode)",
+          "old_text": null,
+          "new_text": "StringUtils::replace(*this, needle, replacement, replace_mode)",
+          "old_line_content": "ErrorOr<String> String::reverse() const",
+          "new_line_content": "    return StringUtils::replace(*this, needle, replacement, replace_mode);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "StringBuilder::create(code_point_length * sizeof(u32))",
+          "old_text": null,
+          "new_text": "StringBuilder::create(code_point_length * sizeof(u32))",
+          "old_line_content": "",
+          "new_line_content": "    auto builder = TRY(StringBuilder::create(code_point_length * sizeof(u32)));",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "take_last",
+          "old_text": null,
+          "new_text": "code_points.take_last()",
+          "old_line_content": "}",
+          "new_line_content": "        TRY(builder.try_append_code_point(code_points.take_last()));",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "to_string",
+          "old_text": null,
+          "new_text": "builder.to_string()",
+          "old_line_content": "ErrorOr<String> String::trim(Utf8View const& code_points_to_trim, TrimMode mode) const",
+          "new_line_content": "    return builder.to_string();",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "trim",
+          "old_text": null,
+          "new_text": "code_points().trim(code_points_to_trim, mode)",
+          "old_line_content": "",
+          "new_line_content": "    auto trimmed = code_points().trim(code_points_to_trim, mode);",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": null,
+          "new_api": "as_string",
+          "old_text": null,
+          "new_text": "trimmed.as_string()",
+          "old_line_content": "ErrorOr<String> String::trim(StringView code_points_to_trim, TrimMode mode) const",
+          "new_line_content": "    return String::from_utf8(trimmed.as_string());",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": null,
+          "new_api": "trim",
+          "old_text": null,
+          "new_text": "trim(Utf8View { code_points_to_trim }, mode)",
+          "old_line_content": "ErrorOr<String> String::trim_ascii_whitespace(TrimMode mode) const",
+          "new_line_content": "    return trim(Utf8View { code_points_to_trim }, mode);",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": null,
+          "new_api": "trim",
+          "old_text": null,
+          "new_text": "trim(\" \\n\\t\\v\\f\\r\"sv, mode)",
+          "old_line_content": "bool String::contains(StringView needle, CaseSensitivity case_sensitivity) const",
+          "new_line_content": "    return trim(\" \\n\\t\\v\\f\\r\"sv, mode);",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "bool String::contains(u32 needle, CaseSensitivity case_sensitivity) const",
+          "new_line_content": "    return StringUtils::contains(bytes_as_string_view(), needle, case_sensitivity);",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": null,
+          "new_api": "String::from_code_point(needle)",
+          "old_text": null,
+          "new_text": "String::from_code_point(needle)",
+          "old_line_content": "",
+          "new_line_content": "    auto needle_as_string = String::from_code_point(needle);",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "needle_as_string.bytes_as_string_view()",
+          "old_line_content": "bool String::starts_with(u32 code_point) const",
+          "new_line_content": "    return contains(needle_as_string.bytes_as_string_view(), case_sensitivity);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "code_points().begin()",
+          "old_line_content": "bool String::starts_with_bytes(StringView bytes, CaseSensitivity case_sensitivity) const",
+          "new_line_content": "    return *code_points().begin() == code_point;",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "starts_with",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().starts_with(bytes, case_sensitivity)",
+          "old_line_content": "bool String::ends_with(u32 code_point) const",
+          "new_line_content": "    return bytes_as_string_view().starts_with(bytes, case_sensitivity);",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": null,
+          "new_api": "is_empty",
+          "old_text": null,
+          "new_text": "is_empty()",
+          "old_line_content": "    u32 last_code_point = 0;",
+          "new_line_content": "    if (is_empty())",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "code_points().end()",
+          "old_line_content": "    return last_code_point == code_point;",
+          "new_line_content": "    for (auto it = code_points().begin(); it != code_points().end(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "ends_with",
+          "old_text": null,
+          "new_text": "bytes_as_string_view().ends_with(bytes, case_sensitivity)",
+          "old_line_content": "unsigned Traits<String>::hash(String const& string)",
+          "new_line_content": "    return bytes_as_string_view().ends_with(bytes, case_sensitivity);",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": null,
+          "new_api": "hash",
+          "old_text": null,
+          "new_text": "string.hash()",
+          "old_line_content": "ByteString String::to_byte_string() const",
+          "new_line_content": "    return string.hash();",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "ErrorOr<String> String::from_byte_string(ByteString const& byte_string)",
+          "new_line_content": "    return ByteString(bytes_as_string_view());",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": null,
+          "new_api": "view",
+          "old_text": null,
+          "new_text": "byte_string.view()",
+          "old_line_content": "bool String::equals_ignoring_ascii_case(StringView other) const",
+          "new_line_content": "    return String::from_utf8(byte_string.view());",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "bytes_as_string_view",
+          "old_text": null,
+          "new_text": "bytes_as_string_view()",
+          "old_line_content": "ErrorOr<String> String::repeated(String const& input, size_t count)",
+          "new_line_content": "    return StringUtils::equals_ignoring_ascii_case(bytes_as_string_view(), other);",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": null,
+          "new_api": "bytes",
+          "old_text": null,
+          "new_text": "input.bytes().size()",
+          "old_line_content": "    String result;",
+          "new_line_content": "    if (Checked<u32>::multiplication_would_overflow(count, input.bytes().size()))",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "replace_with_new_string",
+          "old_text": null,
+          "new_text": "result.replace_with_new_string(count * input_size, [&](Bytes buffer) {\n        if (input_size == 1) {\n            buffer.fill(input.bytes().first());\n        } else {\n            for (size_t i = 0; i < count; ++i)\n                input.bytes().copy_to(buffer.slice(i * input_size, input_size));\n        }\n        return ErrorOr<void> {};\n    })",
+          "old_line_content": "        } else {",
+          "new_line_content": "    TRY(result.replace_with_new_string(count * input_size, [&](Bytes buffer) {",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "slice",
+          "old_text": null,
+          "new_text": "buffer.slice(i * input_size, input_size)",
+          "old_line_content": "    }));",
+          "new_line_content": "                input.bytes().copy_to(buffer.slice(i * input_size, input_size));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 28,
+          "old_api": "append_code_point",
+          "new_api": null,
+          "old_text": "builder.append_code_point(c)",
+          "new_text": null,
+          "old_line_content": "        builder.append_code_point(c);",
+          "new_line_content": "    StringBuilder builder;",
+          "content_same": false
+        },
+        {
+          "line": 30,
+          "old_api": "to_string_without_validation",
+          "new_api": null,
+          "old_text": "builder.to_string_without_validation()",
+          "new_text": null,
+          "old_line_content": "    return builder.to_string_without_validation();",
+          "new_line_content": "    for (auto c : Utf8View { view })",
+          "content_same": false
+        },
+        {
+          "line": 36,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "bytes.size()",
+          "new_text": null,
+          "old_line_content": "    MUST(result.replace_with_new_string(bytes.size(), [&](Bytes buffer) {",
+          "new_line_content": "String String::from_utf8_without_validation(ReadonlyBytes bytes)",
+          "content_same": false
+        },
+        {
+          "line": 37,
+          "old_api": "copy_to",
+          "new_api": null,
+          "old_text": "bytes.copy_to(buffer)",
+          "new_text": null,
+          "old_line_content": "        bytes.copy_to(buffer);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 45,
+          "old_api": "validate",
+          "new_api": null,
+          "old_text": "Utf8View { view }.validate()",
+          "new_text": null,
+          "old_line_content": "    if (!Utf8View { view }.validate())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 46,
+          "old_api": "Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\")",
+          "new_api": null,
+          "old_text": "Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\")",
+          "new_text": null,
+          "old_line_content": "        return Error::from_string_literal(\"String::from_utf8: Input was not valid UTF-8\");",
+          "new_line_content": "ErrorOr<String> String::from_utf8(StringView view)",
+          "content_same": false
+        },
+        {
+          "line": 50,
+          "old_api": "bytes",
+          "new_api": null,
+          "old_text": "view.bytes().copy_to(buffer)",
+          "new_text": null,
+          "old_line_content": "        view.bytes().copy_to(buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 58,
+          "old_api": "validate",
+          "new_api": null,
+          "old_text": "utf16.validate()",
+          "new_text": null,
+          "old_line_content": "    if (!utf16.validate())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 59,
+          "old_api": "Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\")",
+          "new_api": null,
+          "old_text": "Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\")",
+          "new_text": null,
+          "old_line_content": "        return Error::from_string_literal(\"String::from_utf16: Input was not valid UTF-16\");",
+          "new_line_content": "ErrorOr<String> String::from_utf16(Utf16View const& utf16)",
+          "content_same": false
+        },
+        {
+          "line": 60,
+          "old_api": "is_empty",
+          "new_api": null,
+          "old_text": "utf16.is_empty()",
+          "new_text": null,
+          "old_line_content": "    if (utf16.is_empty())",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 65,
+          "old_api": "endianness",
+          "new_api": null,
+          "old_text": "[&]() {\n        switch (utf16.endianness()) {\n        case Endianness::Host:\n            return simdutf::utf8_length_from_utf16(utf16.char_data(), utf16.length_in_code_units());\n        case Endianness::Big:\n            return simdutf::utf8_length_from_utf16be(utf16.char_data(), utf16.length_in_code_units());\n        case Endianness::Little:\n            return simdutf::utf8_length_from_utf16le(utf16.char_data(), utf16.length_in_code_units());\n        }\n        VERIFY_NOT_REACHED();\n    }()",
+          "new_text": null,
+          "old_line_content": "    auto utf8_length = [&]() {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 66,
+          "old_api": "endianness",
+          "new_api": null,
+          "old_text": "utf16.endianness()",
+          "new_text": null,
+          "old_line_content": "        switch (utf16.endianness()) {",
+          "new_line_content": "    String result;",
+          "content_same": false
+        },
+        {
+          "line": 70,
+          "old_api": "length_in_code_units",
+          "new_api": null,
+          "old_text": "utf16.length_in_code_units()",
+          "new_text": null,
+          "old_line_content": "            return simdutf::utf8_length_from_utf16be(utf16.char_data(), utf16.length_in_code_units());",
+          "new_line_content": "        case Endianness::Host:",
+          "content_same": false
+        },
+        {
+          "line": 72,
+          "old_api": "length_in_code_units",
+          "new_api": null,
+          "old_text": "utf16.length_in_code_units()",
+          "new_text": null,
+          "old_line_content": "            return simdutf::utf8_length_from_utf16le(utf16.char_data(), utf16.length_in_code_units());",
+          "new_line_content": "        case Endianness::Big:",
+          "content_same": false
+        },
+        {
+          "line": 74,
+          "old_api": "VERIFY_NOT_REACHED",
+          "new_api": null,
+          "old_text": "VERIFY_NOT_REACHED()",
+          "new_text": null,
+          "old_line_content": "        VERIFY_NOT_REACHED();",
+          "new_line_content": "        case Endianness::Little:",
+          "content_same": false
+        },
+        {
+          "line": 78,
+          "old_api": "endianness",
+          "new_api": null,
+          "old_text": "[&]() {\n            switch (utf16.endianness()) {\n            case Endianness::Host:\n                return simdutf::convert_utf16_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Big:\n                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            case Endianness::Little:\n                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));\n            }\n            VERIFY_NOT_REACHED();\n        }()",
+          "new_text": null,
+          "old_line_content": "        [[maybe_unused]] auto result = [&]() {",
+          "new_line_content": "    }();",
+          "content_same": false
+        },
+        {
+          "line": 79,
+          "old_api": "endianness",
+          "new_api": null,
+          "old_text": "utf16.endianness()",
+          "new_text": null,
+          "old_line_content": "            switch (utf16.endianness()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 83,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "buffer.data()",
+          "new_text": null,
+          "old_line_content": "                return simdutf::convert_utf16be_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "new_line_content": "            case Endianness::Host:",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "buffer.data()",
+          "new_text": null,
+          "old_line_content": "                return simdutf::convert_utf16le_to_utf8(utf16.char_data(), utf16.length_in_code_units(), reinterpret_cast<char*>(buffer.data()));",
+          "new_line_content": "            case Endianness::Big:",
+          "content_same": false
+        },
+        {
+          "line": 87,
+          "old_api": "VERIFY_NOT_REACHED",
+          "new_api": null,
+          "old_text": "VERIFY_NOT_REACHED()",
+          "new_text": null,
+          "old_line_content": "            VERIFY_NOT_REACHED();",
+          "new_line_content": "            case Endianness::Little:",
+          "content_same": false
+        },
+        {
+          "line": 89,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "buffer.size()",
+          "new_text": null,
+          "old_line_content": "        ASSERT(result == buffer.size());",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 100,
+          "old_api": "replace_with_new_string",
+          "new_api": null,
+          "old_text": "result.replace_with_new_string(byte_count, [&](Bytes buffer) -> ErrorOr<void> {\n        TRY(stream.read_until_filled(buffer));\n        if (!Utf8View { StringView { buffer } }.validate())\n            return Error::from_string_literal(\"String::from_stream: Input was not valid UTF-8\");\n        return {};\n    })",
+          "new_text": null,
+          "old_line_content": "    TRY(result.replace_with_new_string(byte_count, [&](Bytes buffer) -> ErrorOr<void> {",
+          "new_line_content": "ErrorOr<String> String::from_stream(Stream& stream, size_t byte_count)",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": "read_until_filled",
+          "new_api": null,
+          "old_text": "stream.read_until_filled(buffer)",
+          "new_text": null,
+          "old_line_content": "        TRY(stream.read_until_filled(buffer));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": "validate",
+          "new_api": null,
+          "old_text": "Utf8View { StringView { buffer } }.validate()",
+          "new_text": null,
+          "old_line_content": "        if (!Utf8View { StringView { buffer } }.validate())",
+          "new_line_content": "    String result;",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": "string_view",
+          "new_api": null,
+          "old_text": "builder.string_view()",
+          "new_text": null,
+          "old_line_content": "    if (!Utf8View { builder.string_view() }.validate())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": "Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\")",
+          "new_api": null,
+          "old_text": "Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\")",
+          "new_text": null,
+          "old_line_content": "        return Error::from_string_literal(\"String::from_string_builder: Input was not valid UTF-8\");",
+          "new_line_content": "ErrorOr<String> String::from_string_builder(Badge<StringBuilder>, StringBuilder& builder)",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": "replace_with_string_builder",
+          "new_api": null,
+          "old_text": "result.replace_with_string_builder(builder)",
+          "new_text": null,
+          "old_line_content": "    result.replace_with_string_builder(builder);",
+          "new_line_content": "String String::from_string_builder_without_validation(Badge<StringBuilder>, StringBuilder& builder)",
+          "content_same": false
+        },
+        {
+          "line": 128,
+          "old_api": "is_unicode",
+          "new_api": null,
+          "old_text": "is_unicode(code_point)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(is_unicode(code_point));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {\n        code_point_as_utf8[i++] = static_cast<u8>(byte);\n    })",
+          "new_api": null,
+          "old_text": "UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {\n        code_point_as_utf8[i++] = static_cast<u8>(byte);\n    })",
+          "new_text": null,
+          "old_line_content": "    size_t code_point_byte_length = UnicodeUtils::code_point_to_utf8(code_point, [&](auto byte) {",
+          "new_line_content": "    Array<u8, 4> code_point_as_utf8;",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "static_cast<u8>(byte)",
+          "new_api": null,
+          "old_text": "static_cast<u8>(byte)",
+          "new_text": null,
+          "old_line_content": "        code_point_as_utf8[i++] = static_cast<u8>(byte);",
+          "new_line_content": "    size_t i = 0;",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "replace_with_new_string",
+          "new_api": null,
+          "old_text": "result.replace_with_new_string(total_byte_count, [&](Bytes buffer) {\n        if (code_point_byte_length == 1) {\n            buffer.fill(code_point_as_utf8[0]);\n        } else {\n            for (i = 0; i < count; ++i)\n                memcpy(buffer.data() + (i * code_point_byte_length), code_point_as_utf8.data(), code_point_byte_length);\n        }\n        return ErrorOr<void> {};\n    })",
+          "new_text": null,
+          "old_line_content": "    TRY(result.replace_with_new_string(total_byte_count, [&](Bytes buffer) {",
+          "new_line_content": "    auto total_byte_count = code_point_byte_length * count;",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "fill",
+          "new_api": null,
+          "old_text": "buffer.fill(code_point_as_utf8[0])",
+          "new_text": null,
+          "old_line_content": "            buffer.fill(code_point_as_utf8[0]);",
+          "new_line_content": "    String result;",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "bytes",
+          "new_api": null,
+          "old_text": "bytes()",
+          "new_text": null,
+          "old_line_content": "    return StringView(bytes());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "bytes().size()",
+          "new_text": null,
+          "old_line_content": "    return bytes().size() == 0;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "vformat",
+          "new_api": null,
+          "old_text": "vformat(builder, fmtstr, params)",
+          "new_text": null,
+          "old_line_content": "    TRY(vformat(builder, fmtstr, params));",
+          "new_line_content": "ErrorOr<String> String::vformatted(StringView fmtstr, TypeErasedFormatParams& params)",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": "to_string",
+          "new_api": null,
+          "old_text": "builder.to_string()",
+          "new_text": null,
+          "old_line_content": "    return builder.to_string();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": "split_limit",
+          "new_api": null,
+          "old_text": "split_limit(separator, 0, split_behavior)",
+          "new_text": null,
+          "old_line_content": "    return split_limit(separator, 0, split_behavior);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": "is_empty",
+          "new_api": null,
+          "old_text": "is_empty()",
+          "new_text": null,
+          "old_line_content": "    if (is_empty())",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": "substring_from_byte_offset_with_shared_superstring",
+          "new_api": null,
+          "old_text": "substring_from_byte_offset_with_shared_superstring(substring_start, substring_length)",
+          "new_text": null,
+          "old_line_content": "                TRY(result.try_append(TRY(substring_from_byte_offset_with_shared_superstring(substring_start, substring_length))));",
+          "new_line_content": "        if (code_point == separator) {",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "substring_from_byte_offset_with_shared_superstring",
+          "new_api": null,
+          "old_text": "substring_from_byte_offset_with_shared_superstring(substring_start, tail_length)",
+          "new_text": null,
+          "old_line_content": "        TRY(result.try_append(TRY(substring_from_byte_offset_with_shared_superstring(substring_start, tail_length))));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "code_points",
+          "new_api": null,
+          "old_text": "this->code_points()",
+          "new_text": null,
+          "old_line_content": "    auto code_points = this->code_points();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "byte_length",
+          "new_api": null,
+          "old_text": "code_points.byte_length()",
+          "new_text": null,
+          "old_line_content": "    if (from_byte_offset >= code_points.byte_length())",
+          "new_line_content": "Optional<size_t> String::find_byte_offset(u32 code_point, size_t from_byte_offset) const",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": "byte_offset_of",
+          "new_api": null,
+          "old_text": "code_points.byte_offset_of(it)",
+          "new_text": null,
+          "old_line_content": "            return code_points.byte_offset_of(it);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    auto view = bytes_as_string_view();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "view.length()",
+          "new_text": null,
+          "old_line_content": "    if (from_byte_offset >= view.length())",
+          "new_line_content": "Optional<size_t> String::find_byte_offset(StringView substring, size_t from_byte_offset) const",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "view.length()",
+          "new_text": null,
+          "old_line_content": "        view.characters_without_null_termination() + from_byte_offset, view.length() - from_byte_offset,",
+          "new_line_content": "        return {};",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "substring.length()",
+          "new_text": null,
+          "old_line_content": "        substring.characters_without_null_termination(), substring.length());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "other.data({})",
+          "new_text": null,
+          "old_line_content": "    return static_cast<StringBase const&>(*this) == other.data({});",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return bytes_as_string_view() == other;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "substring_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().substring_view(start, byte_count)",
+          "new_text": null,
+          "old_line_content": "    return String::from_utf8(bytes_as_string_view().substring_view(start, byte_count));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().length()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(start <= bytes_as_string_view().length());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().length()",
+          "new_text": null,
+          "old_line_content": "    return substring_from_byte_offset(start, bytes_as_string_view().length() - start);",
+          "new_line_content": "ErrorOr<String> String::substring_from_byte_offset(size_t start) const",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)",
+          "new_api": null,
+          "old_text": "StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)",
+          "new_text": null,
+          "old_line_content": "    return String { TRY(StringBase::substring_from_byte_offset_with_shared_superstring(start, byte_count)) };",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().length()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(start <= bytes_as_string_view().length());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().length()",
+          "new_text": null,
+          "old_line_content": "    return substring_from_byte_offset_with_shared_superstring(start, bytes_as_string_view().length() - start);",
+          "new_line_content": "ErrorOr<String> String::substring_from_byte_offset_with_shared_superstring(size_t start) const",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return bytes_as_string_view() == c_string;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "bytes().size()",
+          "new_text": null,
+          "old_line_content": "    return case_insensitive_string_hash(reinterpret_cast<char const*>(bytes().data()), bytes().size());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return Utf8View(bytes_as_string_view());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "utf8_string.bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return Formatter<StringView>::format(builder, utf8_string.bytes_as_string_view());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "StringUtils::replace(*this, needle, replacement, replace_mode)",
+          "new_api": null,
+          "old_text": "StringUtils::replace(*this, needle, replacement, replace_mode)",
+          "new_text": null,
+          "old_line_content": "    return StringUtils::replace(*this, needle, replacement, replace_mode);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "code_points().length()",
+          "new_text": null,
+          "old_line_content": "    auto code_point_length = code_points().length();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": "code_points",
+          "new_api": null,
+          "old_text": "this->code_points()",
+          "new_text": null,
+          "old_line_content": "    for (auto code_point : this->code_points())",
+          "new_line_content": "    Vector<u32> code_points;",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "take_last",
+          "new_api": null,
+          "old_text": "code_points.take_last()",
+          "new_text": null,
+          "old_line_content": "        TRY(builder.try_append_code_point(code_points.take_last()));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": "trim",
+          "new_api": null,
+          "old_text": "code_points().trim(code_points_to_trim, mode)",
+          "new_text": null,
+          "old_line_content": "    auto trimmed = code_points().trim(code_points_to_trim, mode);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": "as_string",
+          "new_api": null,
+          "old_text": "trimmed.as_string()",
+          "new_text": null,
+          "old_line_content": "    return String::from_utf8(trimmed.as_string());",
+          "new_line_content": "ErrorOr<String> String::trim(Utf8View const& code_points_to_trim, TrimMode mode) const",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": "trim",
+          "new_api": null,
+          "old_text": "trim(Utf8View { code_points_to_trim }, mode)",
+          "new_text": null,
+          "old_line_content": "    return trim(Utf8View { code_points_to_trim }, mode);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "trim",
+          "new_api": null,
+          "old_text": "trim(\" \\n\\t\\v\\f\\r\"sv, mode)",
+          "new_text": null,
+          "old_line_content": "    return trim(\" \\n\\t\\v\\f\\r\"sv, mode);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return StringUtils::contains(bytes_as_string_view(), needle, case_sensitivity);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "String::from_code_point(needle)",
+          "new_api": null,
+          "old_text": "String::from_code_point(needle)",
+          "new_text": null,
+          "old_line_content": "    auto needle_as_string = String::from_code_point(needle);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "needle_as_string.bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return contains(needle_as_string.bytes_as_string_view(), case_sensitivity);",
+          "new_line_content": "bool String::contains(u32 needle, CaseSensitivity case_sensitivity) const",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "is_empty",
+          "new_api": null,
+          "old_text": "is_empty()",
+          "new_text": null,
+          "old_line_content": "    if (is_empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "starts_with",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().starts_with(bytes, case_sensitivity)",
+          "new_text": null,
+          "old_line_content": "    return bytes_as_string_view().starts_with(bytes, case_sensitivity);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "is_empty",
+          "new_api": null,
+          "old_text": "is_empty()",
+          "new_text": null,
+          "old_line_content": "    if (is_empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "code_points().end()",
+          "new_text": null,
+          "old_line_content": "    for (auto it = code_points().begin(); it != code_points().end(); ++it)",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "ends_with",
+          "new_api": null,
+          "old_text": "bytes_as_string_view().ends_with(bytes, case_sensitivity)",
+          "new_text": null,
+          "old_line_content": "    return bytes_as_string_view().ends_with(bytes, case_sensitivity);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": "hash",
+          "new_api": null,
+          "old_text": "string.hash()",
+          "new_text": null,
+          "old_line_content": "    return string.hash();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return ByteString(bytes_as_string_view());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 375,
+          "old_api": "view",
+          "new_api": null,
+          "old_text": "byte_string.view()",
+          "new_text": null,
+          "old_line_content": "    return String::from_utf8(byte_string.view());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "bytes_as_string_view",
+          "new_api": null,
+          "old_text": "bytes_as_string_view()",
+          "new_text": null,
+          "old_line_content": "    return StringUtils::equals_ignoring_ascii_case(bytes_as_string_view(), other);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": "bytes",
+          "new_api": null,
+          "old_text": "input.bytes().size()",
+          "new_text": null,
+          "old_line_content": "    if (Checked<u32>::multiplication_would_overflow(count, input.bytes().size()))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "Error::from_errno(EOVERFLOW)",
+          "new_api": null,
+          "old_text": "Error::from_errno(EOVERFLOW)",
+          "new_text": null,
+          "old_line_content": "        return Error::from_errno(EOVERFLOW);",
+          "new_line_content": "ErrorOr<String> String::repeated(String const& input, size_t count)",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": "replace_with_new_string",
+          "new_api": null,
+          "old_text": "result.replace_with_new_string(count * input_size, [&](Bytes buffer) {\n        if (input_size == 1) {\n            buffer.fill(input.bytes().first());\n        } else {\n            for (size_t i = 0; i < count; ++i)\n                input.bytes().copy_to(buffer.slice(i * input_size, input_size));\n        }\n        return ErrorOr<void> {};\n    })",
+          "new_text": null,
+          "old_line_content": "    TRY(result.replace_with_new_string(count * input_size, [&](Bytes buffer) {",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 23,
+      "total_additions": 84,
+      "total_deletions": 82,
+      "total_api_changes": 189
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 189,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          27
+        ]
+      }
+    },
+    "api_calls_before": 204,
+    "api_calls_after": 208,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 0,
+      "total_diff_lines": 15
+    }
+  }
+}

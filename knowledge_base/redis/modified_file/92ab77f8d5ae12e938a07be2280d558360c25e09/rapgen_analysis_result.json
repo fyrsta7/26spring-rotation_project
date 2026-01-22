@@ -1,0 +1,3062 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/92ab77f8d5ae12e938a07be2280d558360c25e09",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/92ab77f8d5ae12e938a07be2280d558360c25e09/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/92ab77f8d5ae12e938a07be2280d558360c25e09/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/92ab77f8d5ae12e938a07be2280d558360c25e09/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 172,
+          "old_api": "resetClient",
+          "new_api": "freeClient",
+          "old_text": "resetClient(c)",
+          "new_text": "freeClient(c)",
+          "old_line_content": "        resetClient(c);",
+          "new_line_content": "        freeClient(c);",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "freeClient",
+          "new_api": "resetClient",
+          "old_text": "freeClient(c)",
+          "new_text": "resetClient(c)",
+          "old_line_content": "        freeClient(c);",
+          "new_line_content": "        resetClient(c);",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "ustime",
+          "new_api": "REDIS_NOTUSED",
+          "old_text": "ustime()",
+          "new_text": "REDIS_NOTUSED(mask)",
+          "old_line_content": "    if (c->latency < 0) c->latency = ustime()-(c->start);",
+          "new_line_content": "    REDIS_NOTUSED(mask);",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": "redisGetReply",
+          "new_api": "redisBufferRead",
+          "old_text": "redisGetReply(c->context,&reply)",
+          "new_text": "redisBufferRead(c->context)",
+          "old_line_content": "            if (redisGetReply(c->context,&reply) != REDIS_OK) {",
+          "new_line_content": "    if (redisBufferRead(c->context) != REDIS_OK) {",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "randomizeClientKey",
+          "new_api": "freeClient",
+          "old_text": "randomizeClientKey(c)",
+          "new_text": "freeClient(c)",
+          "old_line_content": "        if (config.randomkeys) randomizeClientKey(c);",
+          "new_line_content": "            freeClient(c);",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "sdslen",
+          "new_api": "randomizeClientKey",
+          "old_text": "sdslen(c->obuf)",
+          "new_text": "randomizeClientKey(c)",
+          "old_line_content": "    if (sdslen(c->obuf) > c->written) {",
+          "new_line_content": "        if (config.randomkeys) randomizeClientKey(c);",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "strerror",
+          "new_api": "sdslen",
+          "old_text": "strerror(errno)",
+          "new_text": "sdslen(c->obuf)",
+          "old_line_content": "                fprintf(stderr, \"Writing to socket: %s\\n\", strerror(errno));",
+          "new_line_content": "    if (sdslen(c->obuf) > c->written) {",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "sdslen",
+          "new_api": "strerror",
+          "old_text": "sdslen(c->obuf)",
+          "new_text": "strerror(errno)",
+          "old_line_content": "        if (sdslen(c->obuf) == c->written) {",
+          "new_line_content": "                fprintf(stderr, \"Writing to socket: %s\\n\", strerror(errno));",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": "aeDeleteFileEvent",
+          "new_api": "freeClient",
+          "old_text": "aeDeleteFileEvent(config.el,c->context->fd,AE_WRITABLE)",
+          "new_text": "freeClient(c)",
+          "old_line_content": "            aeDeleteFileEvent(config.el,c->context->fd,AE_WRITABLE);",
+          "new_line_content": "            freeClient(c);",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "redisConnectUnixNonBlock",
+          "new_api": "zmalloc",
+          "old_text": "redisConnectUnixNonBlock(config.hostsocket)",
+          "new_text": "zmalloc(sizeof(struct _client))",
+          "old_line_content": "        c->context = redisConnectUnixNonBlock(config.hostsocket);",
+          "new_line_content": "    client c = zmalloc(sizeof(struct _client));",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "fprintf",
+          "new_api": "redisConnectNonBlock",
+          "old_text": "fprintf(stderr,\"Could not connect to Redis at \")",
+          "new_text": "redisConnectNonBlock(config.hostip,config.hostport)",
+          "old_line_content": "        fprintf(stderr,\"Could not connect to Redis at \");",
+          "new_line_content": "        c->context = redisConnectNonBlock(config.hostip,config.hostport);",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "fprintf",
+          "new_api": "redisConnectUnixNonBlock",
+          "old_text": "fprintf(stderr,\"%s:%d: %s\\n\",config.hostip,config.hostport,c->context->errstr)",
+          "new_text": "redisConnectUnixNonBlock(config.hostsocket)",
+          "old_line_content": "            fprintf(stderr,\"%s:%d: %s\\n\",config.hostip,config.hostport,c->context->errstr);",
+          "new_line_content": "        c->context = redisConnectUnixNonBlock(config.hostsocket);",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "exit",
+          "new_api": "fprintf",
+          "old_text": "exit(1)",
+          "new_text": "fprintf(stderr,\"Could not connect to Redis at \")",
+          "old_line_content": "        exit(1);",
+          "new_line_content": "        fprintf(stderr,\"Could not connect to Redis at \");",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "sdscatlen",
+          "new_api": "sdslen",
+          "old_text": "sdscatlen(c->obuf,cmd,len)",
+          "new_text": "sdslen(c->obuf)",
+          "old_line_content": "        c->obuf = sdscatlen(c->obuf,cmd,len);",
+          "new_line_content": "        c->selectlen = sdslen(c->obuf);",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "qsort",
+          "new_api": "printf",
+          "old_text": "qsort(config.latency,config.requests,sizeof(long long),compareLatency)",
+          "new_text": "printf(\"  %d parallel clients\\n\", config.numclients)",
+          "old_line_content": "        qsort(config.latency,config.requests,sizeof(long long),compareLatency);",
+          "new_line_content": "        printf(\"  %d parallel clients\\n\", config.numclients);",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": "printf",
+          "new_api": "qsort",
+          "old_text": "printf(\"%.2f%% <= %d milliseconds\\n\", perc, curlat)",
+          "new_text": "qsort(config.latency,config.requests,sizeof(long long),compareLatency)",
+          "old_line_content": "                printf(\"%.2f%% <= %d milliseconds\\n\", perc, curlat);",
+          "new_line_content": "        qsort(config.latency,config.requests,sizeof(long long),compareLatency);",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "mstime",
+          "new_api": "createClient",
+          "old_text": "mstime()",
+          "new_text": "createClient(cmd,len)",
+          "old_line_content": "    config.totlatency = mstime()-config.start;",
+          "new_line_content": "    c = createClient(cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": "freeAllClients",
+          "new_api": "mstime",
+          "old_text": "freeAllClients()",
+          "new_text": "mstime()",
+          "old_line_content": "    freeAllClients();",
+          "new_line_content": "    config.start = mstime();",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "atoi",
+          "new_api": "strcmp",
+          "old_text": "atoi(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-c\")",
+          "old_line_content": "            config.requests = atoi(argv[++i]);",
+          "new_line_content": "        if (!strcmp(argv[i],\"-c\")) {",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "atoi",
+          "new_api": "strcmp",
+          "old_text": "atoi(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-n\")",
+          "old_line_content": "            config.keepalive = atoi(argv[++i]);",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-n\")) {",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "strdup",
+          "new_api": "strcmp",
+          "old_text": "strdup(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-k\")",
+          "old_line_content": "            config.hostip = strdup(argv[++i]);",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-k\")) {",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": "atoi",
+          "new_api": "strcmp",
+          "old_text": "atoi(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-h\")",
+          "old_line_content": "            config.hostport = atoi(argv[++i]);",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-h\")) {",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": "strdup",
+          "new_api": "strcmp",
+          "old_text": "strdup(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-p\")",
+          "old_line_content": "            config.hostsocket = strdup(argv[++i]);",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-p\")) {",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": "atoi",
+          "new_api": "strcmp",
+          "old_text": "atoi(argv[++i])",
+          "new_text": "strcmp(argv[i],\"-s\")",
+          "old_line_content": "            config.datasize = atoi(argv[++i]);",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-s\")) {",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "strcmp",
+          "new_api": "atoi",
+          "old_text": "strcmp(argv[i],\"--csv\")",
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "        } else if (!strcmp(argv[i],\"--csv\")) {",
+          "new_line_content": "            config.randomkeys_keyspacelen = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "atoi",
+          "new_api": "sdscat",
+          "old_text": "atoi(argv[++i])",
+          "new_text": "sdscat(config.tests,(char*)argv[++i])",
+          "old_line_content": "            config.dbnum = atoi(argv[++i]);",
+          "new_line_content": "            config.tests = sdscat(config.tests,(char*)argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "sdsfromlonglong",
+          "new_api": "sdscat",
+          "old_text": "sdsfromlonglong(config.dbnum)",
+          "new_text": "sdscat(config.tests,\",\")",
+          "old_line_content": "            config.dbnumstr = sdsfromlonglong(config.dbnum);",
+          "new_line_content": "            config.tests = sdscat(config.tests,\",\");",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "strcmp",
+          "new_api": "sdstolower",
+          "old_text": "strcmp(argv[i],\"--help\")",
+          "new_text": "sdstolower(config.tests)",
+          "old_line_content": "        } else if (!strcmp(argv[i],\"--help\")) {",
+          "new_line_content": "            sdstolower(config.tests);",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": "exit",
+          "old_text": "REDIS_NOTUSED(id)",
+          "new_text": "exit(exit_status)",
+          "old_line_content": "    REDIS_NOTUSED(id);",
+          "new_line_content": "    exit(exit_status);",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "mstime",
+          "new_api": "REDIS_NOTUSED",
+          "old_text": "mstime()",
+          "new_text": "REDIS_NOTUSED(eventLoop)",
+          "old_line_content": "    float dt = (float)(mstime()-config.start)/1000.0;",
+          "new_line_content": "    REDIS_NOTUSED(eventLoop);",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "printf",
+          "new_api": "REDIS_NOTUSED",
+          "old_text": "printf(\"%s: %.2f\\r\", config.title, rps)",
+          "new_text": "REDIS_NOTUSED(clientData)",
+          "old_line_content": "    printf(\"%s: %.2f\\r\", config.title, rps);",
+          "new_line_content": "    REDIS_NOTUSED(clientData);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "aeCreateEventLoop",
+          "new_api": "signal",
+          "old_text": "aeCreateEventLoop(1024*10)",
+          "new_text": "signal(SIGPIPE, SIG_IGN)",
+          "old_line_content": "    config.el = aeCreateEventLoop(1024*10);",
+          "new_line_content": "    signal(SIGPIPE, SIG_IGN);",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": "createClient",
+          "new_api": "printf",
+          "old_text": "createClient(\"\",0)",
+          "new_text": "printf(\"WARNING: keepalive disabled, you probably need 'echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse' for Linux and 'sudo sysctl -w net.inet.tcp.msl=1000' for Mac OS X in order to use a lot of clients/requests\\n\")",
+          "old_line_content": "        c = createClient(\"\",0); /* will never receive a reply */",
+          "new_line_content": "        printf(\"WARNING: keepalive disabled, you probably need 'echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse' for Linux and 'sudo sysctl -w net.inet.tcp.msl=1000' for Mac OS X in order to use a lot of clients/requests\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": "redisFormatCommandArgv",
+          "new_api": "sdscatlen",
+          "old_text": "redisFormatCommandArgv(&cmd,argc,argv,NULL)",
+          "new_text": "sdscatlen(title, \" \", 1)",
+          "old_line_content": "            len = redisFormatCommandArgv(&cmd,argc,argv,NULL);",
+          "new_line_content": "            title = sdscatlen(title, \" \", 1);",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": "benchmark",
+          "new_api": "strlen",
+          "old_text": "benchmark(title,cmd,len)",
+          "new_text": "strlen(argv[i])",
+          "old_line_content": "            benchmark(title,cmd,len);",
+          "new_line_content": "            title = sdscatlen(title, (char*)argv[i], strlen(argv[i]));",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": "benchmark",
+          "new_api": "zmalloc",
+          "old_text": "benchmark(\"PING_INLINE\",\"PING\\r\\n\",6)",
+          "new_text": "zmalloc(config.datasize+1)",
+          "old_line_content": "            benchmark(\"PING_INLINE\",\"PING\\r\\n\",6);",
+          "new_line_content": "        data = zmalloc(config.datasize+1);",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "benchmark",
+          "new_api": "test_is_selected",
+          "old_text": "benchmark(\"PING_BULK\",cmd,len)",
+          "new_text": "test_is_selected(\"ping\")",
+          "old_line_content": "            benchmark(\"PING_BULK\",cmd,len);",
+          "new_line_content": "        if (test_is_selected(\"ping_inline\") || test_is_selected(\"ping\"))",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "free",
+          "new_api": "benchmark",
+          "old_text": "free(cmd)",
+          "new_text": "benchmark(\"PING_INLINE\",\"PING\\r\\n\",6)",
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "            benchmark(\"PING_INLINE\",\"PING\\r\\n\",6);",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"set\")",
+          "new_text": "redisFormatCommand(&cmd,\"PING\")",
+          "old_line_content": "        if (test_is_selected(\"set\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"PING\");",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"SET foo:rand:000000000000 %s\",data)",
+          "new_text": "benchmark(\"PING_BULK\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"SET foo:rand:000000000000 %s\",data);",
+          "new_line_content": "            benchmark(\"PING_BULK\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"SET\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"SET\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"get\")",
+          "new_text": "redisFormatCommand(&cmd,\"SET foo:rand:000000000000 %s\",data)",
+          "old_line_content": "        if (test_is_selected(\"get\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"SET foo:rand:000000000000 %s\",data);",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"GET foo:rand:000000000000\")",
+          "new_text": "benchmark(\"SET\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"GET foo:rand:000000000000\");",
+          "new_line_content": "            benchmark(\"SET\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"GET\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"GET\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"incr\")",
+          "new_text": "redisFormatCommand(&cmd,\"GET foo:rand:000000000000\")",
+          "old_line_content": "        if (test_is_selected(\"incr\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"GET foo:rand:000000000000\");",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"INCR counter:rand:000000000000\")",
+          "new_text": "benchmark(\"GET\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"INCR counter:rand:000000000000\");",
+          "new_line_content": "            benchmark(\"GET\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"INCR\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"INCR\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lpush\")",
+          "new_text": "redisFormatCommand(&cmd,\"INCR counter:rand:000000000000\")",
+          "old_line_content": "        if (test_is_selected(\"lpush\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"INCR counter:rand:000000000000\");",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LPUSH mylist %s\",data)",
+          "new_text": "benchmark(\"INCR\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LPUSH mylist %s\",data);",
+          "new_line_content": "            benchmark(\"INCR\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LPUSH\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LPUSH\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lpop\")",
+          "new_text": "redisFormatCommand(&cmd,\"LPUSH mylist %s\",data)",
+          "old_line_content": "        if (test_is_selected(\"lpop\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LPUSH mylist %s\",data);",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LPOP mylist\")",
+          "new_text": "benchmark(\"LPUSH\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LPOP mylist\");",
+          "new_line_content": "            benchmark(\"LPUSH\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LPOP\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LPOP\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"sadd\")",
+          "new_text": "redisFormatCommand(&cmd,\"LPOP mylist\")",
+          "old_line_content": "        if (test_is_selected(\"sadd\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LPOP mylist\");",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\n                \"SADD myset counter:rand:000000000000\")",
+          "new_text": "benchmark(\"LPOP\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,",
+          "new_line_content": "            benchmark(\"LPOP\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"SPOP myset\")",
+          "new_text": "benchmark(\"SADD\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"SPOP myset\");",
+          "new_line_content": "            benchmark(\"SADD\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"SPOP\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"SPOP\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lrange\")",
+          "new_text": "redisFormatCommand(&cmd,\"SPOP myset\")",
+          "old_line_content": "        if (test_is_selected(\"lrange\") ||",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"SPOP myset\");",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "test_is_selected",
+          "new_api": "benchmark",
+          "old_text": "test_is_selected(\"lrange_100\")",
+          "new_text": "benchmark(\"SPOP\",cmd,len)",
+          "old_line_content": "            test_is_selected(\"lrange_100\") ||",
+          "new_line_content": "            benchmark(\"SPOP\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": "test_is_selected",
+          "new_api": "free",
+          "old_text": "test_is_selected(\"lrange_300\")",
+          "new_text": "free(cmd)",
+          "old_line_content": "            test_is_selected(\"lrange_300\") ||",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "redisFormatCommand",
+          "new_api": "test_is_selected",
+          "old_text": "redisFormatCommand(&cmd,\"LPUSH mylist %s\",data)",
+          "new_text": "test_is_selected(\"lrange_100\")",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LPUSH mylist %s\",data);",
+          "new_line_content": "            test_is_selected(\"lrange_100\") ||",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": "benchmark",
+          "new_api": "test_is_selected",
+          "old_text": "benchmark(\"LPUSH (needed to benchmark LRANGE)\",cmd,len)",
+          "new_text": "test_is_selected(\"lrange_300\")",
+          "old_line_content": "            benchmark(\"LPUSH (needed to benchmark LRANGE)\",cmd,len);",
+          "new_line_content": "            test_is_selected(\"lrange_300\") ||",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "free",
+          "new_api": "test_is_selected",
+          "old_text": "free(cmd)",
+          "new_text": "test_is_selected(\"lrange_500\")",
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "            test_is_selected(\"lrange_500\") ||",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lrange_100\")",
+          "new_text": "redisFormatCommand(&cmd,\"LPUSH mylist %s\",data)",
+          "old_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_100\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LPUSH mylist %s\",data);",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 99\")",
+          "new_text": "benchmark(\"LPUSH (needed to benchmark LRANGE)\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 99\");",
+          "new_line_content": "            benchmark(\"LPUSH (needed to benchmark LRANGE)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LRANGE_100 (first 100 elements)\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LRANGE_100 (first 100 elements)\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lrange_300\")",
+          "new_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 99\")",
+          "old_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_300\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 99\");",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 299\")",
+          "new_text": "benchmark(\"LRANGE_100 (first 100 elements)\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 299\");",
+          "new_line_content": "            benchmark(\"LRANGE_100 (first 100 elements)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LRANGE_300 (first 300 elements)\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LRANGE_300 (first 300 elements)\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lrange_500\")",
+          "new_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 299\")",
+          "old_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_500\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 299\");",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 449\")",
+          "new_text": "benchmark(\"LRANGE_300 (first 300 elements)\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 449\");",
+          "new_line_content": "            benchmark(\"LRANGE_300 (first 300 elements)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LRANGE_500 (first 450 elements)\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LRANGE_500 (first 450 elements)\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"lrange_600\")",
+          "new_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 449\")",
+          "old_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_600\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 449\");",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "redisFormatCommand",
+          "new_api": "benchmark",
+          "old_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 599\")",
+          "new_text": "benchmark(\"LRANGE_500 (first 450 elements)\",cmd,len)",
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 599\");",
+          "new_line_content": "            benchmark(\"LRANGE_500 (first 450 elements)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "benchmark",
+          "new_api": "free",
+          "old_text": "benchmark(\"LRANGE_600 (first 600 elements)\",cmd,len)",
+          "new_text": "free(cmd)",
+          "old_line_content": "            benchmark(\"LRANGE_600 (first 600 elements)\",cmd,len);",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "test_is_selected",
+          "new_api": "redisFormatCommand",
+          "old_text": "test_is_selected(\"mset\")",
+          "new_text": "redisFormatCommand(&cmd,\"LRANGE mylist 0 599\")",
+          "old_line_content": "        if (test_is_selected(\"mset\")) {",
+          "new_line_content": "            len = redisFormatCommand(&cmd,\"LRANGE mylist 0 599\");",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "printf",
+          "new_api": "redisFormatCommandArgv",
+          "old_text": "printf(\"\\n\")",
+          "new_text": "redisFormatCommandArgv(&cmd,21,argv,NULL)",
+          "old_line_content": "        if (!config.csv) printf(\"\\n\");",
+          "new_line_content": "            len = redisFormatCommandArgv(&cmd,21,argv,NULL);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(id)",
+          "old_line_content": "    float rps = (float)config.requests_finished/dt;",
+          "new_line_content": "    REDIS_NOTUSED(id);",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": null,
+          "new_api": "mstime",
+          "old_text": null,
+          "new_text": "mstime()",
+          "old_line_content": "}",
+          "new_line_content": "    float dt = (float)(mstime()-config.start)/1000.0;",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"%s: %.2f\\r\", config.title, rps)",
+          "old_line_content": "/* Return true if the named test was selected using the -t command line",
+          "new_line_content": "    printf(\"%s: %.2f\\r\", config.title, rps);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "fflush",
+          "old_text": null,
+          "new_text": "fflush(stdout)",
+          "old_line_content": " * switch, or if all the tests are selected (no -t passed by user). */",
+          "new_line_content": "    fflush(stdout);",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": null,
+          "new_api": "strlen",
+          "old_text": null,
+          "new_text": "strlen(name)",
+          "old_line_content": "    buf[l+1] = ',';",
+          "new_line_content": "    int l = strlen(name);",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(buf+1,name,l)",
+          "old_line_content": "",
+          "new_line_content": "    memcpy(buf+1,name,l);",
+          "content_same": false
+        },
+        {
+          "line": 563,
+          "old_api": null,
+          "new_api": "strstr",
+          "old_text": null,
+          "new_text": "strstr(config.tests,buf)",
+          "old_line_content": "    char *data, *cmd;",
+          "new_line_content": "    return strstr(config.tests,buf) != NULL;",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(NULL)",
+          "old_line_content": "    config.requests = 10000;",
+          "new_line_content": "    srandom(time(NULL));",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": null,
+          "new_api": "signal",
+          "old_text": null,
+          "new_text": "signal(SIGHUP, SIG_IGN)",
+          "old_line_content": "    config.liveclients = 0;",
+          "new_line_content": "    signal(SIGHUP, SIG_IGN);",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "aeCreateEventLoop",
+          "old_text": null,
+          "new_text": "aeCreateEventLoop(1024*10)",
+          "old_line_content": "    config.randomkeys = 0;",
+          "new_line_content": "    config.el = aeCreateEventLoop(1024*10);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "aeCreateTimeEvent",
+          "old_text": null,
+          "new_text": "aeCreateTimeEvent(config.el,1,showThroughput,NULL,NULL)",
+          "old_line_content": "    config.randomkeys_keyspacelen = 0;",
+          "new_line_content": "    aeCreateTimeEvent(config.el,1,showThroughput,NULL,NULL);",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "listCreate",
+          "old_text": null,
+          "new_text": "listCreate()",
+          "old_line_content": "    config.dbnum = 0;",
+          "new_line_content": "    config.clients = listCreate();",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": null,
+          "new_api": "parseOptions",
+          "old_text": null,
+          "new_text": "parseOptions(argc,argv)",
+          "old_line_content": "",
+          "new_line_content": "    i = parseOptions(argc,argv);",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": null,
+          "new_api": "zmalloc",
+          "old_text": null,
+          "new_text": "zmalloc(sizeof(long long)*config.requests)",
+          "old_line_content": "",
+          "new_line_content": "    config.latency = zmalloc(sizeof(long long)*config.requests);",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"Creating %d idle connections and waiting forever (Ctrl+C when done)\\n\", config.numclients)",
+          "old_line_content": "    }",
+          "new_line_content": "        printf(\"Creating %d idle connections and waiting forever (Ctrl+C when done)\\n\", config.numclients);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "createClient",
+          "old_text": null,
+          "new_text": "createClient(\"\",0)",
+          "old_line_content": "",
+          "new_line_content": "        c = createClient(\"\",0); /* will never receive a reply */",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": null,
+          "new_api": "createMissingClients",
+          "old_text": null,
+          "new_text": "createMissingClients(c)",
+          "old_line_content": "    /* Run benchmark with command in the remainder of the arguments. */",
+          "new_line_content": "        createMissingClients(c);",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "aeMain",
+          "old_text": null,
+          "new_text": "aeMain(config.el)",
+          "old_line_content": "    if (argc) {",
+          "new_line_content": "        aeMain(config.el);",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": null,
+          "new_api": "sdsnew",
+          "old_text": null,
+          "new_text": "sdsnew(argv[0])",
+          "old_line_content": "",
+          "new_line_content": "        sds title = sdsnew(argv[0]);",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": null,
+          "new_api": "redisFormatCommandArgv",
+          "old_text": null,
+          "new_text": "redisFormatCommandArgv(&cmd,argc,argv,NULL)",
+          "old_line_content": "        return 0;",
+          "new_line_content": "            len = redisFormatCommandArgv(&cmd,argc,argv,NULL);",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": null,
+          "new_api": "benchmark",
+          "old_text": null,
+          "new_text": "benchmark(title,cmd,len)",
+          "old_line_content": "    }",
+          "new_line_content": "            benchmark(title,cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(cmd)",
+          "old_line_content": "",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(data,'x',config.datasize)",
+          "old_line_content": "",
+          "new_line_content": "        memset(data,'x',config.datasize);",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"ping\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"ping_mbulk\") || test_is_selected(\"ping\")) {",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"set\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"set\")) {",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"get\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"get\")) {",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"incr\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"incr\")) {",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lpush\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lpush\")) {",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lpop\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lpop\")) {",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(cmd)",
+          "old_line_content": "                \"SADD myset counter:rand:000000000000\");",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"sadd\")",
+          "old_line_content": "        }",
+          "new_line_content": "        if (test_is_selected(\"sadd\")) {",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": null,
+          "new_api": "redisFormatCommand",
+          "old_text": null,
+          "new_text": "redisFormatCommand(&cmd,\n                \"SADD myset counter:rand:000000000000\")",
+          "old_line_content": "",
+          "new_line_content": "            len = redisFormatCommand(&cmd,",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "aeStop",
+          "old_text": null,
+          "new_text": "aeStop(config.el)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        aeStop(config.el);",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"spop\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"spop\")) {",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": null,
+          "new_api": "createMissingClients",
+          "old_text": null,
+          "new_text": "createMissingClients(c)",
+          "old_line_content": "",
+          "new_line_content": "        createMissingClients(c);",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange\")",
+          "old_line_content": "        {",
+          "new_line_content": "        if (test_is_selected(\"lrange\") ||",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": null,
+          "new_api": "freeClient",
+          "old_text": null,
+          "new_text": "freeClient(c)",
+          "old_line_content": "    client c = privdata;",
+          "new_line_content": "        freeClient(c);",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange_600\")",
+          "old_line_content": "        }",
+          "new_line_content": "            test_is_selected(\"lrange_600\"))",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(el)",
+          "old_line_content": "     * server already sent the reply and we need to parse it. Parsing overhead",
+          "new_line_content": "    REDIS_NOTUSED(el);",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(fd)",
+          "old_line_content": "     * is not part of the latency, so calculate it only once, here. */",
+          "new_line_content": "    REDIS_NOTUSED(fd);",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange_100\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_100\")) {",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "ustime",
+          "old_text": null,
+          "new_text": "ustime()",
+          "old_line_content": "    } else {",
+          "new_line_content": "    if (c->latency < 0) c->latency = ustime()-(c->start);",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange_300\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_300\")) {",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "redisGetReply",
+          "old_text": null,
+          "new_text": "redisGetReply(c->context,&reply)",
+          "old_line_content": "                if (reply == (void*)REDIS_REPLY_ERROR) {",
+          "new_line_content": "            if (redisGetReply(c->context,&reply) != REDIS_OK) {",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange_500\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_500\")) {",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf(stderr,\"Unexpected error reply, exiting...\\n\")",
+          "old_line_content": "",
+          "new_line_content": "                    fprintf(stderr,\"Unexpected error reply, exiting...\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "exit",
+          "old_text": null,
+          "new_text": "exit(1)",
+          "old_line_content": "                if (c->selectlen) {",
+          "new_line_content": "                    exit(1);",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"lrange_600\")",
+          "old_line_content": "",
+          "new_line_content": "        if (test_is_selected(\"lrange\") || test_is_selected(\"lrange_600\")) {",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": null,
+          "new_api": "benchmark",
+          "old_text": null,
+          "new_text": "benchmark(\"LRANGE_600 (first 600 elements)\",cmd,len)",
+          "old_line_content": "            const char *argv[21];",
+          "new_line_content": "            benchmark(\"LRANGE_600 (first 600 elements)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "freeReplyObject",
+          "old_text": null,
+          "new_text": "freeReplyObject(reply)",
+          "old_line_content": "                    /* This is the OK from SELECT. Just discard the SELECT",
+          "new_line_content": "                freeReplyObject(reply);",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(cmd)",
+          "old_line_content": "            argv[0] = \"MSET\";",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 727,
+          "old_api": null,
+          "new_api": "test_is_selected",
+          "old_text": null,
+          "new_text": "test_is_selected(\"mset\")",
+          "old_line_content": "                argv[i+1] = data;",
+          "new_line_content": "        if (test_is_selected(\"mset\")) {",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "sdsrange",
+          "old_text": null,
+          "new_text": "sdsrange(c->obuf,c->selectlen,-1)",
+          "old_line_content": "                    c->selectlen = 0;",
+          "new_line_content": "                    sdsrange(c->obuf,c->selectlen,-1);",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": null,
+          "new_api": "benchmark",
+          "old_text": null,
+          "new_text": "benchmark(\"MSET (10 keys)\",cmd,len)",
+          "old_line_content": "    } while(config.loop);",
+          "new_line_content": "            benchmark(\"MSET (10 keys)\",cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(cmd)",
+          "old_line_content": "",
+          "new_line_content": "            free(cmd);",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"\\n\")",
+          "old_line_content": "",
+          "new_line_content": "        if (!config.csv) printf(\"\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "clientDone",
+          "old_text": null,
+          "new_text": "clientDone(c)",
+          "old_line_content": "            }",
+          "new_line_content": "                    clientDone(c);",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(el)",
+          "old_line_content": "    if (c->written == 0) {",
+          "new_line_content": "    REDIS_NOTUSED(el);",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(fd)",
+          "old_line_content": "        /* Enforce upper bound to number of requests. */",
+          "new_line_content": "    REDIS_NOTUSED(fd);",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "REDIS_NOTUSED",
+          "old_text": null,
+          "new_text": "REDIS_NOTUSED(mask)",
+          "old_line_content": "        if (config.requests_issued++ >= config.requests) {",
+          "new_line_content": "    REDIS_NOTUSED(mask);",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": null,
+          "new_api": "ustime",
+          "old_text": null,
+          "new_text": "ustime()",
+          "old_line_content": "        void *ptr = c->obuf+c->written;",
+          "new_line_content": "        c->start = ustime();",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": null,
+          "new_api": "sdslen",
+          "old_text": null,
+          "new_text": "sdslen(c->obuf)",
+          "old_line_content": "            return;",
+          "new_line_content": "        int nwritten = write(c->context->fd,ptr,sdslen(c->obuf)-c->written);",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": null,
+          "new_api": "sdslen",
+          "old_text": null,
+          "new_text": "sdslen(c->obuf)",
+          "old_line_content": "}",
+          "new_line_content": "        if (sdslen(c->obuf) == c->written) {",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": null,
+          "new_api": "aeDeleteFileEvent",
+          "old_text": null,
+          "new_text": "aeDeleteFileEvent(config.el,c->context->fd,AE_WRITABLE)",
+          "old_line_content": "",
+          "new_line_content": "            aeDeleteFileEvent(config.el,c->context->fd,AE_WRITABLE);",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": null,
+          "new_api": "aeCreateFileEvent",
+          "old_text": null,
+          "new_text": "aeCreateFileEvent(config.el,c->context->fd,AE_READABLE,readHandler,c)",
+          "old_line_content": "static client createClient(char *cmd, size_t len) {",
+          "new_line_content": "            aeCreateFileEvent(config.el,c->context->fd,AE_READABLE,readHandler,c);",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf(stderr,\"%s:%d: %s\\n\",config.hostip,config.hostport,c->context->errstr)",
+          "old_line_content": "    /* Suppress hiredis cleanup of unused buffers for max speed. */",
+          "new_line_content": "            fprintf(stderr,\"%s:%d: %s\\n\",config.hostip,config.hostport,c->context->errstr);",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf(stderr,\"%s: %s\\n\",config.hostsocket,c->context->errstr)",
+          "old_line_content": "",
+          "new_line_content": "            fprintf(stderr,\"%s: %s\\n\",config.hostsocket,c->context->errstr);",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": null,
+          "new_api": "exit",
+          "old_text": null,
+          "new_text": "exit(1)",
+          "old_line_content": "    /* Queue N requests accordingly to the pipeline size. */",
+          "new_line_content": "        exit(1);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "sdsempty",
+          "old_text": null,
+          "new_text": "sdsempty()",
+          "old_line_content": "         * SELECT command will not be used again. */",
+          "new_line_content": "    c->obuf = sdsempty();",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "sdscatprintf",
+          "old_text": null,
+          "new_text": "sdscatprintf(c->obuf,\"*2\\r\\n$6\\r\\nSELECT\\r\\n$%d\\r\\n%s\\r\\n\",\n            (int)sdslen(config.dbnumstr),config.dbnumstr)",
+          "old_line_content": "    }",
+          "new_line_content": "        c->obuf = sdscatprintf(c->obuf,\"*2\\r\\n$6\\r\\nSELECT\\r\\n$%d\\r\\n%s\\r\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "sdslen",
+          "old_text": null,
+          "new_text": "sdslen(config.dbnumstr)",
+          "old_line_content": "    for (j = 0; j < config.pipeline; j++)",
+          "new_line_content": "            (int)sdslen(config.dbnumstr),config.dbnumstr);",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": null,
+          "new_api": "sdscatlen",
+          "old_text": null,
+          "new_text": "sdscatlen(c->obuf,cmd,len)",
+          "old_line_content": "    c->pending = config.pipeline;",
+          "new_line_content": "        c->obuf = sdscatlen(c->obuf,cmd,len);",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": null,
+          "new_api": "zmalloc",
+          "old_text": null,
+          "new_text": "zmalloc(sizeof(char*)*c->randfree)",
+          "old_line_content": "    /* Find substrings in the output buffer that need to be randomized. */",
+          "new_line_content": "    c->randptr = zmalloc(sizeof(char*)*c->randfree);",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": null,
+          "new_api": "strstr",
+          "old_text": null,
+          "new_text": "strstr(p,\":rand:\")",
+          "old_line_content": "            c->randptr[c->randlen++] = p+6;",
+          "new_line_content": "        while ((p = strstr(p,\":rand:\")) != NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "zrealloc",
+          "old_text": null,
+          "new_text": "zrealloc(c->randptr,sizeof(char*)*c->randlen*2)",
+          "old_line_content": "            p += 6;",
+          "new_line_content": "                c->randptr = zrealloc(c->randptr,sizeof(char*)*c->randlen*2);",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": null,
+          "new_api": "aeCreateFileEvent",
+          "old_text": null,
+          "new_text": "aeCreateFileEvent(config.el,c->context->fd,AE_WRITABLE,writeHandler,c)",
+          "old_line_content": "",
+          "new_line_content": "    aeCreateFileEvent(config.el,c->context->fd,AE_WRITABLE,writeHandler,c);",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": null,
+          "new_api": "listAddNodeTail",
+          "old_text": null,
+          "new_text": "listAddNodeTail(config.clients,c)",
+          "old_line_content": "static void createMissingClients(client c) {",
+          "new_line_content": "    listAddNodeTail(config.clients,c);",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "sdslen",
+          "old_text": null,
+          "new_text": "sdslen(c->obuf)",
+          "old_line_content": "        buf += c->selectlen;",
+          "new_line_content": "    size_t buflen = sdslen(c->obuf);",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "createClient",
+          "old_text": null,
+          "new_text": "createClient(buf,buflen/config.pipeline)",
+          "old_line_content": "            n = 0;",
+          "new_line_content": "        createClient(buf,buflen/config.pipeline);",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "usleep",
+          "old_text": null,
+          "new_text": "usleep(50000)",
+          "old_line_content": "",
+          "new_line_content": "            usleep(50000);",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"  %d bytes payload\\n\", config.datasize)",
+          "old_line_content": "        for (i = 0; i < config.requests; i++) {",
+          "new_line_content": "        printf(\"  %d bytes payload\\n\", config.datasize);",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"  keep alive: %d\\n\", config.keepalive)",
+          "old_line_content": "            if (config.latency[i]/1000 != curlat || i == (config.requests-1)) {",
+          "new_line_content": "        printf(\"  keep alive: %d\\n\", config.keepalive);",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"\\n\")",
+          "old_line_content": "                curlat = config.latency[i]/1000;",
+          "new_line_content": "        printf(\"\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"%.2f requests per second\\n\\n\", reqpersec)",
+          "old_line_content": "    }",
+          "new_line_content": "        printf(\"%.2f requests per second\\n\\n\", reqpersec);",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"\\\"%s\\\",\\\"%.2f\\\"\\n\", config.title, reqpersec)",
+          "old_line_content": "",
+          "new_line_content": "        printf(\"\\\"%s\\\",\\\"%.2f\\\"\\n\", config.title, reqpersec);",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"%s: %.2f requests per second\\n\", config.title, reqpersec)",
+          "old_line_content": "    client c;",
+          "new_line_content": "        printf(\"%s: %.2f requests per second\\n\", config.title, reqpersec);",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": null,
+          "new_api": "createMissingClients",
+          "old_text": null,
+          "new_text": "createMissingClients(c)",
+          "old_line_content": "",
+          "new_line_content": "    createMissingClients(c);",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "aeMain",
+          "old_text": null,
+          "new_text": "aeMain(config.el)",
+          "old_line_content": "}",
+          "new_line_content": "    aeMain(config.el);",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": null,
+          "new_api": "mstime",
+          "old_text": null,
+          "new_text": "mstime()",
+          "old_line_content": "",
+          "new_line_content": "    config.totlatency = mstime()-config.start;",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "showLatencyReport",
+          "old_text": null,
+          "new_text": "showLatencyReport()",
+          "old_line_content": "int parseOptions(int argc, const char **argv) {",
+          "new_line_content": "    showLatencyReport();",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "freeAllClients",
+          "old_text": null,
+          "new_text": "freeAllClients()",
+          "old_line_content": "    int i;",
+          "new_line_content": "    freeAllClients();",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.numclients = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.requests = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.keepalive = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": null,
+          "new_api": "strdup",
+          "old_text": null,
+          "new_text": "strdup(argv[++i])",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.hostip = strdup(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.hostport = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": null,
+          "new_api": "strdup",
+          "old_text": null,
+          "new_text": "strdup(argv[++i])",
+          "old_line_content": "            if (config.datasize > 1024*1024*1024) config.datasize = 1024*1024*1024;",
+          "new_line_content": "            config.hostsocket = strdup(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-P\")",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-P\")) {",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-r\")",
+          "old_line_content": "                config.randomkeys_keyspacelen = 0;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-r\")) {",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-q\")",
+          "old_line_content": "            config.loop = 1;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-q\")) {",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"--csv\")",
+          "old_line_content": "            config.idlemode = 1;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"--csv\")) {",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-l\")",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-l\")) {",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-I\")",
+          "old_line_content": "             * get,set,lrange,...,test_N. Then we add a comma before and",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-I\")) {",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"-t\")",
+          "old_line_content": "             * for \",testname,\" will always get a match if the test is",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"-t\")) {",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "sdsnew",
+          "old_text": null,
+          "new_text": "sdsnew(\",\")",
+          "old_line_content": "            if (lastarg) goto invalid;",
+          "new_line_content": "            config.tests = sdsnew(\",\");",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"--dbnum\")",
+          "old_line_content": "            exit_status = 0;",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"--dbnum\")) {",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(argv[++i])",
+          "old_line_content": "        } else {",
+          "new_line_content": "            config.dbnum = atoi(argv[++i]);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "sdsfromlonglong",
+          "old_text": null,
+          "new_text": "sdsfromlonglong(config.dbnum)",
+          "old_line_content": "            /* Assume the user meant to provide an option when the arg starts",
+          "new_line_content": "            config.dbnumstr = sdsfromlonglong(config.dbnum);",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": null,
+          "new_api": "strcmp",
+          "old_text": null,
+          "new_text": "strcmp(argv[i],\"--help\")",
+          "old_line_content": "             * with a dash. We're done otherwise and should use the remainder",
+          "new_line_content": "        } else if (!strcmp(argv[i],\"--help\")) {",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\"Invalid option \\\"%s\\\" or option argument missing\\n\\n\",argv[i])",
+          "old_line_content": "\" -h <hostname>      Server hostname (default 127.0.0.1)\\n\"",
+          "new_line_content": "    printf(\"Invalid option \\\"%s\\\" or option argument missing\\n\\n\",argv[i]);",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "printf",
+          "old_text": null,
+          "new_text": "printf(\n\"Usage: redis-benchmark [-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]\\n\\n\"\n\" -h <hostname>      Server hostname (default 127.0.0.1)\\n\"\n\" -p <port>          Server port (default 6379)\\n\"\n\" -s <socket>        Server socket (overrides host and port)\\n\"\n\" -c <clients>       Number of parallel connections (default 50)\\n\"\n\" -n <requests>      Total number of requests (default 10000)\\n\"\n\" -d <size>          Data size of SET/GET value in bytes (default 2)\\n\"\n\" -dbnum <db>        SELECT the specified db number (default 0)\\n\"\n\" -k <boolean>       1=keep alive 0=reconnect (default 1)\\n\"\n\" -r <keyspacelen>   Use random keys for SET/GET/INCR, random values for SADD\\n\"\n\"  Using this option the benchmark will get/set keys\\n\"\n\"  in the form mykey_rand:000000012456 instead of constant\\n\"\n\"  keys, the <keyspacelen> argument determines the max\\n\"\n\"  number of values for the random number. For instance\\n\"\n\"  if set to 10 only rand:000000000000 - rand:000000000009\\n\"\n\"  range will be allowed.\\n\"\n\" -P <numreq>        Pipeline <numreq> requests. Default 1 (no pipeline).\\n\"\n\" -q                 Quiet. Just show query/sec values\\n\"\n\" --csv              Output in CSV format\\n\"\n\" -l                 Loop. Run the tests forever\\n\"\n\" -t <tests>         Only run the comma separated list of tests. The test\\n\"\n\"                    names are the same as the ones produced as output.\\n\"\n\" -I                 Idle mode. Just open N idle connections and wait.\\n\\n\"\n\"Examples:\\n\\n\"\n\" Run the benchmark with the default configuration against 127.0.0.1:6379:\\n\"\n\"   $ redis-benchmark\\n\\n\"\n\" Use 20 parallel clients, for a total of 100k requests, against 192.168.1.1:\\n\"\n\"   $ redis-benchmark -h 192.168.1.1 -p 6379 -n 100000 -c 20\\n\\n\"\n\" Fill 127.0.0.1:6379 with about 1 million keys only using the SET test:\\n\"\n\"   $ redis-benchmark -t set -n 1000000 -r 100000000\\n\\n\"\n\" Benchmark 127.0.0.1:6379 for a few commands producing CSV output:\\n\"\n\"   $ redis-benchmark -t ping,set,get -n 100000 --csv\\n\\n\"\n\" Fill a list with 10000 random elements:\\n\"\n\"   $ redis-benchmark -r 10000 -n 10000 lpush mylist ele:rand:000000000000\\n\\n\"\n    )",
+          "old_line_content": "\" -c <clients>       Number of parallel connections (default 50)\\n\"",
+          "new_line_content": "    printf(",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 531,
+          "old_api": "exit",
+          "new_api": null,
+          "old_text": "exit(exit_status)",
+          "new_text": null,
+          "old_line_content": "    exit(exit_status);",
+          "new_line_content": "\" Benchmark 127.0.0.1:6379 for a few commands producing CSV output:\\n\"",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(eventLoop)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(eventLoop);",
+          "new_line_content": "    );",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(clientData)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(clientData);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "fflush",
+          "new_api": null,
+          "old_text": "fflush(stdout)",
+          "new_text": null,
+          "old_line_content": "    fflush(stdout);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(name)",
+          "new_text": null,
+          "old_line_content": "    int l = strlen(name);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(buf+1,name,l)",
+          "new_text": null,
+          "old_line_content": "    memcpy(buf+1,name,l);",
+          "new_line_content": "    char buf[256];",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "strstr",
+          "new_api": null,
+          "old_text": "strstr(config.tests,buf)",
+          "new_text": null,
+          "old_line_content": "    return strstr(config.tests,buf) != NULL;",
+          "new_line_content": "    if (config.tests == NULL) return 1;",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "time",
+          "new_api": null,
+          "old_text": "time(NULL)",
+          "new_text": null,
+          "old_line_content": "    srandom(time(NULL));",
+          "new_line_content": "    char *data, *cmd;",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "signal",
+          "new_api": null,
+          "old_text": "signal(SIGHUP, SIG_IGN)",
+          "new_text": null,
+          "old_line_content": "    signal(SIGHUP, SIG_IGN);",
+          "new_line_content": "    int len;",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "signal",
+          "new_api": null,
+          "old_text": "signal(SIGPIPE, SIG_IGN)",
+          "new_text": null,
+          "old_line_content": "    signal(SIGPIPE, SIG_IGN);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "aeCreateTimeEvent",
+          "new_api": null,
+          "old_text": "aeCreateTimeEvent(config.el,1,showThroughput,NULL,NULL)",
+          "new_text": null,
+          "old_line_content": "    aeCreateTimeEvent(config.el,1,showThroughput,NULL,NULL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": "listCreate",
+          "new_api": null,
+          "old_text": "listCreate()",
+          "new_text": null,
+          "old_line_content": "    config.clients = listCreate();",
+          "new_line_content": "    config.quiet = 0;",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": "parseOptions",
+          "new_api": null,
+          "old_text": "parseOptions(argc,argv)",
+          "new_text": null,
+          "old_line_content": "    i = parseOptions(argc,argv);",
+          "new_line_content": "    config.hostport = 6379;",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "zmalloc",
+          "new_api": null,
+          "old_text": "zmalloc(sizeof(long long)*config.requests)",
+          "new_text": null,
+          "old_line_content": "    config.latency = zmalloc(sizeof(long long)*config.requests);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"WARNING: keepalive disabled, you probably need 'echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse' for Linux and 'sudo sysctl -w net.inet.tcp.msl=1000' for Mac OS X in order to use a lot of clients/requests\\n\")",
+          "new_text": null,
+          "old_line_content": "        printf(\"WARNING: keepalive disabled, you probably need 'echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse' for Linux and 'sudo sysctl -w net.inet.tcp.msl=1000' for Mac OS X in order to use a lot of clients/requests\\n\");",
+          "new_line_content": "    argv += i;",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"Creating %d idle connections and waiting forever (Ctrl+C when done)\\n\", config.numclients)",
+          "new_text": null,
+          "old_line_content": "        printf(\"Creating %d idle connections and waiting forever (Ctrl+C when done)\\n\", config.numclients);",
+          "new_line_content": "    if (config.keepalive == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 607,
+          "old_api": "createMissingClients",
+          "new_api": null,
+          "old_text": "createMissingClients(c)",
+          "new_text": null,
+          "old_line_content": "        createMissingClients(c);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "aeMain",
+          "new_api": null,
+          "old_text": "aeMain(config.el)",
+          "new_text": null,
+          "old_line_content": "        aeMain(config.el);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": "sdsnew",
+          "new_api": null,
+          "old_text": "sdsnew(argv[0])",
+          "new_text": null,
+          "old_line_content": "        sds title = sdsnew(argv[0]);",
+          "new_line_content": "        /* and will wait for every */",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": "sdscatlen",
+          "new_api": null,
+          "old_text": "sdscatlen(title, \" \", 1)",
+          "new_text": null,
+          "old_line_content": "            title = sdscatlen(title, \" \", 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(argv[i])",
+          "new_text": null,
+          "old_line_content": "            title = sdscatlen(title, (char*)argv[i], strlen(argv[i]));",
+          "new_line_content": "    /* Run benchmark with command in the remainder of the arguments. */",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "zmalloc",
+          "new_api": null,
+          "old_text": "zmalloc(config.datasize+1)",
+          "new_text": null,
+          "old_line_content": "        data = zmalloc(config.datasize+1);",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(data,'x',config.datasize)",
+          "new_text": null,
+          "old_line_content": "        memset(data,'x',config.datasize);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "test_is_selected",
+          "new_api": null,
+          "old_text": "test_is_selected(\"ping\")",
+          "new_text": null,
+          "old_line_content": "        if (test_is_selected(\"ping_inline\") || test_is_selected(\"ping\"))",
+          "new_line_content": "    do {",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": "test_is_selected",
+          "new_api": null,
+          "old_text": "test_is_selected(\"ping\")",
+          "new_text": null,
+          "old_line_content": "        if (test_is_selected(\"ping_mbulk\") || test_is_selected(\"ping\")) {",
+          "new_line_content": "        data[config.datasize] = '\\0';",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "redisFormatCommand",
+          "new_api": null,
+          "old_text": "redisFormatCommand(&cmd,\"PING\")",
+          "new_text": null,
+          "old_line_content": "            len = redisFormatCommand(&cmd,\"PING\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 671,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": "snprintf",
+          "new_api": null,
+          "old_text": "snprintf(buf,sizeof(buf),\"%012zu\",r)",
+          "new_text": null,
+          "old_line_content": "        snprintf(buf,sizeof(buf),\"%012zu\",r);",
+          "new_line_content": "        size_t j;",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(c->randptr[i],buf,12)",
+          "new_text": null,
+          "old_line_content": "        memcpy(c->randptr[i],buf,12);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": "benchmark",
+          "new_api": null,
+          "old_text": "benchmark(\"SADD\",cmd,len)",
+          "new_text": null,
+          "old_line_content": "            benchmark(\"SADD\",cmd,len);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "freeClient",
+          "new_api": null,
+          "old_text": "freeClient(c)",
+          "new_text": null,
+          "old_line_content": "        freeClient(c);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "aeStop",
+          "new_api": null,
+          "old_text": "aeStop(config.el)",
+          "new_text": null,
+          "old_line_content": "        aeStop(config.el);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "test_is_selected",
+          "new_api": null,
+          "old_text": "test_is_selected(\"spop\")",
+          "new_text": null,
+          "old_line_content": "        if (test_is_selected(\"spop\")) {",
+          "new_line_content": "                \"SADD myset counter:rand:000000000000\");",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": "createMissingClients",
+          "new_api": null,
+          "old_text": "createMissingClients(c)",
+          "new_text": null,
+          "old_line_content": "        createMissingClients(c);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "test_is_selected",
+          "new_api": null,
+          "old_text": "test_is_selected(\"lrange_500\")",
+          "new_text": null,
+          "old_line_content": "            test_is_selected(\"lrange_500\") ||",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "test_is_selected",
+          "new_api": null,
+          "old_text": "test_is_selected(\"lrange_600\")",
+          "new_text": null,
+          "old_line_content": "            test_is_selected(\"lrange_600\"))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(el)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(el);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(fd)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(fd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(mask)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(mask);",
+          "new_line_content": "static void readHandler(aeEventLoop *el, int fd, void *privdata, int mask) {",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": "redisBufferRead",
+          "new_api": null,
+          "old_text": "redisBufferRead(c->context)",
+          "new_text": null,
+          "old_line_content": "    if (redisBufferRead(c->context) != REDIS_OK) {",
+          "new_line_content": "    /* Calculate latency only for the first read event. This means that the",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "fprintf",
+          "new_api": null,
+          "old_text": "fprintf(stderr,\"Error: %s\\n\",c->context->errstr)",
+          "new_text": null,
+          "old_line_content": "        fprintf(stderr,\"Error: %s\\n\",c->context->errstr);",
+          "new_line_content": "     * server already sent the reply and we need to parse it. Parsing overhead",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "exit",
+          "new_api": null,
+          "old_text": "exit(1)",
+          "new_text": null,
+          "old_line_content": "        exit(1);",
+          "new_line_content": "     * is not part of the latency, so calculate it only once, here. */",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "freeReplyObject",
+          "new_api": null,
+          "old_text": "freeReplyObject(reply)",
+          "new_text": null,
+          "old_line_content": "                freeReplyObject(reply);",
+          "new_line_content": "                if (reply == (void*)REDIS_REPLY_ERROR) {",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "sdsrange",
+          "new_api": null,
+          "old_text": "sdsrange(c->obuf,c->selectlen,-1)",
+          "new_text": null,
+          "old_line_content": "                    sdsrange(c->obuf,c->selectlen,-1);",
+          "new_line_content": "                    int j;",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": "redisFormatCommandArgv",
+          "new_api": null,
+          "old_text": "redisFormatCommandArgv(&cmd,21,argv,NULL)",
+          "new_text": null,
+          "old_line_content": "            len = redisFormatCommandArgv(&cmd,21,argv,NULL);",
+          "new_line_content": "            argv[0] = \"MSET\";",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "benchmark",
+          "new_api": null,
+          "old_text": "benchmark(\"MSET (10 keys)\",cmd,len)",
+          "new_text": null,
+          "old_line_content": "            benchmark(\"MSET (10 keys)\",cmd,len);",
+          "new_line_content": "            for (i = 1; i < 21; i += 2) {",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(cmd)",
+          "new_text": null,
+          "old_line_content": "            free(cmd);",
+          "new_line_content": "                argv[i] = \"foo:rand:000000000000\";",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "clientDone",
+          "new_api": null,
+          "old_text": "clientDone(c)",
+          "new_text": null,
+          "old_line_content": "                    clientDone(c);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(el)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(el);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(fd)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(fd);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "REDIS_NOTUSED",
+          "new_api": null,
+          "old_text": "REDIS_NOTUSED(mask)",
+          "new_text": null,
+          "old_line_content": "    REDIS_NOTUSED(mask);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "freeClient",
+          "new_api": null,
+          "old_text": "freeClient(c)",
+          "new_text": null,
+          "old_line_content": "            freeClient(c);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "ustime",
+          "new_api": null,
+          "old_text": "ustime()",
+          "new_text": null,
+          "old_line_content": "        c->start = ustime();",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "sdslen",
+          "new_api": null,
+          "old_text": "sdslen(c->obuf)",
+          "new_text": null,
+          "old_line_content": "        int nwritten = write(c->context->fd,ptr,sdslen(c->obuf)-c->written);",
+          "new_line_content": "        c->latency = -1;",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "freeClient",
+          "new_api": null,
+          "old_text": "freeClient(c)",
+          "new_text": null,
+          "old_line_content": "            freeClient(c);",
+          "new_line_content": "        void *ptr = c->obuf+c->written;",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "aeCreateFileEvent",
+          "new_api": null,
+          "old_text": "aeCreateFileEvent(config.el,c->context->fd,AE_READABLE,readHandler,c)",
+          "new_text": null,
+          "old_line_content": "            aeCreateFileEvent(config.el,c->context->fd,AE_READABLE,readHandler,c);",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "zmalloc",
+          "new_api": null,
+          "old_text": "zmalloc(sizeof(struct _client))",
+          "new_text": null,
+          "old_line_content": "    client c = zmalloc(sizeof(struct _client));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "redisConnectNonBlock",
+          "new_api": null,
+          "old_text": "redisConnectNonBlock(config.hostip,config.hostport)",
+          "new_text": null,
+          "old_line_content": "        c->context = redisConnectNonBlock(config.hostip,config.hostport);",
+          "new_line_content": "static client createClient(char *cmd, size_t len) {",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": "fprintf",
+          "new_api": null,
+          "old_text": "fprintf(stderr,\"%s: %s\\n\",config.hostsocket,c->context->errstr)",
+          "new_text": null,
+          "old_line_content": "            fprintf(stderr,\"%s: %s\\n\",config.hostsocket,c->context->errstr);",
+          "new_line_content": "    if (c->context->err) {",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": "sdsempty",
+          "new_api": null,
+          "old_text": "sdsempty()",
+          "new_text": null,
+          "old_line_content": "    c->obuf = sdsempty();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "sdscatprintf",
+          "new_api": null,
+          "old_text": "sdscatprintf(c->obuf,\"*2\\r\\n$6\\r\\nSELECT\\r\\n$%d\\r\\n%s\\r\\n\",\n            (int)sdslen(config.dbnumstr),config.dbnumstr)",
+          "new_text": null,
+          "old_line_content": "        c->obuf = sdscatprintf(c->obuf,\"*2\\r\\n$6\\r\\nSELECT\\r\\n$%d\\r\\n%s\\r\\n\",",
+          "new_line_content": "    if (config.dbnum != 0) {",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "sdslen",
+          "new_api": null,
+          "old_text": "sdslen(config.dbnumstr)",
+          "new_text": null,
+          "old_line_content": "            (int)sdslen(config.dbnumstr),config.dbnumstr);",
+          "new_line_content": "        /* If a DB number different than zero is selected, prefix our request",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "sdslen",
+          "new_api": null,
+          "old_text": "sdslen(c->obuf)",
+          "new_text": null,
+          "old_line_content": "        c->selectlen = sdslen(c->obuf);",
+          "new_line_content": "         * buffer with the SELECT command, that will be discarded the first",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "zmalloc",
+          "new_api": null,
+          "old_text": "zmalloc(sizeof(char*)*c->randfree)",
+          "new_text": null,
+          "old_line_content": "    c->randptr = zmalloc(sizeof(char*)*c->randfree);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "strstr",
+          "new_api": null,
+          "old_text": "strstr(p,\":rand:\")",
+          "new_text": null,
+          "old_line_content": "        while ((p = strstr(p,\":rand:\")) != NULL) {",
+          "new_line_content": "    if (c->selectlen) c->pending++;",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": "zrealloc",
+          "new_api": null,
+          "old_text": "zrealloc(c->randptr,sizeof(char*)*c->randlen*2)",
+          "new_text": null,
+          "old_line_content": "                c->randptr = zrealloc(c->randptr,sizeof(char*)*c->randlen*2);",
+          "new_line_content": "    /* Find substrings in the output buffer that need to be randomized. */",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": "aeCreateFileEvent",
+          "new_api": null,
+          "old_text": "aeCreateFileEvent(config.el,c->context->fd,AE_WRITABLE,writeHandler,c)",
+          "new_text": null,
+          "old_line_content": "    aeCreateFileEvent(config.el,c->context->fd,AE_WRITABLE,writeHandler,c);",
+          "new_line_content": "            c->randptr[c->randlen++] = p+6;",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "listAddNodeTail",
+          "new_api": null,
+          "old_text": "listAddNodeTail(config.clients,c)",
+          "new_text": null,
+          "old_line_content": "    listAddNodeTail(config.clients,c);",
+          "new_line_content": "            c->randfree--;",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "sdslen",
+          "new_api": null,
+          "old_text": "sdslen(c->obuf)",
+          "new_text": null,
+          "old_line_content": "    size_t buflen = sdslen(c->obuf);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "createClient",
+          "new_api": null,
+          "old_text": "createClient(buf,buflen/config.pipeline)",
+          "new_text": null,
+          "old_line_content": "        createClient(buf,buflen/config.pipeline);",
+          "new_line_content": "        buf += c->selectlen;",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": "usleep",
+          "new_api": null,
+          "old_text": "usleep(50000)",
+          "new_text": null,
+          "old_line_content": "            usleep(50000);",
+          "new_line_content": "    while(config.liveclients < config.numclients) {",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"====== %s ======\\n\", config.title)",
+          "new_text": null,
+          "old_line_content": "        printf(\"====== %s ======\\n\", config.title);",
+          "new_line_content": "    int i, curlat = 0;",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"  %d requests completed in %.2f seconds\\n\", config.requests_finished,\n            (float)config.totlatency/1000)",
+          "new_text": null,
+          "old_line_content": "        printf(\"  %d requests completed in %.2f seconds\\n\", config.requests_finished,",
+          "new_line_content": "    float perc, reqpersec;",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"  %d parallel clients\\n\", config.numclients)",
+          "new_text": null,
+          "old_line_content": "        printf(\"  %d parallel clients\\n\", config.numclients);",
+          "new_line_content": "    reqpersec = (float)config.requests_finished/((float)config.totlatency/1000);",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"  %d bytes payload\\n\", config.datasize)",
+          "new_text": null,
+          "old_line_content": "        printf(\"  %d bytes payload\\n\", config.datasize);",
+          "new_line_content": "    if (!config.quiet && !config.csv) {",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"%.2f requests per second\\n\\n\", reqpersec)",
+          "new_text": null,
+          "old_line_content": "        printf(\"%.2f requests per second\\n\\n\", reqpersec);",
+          "new_line_content": "                curlat = config.latency[i]/1000;",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"%s: %.2f requests per second\\n\", config.title, reqpersec)",
+          "new_text": null,
+          "old_line_content": "        printf(\"%s: %.2f requests per second\\n\", config.title, reqpersec);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "createClient",
+          "new_api": null,
+          "old_text": "createClient(cmd,len)",
+          "new_text": null,
+          "old_line_content": "    c = createClient(cmd,len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "createMissingClients",
+          "new_api": null,
+          "old_text": "createMissingClients(c)",
+          "new_text": null,
+          "old_line_content": "    createMissingClients(c);",
+          "new_line_content": "    config.title = title;",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "mstime",
+          "new_api": null,
+          "old_text": "mstime()",
+          "new_text": null,
+          "old_line_content": "    config.start = mstime();",
+          "new_line_content": "    config.requests_finished = 0;",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "aeMain",
+          "new_api": null,
+          "old_text": "aeMain(config.el)",
+          "new_text": null,
+          "old_line_content": "    aeMain(config.el);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "showLatencyReport",
+          "new_api": null,
+          "old_text": "showLatencyReport()",
+          "new_text": null,
+          "old_line_content": "    showLatencyReport();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-c\")",
+          "new_text": null,
+          "old_line_content": "        if (!strcmp(argv[i],\"-c\")) {",
+          "new_line_content": "    int exit_status = 1;",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "atoi",
+          "new_api": null,
+          "old_text": "atoi(argv[++i])",
+          "new_text": null,
+          "old_line_content": "            config.numclients = atoi(argv[++i]);",
+          "new_line_content": "    for (i = 1; i < argc; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-n\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-n\")) {",
+          "new_line_content": "        lastarg = (i == (argc-1));",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-k\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-k\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-h\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-h\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-p\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-p\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-s\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-s\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-d\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-d\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-r\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-r\")) {",
+          "new_line_content": "            if (config.datasize > 1024*1024*1024) config.datasize = 1024*1024*1024;",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-q\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-q\")) {",
+          "new_line_content": "            if (lastarg) goto invalid;",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-l\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-l\")) {",
+          "new_line_content": "                config.randomkeys_keyspacelen = 0;",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-I\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-I\")) {",
+          "new_line_content": "            config.quiet = 1;",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"-t\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"-t\")) {",
+          "new_line_content": "            config.csv = 1;",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": "sdsnew",
+          "new_api": null,
+          "old_text": "sdsnew(\",\")",
+          "new_text": null,
+          "old_line_content": "            config.tests = sdsnew(\",\");",
+          "new_line_content": "            /* We get the list of tests to run as a string in the form",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "sdscat",
+          "new_api": null,
+          "old_text": "sdscat(config.tests,(char*)argv[++i])",
+          "new_text": null,
+          "old_line_content": "            config.tests = sdscat(config.tests,(char*)argv[++i]);",
+          "new_line_content": "             * get,set,lrange,...,test_N. Then we add a comma before and",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "sdscat",
+          "new_api": null,
+          "old_text": "sdscat(config.tests,\",\")",
+          "new_text": null,
+          "old_line_content": "            config.tests = sdscat(config.tests,\",\");",
+          "new_line_content": "             * after the string in order to make sure that searching",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "sdstolower",
+          "new_api": null,
+          "old_text": "sdstolower(config.tests)",
+          "new_text": null,
+          "old_line_content": "            sdstolower(config.tests);",
+          "new_line_content": "             * for \",testname,\" will always get a match if the test is",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "strcmp",
+          "new_api": null,
+          "old_text": "strcmp(argv[i],\"--dbnum\")",
+          "new_text": null,
+          "old_line_content": "        } else if (!strcmp(argv[i],\"--dbnum\")) {",
+          "new_line_content": "             * enabled. */",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\"Invalid option \\\"%s\\\" or option argument missing\\n\\n\",argv[i])",
+          "new_text": null,
+          "old_line_content": "    printf(\"Invalid option \\\"%s\\\" or option argument missing\\n\\n\",argv[i]);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": "printf",
+          "new_api": null,
+          "old_text": "printf(\n\"Usage: redis-benchmark [-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]\\n\\n\"\n\" -h <hostname>      Server hostname (default 127.0.0.1)\\n\"\n\" -p <port>          Server port (default 6379)\\n\"\n\" -s <socket>        Server socket (overrides host and port)\\n\"\n\" -c <clients>       Number of parallel connections (default 50)\\n\"\n\" -n <requests>      Total number of requests (default 10000)\\n\"\n\" -d <size>          Data size of SET/GET value in bytes (default 2)\\n\"\n\" -dbnum <db>        SELECT the specified db number (default 0)\\n\"\n\" -k <boolean>       1=keep alive 0=reconnect (default 1)\\n\"\n\" -r <keyspacelen>   Use random keys for SET/GET/INCR, random values for SADD\\n\"\n\"  Using this option the benchmark will get/set keys\\n\"\n\"  in the form mykey_rand:000000012456 instead of constant\\n\"\n\"  keys, the <keyspacelen> argument determines the max\\n\"\n\"  number of values for the random number. For instance\\n\"\n\"  if set to 10 only rand:000000000000 - rand:000000000009\\n\"\n\"  range will be allowed.\\n\"\n\" -P <numreq>        Pipeline <numreq> requests. Default 1 (no pipeline).\\n\"\n\" -q                 Quiet. Just show query/sec values\\n\"\n\" --csv              Output in CSV format\\n\"\n\" -l                 Loop. Run the tests forever\\n\"\n\" -t <tests>         Only run the comma separated list of tests. The test\\n\"\n\"                    names are the same as the ones produced as output.\\n\"\n\" -I                 Idle mode. Just open N idle connections and wait.\\n\\n\"\n\"Examples:\\n\\n\"\n\" Run the benchmark with the default configuration against 127.0.0.1:6379:\\n\"\n\"   $ redis-benchmark\\n\\n\"\n\" Use 20 parallel clients, for a total of 100k requests, against 192.168.1.1:\\n\"\n\"   $ redis-benchmark -h 192.168.1.1 -p 6379 -n 100000 -c 20\\n\\n\"\n\" Fill 127.0.0.1:6379 with about 1 million keys only using the SET test:\\n\"\n\"   $ redis-benchmark -t set -n 1000000 -r 100000000\\n\\n\"\n\" Benchmark 127.0.0.1:6379 for a few commands producing CSV output:\\n\"\n\"   $ redis-benchmark -t ping,set,get -n 100000 --csv\\n\\n\"\n\" Fill a list with 10000 random elements:\\n\"\n\"   $ redis-benchmark -r 10000 -n 10000 lpush mylist ele:rand:000000000000\\n\\n\"\n    )",
+          "new_text": null,
+          "old_line_content": "    printf(",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 77,
+      "total_additions": 111,
+      "total_deletions": 113,
+      "total_api_changes": 301
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 301,
+        "non_api_lines": 9,
+        "non_api_line_numbers": [
+          162,
+          163,
+          164,
+          165,
+          166,
+          155,
+          156,
+          158,
+          159
+        ]
+      }
+    },
+    "api_calls_before": 226,
+    "api_calls_after": 224,
+    "diff_info": {
+      "added_lines": 10,
+      "removed_lines": 5,
+      "total_diff_lines": 29
+    }
+  }
+}

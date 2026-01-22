@@ -1,0 +1,19 @@
+diff --git a/src/t_stream.c b/src/t_stream.c
+index 02d9fdcaa..900e23d0e 100644
+--- a/src/t_stream.c
++++ b/src/t_stream.c
+@@ -1841,9 +1841,11 @@ void xaddCommand(client *c) {
+ 
+     /* Let's rewrite the ID argument with the one actually generated for
+      * AOF/replication propagation. */
+-    robj *idarg = createObjectFromStreamID(&id);
+-    rewriteClientCommandArgument(c,idpos,idarg);
+-    decrRefCount(idarg);
++    if (!parsed_args.id_given) {
++        robj *idarg = createObjectFromStreamID(&id);
++        rewriteClientCommandArgument(c, idpos, idarg);
++        decrRefCount(idarg);
++    }
+ 
+     /* We need to signal to blocked clients that there is new data on this
+      * stream. */

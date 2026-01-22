@@ -1,0 +1,809 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/f93024247883e93685edfa7867c83d8797236000",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/f93024247883e93685edfa7867c83d8797236000/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/f93024247883e93685edfa7867c83d8797236000/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/f93024247883e93685edfa7867c83d8797236000/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 477,
+          "old_api": "erase",
+          "new_api": "OutOfMemoryException",
+          "old_text": "blocks.erase(block_id)",
+          "new_text": "OutOfMemoryException(\n\t\t    \"Failed to change memory limit to %lld: could not free up enough memory for the new limit\", limit)",
+          "old_line_content": "\t\tblocks.erase(block_id);",
+          "new_line_content": "\t\tthrow OutOfMemoryException(",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "EvictBlocks",
+          "new_api": "to_string",
+          "old_text": "EvictBlocks(0, limit)",
+          "new_text": "to_string(id)",
+          "old_line_content": "\tif (!EvictBlocks(0, limit)) {",
+          "new_line_content": "\treturn fs.JoinPath(temp_directory, to_string(id) + \".block\");",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "GetTemporaryPath",
+          "new_api": "get",
+          "old_text": "GetTemporaryPath(buffer.id)",
+          "new_text": "temp_directory_handle.get()",
+          "old_line_content": "\tauto path = GetTemporaryPath(buffer.id);",
+          "new_line_content": "\tD_ASSERT(temp_directory_handle.get());",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "OpenFile",
+          "new_api": "GetTemporaryPath",
+          "old_text": "fs.OpenFile(path, FileFlags::FILE_FLAGS_WRITE | FileFlags::FILE_FLAGS_FILE_CREATE)",
+          "new_text": "GetTemporaryPath(id)",
+          "old_line_content": "\tauto handle = fs.OpenFile(path, FileFlags::FILE_FLAGS_WRITE | FileFlags::FILE_FLAGS_FILE_CREATE);",
+          "new_line_content": "\tauto path = GetTemporaryPath(id);",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "Write",
+          "new_api": "FileSystem::GetFileSystem(db)",
+          "old_text": "handle->Write(&buffer.size, sizeof(idx_t), 0)",
+          "new_text": "FileSystem::GetFileSystem(db)",
+          "old_line_content": "\thandle->Write(&buffer.size, sizeof(idx_t), 0);",
+          "new_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "Write",
+          "new_api": "OpenFile",
+          "old_text": "buffer.Write(*handle, sizeof(idx_t))",
+          "new_text": "fs.OpenFile(path, FileFlags::FILE_FLAGS_READ)",
+          "old_line_content": "\tbuffer.Write(*handle, sizeof(idx_t));",
+          "new_line_content": "\tauto handle = fs.OpenFile(path, FileFlags::FILE_FLAGS_READ);",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": "empty",
+          "new_api": "make_unique<ManagedBuffer>(db, block_size, false, id)",
+          "old_text": "temp_directory.empty()",
+          "new_text": "make_unique<ManagedBuffer>(db, block_size, false, id)",
+          "old_line_content": "\tD_ASSERT(!temp_directory.empty());",
+          "new_line_content": "\tauto buffer = make_unique<ManagedBuffer>(db, block_size, false, id);",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "get",
+          "new_api": "Read",
+          "old_text": "temp_directory_handle.get()",
+          "new_text": "buffer->Read(*handle, sizeof(idx_t))",
+          "old_line_content": "\tD_ASSERT(temp_directory_handle.get());",
+          "new_line_content": "\tbuffer->Read(*handle, sizeof(idx_t));",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "GetTemporaryPath",
+          "new_api": "DeleteTemporaryFile",
+          "old_text": "GetTemporaryPath(id)",
+          "new_text": "DeleteTemporaryFile(id)",
+          "old_line_content": "\tauto path = GetTemporaryPath(id);",
+          "new_line_content": "\tDeleteTemporaryFile(id);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "FileSystem::GetFileSystem(db)",
+          "new_api": "move",
+          "old_text": "FileSystem::GetFileSystem(db)",
+          "new_text": "move(buffer)",
+          "old_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "new_line_content": "\treturn move(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "reset",
+          "new_api": "GetTemporaryPath",
+          "old_text": "handle.reset()",
+          "new_text": "GetTemporaryPath(id)",
+          "old_line_content": "\thandle.reset();",
+          "new_line_content": "\tauto path = GetTemporaryPath(id);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": "DeleteTemporaryFile",
+          "new_api": "FileExists",
+          "old_text": "DeleteTemporaryFile(id)",
+          "new_text": "fs.FileExists(path)",
+          "old_line_content": "\tDeleteTemporaryFile(id);",
+          "new_line_content": "\tif (fs.FileExists(path)) {",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "move",
+          "new_api": "RemoveFile",
+          "old_text": "move(buffer)",
+          "new_text": "fs.RemoveFile(path)",
+          "old_line_content": "\treturn move(buffer);",
+          "new_line_content": "\t\tfs.RemoveFile(path);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 513,
+          "old_api": null,
+          "new_api": "D_ASSERT",
+          "old_text": null,
+          "new_text": "D_ASSERT(buffer.size >= Storage::BLOCK_SIZE)",
+          "old_line_content": "\tlock_guard<mutex> temp_handle_guard(temp_handle_lock);",
+          "new_line_content": "\tD_ASSERT(buffer.size >= Storage::BLOCK_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 515,
+          "old_api": null,
+          "new_api": "GetTemporaryPath",
+          "old_text": null,
+          "new_text": "GetTemporaryPath(buffer.id)",
+          "old_line_content": "\t\t// temp directory has not been created yet: initialize it",
+          "new_line_content": "\tauto path = GetTemporaryPath(buffer.id);",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": null,
+          "new_api": "FileSystem::GetFileSystem(db)",
+          "old_text": null,
+          "new_text": "FileSystem::GetFileSystem(db)",
+          "old_line_content": "\t}",
+          "new_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "OpenFile",
+          "old_text": null,
+          "new_text": "fs.OpenFile(path, FileFlags::FILE_FLAGS_WRITE | FileFlags::FILE_FLAGS_FILE_CREATE)",
+          "old_line_content": "}",
+          "new_line_content": "\tauto handle = fs.OpenFile(path, FileFlags::FILE_FLAGS_WRITE | FileFlags::FILE_FLAGS_FILE_CREATE);",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": null,
+          "new_api": "Write",
+          "old_text": null,
+          "new_text": "handle->Write(&buffer.size, sizeof(idx_t), 0)",
+          "old_line_content": "",
+          "new_line_content": "\thandle->Write(&buffer.size, sizeof(idx_t), 0);",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "Write",
+          "old_text": null,
+          "new_text": "buffer.Write(*handle, sizeof(idx_t))",
+          "old_line_content": "void BufferManager::WriteTemporaryBuffer(ManagedBuffer &buffer) {",
+          "new_line_content": "\tbuffer.Write(*handle, sizeof(idx_t));",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "temp_directory.empty()",
+          "old_line_content": "\t// get the path to write to",
+          "new_line_content": "\tD_ASSERT(!temp_directory.empty());",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": null,
+          "new_api": "Unload",
+          "old_text": null,
+          "new_text": "h->Unload()",
+          "old_line_content": "\t\t\tfor (auto &h : handles_to_unload) {",
+          "new_line_content": "\t\th->Unload();",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": null,
+          "new_api": "Read",
+          "old_text": null,
+          "new_text": "handle->Read(&block_size, sizeof(idx_t), 0)",
+          "old_line_content": "}",
+          "new_line_content": "\thandle->Read(&block_size, sizeof(idx_t), 0);",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": null,
+          "new_api": "unlock",
+          "old_text": null,
+          "new_text": "h->lock.unlock()",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\th->lock.unlock();",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "handle.reset()",
+          "old_line_content": "\t// open the temporary file and read the size",
+          "new_line_content": "\thandle.reset();",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "unlock",
+          "old_text": null,
+          "new_text": "memory_full_lock.unlock()",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\tmemory_full_lock.unlock();",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "temp_directory.empty()",
+          "old_line_content": "\t// now allocate a buffer of this size and read the data into that buffer",
+          "new_line_content": "\tif (temp_directory.empty() || !temp_directory_handle) {",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": null,
+          "new_api": "FileSystem::GetFileSystem(db)",
+          "old_text": null,
+          "new_text": "FileSystem::GetFileSystem(db)",
+          "old_line_content": "",
+          "new_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": null,
+          "new_api": "try_dequeue",
+          "old_text": null,
+          "new_text": "queue->q.try_dequeue(node)",
+          "old_line_content": "\t\treturn false;",
+          "new_line_content": "\t\tif (!queue->q.try_dequeue(node)) {",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "TryGetBlockHandle",
+          "old_text": null,
+          "new_text": "node->TryGetBlockHandle()",
+          "old_line_content": "\t\treturn true;",
+          "new_line_content": "\t\tauto handle = node->TryGetBlockHandle();",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": null,
+          "new_api": "move",
+          "old_text": null,
+          "new_text": "move(node)",
+          "old_line_content": "void BufferManager::PurgeQueue() {",
+          "new_line_content": "\t\t\tqueue->q.enqueue(move(node));",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "lock",
+          "old_text": null,
+          "new_text": "map_entry.second.lock()",
+          "old_line_content": "\t\t\tbreak;",
+          "new_line_content": "\t\tauto &block = *map_entry.second.lock();",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": null,
+          "new_api": "D_ASSERT",
+          "old_text": null,
+          "new_text": "D_ASSERT(summed_memory == current_memory)",
+          "old_line_content": "\t\tif (block.state == BlockState::BLOCK_LOADED) {",
+          "new_line_content": "\tD_ASSERT(summed_memory == current_memory);",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": null,
+          "new_api": "DeleteTemporaryFile",
+          "old_text": null,
+          "new_text": "DeleteTemporaryFile(block_id)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tDeleteTemporaryFile(block_id);",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "temp_blocks.erase(block_id)",
+          "old_line_content": "",
+          "new_line_content": "\t\ttemp_blocks.erase(block_id);",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "blocks.erase(block_id)",
+          "old_line_content": "\t\t\t// buffer could have been offloaded to disk: remove the file",
+          "new_line_content": "\t\tblocks.erase(block_id);",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "EvictBlocks",
+          "old_text": null,
+          "new_text": "EvictBlocks(0, limit)",
+          "old_line_content": "\t\t// on-disk block: erase from list of blocks in manager",
+          "new_line_content": "\tif (!EvictBlocks(0, limit)) {",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": null,
+          "new_api": "EvictBlocks",
+          "old_text": null,
+          "new_text": "EvictBlocks(0, limit)",
+          "old_line_content": "#endif",
+          "new_line_content": "\tif (!EvictBlocks(0, limit)) {",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": null,
+          "new_api": "FileSystem::GetFileSystem(db)",
+          "old_text": null,
+          "new_text": "FileSystem::GetFileSystem(db)",
+          "old_line_content": "\t// evict again",
+          "new_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "temp_directory.empty()",
+          "old_line_content": "\t\t    \"Failed to change memory limit to %lld: could not free up enough memory for the new limit\", limit);",
+          "new_line_content": "\tif (temp_directory.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\n\t\t    \"Out-of-memory: cannot write buffer because no temporary directory is specified!\\nTo enable \"\n\t\t    \"temporary buffer eviction set a temporary directory using PRAGMA temp_directory='/path/to/tmp.tmp'\")",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tthrow Exception(",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "make_unique<TemporaryDirectoryHandle>(db, temp_directory)",
+          "old_text": null,
+          "new_text": "make_unique<TemporaryDirectoryHandle>(db, temp_directory)",
+          "old_line_content": "",
+          "new_line_content": "\t\ttemp_directory_handle = make_unique<TemporaryDirectoryHandle>(db, temp_directory);",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": null,
+          "new_api": "RequireTemporaryDirectory",
+          "old_text": null,
+          "new_text": "RequireTemporaryDirectory()",
+          "old_line_content": "\t\t    \"temporary buffer eviction set a temporary directory using PRAGMA temp_directory='/path/to/tmp.tmp'\");",
+          "new_line_content": "\tRequireTemporaryDirectory();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 516,
+          "old_api": "make_unique<TemporaryDirectoryHandle>(db, temp_directory)",
+          "new_api": null,
+          "old_text": "make_unique<TemporaryDirectoryHandle>(db, temp_directory)",
+          "new_text": null,
+          "old_line_content": "\t\ttemp_directory_handle = make_unique<TemporaryDirectoryHandle>(db, temp_directory);",
+          "new_line_content": "\t// create the file and write the size followed by the buffer contents",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "RequireTemporaryDirectory",
+          "new_api": null,
+          "old_text": "RequireTemporaryDirectory()",
+          "new_text": null,
+          "old_line_content": "\tRequireTemporaryDirectory();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": "D_ASSERT",
+          "new_api": null,
+          "old_text": "D_ASSERT(buffer.size >= Storage::BLOCK_SIZE)",
+          "new_text": null,
+          "old_line_content": "\tD_ASSERT(buffer.size >= Storage::BLOCK_SIZE);",
+          "new_line_content": "unique_ptr<FileBuffer> BufferManager::ReadTemporaryBuffer(block_id_t id) {",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "FileSystem::GetFileSystem(db)",
+          "new_api": null,
+          "old_text": "FileSystem::GetFileSystem(db)",
+          "new_text": null,
+          "old_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "new_line_content": "\t// open the temporary file and read the size",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "handles_to_unload.size()",
+          "new_text": null,
+          "old_line_content": "\t\tif (handles_to_unload.size() == 1024 || memory_to_free >= 0.05 * memory_limit) {",
+          "new_line_content": "\tfor (auto &h : handles_to_unload) {",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "Unload",
+          "new_api": null,
+          "old_text": "h->Unload()",
+          "new_text": null,
+          "old_line_content": "\t\t\t\th->Unload();",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "h->lock.unlock()",
+          "new_text": null,
+          "old_line_content": "\t\t\t\th->lock.unlock();",
+          "new_line_content": "\tfor (auto &h : handles_to_unload) {",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "handles_to_unload.clear()",
+          "new_text": null,
+          "old_line_content": "\t\t\thandles_to_unload.clear();",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "OpenFile",
+          "new_api": null,
+          "old_text": "fs.OpenFile(path, FileFlags::FILE_FLAGS_READ)",
+          "new_text": null,
+          "old_line_content": "\tauto handle = fs.OpenFile(path, FileFlags::FILE_FLAGS_READ);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": "Read",
+          "new_api": null,
+          "old_text": "handle->Read(&block_size, sizeof(idx_t), 0)",
+          "new_text": null,
+          "old_line_content": "\thandle->Read(&block_size, sizeof(idx_t), 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "h->lock.unlock()",
+          "new_text": null,
+          "old_line_content": "\t\th->lock.unlock();",
+          "new_line_content": "\t\treturn true;",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": "Unload",
+          "new_api": null,
+          "old_text": "h->Unload()",
+          "new_text": null,
+          "old_line_content": "\t\th->Unload();",
+          "new_line_content": "\t\t// we freed up enough space!",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "make_unique<ManagedBuffer>(db, block_size, false, id)",
+          "new_api": null,
+          "old_text": "make_unique<ManagedBuffer>(db, block_size, false, id)",
+          "new_text": null,
+          "old_line_content": "\tauto buffer = make_unique<ManagedBuffer>(db, block_size, false, id);",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "Read",
+          "new_api": null,
+          "old_text": "buffer->Read(*handle, sizeof(idx_t))",
+          "new_text": null,
+          "old_line_content": "\tbuffer->Read(*handle, sizeof(idx_t));",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "io_lock.unlock()",
+          "new_text": null,
+          "old_line_content": "\tio_lock.unlock();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "memory_full_lock.unlock()",
+          "new_text": null,
+          "old_line_content": "\t\tmemory_full_lock.unlock();",
+          "new_line_content": "\twhile (true) {",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "temp_directory.empty()",
+          "new_text": null,
+          "old_line_content": "\tif (temp_directory.empty() || !temp_directory_handle) {",
+          "new_line_content": "} // namespace duckdb",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "FileSystem::GetFileSystem(db)",
+          "new_api": null,
+          "old_text": "FileSystem::GetFileSystem(db)",
+          "new_text": null,
+          "old_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "GetTemporaryPath",
+          "new_api": null,
+          "old_text": "GetTemporaryPath(id)",
+          "new_text": null,
+          "old_line_content": "\tauto path = GetTemporaryPath(id);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "FileExists",
+          "new_api": null,
+          "old_text": "fs.FileExists(path)",
+          "new_text": null,
+          "old_line_content": "\tif (fs.FileExists(path)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": "RemoveFile",
+          "new_api": null,
+          "old_text": "fs.RemoveFile(path)",
+          "new_text": null,
+          "old_line_content": "\t\tfs.RemoveFile(path);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "try_dequeue",
+          "new_api": null,
+          "old_text": "queue->q.try_dequeue(node)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!queue->q.try_dequeue(node)) {",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "TryGetBlockHandle",
+          "new_api": null,
+          "old_text": "node->TryGetBlockHandle()",
+          "new_text": null,
+          "old_line_content": "\t\tauto handle = node->TryGetBlockHandle();",
+          "new_line_content": "void BufferManager::VerifyCurrentMemory() {",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": "move",
+          "new_api": null,
+          "old_text": "move(node)",
+          "new_text": null,
+          "old_line_content": "\t\t\tqueue->q.enqueue(move(node));",
+          "new_line_content": "\tfor (auto &map_entry : blocks) {",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": "lock",
+          "new_api": null,
+          "old_text": "map_entry.second.lock()",
+          "new_text": null,
+          "old_line_content": "\t\tauto &block = *map_entry.second.lock();",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "D_ASSERT",
+          "new_api": null,
+          "old_text": "D_ASSERT(summed_memory == current_memory)",
+          "new_text": null,
+          "old_line_content": "\tD_ASSERT(summed_memory == current_memory);",
+          "new_line_content": "#ifdef DEBUG",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": "DeleteTemporaryFile",
+          "new_api": null,
+          "old_text": "DeleteTemporaryFile(block_id)",
+          "new_text": null,
+          "old_line_content": "\t\t\tDeleteTemporaryFile(block_id);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "temp_blocks.erase(block_id)",
+          "new_text": null,
+          "old_line_content": "\t\ttemp_blocks.erase(block_id);",
+          "new_line_content": "#ifdef DEBUG",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "EvictBlocks",
+          "new_api": null,
+          "old_text": "EvictBlocks(0, limit)",
+          "new_text": null,
+          "old_line_content": "\tif (!EvictBlocks(0, limit)) {",
+          "new_line_content": "\t\tmaximum_memory = old_limit;",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": "OutOfMemoryException",
+          "new_api": null,
+          "old_text": "OutOfMemoryException(\n\t\t    \"Failed to change memory limit to %lld: could not free up enough memory for the new limit\", limit)",
+          "new_text": null,
+          "old_line_content": "\t\tthrow OutOfMemoryException(",
+          "new_line_content": "void BufferManager::RequireTemporaryDirectory() {",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "FileSystem::GetFileSystem(db)",
+          "new_api": null,
+          "old_text": "FileSystem::GetFileSystem(db)",
+          "new_text": null,
+          "old_line_content": "\tauto &fs = FileSystem::GetFileSystem(db);",
+          "new_line_content": "\tlock_guard<mutex> temp_handle_guard(temp_handle_lock);",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "to_string",
+          "new_api": null,
+          "old_text": "to_string(id)",
+          "new_text": null,
+          "old_line_content": "\treturn fs.JoinPath(temp_directory, to_string(id) + \".block\");",
+          "new_line_content": "\tif (!temp_directory_handle) {",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "temp_directory.empty()",
+          "new_text": null,
+          "old_line_content": "\tif (temp_directory.empty()) {",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\n\t\t    \"Out-of-memory: cannot write buffer because no temporary directory is specified!\\nTo enable \"\n\t\t    \"temporary buffer eviction set a temporary directory using PRAGMA temp_directory='/path/to/tmp.tmp'\")",
+          "new_text": null,
+          "old_line_content": "\t\tthrow Exception(",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 13,
+      "total_additions": 29,
+      "total_deletions": 34,
+      "total_api_changes": 76
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 13,
+        "api_related_lines": 76,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          399,
+          370,
+          406,
+          407,
+          408,
+          409
+        ]
+      }
+    },
+    "api_calls_before": 149,
+    "api_calls_after": 144,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 13,
+      "total_diff_lines": 38
+    }
+  }
+}

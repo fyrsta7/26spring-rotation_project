@@ -1,0 +1,20 @@
+diff --git a/strbuf.c b/strbuf.c
+index 14f337db1f..af2bad4b56 100644
+--- a/strbuf.c
++++ b/strbuf.c
+@@ -443,12 +443,14 @@ int strbuf_getwholeline(struct strbuf *sb, FILE *fp, int term)
+ 		return EOF;
+ 
+ 	strbuf_reset(sb);
+-	while ((ch = getc(fp)) != EOF) {
++	flockfile(fp);
++	while ((ch = getc_unlocked(fp)) != EOF) {
+ 		strbuf_grow(sb, 1);
+ 		sb->buf[sb->len++] = ch;
+ 		if (ch == term)
+ 			break;
+ 	}
++	funlockfile(fp);
+ 	if (ch == EOF && sb->len == 0)
+ 		return EOF;
+ 

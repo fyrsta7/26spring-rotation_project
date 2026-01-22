@@ -1,0 +1,1384 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/09e0f6e21f2ba68fa6ed80702ca73b1808a6c782",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/09e0f6e21f2ba68fa6ed80702ca73b1808a6c782/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/09e0f6e21f2ba68fa6ed80702ca73b1808a6c782/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/09e0f6e21f2ba68fa6ed80702ca73b1808a6c782/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 218,
+          "old_api": "info",
+          "new_api": "DisposeOptimizedCompileJob",
+          "old_text": "job->info()->is_osr()",
+          "new_text": "DisposeOptimizedCompileJob(job, restore_function_code)",
+          "old_line_content": "    if (!job->info()->is_osr()) {",
+          "new_line_content": "      DisposeOptimizedCompileJob(job, restore_function_code);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "IsOptimizerThread",
+          "new_api": "static_cast<base::AtomicWord>(FLUSH)",
+          "old_text": "IsOptimizerThread()",
+          "new_text": "static_cast<base::AtomicWord>(FLUSH)",
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(FLUSH));",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "static_cast<base::AtomicWord>(FLUSH)",
+          "new_api": "Unblock",
+          "old_text": "static_cast<base::AtomicWord>(FLUSH)",
+          "new_text": "Unblock()",
+          "old_line_content": "  base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(FLUSH));",
+          "new_line_content": "  if (FLAG_block_concurrent_recompilation) Unblock();",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": "Signal",
+          "new_api": "Wait",
+          "old_text": "input_queue_semaphore_.Signal()",
+          "new_text": "stop_semaphore_.Wait()",
+          "old_line_content": "    input_queue_semaphore_.Signal();",
+          "new_line_content": "    stop_semaphore_.Wait();",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "Wait",
+          "new_api": "static_cast<base::AtomicWord>(CONTINUE)",
+          "old_text": "ref_count_zero_.Wait(&ref_count_mutex_)",
+          "new_text": "static_cast<base::AtomicWord>(CONTINUE)",
+          "old_line_content": "    while (ref_count_ > 0) ref_count_zero_.Wait(&ref_count_mutex_);",
+          "new_line_content": "    base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(CONTINUE));",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "FlushOutputQueue",
+          "new_api": "FlushOsrBuffer",
+          "old_text": "FlushOutputQueue(true)",
+          "new_text": "FlushOsrBuffer(true)",
+          "old_line_content": "  FlushOutputQueue(true);",
+          "new_line_content": "  if (FLAG_concurrent_osr) FlushOsrBuffer(true);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": "IsOptimizerThread",
+          "new_api": "static_cast<base::AtomicWord>(STOP)",
+          "old_text": "IsOptimizerThread()",
+          "new_text": "static_cast<base::AtomicWord>(STOP)",
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(STOP));",
+          "content_same": false
+        },
+        {
+          "line": 257,
+          "old_api": "static_cast<base::AtomicWord>(STOP)",
+          "new_api": "Unblock",
+          "old_text": "static_cast<base::AtomicWord>(STOP)",
+          "new_text": "Unblock()",
+          "old_line_content": "  base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(STOP));",
+          "new_line_content": "  if (FLAG_block_concurrent_recompilation) Unblock();",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "Signal",
+          "new_api": "Wait",
+          "old_text": "input_queue_semaphore_.Signal()",
+          "new_text": "stop_semaphore_.Wait()",
+          "old_line_content": "    input_queue_semaphore_.Signal();",
+          "new_line_content": "    stop_semaphore_.Wait();",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "Wait",
+          "new_api": "static_cast<base::AtomicWord>(CONTINUE)",
+          "old_text": "ref_count_zero_.Wait(&ref_count_mutex_)",
+          "new_text": "static_cast<base::AtomicWord>(CONTINUE)",
+          "old_line_content": "    while (ref_count_ > 0) ref_count_zero_.Wait(&ref_count_mutex_);",
+          "new_line_content": "    base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(CONTINUE));",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "NextInput",
+          "new_api": "InstallOptimizedFunctions",
+          "old_text": "NextInput()",
+          "new_text": "InstallOptimizedFunctions()",
+          "old_line_content": "    while (input_queue_length_ > 0) CompileNext(NextInput());",
+          "new_line_content": "    InstallOptimizedFunctions();",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "FlushInputQueue",
+          "new_api": "FlushOutputQueue",
+          "old_text": "FlushInputQueue(false)",
+          "new_text": "FlushOutputQueue(false)",
+          "old_line_content": "    FlushInputQueue(false);",
+          "new_line_content": "    FlushOutputQueue(false);",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "Dequeue",
+          "new_api": "info",
+          "old_text": "output_queue_.Dequeue(&job)",
+          "new_text": "job->info()",
+          "old_line_content": "  while (output_queue_.Dequeue(&job)) {",
+          "new_line_content": "    CompilationInfo* info = job->info();",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "info",
+          "new_api": "closure",
+          "old_text": "job->info()",
+          "new_text": "info->closure()",
+          "old_line_content": "    CompilationInfo* info = job->info();",
+          "new_line_content": "    Handle<JSFunction> function(*info->closure());",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "closure",
+          "new_api": "is_osr",
+          "old_text": "info->closure()",
+          "new_text": "info->is_osr()",
+          "old_line_content": "    Handle<JSFunction> function(*info->closure());",
+          "new_line_content": "    if (info->is_osr()) {",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "PrintF",
+          "new_api": "ShortPrint",
+          "old_text": "PrintF(\"[COSR - \")",
+          "new_text": "function->ShortPrint()",
+          "old_line_content": "        PrintF(\"[COSR - \");",
+          "new_line_content": "        function->ShortPrint();",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "ShortPrint",
+          "new_api": "ToInt",
+          "old_text": "function->ShortPrint()",
+          "new_text": "PrintF(\" is ready for install and entry at AST id %d]\\n\",\n               info->osr_ast_id().ToInt())",
+          "old_line_content": "        function->ShortPrint();",
+          "new_line_content": "        PrintF(\" is ready for install and entry at AST id %d]\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "unoptimized_code",
+          "new_api": "osr_ast_id",
+          "old_text": "info->unoptimized_code()",
+          "new_text": "info->osr_ast_id()",
+          "old_line_content": "      Handle<Code> code = info->unoptimized_code();",
+          "new_line_content": "      uint32_t offset = code->TranslateAstIdToPcOffset(info->osr_ast_id());",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "osr_ast_id",
+          "new_api": "BackEdgeTable::RemoveStackCheck(code, offset)",
+          "old_text": "info->osr_ast_id()",
+          "new_text": "BackEdgeTable::RemoveStackCheck(code, offset)",
+          "old_line_content": "      uint32_t offset = code->TranslateAstIdToPcOffset(info->osr_ast_id());",
+          "new_line_content": "      BackEdgeTable::RemoveStackCheck(code, offset);",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "PrintF",
+          "new_api": "ShortPrint",
+          "old_text": "PrintF(\"  ** Aborting compilation for \")",
+          "new_text": "function->ShortPrint()",
+          "old_line_content": "          PrintF(\"  ** Aborting compilation for \");",
+          "new_line_content": "          function->ShortPrint();",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": "ShortPrint",
+          "new_api": "PrintF",
+          "old_text": "function->ShortPrint()",
+          "new_text": "PrintF(\" as it has already been optimized.\\n\")",
+          "old_line_content": "          function->ShortPrint();",
+          "new_line_content": "          PrintF(\" as it has already been optimized.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": "Compiler::GetConcurrentlyOptimizedCode(job)",
+          "new_api": "is_null",
+          "old_text": "Compiler::GetConcurrentlyOptimizedCode(job)",
+          "new_text": "function->ReplaceCode(\n            code.is_null() ? function->shared()->code() : *code)",
+          "old_line_content": "        Handle<Code> code = Compiler::GetConcurrentlyOptimizedCode(job);",
+          "new_line_content": "        function->ReplaceCode(",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": "is_null",
+          "new_api": "shared",
+          "old_text": "function->ReplaceCode(\n            code.is_null() ? function->shared()->code() : *code)",
+          "new_text": "function->shared()->code()",
+          "old_line_content": "        function->ReplaceCode(",
+          "new_line_content": "            code.is_null() ? function->shared()->code() : *code);",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "IsQueueAvailable",
+          "new_api": "IsOptimizerThread",
+          "old_text": "IsQueueAvailable()",
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "  DCHECK(IsQueueAvailable());",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "IsOptimizerThread",
+          "new_api": "info",
+          "old_text": "IsOptimizerThread()",
+          "new_text": "job->info()",
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  CompilationInfo* info = job->info();",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "info",
+          "new_api": "is_osr",
+          "old_text": "job->info()",
+          "new_text": "info->is_osr()",
+          "old_line_content": "  CompilationInfo* info = job->info();",
+          "new_line_content": "  if (info->is_osr()) {",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "DCHECK_LT",
+          "new_api": "InputQueueIndex",
+          "old_text": "DCHECK_LT(input_queue_length_, input_queue_capacity_)",
+          "new_text": "InputQueueIndex(input_queue_length_)",
+          "old_line_content": "    DCHECK_LT(input_queue_length_, input_queue_capacity_);",
+          "new_line_content": "    input_queue_[InputQueueIndex(input_queue_length_)] = job;",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": "IsWaitingForInstall",
+          "new_api": "info",
+          "old_text": "current->IsWaitingForInstall()",
+          "new_text": "current->info()->HasSameOsrEntry(function, osr_ast_id)",
+          "old_line_content": "        current->IsWaitingForInstall() &&",
+          "new_line_content": "        current->info()->HasSameOsrEntry(function, osr_ast_id)) {",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "info",
+          "new_api": "IsWaitingForInstall",
+          "old_text": "current->info()->HasSameOsrEntry(function, osr_ast_id)",
+          "new_text": "current->IsWaitingForInstall()",
+          "old_line_content": "        current->info()->HasSameOsrEntry(function, osr_ast_id)) {",
+          "new_line_content": "      return !current->IsWaitingForInstall();",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": "info",
+          "new_api": "IsWaitingForInstall",
+          "old_text": "current->info()->closure()",
+          "new_text": "current->IsWaitingForInstall()",
+          "old_line_content": "    if (current != NULL && *current->info()->closure() == function) {",
+          "new_line_content": "      return !current->IsWaitingForInstall();",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": "IsWaitingForInstall",
+          "new_api": "info",
+          "old_text": "stale->IsWaitingForInstall()",
+          "new_text": "stale->info()",
+          "old_line_content": "    DCHECK(stale->IsWaitingForInstall());",
+          "new_line_content": "    CompilationInfo* info = stale->info();",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "PrintF",
+          "new_api": "closure",
+          "old_text": "PrintF(\"[COSR - Discarded \")",
+          "new_text": "info->closure()->PrintName()",
+          "old_line_content": "      PrintF(\"[COSR - Discarded \");",
+          "new_line_content": "      info->closure()->PrintName();",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "closure",
+          "new_api": "ToInt",
+          "old_text": "info->closure()->PrintName()",
+          "new_text": "info->osr_ast_id().ToInt()",
+          "old_line_content": "      info->closure()->PrintName();",
+          "new_line_content": "      PrintF(\", AST id %d]\\n\", info->osr_ast_id().ToInt());",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": "concurrent_recompilation_enabled",
+          "new_api": "optimizing_compiler_thread",
+          "old_text": "isolate->concurrent_recompilation_enabled()",
+          "new_text": "isolate->optimizing_compiler_thread()->IsOptimizerThread()",
+          "old_line_content": "  return isolate->concurrent_recompilation_enabled() &&",
+          "new_line_content": "         isolate->optimizing_compiler_thread()->IsOptimizerThread();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "Signal",
+          "old_text": null,
+          "new_text": "input_queue_semaphore_.Signal()",
+          "old_line_content": "  if (!job_based_recompilation_) {",
+          "new_line_content": "    input_queue_semaphore_.Signal();",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": null,
+          "new_api": "Wait",
+          "old_text": null,
+          "new_text": "ref_count_zero_.Wait(&ref_count_mutex_)",
+          "old_line_content": "    base::LockGuard<base::Mutex> lock_guard(&ref_count_mutex_);",
+          "new_line_content": "    while (ref_count_ > 0) ref_count_zero_.Wait(&ref_count_mutex_);",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "IsWaitingForInstall",
+          "old_text": null,
+          "new_text": "current->IsWaitingForInstall()",
+          "old_line_content": "    if (current != NULL &&",
+          "new_line_content": "        current->IsWaitingForInstall() &&",
+          "content_same": false
+        },
+        {
+          "line": 396,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "                                              BailoutId osr_ast_id) {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "NextInput",
+          "old_text": null,
+          "new_text": "NextInput()",
+          "old_line_content": "    // There is no need for a mutex when reading input_queue_length_.",
+          "new_line_content": "    while (input_queue_length_ > 0) CompileNext(NextInput());",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": null,
+          "new_api": "info",
+          "old_text": null,
+          "new_text": "current->info()->HasSameOsrEntry(function, osr_ast_id)",
+          "old_line_content": "    if (current != NULL &&",
+          "new_line_content": "        current->info()->HasSameOsrEntry(function, osr_ast_id)) {",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": null,
+          "new_api": "FlushInputQueue",
+          "old_text": null,
+          "new_text": "FlushInputQueue(false)",
+          "old_line_content": "  } else {",
+          "new_line_content": "    FlushInputQueue(false);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "FlushOsrBuffer",
+          "old_text": null,
+          "new_text": "FlushOsrBuffer(false)",
+          "old_line_content": "",
+          "new_line_content": "  if (FLAG_concurrent_osr) FlushOsrBuffer(false);",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": null,
+          "new_api": "PercentOf",
+          "old_text": null,
+          "new_text": "time_spent_compiling_.PercentOf(time_spent_total_)",
+          "old_line_content": "  if (tracing_enabled_) {",
+          "new_line_content": "    double percentage = time_spent_compiling_.PercentOf(time_spent_total_);",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "bool OptimizingCompilerThread::IsQueuedForOSR(JSFunction* function) {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"  ** Compiler thread did %.2f%% useful work\\n\", percentage)",
+          "old_line_content": "    if (job_based_recompilation_) percentage = 100.0;",
+          "new_line_content": "    PrintF(\"  ** Compiler thread did %.2f%% useful work\\n\", percentage);",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "info",
+          "old_text": null,
+          "new_text": "current->info()->closure()",
+          "old_line_content": "    OptimizedCompileJob* current = osr_buffer_[i];",
+          "new_line_content": "    if (current != NULL && *current->info()->closure() == function) {",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"[COSR hit rate %d / %d]\\n\", osr_hits_, osr_attempts_)",
+          "old_line_content": "  if ((FLAG_trace_osr || tracing_enabled_) && FLAG_concurrent_osr) {",
+          "new_line_content": "    PrintF(\"[COSR hit rate %d / %d]\\n\", osr_hits_, osr_attempts_);",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": null,
+          "new_api": "Join",
+          "old_text": null,
+          "new_text": "Join()",
+          "old_line_content": "",
+          "new_line_content": "  Join();",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "void OptimizingCompilerThread::AddToOsrBuffer(OptimizedCompileJob* job) {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "void OptimizingCompilerThread::InstallOptimizedFunctions() {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": null,
+          "new_api": "Dequeue",
+          "old_text": null,
+          "new_text": "output_queue_.Dequeue(&job)",
+          "old_line_content": "  OptimizedCompileJob* job;",
+          "new_line_content": "  while (output_queue_.Dequeue(&job)) {",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "IsWaitingForInstall",
+          "old_text": null,
+          "new_text": "stale->IsWaitingForInstall()",
+          "old_line_content": "    stale = osr_buffer_[osr_buffer_cursor_];",
+          "new_line_content": "    if (stale == NULL || stale->IsWaitingForInstall()) break;",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"[COSR - \")",
+          "old_line_content": "      if (FLAG_trace_osr) {",
+          "new_line_content": "        PrintF(\"[COSR - \");",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": null,
+          "new_api": "IsWaitingForInstall",
+          "old_text": null,
+          "new_text": "stale->IsWaitingForInstall()",
+          "old_line_content": "  if (stale != NULL) {",
+          "new_line_content": "    DCHECK(stale->IsWaitingForInstall());",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"[COSR - Discarded \")",
+          "old_line_content": "    if (FLAG_trace_osr) {",
+          "new_line_content": "      PrintF(\"[COSR - Discarded \");",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "WaitForInstall",
+          "old_text": null,
+          "new_text": "job->WaitForInstall()",
+          "old_line_content": "      }",
+          "new_line_content": "      job->WaitForInstall();",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": null,
+          "new_api": "unoptimized_code",
+          "old_text": null,
+          "new_text": "info->unoptimized_code()",
+          "old_line_content": "      // Remove stack check that guards OSR entry on original code.",
+          "new_line_content": "      Handle<Code> code = info->unoptimized_code();",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "DisposeOptimizedCompileJob",
+          "old_text": null,
+          "new_text": "DisposeOptimizedCompileJob(stale, false)",
+          "old_line_content": "    }",
+          "new_line_content": "    DisposeOptimizedCompileJob(stale, false);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "IsOptimized",
+          "old_text": null,
+          "new_text": "function->IsOptimized()",
+          "old_line_content": "    } else {",
+          "new_line_content": "      if (function->IsOptimized()) {",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"  ** Aborting compilation for \")",
+          "old_line_content": "        if (tracing_enabled_) {",
+          "new_line_content": "          PrintF(\"  ** Aborting compilation for \");",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": null,
+          "new_api": "DisposeOptimizedCompileJob",
+          "old_text": null,
+          "new_text": "DisposeOptimizedCompileJob(job, false)",
+          "old_line_content": "        }",
+          "new_line_content": "        DisposeOptimizedCompileJob(job, false);",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": null,
+          "new_api": "concurrent_recompilation_enabled",
+          "old_text": null,
+          "new_text": "isolate->concurrent_recompilation_enabled()",
+          "old_line_content": "bool OptimizingCompilerThread::IsOptimizerThread(Isolate* isolate) {",
+          "new_line_content": "  return isolate->concurrent_recompilation_enabled() &&",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": null,
+          "new_api": "Compiler::GetConcurrentlyOptimizedCode(job)",
+          "old_text": null,
+          "new_text": "Compiler::GetConcurrentlyOptimizedCode(job)",
+          "old_line_content": "      } else {",
+          "new_line_content": "        Handle<Code> code = Compiler::GetConcurrentlyOptimizedCode(job);",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": null,
+          "new_api": "ToInteger",
+          "old_text": null,
+          "new_text": "ThreadId::Current().ToInteger()",
+          "old_line_content": "  base::LockGuard<base::Mutex> lock_guard(&thread_id_mutex_);",
+          "new_line_content": "  return ThreadId::Current().ToInteger() == thread_id_;",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": null,
+          "new_api": "IsQueueAvailable",
+          "old_text": null,
+          "new_text": "IsQueueAvailable()",
+          "old_line_content": "void OptimizingCompilerThread::QueueForOptimization(OptimizedCompileJob* job) {",
+          "new_line_content": "  DCHECK(IsQueueAvailable());",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": null,
+          "new_api": "AddToOsrBuffer",
+          "old_text": null,
+          "new_text": "AddToOsrBuffer(job)",
+          "old_line_content": "    osr_attempts_++;",
+          "new_line_content": "    AddToOsrBuffer(job);",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": null,
+          "new_api": "DCHECK_LT",
+          "old_text": null,
+          "new_text": "DCHECK_LT(input_queue_length_, input_queue_capacity_)",
+          "old_line_content": "    base::LockGuard<base::Mutex> access_input_queue(&input_queue_mutex_);",
+          "new_line_content": "    DCHECK_LT(input_queue_length_, input_queue_capacity_);",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": null,
+          "new_api": "InputQueueIndex",
+          "old_text": null,
+          "new_text": "InputQueueIndex(input_queue_capacity_ - 1)",
+          "old_line_content": "    // Move shift_ back by one.",
+          "new_line_content": "    input_queue_shift_ = InputQueueIndex(input_queue_capacity_ - 1);",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "Dequeue",
+          "old_text": null,
+          "new_text": "output_queue_.Dequeue(&job)",
+          "old_line_content": "  OptimizedCompileJob* job;",
+          "new_line_content": "  while (output_queue_.Dequeue(&job)) {",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": null,
+          "new_api": "info",
+          "old_text": null,
+          "new_text": "job->info()->is_osr()",
+          "old_line_content": "    // OSR jobs are dealt with separately.",
+          "new_line_content": "    if (!job->info()->is_osr()) {",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": null,
+          "new_api": "DCHECK_LT",
+          "old_text": null,
+          "new_text": "DCHECK_LT(input_queue_length_, input_queue_capacity_)",
+          "old_line_content": "    base::LockGuard<base::Mutex> access_input_queue(&input_queue_mutex_);",
+          "new_line_content": "    DCHECK_LT(input_queue_length_, input_queue_capacity_);",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "DisposeOptimizedCompileJob",
+          "old_text": null,
+          "new_text": "DisposeOptimizedCompileJob(osr_buffer_[i], restore_function_code)",
+          "old_line_content": "    if (osr_buffer_[i] != NULL) {",
+          "new_line_content": "      DisposeOptimizedCompileJob(osr_buffer_[i], restore_function_code);",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "CallOnBackgroundThread",
+          "old_text": null,
+          "new_text": "V8::GetCurrentPlatform()->CallOnBackgroundThread(\n        new CompileTask(isolate_), v8::Platform::kShortRunningTask)",
+          "old_line_content": "  } else if (job_based_recompilation_) {",
+          "new_line_content": "    V8::GetCurrentPlatform()->CallOnBackgroundThread(",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": null,
+          "new_api": "Signal",
+          "old_text": null,
+          "new_text": "input_queue_semaphore_.Signal()",
+          "old_line_content": "  } else {",
+          "new_line_content": "    input_queue_semaphore_.Signal();",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "void OptimizingCompilerThread::Flush() {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "void OptimizingCompilerThread::Unblock() {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": null,
+          "new_api": "Signal",
+          "old_text": null,
+          "new_text": "input_queue_semaphore_.Signal()",
+          "old_line_content": "  if (!job_based_recompilation_) {",
+          "new_line_content": "    input_queue_semaphore_.Signal();",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": null,
+          "new_api": "CallOnBackgroundThread",
+          "old_text": null,
+          "new_text": "V8::GetCurrentPlatform()->CallOnBackgroundThread(\n          new CompileTask(isolate_), v8::Platform::kShortRunningTask)",
+          "old_line_content": "    if (job_based_recompilation_) {",
+          "new_line_content": "      V8::GetCurrentPlatform()->CallOnBackgroundThread(",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": null,
+          "new_api": "Signal",
+          "old_text": null,
+          "new_text": "input_queue_semaphore_.Signal()",
+          "old_line_content": "    } else {",
+          "new_line_content": "      input_queue_semaphore_.Signal();",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": null,
+          "new_api": "Wait",
+          "old_text": null,
+          "new_text": "ref_count_zero_.Wait(&ref_count_mutex_)",
+          "old_line_content": "    base::LockGuard<base::Mutex> lock_guard(&ref_count_mutex_);",
+          "new_line_content": "    while (ref_count_ > 0) ref_count_zero_.Wait(&ref_count_mutex_);",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": null,
+          "new_api": "FlushOutputQueue",
+          "old_text": null,
+          "new_text": "FlushOutputQueue(true)",
+          "old_line_content": "  }",
+          "new_line_content": "  FlushOutputQueue(true);",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "PrintF",
+          "old_text": null,
+          "new_text": "PrintF(\"  ** Flushed concurrent recompilation queues.\\n\")",
+          "old_line_content": "  if (tracing_enabled_) {",
+          "new_line_content": "    PrintF(\"  ** Flushed concurrent recompilation queues.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "    Handle<JSFunction> function, BailoutId osr_ast_id) {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "IsOptimizerThread",
+          "old_text": null,
+          "new_text": "IsOptimizerThread()",
+          "old_line_content": "void OptimizingCompilerThread::Stop() {",
+          "new_line_content": "  DCHECK(!IsOptimizerThread());",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 385,
+          "old_api": "info",
+          "new_api": null,
+          "old_text": "current->info()->HasSameOsrEntry(function, osr_ast_id)",
+          "new_text": null,
+          "old_line_content": "        current->info()->HasSameOsrEntry(function, osr_ast_id)) {",
+          "new_line_content": "      osr_hits_++;",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "Unblock",
+          "new_api": null,
+          "old_text": "Unblock()",
+          "new_text": null,
+          "old_line_content": "  if (FLAG_block_concurrent_recompilation) Unblock();",
+          "new_line_content": "  if (!job_based_recompilation_) {",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "Wait",
+          "new_api": null,
+          "old_text": "stop_semaphore_.Wait()",
+          "new_text": null,
+          "old_line_content": "    stop_semaphore_.Wait();",
+          "new_line_content": "  } else {",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "static_cast<base::AtomicWord>(CONTINUE)",
+          "new_api": null,
+          "old_text": "static_cast<base::AtomicWord>(CONTINUE)",
+          "new_text": null,
+          "old_line_content": "    base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(CONTINUE));",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  for (int i = 0; i < osr_buffer_capacity_; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": "InstallOptimizedFunctions",
+          "new_api": null,
+          "old_text": "InstallOptimizedFunctions()",
+          "new_text": null,
+          "old_line_content": "    InstallOptimizedFunctions();",
+          "new_line_content": "  } else {",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "IsWaitingForInstall",
+          "new_api": null,
+          "old_text": "current->IsWaitingForInstall()",
+          "new_text": null,
+          "old_line_content": "      return !current->IsWaitingForInstall();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": "FlushOutputQueue",
+          "new_api": null,
+          "old_text": "FlushOutputQueue(false)",
+          "new_text": null,
+          "old_line_content": "    FlushOutputQueue(false);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "FlushOsrBuffer",
+          "new_api": null,
+          "old_text": "FlushOsrBuffer(false)",
+          "new_text": null,
+          "old_line_content": "  if (FLAG_concurrent_osr) FlushOsrBuffer(false);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "PercentOf",
+          "new_api": null,
+          "old_text": "time_spent_compiling_.PercentOf(time_spent_total_)",
+          "new_text": null,
+          "old_line_content": "    double percentage = time_spent_compiling_.PercentOf(time_spent_total_);",
+          "new_line_content": "    if (job_based_recompilation_) percentage = 100.0;",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  for (int i = 0; i < osr_buffer_capacity_; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "PrintF",
+          "new_api": null,
+          "old_text": "PrintF(\"  ** Compiler thread did %.2f%% useful work\\n\", percentage)",
+          "new_text": null,
+          "old_line_content": "    PrintF(\"  ** Compiler thread did %.2f%% useful work\\n\", percentage);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "IsWaitingForInstall",
+          "new_api": null,
+          "old_text": "current->IsWaitingForInstall()",
+          "new_text": null,
+          "old_line_content": "      return !current->IsWaitingForInstall();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "PrintF",
+          "new_api": null,
+          "old_text": "PrintF(\"[COSR hit rate %d / %d]\\n\", osr_hits_, osr_attempts_)",
+          "new_text": null,
+          "old_line_content": "    PrintF(\"[COSR hit rate %d / %d]\\n\", osr_hits_, osr_attempts_);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": "Join",
+          "new_api": null,
+          "old_text": "Join()",
+          "new_text": null,
+          "old_line_content": "  Join();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  // Find the next slot that is empty or has a stale job.",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  HandleScope handle_scope(isolate_);",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "IsWaitingForInstall",
+          "new_api": null,
+          "old_text": "stale->IsWaitingForInstall()",
+          "new_text": null,
+          "old_line_content": "    if (stale == NULL || stale->IsWaitingForInstall()) break;",
+          "new_line_content": "    osr_buffer_cursor_ = (osr_buffer_cursor_ + 1) % osr_buffer_capacity_;",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "is_osr",
+          "new_api": null,
+          "old_text": "info->is_osr()",
+          "new_text": null,
+          "old_line_content": "    if (info->is_osr()) {",
+          "new_line_content": "      if (FLAG_trace_osr) {",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "info",
+          "new_api": null,
+          "old_text": "stale->info()",
+          "new_text": null,
+          "old_line_content": "    CompilationInfo* info = stale->info();",
+          "new_line_content": "    if (FLAG_trace_osr) {",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "ToInt",
+          "new_api": null,
+          "old_text": "info->osr_ast_id().ToInt()",
+          "new_text": null,
+          "old_line_content": "               info->osr_ast_id().ToInt());",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": "WaitForInstall",
+          "new_api": null,
+          "old_text": "job->WaitForInstall()",
+          "new_text": null,
+          "old_line_content": "      job->WaitForInstall();",
+          "new_line_content": "      // Remove stack check that guards OSR entry on original code.",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": "ToInt",
+          "new_api": null,
+          "old_text": "info->osr_ast_id().ToInt()",
+          "new_text": null,
+          "old_line_content": "      PrintF(\", AST id %d]\\n\", info->osr_ast_id().ToInt());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "DisposeOptimizedCompileJob",
+          "new_api": null,
+          "old_text": "DisposeOptimizedCompileJob(stale, false)",
+          "new_text": null,
+          "old_line_content": "    DisposeOptimizedCompileJob(stale, false);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "BackEdgeTable::RemoveStackCheck(code, offset)",
+          "new_api": null,
+          "old_text": "BackEdgeTable::RemoveStackCheck(code, offset)",
+          "new_text": null,
+          "old_line_content": "      BackEdgeTable::RemoveStackCheck(code, offset);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": "IsOptimized",
+          "new_api": null,
+          "old_text": "function->IsOptimized()",
+          "new_text": null,
+          "old_line_content": "      if (function->IsOptimized()) {",
+          "new_line_content": "        if (tracing_enabled_) {",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "PrintF",
+          "new_api": null,
+          "old_text": "PrintF(\" as it has already been optimized.\\n\")",
+          "new_text": null,
+          "old_line_content": "          PrintF(\" as it has already been optimized.\\n\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "DisposeOptimizedCompileJob",
+          "new_api": null,
+          "old_text": "DisposeOptimizedCompileJob(job, false)",
+          "new_text": null,
+          "old_line_content": "        DisposeOptimizedCompileJob(job, false);",
+          "new_line_content": "      } else {",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "optimizing_compiler_thread",
+          "new_api": null,
+          "old_text": "isolate->optimizing_compiler_thread()->IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "         isolate->optimizing_compiler_thread()->IsOptimizerThread();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "shared",
+          "new_api": null,
+          "old_text": "function->shared()->code()",
+          "new_text": null,
+          "old_line_content": "            code.is_null() ? function->shared()->code() : *code);",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "ToInteger",
+          "new_api": null,
+          "old_text": "ThreadId::Current().ToInteger()",
+          "new_text": null,
+          "old_line_content": "  return ThreadId::Current().ToInteger() == thread_id_;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "is_osr",
+          "new_api": null,
+          "old_text": "info->is_osr()",
+          "new_text": null,
+          "old_line_content": "  if (info->is_osr()) {",
+          "new_line_content": "    osr_attempts_++;",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "AddToOsrBuffer",
+          "new_api": null,
+          "old_text": "AddToOsrBuffer(job)",
+          "new_text": null,
+          "old_line_content": "    AddToOsrBuffer(job);",
+          "new_line_content": "    // Add job to the front of the input queue.",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "DCHECK_LT",
+          "new_api": null,
+          "old_text": "DCHECK_LT(input_queue_length_, input_queue_capacity_)",
+          "new_text": null,
+          "old_line_content": "    DCHECK_LT(input_queue_length_, input_queue_capacity_);",
+          "new_line_content": "    // Move shift_ back by one.",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "Dequeue",
+          "new_api": null,
+          "old_text": "output_queue_.Dequeue(&job)",
+          "new_text": null,
+          "old_line_content": "  while (output_queue_.Dequeue(&job)) {",
+          "new_line_content": "    // OSR jobs are dealt with separately.",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "InputQueueIndex",
+          "new_api": null,
+          "old_text": "InputQueueIndex(0)",
+          "new_text": null,
+          "old_line_content": "    input_queue_[InputQueueIndex(0)] = job;",
+          "new_line_content": "    input_queue_length_++;",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "DisposeOptimizedCompileJob",
+          "new_api": null,
+          "old_text": "DisposeOptimizedCompileJob(job, restore_function_code)",
+          "new_text": null,
+          "old_line_content": "      DisposeOptimizedCompileJob(job, restore_function_code);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "InputQueueIndex",
+          "new_api": null,
+          "old_text": "InputQueueIndex(input_queue_length_)",
+          "new_text": null,
+          "old_line_content": "    input_queue_[InputQueueIndex(input_queue_length_)] = job;",
+          "new_line_content": "    input_queue_length_++;",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "DisposeOptimizedCompileJob",
+          "new_api": null,
+          "old_text": "DisposeOptimizedCompileJob(osr_buffer_[i], restore_function_code)",
+          "new_text": null,
+          "old_line_content": "      DisposeOptimizedCompileJob(osr_buffer_[i], restore_function_code);",
+          "new_line_content": "      osr_buffer_[i] = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": "CallOnBackgroundThread",
+          "new_api": null,
+          "old_text": "V8::GetCurrentPlatform()->CallOnBackgroundThread(\n        new CompileTask(isolate_), v8::Platform::kShortRunningTask)",
+          "new_text": null,
+          "old_line_content": "    V8::GetCurrentPlatform()->CallOnBackgroundThread(",
+          "new_line_content": "        new CompileTask(isolate_), v8::Platform::kShortRunningTask);",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "Signal",
+          "new_api": null,
+          "old_text": "input_queue_semaphore_.Signal()",
+          "new_text": null,
+          "old_line_content": "    input_queue_semaphore_.Signal();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  while (blocked_jobs_ > 0) {",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": "Unblock",
+          "new_api": null,
+          "old_text": "Unblock()",
+          "new_text": null,
+          "old_line_content": "  if (FLAG_block_concurrent_recompilation) Unblock();",
+          "new_line_content": "  if (!job_based_recompilation_) {",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "CallOnBackgroundThread",
+          "new_api": null,
+          "old_text": "V8::GetCurrentPlatform()->CallOnBackgroundThread(\n          new CompileTask(isolate_), v8::Platform::kShortRunningTask)",
+          "new_text": null,
+          "old_line_content": "      V8::GetCurrentPlatform()->CallOnBackgroundThread(",
+          "new_line_content": "          new CompileTask(isolate_), v8::Platform::kShortRunningTask);",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "Wait",
+          "new_api": null,
+          "old_text": "stop_semaphore_.Wait()",
+          "new_text": null,
+          "old_line_content": "    stop_semaphore_.Wait();",
+          "new_line_content": "  } else {",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "Signal",
+          "new_api": null,
+          "old_text": "input_queue_semaphore_.Signal()",
+          "new_text": null,
+          "old_line_content": "      input_queue_semaphore_.Signal();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": "static_cast<base::AtomicWord>(CONTINUE)",
+          "new_api": null,
+          "old_text": "static_cast<base::AtomicWord>(CONTINUE)",
+          "new_text": null,
+          "old_line_content": "    base::Release_Store(&stop_thread_, static_cast<base::AtomicWord>(CONTINUE));",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "FlushOsrBuffer",
+          "new_api": null,
+          "old_text": "FlushOsrBuffer(true)",
+          "new_text": null,
+          "old_line_content": "  if (FLAG_concurrent_osr) FlushOsrBuffer(true);",
+          "new_line_content": "  if (tracing_enabled_) {",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": "PrintF",
+          "new_api": null,
+          "old_text": "PrintF(\"  ** Flushed concurrent recompilation queues.\\n\")",
+          "new_text": null,
+          "old_line_content": "    PrintF(\"  ** Flushed concurrent recompilation queues.\\n\");",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "IsOptimizerThread",
+          "new_api": null,
+          "old_text": "IsOptimizerThread()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!IsOptimizerThread());",
+          "new_line_content": "  for (int i = 0; i < osr_buffer_capacity_; i++) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 34,
+      "total_additions": 50,
+      "total_deletions": 50,
+      "total_api_changes": 134
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 1,
+        "api_related_lines": 134,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          214
+        ]
+      }
+    },
+    "api_calls_before": 179,
+    "api_calls_after": 179,
+    "diff_info": {
+      "added_lines": 0,
+      "removed_lines": 1,
+      "total_diff_lines": 13
+    }
+  }
+}

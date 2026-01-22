@@ -1,0 +1,16 @@
+diff --git a/commit-reach.c b/commit-reach.c
+index 9f79ce0a22..79419be8af 100644
+--- a/commit-reach.c
++++ b/commit-reach.c
+@@ -593,8 +593,10 @@ int can_all_from_reach_with_flag(struct object_array *from,
+ 		while (stack) {
+ 			struct commit_list *parent;
+ 
+-			if (stack->item->object.flags & with_flag) {
++			if (stack->item->object.flags & (with_flag | RESULT)) {
+ 				pop_commit(&stack);
++				if (stack)
++					stack->item->object.flags |= RESULT;
+ 				continue;
+ 			}
+ 

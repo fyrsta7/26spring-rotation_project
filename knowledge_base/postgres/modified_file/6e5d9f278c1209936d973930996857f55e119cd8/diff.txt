@@ -1,0 +1,14 @@
+diff --git a/src/backend/executor/spi.c b/src/backend/executor/spi.c
+index d544ad9c10..300401e01f 100644
+--- a/src/backend/executor/spi.c
++++ b/src/backend/executor/spi.c
+@@ -1797,7 +1797,8 @@ spi_printtup(TupleTableSlot *slot, DestReceiver *self)
+ 
+ 	if (tuptable->free == 0)
+ 	{
+-		tuptable->free = 256;
++		/* Double the size of the pointer array */
++		tuptable->free = tuptable->alloced;
+ 		tuptable->alloced += tuptable->free;
+ 		tuptable->vals = (HeapTuple *) repalloc(tuptable->vals,
+ 									  tuptable->alloced * sizeof(HeapTuple));

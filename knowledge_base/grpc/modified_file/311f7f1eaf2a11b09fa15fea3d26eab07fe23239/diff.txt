@@ -1,0 +1,13 @@
+diff --git a/src/core/lib/iomgr/error.c b/src/core/lib/iomgr/error.c
+index dbe5b139f9..6c4d0157c2 100644
+--- a/src/core/lib/iomgr/error.c
++++ b/src/core/lib/iomgr/error.c
+@@ -262,6 +262,8 @@ static grpc_error *copy_error_and_unref(grpc_error *in) {
+                              GRPC_ERROR_INT_GRPC_STATUS, GRPC_STATUS_CANCELLED);
+     else
+       out = GRPC_ERROR_CREATE("unknown");
++  } else if (gpr_ref_is_unique(&in->refs)) {
++    return in;
+   } else {
+     out = gpr_malloc(sizeof(*out));
+ #ifdef GRPC_ERROR_REFCOUNT_DEBUG

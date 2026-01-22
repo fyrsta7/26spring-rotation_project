@@ -1,0 +1,18 @@
+diff --git a/libavcodec/aacenc_utils.h b/libavcodec/aacenc_utils.h
+index b9bd6bf449..41a62961e1 100644
+--- a/libavcodec/aacenc_utils.h
++++ b/libavcodec/aacenc_utils.h
+@@ -68,10 +68,11 @@ static inline void quantize_bands(int *out, const float *in, const float *scaled
+     int i;
+     for (i = 0; i < size; i++) {
+         float qc = scaled[i] * Q34;
+-        out[i] = (int)FFMIN(qc + rounding, (float)maxval);
++        int tmp = (int)FFMIN(qc + rounding, (float)maxval);
+         if (is_signed && in[i] < 0.0f) {
+-            out[i] = -out[i];
++            tmp = -tmp;
+         }
++        out[i] = tmp;
+     }
+ }
+ 

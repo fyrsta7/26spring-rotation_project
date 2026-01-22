@@ -1,0 +1,17 @@
+diff --git a/src/base/platform/platform-posix.cc b/src/base/platform/platform-posix.cc
+index 456728a6a7b..c7a0002e9ea 100644
+--- a/src/base/platform/platform-posix.cc
++++ b/src/base/platform/platform-posix.cc
+@@ -889,6 +889,12 @@ bool AddressSpaceReservation::Allocate(void* address, size_t size,
+                                        OS::MemoryPermission access) {
+   // The region is already mmap'ed, so it just has to be made accessible now.
+   DCHECK(Contains(address, size));
++  if (access == OS::MemoryPermission::kNoAccess) {
++    // Nothing to do. We don't want to call SetPermissions with kNoAccess here
++    // as that will for example mark the pages as discardable, which is
++    // probably not desired here.
++    return true;
++  }
+   return OS::SetPermissions(address, size, access);
+ }
+ 

@@ -1,0 +1,7 @@
+void BaselineCompiler::VisitCreateFunctionContext() {
+  Handle<ScopeInfo> info = Constant<ScopeInfo>(0);
+  uint32_t slot_count = Uint(1);
+  DCHECK_LE(slot_count, ConstructorBuiltins::MaximumFunctionContextSlots());
+  DCHECK_EQ(info->scope_type(), ScopeType::FUNCTION_SCOPE);
+  CallBuiltin<Builtin::kFastNewFunctionContextFunction>(info, slot_count);
+}

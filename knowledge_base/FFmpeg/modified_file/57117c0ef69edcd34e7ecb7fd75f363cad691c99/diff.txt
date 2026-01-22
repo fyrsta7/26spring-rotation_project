@@ -1,0 +1,23 @@
+diff --git a/libavcodec/aac_ac3_parser.c b/libavcodec/aac_ac3_parser.c
+index 6df064e28d..b2cb79801e 100644
+--- a/libavcodec/aac_ac3_parser.c
++++ b/libavcodec/aac_ac3_parser.c
+@@ -40,6 +40,10 @@ int ff_aac_ac3_parse(AVCodecParserContext *s1,
+     int new_frame_start;
+     int got_frame = 0;
+ 
++    if (s1->flags & PARSER_FLAG_COMPLETE_FRAMES) {
++        i = buf_size;
++        got_frame = 1;
++    } else {
+ get_next:
+     i=END_NOT_FOUND;
+     if(s->remaining_size <= buf_size){
+@@ -77,6 +81,7 @@ get_next:
+         *poutbuf_size = 0;
+         return buf_size;
+     }
++    }
+ 
+     *poutbuf = buf;
+     *poutbuf_size = buf_size;

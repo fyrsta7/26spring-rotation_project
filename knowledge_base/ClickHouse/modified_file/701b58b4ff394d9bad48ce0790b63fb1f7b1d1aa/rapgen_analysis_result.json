@@ -1,0 +1,2825 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/701b58b4ff394d9bad48ce0790b63fb1f7b1d1aa",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/701b58b4ff394d9bad48ce0790b63fb1f7b1d1aa/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/701b58b4ff394d9bad48ce0790b63fb1f7b1d1aa/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/701b58b4ff394d9bad48ce0790b63fb1f7b1d1aa/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 141,
+          "old_api": "begin",
+          "new_api": "empty",
+          "old_text": "inserts_by_time.begin()",
+          "new_text": "inserts_by_time.empty()",
+          "old_line_content": "    else if ((*inserts_by_time.begin())->create_time > min_unprocessed_insert_time)",
+          "new_line_content": "    if (inserts_by_time.empty())",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "toString",
+          "new_api": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "old_text": "toString(*max_processed_insert_time_changed)",
+          "new_text": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "old_line_content": "            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1));",
+          "new_line_content": "        ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "tryMulti",
+          "new_api": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1)",
+          "old_text": "zookeeper->tryMulti(ops)",
+          "new_text": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1)",
+          "old_line_content": "        auto code = zookeeper->tryMulti(ops);",
+          "new_line_content": "        ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "LOG_ERROR",
+          "new_api": "empty",
+          "old_text": "LOG_ERROR(log, \"Couldn't set value of nodes for insert times (\"\n                << replica_path << \"/min_unprocessed_insert_time, max_processed_insert_time)\" << \": \"\n                << zkutil::ZooKeeper::error2string(code) + \". This shouldn't happen often.\")",
+          "new_text": "ops.empty()",
+          "old_line_content": "            LOG_ERROR(log, \"Couldn't set value of nodes for insert times (\"",
+          "new_line_content": "    if (!ops.empty())",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "zkutil::ZooKeeper::error2string(code)",
+          "new_api": "tryMulti",
+          "old_text": "zkutil::ZooKeeper::error2string(code)",
+          "new_text": "zookeeper->tryMulti(ops)",
+          "old_line_content": "                << zkutil::ZooKeeper::error2string(code) + \". This shouldn't happen often.\");",
+          "new_line_content": "        auto code = zookeeper->tryMulti(ops);",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": "erase",
+          "new_api": "begin",
+          "old_text": "queue.erase(it)",
+          "new_text": "queue.begin()",
+          "old_line_content": "                queue.erase(it);",
+          "new_line_content": "        for (Queue::iterator it = queue.end(); it != queue.begin();)",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "updateTimesOnRemoval",
+          "new_api": "erase",
+          "old_text": "updateTimesOnRemoval(entry, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "new_text": "queue.erase(it)",
+          "old_line_content": "        updateTimesOnRemoval(entry, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "new_line_content": "                queue.erase(it);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "erase",
+          "new_api": "end",
+          "old_text": "queue.erase(it++)",
+          "new_text": "queue.end()",
+          "old_line_content": "                queue.erase(it++);",
+          "new_line_content": "        for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "empty",
+          "new_api": "get",
+          "old_text": "index_str.empty()",
+          "new_text": "zookeeper->get(replica_path + \"/log_pointer\")",
+          "old_line_content": "    if (index_str.empty())",
+          "new_line_content": "    String index_str = zookeeper->get(replica_path + \"/log_pointer\");",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "strlen",
+          "new_api": "getChildren",
+          "old_text": "strlen(\"log-\")",
+          "new_text": "zookeeper->getChildren(zookeeper_path + \"/log\")",
+          "old_line_content": "        index = log_entries.empty() ? 0 : parse<UInt64>(std::min_element(log_entries.begin(), log_entries.end())->substr(strlen(\"log-\")));",
+          "new_line_content": "    Strings log_entries = zookeeper->getChildren(zookeeper_path + \"/log\");",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": "toString",
+          "new_api": "empty",
+          "old_text": "toString(index)",
+          "new_text": "index_str.empty()",
+          "old_line_content": "        zookeeper->set(replica_path + \"/log_pointer\", toString(index));",
+          "new_line_content": "    if (index_str.empty())",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "end",
+          "new_api": "padIndex",
+          "old_text": "log_entries.end()",
+          "new_text": "padIndex(index)",
+          "old_line_content": "        std::remove_if(log_entries.begin(), log_entries.end(), [&min_log_entry](const String & entry) { return entry < min_log_entry; }),",
+          "new_line_content": "    String min_log_entry = \"log-\" + padIndex(index);",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "size",
+          "new_api": "constexpr",
+          "old_text": "log_entries.size()",
+          "new_text": "constexpr",
+          "old_line_content": "            auto end = i + MAX_MULTI_OPS >= log_entries.size()",
+          "new_line_content": "        static constexpr auto MAX_MULTI_OPS = 100;",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "startsWith",
+          "new_api": "end",
+          "old_text": "startsWith(last_entry, \"log-\")",
+          "new_text": "log_entries.end()",
+          "old_line_content": "            if (!startsWith(last_entry, \"log-\"))",
+          "new_line_content": "                ? log_entries.end()",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "LOG_DEBUG",
+          "new_api": "Exception",
+          "old_text": "LOG_DEBUG(log, \"Pulling \" << (end - begin) << \" entries to queue: \" << *begin << \" - \" << *last)",
+          "new_text": "Exception(\"Error in zookeeper data: unexpected node \" + last_entry + \" in \" + zookeeper_path + \"/log\",\n                    ErrorCodes::UNEXPECTED_NODE_IN_ZOOKEEPER)",
+          "old_line_content": "            LOG_DEBUG(log, \"Pulling \" << (end - begin) << \" entries to queue: \" << *begin << \" - \" << *last);",
+          "new_line_content": "                throw Exception(\"Error in zookeeper data: unexpected node \" + last_entry + \" in \" + zookeeper_path + \"/log\",",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "reserve",
+          "new_api": "strlen",
+          "old_text": "futures.reserve(end - begin)",
+          "new_text": "strlen(\"log-\")",
+          "old_line_content": "            futures.reserve(end - begin);",
+          "new_line_content": "            UInt64 last_entry_index = parse<UInt64>(last_entry.substr(strlen(\"log-\")));",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "back",
+          "new_api": "LogEntry::parse(res.value, res.stat)",
+          "old_text": "copied_entries.back()",
+          "new_text": "LogEntry::parse(res.value, res.stat)",
+          "old_line_content": "                const auto & entry = *copied_entries.back();",
+          "new_line_content": "                copied_entries.emplace_back(LogEntry::parse(res.value, res.stat));",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "toString",
+          "new_api": "std::make_shared<zkutil::Op::SetData>(\n                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1)",
+          "old_text": "toString(*min_unprocessed_insert_time_changed)",
+          "new_text": "std::make_shared<zkutil::Op::SetData>(\n                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1)",
+          "old_line_content": "                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1));",
+          "new_line_content": "            ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "multi",
+          "new_api": "std::make_shared<zkutil::Op::SetData>(\n                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "old_text": "zookeeper->multi(ops)",
+          "new_text": "std::make_shared<zkutil::Op::SetData>(\n                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "old_line_content": "                zookeeper->multi(ops);",
+          "new_line_content": "                ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "updateTimesOnRemoval",
+          "new_api": "tryRemove",
+          "old_text": "updateTimesOnRemoval(*it, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "new_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + (*it)->znode_name)",
+          "old_line_content": "            updateTimesOnRemoval(*it, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "new_line_content": "            auto code = zookeeper->tryRemove(replica_path + \"/queue/\" + (*it)->znode_name);",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": "wait",
+          "new_api": "size",
+          "old_text": "entry->execution_complete.wait(lock, [&entry] { return !entry->currently_executing; })",
+          "new_text": "LOG_DEBUG(log, \"Removed \" << removed_entries << \" entries from queue. \"\n        \"Waiting for \" << to_wait.size() << \" entries that are currently executing.\")",
+          "old_line_content": "        entry->execution_complete.wait(lock, [&entry] { return !entry->currently_executing; });",
+          "new_line_content": "    LOG_DEBUG(log, \"Removed \" << removed_entries << \" entries from queue. \"",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": "MergeTreePartInfo::fromPartName(elem->new_part_name, format_version)",
+          "new_api": "emplace_back",
+          "old_text": "MergeTreePartInfo::fromPartName(elem->new_part_name, format_version)",
+          "new_text": "conflicts.emplace_back(elem)",
+          "old_line_content": "                auto cur_part = MergeTreePartInfo::fromPartName(elem->new_part_name, format_version);",
+          "new_line_content": "                    conflicts.emplace_back(elem);",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "str",
+          "new_api": "typeToString",
+          "old_text": "ss.str()",
+          "new_text": "entry.typeToString()",
+          "old_line_content": "        *out_conflicts_description = ss.str();",
+          "new_line_content": "        ss << \"Can't execute \" << entry.typeToString() << \" entry \" << entry.znode_name << \". \";",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "MergeTreePartInfo::fromPartName(future_part_name, format_version)",
+          "new_api": "MergeTreePartInfo::fromPartName(new_part_name, format_version)",
+          "old_text": "MergeTreePartInfo::fromPartName(future_part_name, format_version)",
+          "new_text": "MergeTreePartInfo::fromPartName(new_part_name, format_version)",
+          "old_line_content": "        auto future_part = MergeTreePartInfo::fromPartName(future_part_name, format_version);",
+          "new_line_content": "    auto result_part = MergeTreePartInfo::fromPartName(new_part_name, format_version);",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "getPartIfExists",
+          "new_api": "LOG_TRACE",
+          "old_text": "data.getPartIfExists(name, {MergeTreeDataPartState::PreCommitted, MergeTreeDataPartState::Committed, MergeTreeDataPartState::Outdated})",
+          "new_text": "LOG_TRACE(log, reason)",
+          "old_line_content": "            auto part = data.getPartIfExists(name, {MergeTreeDataPartState::PreCommitted, MergeTreeDataPartState::Committed, MergeTreeDataPartState::Outdated});",
+          "new_line_content": "                LOG_TRACE(log, reason);",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "isCancelled",
+          "new_api": "getPartIfExists",
+          "old_text": "merger.merges_blocker.isCancelled()",
+          "new_text": "data.getPartIfExists(name, {MergeTreeDataPartState::PreCommitted, MergeTreeDataPartState::Committed, MergeTreeDataPartState::Outdated})",
+          "old_line_content": "        if (merger.merges_blocker.isCancelled())",
+          "new_line_content": "            auto part = data.getPartIfExists(name, {MergeTreeDataPartState::PreCommitted, MergeTreeDataPartState::Committed, MergeTreeDataPartState::Outdated});",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "formatReadableSizeWithBinarySuffix",
+          "new_api": "getMaxPartsSizeForMerge",
+          "old_text": "formatReadableSizeWithBinarySuffix(sum_parts_size_in_bytes)",
+          "new_text": "merger.getMaxPartsSizeForMerge()",
+          "old_line_content": "                + \" because its size (\" + formatReadableSizeWithBinarySuffix(sum_parts_size_in_bytes)",
+          "new_line_content": "        size_t max_parts_size_for_merge = merger.getMaxPartsSizeForMerge();",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "empty",
+          "new_api": "notify_all",
+          "old_text": "entry->actual_new_part_name.empty()",
+          "new_text": "entry->execution_complete.notify_all()",
+          "old_line_content": "    if (!entry->actual_new_part_name.empty())",
+          "new_line_content": "    entry->execution_complete.notify_all();",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": "clear",
+          "new_api": "empty",
+          "old_text": "entry->actual_new_part_name.clear()",
+          "new_text": "entry->actual_new_part_name.empty()",
+          "old_line_content": "        entry->actual_new_part_name.clear();",
+          "new_line_content": "    if (!entry->actual_new_part_name.empty())",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "shouldExecuteLogEntry",
+          "new_api": "end",
+          "old_text": "shouldExecuteLogEntry(**it, (*it)->postpone_reason, merger, data, lock)",
+          "new_text": "queue.end()",
+          "old_line_content": "        if (shouldExecuteLogEntry(**it, (*it)->postpone_reason, merger, data, lock))",
+          "new_line_content": "    for (auto it = queue.begin(); it != queue.end(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": "std::current_exception()",
+          "new_api": "func",
+          "old_text": "std::current_exception()",
+          "new_text": "func(entry)",
+          "old_line_content": "        saved_exception = std::current_exception();",
+          "new_line_content": "        if (func(entry))",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": "add",
+          "new_api": "getContainingPart",
+          "old_text": "virtual_parts.add(part_name)",
+          "new_text": "virtual_parts.getContainingPart(part_name)",
+          "old_line_content": "    virtual_parts.add(part_name);",
+          "new_line_content": "    return virtual_parts.getContainingPart(part_name) != part_name;",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": "emplace_back",
+          "new_api": "clear",
+          "old_text": "res.emplace_back(*entry)",
+          "new_text": "res.clear()",
+          "old_line_content": "        res.emplace_back(*entry);",
+          "new_line_content": "    res.clear();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 513,
+          "old_api": null,
+          "new_api": "MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version)",
+          "old_text": null,
+          "new_text": "MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version)",
+          "old_line_content": "            {",
+          "new_line_content": "                if (MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version))",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": null,
+          "new_api": "MergeTreePartInfo::fromPartName(elem->new_part_name, format_version)",
+          "old_text": null,
+          "new_text": "MergeTreePartInfo::fromPartName(elem->new_part_name, format_version)",
+          "old_line_content": "            }",
+          "new_line_content": "                auto cur_part = MergeTreePartInfo::fromPartName(elem->new_part_name, format_version);",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "MergeTreePartInfo::fromPartName(entry.new_part_name, format_version)",
+          "old_text": null,
+          "new_text": "MergeTreePartInfo::fromPartName(entry.new_part_name, format_version)",
+          "old_line_content": "        }",
+          "new_line_content": "                auto part = MergeTreePartInfo::fromPartName(entry.new_part_name, format_version);",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "conflicts.emplace_back(elem)",
+          "old_line_content": "    if (out_conflicts_description)",
+          "new_line_content": "                    conflicts.emplace_back(elem);",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "conflicts.size()",
+          "old_line_content": "    }",
+          "new_line_content": "        ss << \"There are \" << conflicts.size() << \" currently executing entries blocking it: \";",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "typeToString",
+          "old_text": null,
+          "new_text": "conflict->typeToString()",
+          "old_line_content": "    return conflicts;",
+          "new_line_content": "            ss << conflict->typeToString() << \" \" << conflict->new_part_name << \" \" << conflict->znode_name << \", \";",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": null,
+          "new_api": "str",
+          "old_text": null,
+          "new_text": "ss.str()",
+          "old_line_content": "",
+          "new_line_content": "        *out_conflicts_description = ss.str();",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty()",
+          "old_line_content": "}",
+          "new_line_content": "    if (!getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty())",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(conflicts_description, ErrorCodes::UNFINISHED)",
+          "old_line_content": "",
+          "new_line_content": "        throw Exception(conflicts_description, ErrorCodes::UNFINISHED);",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "future_parts.count(entry.new_part_name)",
+          "old_line_content": "bool ReplicatedMergeTreeQueue::isNotCoveredByFuturePartsImpl(const String & new_part_name, String & out_reason, std::lock_guard<std::mutex> &) const",
+          "new_line_content": "    if (!future_parts.count(entry.new_part_name))",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Expected that merges and fetches should be blocked in range \" + entry.new_part_name + \". This is a bug\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "{",
+          "new_line_content": "        throw Exception(\"Expected that merges and fetches should be blocked in range \" + entry.new_part_name + \". This is a bug\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "future_parts.count(new_part_name)",
+          "old_line_content": "",
+          "new_line_content": "    if (future_parts.count(new_part_name))",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": null,
+          "new_api": "MergeTreePartInfo::fromPartName(future_part_name, format_version)",
+          "old_text": null,
+          "new_text": "MergeTreePartInfo::fromPartName(future_part_name, format_version)",
+          "old_line_content": "        }",
+          "new_line_content": "        auto future_part = MergeTreePartInfo::fromPartName(future_part_name, format_version);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "contains",
+          "old_text": null,
+          "new_text": "future_part.contains(result_part)",
+          "old_line_content": "",
+          "new_line_content": "        if (future_part.contains(result_part))",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "isNotCoveredByFuturePartsImpl",
+          "old_text": null,
+          "new_text": "isNotCoveredByFuturePartsImpl(part_name, reject_reason, lock)",
+          "old_line_content": "",
+          "new_line_content": "    if (isNotCoveredByFuturePartsImpl(part_name, reject_reason, lock))",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": null,
+          "new_api": "CurrentlyExecuting::setActualPartName(entry, part_name, *this)",
+          "old_text": null,
+          "new_text": "CurrentlyExecuting::setActualPartName(entry, part_name, *this)",
+          "old_line_content": "}",
+          "new_line_content": "        CurrentlyExecuting::setActualPartName(entry, part_name, *this);",
+          "content_same": false
+        },
+        {
+          "line": 100,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "queue.push_back(entry)",
+          "old_line_content": "    {",
+          "new_line_content": "        queue.push_back(entry);",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "isNotCoveredByFuturePartsImpl",
+          "old_text": null,
+          "new_text": "isNotCoveredByFuturePartsImpl(entry.new_part_name, out_postpone_reason, lock)",
+          "old_line_content": "        }",
+          "new_line_content": "        if (!isNotCoveredByFuturePartsImpl(entry.new_part_name, out_postpone_reason, lock))",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": null,
+          "new_api": "push_front",
+          "old_text": null,
+          "new_text": "queue.push_front(entry)",
+          "old_line_content": "",
+          "new_line_content": "        queue.push_front(entry);",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "out_postpone_reason.empty()",
+          "old_line_content": "",
+          "new_line_content": "            if (!out_postpone_reason.empty())",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, out_postpone_reason)",
+          "old_line_content": "    if (entry.type == LogEntry::MERGE_PARTS)",
+          "new_line_content": "                LOG_DEBUG(log, out_postpone_reason);",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "inserts_by_time.insert(entry)",
+          "old_line_content": "            min_unprocessed_insert_time_changed = min_unprocessed_insert_time;",
+          "new_line_content": "        inserts_by_time.insert(entry);",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "future_parts.count(name)",
+          "old_line_content": "                out_postpone_reason = reason;",
+          "new_line_content": "            if (future_parts.count(name))",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": null,
+          "new_api": "insertUnlocked",
+          "old_text": null,
+          "new_text": "insertUnlocked(entry, min_unprocessed_insert_time_changed, lock)",
+          "old_line_content": "",
+          "new_line_content": "        insertUnlocked(entry, min_unprocessed_insert_time_changed, lock);",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "updateTimesInZooKeeper",
+          "old_text": null,
+          "new_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, {})",
+          "old_line_content": "    const LogEntryPtr & entry,",
+          "new_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, {});",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": null,
+          "new_api": "isCancelled",
+          "old_text": null,
+          "new_text": "merger.merges_blocker.isCancelled()",
+          "old_line_content": "            return false;",
+          "new_line_content": "        if (merger.merges_blocker.isCancelled())",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, reason)",
+          "old_line_content": "        /** Execute merge only if there are enough free threads in background pool to do merges of that size.",
+          "new_line_content": "            LOG_DEBUG(log, reason);",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "inserts_by_time.erase(entry)",
+          "old_line_content": "        min_unprocessed_insert_time_changed = min_unprocessed_insert_time;",
+          "new_line_content": "    inserts_by_time.erase(entry);",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "inserts_by_time.begin()",
+          "old_line_content": "",
+          "new_line_content": "    else if ((*inserts_by_time.begin())->create_time > min_unprocessed_insert_time)",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "inserts_by_time.begin()",
+          "old_line_content": "    {",
+          "new_line_content": "        min_unprocessed_insert_time = (*inserts_by_time.begin())->create_time;",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "formatReadableSizeWithBinarySuffix",
+          "old_text": null,
+          "new_text": "formatReadableSizeWithBinarySuffix(sum_parts_size_in_bytes)",
+          "old_line_content": "        }",
+          "new_line_content": "                + \" because its size (\" + formatReadableSizeWithBinarySuffix(sum_parts_size_in_bytes)",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "formatReadableSizeWithBinarySuffix",
+          "old_text": null,
+          "new_text": "formatReadableSizeWithBinarySuffix(max_parts_size_for_merge)",
+          "old_line_content": "    }",
+          "new_line_content": "                + \") is greater than current maximum (\" + formatReadableSizeWithBinarySuffix(max_parts_size_for_merge) + \").\";",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, reason)",
+          "old_line_content": "",
+          "new_line_content": "            LOG_DEBUG(log, reason);",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty()",
+          "old_line_content": "    }",
+          "new_line_content": "        if (!getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty())",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, conflicts_description)",
+          "old_line_content": "    return true;",
+          "new_line_content": "            LOG_DEBUG(log, conflicts_description);",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(*min_unprocessed_insert_time_changed)",
+          "old_line_content": "",
+          "new_line_content": "            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1));",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(*max_processed_insert_time_changed)",
+          "old_line_content": "",
+          "new_line_content": "            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1));",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(nullptr)",
+          "old_line_content": "",
+          "new_line_content": "    entry->last_attempt_time = time(nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "queue.future_parts.insert(entry->new_part_name)",
+          "old_line_content": "void ReplicatedMergeTreeQueue::CurrentlyExecuting::setActualPartName(const ReplicatedMergeTreeLogEntry & entry,",
+          "new_line_content": "    if (!queue.future_parts.insert(entry->new_part_name).second)",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Tagging already tagged future part \" + entry->new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "                                                                     const String & actual_part_name, ReplicatedMergeTreeQueue & queue)",
+          "new_line_content": "        throw Exception(\"Tagging already tagged future part \" + entry->new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "LOG_ERROR",
+          "old_text": null,
+          "new_text": "LOG_ERROR(log, \"Couldn't set value of nodes for insert times (\"\n                << replica_path << \"/min_unprocessed_insert_time, max_processed_insert_time)\" << \": \"\n                << zkutil::ZooKeeper::error2string(code) + \". This shouldn't happen often.\")",
+          "old_line_content": "",
+          "new_line_content": "            LOG_ERROR(log, \"Couldn't set value of nodes for insert times (\"",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": null,
+          "new_api": "zkutil::ZooKeeper::error2string(code)",
+          "old_text": null,
+          "new_text": "zkutil::ZooKeeper::error2string(code)",
+          "old_line_content": "void ReplicatedMergeTreeQueue::remove(zkutil::ZooKeeperPtr zookeeper, LogEntryPtr & entry)",
+          "new_line_content": "                << zkutil::ZooKeeper::error2string(code) + \". This shouldn't happen often.\");",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "entry.actual_new_part_name.empty()",
+          "old_line_content": "    /// Check if it is the same (and already added) part.",
+          "new_line_content": "    if (!entry.actual_new_part_name.empty())",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Entry actual part isn't empty yet. This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "    if (entry.actual_new_part_name == entry.new_part_name)",
+          "new_line_content": "        throw Exception(\"Entry actual part isn't empty yet. This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": null,
+          "new_api": "tryRemove",
+          "old_text": null,
+          "new_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + entry->znode_name)",
+          "old_line_content": "",
+          "new_line_content": "    auto code = zookeeper->tryRemove(replica_path + \"/queue/\" + entry->znode_name);",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "LOG_ERROR",
+          "old_text": null,
+          "new_text": "LOG_ERROR(log, \"Couldn't remove \" << replica_path << \"/queue/\" << entry->znode_name << \": \"\n            << zkutil::ZooKeeper::error2string(code) << \". This shouldn't happen often.\")",
+          "old_line_content": "",
+          "new_line_content": "        LOG_ERROR(log, \"Couldn't remove \" << replica_path << \"/queue/\" << entry->znode_name << \": \"",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": null,
+          "new_api": "zkutil::ZooKeeper::error2string(code)",
+          "old_text": null,
+          "new_text": "zkutil::ZooKeeper::error2string(code)",
+          "old_line_content": "    {",
+          "new_line_content": "            << zkutil::ZooKeeper::error2string(code) << \". This shouldn't happen often.\");",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "queue.future_parts.insert(entry.actual_new_part_name)",
+          "old_line_content": "ReplicatedMergeTreeQueue::CurrentlyExecuting::~CurrentlyExecuting()",
+          "new_line_content": "    if (!queue.future_parts.insert(entry.actual_new_part_name).second)",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Attaching already exsisting future part \" + entry.actual_new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "{",
+          "new_line_content": "        throw Exception(\"Attaching already exsisting future part \" + entry.actual_new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "queue.future_parts.erase(entry->actual_new_part_name)",
+          "old_line_content": "}",
+          "new_line_content": "        if (entry->actual_new_part_name != entry->new_part_name && !queue.future_parts.erase(entry->actual_new_part_name))",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": null,
+          "new_api": "LOG_ERROR",
+          "old_text": null,
+          "new_text": "LOG_ERROR(queue.log, \"Untagging already untagged future part \" + entry->actual_new_part_name + \". This is a bug.\")",
+          "old_line_content": "",
+          "new_line_content": "            LOG_ERROR(queue.log, \"Untagging already untagged future part \" + entry->actual_new_part_name + \". This is a bug.\");",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "entry->actual_new_part_name.clear()",
+          "old_line_content": "ReplicatedMergeTreeQueue::SelectedEntry ReplicatedMergeTreeQueue::selectEntryToProcess(MergeTreeDataMerger & merger, MergeTreeData & data)",
+          "new_line_content": "        entry->actual_new_part_name.clear();",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": null,
+          "new_api": "updateTimesOnRemoval",
+          "old_text": null,
+          "new_text": "updateTimesOnRemoval(entry, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "old_line_content": "",
+          "new_line_content": "        updateTimesOnRemoval(entry, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "updateTimesInZooKeeper",
+          "old_text": null,
+          "new_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "old_line_content": "{",
+          "new_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": null,
+          "new_api": "shouldExecuteLogEntry",
+          "old_text": null,
+          "new_text": "shouldExecuteLogEntry(**it, (*it)->postpone_reason, merger, data, lock)",
+          "old_line_content": "        }",
+          "new_line_content": "        if (shouldExecuteLogEntry(**it, (*it)->postpone_reason, merger, data, lock))",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "queue.end()",
+          "old_line_content": "            ++(*it)->num_postponed;",
+          "new_line_content": "            queue.splice(queue.end(), queue, it);",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "queue.erase(it++)",
+          "old_line_content": "                ++it;",
+          "new_line_content": "                queue.erase(it++);",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": null,
+          "new_api": "updateTimesOnRemoval",
+          "old_text": null,
+          "new_text": "updateTimesOnRemoval(found, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "old_line_content": "        }",
+          "new_line_content": "                updateTimesOnRemoval(found, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(nullptr)",
+          "old_line_content": "        return { entry, std::unique_ptr<CurrentlyExecuting>{ new CurrentlyExecuting(entry, *this) } };",
+          "new_line_content": "            (*it)->last_postpone_time = time(nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": null,
+          "new_api": "tryRemove",
+          "old_text": null,
+          "new_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + found->znode_name)",
+          "old_line_content": "",
+          "new_line_content": "    zookeeper->tryRemove(replica_path + \"/queue/\" + found->znode_name);",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": null,
+          "new_api": "updateTimesInZooKeeper",
+          "old_text": null,
+          "new_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "old_line_content": "",
+          "new_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": null,
+          "new_api": "get_zookeeper",
+          "old_text": null,
+          "new_text": "get_zookeeper()",
+          "old_line_content": "    }",
+          "new_line_content": "            remove(get_zookeeper(), entry);",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": null,
+          "new_api": "std::current_exception()",
+          "old_text": null,
+          "new_text": "std::current_exception()",
+          "old_line_content": "        std::lock_guard<std::mutex> lock(mutex);",
+          "new_line_content": "        saved_exception = std::current_exception();",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "load(zookeeper)",
+          "old_line_content": "    UInt64 index;",
+          "new_line_content": "        dirty_entries_loaded = load(zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": null,
+          "new_api": "strlen",
+          "old_text": null,
+          "new_text": "strlen(\"log-\")",
+          "old_line_content": "    {",
+          "new_line_content": "        index = log_entries.empty() ? 0 : parse<UInt64>(std::min_element(log_entries.begin(), log_entries.end())->substr(strlen(\"log-\")));",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(index)",
+          "old_line_content": "    }",
+          "new_line_content": "        zookeeper->set(replica_path + \"/log_pointer\", toString(index));",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": null,
+          "new_api": "parse<UInt64>(index_str)",
+          "old_text": null,
+          "new_text": "parse<UInt64>(index_str)",
+          "old_line_content": "    /// Multiple log entries that must be copied to the queue.",
+          "new_line_content": "        index = parse<UInt64>(index_str);",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": null,
+          "new_api": "add",
+          "old_text": null,
+          "new_text": "virtual_parts.add(part_name)",
+          "old_line_content": "ReplicatedMergeTreeQueue::Status ReplicatedMergeTreeQueue::getStatus() const",
+          "new_line_content": "    virtual_parts.add(part_name);",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "log_entries.erase(\n        std::remove_if(log_entries.begin(), log_entries.end(), [&min_log_entry](const String & entry) { return entry < min_log_entry; }),\n        log_entries.end())",
+          "old_line_content": "    {",
+          "new_line_content": "    log_entries.erase(",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "log_entries.end()",
+          "old_line_content": "",
+          "new_line_content": "        log_entries.end());",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "log_entries.empty()",
+          "old_line_content": "        /// If the limit is exceeded, the connection is simply closed.",
+          "new_line_content": "    if (!log_entries.empty())",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "log_entries.end()",
+          "old_line_content": "        /// The average size of the node value in this case is less than 10 kilobytes.",
+          "new_line_content": "        std::sort(log_entries.begin(), log_entries.end());",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "future_parts.size()",
+          "old_line_content": "    res.merges_in_queue = 0;",
+          "new_line_content": "    res.future_parts = future_parts.size();",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "queue.size()",
+          "old_line_content": "    res.queue_oldest_time = 0;",
+          "new_line_content": "    res.queue_size = queue.size();",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "log_entries.size()",
+          "old_line_content": "                : (begin + MAX_MULTI_OPS);",
+          "new_line_content": "        for (size_t i = 0, size = log_entries.size(); i < size; i += MAX_MULTI_OPS)",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "log_entries.begin()",
+          "old_line_content": "",
+          "new_line_content": "            auto begin = log_entries.begin() + i;",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "log_entries.size()",
+          "old_line_content": "            String last_entry = *last;",
+          "new_line_content": "            auto end = i + MAX_MULTI_OPS >= log_entries.size()",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": null,
+          "new_api": "startsWith",
+          "old_text": null,
+          "new_text": "startsWith(last_entry, \"log-\")",
+          "old_line_content": "",
+          "new_line_content": "            if (!startsWith(last_entry, \"log-\"))",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Pulling \" << (end - begin) << \" entries to queue: \" << *begin << \" - \" << *last)",
+          "old_line_content": "            for (auto it = begin; it != end; ++it)",
+          "new_line_content": "            LOG_DEBUG(log, \"Pulling \" << (end - begin) << \" entries to queue: \" << *begin << \" - \" << *last);",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": null,
+          "new_api": "reserve",
+          "old_text": null,
+          "new_text": "futures.reserve(end - begin)",
+          "old_line_content": "            /// Simultaneously add all new entries to the queue and move the pointer to the log.",
+          "new_line_content": "            futures.reserve(end - begin);",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "asyncGet",
+          "old_text": null,
+          "new_text": "zookeeper->asyncGet(zookeeper_path + \"/log/\" + *it)",
+          "old_line_content": "            std::vector<LogEntryPtr> copied_entries;",
+          "new_line_content": "                futures.emplace_back(*it, zookeeper->asyncGet(zookeeper_path + \"/log/\" + *it));",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": null,
+          "new_api": "reserve",
+          "old_text": null,
+          "new_text": "copied_entries.reserve(end - begin)",
+          "old_line_content": "            {",
+          "new_line_content": "            copied_entries.reserve(end - begin);",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "future.second.get()",
+          "old_line_content": "",
+          "new_line_content": "                zkutil::ZooKeeper::ValueAndStat res = future.second.get();",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": null,
+          "new_api": "getDefaultACL",
+          "old_text": null,
+          "new_text": "std::make_shared<zkutil::Op::Create>(\n                    replica_path + \"/queue/queue-\", res.value, zookeeper->getDefaultACL(), zkutil::CreateMode::PersistentSequential)",
+          "old_line_content": "                {",
+          "new_line_content": "                ops.emplace_back(std::make_shared<zkutil::Op::Create>(",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": null,
+          "new_api": "getDefaultACL",
+          "old_text": null,
+          "new_text": "zookeeper->getDefaultACL()",
+          "old_line_content": "                    std::lock_guard<std::mutex> lock(mutex);",
+          "new_line_content": "                    replica_path + \"/queue/queue-\", res.value, zookeeper->getDefaultACL(), zkutil::CreateMode::PersistentSequential));",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "copied_entries.back()",
+          "old_line_content": "                    {",
+          "new_line_content": "                const auto & entry = *copied_entries.back();",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "queue.size()",
+          "old_line_content": "",
+          "new_line_content": "    res.reserve(queue.size());",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "res.emplace_back(*entry)",
+          "old_line_content": "{",
+          "new_line_content": "        res.emplace_back(*entry);",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(last_entry_index + 1)",
+          "old_line_content": "",
+          "new_line_content": "                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1));",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(*min_unprocessed_insert_time_changed)",
+          "old_line_content": "            }",
+          "new_line_content": "                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1));",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": null,
+          "new_api": "multi",
+          "old_text": null,
+          "new_text": "zookeeper->multi(ops)",
+          "old_line_content": "                {",
+          "new_line_content": "                zookeeper->multi(ops);",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": null,
+          "new_api": "isTemporaryError",
+          "old_text": null,
+          "new_text": "ex.isTemporaryError()",
+          "old_line_content": "",
+          "new_line_content": "                if (ex.isTemporaryError())",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \"Unknown status of queue update, marking queue dirty (will reload on next iteration).\")",
+          "old_line_content": "            }",
+          "new_line_content": "                    LOG_WARNING(log, \"Unknown status of queue update, marking queue dirty (will reload on next iteration).\");",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(index)",
+          "old_line_content": "",
+          "new_line_content": "    String index_str = toString(index);",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "index_str.size()",
+          "old_line_content": "",
+          "new_line_content": "    return std::string(10 - index_str.size(), '0') + index_str;",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "copied_entries.size()",
+          "old_line_content": "                    std::optional<time_t> unused = false;",
+          "new_line_content": "                for (size_t i = 0, size = copied_entries.size(); i < size; ++i)",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "getPathCreated",
+          "old_text": null,
+          "new_text": "dynamic_cast<zkutil::Op::Create &>(*ops[i]).getPathCreated()",
+          "old_line_content": "                }",
+          "new_line_content": "                    String path_created = dynamic_cast<zkutil::Op::Create &>(*ops[i]).getPathCreated();",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": null,
+          "new_api": "find_last_of",
+          "old_text": null,
+          "new_text": "path_created.find_last_of('/')",
+          "old_line_content": "",
+          "new_line_content": "                    copied_entries[i]->znode_name = path_created.substr(path_created.find_last_of('/') + 1);",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": null,
+          "new_api": "insertUnlocked",
+          "old_text": null,
+          "new_text": "insertUnlocked(copied_entries[i], unused, lock)",
+          "old_line_content": "            catch (...)",
+          "new_line_content": "                    insertUnlocked(copied_entries[i], unused, lock);",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(nullptr)",
+          "old_line_content": "                /// This is possible only if there is an unknown logical error.",
+          "new_line_content": "                last_queue_update = time(nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": null,
+          "new_api": "std::terminate()",
+          "old_text": null,
+          "new_text": "std::terminate()",
+          "old_line_content": "        }",
+          "new_line_content": "                std::terminate();",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "copied_entries.empty()",
+          "old_line_content": "    if (next_update_event)",
+          "new_line_content": "            if (!copied_entries.empty())",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "copied_entries.size()",
+          "old_line_content": "    {",
+          "new_line_content": "                LOG_DEBUG(log, \"Pulled \" << copied_entries.size() << \" entries to queue.\");",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "padIndex",
+          "old_text": null,
+          "new_text": "padIndex(index)",
+          "old_line_content": "}",
+          "new_line_content": "        if (zookeeper->exists(zookeeper_path + \"/log/log-\" + padIndex(index), nullptr, next_update_event))",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": null,
+          "new_api": "set",
+          "old_text": null,
+          "new_text": "next_update_event->set()",
+          "old_line_content": "",
+          "new_line_content": "            next_update_event->set();",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "log_entries.empty()",
+          "old_line_content": "{",
+          "new_line_content": "    return dirty_entries_loaded || !log_entries.empty();",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "*it)->parts_to_merge.end()",
+          "old_line_content": "                break;",
+          "new_line_content": "            if (std::find((*it)->parts_to_merge.begin(), (*it)->parts_to_merge.end(), part_name)",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "*it)->parts_to_merge.end()",
+          "old_line_content": "            }",
+          "new_line_content": "                != (*it)->parts_to_merge.end())",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "*it)->parts_to_merge.end()",
+          "old_line_content": "    }",
+          "new_line_content": "                parts_for_merge = StringSet((*it)->parts_to_merge.begin(), (*it)->parts_to_merge.end());",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "parts_for_merge.empty()",
+          "old_line_content": "            auto it0 = it;",
+          "new_line_content": "    if (!parts_for_merge.empty())",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "queue.end()",
+          "old_line_content": "            if (it0 == merge_entry)",
+          "new_line_content": "        for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "parts_for_merge.count((*it0)->new_part_name)",
+          "old_line_content": "    }",
+          "new_line_content": "                && parts_for_merge.count((*it0)->new_part_name))",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "queue.end()",
+          "old_line_content": "    return parts_for_merge;",
+          "new_line_content": "                queue.splice(queue.end(), queue, it0, it);",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "queue.end()",
+          "old_line_content": "            if ((*it)->currently_executing)",
+          "new_line_content": "    for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version)",
+          "old_text": null,
+          "new_text": "MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version)",
+          "old_line_content": "            if (code != ZOK)",
+          "new_line_content": "            MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version))",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "to_wait.push_back(*it)",
+          "old_line_content": "",
+          "new_line_content": "                to_wait.push_back(*it);",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "LOG_INFO",
+          "old_text": null,
+          "new_text": "LOG_INFO(log, \"Couldn't remove \" << replica_path + \"/queue/\" + (*it)->znode_name << \": \"\n                    << zkutil::ZooKeeper::error2string(code))",
+          "old_line_content": "            ++removed_entries;",
+          "new_line_content": "                LOG_INFO(log, \"Couldn't remove \" << replica_path + \"/queue/\" + (*it)->znode_name << \": \"",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "zkutil::ZooKeeper::error2string(code)",
+          "old_text": null,
+          "new_text": "zkutil::ZooKeeper::error2string(code)",
+          "old_line_content": "        }",
+          "new_line_content": "                    << zkutil::ZooKeeper::error2string(code));",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "updateTimesOnRemoval",
+          "old_text": null,
+          "new_text": "updateTimesOnRemoval(*it, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "old_line_content": "            ++it;",
+          "new_line_content": "            updateTimesOnRemoval(*it, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "queue.erase(it++)",
+          "old_line_content": "    }",
+          "new_line_content": "            queue.erase(it++);",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": null,
+          "new_api": "updateTimesInZooKeeper",
+          "old_text": null,
+          "new_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "old_line_content": "    /// Let's wait for the operations with the parts contained in the range to be deleted.",
+          "new_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "to_wait.size()",
+          "old_line_content": "}",
+          "new_line_content": "        \"Waiting for \" << to_wait.size() << \" entries that are currently executing.\");",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": null,
+          "new_api": "wait",
+          "old_text": null,
+          "new_text": "entry->execution_complete.wait(lock, [&entry] { return !entry->currently_executing; })",
+          "old_line_content": "    const LogEntry & entry, String * out_conflicts_description, std::lock_guard<std::mutex> &) const",
+          "new_line_content": "        entry->execution_complete.wait(lock, [&entry] { return !entry->currently_executing; });",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 515,
+          "old_api": "MergeTreePartInfo::fromPartName(entry.new_part_name, format_version)",
+          "new_api": null,
+          "old_text": "MergeTreePartInfo::fromPartName(entry.new_part_name, format_version)",
+          "new_text": null,
+          "old_line_content": "                auto part = MergeTreePartInfo::fromPartName(entry.new_part_name, format_version);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "conflicts.emplace_back(elem)",
+          "new_text": null,
+          "old_line_content": "                    conflicts.emplace_back(elem);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "typeToString",
+          "new_api": null,
+          "old_text": "entry.typeToString()",
+          "new_text": null,
+          "old_line_content": "        ss << \"Can't execute \" << entry.typeToString() << \" entry \" << entry.znode_name << \". \";",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "conflicts.size()",
+          "new_text": null,
+          "old_line_content": "        ss << \"There are \" << conflicts.size() << \" currently executing entries blocking it: \";",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "typeToString",
+          "new_api": null,
+          "old_text": "conflict->typeToString()",
+          "new_text": null,
+          "old_line_content": "            ss << conflict->typeToString() << \" \" << conflict->new_part_name << \" \" << conflict->znode_name << \", \";",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty()",
+          "new_text": null,
+          "old_line_content": "    if (!getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty())",
+          "new_line_content": "void ReplicatedMergeTreeQueue::disableMergesAndFetchesInRange(const LogEntry & entry)",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(conflicts_description, ErrorCodes::UNFINISHED)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(conflicts_description, ErrorCodes::UNFINISHED);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "future_parts.count(entry.new_part_name)",
+          "new_text": null,
+          "old_line_content": "    if (!future_parts.count(entry.new_part_name))",
+          "new_line_content": "    String conflicts_description;",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Expected that merges and fetches should be blocked in range \" + entry.new_part_name + \". This is a bug\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(\"Expected that merges and fetches should be blocked in range \" + entry.new_part_name + \". This is a bug\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "future_parts.count(new_part_name)",
+          "new_text": null,
+          "old_line_content": "    if (future_parts.count(new_part_name))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "MergeTreePartInfo::fromPartName(new_part_name, format_version)",
+          "new_api": null,
+          "old_text": "MergeTreePartInfo::fromPartName(new_part_name, format_version)",
+          "new_text": null,
+          "old_line_content": "    auto result_part = MergeTreePartInfo::fromPartName(new_part_name, format_version);",
+          "new_line_content": "            */",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "contains",
+          "new_api": null,
+          "old_text": "future_part.contains(result_part)",
+          "new_text": null,
+          "old_line_content": "        if (future_part.contains(result_part))",
+          "new_line_content": "    /// It can slow down when the size of `future_parts` is large. But it can not be large, since `BackgroundProcessingPool` is limited.",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "isNotCoveredByFuturePartsImpl",
+          "new_api": null,
+          "old_text": "isNotCoveredByFuturePartsImpl(part_name, reject_reason, lock)",
+          "new_text": null,
+          "old_line_content": "    if (isNotCoveredByFuturePartsImpl(part_name, reject_reason, lock))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "CurrentlyExecuting::setActualPartName(entry, part_name, *this)",
+          "new_api": null,
+          "old_text": "CurrentlyExecuting::setActualPartName(entry, part_name, *this)",
+          "new_text": null,
+          "old_line_content": "        CurrentlyExecuting::setActualPartName(entry, part_name, *this);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "isNotCoveredByFuturePartsImpl",
+          "new_api": null,
+          "old_text": "isNotCoveredByFuturePartsImpl(entry.new_part_name, out_postpone_reason, lock)",
+          "new_text": null,
+          "old_line_content": "        if (!isNotCoveredByFuturePartsImpl(entry.new_part_name, out_postpone_reason, lock))",
+          "new_line_content": "    MergeTreeData & data,",
+          "content_same": false
+        },
+        {
+          "line": 97,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "queue.push_back(entry)",
+          "new_text": null,
+          "old_line_content": "    queue.push_back(entry);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "out_postpone_reason.empty()",
+          "new_text": null,
+          "old_line_content": "            if (!out_postpone_reason.empty())",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, out_postpone_reason)",
+          "new_text": null,
+          "old_line_content": "                LOG_DEBUG(log, out_postpone_reason);",
+          "new_line_content": "    if (entry.type == LogEntry::MERGE_PARTS || entry.type == LogEntry::GET_PART || entry.type == LogEntry::ATTACH_PART)",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "inserts_by_time.insert(entry)",
+          "new_text": null,
+          "old_line_content": "        inserts_by_time.insert(entry);",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "future_parts.count(name)",
+          "new_text": null,
+          "old_line_content": "            if (future_parts.count(name))",
+          "new_line_content": "          * Such a situation is possible if the receive of a part has failed, and it was moved to the end of the queue.",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": "insertUnlocked",
+          "new_api": null,
+          "old_text": "insertUnlocked(entry, min_unprocessed_insert_time_changed, lock)",
+          "new_text": null,
+          "old_line_content": "        insertUnlocked(entry, min_unprocessed_insert_time_changed, lock);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": "LOG_TRACE",
+          "new_api": null,
+          "old_text": "LOG_TRACE(log, reason)",
+          "new_text": null,
+          "old_line_content": "                LOG_TRACE(log, reason);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": "updateTimesInZooKeeper",
+          "new_api": null,
+          "old_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, {})",
+          "new_text": null,
+          "old_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, {});",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, reason)",
+          "new_text": null,
+          "old_line_content": "            LOG_DEBUG(log, reason);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "inserts_by_time.erase(entry)",
+          "new_text": null,
+          "old_line_content": "    inserts_by_time.erase(entry);",
+          "new_line_content": "    std::unique_lock<std::mutex> &)",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "inserts_by_time.empty()",
+          "new_text": null,
+          "old_line_content": "    if (inserts_by_time.empty())",
+          "new_line_content": "    if (entry->type != LogEntry::GET_PART)",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "getMaxPartsSizeForMerge",
+          "new_api": null,
+          "old_text": "merger.getMaxPartsSizeForMerge()",
+          "new_text": null,
+          "old_line_content": "        size_t max_parts_size_for_merge = merger.getMaxPartsSizeForMerge();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "inserts_by_time.begin()",
+          "new_text": null,
+          "old_line_content": "        min_unprocessed_insert_time = (*inserts_by_time.begin())->create_time;",
+          "new_line_content": "        min_unprocessed_insert_time = 0;",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "formatReadableSizeWithBinarySuffix",
+          "new_api": null,
+          "old_text": "formatReadableSizeWithBinarySuffix(max_parts_size_for_merge)",
+          "new_text": null,
+          "old_line_content": "                + \") is greater than current maximum (\" + formatReadableSizeWithBinarySuffix(max_parts_size_for_merge) + \").\";",
+          "new_line_content": "        if (max_parts_size_for_merge != data.settings.max_bytes_to_merge_at_max_space_in_pool",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, reason)",
+          "new_text": null,
+          "old_line_content": "            LOG_DEBUG(log, reason);",
+          "new_line_content": "            && sum_parts_size_in_bytes > max_parts_size_for_merge)",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty()",
+          "new_text": null,
+          "old_line_content": "        if (!getConflictsForClearColumnCommand(entry, &conflicts_description, lock).empty())",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, conflicts_description)",
+          "new_text": null,
+          "old_line_content": "            LOG_DEBUG(log, conflicts_description);",
+          "new_line_content": "    if (entry.type == LogEntry::CLEAR_COLUMN)",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "new_api": null,
+          "old_text": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "new_text": null,
+          "old_line_content": "        ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "new_line_content": "    /// Consider it unimportant (for a short time, ZK will have a slightly different time value).",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "toString",
+          "new_api": null,
+          "old_text": "toString(*min_unprocessed_insert_time_changed)",
+          "new_text": null,
+          "old_line_content": "            replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1)",
+          "new_api": null,
+          "old_text": "std::make_shared<zkutil::Op::SetData>(\n            replica_path + \"/max_processed_insert_time\", toString(*max_processed_insert_time_changed), -1)",
+          "new_text": null,
+          "old_line_content": "        ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "new_line_content": "    if (min_unprocessed_insert_time_changed)",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "time",
+          "new_api": null,
+          "old_text": "time(nullptr)",
+          "new_text": null,
+          "old_line_content": "    entry->last_attempt_time = time(nullptr);",
+          "new_line_content": "ReplicatedMergeTreeQueue::CurrentlyExecuting::CurrentlyExecuting(ReplicatedMergeTreeQueue::LogEntryPtr & entry, ReplicatedMergeTreeQueue & queue)",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "ops.empty()",
+          "new_text": null,
+          "old_line_content": "    if (!ops.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "queue.future_parts.insert(entry->new_part_name)",
+          "new_text": null,
+          "old_line_content": "    if (!queue.future_parts.insert(entry->new_part_name).second)",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Tagging already tagged future part \" + entry->new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(\"Tagging already tagged future part \" + entry->new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "    entry->currently_executing = true;",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "entry.actual_new_part_name.empty()",
+          "new_text": null,
+          "old_line_content": "    if (!entry.actual_new_part_name.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Entry actual part isn't empty yet. This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(\"Entry actual part isn't empty yet. This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "tryRemove",
+          "new_api": null,
+          "old_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + entry->znode_name)",
+          "new_text": null,
+          "old_line_content": "    auto code = zookeeper->tryRemove(replica_path + \"/queue/\" + entry->znode_name);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "LOG_ERROR",
+          "new_api": null,
+          "old_text": "LOG_ERROR(log, \"Couldn't remove \" << replica_path << \"/queue/\" << entry->znode_name << \": \"\n            << zkutil::ZooKeeper::error2string(code) << \". This shouldn't happen often.\")",
+          "new_text": null,
+          "old_line_content": "        LOG_ERROR(log, \"Couldn't remove \" << replica_path << \"/queue/\" << entry->znode_name << \": \"",
+          "new_line_content": "void ReplicatedMergeTreeQueue::remove(zkutil::ZooKeeperPtr zookeeper, LogEntryPtr & entry)",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": "zkutil::ZooKeeper::error2string(code)",
+          "new_api": null,
+          "old_text": "zkutil::ZooKeeper::error2string(code)",
+          "new_text": null,
+          "old_line_content": "            << zkutil::ZooKeeper::error2string(code) << \". This shouldn't happen often.\");",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "queue.future_parts.insert(entry.actual_new_part_name)",
+          "new_text": null,
+          "old_line_content": "    if (!queue.future_parts.insert(entry.actual_new_part_name).second)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Attaching already exsisting future part \" + entry.actual_new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(\"Attaching already exsisting future part \" + entry.actual_new_part_name + \". This is a bug.\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "    /// Check if it is the same (and already added) part.",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": "notify_all",
+          "new_api": null,
+          "old_text": "entry->execution_complete.notify_all()",
+          "new_text": null,
+          "old_line_content": "    entry->execution_complete.notify_all();",
+          "new_line_content": "ReplicatedMergeTreeQueue::CurrentlyExecuting::~CurrentlyExecuting()",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "queue.future_parts.erase(entry->new_part_name)",
+          "new_text": null,
+          "old_line_content": "    if (!queue.future_parts.erase(entry->new_part_name))",
+          "new_line_content": "    std::lock_guard<std::mutex> lock(queue.mutex);",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "queue.begin()",
+          "new_text": null,
+          "old_line_content": "        for (Queue::iterator it = queue.end(); it != queue.begin();)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "LOG_ERROR",
+          "new_api": null,
+          "old_text": "LOG_ERROR(queue.log, \"Untagging already untagged future part \" + entry->new_part_name + \". This is a bug.\")",
+          "new_text": null,
+          "old_line_content": "        LOG_ERROR(queue.log, \"Untagging already untagged future part \" + entry->new_part_name + \". This is a bug.\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "updateTimesInZooKeeper",
+          "new_api": null,
+          "old_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "new_text": null,
+          "old_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "    for (auto it = queue.begin(); it != queue.end(); ++it)",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "            queue.splice(queue.end(), queue, it);",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "        for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "new_line_content": "    std::optional<time_t> max_processed_insert_time_changed;",
+          "content_same": false
+        },
+        {
+          "line": 748,
+          "old_api": "time",
+          "new_api": null,
+          "old_text": "time(nullptr)",
+          "new_text": null,
+          "old_line_content": "            (*it)->last_postpone_time = time(nullptr);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "updateTimesOnRemoval",
+          "new_api": null,
+          "old_text": "updateTimesOnRemoval(found, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock)",
+          "new_text": null,
+          "old_line_content": "                updateTimesOnRemoval(found, min_unprocessed_insert_time_changed, max_processed_insert_time_changed, lock);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "tryRemove",
+          "new_api": null,
+          "old_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + found->znode_name)",
+          "new_text": null,
+          "old_line_content": "    zookeeper->tryRemove(replica_path + \"/queue/\" + found->znode_name);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "updateTimesInZooKeeper",
+          "new_api": null,
+          "old_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "new_text": null,
+          "old_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 768,
+          "old_api": "func",
+          "new_api": null,
+          "old_text": "func(entry)",
+          "new_text": null,
+          "old_line_content": "        if (func(entry))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": "get_zookeeper",
+          "new_api": null,
+          "old_text": "get_zookeeper()",
+          "new_text": null,
+          "old_line_content": "            remove(get_zookeeper(), entry);",
+          "new_line_content": "    std::exception_ptr saved_exception;",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "load(zookeeper)",
+          "new_text": null,
+          "old_line_content": "        dirty_entries_loaded = load(zookeeper);",
+          "new_line_content": "    std::lock_guard<std::mutex> lock(pull_logs_to_queue_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "zookeeper->get(replica_path + \"/log_pointer\")",
+          "new_text": null,
+          "old_line_content": "    String index_str = zookeeper->get(replica_path + \"/log_pointer\");",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "getChildren",
+          "new_api": null,
+          "old_text": "zookeeper->getChildren(zookeeper_path + \"/log\")",
+          "new_text": null,
+          "old_line_content": "    Strings log_entries = zookeeper->getChildren(zookeeper_path + \"/log\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "getContainingPart",
+          "new_api": null,
+          "old_text": "virtual_parts.getContainingPart(part_name)",
+          "new_text": null,
+          "old_line_content": "    return virtual_parts.getContainingPart(part_name) != part_name;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": "parse<UInt64>(index_str)",
+          "new_api": null,
+          "old_text": "parse<UInt64>(index_str)",
+          "new_text": null,
+          "old_line_content": "        index = parse<UInt64>(index_str);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "padIndex",
+          "new_api": null,
+          "old_text": "padIndex(index)",
+          "new_text": null,
+          "old_line_content": "    String min_log_entry = \"log-\" + padIndex(index);",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "log_entries.erase(\n        std::remove_if(log_entries.begin(), log_entries.end(), [&min_log_entry](const String & entry) { return entry < min_log_entry; }),\n        log_entries.end())",
+          "new_text": null,
+          "old_line_content": "    log_entries.erase(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "log_entries.end()",
+          "new_text": null,
+          "old_line_content": "        log_entries.end());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "log_entries.empty()",
+          "new_text": null,
+          "old_line_content": "    if (!log_entries.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 805,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "future_parts.size()",
+          "new_text": null,
+          "old_line_content": "    res.future_parts = future_parts.size();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "queue.size()",
+          "new_text": null,
+          "old_line_content": "    res.queue_size = queue.size();",
+          "new_line_content": "    std::lock_guard<std::mutex> lock(mutex);",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "        static constexpr auto MAX_MULTI_OPS = 100;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "log_entries.size()",
+          "new_text": null,
+          "old_line_content": "        for (size_t i = 0, size = log_entries.size(); i < size; i += MAX_MULTI_OPS)",
+          "new_line_content": "        /// If the limit is exceeded, the connection is simply closed.",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "log_entries.begin()",
+          "new_text": null,
+          "old_line_content": "            auto begin = log_entries.begin() + i;",
+          "new_line_content": "        /// The average size of the node value in this case is less than 10 kilobytes.",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "log_entries.end()",
+          "new_text": null,
+          "old_line_content": "                ? log_entries.end()",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Error in zookeeper data: unexpected node \" + last_entry + \" in \" + zookeeper_path + \"/log\",\n                    ErrorCodes::UNEXPECTED_NODE_IN_ZOOKEEPER)",
+          "new_text": null,
+          "old_line_content": "                throw Exception(\"Error in zookeeper data: unexpected node \" + last_entry + \" in \" + zookeeper_path + \"/log\",",
+          "new_line_content": "                : (begin + MAX_MULTI_OPS);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(\"log-\")",
+          "new_text": null,
+          "old_line_content": "            UInt64 last_entry_index = parse<UInt64>(last_entry.substr(strlen(\"log-\")));",
+          "new_line_content": "            String last_entry = *last;",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "asyncGet",
+          "new_api": null,
+          "old_text": "zookeeper->asyncGet(zookeeper_path + \"/log/\" + *it)",
+          "new_text": null,
+          "old_line_content": "                futures.emplace_back(*it, zookeeper->asyncGet(zookeeper_path + \"/log/\" + *it));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": "reserve",
+          "new_api": null,
+          "old_text": "copied_entries.reserve(end - begin)",
+          "new_text": null,
+          "old_line_content": "            copied_entries.reserve(end - begin);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "future.second.get()",
+          "new_text": null,
+          "old_line_content": "                zkutil::ZooKeeper::ValueAndStat res = future.second.get();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "LogEntry::parse(res.value, res.stat)",
+          "new_api": null,
+          "old_text": "LogEntry::parse(res.value, res.stat)",
+          "new_text": null,
+          "old_line_content": "                copied_entries.emplace_back(LogEntry::parse(res.value, res.stat));",
+          "new_line_content": "            std::optional<time_t> min_unprocessed_insert_time_changed;",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "getDefaultACL",
+          "new_api": null,
+          "old_text": "std::make_shared<zkutil::Op::Create>(\n                    replica_path + \"/queue/queue-\", res.value, zookeeper->getDefaultACL(), zkutil::CreateMode::PersistentSequential)",
+          "new_text": null,
+          "old_line_content": "                ops.emplace_back(std::make_shared<zkutil::Op::Create>(",
+          "new_line_content": "            for (auto & future : futures)",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "getDefaultACL",
+          "new_api": null,
+          "old_text": "zookeeper->getDefaultACL()",
+          "new_text": null,
+          "old_line_content": "                    replica_path + \"/queue/queue-\", res.value, zookeeper->getDefaultACL(), zkutil::CreateMode::PersistentSequential));",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "res.clear()",
+          "new_text": null,
+          "old_line_content": "    res.clear();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "queue.size()",
+          "new_text": null,
+          "old_line_content": "    res.reserve(queue.size());",
+          "new_line_content": "void ReplicatedMergeTreeQueue::getEntries(LogEntriesData & res) const",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "std::make_shared<zkutil::Op::SetData>(\n                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1)",
+          "new_api": null,
+          "old_text": "std::make_shared<zkutil::Op::SetData>(\n                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1)",
+          "new_text": null,
+          "old_line_content": "            ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "new_line_content": "                        min_unprocessed_insert_time_changed = min_unprocessed_insert_time;",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": "toString",
+          "new_api": null,
+          "old_text": "toString(last_entry_index + 1)",
+          "new_text": null,
+          "old_line_content": "                replica_path + \"/log_pointer\", toString(last_entry_index + 1), -1));",
+          "new_line_content": "                    }",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": "std::make_shared<zkutil::Op::SetData>(\n                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "new_api": null,
+          "old_text": "std::make_shared<zkutil::Op::SetData>(\n                    replica_path + \"/min_unprocessed_insert_time\", toString(*min_unprocessed_insert_time_changed), -1)",
+          "new_text": null,
+          "old_line_content": "                ops.emplace_back(std::make_shared<zkutil::Op::SetData>(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": "isTemporaryError",
+          "new_api": null,
+          "old_text": "ex.isTemporaryError()",
+          "new_text": null,
+          "old_line_content": "                if (ex.isTemporaryError())",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "LOG_WARNING",
+          "new_api": null,
+          "old_text": "LOG_WARNING(log, \"Unknown status of queue update, marking queue dirty (will reload on next iteration).\")",
+          "new_text": null,
+          "old_line_content": "                    LOG_WARNING(log, \"Unknown status of queue update, marking queue dirty (will reload on next iteration).\");",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "toString",
+          "new_api": null,
+          "old_text": "toString(index)",
+          "new_text": null,
+          "old_line_content": "    String index_str = toString(index);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 883,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "index_str.size()",
+          "new_text": null,
+          "old_line_content": "    return std::string(10 - index_str.size(), '0') + index_str;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "copied_entries.size()",
+          "new_text": null,
+          "old_line_content": "                for (size_t i = 0, size = copied_entries.size(); i < size; ++i)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": "getPathCreated",
+          "new_api": null,
+          "old_text": "dynamic_cast<zkutil::Op::Create &>(*ops[i]).getPathCreated()",
+          "new_text": null,
+          "old_line_content": "                    String path_created = dynamic_cast<zkutil::Op::Create &>(*ops[i]).getPathCreated();",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": "find_last_of",
+          "new_api": null,
+          "old_text": "path_created.find_last_of('/')",
+          "new_text": null,
+          "old_line_content": "                    copied_entries[i]->znode_name = path_created.substr(path_created.find_last_of('/') + 1);",
+          "new_line_content": "                std::lock_guard<std::mutex> lock(mutex);",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "insertUnlocked",
+          "new_api": null,
+          "old_text": "insertUnlocked(copied_entries[i], unused, lock)",
+          "new_text": null,
+          "old_line_content": "                    insertUnlocked(copied_entries[i], unused, lock);",
+          "new_line_content": "                {",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": "time",
+          "new_api": null,
+          "old_text": "time(nullptr)",
+          "new_text": null,
+          "old_line_content": "                last_queue_update = time(nullptr);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "std::terminate()",
+          "new_api": null,
+          "old_text": "std::terminate()",
+          "new_text": null,
+          "old_line_content": "                std::terminate();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "copied_entries.empty()",
+          "new_text": null,
+          "old_line_content": "            if (!copied_entries.empty())",
+          "new_line_content": "                /// If it fails, the data in RAM is incorrect. In order to avoid possible further corruption of data in ZK, we will kill ourselves.",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "copied_entries.size()",
+          "new_text": null,
+          "old_line_content": "                LOG_DEBUG(log, \"Pulled \" << copied_entries.size() << \" entries to queue.\");",
+          "new_line_content": "                /// This is possible only if there is an unknown logical error.",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "padIndex",
+          "new_api": null,
+          "old_text": "padIndex(index)",
+          "new_text": null,
+          "old_line_content": "        if (zookeeper->exists(zookeeper_path + \"/log/log-\" + padIndex(index), nullptr, next_update_event))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "set",
+          "new_api": null,
+          "old_text": "next_update_event->set()",
+          "new_text": null,
+          "old_line_content": "            next_update_event->set();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "log_entries.empty()",
+          "new_text": null,
+          "old_line_content": "    return dirty_entries_loaded || !log_entries.empty();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "    for (Queue::iterator it = queue.begin(); it != queue.end(); ++it)",
+          "new_line_content": "    std::lock_guard<std::mutex> lock(mutex);",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "*it)->parts_to_merge.end()",
+          "new_text": null,
+          "old_line_content": "            if (std::find((*it)->parts_to_merge.begin(), (*it)->parts_to_merge.end(), part_name)",
+          "new_line_content": "    Queue::iterator merge_entry;",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "*it)->parts_to_merge.end()",
+          "new_text": null,
+          "old_line_content": "                parts_for_merge = StringSet((*it)->parts_to_merge.begin(), (*it)->parts_to_merge.end());",
+          "new_line_content": "        if ((*it)->type == LogEntry::MERGE_PARTS)",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "parts_for_merge.empty()",
+          "new_text": null,
+          "old_line_content": "    if (!parts_for_merge.empty())",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "        for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 446,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "parts_for_merge.count((*it0)->new_part_name)",
+          "new_text": null,
+          "old_line_content": "                && parts_for_merge.count((*it0)->new_part_name))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "                queue.splice(queue.end(), queue, it0, it);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue.end()",
+          "new_text": null,
+          "old_line_content": "    for (Queue::iterator it = queue.begin(); it != queue.end();)",
+          "new_line_content": "    std::optional<time_t> min_unprocessed_insert_time_changed;",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": "MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version)",
+          "new_api": null,
+          "old_text": "MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version)",
+          "new_text": null,
+          "old_line_content": "            MergeTreePartInfo::contains(part_name, (*it)->new_part_name, format_version))",
+          "new_line_content": "    /// Remove operations with parts, contained in the range to be deleted, from the queue.",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "to_wait.push_back(*it)",
+          "new_text": null,
+          "old_line_content": "                to_wait.push_back(*it);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "tryRemove",
+          "new_api": null,
+          "old_text": "zookeeper->tryRemove(replica_path + \"/queue/\" + (*it)->znode_name)",
+          "new_text": null,
+          "old_line_content": "            auto code = zookeeper->tryRemove(replica_path + \"/queue/\" + (*it)->znode_name);",
+          "new_line_content": "        if (((*it)->type == LogEntry::GET_PART || (*it)->type == LogEntry::MERGE_PARTS) &&",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "LOG_INFO",
+          "new_api": null,
+          "old_text": "LOG_INFO(log, \"Couldn't remove \" << replica_path + \"/queue/\" + (*it)->znode_name << \": \"\n                    << zkutil::ZooKeeper::error2string(code))",
+          "new_text": null,
+          "old_line_content": "                LOG_INFO(log, \"Couldn't remove \" << replica_path + \"/queue/\" + (*it)->znode_name << \": \"",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "zkutil::ZooKeeper::error2string(code)",
+          "new_api": null,
+          "old_text": "zkutil::ZooKeeper::error2string(code)",
+          "new_text": null,
+          "old_line_content": "                    << zkutil::ZooKeeper::error2string(code));",
+          "new_line_content": "            if ((*it)->currently_executing)",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "queue.erase(it++)",
+          "new_text": null,
+          "old_line_content": "            queue.erase(it++);",
+          "new_line_content": "            if (code != ZOK)",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "updateTimesInZooKeeper",
+          "new_api": null,
+          "old_text": "updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed)",
+          "new_text": null,
+          "old_line_content": "    updateTimesInZooKeeper(zookeeper, min_unprocessed_insert_time_changed, max_processed_insert_time_changed);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Removed \" << removed_entries << \" entries from queue. \"\n        \"Waiting for \" << to_wait.size() << \" entries that are currently executing.\")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Removed \" << removed_entries << \" entries from queue. \"",
+          "new_line_content": "            ++it;",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "to_wait.size()",
+          "new_text": null,
+          "old_line_content": "        \"Waiting for \" << to_wait.size() << \" entries that are currently executing.\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": "MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version)",
+          "new_api": null,
+          "old_text": "MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version)",
+          "new_text": null,
+          "old_line_content": "                if (MergeTreePartInfo::contains(entry.new_part_name, elem->new_part_name, format_version))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "conflicts.emplace_back(elem)",
+          "new_text": null,
+          "old_line_content": "                    conflicts.emplace_back(elem);",
+          "new_line_content": "        if (elem->currently_executing && elem->znode_name != entry.znode_name)",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 33,
+      "total_additions": 123,
+      "total_deletions": 122,
+      "total_api_changes": 278
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 278,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          98,
+          99
+        ]
+      }
+    },
+    "api_calls_before": 229,
+    "api_calls_after": 230,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 1,
+      "total_diff_lines": 19
+    }
+  }
+}

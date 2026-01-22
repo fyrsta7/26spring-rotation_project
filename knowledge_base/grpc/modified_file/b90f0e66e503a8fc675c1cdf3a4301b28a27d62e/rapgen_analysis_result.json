@@ -1,0 +1,354 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/b90f0e66e503a8fc675c1cdf3a4301b28a27d62e",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/b90f0e66e503a8fc675c1cdf3a4301b28a27d62e/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/b90f0e66e503a8fc675c1cdf3a4301b28a27d62e/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/b90f0e66e503a8fc675c1cdf3a4301b28a27d62e/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 192,
+          "old_api": "grpc_empty_slice",
+          "new_api": "grpc_slice_malloc",
+          "old_text": "g_core_codegen_interface->grpc_empty_slice()",
+          "new_text": "g_core_codegen_interface->grpc_slice_malloc(byte_size)",
+          "old_line_content": "    grpc_slice empty_slice = g_core_codegen_interface->grpc_empty_slice();",
+          "new_line_content": "    grpc_slice slice = g_core_codegen_interface->grpc_slice_malloc(byte_size);",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": "grpc_raw_byte_buffer_create",
+          "new_api": "SerializeWithCachedSizesToArray",
+          "old_text": "g_core_codegen_interface->grpc_raw_byte_buffer_create(&empty_slice, 1)",
+          "new_text": "GPR_CODEGEN_ASSERT(\n        GRPC_SLICE_END_PTR(slice) ==\n        msg.SerializeWithCachedSizesToArray(GRPC_SLICE_START_PTR(slice)))",
+          "old_line_content": "    *bp = g_core_codegen_interface->grpc_raw_byte_buffer_create(&empty_slice, 1);",
+          "new_line_content": "    GPR_CODEGEN_ASSERT(",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "ok",
+          "new_api": "GRPC_SLICE_END_PTR",
+          "old_text": "g_core_codegen_interface->ok()",
+          "new_text": "GRPC_SLICE_END_PTR(slice)",
+          "old_line_content": "    return g_core_codegen_interface->ok();",
+          "new_line_content": "        GRPC_SLICE_END_PTR(slice) ==",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "SerializeToZeroCopyStream",
+          "new_api": "grpc_slice_unref",
+          "old_text": "msg.SerializeToZeroCopyStream(&writer)",
+          "new_text": "g_core_codegen_interface->grpc_slice_unref(slice)",
+          "old_line_content": "  return msg.SerializeToZeroCopyStream(&writer)",
+          "new_line_content": "    g_core_codegen_interface->grpc_slice_unref(slice);",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": "Status",
+          "new_api": "ok",
+          "old_text": "Status(StatusCode::INTERNAL, \"Failed to serialize message\")",
+          "new_text": "g_core_codegen_interface->ok()",
+          "old_line_content": "             : Status(StatusCode::INTERNAL, \"Failed to serialize message\");",
+          "new_line_content": "    return g_core_codegen_interface->ok();",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": "status",
+          "new_api": "Status",
+          "old_text": "reader.status().ok()",
+          "new_text": "Status(StatusCode::INTERNAL, \"No payload\")",
+          "old_line_content": "    if (!reader.status().ok()) {",
+          "new_line_content": "    return Status(StatusCode::INTERNAL, \"No payload\");",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "ParseFromCodedStream",
+          "new_api": "status",
+          "old_text": "msg->ParseFromCodedStream(&decoder)",
+          "new_text": "reader.status().ok()",
+          "old_line_content": "    if (!msg->ParseFromCodedStream(&decoder)) {",
+          "new_line_content": "    if (!reader.status().ok()) {",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": "InitializationErrorString",
+          "new_api": "status",
+          "old_text": "msg->InitializationErrorString()",
+          "new_text": "reader.status()",
+          "old_line_content": "      result = Status(StatusCode::INTERNAL, msg->InitializationErrorString());",
+          "new_line_content": "      return reader.status();",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "Status",
+          "new_api": "SetTotalBytesLimit",
+          "old_text": "Status(StatusCode::INTERNAL, \"Did not read entire message\")",
+          "new_text": "decoder.SetTotalBytesLimit(INT_MAX, INT_MAX)",
+          "old_line_content": "      result = Status(StatusCode::INTERNAL, \"Did not read entire message\");",
+          "new_line_content": "    decoder.SetTotalBytesLimit(INT_MAX, INT_MAX);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 256,
+          "old_api": null,
+          "new_api": "internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,\n                                                                       msg)",
+          "old_text": null,
+          "new_text": "internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,\n                                                                       msg)",
+          "old_line_content": "",
+          "new_line_content": "    return internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "ParseFromCodedStream",
+          "old_text": null,
+          "new_text": "msg->ParseFromCodedStream(&decoder)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (!msg->ParseFromCodedStream(&decoder)) {",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "InitializationErrorString",
+          "old_text": null,
+          "new_text": "msg->InitializationErrorString()",
+          "old_line_content": "  }",
+          "new_line_content": "      result = Status(StatusCode::INTERNAL, msg->InitializationErrorString());",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "GRPC_SLICE_START_PTR",
+          "old_text": null,
+          "new_text": "GRPC_SLICE_START_PTR(slice)",
+          "old_line_content": "  }",
+          "new_line_content": "        msg.SerializeWithCachedSizesToArray(GRPC_SLICE_START_PTR(slice)));",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "grpc_raw_byte_buffer_create",
+          "old_text": null,
+          "new_text": "g_core_codegen_interface->grpc_raw_byte_buffer_create(&slice, 1)",
+          "old_line_content": "  BufferWriter writer(bp, kGrpcBufferWriterMaxBufferLength, byte_size);",
+          "new_line_content": "    *bp = g_core_codegen_interface->grpc_raw_byte_buffer_create(&slice, 1);",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "ConsumedEntireMessage",
+          "old_text": null,
+          "new_text": "decoder.ConsumedEntireMessage()",
+          "old_line_content": "  return result;",
+          "new_line_content": "    if (!decoder.ConsumedEntireMessage()) {",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "Status",
+          "old_text": null,
+          "new_text": "Status(StatusCode::INTERNAL, \"Did not read entire message\")",
+          "old_line_content": "}",
+          "new_line_content": "      result = Status(StatusCode::INTERNAL, \"Did not read entire message\");",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": null,
+          "new_api": "grpc_byte_buffer_destroy",
+          "old_text": null,
+          "new_text": "g_core_codegen_interface->grpc_byte_buffer_destroy(buffer)",
+          "old_line_content": "",
+          "new_line_content": "  g_core_codegen_interface->grpc_byte_buffer_destroy(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "SerializeToZeroCopyStream",
+          "old_text": null,
+          "new_text": "msg.SerializeToZeroCopyStream(&writer)",
+          "old_line_content": "// BufferReader must be a subclass of io::ZeroCopyInputStream.",
+          "new_line_content": "  return msg.SerializeToZeroCopyStream(&writer)",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "ok",
+          "old_text": null,
+          "new_text": "g_core_codegen_interface->ok()",
+          "old_line_content": "template <class BufferReader, class T>",
+          "new_line_content": "             ? g_core_codegen_interface->ok()",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": null,
+          "new_api": "Status",
+          "old_text": null,
+          "new_text": "Status(StatusCode::INTERNAL, \"Failed to serialize message\")",
+          "old_line_content": "Status GenericDeserialize(grpc_byte_buffer* buffer,",
+          "new_line_content": "             : Status(StatusCode::INTERNAL, \"Failed to serialize message\");",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": null,
+          "new_api": "ok",
+          "old_text": null,
+          "new_text": "g_core_codegen_interface->ok()",
+          "old_line_content": "    }",
+          "new_line_content": "  Status result = g_core_codegen_interface->ok();",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": null,
+          "new_api": "internal::GenericSerialize<internal::GrpcBufferWriter, T>(\n        msg, bp, own_buffer)",
+          "old_text": null,
+          "new_text": "internal::GenericSerialize<internal::GrpcBufferWriter, T>(\n        msg, bp, own_buffer)",
+          "old_line_content": "                            grpc::protobuf::Message* msg) {",
+          "new_line_content": "    return internal::GenericSerialize<internal::GrpcBufferWriter, T>(",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 227,
+          "old_api": "grpc_byte_buffer_destroy",
+          "new_api": null,
+          "old_text": "g_core_codegen_interface->grpc_byte_buffer_destroy(buffer)",
+          "new_text": null,
+          "old_line_content": "  g_core_codegen_interface->grpc_byte_buffer_destroy(buffer);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "g_core_codegen_interface->ok()",
+          "new_text": null,
+          "old_line_content": "             ? g_core_codegen_interface->ok()",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": "internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,\n                                                                       msg)",
+          "new_api": null,
+          "old_text": "internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,\n                                                                       msg)",
+          "new_text": null,
+          "old_line_content": "    return internal::GenericDeserialize<internal::GrpcBufferReader, T>(buffer,",
+          "new_line_content": "        msg, bp, own_buffer);",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": "Status",
+          "new_api": null,
+          "old_text": "Status(StatusCode::INTERNAL, \"No payload\")",
+          "new_text": null,
+          "old_line_content": "    return Status(StatusCode::INTERNAL, \"No payload\");",
+          "new_line_content": "                          grpc::protobuf::Message* msg) {",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "g_core_codegen_interface->ok()",
+          "new_text": null,
+          "old_line_content": "  Status result = g_core_codegen_interface->ok();",
+          "new_line_content": "      std::is_base_of<protobuf::io::ZeroCopyInputStream, BufferReader>::value,",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": "internal::GenericSerialize<internal::GrpcBufferWriter, T>(\n        msg, bp, own_buffer)",
+          "new_api": null,
+          "old_text": "internal::GenericSerialize<internal::GrpcBufferWriter, T>(\n        msg, bp, own_buffer)",
+          "new_text": null,
+          "old_line_content": "    return internal::GenericSerialize<internal::GrpcBufferWriter, T>(",
+          "new_line_content": "class SerializationTraits<T, typename std::enable_if<std::is_base_of<",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "status",
+          "new_api": null,
+          "old_text": "reader.status()",
+          "new_text": null,
+          "old_line_content": "      return reader.status();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "SetTotalBytesLimit",
+          "new_api": null,
+          "old_text": "decoder.SetTotalBytesLimit(INT_MAX, INT_MAX)",
+          "new_text": null,
+          "old_line_content": "    decoder.SetTotalBytesLimit(INT_MAX, INT_MAX);",
+          "new_line_content": "    BufferReader reader(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "ConsumedEntireMessage",
+          "new_api": null,
+          "old_text": "decoder.ConsumedEntireMessage()",
+          "new_text": null,
+          "old_line_content": "    if (!decoder.ConsumedEntireMessage()) {",
+          "new_line_content": "    ::grpc::protobuf::io::CodedInputStream decoder(&reader);",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 9,
+      "total_additions": 13,
+      "total_deletions": 9,
+      "total_api_changes": 31
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 31,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          191
+        ]
+      }
+    },
+    "api_calls_before": 51,
+    "api_calls_after": 56,
+    "diff_info": {
+      "added_lines": 8,
+      "removed_lines": 3,
+      "total_diff_lines": 23
+    }
+  }
+}

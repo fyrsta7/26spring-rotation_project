@@ -1,0 +1,2515 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/1460c79097b19c9ff0413df4d8d651dd5c1a9983",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/1460c79097b19c9ff0413df4d8d651dd5c1a9983/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/1460c79097b19c9ff0413df4d8d651dd5c1a9983/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/1460c79097b19c9ff0413df4d8d651dd5c1a9983/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 582,
+          "old_api": "decode_transform_coeffs_ch",
+          "new_api": "calc_transform_coeffs_cpl",
+          "old_text": "decode_transform_coeffs_ch(s, blk, CPL_CH, &m)",
+          "new_text": "calc_transform_coeffs_cpl(s)",
+          "old_line_content": "                decode_transform_coeffs_ch(s, blk, CPL_CH, &m);",
+          "new_line_content": "                calc_transform_coeffs_cpl(s);",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "ff_imdct_half",
+          "new_api": "vector_fmul_window",
+          "old_text": "ff_imdct_half(&s->imdct_256, s->tmp_output, x)",
+          "new_text": "s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128)",
+          "old_line_content": "            ff_imdct_half(&s->imdct_256, s->tmp_output, x);",
+          "new_line_content": "            s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128);",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "ff_imdct_half",
+          "new_api": "vector_fmul_window",
+          "old_text": "ff_imdct_half(&s->imdct_512, s->tmp_output, s->transform_coeffs[ch])",
+          "new_text": "s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128)",
+          "old_line_content": "            ff_imdct_half(&s->imdct_512, s->tmp_output, s->transform_coeffs[ch]);",
+          "new_line_content": "            s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128);",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "vector_fmul_window",
+          "new_api": "memcpy",
+          "old_text": "s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128)",
+          "new_text": "memcpy(s->delay[ch-1], s->tmp_output+128, 128*sizeof(float))",
+          "old_line_content": "            s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128);",
+          "new_line_content": "            memcpy(s->delay[ch-1], s->tmp_output+128, 128*sizeof(float));",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": "memcpy",
+          "new_api": "memset",
+          "old_text": "memcpy(s->delay[2], s->delay[1], channel_data_size)",
+          "new_text": "memset(s->delay[1], 0, channel_data_size)",
+          "old_line_content": "            memcpy(s->delay[2], s->delay[1], channel_data_size);",
+          "new_line_content": "            memset(s->delay[1], 0, channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": "get_bits1",
+          "new_api": "get_bits",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "get_bits(gbc, 8)",
+          "old_line_content": "        if(get_bits1(gbc)) {",
+          "new_line_content": "            s->dynamic_range[i] = ((dynamic_range_tab[get_bits(gbc, 8)]-1.0) *",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "get_bits1",
+          "new_api": "av_log_missing_feature",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "av_log_missing_feature(s->avctx, \"Spectral extension\", 1)",
+          "old_line_content": "        if (get_bits1(gbc)) {",
+          "new_line_content": "            av_log_missing_feature(s->avctx, \"Spectral extension\", 1);",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": "get_bits1",
+          "new_api": "memset",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS)",
+          "old_line_content": "    if (s->eac3 ? s->cpl_strategy_exists[blk] : get_bits1(gbc)) {",
+          "new_line_content": "        memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS);",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": "get_bits",
+          "new_api": "decode_exponents",
+          "old_text": "get_bits(gbc, 4)",
+          "new_text": "decode_exponents(gbc, s->exp_strategy[blk][ch],\n                                 s->num_exp_groups[ch], s->dexps[ch][0],\n                                 &s->dexps[ch][s->start_freq[ch]+!!ch])",
+          "old_line_content": "            s->dexps[ch][0] = get_bits(gbc, 4) << !ch;",
+          "new_line_content": "            if (decode_exponents(gbc, s->exp_strategy[blk][ch],",
+          "content_same": false
+        },
+        {
+          "line": 1000,
+          "old_api": "get_bits1",
+          "new_api": "get_bits",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "get_bits(gbc, 2)",
+          "old_line_content": "        if (get_bits1(gbc)) {",
+          "new_line_content": "            s->bit_alloc_params.slow_decay = ff_ac3_slow_decay_tab[get_bits(gbc, 2)] >> s->bit_alloc_params.sr_shift;",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": "get_bits1",
+          "new_api": "skip_bits",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "skip_bits(gbc, 10)",
+          "old_line_content": "    if (s->frame_type == EAC3_FRAME_TYPE_INDEPENDENT && get_bits1(gbc)) {",
+          "new_line_content": "        skip_bits(gbc, 10); // skip converter snr offset",
+          "content_same": false
+        },
+        {
+          "line": 1066,
+          "old_api": "get_bits1",
+          "new_api": "get_bits",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "get_bits(gbc, 3)",
+          "old_line_content": "        if (s->first_cpl_leak || get_bits1(gbc)) {",
+          "new_line_content": "            int fl = get_bits(gbc, 3);",
+          "content_same": false
+        },
+        {
+          "line": 1148,
+          "old_api": "get_bits1",
+          "new_api": "get_bits",
+          "old_text": "get_bits1(gbc)",
+          "new_text": "get_bits(gbc, 9)",
+          "old_line_content": "    if (s->skip_syntax && get_bits1(gbc)) {",
+          "new_line_content": "        int skipl = get_bits(gbc, 9);",
+          "content_same": false
+        },
+        {
+          "line": 1230,
+          "old_api": "FFMIN",
+          "new_api": "init_get_bits",
+          "old_text": "FFMIN(buf_size, AC3_FRAME_BUFFER_SIZE)",
+          "new_text": "init_get_bits(&s->gbc, s->input_buffer, buf_size * 8)",
+          "old_line_content": "        memcpy(s->input_buffer, buf, FFMIN(buf_size, AC3_FRAME_BUFFER_SIZE));",
+          "new_line_content": "        init_get_bits(&s->gbc, s->input_buffer, buf_size * 8);",
+          "content_same": false
+        },
+        {
+          "line": 1248,
+          "old_api": "av_crc_get_table",
+          "new_api": "av_log",
+          "old_text": "av_crc_get_table(AV_CRC_16_ANSI)",
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"frame CRC mismatch\\n\")",
+          "old_line_content": "        if(av_crc(av_crc_get_table(AV_CRC_16_ANSI), 0, &buf[2], s->frame_size-2)) {",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"frame CRC mismatch\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1319,
+          "old_api": "decode_audio_block",
+          "new_api": "av_log",
+          "old_text": "decode_audio_block(s, blk)",
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"error decoding the audio block\\n\")",
+          "old_line_content": "        if (!err && decode_audio_block(s, blk)) {",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"error decoding the audio block\\n\");",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1025,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 1)",
+          "old_line_content": "                if(blk && s->snr_offset[ch] != snr) {",
+          "new_line_content": "                    bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 1);",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 4)",
+          "old_line_content": "            case 5:",
+          "new_line_content": "                mantissa = b5_mantissas[get_bits(gbc, 4)];",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, quantization_tab[bap])",
+          "old_line_content": "            default: /* 6 to 15 */",
+          "new_line_content": "                mantissa = get_bits(gbc, quantization_tab[bap]);",
+          "content_same": false
+        },
+        {
+          "line": 1032,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 3)",
+          "old_line_content": "                    int prev = s->fast_gain[ch];",
+          "new_line_content": "                    s->fast_gain[ch] = ff_ac3_fast_gain_tab[get_bits(gbc, 3)];",
+          "content_same": false
+        },
+        {
+          "line": 1035,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "old_line_content": "                    if(blk && prev != s->fast_gain[ch])",
+          "new_line_content": "                        bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"new snr offsets must be present in block 0\\n\")",
+          "old_line_content": "        } else if (!s->eac3 && !blk) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new snr offsets must be present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1045,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* fast gain (E-AC-3 only) */",
+          "new_line_content": "    if (s->fast_gain_syntax && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 1048,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 3)",
+          "old_line_content": "            int prev = s->fast_gain[ch];",
+          "new_line_content": "            s->fast_gain[ch] = ff_ac3_fast_gain_tab[get_bits(gbc, 3)];",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "old_line_content": "            if(blk && prev != s->fast_gain[ch])",
+          "new_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "content_same": false
+        },
+        {
+          "line": 1059,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* E-AC-3 to AC-3 converter SNR offset */",
+          "new_line_content": "    if (s->frame_type == EAC3_FRAME_TYPE_INDEPENDENT && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": null,
+          "new_api": "ac3_decode_transform_coeffs_ch",
+          "old_text": null,
+          "new_text": "ac3_decode_transform_coeffs_ch(s, ch, m)",
+          "old_line_content": "    if (!s->channel_uses_aht[ch]) {",
+          "new_line_content": "        ac3_decode_transform_coeffs_ch(s, ch, m);",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    if (cpl_in_use) {",
+          "new_line_content": "        if (s->first_cpl_leak || get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": null,
+          "new_api": "ff_eac3_decode_transform_coeffs_aht_ch",
+          "old_text": null,
+          "new_text": "ff_eac3_decode_transform_coeffs_aht_ch(s, ch)",
+          "old_line_content": "        if (!blk && CONFIG_EAC3_DECODER)",
+          "new_line_content": "            ff_eac3_decode_transform_coeffs_aht_ch(s, ch);",
+          "content_same": false
+        },
+        {
+          "line": 1072,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[CPL_CH], 2)",
+          "old_line_content": "                       sl != s->bit_alloc_params.cpl_slow_leak)) {",
+          "new_line_content": "                bit_alloc_stages[CPL_CH] = FFMAX(bit_alloc_stages[CPL_CH], 2);",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling leak info must be present in block 0\\n\")",
+          "old_line_content": "        } else if (!s->eac3 && !blk) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new coupling leak info must be present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1084,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* delta bit allocation information */",
+          "new_line_content": "    if (s->dba_syntax && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 1087,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 2)",
+          "old_line_content": "        for (ch = !cpl_in_use; ch <= fbw_channels; ch++) {",
+          "new_line_content": "            s->dba_mode[ch] = get_bits(gbc, 2);",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": null,
+          "new_api": "decode_transform_coeffs_ch",
+          "old_text": null,
+          "new_text": "decode_transform_coeffs_ch(s, blk, ch, &m)",
+          "old_line_content": "        /* transform coefficients for full-bandwidth channel */",
+          "new_line_content": "        decode_transform_coeffs_ch(s, blk, ch, &m);",
+          "content_same": false
+        },
+        {
+          "line": 1089,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"delta bit allocation strategy reserved\\n\")",
+          "old_line_content": "            if (s->dba_mode[ch] == DBA_RESERVED) {",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"delta bit allocation strategy reserved\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "old_line_content": "            }",
+          "new_line_content": "            bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "decode_transform_coeffs_ch",
+          "old_text": null,
+          "new_text": "decode_transform_coeffs_ch(s, blk, CPL_CH, &m)",
+          "old_line_content": "            if (!got_cplchan) {",
+          "new_line_content": "                decode_transform_coeffs_ch(s, blk, CPL_CH, &m);",
+          "content_same": false
+        },
+        {
+          "line": 1097,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 3)",
+          "old_line_content": "            if (s->dba_mode[ch] == DBA_NEW) {",
+          "new_line_content": "                s->dba_nsegs[ch] = get_bits(gbc, 3);",
+          "content_same": false
+        },
+        {
+          "line": 1099,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 5)",
+          "old_line_content": "                for (seg = 0; seg <= s->dba_nsegs[ch]; seg++) {",
+          "new_line_content": "                    s->dba_offsets[ch][seg] = get_bits(gbc, 5);",
+          "content_same": false
+        },
+        {
+          "line": 1104,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "old_line_content": "                /* run last 2 bit allocation stages if new dba values */",
+          "new_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": null,
+          "new_api": "remove_dithering",
+          "old_text": null,
+          "new_text": "remove_dithering(s)",
+          "old_line_content": "    /* zero the dithered coefficients for appropriate channels */",
+          "new_line_content": "    remove_dithering(s);",
+          "content_same": false
+        },
+        {
+          "line": 1117,
+          "old_api": null,
+          "new_api": "ff_ac3_bit_alloc_calc_psd",
+          "old_text": null,
+          "new_text": "ff_ac3_bit_alloc_calc_psd(s->dexps[ch],\n                                      s->start_freq[ch], s->end_freq[ch],\n                                      s->psd[ch], s->band_psd[ch])",
+          "old_line_content": "            /* Exponent mapping into PSD and PSD integration */",
+          "new_line_content": "            ff_ac3_bit_alloc_calc_psd(s->dexps[ch],",
+          "content_same": false
+        },
+        {
+          "line": 607,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(s->end_freq[1], s->end_freq[2])",
+          "old_line_content": "",
+          "new_line_content": "    end = FFMIN(s->end_freq[1], s->end_freq[2]);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(end, ff_ac3_rematrix_band_tab[bnd+1])",
+          "old_line_content": "        if(s->rematrixing_flags[bnd]) {",
+          "new_line_content": "            bndend = FFMIN(end, ff_ac3_rematrix_band_tab[bnd+1]);",
+          "content_same": false
+        },
+        {
+          "line": 1124,
+          "old_api": null,
+          "new_api": "ff_ac3_bit_alloc_calc_mask",
+          "old_text": null,
+          "new_text": "ff_ac3_bit_alloc_calc_mask(&s->bit_alloc_params, s->band_psd[ch],\n                                           s->start_freq[ch], s->end_freq[ch],\n                                           s->fast_gain[ch], (ch == s->lfe_ch),\n                                           s->dba_mode[ch], s->dba_nsegs[ch],\n                                           s->dba_offsets[ch], s->dba_lengths[ch],\n                                           s->dba_values[ch], s->mask[ch])",
+          "old_line_content": "               Apply delta bit allocation */",
+          "new_line_content": "            if (ff_ac3_bit_alloc_calc_mask(&s->bit_alloc_params, s->band_psd[ch],",
+          "content_same": false
+        },
+        {
+          "line": 1130,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"error in bit allocation\\n\")",
+          "old_line_content": "                                           s->dba_values[ch], s->mask[ch])) {",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"error in bit allocation\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1138,
+          "old_api": null,
+          "new_api": "ff_ac3_bit_alloc_calc_bap",
+          "old_text": null,
+          "new_text": "ff_ac3_bit_alloc_calc_bap(s->mask[ch], s->psd[ch],\n                                      s->start_freq[ch], s->end_freq[ch],\n                                      s->snr_offset[ch],\n                                      s->bit_alloc_params.floor,\n                                      bap_tab, s->bap[ch])",
+          "old_line_content": "                                     ff_eac3_hebap_tab : ff_ac3_bap_tab;",
+          "new_line_content": "            ff_ac3_bit_alloc_calc_bap(s->mask[ch], s->psd[ch],",
+          "content_same": false
+        },
+        {
+          "line": 1147,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* unused dummy data */",
+          "new_line_content": "    if (s->skip_syntax && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": null,
+          "new_api": "skip_bits",
+          "old_text": null,
+          "new_text": "skip_bits(gbc, 8)",
+          "old_line_content": "        while(skipl--)",
+          "new_line_content": "            skip_bits(gbc, 8);",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": null,
+          "new_api": "ff_imdct_half",
+          "old_text": null,
+          "new_text": "ff_imdct_half(&s->imdct_256, s->tmp_output, x)",
+          "old_line_content": "                x[i] = s->transform_coeffs[ch][2*i];",
+          "new_line_content": "            ff_imdct_half(&s->imdct_256, s->tmp_output, x);",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": null,
+          "new_api": "ff_imdct_half",
+          "old_text": null,
+          "new_text": "ff_imdct_half(&s->imdct_256, s->delay[ch-1], x)",
+          "old_line_content": "                x[i] = s->transform_coeffs[ch][2*i+1];",
+          "new_line_content": "            ff_imdct_half(&s->imdct_256, s->delay[ch-1], x);",
+          "content_same": false
+        },
+        {
+          "line": 1155,
+          "old_api": null,
+          "new_api": "decode_transform_coeffs",
+          "old_text": null,
+          "new_text": "decode_transform_coeffs(s, blk)",
+          "old_line_content": "       this also uncouples channels if coupling is in use. */",
+          "new_line_content": "    decode_transform_coeffs(s, blk);",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": null,
+          "new_api": "ff_imdct_half",
+          "old_text": null,
+          "new_text": "ff_imdct_half(&s->imdct_512, s->tmp_output, s->transform_coeffs[ch])",
+          "old_line_content": "        } else {",
+          "new_line_content": "            ff_imdct_half(&s->imdct_512, s->tmp_output, s->transform_coeffs[ch]);",
+          "content_same": false
+        },
+        {
+          "line": 1163,
+          "old_api": null,
+          "new_api": "do_rematrixing",
+          "old_text": null,
+          "new_text": "do_rematrixing(s)",
+          "old_line_content": "    if(s->channel_mode == AC3_CHMODE_STEREO)",
+          "new_line_content": "        do_rematrixing(s);",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": null,
+          "new_api": "int32_to_float_fmul_scalar",
+          "old_text": null,
+          "new_text": "s->dsp.int32_to_float_fmul_scalar(s->transform_coeffs[ch], s->fixed_coeffs[ch], gain, 256)",
+          "old_line_content": "        }",
+          "new_line_content": "        s->dsp.int32_to_float_fmul_scalar(s->transform_coeffs[ch], s->fixed_coeffs[ch], gain, 256);",
+          "content_same": false
+        },
+        {
+          "line": 1187,
+          "old_api": null,
+          "new_api": "ac3_upmix_delay",
+          "old_text": null,
+          "new_text": "ac3_upmix_delay(s)",
+          "old_line_content": "            s->downmixed = 0;",
+          "new_line_content": "            ac3_upmix_delay(s);",
+          "content_same": false
+        },
+        {
+          "line": 1190,
+          "old_api": null,
+          "new_api": "do_imdct",
+          "old_text": null,
+          "new_text": "do_imdct(s, s->channels)",
+          "old_line_content": "",
+          "new_line_content": "        do_imdct(s, s->channels);",
+          "content_same": false
+        },
+        {
+          "line": 1193,
+          "old_api": null,
+          "new_api": "ac3_downmix",
+          "old_text": null,
+          "new_text": "s->dsp.ac3_downmix(s->output, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256)",
+          "old_line_content": "        if(downmix_output) {",
+          "new_line_content": "            s->dsp.ac3_downmix(s->output, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256);",
+          "content_same": false
+        },
+        {
+          "line": 1197,
+          "old_api": null,
+          "new_api": "ac3_downmix",
+          "old_text": null,
+          "new_text": "s->dsp.ac3_downmix(s->transform_coeffs+1, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256)",
+          "old_line_content": "        if(downmix_output) {",
+          "new_line_content": "            s->dsp.ac3_downmix(s->transform_coeffs+1, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256);",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(s->delay[1], s->delay[0], channel_data_size)",
+          "old_line_content": "            /* upmix mono to stereo */",
+          "new_line_content": "            memcpy(s->delay[1], s->delay[0], channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 1202,
+          "old_api": null,
+          "new_api": "ac3_downmix",
+          "old_text": null,
+          "new_text": "s->dsp.ac3_downmix(s->delay, s->downmix_coeffs, s->out_channels, s->fbw_channels, 128)",
+          "old_line_content": "            s->downmixed = 1;",
+          "new_line_content": "            s->dsp.ac3_downmix(s->delay, s->downmix_coeffs, s->out_channels, s->fbw_channels, 128);",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->delay[3], 0, channel_data_size)",
+          "old_line_content": "        case AC3_CHMODE_2F2R:",
+          "new_line_content": "            memset(s->delay[3], 0, channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 1205,
+          "old_api": null,
+          "new_api": "do_imdct",
+          "old_text": null,
+          "new_text": "do_imdct(s, s->out_channels)",
+          "old_line_content": "",
+          "new_line_content": "        do_imdct(s, s->out_channels);",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->delay[2], 0, channel_data_size)",
+          "old_line_content": "        case AC3_CHMODE_2F1R:",
+          "new_line_content": "            memset(s->delay[2], 0, channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->delay[4], 0, channel_data_size)",
+          "old_line_content": "        case AC3_CHMODE_3F2R:",
+          "new_line_content": "            memset(s->delay[4], 0, channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->delay[3], 0, channel_data_size)",
+          "old_line_content": "        case AC3_CHMODE_3F1R:",
+          "new_line_content": "            memset(s->delay[3], 0, channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(s->delay[2], s->delay[1], channel_data_size)",
+          "old_line_content": "        case AC3_CHMODE_3F:",
+          "new_line_content": "            memcpy(s->delay[2], s->delay[1], channel_data_size);",
+          "content_same": false
+        },
+        {
+          "line": 1229,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(buf_size, AC3_FRAME_BUFFER_SIZE)",
+          "old_line_content": "           of the buffer, which can be caused by a damaged input stream. */",
+          "new_line_content": "        memcpy(s->input_buffer, buf, FFMIN(buf_size, AC3_FRAME_BUFFER_SIZE));",
+          "content_same": false
+        },
+        {
+          "line": 1232,
+          "old_api": null,
+          "new_api": "init_get_bits",
+          "old_text": null,
+          "new_text": "init_get_bits(&s->gbc, buf, buf_size * 8)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        init_get_bits(&s->gbc, buf, buf_size * 8);",
+          "content_same": false
+        },
+        {
+          "line": 1237,
+          "old_api": null,
+          "new_api": "parse_frame_header",
+          "old_text": null,
+          "new_text": "parse_frame_header(s)",
+          "old_line_content": "    *data_size = 0;",
+          "new_line_content": "    err = parse_frame_header(s);",
+          "content_same": false
+        },
+        {
+          "line": 1241,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"incomplete frame\\n\")",
+          "old_line_content": "    if(s->frame_size > buf_size) {",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"incomplete frame\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1247,
+          "old_api": null,
+          "new_api": "av_crc_get_table",
+          "old_text": null,
+          "new_text": "av_crc_get_table(AV_CRC_16_ANSI)",
+          "old_line_content": "    if(err != AAC_AC3_PARSE_ERROR_FRAME_SIZE && avctx->error_recognition >= FF_ER_CAREFUL) {",
+          "new_line_content": "        if(av_crc(av_crc_get_table(AV_CRC_16_ANSI), 0, &buf[2], s->frame_size-2)) {",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* decode band structure from bitstream or use default */",
+          "new_line_content": "    if (!eac3 || get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "        for (subbnd = 0; subbnd < n_subbands - 1; subbnd++) {",
+          "new_line_content": "            coded_band_struct[subbnd] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 1256,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"frame sync error\\n\")",
+          "old_line_content": "            case AAC_AC3_PARSE_ERROR_SYNC:",
+          "new_line_content": "                av_log(avctx, AV_LOG_ERROR, \"frame sync error\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1259,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"invalid bitstream id\\n\")",
+          "old_line_content": "            case AAC_AC3_PARSE_ERROR_BSID:",
+          "new_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid bitstream id\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1262,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"invalid sample rate\\n\")",
+          "old_line_content": "            case AAC_AC3_PARSE_ERROR_SAMPLE_RATE:",
+          "new_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid sample rate\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1265,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"invalid frame size\\n\")",
+          "old_line_content": "            case AAC_AC3_PARSE_ERROR_FRAME_SIZE:",
+          "new_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid frame size\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1271,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"unsupported frame type : skipping frame\\n\")",
+          "old_line_content": "                if(s->frame_type == EAC3_FRAME_TYPE_DEPENDENT || s->substreamid) {",
+          "new_line_content": "                    av_log(avctx, AV_LOG_ERROR, \"unsupported frame type : skipping frame\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1274,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"invalid frame type\\n\")",
+          "old_line_content": "                } else {",
+          "new_line_content": "                    av_log(avctx, AV_LOG_ERROR, \"invalid frame type\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1278,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"invalid header\\n\")",
+          "old_line_content": "            default:",
+          "new_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid header\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(band_sizes, bnd_sz, n_bands)",
+          "old_line_content": "    if (band_sizes)",
+          "new_line_content": "        memcpy(band_sizes, bnd_sz, n_bands);",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(bit_alloc_stages, 0, AC3_MAX_CHANNELS)",
+          "old_line_content": "",
+          "new_line_content": "    memset(bit_alloc_stages, 0, AC3_MAX_CHANNELS);",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "        for (ch = 1; ch <= fbw_channels; ch++) {",
+          "new_line_content": "            s->block_switch[ch] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 1305,
+          "old_api": null,
+          "new_api": "set_downmix_coeffs",
+          "old_text": null,
+          "new_text": "set_downmix_coeffs(s)",
+          "old_line_content": "                s->fbw_channels == s->out_channels)) {",
+          "new_line_content": "            set_downmix_coeffs(s);",
+          "content_same": false
+        },
+        {
+          "line": 801,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "        for (ch = 1; ch <= fbw_channels; ch++) {",
+          "new_line_content": "            s->dither_flag[ch] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 1318,
+          "old_api": null,
+          "new_api": "decode_audio_block",
+          "old_text": null,
+          "new_text": "decode_audio_block(s, blk)",
+          "old_line_content": "    for (blk = 0; blk < s->num_blocks; blk++) {",
+          "new_line_content": "        if (!err && decode_audio_block(s, blk)) {",
+          "content_same": false
+        },
+        {
+          "line": 808,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    do {",
+          "new_line_content": "        if(get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 1322,
+          "old_api": null,
+          "new_api": "float_to_int16_interleave",
+          "old_text": null,
+          "new_text": "s->dsp.float_to_int16_interleave(out_samples, output, 256, s->out_channels)",
+          "old_line_content": "        }",
+          "new_line_content": "        s->dsp.float_to_int16_interleave(out_samples, output, 256, s->out_channels);",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* spectral extension strategy */",
+          "new_line_content": "    if (s->eac3 && (!blk || get_bits1(gbc))) {",
+          "content_same": false
+        },
+        {
+          "line": 1335,
+          "old_api": null,
+          "new_api": "ff_mdct_end",
+          "old_text": null,
+          "new_text": "ff_mdct_end(&s->imdct_512)",
+          "old_line_content": "    AC3DecodeContext *s = avctx->priv_data;",
+          "new_line_content": "    ff_mdct_end(&s->imdct_512);",
+          "content_same": false
+        },
+        {
+          "line": 1338,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&s->input_buffer)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&s->input_buffer);",
+          "content_same": false
+        },
+        {
+          "line": 828,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    /* coupling strategy */",
+          "new_line_content": "    if (s->eac3 ? s->cpl_strategy_exists[blk] : get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "        if (!s->eac3)",
+          "new_line_content": "            s->cpl_in_use[blk] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 837,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"coupling not allowed in mono or dual-mono\\n\")",
+          "old_line_content": "            if (channel_mode < AC3_CHMODE_STEREO) {",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"coupling not allowed in mono or dual-mono\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1351,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"ATSC A/52A (AC-3)\")",
+          "old_line_content": "    .decode = ac3_decode_frame,",
+          "new_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"ATSC A/52A (AC-3)\"),",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "            /* check for enhanced coupling */",
+          "new_line_content": "            if (s->eac3 && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": null,
+          "new_api": "av_log_missing_feature",
+          "old_text": null,
+          "new_text": "av_log_missing_feature(s->avctx, \"Enhanced coupling\", 1)",
+          "old_line_content": "                /* TODO: parse enhanced coupling strategy info */",
+          "new_line_content": "                av_log_missing_feature(s->avctx, \"Enhanced coupling\", 1);",
+          "content_same": false
+        },
+        {
+          "line": 1363,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"ATSC A/52B (AC-3, E-AC-3)\")",
+          "old_line_content": "    .decode = ac3_decode_frame,",
+          "new_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"ATSC A/52B (AC-3, E-AC-3)\"),",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "                for (ch = 1; ch <= fbw_channels; ch++)",
+          "new_line_content": "                    s->channel_in_cpl[ch] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "            if (channel_mode == AC3_CHMODE_STEREO)",
+          "new_line_content": "                s->phase_flags_in_use = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 4)",
+          "old_line_content": "            /* TODO: modify coupling end freq if spectral extension is used */",
+          "new_line_content": "            cpl_start_subband = get_bits(gbc, 4);",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coupling range (%d >= %d)\\n\",\n                       cpl_start_subband, cpl_end_subband)",
+          "old_line_content": "            if (cpl_start_subband >= cpl_end_subband) {",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"invalid coupling range (%d >= %d)\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": null,
+          "new_api": "decode_band_structure",
+          "old_text": null,
+          "new_text": "decode_band_structure(gbc, blk, s->eac3, 0, cpl_start_subband,\n                                  cpl_end_subband,\n                                  ff_eac3_default_cpl_band_struct,\n                                  &s->num_cpl_bands, s->cpl_band_sizes)",
+          "old_line_content": "",
+          "new_line_content": "            decode_band_structure(gbc, blk, s->eac3, 0, cpl_start_subband,",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling strategy must be present in block 0\\n\")",
+          "old_line_content": "        if(!blk) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new coupling strategy must be present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 902,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "            if (s->channel_in_cpl[ch]) {",
+          "new_line_content": "                if ((s->eac3 && s->first_cpl_coords[ch]) || get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 2)",
+          "old_line_content": "                    cpl_coords_exist = 1;",
+          "new_line_content": "                    master_cpl_coord = 3 * get_bits(gbc, 2);",
+          "content_same": false
+        },
+        {
+          "line": 908,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 4)",
+          "old_line_content": "                    for (bnd = 0; bnd < s->num_cpl_bands; bnd++) {",
+          "new_line_content": "                        cpl_coord_exp = get_bits(gbc, 4);",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling coordinates must be present in block 0\\n\")",
+          "old_line_content": "                } else if (!blk) {",
+          "new_line_content": "                    av_log(s->avctx, AV_LOG_ERROR, \"new coupling coordinates must be present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 928,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "            for (bnd = 0; bnd < s->num_cpl_bands; bnd++) {",
+          "new_line_content": "                s->phase_flags[bnd] = s->phase_flags_in_use? get_bits1(gbc) : 0;",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    if (channel_mode == AC3_CHMODE_STEREO) {",
+          "new_line_content": "        if ((s->eac3 && !blk) || get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": null,
+          "new_api": "MULH",
+          "old_text": null,
+          "new_text": "MULH(s->fixed_coeffs[CPL_CH][bin] << 4, cpl_coord)",
+          "old_line_content": "                    s->fixed_coeffs[ch][bin] = ((int64_t)s->fixed_coeffs[CPL_CH][bin] *",
+          "new_line_content": "                    s->fixed_coeffs[ch][bin] = MULH(s->fixed_coeffs[CPL_CH][bin] << 4, cpl_coord);",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "            for(bnd=0; bnd<s->num_rematrixing_bands; bnd++)",
+          "new_line_content": "                s->rematrixing_flags[bnd] = get_bits1(gbc);",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_WARNING, \"Warning: new rematrixing strategy not present in block 0\\n\")",
+          "old_line_content": "        } else if (!blk) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_WARNING, \"Warning: new rematrixing strategy not present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 2 - (ch == s->lfe_ch))",
+          "old_line_content": "        if (!s->eac3)",
+          "new_line_content": "            s->exp_strategy[blk][ch] = get_bits(gbc, 2 - (ch == s->lfe_ch));",
+          "content_same": false
+        },
+        {
+          "line": 964,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 6)",
+          "old_line_content": "            else {",
+          "new_line_content": "                int bandwidth_code = get_bits(gbc, 6);",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"bandwidth code = %d > 60\\n\", bandwidth_code)",
+          "old_line_content": "                if (bandwidth_code > 60) {",
+          "new_line_content": "                    av_log(s->avctx, AV_LOG_ERROR, \"bandwidth code = %d > 60\\n\", bandwidth_code);",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS)",
+          "old_line_content": "            if(blk > 0 && s->end_freq[ch] != prev)",
+          "new_line_content": "                memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS);",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": null,
+          "new_api": "av_lfg_get",
+          "old_text": null,
+          "new_text": "av_lfg_get(&s->dith_state)",
+          "old_line_content": "                if (dither)",
+          "new_line_content": "                    mantissa = (av_lfg_get(&s->dith_state) & 0x7FFFFF) - 0x400000;",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 4)",
+          "old_line_content": "        if (s->exp_strategy[blk][ch] != EXP_REUSE) {",
+          "new_line_content": "            s->dexps[ch][0] = get_bits(gbc, 4) << !ch;",
+          "content_same": false
+        },
+        {
+          "line": 989,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"exponent out-of-range\\n\")",
+          "old_line_content": "                                 &s->dexps[ch][s->start_freq[ch]+!!ch])) {",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"exponent out-of-range\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 5)",
+          "old_line_content": "                else{",
+          "new_line_content": "                    int bits      = get_bits(gbc, 5);",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": null,
+          "new_api": "skip_bits",
+          "old_text": null,
+          "new_text": "skip_bits(gbc, 2)",
+          "old_line_content": "            if(ch != CPL_CH && ch != s->lfe_ch)",
+          "new_line_content": "                skip_bits(gbc, 2); /* skip gainrng */",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    if (s->bit_allocation_syntax) {",
+          "new_line_content": "        if (get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 7)",
+          "old_line_content": "                else{",
+          "new_line_content": "                    int bits      = get_bits(gbc, 7);",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "old_line_content": "            for(ch=!cpl_in_use; ch<=s->channels; ch++)",
+          "new_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "content_same": false
+        },
+        {
+          "line": 1008,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"new bit allocation info must be present in block 0\\n\")",
+          "old_line_content": "        } else if (!blk) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new bit allocation info must be present in block 0\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 3)",
+          "old_line_content": "            case 3:",
+          "new_line_content": "                mantissa = b3_mantissas[get_bits(gbc, 3)];",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gbc)",
+          "old_line_content": "    if(!s->eac3 || !blk){",
+          "new_line_content": "        if(s->snr_offset_strategy && get_bits1(gbc)) {",
+          "content_same": false
+        },
+        {
+          "line": 1018,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 6)",
+          "old_line_content": "            int csnr;",
+          "new_line_content": "            csnr = (get_bits(gbc, 6) - 15) << 4;",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 7)",
+          "old_line_content": "                else{",
+          "new_line_content": "                    int bits   = get_bits(gbc, 7);",
+          "content_same": false
+        },
+        {
+          "line": 1022,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gbc, 4)",
+          "old_line_content": "                if (ch == i || s->snr_offset_strategy == 2)",
+          "new_line_content": "                    snr = (csnr + get_bits(gbc, 4)) << 2;",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1026,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 1)",
+          "new_text": null,
+          "old_line_content": "                    bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 1);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 4)",
+          "new_text": null,
+          "old_line_content": "                mantissa = b5_mantissas[get_bits(gbc, 4)];",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, quantization_tab[bap])",
+          "new_text": null,
+          "old_line_content": "                mantissa = get_bits(gbc, quantization_tab[bap]);",
+          "new_line_content": "                /* Shift mantissa and sign-extend it. */",
+          "content_same": false
+        },
+        {
+          "line": 1033,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "                    s->fast_gain[ch] = ff_ac3_fast_gain_tab[get_bits(gbc, 3)];",
+          "new_line_content": "                    /* run last 2 bit allocation stages if fast gain changes */",
+          "content_same": false
+        },
+        {
+          "line": 1036,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "new_text": null,
+          "old_line_content": "                        bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 1040,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"new snr offsets must be present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new snr offsets must be present in block 0\\n\");",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1046,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "    if (s->fast_gain_syntax && get_bits1(gbc)) {",
+          "new_line_content": "        for (ch = !cpl_in_use; ch <= s->channels; ch++) {",
+          "content_same": false
+        },
+        {
+          "line": 1049,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "            s->fast_gain[ch] = ff_ac3_fast_gain_tab[get_bits(gbc, 3)];",
+          "new_line_content": "            /* run last 2 bit allocation stages if fast gain changes */",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "new_text": null,
+          "old_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": "skip_bits",
+          "new_api": null,
+          "old_text": "skip_bits(gbc, 10)",
+          "new_text": null,
+          "old_line_content": "        skip_bits(gbc, 10); // skip converter snr offset",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "ac3_decode_transform_coeffs_ch",
+          "new_api": null,
+          "old_text": "ac3_decode_transform_coeffs_ch(s, ch, m)",
+          "new_text": null,
+          "old_line_content": "        ac3_decode_transform_coeffs_ch(s, ch, m);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 1068,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "            int sl = get_bits(gbc, 3);",
+          "new_line_content": "            /* run last 2 bit allocation stages for coupling channel if",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "ff_eac3_decode_transform_coeffs_aht_ch",
+          "new_api": null,
+          "old_text": "ff_eac3_decode_transform_coeffs_aht_ch(s, ch)",
+          "new_text": null,
+          "old_line_content": "            ff_eac3_decode_transform_coeffs_aht_ch(s, ch);",
+          "new_line_content": "        for (bin = s->start_freq[ch]; bin < s->end_freq[ch]; bin++) {",
+          "content_same": false
+        },
+        {
+          "line": 1073,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[CPL_CH], 2)",
+          "new_text": null,
+          "old_line_content": "                bit_alloc_stages[CPL_CH] = FFMAX(bit_alloc_stages[CPL_CH], 2);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling leak info must be present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new coupling leak info must be present in block 0\\n\");",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1085,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "    if (s->dba_syntax && get_bits1(gbc)) {",
+          "new_line_content": "        /* delta bit allocation exists (strategy) */",
+          "content_same": false
+        },
+        {
+          "line": 1088,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 2)",
+          "new_text": null,
+          "old_line_content": "            s->dba_mode[ch] = get_bits(gbc, 2);",
+          "new_line_content": "            if (s->dba_mode[ch] == DBA_RESERVED) {",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": "decode_transform_coeffs_ch",
+          "new_api": null,
+          "old_text": "decode_transform_coeffs_ch(s, blk, ch, &m)",
+          "new_text": null,
+          "old_line_content": "        decode_transform_coeffs_ch(s, blk, ch, &m);",
+          "new_line_content": "        /* tranform coefficients for coupling channel come right after the",
+          "content_same": false
+        },
+        {
+          "line": 1090,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"delta bit allocation strategy reserved\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"delta bit allocation strategy reserved\\n\");",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1093,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "new_text": null,
+          "old_line_content": "            bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "calc_transform_coeffs_cpl",
+          "new_api": null,
+          "old_text": "calc_transform_coeffs_cpl(s)",
+          "new_text": null,
+          "old_line_content": "                calc_transform_coeffs_cpl(s);",
+          "new_line_content": "                got_cplchan = 1;",
+          "content_same": false
+        },
+        {
+          "line": 1098,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "                s->dba_nsegs[ch] = get_bits(gbc, 3);",
+          "new_line_content": "                for (seg = 0; seg <= s->dba_nsegs[ch]; seg++) {",
+          "content_same": false
+        },
+        {
+          "line": 1102,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "                    s->dba_values[ch][seg] = get_bits(gbc, 3);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "new_text": null,
+          "old_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": "remove_dithering",
+          "new_api": null,
+          "old_text": "remove_dithering(s)",
+          "new_text": null,
+          "old_line_content": "    remove_dithering(s);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": "ff_ac3_bit_alloc_calc_psd",
+          "new_api": null,
+          "old_text": "ff_ac3_bit_alloc_calc_psd(s->dexps[ch],\n                                      s->start_freq[ch], s->end_freq[ch],\n                                      s->psd[ch], s->band_psd[ch])",
+          "new_text": null,
+          "old_line_content": "            ff_ac3_bit_alloc_calc_psd(s->dexps[ch],",
+          "new_line_content": "                                      s->start_freq[ch], s->end_freq[ch],",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(s->end_freq[1], s->end_freq[2])",
+          "new_text": null,
+          "old_line_content": "    end = FFMIN(s->end_freq[1], s->end_freq[2]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(end, ff_ac3_rematrix_band_tab[bnd+1])",
+          "new_text": null,
+          "old_line_content": "            bndend = FFMIN(end, ff_ac3_rematrix_band_tab[bnd+1]);",
+          "new_line_content": "            for(i=ff_ac3_rematrix_band_tab[bnd]; i<bndend; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1125,
+          "old_api": "ff_ac3_bit_alloc_calc_mask",
+          "new_api": null,
+          "old_text": "ff_ac3_bit_alloc_calc_mask(&s->bit_alloc_params, s->band_psd[ch],\n                                           s->start_freq[ch], s->end_freq[ch],\n                                           s->fast_gain[ch], (ch == s->lfe_ch),\n                                           s->dba_mode[ch], s->dba_nsegs[ch],\n                                           s->dba_offsets[ch], s->dba_lengths[ch],\n                                           s->dba_values[ch], s->mask[ch])",
+          "new_text": null,
+          "old_line_content": "            if (ff_ac3_bit_alloc_calc_mask(&s->bit_alloc_params, s->band_psd[ch],",
+          "new_line_content": "                                           s->start_freq[ch], s->end_freq[ch],",
+          "content_same": false
+        },
+        {
+          "line": 1131,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"error in bit allocation\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"error in bit allocation\\n\");",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1139,
+          "old_api": "ff_ac3_bit_alloc_calc_bap",
+          "new_api": null,
+          "old_text": "ff_ac3_bit_alloc_calc_bap(s->mask[ch], s->psd[ch],\n                                      s->start_freq[ch], s->end_freq[ch],\n                                      s->snr_offset[ch],\n                                      s->bit_alloc_params.floor,\n                                      bap_tab, s->bap[ch])",
+          "new_text": null,
+          "old_line_content": "            ff_ac3_bit_alloc_calc_bap(s->mask[ch], s->psd[ch],",
+          "new_line_content": "                                      s->start_freq[ch], s->end_freq[ch],",
+          "content_same": false
+        },
+        {
+          "line": 1149,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 9)",
+          "new_text": null,
+          "old_line_content": "        int skipl = get_bits(gbc, 9);",
+          "new_line_content": "        while(skipl--)",
+          "content_same": false
+        },
+        {
+          "line": 1151,
+          "old_api": "skip_bits",
+          "new_api": null,
+          "old_text": "skip_bits(gbc, 8)",
+          "new_text": null,
+          "old_line_content": "            skip_bits(gbc, 8);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "vector_fmul_window",
+          "new_api": null,
+          "old_text": "s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128)",
+          "new_text": null,
+          "old_line_content": "            s->dsp.vector_fmul_window(s->output[ch-1], s->delay[ch-1], s->tmp_output, s->window, add_bias, 128);",
+          "new_line_content": "            for(i=0; i<128; i++)",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "ff_imdct_half",
+          "new_api": null,
+          "old_text": "ff_imdct_half(&s->imdct_256, s->delay[ch-1], x)",
+          "new_text": null,
+          "old_line_content": "            ff_imdct_half(&s->imdct_256, s->delay[ch-1], x);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 1156,
+          "old_api": "decode_transform_coeffs",
+          "new_api": null,
+          "old_text": "decode_transform_coeffs(s, blk)",
+          "new_text": null,
+          "old_line_content": "    decode_transform_coeffs(s, blk);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(s->delay[ch-1], s->tmp_output+128, 128*sizeof(float))",
+          "new_text": null,
+          "old_line_content": "            memcpy(s->delay[ch-1], s->tmp_output+128, 128*sizeof(float));",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1164,
+          "old_api": "do_rematrixing",
+          "new_api": null,
+          "old_text": "do_rematrixing(s)",
+          "new_text": null,
+          "old_line_content": "        do_rematrixing(s);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1174,
+          "old_api": "int32_to_float_fmul_scalar",
+          "new_api": null,
+          "old_text": "s->dsp.int32_to_float_fmul_scalar(s->transform_coeffs[ch], s->fixed_coeffs[ch], gain, 256)",
+          "new_text": null,
+          "old_line_content": "        s->dsp.int32_to_float_fmul_scalar(s->transform_coeffs[ch], s->fixed_coeffs[ch], gain, 256);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1188,
+          "old_api": "ac3_upmix_delay",
+          "new_api": null,
+          "old_text": "ac3_upmix_delay(s)",
+          "new_text": null,
+          "old_line_content": "            ac3_upmix_delay(s);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1191,
+          "old_api": "do_imdct",
+          "new_api": null,
+          "old_text": "do_imdct(s, s->channels)",
+          "new_text": null,
+          "old_line_content": "        do_imdct(s, s->channels);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1194,
+          "old_api": "ac3_downmix",
+          "new_api": null,
+          "old_text": "s->dsp.ac3_downmix(s->output, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256)",
+          "new_text": null,
+          "old_line_content": "            s->dsp.ac3_downmix(s->output, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1198,
+          "old_api": "ac3_downmix",
+          "new_api": null,
+          "old_text": "s->dsp.ac3_downmix(s->transform_coeffs+1, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256)",
+          "new_text": null,
+          "old_line_content": "            s->dsp.ac3_downmix(s->transform_coeffs+1, s->downmix_coeffs, s->out_channels, s->fbw_channels, 256);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(s->delay[1], s->delay[0], channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memcpy(s->delay[1], s->delay[0], channel_data_size);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 1203,
+          "old_api": "ac3_downmix",
+          "new_api": null,
+          "old_text": "s->dsp.ac3_downmix(s->delay, s->downmix_coeffs, s->out_channels, s->fbw_channels, 128)",
+          "new_text": null,
+          "old_line_content": "            s->dsp.ac3_downmix(s->delay, s->downmix_coeffs, s->out_channels, s->fbw_channels, 128);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->delay[3], 0, channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memset(s->delay[3], 0, channel_data_size);",
+          "new_line_content": "        case AC3_CHMODE_2F1R:",
+          "content_same": false
+        },
+        {
+          "line": 1206,
+          "old_api": "do_imdct",
+          "new_api": null,
+          "old_text": "do_imdct(s, s->out_channels)",
+          "new_text": null,
+          "old_line_content": "        do_imdct(s, s->out_channels);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->delay[2], 0, channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memset(s->delay[2], 0, channel_data_size);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->delay[4], 0, channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memset(s->delay[4], 0, channel_data_size);",
+          "new_line_content": "        case AC3_CHMODE_3F1R:",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->delay[3], 0, channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memset(s->delay[3], 0, channel_data_size);",
+          "new_line_content": "        case AC3_CHMODE_3F:",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->delay[1], 0, channel_data_size)",
+          "new_text": null,
+          "old_line_content": "            memset(s->delay[1], 0, channel_data_size);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 1231,
+          "old_api": "init_get_bits",
+          "new_api": null,
+          "old_text": "init_get_bits(&s->gbc, s->input_buffer, buf_size * 8)",
+          "new_text": null,
+          "old_line_content": "        init_get_bits(&s->gbc, s->input_buffer, buf_size * 8);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 1233,
+          "old_api": "init_get_bits",
+          "new_api": null,
+          "old_text": "init_get_bits(&s->gbc, buf, buf_size * 8)",
+          "new_text": null,
+          "old_line_content": "        init_get_bits(&s->gbc, buf, buf_size * 8);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1238,
+          "old_api": "parse_frame_header",
+          "new_api": null,
+          "old_text": "parse_frame_header(s)",
+          "new_text": null,
+          "old_line_content": "    err = parse_frame_header(s);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1242,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"incomplete frame\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"incomplete frame\\n\");",
+          "new_line_content": "        err = AAC_AC3_PARSE_ERROR_FRAME_SIZE;",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "    if (!eac3 || get_bits1(gbc)) {",
+          "new_line_content": "        for (subbnd = 0; subbnd < n_subbands - 1; subbnd++) {",
+          "content_same": false
+        },
+        {
+          "line": 1249,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"frame CRC mismatch\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"frame CRC mismatch\\n\");",
+          "new_line_content": "            err = AAC_AC3_PARSE_ERROR_CRC;",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "            coded_band_struct[subbnd] = get_bits1(gbc);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1257,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"frame sync error\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(avctx, AV_LOG_ERROR, \"frame sync error\\n\");",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1260,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"invalid bitstream id\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid bitstream id\\n\");",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1263,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"invalid sample rate\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid sample rate\\n\");",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1266,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"invalid frame size\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid frame size\\n\");",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1272,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"unsupported frame type : skipping frame\\n\")",
+          "new_text": null,
+          "old_line_content": "                    av_log(avctx, AV_LOG_ERROR, \"unsupported frame type : skipping frame\\n\");",
+          "new_line_content": "                    return s->frame_size;",
+          "content_same": false
+        },
+        {
+          "line": 1275,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"invalid frame type\\n\")",
+          "new_text": null,
+          "old_line_content": "                    av_log(avctx, AV_LOG_ERROR, \"invalid frame type\\n\");",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 1279,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"invalid header\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(avctx, AV_LOG_ERROR, \"invalid header\\n\");",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 770,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(band_sizes, bnd_sz, n_bands)",
+          "new_text": null,
+          "old_line_content": "        memcpy(band_sizes, bnd_sz, n_bands);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 787,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(bit_alloc_stages, 0, AC3_MAX_CHANNELS)",
+          "new_text": null,
+          "old_line_content": "    memset(bit_alloc_stages, 0, AC3_MAX_CHANNELS);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "            s->block_switch[ch] = get_bits1(gbc);",
+          "new_line_content": "            if(ch > 1 && s->block_switch[ch] != s->block_switch[1])",
+          "content_same": false
+        },
+        {
+          "line": 1306,
+          "old_api": "set_downmix_coeffs",
+          "new_api": null,
+          "old_text": "set_downmix_coeffs(s)",
+          "new_text": null,
+          "old_line_content": "            set_downmix_coeffs(s);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 802,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "            s->dither_flag[ch] = get_bits1(gbc);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1320,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"error decoding the audio block\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"error decoding the audio block\\n\");",
+          "new_line_content": "            err = 1;",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 8)",
+          "new_text": null,
+          "old_line_content": "            s->dynamic_range[i] = ((dynamic_range_tab[get_bits(gbc, 8)]-1.0) *",
+          "new_line_content": "                                  s->avctx->drc_scale)+1.0;",
+          "content_same": false
+        },
+        {
+          "line": 1323,
+          "old_api": "float_to_int16_interleave",
+          "new_api": null,
+          "old_text": "s->dsp.float_to_int16_interleave(out_samples, output, 256, s->out_channels)",
+          "new_text": null,
+          "old_line_content": "        s->dsp.float_to_int16_interleave(out_samples, output, 256, s->out_channels);",
+          "new_line_content": "        out_samples += 256 * s->out_channels;",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "av_log_missing_feature",
+          "new_api": null,
+          "old_text": "av_log_missing_feature(s->avctx, \"Spectral extension\", 1)",
+          "new_text": null,
+          "old_line_content": "            av_log_missing_feature(s->avctx, \"Spectral extension\", 1);",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1337,
+          "old_api": "ff_mdct_end",
+          "new_api": null,
+          "old_text": "ff_mdct_end(&s->imdct_256)",
+          "new_text": null,
+          "old_line_content": "    ff_mdct_end(&s->imdct_256);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1339,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&s->input_buffer)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&s->input_buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS)",
+          "new_text": null,
+          "old_line_content": "        memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS);",
+          "new_line_content": "        if (!s->eac3)",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "            s->cpl_in_use[blk] = get_bits1(gbc);",
+          "new_line_content": "        if (s->cpl_in_use[blk]) {",
+          "content_same": false
+        },
+        {
+          "line": 838,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"coupling not allowed in mono or dual-mono\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"coupling not allowed in mono or dual-mono\\n\");",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1352,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"ATSC A/52A (AC-3)\")",
+          "new_text": null,
+          "old_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"ATSC A/52A (AC-3)\"),",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "            if (s->eac3 && get_bits1(gbc)) {",
+          "new_line_content": "                /* TODO: parse enhanced coupling strategy info */",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": "av_log_missing_feature",
+          "new_api": null,
+          "old_text": "av_log_missing_feature(s->avctx, \"Enhanced coupling\", 1)",
+          "new_text": null,
+          "old_line_content": "                av_log_missing_feature(s->avctx, \"Enhanced coupling\", 1);",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1364,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"ATSC A/52B (AC-3, E-AC-3)\")",
+          "new_text": null,
+          "old_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"ATSC A/52B (AC-3, E-AC-3)\"),",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "                    s->channel_in_cpl[ch] = get_bits1(gbc);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "                s->phase_flags_in_use = get_bits1(gbc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 4)",
+          "new_text": null,
+          "old_line_content": "            cpl_end_subband   = get_bits(gbc, 4) + 3;",
+          "new_line_content": "            if (cpl_start_subband >= cpl_end_subband) {",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coupling range (%d >= %d)\\n\",\n                       cpl_start_subband, cpl_end_subband)",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"invalid coupling range (%d >= %d)\\n\",",
+          "new_line_content": "                       cpl_start_subband, cpl_end_subband);",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "decode_band_structure",
+          "new_api": null,
+          "old_text": "decode_band_structure(gbc, blk, s->eac3, 0, cpl_start_subband,\n                                  cpl_end_subband,\n                                  ff_eac3_default_cpl_band_struct,\n                                  &s->num_cpl_bands, s->cpl_band_sizes)",
+          "new_text": null,
+          "old_line_content": "            decode_band_structure(gbc, blk, s->eac3, 0, cpl_start_subband,",
+          "new_line_content": "                                  cpl_end_subband,",
+          "content_same": false
+        },
+        {
+          "line": 889,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling strategy must be present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new coupling strategy must be present in block 0\\n\");",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "                if ((s->eac3 && s->first_cpl_coords[ch]) || get_bits1(gbc)) {",
+          "new_line_content": "                    int master_cpl_coord, cpl_coord_exp, cpl_coord_mant;",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 2)",
+          "new_text": null,
+          "old_line_content": "                    master_cpl_coord = 3 * get_bits(gbc, 2);",
+          "new_line_content": "                    for (bnd = 0; bnd < s->num_cpl_bands; bnd++) {",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 4)",
+          "new_text": null,
+          "old_line_content": "                        cpl_coord_mant = get_bits(gbc, 4);",
+          "new_line_content": "                        if (cpl_coord_exp == 15)",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"new coupling coordinates must be present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "                    av_log(s->avctx, AV_LOG_ERROR, \"new coupling coordinates must be present in block 0\\n\");",
+          "new_line_content": "                    return -1;",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "                s->phase_flags[bnd] = s->phase_flags_in_use? get_bits1(gbc) : 0;",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "        if ((s->eac3 && !blk) || get_bits1(gbc)) {",
+          "new_line_content": "            s->num_rematrixing_bands = 4;",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "                s->rematrixing_flags[bnd] = get_bits1(gbc);",
+          "new_line_content": "        } else if (!blk) {",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_WARNING, \"Warning: new rematrixing strategy not present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_WARNING, \"Warning: new rematrixing strategy not present in block 0\\n\");",
+          "new_line_content": "            s->num_rematrixing_bands = 0;",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 2 - (ch == s->lfe_ch))",
+          "new_text": null,
+          "old_line_content": "            s->exp_strategy[blk][ch] = get_bits(gbc, 2 - (ch == s->lfe_ch));",
+          "new_line_content": "        if(s->exp_strategy[blk][ch] != EXP_REUSE)",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 6)",
+          "new_text": null,
+          "old_line_content": "                int bandwidth_code = get_bits(gbc, 6);",
+          "new_line_content": "                if (bandwidth_code > 60) {",
+          "content_same": false
+        },
+        {
+          "line": 967,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"bandwidth code = %d > 60\\n\", bandwidth_code)",
+          "new_text": null,
+          "old_line_content": "                    av_log(s->avctx, AV_LOG_ERROR, \"bandwidth code = %d > 60\\n\", bandwidth_code);",
+          "new_line_content": "                    return -1;",
+          "content_same": false
+        },
+        {
+          "line": 975,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS)",
+          "new_text": null,
+          "old_line_content": "                memset(bit_alloc_stages, 3, AC3_MAX_CHANNELS);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "av_lfg_get",
+          "new_api": null,
+          "old_text": "av_lfg_get(&s->dith_state)",
+          "new_text": null,
+          "old_line_content": "                    mantissa = (av_lfg_get(&s->dith_state) & 0x7FFFFF) - 0x400000;",
+          "new_line_content": "                else",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": "decode_exponents",
+          "new_api": null,
+          "old_text": "decode_exponents(gbc, s->exp_strategy[blk][ch],\n                                 s->num_exp_groups[ch], s->dexps[ch][0],\n                                 &s->dexps[ch][s->start_freq[ch]+!!ch])",
+          "new_text": null,
+          "old_line_content": "            if (decode_exponents(gbc, s->exp_strategy[blk][ch],",
+          "new_line_content": "                                 s->num_exp_groups[ch], s->dexps[ch][0],",
+          "content_same": false
+        },
+        {
+          "line": 990,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"exponent out-of-range\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_ERROR, \"exponent out-of-range\\n\");",
+          "new_line_content": "                return -1;",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 5)",
+          "new_text": null,
+          "old_line_content": "                    int bits      = get_bits(gbc, 5);",
+          "new_line_content": "                    mantissa      = b1_mantissas[bits][0];",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": "skip_bits",
+          "new_api": null,
+          "old_text": "skip_bits(gbc, 2)",
+          "new_text": null,
+          "old_line_content": "                skip_bits(gbc, 2); /* skip gainrng */",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "            s->bit_alloc_params.floor  = ff_ac3_floor_tab[get_bits(gbc, 3)];",
+          "new_line_content": "            for(ch=!cpl_in_use; ch<=s->channels; ch++)",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 7)",
+          "new_text": null,
+          "old_line_content": "                    int bits      = get_bits(gbc, 7);",
+          "new_line_content": "                    mantissa      = b2_mantissas[bits][0];",
+          "content_same": false
+        },
+        {
+          "line": 1007,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(bit_alloc_stages[ch], 2)",
+          "new_text": null,
+          "old_line_content": "                bit_alloc_stages[ch] = FFMAX(bit_alloc_stages[ch], 2);",
+          "new_line_content": "        } else if (!blk) {",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"new bit allocation info must be present in block 0\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"new bit allocation info must be present in block 0\\n\");",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 3)",
+          "new_text": null,
+          "old_line_content": "                mantissa = b3_mantissas[get_bits(gbc, 3)];",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1016,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(gbc)",
+          "new_text": null,
+          "old_line_content": "        if(s->snr_offset_strategy && get_bits1(gbc)) {",
+          "new_line_content": "            int snr = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 6)",
+          "new_text": null,
+          "old_line_content": "            csnr = (get_bits(gbc, 6) - 15) << 4;",
+          "new_line_content": "            for (i = ch = !cpl_in_use; ch <= s->channels; ch++) {",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 7)",
+          "new_text": null,
+          "old_line_content": "                    int bits   = get_bits(gbc, 7);",
+          "new_line_content": "                    mantissa   = b4_mantissas[bits][0];",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(gbc, 4)",
+          "new_text": null,
+          "old_line_content": "                    snr = (csnr + get_bits(gbc, 4)) << 2;",
+          "new_line_content": "                /* run at least last bit allocation stage if snr offset changes */",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 16,
+      "total_additions": 116,
+      "total_deletions": 115,
+      "total_api_changes": 247
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 247,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          426,
+          423
+        ]
+      }
+    },
+    "api_calls_before": 184,
+    "api_calls_after": 185,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 3,
+      "total_diff_lines": 18
+    }
+  }
+}

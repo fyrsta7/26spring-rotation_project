@@ -1,0 +1,312 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ef8c919e3f6bf16c202d01cbdaafac5ac900586b",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ef8c919e3f6bf16c202d01cbdaafac5ac900586b/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ef8c919e3f6bf16c202d01cbdaafac5ac900586b/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ef8c919e3f6bf16c202d01cbdaafac5ac900586b/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 164,
+          "old_api": "_mm256_cvtpd_ps",
+          "new_api": "_mm256_cvtpd_epi32",
+          "old_text": "_mm256_cvtpd_ps(__u)",
+          "new_text": "_mm256_cvtpd_epi32(__u)",
+          "old_line_content": "            __m128 __u_float = _mm256_cvtpd_ps(__u);",
+          "new_line_content": "            __m128i __iu = _mm256_cvtpd_epi32(__u);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "_mm256_cvtpd_ps",
+          "new_api": "_mm256_cvtpd_epi32",
+          "old_text": "_mm256_cvtpd_ps(__v)",
+          "new_text": "_mm256_cvtpd_epi32(__v)",
+          "old_line_content": "            __m128 __v_float = _mm256_cvtpd_ps(__v);",
+          "new_line_content": "            __m128i __iv = _mm256_cvtpd_epi32(__v);",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "std::numeric_limits<int>::max()",
+          "new_api": "_mm_set1_epi32",
+          "old_text": "std::numeric_limits<int>::max()",
+          "new_text": "_mm_set1_epi32(INTER_TAB_SIZE - 1)",
+          "old_line_content": "            static const __m128 __int_max = _mm_set1_ps((float)(std::numeric_limits<int>::max()));",
+          "new_line_content": "            static const __m128i __INTER_TAB_SIZE_m1 = _mm_set1_epi32(INTER_TAB_SIZE - 1);",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "std::numeric_limits<int>::min()",
+          "new_api": "_mm_add_epi32",
+          "old_text": "std::numeric_limits<int>::min()",
+          "new_text": "_mm_add_epi32(\n                _mm_mullo_epi32(_mm_and_si128(__iv, __INTER_TAB_SIZE_m1), _mm_set1_epi32(INTER_TAB_SIZE)),\n                _mm_and_si128(__iu, __INTER_TAB_SIZE_m1))",
+          "old_line_content": "            static const __m128 __int_min = _mm_set1_ps((float)(std::numeric_limits<int>::min()));",
+          "new_line_content": "            __m128i __m2 = _mm_add_epi32(",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "_mm_min_ps",
+          "new_api": "_mm_set1_epi32",
+          "old_text": "_mm_min_ps(__u_float, __int_max)",
+          "new_text": "_mm_set1_epi32(INTER_TAB_SIZE)",
+          "old_line_content": "            __u_float = _mm_max_ps(_mm_min_ps(__u_float, __int_max), __int_min);",
+          "new_line_content": "                _mm_mullo_epi32(_mm_and_si128(__iv, __INTER_TAB_SIZE_m1), _mm_set1_epi32(INTER_TAB_SIZE)),",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "_mm_min_ps",
+          "new_api": "_mm_and_si128",
+          "old_text": "_mm_min_ps(__v_float, __int_max)",
+          "new_text": "_mm_and_si128(__iu, __INTER_TAB_SIZE_m1)",
+          "old_line_content": "            __v_float = _mm_max_ps(_mm_min_ps(__v_float, __int_max), __int_min);",
+          "new_line_content": "                _mm_and_si128(__iu, __INTER_TAB_SIZE_m1));",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "_mm_cvtps_epi32",
+          "new_api": "_mm_set_epi32",
+          "old_text": "_mm_cvtps_epi32(__u_float)",
+          "new_text": "_mm_set_epi32(0, 0, 0xFFFFFFFF, 0xFFFFFFFF)",
+          "old_line_content": "            __m128i __iu = _mm_cvtps_epi32(__u_float);",
+          "new_line_content": "            _mm_maskstore_epi64((long long int*) &m2[j], _mm_set_epi32(0, 0, 0xFFFFFFFF, 0xFFFFFFFF), __m2);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "_mm_add_epi32",
+          "new_api": "_mm256_setzero_si256",
+          "old_text": "_mm_add_epi32(\n                _mm_mullo_epi32(_mm_and_si128(__iv, __INTER_TAB_SIZE_m1), _mm_set1_epi32(INTER_TAB_SIZE)),\n                _mm_and_si128(__iu, __INTER_TAB_SIZE_m1))",
+          "new_text": "_mm256_setzero_si256()",
+          "old_line_content": "            __m128i __m2 = _mm_add_epi32(",
+          "new_line_content": "            __m256i __m1 = _mm256_setzero_si256();",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "_mm_set1_epi32",
+          "new_api": "_mm256_inserti128_si256",
+          "old_text": "_mm_set1_epi32(INTER_TAB_SIZE)",
+          "new_text": "_mm256_inserti128_si256(__m1, __iu, 0)",
+          "old_line_content": "                _mm_mullo_epi32(_mm_and_si128(__iv, __INTER_TAB_SIZE_m1), _mm_set1_epi32(INTER_TAB_SIZE)),",
+          "new_line_content": "            __m1 = _mm256_inserti128_si256(__m1, __iu, 0);",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": "_mm_and_si128",
+          "new_api": "_mm256_inserti128_si256",
+          "old_text": "_mm_and_si128(__iu, __INTER_TAB_SIZE_m1)",
+          "new_text": "_mm256_inserti128_si256(__m1, __iv, 1)",
+          "old_line_content": "                _mm_and_si128(__iu, __INTER_TAB_SIZE_m1));",
+          "new_line_content": "            __m1 = _mm256_inserti128_si256(__m1, __iv, 1);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "_mm_packus_epi32",
+          "new_api": "_mm256_srai_epi32",
+          "old_text": "_mm_packus_epi32(__m2, __m2)",
+          "new_text": "_mm256_srai_epi32(__m1, INTER_BITS)",
+          "old_line_content": "            __m2 = _mm_packus_epi32(__m2, __m2);",
+          "new_line_content": "            __m1 = _mm256_srai_epi32(__m1, INTER_BITS); // v3 v2 v1 v0 u3 u2 u1 u0 (int32_t)",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "_mm_set_epi32",
+          "new_api": "_mm256_set_epi32",
+          "old_text": "_mm_set_epi32(0, 0, 0xFFFFFFFF, 0xFFFFFFFF)",
+          "new_text": "_mm256_set_epi32(7, 3, 6, 2, 5, 1, 4, 0)",
+          "old_line_content": "            _mm_maskstore_epi64((long long int*) &m2[j], _mm_set_epi32(0, 0, 0xFFFFFFFF, 0xFFFFFFFF), __m2);",
+          "new_line_content": "            static const __m256i __permute_mask = _mm256_set_epi32(7, 3, 6, 2, 5, 1, 4, 0);",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "_mm256_srai_epi32",
+          "new_api": "_mm256_zeroupper",
+          "old_text": "_mm256_srai_epi32(__m1, INTER_BITS)",
+          "new_text": "_mm256_zeroupper()",
+          "old_line_content": "            __m1 = _mm256_srai_epi32(__m1, INTER_BITS); // v3 v2 v1 v0 u3 u2 u1 u0 (int32_t)",
+          "new_line_content": "    _mm256_zeroupper();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "_mm_packus_epi32",
+          "old_text": null,
+          "new_text": "_mm_packus_epi32(__m2, __m2)",
+          "old_line_content": "",
+          "new_line_content": "            __m2 = _mm_packus_epi32(__m2, __m2);",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": null,
+          "new_api": "_mm256_permutevar8x32_epi32",
+          "old_text": null,
+          "new_text": "_mm256_permutevar8x32_epi32(__m1, __permute_mask)",
+          "old_line_content": "",
+          "new_line_content": "            __m1 = _mm256_permutevar8x32_epi32(__m1, __permute_mask); // v3 u3 v2 u2 v1 u1 v0 u0 (int32_t)",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": null,
+          "new_api": "_mm256_packs_epi32",
+          "old_text": null,
+          "new_text": "_mm256_packs_epi32(__m1, __m1)",
+          "old_line_content": "            // gcc4.9 does not support _mm256_set_m128",
+          "new_line_content": "            __m1 = _mm256_packs_epi32(__m1, __m1); // x x x x v3 u3 v2 u2 x x x x v1 u1 v0 u0 (int16_t)",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": null,
+          "new_api": "_mm256_permute4x64_epi64",
+          "old_text": null,
+          "new_text": "_mm256_permute4x64_epi64(__m1, (2 << 2) + 0)",
+          "old_line_content": "            // __m256i __m1 = _mm256_set_m128i(__iv, __iu);",
+          "new_line_content": "            _mm_storeu_si128((__m128i*) &m1[j * 2], _mm256_extracti128_si256(_mm256_permute4x64_epi64(__m1, (2 << 2) + 0), 0));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 166,
+          "old_api": "_mm256_zeroupper",
+          "new_api": null,
+          "old_text": "_mm256_zeroupper()",
+          "new_text": null,
+          "old_line_content": "            _mm256_zeroupper();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": "_mm_cvtps_epi32",
+          "new_api": null,
+          "old_text": "_mm_cvtps_epi32(__v_float)",
+          "new_text": null,
+          "old_line_content": "            __m128i __iv = _mm_cvtps_epi32(__v_float);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": "_mm_set1_epi32",
+          "new_api": null,
+          "old_text": "_mm_set1_epi32(INTER_TAB_SIZE - 1)",
+          "new_text": null,
+          "old_line_content": "            static const __m128i __INTER_TAB_SIZE_m1 = _mm_set1_epi32(INTER_TAB_SIZE - 1);",
+          "new_line_content": "            // __m256i __m1 = _mm256_set_m128i(__iv, __iu);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "_mm256_setzero_si256",
+          "new_api": null,
+          "old_text": "_mm256_setzero_si256()",
+          "new_text": null,
+          "old_line_content": "            __m256i __m1 = _mm256_setzero_si256();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "_mm256_inserti128_si256",
+          "new_api": null,
+          "old_text": "_mm256_inserti128_si256(__m1, __iu, 0)",
+          "new_text": null,
+          "old_line_content": "            __m1 = _mm256_inserti128_si256(__m1, __iu, 0);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "_mm256_inserti128_si256",
+          "new_api": null,
+          "old_text": "_mm256_inserti128_si256(__m1, __iv, 1)",
+          "new_text": null,
+          "old_line_content": "            __m1 = _mm256_inserti128_si256(__m1, __iv, 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "_mm256_set_epi32",
+          "new_api": null,
+          "old_text": "_mm256_set_epi32(7, 3, 6, 2, 5, 1, 4, 0)",
+          "new_text": null,
+          "old_line_content": "            static const __m256i __permute_mask = _mm256_set_epi32(7, 3, 6, 2, 5, 1, 4, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": "_mm256_permutevar8x32_epi32",
+          "new_api": null,
+          "old_text": "_mm256_permutevar8x32_epi32(__m1, __permute_mask)",
+          "new_text": null,
+          "old_line_content": "            __m1 = _mm256_permutevar8x32_epi32(__m1, __permute_mask); // v3 u3 v2 u2 v1 u1 v0 u0 (int32_t)",
+          "new_line_content": "    return j;",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": "_mm256_packs_epi32",
+          "new_api": null,
+          "old_text": "_mm256_packs_epi32(__m1, __m1)",
+          "new_text": null,
+          "old_line_content": "            __m1 = _mm256_packs_epi32(__m1, __m1); // x x x x v3 u3 v2 u2 x x x x v1 u1 v0 u0 (int16_t)",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "_mm256_permute4x64_epi64",
+          "new_api": null,
+          "old_text": "_mm256_permute4x64_epi64(__m1, (2 << 2) + 0)",
+          "new_text": null,
+          "old_line_content": "            _mm_storeu_si128((__m128i*) &m1[j * 2], _mm256_extracti128_si256(_mm256_permute4x64_epi64(__m1, (2 << 2) + 0), 0));",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 13,
+      "total_additions": 4,
+      "total_deletions": 10,
+      "total_api_changes": 27
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 12,
+        "api_related_lines": 27,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 191,
+    "api_calls_after": 181,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 10,
+      "total_diff_lines": 33
+    }
+  }
+}

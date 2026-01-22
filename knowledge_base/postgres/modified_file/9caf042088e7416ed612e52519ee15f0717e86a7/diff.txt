@@ -1,0 +1,35 @@
+diff --git a/src/backend/optimizer/path/pathkeys.c b/src/backend/optimizer/path/pathkeys.c
+index e53ea84224..fdb60aaa8d 100644
+--- a/src/backend/optimizer/path/pathkeys.c
++++ b/src/backend/optimizer/path/pathkeys.c
+@@ -407,7 +407,8 @@ pathkeys_count_contained_in(List *keys1, List *keys2, int *n_common)
+ /*
+  * get_cheapest_path_for_pathkeys
+  *	  Find the cheapest path (according to the specified criterion) that
+- *	  satisfies the given pathkeys and parameterization.
++ *	  satisfies the given pathkeys and parameterization, and is parallel-safe
++ *	  if required.
+  *	  Return NULL if no such path.
+  *
+  * 'paths' is a list of possible paths that all generate the same relation
+@@ -429,6 +430,10 @@ get_cheapest_path_for_pathkeys(List *paths, List *pathkeys,
+ 	{
+ 		Path	   *path = (Path *) lfirst(l);
+ 
++		/* If required, reject paths that are not parallel-safe */
++		if (require_parallel_safe && !path->parallel_safe)
++			continue;
++
+ 		/*
+ 		 * Since cost comparison is a lot cheaper than pathkey comparison, do
+ 		 * that first.  (XXX is that still true?)
+@@ -437,9 +442,6 @@ get_cheapest_path_for_pathkeys(List *paths, List *pathkeys,
+ 			compare_path_costs(matched_path, path, cost_criterion) <= 0)
+ 			continue;
+ 
+-		if (require_parallel_safe && !path->parallel_safe)
+-			continue;
+-
+ 		if (pathkeys_contained_in(pathkeys, path->pathkeys) &&
+ 			bms_is_subset(PATH_REQ_OUTER(path), required_outer))
+ 			matched_path = path;

@@ -1,0 +1,1024 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/51828385f150b3fdc075f0f0489e8cba7b42aecb",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/51828385f150b3fdc075f0f0489e8cba7b42aecb/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/51828385f150b3fdc075f0f0489e8cba7b42aecb/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/51828385f150b3fdc075f0f0489e8cba7b42aecb/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 276,
+          "old_api": "hb_fopen",
+          "new_api": "fseek",
+          "old_text": "hb_fopen(filename, \"rb\")",
+          "new_text": "fseek( pv->file, 0, SEEK_SET )",
+          "old_line_content": "            pv->file = hb_fopen(filename, \"rb\");",
+          "new_line_content": "            fseek( pv->file, 0, SEEK_SET );",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": "fseek",
+          "new_api": "malloc",
+          "old_text": "fseek( pv->file, 0, SEEK_END )",
+          "new_text": "malloc( size + 1 )",
+          "old_line_content": "            fseek( pv->file, 0, SEEK_END );",
+          "new_line_content": "            log = malloc( size + 1 );",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "fseek",
+          "new_api": "fread",
+          "old_text": "fseek( pv->file, 0, SEEK_SET )",
+          "new_text": "fread( log, size, 1, pv->file )",
+          "old_line_content": "            fseek( pv->file, 0, SEEK_SET );",
+          "new_line_content": "            fread( log, size, 1, pv->file );",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": "malloc",
+          "new_api": "fclose",
+          "old_text": "malloc( size + 1 )",
+          "new_text": "fclose( pv->file )",
+          "old_line_content": "            log = malloc( size + 1 );",
+          "new_line_content": "            fclose( pv->file );",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "hb_chapter_queue_close",
+          "new_api": "hb_deep_log",
+          "old_text": "hb_chapter_queue_close(&pv->chapter_queue)",
+          "new_text": "hb_deep_log( 2, \"encavcodec: closing libavcodec\" )",
+          "old_line_content": "    hb_chapter_queue_close(&pv->chapter_queue);",
+          "new_line_content": "        hb_deep_log( 2, \"encavcodec: closing libavcodec\" );",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "hb_deep_log",
+          "new_api": "av_free",
+          "old_text": "hb_deep_log( 2, \"encavcodec: closing libavcodec\" )",
+          "new_text": "av_free( pv->context )",
+          "old_line_content": "        hb_deep_log( 2, \"encavcodec: closing libavcodec\" );",
+          "new_line_content": "        av_free( pv->context );",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "avcodec_encode_video2",
+          "new_api": "hb_buffer_close",
+          "old_text": "avcodec_encode_video2( pv->context, &pkt, frame, &got_packet )",
+          "new_text": "hb_buffer_close( &buf )",
+          "old_line_content": "            ret = avcodec_encode_video2( pv->context, &pkt, frame, &got_packet );",
+          "new_line_content": "                hb_buffer_close( &buf );",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "get_frame_duration",
+          "new_api": "convert_pict_type",
+          "old_text": "get_frame_duration( pv, frameno )",
+          "new_text": "convert_pict_type( pv->context->coded_frame->pict_type, pkt.flags & AV_PKT_FLAG_KEY, &buf->s.flags )",
+          "old_line_content": "                buf->s.duration = get_frame_duration( pv, frameno );",
+          "new_line_content": "                buf->s.frametype = convert_pict_type( pv->context->coded_frame->pict_type, pkt.flags & AV_PKT_FLAG_KEY, &buf->s.flags );",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "convert_pict_type",
+          "new_api": "hb_chapter_dequeue",
+          "old_text": "convert_pict_type( pv->context->coded_frame->pict_type, pkt.flags & AV_PKT_FLAG_KEY, &buf->s.flags )",
+          "new_text": "hb_chapter_dequeue(pv->chapter_queue, buf)",
+          "old_line_content": "                buf->s.frametype = convert_pict_type( pv->context->coded_frame->pict_type, pkt.flags & AV_PKT_FLAG_KEY, &buf->s.flags );",
+          "new_line_content": "                    hb_chapter_dequeue(pv->chapter_queue, buf);",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "hb_error",
+          "new_api": "av_frame_free",
+          "old_text": "hb_error( \"encavcodec: codec context has uninitialized codec; skipping frame\" )",
+          "new_text": "av_frame_free( &frame )",
+          "old_line_content": "        hb_error( \"encavcodec: codec context has uninitialized codec; skipping frame\" );",
+          "new_line_content": "    av_frame_free( &frame );",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 260,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset( filename, 0, 1024 )",
+          "old_line_content": "    if( job->pass_id == HB_PASS_ENCODE_1ST ||",
+          "new_line_content": "        char filename[1024]; memset( filename, 0, 1024 );",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "hb_get_tempory_filename",
+          "old_text": null,
+          "new_text": "hb_get_tempory_filename( job->h, filename, \"ffmpeg.log\" )",
+          "old_line_content": "        job->pass_id == HB_PASS_ENCODE_2ND )",
+          "new_line_content": "        hb_get_tempory_filename( job->h, filename, \"ffmpeg.log\" );",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "av_frame_alloc",
+          "old_text": null,
+          "new_text": "av_frame_alloc()",
+          "old_line_content": "    }",
+          "new_line_content": "        frame              = av_frame_alloc();",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "hb_fopen",
+          "old_text": null,
+          "new_text": "hb_fopen(filename, \"wb\")",
+          "old_line_content": "",
+          "new_line_content": "            pv->file = hb_fopen(filename, \"wb\");",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": null,
+          "new_api": "hb_fopen",
+          "old_text": null,
+          "new_text": "hb_fopen(filename, \"rb\")",
+          "old_line_content": "            int    size;",
+          "new_line_content": "            pv->file = hb_fopen(filename, \"rb\");",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": null,
+          "new_api": "fseek",
+          "old_text": null,
+          "new_text": "fseek( pv->file, 0, SEEK_END )",
+          "old_line_content": "            char * log;",
+          "new_line_content": "            fseek( pv->file, 0, SEEK_END );",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": null,
+          "new_api": "ftell",
+          "old_text": null,
+          "new_text": "ftell( pv->file )",
+          "old_line_content": "",
+          "new_line_content": "            size = ftell( pv->file );",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "hb_chapter_enqueue",
+          "old_text": null,
+          "new_text": "hb_chapter_enqueue(pv->chapter_queue, in)",
+          "old_line_content": "               when this frame finally pops out of the encoder we'll mark",
+          "new_line_content": "            hb_chapter_enqueue(pv->chapter_queue, in);",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": null,
+          "new_api": "save_frame_info",
+          "old_text": null,
+          "new_text": "save_frame_info( pv, in )",
+          "old_line_content": "",
+          "new_line_content": "        save_frame_info( pv, in );",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "compute_dts_offset",
+          "old_text": null,
+          "new_text": "compute_dts_offset( pv, in )",
+          "old_line_content": "        // Remember info about this frame that we need to pass across",
+          "new_line_content": "        compute_dts_offset( pv, in );",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "hb_avcodec_open",
+          "old_text": null,
+          "new_text": "hb_avcodec_open(context, codec, &av_opts, HB_FFMPEG_THREADS_AUTO)",
+          "old_line_content": "        }",
+          "new_line_content": "    if (hb_avcodec_open(context, codec, &av_opts, HB_FFMPEG_THREADS_AUTO))",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log( \"encavcodecInit: avcodec_open failed\" )",
+          "old_line_content": "",
+          "new_line_content": "        hb_log( \"encavcodecInit: avcodec_open failed\" );",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": null,
+          "new_api": "av_dict_get",
+          "old_text": null,
+          "new_text": "av_dict_get( av_opts, \"\", t, AV_DICT_IGNORE_SUFFIX )",
+          "old_line_content": "    // avcodec_open populates the opts dictionary with the",
+          "new_line_content": "    while( ( t = av_dict_get( av_opts, \"\", t, AV_DICT_IGNORE_SUFFIX ) ) )",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log( \"encavcodecInit: Unknown avcodec option %s\", t->key )",
+          "old_line_content": "    AVDictionaryEntry *t = NULL;",
+          "new_line_content": "        hb_log( \"encavcodecInit: Unknown avcodec option %s\", t->key );",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "av_dict_free",
+          "old_text": null,
+          "new_text": "av_dict_free( &av_opts )",
+          "old_line_content": "    {",
+          "new_line_content": "    av_dict_free( &av_opts );",
+          "content_same": false
+        },
+        {
+          "line": 561,
+          "old_api": null,
+          "new_api": "av_init_packet",
+          "old_text": null,
+          "new_text": "av_init_packet(&pkt)",
+          "old_line_content": "        char still_flushing = final_flushing_call;",
+          "new_line_content": "            av_init_packet(&pkt);",
+          "content_same": false
+        },
+        {
+          "line": 563,
+          "old_api": null,
+          "new_api": "hb_video_buffer_init",
+          "old_text": null,
+          "new_text": "hb_video_buffer_init(job->width, job->height)",
+          "old_line_content": "        {",
+          "new_line_content": "            buf = hb_video_buffer_init(job->width, job->height);",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": null,
+          "new_api": "avcodec_encode_video2",
+          "old_text": null,
+          "new_text": "avcodec_encode_video2( pv->context, &pkt, frame, &got_packet )",
+          "old_line_content": "            pkt.data = buf->data;",
+          "new_line_content": "            ret = avcodec_encode_video2( pv->context, &pkt, frame, &got_packet );",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy( w->config->mpeg4.bytes, context->extradata,\n                context->extradata_size )",
+          "old_line_content": "    if( ( job->mux & HB_MUX_MASK_MP4 ) && job->pass_id != HB_PASS_ENCODE_1ST )",
+          "new_line_content": "        memcpy( w->config->mpeg4.bytes, context->extradata,",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "get_frame_start",
+          "old_text": null,
+          "new_text": "get_frame_start( pv, frameno )",
+          "old_line_content": "            {",
+          "new_line_content": "                buf->s.start    = get_frame_start( pv, frameno );",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": null,
+          "new_api": "get_frame_duration",
+          "old_text": null,
+          "new_text": "get_frame_duration( pv, frameno )",
+          "old_line_content": "                int64_t frameno = pkt.pts;",
+          "new_line_content": "                buf->s.duration = get_frame_duration( pv, frameno );",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&pv->delay_list, buf)",
+          "old_line_content": "    if (pv->job->areBframes)",
+          "new_line_content": "        hb_buffer_list_append(&pv->delay_list, buf);",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "process_delay_list",
+          "old_text": null,
+          "new_text": "process_delay_list( pv, buf )",
+          "old_line_content": "                {",
+          "new_line_content": "                buf = process_delay_list( pv, buf );",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "hb_chapter_queue_close",
+          "old_text": null,
+          "new_text": "hb_chapter_queue_close(&pv->chapter_queue)",
+          "old_line_content": "    {",
+          "new_line_content": "    hb_chapter_queue_close(&pv->chapter_queue);",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&list, buf)",
+          "old_line_content": "                }",
+          "new_line_content": "                hb_buffer_list_append(&list, buf);",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": null,
+          "new_api": "avcodec_flush_buffers",
+          "old_text": null,
+          "new_text": "avcodec_flush_buffers( pv->context )",
+          "old_line_content": "    if( pv->context && pv->context->codec )",
+          "new_line_content": "        avcodec_flush_buffers( pv->context );",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": null,
+          "new_api": "hb_avcodec_close",
+          "old_text": null,
+          "new_text": "hb_avcodec_close( pv->context )",
+          "old_line_content": "    {",
+          "new_line_content": "        hb_avcodec_close( pv->context );",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": null,
+          "new_api": "hb_buffer_list_head",
+          "old_text": null,
+          "new_text": "hb_buffer_list_head(&pv->delay_list)",
+          "old_line_content": "",
+          "new_line_content": "        buf = hb_buffer_list_head(&pv->delay_list);",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf( pv->file, \"%s\", pv->context->stats_out )",
+          "old_line_content": "            if (job->pass_id == HB_PASS_ENCODE_1ST &&",
+          "new_line_content": "                fprintf( pv->file, \"%s\", pv->context->stats_out );",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "fclose",
+          "old_text": null,
+          "new_text": "fclose( pv->file )",
+          "old_line_content": "    }",
+          "new_line_content": "        fclose( pv->file );",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": null,
+          "new_api": "av_dict_set",
+          "old_text": null,
+          "new_text": "av_dict_set( &av_opts, \"deadline\", \"good\", 0)",
+          "old_line_content": "            //Setting the deadline to good and cpu-used to 0",
+          "new_line_content": "            av_dict_set( &av_opts, \"deadline\", \"good\", 0);",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "av_dict_set",
+          "old_text": null,
+          "new_text": "av_dict_set( &av_opts, \"cpu-used\", \"2\", 0)",
+          "old_line_content": "            //causes the encoder to balance video quality and",
+          "new_line_content": "            av_dict_set( &av_opts, \"cpu-used\", \"2\", 0);",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free( pv )",
+          "old_line_content": "    {",
+          "new_line_content": "    free( pv );",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&list, in)",
+          "old_line_content": "        if (final_flushing_call)",
+          "new_line_content": "            hb_buffer_list_append(&list, in);",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": null,
+          "new_api": "get_frame_start",
+          "old_text": null,
+          "new_text": "get_frame_start( pv, pv->frameno_out )",
+          "old_line_content": "            // output buffers have rearranged start times.",
+          "new_line_content": "                int64_t start = get_frame_start( pv, pv->frameno_out );",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log( \"encavcodec: encoding at CQ %.2f\", job->vquality )",
+          "old_line_content": "            //for libvpx to \"turn off\" the maximum bitrate feature",
+          "new_line_content": "            hb_log( \"encavcodec: encoding at CQ %.2f\", job->vquality );",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "get_frame_start",
+          "old_text": null,
+          "new_text": "get_frame_start(pv,\n                                        pv->frameno_out - pv->job->areBframes)",
+          "old_line_content": "            }",
+          "new_line_content": "                buf->s.renderOffset = get_frame_start(pv,",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "hb_error",
+          "old_text": null,
+          "new_text": "hb_error( \"encavcodec: codec context has uninitialized codec; skipping frame\" )",
+          "old_line_content": "    }",
+          "new_line_content": "        hb_error( \"encavcodec: codec context has uninitialized codec; skipping frame\" );",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log( \"encavcodec: encoding at constant quantizer %d\",\n                    context->global_quality )",
+          "old_line_content": "        }",
+          "new_line_content": "            hb_log( \"encavcodec: encoding at constant quantizer %d\",",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&pv->delay_list)",
+          "old_line_content": "            buf = buf->next;",
+          "new_line_content": "        buf = hb_buffer_list_clear(&pv->delay_list);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "",
+          "new_line_content": "    *buf_out = hb_buffer_list_clear(&list);",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": null,
+          "new_api": "hb_limit_rational",
+          "old_text": null,
+          "new_text": "hb_limit_rational(&context->sample_aspect_ratio.num,\n                          &context->sample_aspect_ratio.den,\n                           context->sample_aspect_ratio.num,\n                           context->sample_aspect_ratio.den, 255)",
+          "old_line_content": "        // MPEG-4 Part 2 stores the PAR num/den as unsigned 8-bit fields,",
+          "new_line_content": "        hb_limit_rational(&context->sample_aspect_ratio.num,",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log( \"encavcodec: encoding with stored aspect %d/%d\",\n            job->par.num, job->par.den )",
+          "old_line_content": "                           context->sample_aspect_ratio.den, 255);",
+          "new_line_content": "    hb_log( \"encavcodec: encoding with stored aspect %d/%d\",",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "    hb_buffer_list_t list;",
+          "new_line_content": "    hb_buffer_list_clear(&list);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 263,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset( filename, 0, 1024 )",
+          "new_text": null,
+          "old_line_content": "        char filename[1024]; memset( filename, 0, 1024 );",
+          "new_line_content": "        if( job->pass_id == HB_PASS_ENCODE_1ST )",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "hb_get_tempory_filename",
+          "new_api": null,
+          "old_text": "hb_get_tempory_filename( job->h, filename, \"ffmpeg.log\" )",
+          "new_text": null,
+          "old_line_content": "        hb_get_tempory_filename( job->h, filename, \"ffmpeg.log\" );",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "av_frame_alloc",
+          "new_api": null,
+          "old_text": "av_frame_alloc()",
+          "new_text": null,
+          "old_line_content": "        frame              = av_frame_alloc();",
+          "new_line_content": "        frame->data[2]     = in->plane[2].data;",
+          "content_same": false
+        },
+        {
+          "line": 268,
+          "old_api": "hb_fopen",
+          "new_api": null,
+          "old_text": "hb_fopen(filename, \"wb\")",
+          "new_text": null,
+          "old_line_content": "            pv->file = hb_fopen(filename, \"wb\");",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "ftell",
+          "new_api": null,
+          "old_text": "ftell( pv->file )",
+          "new_text": null,
+          "old_line_content": "            size = ftell( pv->file );",
+          "new_line_content": "            log[size] = '\\0';",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "hb_chapter_enqueue",
+          "new_api": null,
+          "old_text": "hb_chapter_enqueue(pv->chapter_queue, in)",
+          "new_text": null,
+          "old_line_content": "            hb_chapter_enqueue(pv->chapter_queue, in);",
+          "new_line_content": "        // For constant quality, setting the quality in AVCodecContext ",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": "fread",
+          "new_api": null,
+          "old_text": "fread( log, size, 1, pv->file )",
+          "new_text": null,
+          "old_line_content": "            fread( log, size, 1, pv->file );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "fclose",
+          "new_api": null,
+          "old_text": "fclose( pv->file )",
+          "new_text": null,
+          "old_line_content": "            fclose( pv->file );",
+          "new_line_content": "            context->flags    |= CODEC_FLAG_PASS2;",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "save_frame_info",
+          "new_api": null,
+          "old_text": "save_frame_info( pv, in )",
+          "new_text": null,
+          "old_line_content": "        save_frame_info( pv, in );",
+          "new_line_content": "        // Bizarro ffmpeg appears to require the input AVFrame.pts to be",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "compute_dts_offset",
+          "new_api": null,
+          "old_text": "compute_dts_offset( pv, in )",
+          "new_text": null,
+          "old_line_content": "        compute_dts_offset( pv, in );",
+          "new_line_content": "        // set to a frame number.  Setting it to an actual pts causes",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "hb_avcodec_open",
+          "new_api": null,
+          "old_text": "hb_avcodec_open(context, codec, &av_opts, HB_FFMPEG_THREADS_AUTO)",
+          "new_text": null,
+          "old_line_content": "    if (hb_avcodec_open(context, codec, &av_opts, HB_FFMPEG_THREADS_AUTO))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "hb_log",
+          "new_api": null,
+          "old_text": "hb_log( \"encavcodecInit: avcodec_open failed\" )",
+          "new_text": null,
+          "old_line_content": "        hb_log( \"encavcodecInit: avcodec_open failed\" );",
+          "new_line_content": "    // things it didn't recognize.",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": "av_dict_get",
+          "new_api": null,
+          "old_text": "av_dict_get( av_opts, \"\", t, AV_DICT_IGNORE_SUFFIX )",
+          "new_text": null,
+          "old_line_content": "    while( ( t = av_dict_get( av_opts, \"\", t, AV_DICT_IGNORE_SUFFIX ) ) )",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "hb_log",
+          "new_api": null,
+          "old_text": "hb_log( \"encavcodecInit: Unknown avcodec option %s\", t->key )",
+          "new_text": null,
+          "old_line_content": "        hb_log( \"encavcodecInit: Unknown avcodec option %s\", t->key );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "av_dict_free",
+          "new_api": null,
+          "old_text": "av_dict_free( &av_opts )",
+          "new_text": null,
+          "old_line_content": "    av_dict_free( &av_opts );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": "av_init_packet",
+          "new_api": null,
+          "old_text": "av_init_packet(&pkt)",
+          "new_text": null,
+          "old_line_content": "            av_init_packet(&pkt);",
+          "new_line_content": "            pkt.data = buf->data;",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": "hb_video_buffer_init",
+          "new_api": null,
+          "old_text": "hb_video_buffer_init(job->width, job->height)",
+          "new_text": null,
+          "old_line_content": "            buf = hb_video_buffer_init(job->width, job->height);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy( w->config->mpeg4.bytes, context->extradata,\n                context->extradata_size )",
+          "new_text": null,
+          "old_line_content": "        memcpy( w->config->mpeg4.bytes, context->extradata,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": "hb_buffer_close",
+          "new_api": null,
+          "old_text": "hb_buffer_close( &buf )",
+          "new_text": null,
+          "old_line_content": "                hb_buffer_close( &buf );",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "get_frame_start",
+          "new_api": null,
+          "old_text": "get_frame_start( pv, frameno )",
+          "new_text": null,
+          "old_line_content": "                buf->s.start    = get_frame_start( pv, frameno );",
+          "new_line_content": "                buf->s.flags   &= ~HB_FRAME_REF;",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&pv->delay_list, buf)",
+          "new_text": null,
+          "old_line_content": "        hb_buffer_list_append(&pv->delay_list, buf);",
+          "new_line_content": "            // dts_delay not yet set.  queue up buffers till it is set.",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": "hb_chapter_dequeue",
+          "new_api": null,
+          "old_text": "hb_chapter_dequeue(pv->chapter_queue, buf)",
+          "new_text": null,
+          "old_line_content": "                    hb_chapter_dequeue(pv->chapter_queue, buf);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "process_delay_list",
+          "new_api": null,
+          "old_text": "process_delay_list( pv, buf )",
+          "new_text": null,
+          "old_line_content": "                buf = process_delay_list( pv, buf );",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&list, buf)",
+          "new_text": null,
+          "old_line_content": "                hb_buffer_list_append(&list, buf);",
+          "new_line_content": "            if (job->pass_id == HB_PASS_ENCODE_1ST &&",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "avcodec_flush_buffers",
+          "new_api": null,
+          "old_text": "avcodec_flush_buffers( pv->context )",
+          "new_text": null,
+          "old_line_content": "        avcodec_flush_buffers( pv->context );",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "hb_avcodec_close",
+          "new_api": null,
+          "old_text": "hb_avcodec_close( pv->context )",
+          "new_text": null,
+          "old_line_content": "        hb_avcodec_close( pv->context );",
+          "new_line_content": "    if( pv->file )",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "av_free",
+          "new_api": null,
+          "old_text": "av_free( pv->context )",
+          "new_text": null,
+          "old_line_content": "        av_free( pv->context );",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": "fprintf",
+          "new_api": null,
+          "old_text": "fprintf( pv->file, \"%s\", pv->context->stats_out )",
+          "new_text": null,
+          "old_line_content": "                fprintf( pv->file, \"%s\", pv->context->stats_out );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "hb_buffer_list_head",
+          "new_api": null,
+          "old_text": "hb_buffer_list_head(&pv->delay_list)",
+          "new_text": null,
+          "old_line_content": "        buf = hb_buffer_list_head(&pv->delay_list);",
+          "new_line_content": "            // Use the cached frame info to get the start time of Nth frame",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "fclose",
+          "new_api": null,
+          "old_text": "fclose( pv->file )",
+          "new_text": null,
+          "old_line_content": "        fclose( pv->file );",
+          "new_line_content": "    w->private_data = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "av_dict_set",
+          "new_api": null,
+          "old_text": "av_dict_set( &av_opts, \"deadline\", \"good\", 0)",
+          "new_text": null,
+          "old_line_content": "            av_dict_set( &av_opts, \"deadline\", \"good\", 0);",
+          "new_line_content": "            //for libvpx to \"turn off\" the maximum bitrate feature",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": "av_dict_set",
+          "new_api": null,
+          "old_text": "av_dict_set( &av_opts, \"cpu-used\", \"0\", 0)",
+          "new_text": null,
+          "old_line_content": "            av_dict_set( &av_opts, \"cpu-used\", \"0\", 0);",
+          "new_line_content": "            //that is normally applied to constant quality.",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free( pv )",
+          "new_text": null,
+          "old_line_content": "    free( pv );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&list, in)",
+          "new_text": null,
+          "old_line_content": "            hb_buffer_list_append(&list, in);",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "get_frame_start",
+          "new_api": null,
+          "old_text": "get_frame_start( pv, pv->frameno_out )",
+          "new_text": null,
+          "old_line_content": "                int64_t start = get_frame_start( pv, pv->frameno_out );",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "hb_log",
+          "new_api": null,
+          "old_text": "hb_log( \"encavcodec: encoding at CQ %.2f\", job->vquality )",
+          "new_text": null,
+          "old_line_content": "            hb_log( \"encavcodec: encoding at CQ %.2f\", job->vquality );",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "get_frame_start",
+          "new_api": null,
+          "old_text": "get_frame_start(pv,\n                                        pv->frameno_out - pv->job->areBframes)",
+          "new_text": null,
+          "old_line_content": "                buf->s.renderOffset = get_frame_start(pv,",
+          "new_line_content": "            buf = buf->next;",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "hb_log",
+          "new_api": null,
+          "old_text": "hb_log( \"encavcodec: encoding at constant quantizer %d\",\n                    context->global_quality )",
+          "new_text": null,
+          "old_line_content": "            hb_log( \"encavcodec: encoding at constant quantizer %d\",",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free( &frame )",
+          "new_text": null,
+          "old_line_content": "    av_frame_free( &frame );",
+          "new_line_content": "    return final_flushing_call? HB_WORK_DONE : HB_WORK_OK;",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&pv->delay_list)",
+          "new_text": null,
+          "old_line_content": "        buf = hb_buffer_list_clear(&pv->delay_list);",
+          "new_line_content": "    else if (buf != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "    *buf_out = hb_buffer_list_clear(&list);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "hb_limit_rational",
+          "new_api": null,
+          "old_text": "hb_limit_rational(&context->sample_aspect_ratio.num,\n                          &context->sample_aspect_ratio.den,\n                           context->sample_aspect_ratio.num,\n                           context->sample_aspect_ratio.den, 255)",
+          "new_text": null,
+          "old_line_content": "        hb_limit_rational(&context->sample_aspect_ratio.num,",
+          "new_line_content": "                           context->sample_aspect_ratio.den, 255);",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "hb_log",
+          "new_api": null,
+          "old_text": "hb_log( \"encavcodec: encoding with stored aspect %d/%d\",\n            job->par.num, job->par.den )",
+          "new_text": null,
+          "old_line_content": "    hb_log( \"encavcodec: encoding with stored aspect %d/%d\",",
+          "new_line_content": "    if( job->mux & HB_MUX_MASK_MP4 )",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "    hb_buffer_list_clear(&list);",
+          "new_line_content": "        /* EOF on input - send it downstream & say we're done */",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 10,
+      "total_additions": 44,
+      "total_deletions": 44,
+      "total_api_changes": 98
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 98,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          216
+        ]
+      }
+    },
+    "api_calls_before": 84,
+    "api_calls_after": 84,
+    "diff_info": {
+      "added_lines": 1,
+      "removed_lines": 4,
+      "total_diff_lines": 18
+    }
+  }
+}

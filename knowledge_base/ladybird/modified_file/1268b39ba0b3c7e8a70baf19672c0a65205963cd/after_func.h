@@ -1,0 +1,87 @@
+    {
+    }
+
+    // Based on the super fast blur algorithm by Quasimondo, explored here: https://stackoverflow.com/questions/21418892/understanding-super-fast-blur-algorithm
+    void apply_single_pass(int radius)
+    {
+        VERIFY(radius >= 0);
+        VERIFY(m_bitmap.format() == BitmapFormat::BGRA8888);
+
+        int height = m_bitmap.height();
+        int width = m_bitmap.width();
+
+        int div = 2 * radius + 1;
+
+        size_t sum_red, sum_green, sum_blue, sum_alpha;
+
+        u8 intermediate_red[width * height];
+        u8 intermediate_green[width * height];
+        u8 intermediate_blue[width * height];
+        u8 intermediate_alpha[width * height];
+
+        // First pass: vertical
+        for (int y = 0; y < height; y++) {
+            sum_red = sum_green = sum_blue = sum_alpha = 0;
+            // Setup sliding window
+            for (int i = -radius; i <= radius; i++) {
+                auto color_at_px = m_bitmap.get_pixel<StorageFormat::BGRA8888>(clamp(i, 0, width - 1), y);
+                sum_red += red_value(color_at_px);
+                sum_green += green_value(color_at_px);
+                sum_blue += blue_value(color_at_px);
+                sum_alpha += color_at_px.alpha();
+            }
+            // Slide horizontally
+            for (int x = 0; x < width; x++) {
+                intermediate_red[y * width + x] = (sum_red / div);
+                intermediate_green[y * width + x] = (sum_green / div);
+                intermediate_blue[y * width + x] = (sum_blue / div);
+                intermediate_alpha[y * width + x] = (sum_alpha / div);
+
+                auto leftmost_x_coord = max(x - radius, 0);
+                auto rightmost_x_coord = min(x + radius + 1, width - 1);
+
+                auto leftmost_x_color = m_bitmap.get_pixel<StorageFormat::BGRA8888>(leftmost_x_coord, y);
+                auto rightmost_x_color = m_bitmap.get_pixel<StorageFormat::BGRA8888>(rightmost_x_coord, y);
+
+                sum_red -= red_value(leftmost_x_color);
+                sum_red += red_value(rightmost_x_color);
+                sum_green -= green_value(leftmost_x_color);
+                sum_green += green_value(rightmost_x_color);
+                sum_blue -= blue_value(leftmost_x_color);
+                sum_blue += blue_value(rightmost_x_color);
+                sum_alpha -= leftmost_x_color.alpha();
+                sum_alpha += rightmost_x_color.alpha();
+            }
+        }
+
+        // Second pass: horizontal
+        for (int x = 0; x < width; x++) {
+            sum_red = sum_green = sum_blue = sum_alpha = 0;
+            // Setup sliding window
+            for (int i = -radius; i <= radius; i++) {
+                int offset = clamp(i, 0, height - 1) * width + x;
+                sum_red += intermediate_red[offset];
+                sum_green += intermediate_green[offset];
+                sum_blue += intermediate_blue[offset];
+                sum_alpha += intermediate_alpha[offset];
+            }
+
+            for (int y = 0; y < height; y++) {
+                auto color = Color(
+                    sum_red / div,
+                    sum_green / div,
+                    sum_blue / div,
+                    sum_alpha / div);
+
+                m_bitmap.set_pixel<StorageFormat::BGRA8888>(x, y, color);
+
+                auto topmost_y_coord = max(y - radius, 0);
+                auto bottommost_y_coord = min(y + radius + 1, height - 1);
+
+                sum_red += intermediate_red[x + bottommost_y_coord * width];
+                sum_red -= intermediate_red[x + topmost_y_coord * width];
+                sum_green += intermediate_green[x + bottommost_y_coord * width];
+                sum_green -= intermediate_green[x + topmost_y_coord * width];
+                sum_blue += intermediate_blue[x + bottommost_y_coord * width];
+                sum_blue -= intermediate_blue[x + topmost_y_coord * width];
+                sum_alpha += intermediate_alpha[x + bottommost_y_coord * width];

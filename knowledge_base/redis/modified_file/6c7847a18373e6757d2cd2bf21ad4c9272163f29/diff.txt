@@ -1,0 +1,22 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -247,7 +247,7 @@
+ 
+
+         /* Append to this object when possible. If tail == NULL it was
+
+          * set via addDeferredMultiBulkLength(). */
+
+-        if (tail && sdslen(tail)+len <= PROTO_REPLY_CHUNK_BYTES) {
+
++        if (tail && (sdsavail(tail) >= len || sdslen(tail)+len <= PROTO_REPLY_CHUNK_BYTES)) {
+
+             tail = sdscatlen(tail,s,len);
+
+             listNodeValue(ln) = tail;
+
+             c->reply_bytes += len;

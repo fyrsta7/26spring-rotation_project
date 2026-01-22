@@ -1,0 +1,14 @@
+diff --git a/compat/mingw.c b/compat/mingw.c
+index 8ee0b6408e..f18636c17c 100644
+--- a/compat/mingw.c
++++ b/compat/mingw.c
+@@ -290,6 +290,9 @@ int mingw_unlink(const char *pathname)
+ 	if (xutftowcs_path(wpathname, pathname) < 0)
+ 		return -1;
+ 
++	if (DeleteFileW(wpathname))
++		return 0;
++
+ 	/* read-only files cannot be removed */
+ 	_wchmod(wpathname, 0666);
+ 	while ((ret = _wunlink(wpathname)) == -1 && tries < ARRAY_SIZE(delay)) {

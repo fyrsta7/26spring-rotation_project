@@ -1,0 +1,21 @@
+diff --git a/lib/SILPasses/PerformanceInliner.cpp b/lib/SILPasses/PerformanceInliner.cpp
+index 8cbf828da87..939c0187f84 100644
+--- a/lib/SILPasses/PerformanceInliner.cpp
++++ b/lib/SILPasses/PerformanceInliner.cpp
+@@ -109,6 +109,16 @@ static unsigned instructionInlineCost(SILInstruction &I) {
+     case ValueKind::DebugValueInst:
+     case ValueKind::DebugValueAddrInst:
+       return 0;
++    case ValueKind::TupleElementAddrInst:
++    case ValueKind::StructElementAddrInst: {
++      // A gep whose operand is a gep with no other users will get folded by
++      // LLVM into one gep implying the second should be free.
++      SILValue Op = I.getOperand(0);
++      if ((Op->getKind() == ValueKind::TupleElementAddrInst ||
++           Op->getKind() == ValueKind::StructElementAddrInst) &&
++          Op->hasOneUse())
++        return 0;
++    }
+     default:
+       return 1;
+   }

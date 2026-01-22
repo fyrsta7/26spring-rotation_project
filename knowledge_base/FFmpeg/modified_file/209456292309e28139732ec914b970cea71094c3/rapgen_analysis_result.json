@@ -1,0 +1,1446 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/209456292309e28139732ec914b970cea71094c3",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/209456292309e28139732ec914b970cea71094c3/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/209456292309e28139732ec914b970cea71094c3/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/209456292309e28139732ec914b970cea71094c3/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1842,
+          "old_api": "ff_spatial_idwt_init",
+          "new_api": "decode_component",
+          "old_text": "ff_spatial_idwt_init(&d, &p->idwt, s->wavelet_idx+2,\n                                   s->wavelet_depth, s->bit_depth)",
+          "new_text": "decode_component(s, comp)",
+          "old_line_content": "        ret = ff_spatial_idwt_init(&d, &p->idwt, s->wavelet_idx+2,",
+          "new_line_content": "            decode_component(s, comp); /* [DIRAC_STD] 13.4.1 core_transform_data() */",
+          "content_same": false
+        },
+        {
+          "line": 1986,
+          "old_api": "remove_frame",
+          "new_api": "dirac_get_se_golomb",
+          "old_text": "remove_frame(s->ref_frames, retire)",
+          "new_text": "dirac_get_se_golomb(gb)",
+          "old_line_content": "            DiracFrame *retire_pic = remove_frame(s->ref_frames, retire);",
+          "new_line_content": "        retire = (picnum + dirac_get_se_golomb(gb)) & 0xFFFFFFFF;",
+          "content_same": false
+        },
+        {
+          "line": 1997,
+          "old_api": "remove_frame",
+          "new_api": "add_frame",
+          "old_text": "remove_frame(s->ref_frames, s->ref_frames[0]->avframe->display_picture_number)",
+          "new_text": "add_frame(s->ref_frames, MAX_REFERENCE_FRAMES, s->current_picture)",
+          "old_line_content": "            remove_frame(s->ref_frames, s->ref_frames[0]->avframe->display_picture_number)->reference &= DELAYED_PIC_REF;",
+          "new_line_content": "        while (add_frame(s->ref_frames, MAX_REFERENCE_FRAMES, s->current_picture)) {",
+          "content_same": false
+        },
+        {
+          "line": 2075,
+          "old_api": "av_log",
+          "new_api": "av_dirac_parse_sequence_header",
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"error parsing sequence header\")",
+          "new_text": "av_dirac_parse_sequence_header(&dsh, buf + DATA_UNIT_HEADER_SIZE, size - DATA_UNIT_HEADER_SIZE, avctx)",
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"error parsing sequence header\");",
+          "new_line_content": "        ret = av_dirac_parse_sequence_header(&dsh, buf + DATA_UNIT_HEADER_SIZE, size - DATA_UNIT_HEADER_SIZE, avctx);",
+          "content_same": false
+        },
+        {
+          "line": 2081,
+          "old_api": "av_freep",
+          "new_api": "ff_set_dimensions",
+          "old_text": "av_freep(&dsh)",
+          "new_text": "ff_set_dimensions(avctx, dsh->width, dsh->height)",
+          "old_line_content": "            av_freep(&dsh);",
+          "new_line_content": "        ret = ff_set_dimensions(avctx, dsh->width, dsh->height);",
+          "content_same": false
+        },
+        {
+          "line": 2104,
+          "old_api": "alloc_sequence_buffers",
+          "new_api": "avcodec_get_chroma_sub_sample",
+          "old_text": "alloc_sequence_buffers(s)",
+          "new_text": "avcodec_get_chroma_sub_sample(avctx->pix_fmt, &s->chroma_x_shift, &s->chroma_y_shift)",
+          "old_line_content": "        ret = alloc_sequence_buffers(s);",
+          "new_line_content": "        avcodec_get_chroma_sub_sample(avctx->pix_fmt, &s->chroma_x_shift, &s->chroma_y_shift);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 2177,
+          "old_api": null,
+          "new_api": "dirac_decode_picture_header",
+          "old_text": null,
+          "new_text": "dirac_decode_picture_header(s)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = dirac_decode_picture_header(s);",
+          "content_same": false
+        },
+        {
+          "line": 2182,
+          "old_api": null,
+          "new_api": "dirac_decode_frame_internal",
+          "old_text": null,
+          "new_text": "dirac_decode_frame_internal(s)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = dirac_decode_frame_internal(s);",
+          "content_same": false
+        },
+        {
+          "line": 2068,
+          "old_api": null,
+          "new_api": "init_get_bits",
+          "old_text": null,
+          "new_text": "init_get_bits(&s->gb, &buf[13], 8*(size - DATA_UNIT_HEADER_SIZE))",
+          "old_line_content": "    if (parse_code == DIRAC_PCODE_SEQ_HEADER) {",
+          "new_line_content": "    init_get_bits(&s->gb, &buf[13], 8*(size - DATA_UNIT_HEADER_SIZE));",
+          "content_same": false
+        },
+        {
+          "line": 1941,
+          "old_api": null,
+          "new_api": "get_bits_long",
+          "old_text": null,
+          "new_text": "get_bits_long(gb, 32)",
+          "old_line_content": "",
+          "new_line_content": "    picnum = s->current_picture->avframe->display_picture_number = get_bits_long(gb, 32);",
+          "content_same": false
+        },
+        {
+          "line": 1944,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx,AV_LOG_DEBUG,\"PICTURE_NUM: %d\\n\",picnum)",
+          "old_line_content": "    /* if this is the first keyframe after a sequence header, start our",
+          "new_line_content": "    av_log(s->avctx,AV_LOG_DEBUG,\"PICTURE_NUM: %d\\n\",picnum);",
+          "content_same": false
+        },
+        {
+          "line": 2202,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(s->all_frames[i].avframe)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_frame_unref(s->all_frames[i].avframe);",
+          "content_same": false
+        },
+        {
+          "line": 2203,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->all_frames[i].interpolated, 0, sizeof(s->all_frames[i].interpolated))",
+          "old_line_content": "",
+          "new_line_content": "            memset(s->all_frames[i].interpolated, 0, sizeof(s->all_frames[i].interpolated));",
+          "content_same": false
+        },
+        {
+          "line": 2077,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"error parsing sequence header\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"error parsing sequence header\");",
+          "content_same": false
+        },
+        {
+          "line": 1822,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height)",
+          "old_line_content": "        }",
+          "new_line_content": "                memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);",
+          "content_same": false
+        },
+        {
+          "line": 1953,
+          "old_api": null,
+          "new_api": "dirac_get_se_golomb",
+          "old_text": null,
+          "new_text": "dirac_get_se_golomb(gb)",
+          "old_line_content": "",
+          "new_line_content": "        refnum = (picnum + dirac_get_se_golomb(gb)) & 0xFFFFFFFF;",
+          "content_same": false
+        },
+        {
+          "line": 1826,
+          "old_api": null,
+          "new_api": "decode_lowdelay",
+          "old_text": null,
+          "new_text": "decode_lowdelay(s)",
+          "old_line_content": "        }",
+          "new_line_content": "            if ((ret = decode_lowdelay(s)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 2083,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&dsh)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_freep(&dsh);",
+          "content_same": false
+        },
+        {
+          "line": 2211,
+          "old_api": null,
+          "new_api": "get_delayed_pic",
+          "old_text": null,
+          "new_text": "get_delayed_pic(s, (AVFrame *)data, got_frame)",
+          "old_line_content": "    for (;;) {",
+          "new_line_content": "        return get_delayed_pic(s, (AVFrame *)data, got_frame);",
+          "content_same": false
+        },
+        {
+          "line": 2087,
+          "old_api": null,
+          "new_api": "ff_set_sar",
+          "old_text": null,
+          "new_text": "ff_set_sar(avctx, dsh->sample_aspect_ratio)",
+          "old_line_content": "        avctx->color_range     = dsh->color_range;",
+          "new_line_content": "        ff_set_sar(avctx, dsh->sample_aspect_ratio);",
+          "content_same": false
+        },
+        {
+          "line": 1962,
+          "old_api": null,
+          "new_api": "FFABS",
+          "old_text": null,
+          "new_text": "FFABS(s->ref_frames[j]->avframe->display_picture_number - refnum)",
+          "old_line_content": "",
+          "new_line_content": "                refdist = FFABS(s->ref_frames[j]->avframe->display_picture_number - refnum);",
+          "content_same": false
+        },
+        {
+          "line": 1837,
+          "old_api": null,
+          "new_api": "FFALIGN",
+          "old_text": null,
+          "new_text": "FFALIGN(p->width, 16)",
+          "old_line_content": "        if (!s->zero_res && !s->low_delay)",
+          "new_line_content": "            s->edge_emu_buffer[i] = s->edge_emu_buffer_base + i*FFALIGN(p->width, 16);",
+          "content_same": false
+        },
+        {
+          "line": 1966,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_DEBUG, \"Reference not found\\n\")",
+          "old_line_content": "        /* if there were no references at all, allocate one */",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_DEBUG, \"Reference not found\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1841,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height)",
+          "old_line_content": "        }",
+          "new_line_content": "            memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);",
+          "content_same": false
+        },
+        {
+          "line": 2226,
+          "old_api": null,
+          "new_api": "AV_RB32",
+          "old_text": null,
+          "new_text": "AV_RB32(buf+buf_idx+5)",
+          "old_line_content": "            if(data_unit_size > buf_size - buf_idx)",
+          "new_line_content": "        data_unit_size = AV_RB32(buf+buf_idx+5);",
+          "content_same": false
+        },
+        {
+          "line": 2100,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&dsh)",
+          "old_line_content": "        s->pshift = s->bit_depth > 8;",
+          "new_line_content": "        av_freep(&dsh);",
+          "content_same": false
+        },
+        {
+          "line": 2229,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR,\n                   \"Data unit with size %d is larger than input buffer, discarding\\n\",\n                   data_unit_size)",
+          "old_line_content": "                   data_unit_size);",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 1844,
+          "old_api": null,
+          "new_api": "ff_spatial_idwt_init",
+          "old_text": null,
+          "new_text": "ff_spatial_idwt_init(&d, &p->idwt, s->wavelet_idx+2,\n                                   s->wavelet_depth, s->bit_depth)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "        ret = ff_spatial_idwt_init(&d, &p->idwt, s->wavelet_idx+2,",
+          "content_same": false
+        },
+        {
+          "line": 1973,
+          "old_api": null,
+          "new_api": "get_buffer_with_edge",
+          "old_text": null,
+          "new_text": "get_buffer_with_edge(s->avctx, s->ref_pics[i]->avframe, AV_GET_BUFFER_FLAG_REF)",
+          "old_line_content": "                }",
+          "new_line_content": "                    get_buffer_with_edge(s->avctx, s->ref_pics[i]->avframe, AV_GET_BUFFER_FLAG_REF);",
+          "content_same": false
+        },
+        {
+          "line": 2106,
+          "old_api": null,
+          "new_api": "alloc_sequence_buffers",
+          "old_text": null,
+          "new_text": "alloc_sequence_buffers(s)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = alloc_sequence_buffers(s);",
+          "content_same": false
+        },
+        {
+          "line": 1978,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"Reference could not be allocated\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Reference could not be allocated\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2236,
+          "old_api": null,
+          "new_api": "dirac_decode_data_unit",
+          "old_text": null,
+          "new_text": "dirac_decode_data_unit(avctx, buf+buf_idx, data_unit_size)",
+          "old_line_content": "        {",
+          "new_line_content": "        ret = dirac_decode_data_unit(avctx, buf+buf_idx, data_unit_size);",
+          "content_same": false
+        },
+        {
+          "line": 1852,
+          "old_api": null,
+          "new_api": "ff_spatial_idwt_slice2",
+          "old_text": null,
+          "new_text": "ff_spatial_idwt_slice2(&d, y+16)",
+          "old_line_content": "                                                         p->stride,",
+          "new_line_content": "                ff_spatial_idwt_slice2(&d, y+16); /* decode */",
+          "content_same": false
+        },
+        {
+          "line": 1853,
+          "old_api": null,
+          "new_api": "s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,\n                                                         p->stride,\n                                                         p->idwt.buf + y*p->idwt.stride,\n                                                         p->idwt.stride, p->width, 16)",
+          "old_text": null,
+          "new_text": "s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,\n                                                         p->stride,\n                                                         p->idwt.buf + y*p->idwt.stride,\n                                                         p->idwt.stride, p->width, 16)",
+          "old_line_content": "                                                         p->idwt.buf + y*p->idwt.stride,",
+          "new_line_content": "                s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,",
+          "content_same": false
+        },
+        {
+          "line": 2239,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR,\"Error in dirac_decode_data_unit\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR,\"Error in dirac_decode_data_unit\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2112,
+          "old_api": null,
+          "new_api": "free_sequence_buffers",
+          "old_text": null,
+          "new_text": "free_sequence_buffers(s)",
+          "old_line_content": "    } else if (parse_code == DIRAC_PCODE_AUX) {",
+          "new_line_content": "        free_sequence_buffers(s);",
+          "content_same": false
+        },
+        {
+          "line": 1988,
+          "old_api": null,
+          "new_api": "remove_frame",
+          "old_text": null,
+          "new_text": "remove_frame(s->ref_frames, retire)",
+          "old_line_content": "            if (retire_pic)",
+          "new_line_content": "            DiracFrame *retire_pic = remove_frame(s->ref_frames, retire);",
+          "content_same": false
+        },
+        {
+          "line": 1861,
+          "old_api": null,
+          "new_api": "select_dsp_funcs",
+          "old_text": null,
+          "new_text": "select_dsp_funcs(s, p->width, p->height, p->xblen, p->yblen)",
+          "old_line_content": "            for (i = 0; i < s->num_refs; i++) {",
+          "new_line_content": "            select_dsp_funcs(s, p->width, p->height, p->xblen, p->yblen);",
+          "content_same": false
+        },
+        {
+          "line": 2119,
+          "old_api": null,
+          "new_api": "sscanf",
+          "old_text": null,
+          "new_text": "sscanf(buf+14, \"Schroedinger %d.%d.%d\", ver, ver+1, ver+2)",
+          "old_line_content": "                    s->old_delta_quant = 1;",
+          "new_line_content": "            if (sscanf(buf+14, \"Schroedinger %d.%d.%d\", ver, ver+1, ver+2) == 3)",
+          "content_same": false
+        },
+        {
+          "line": 1864,
+          "old_api": null,
+          "new_api": "interpolate_refplane",
+          "old_text": null,
+          "new_text": "interpolate_refplane(s, s->ref_pics[i], comp, p->width, p->height)",
+          "old_line_content": "                    return ret;",
+          "new_line_content": "                int ret = interpolate_refplane(s, s->ref_pics[i], comp, p->width, p->height);",
+          "content_same": false
+        },
+        {
+          "line": 2249,
+          "old_api": null,
+          "new_api": "remove_frame",
+          "old_text": null,
+          "new_text": "remove_frame(s->delay_frames, s->frame_number)",
+          "old_line_content": "        s->current_picture->reference |= DELAYED_PIC_REF;",
+          "new_line_content": "        DiracFrame *delayed_frame = remove_frame(s->delay_frames, s->frame_number);",
+          "content_same": false
+        },
+        {
+          "line": 1993,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_DEBUG, \"Frame to retire not found\\n\")",
+          "old_line_content": "",
+          "new_line_content": "                av_log(s->avctx, AV_LOG_DEBUG, \"Frame to retire not found\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2125,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_DEBUG, \"Dropping frame without sequence header\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_DEBUG, \"Dropping frame without sequence header\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2253,
+          "old_api": null,
+          "new_api": "add_frame",
+          "old_text": null,
+          "new_text": "add_frame(s->delay_frames, MAX_DELAY, s->current_picture)",
+          "old_line_content": "            /* Too many delayed frames, so we display the frame with the lowest pts */",
+          "new_line_content": "        if (add_frame(s->delay_frames, MAX_DELAY, s->current_picture)) {",
+          "content_same": false
+        },
+        {
+          "line": 1869,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->mctmp, 0, 4*p->yoffset*p->stride)",
+          "old_line_content": "            dsty = -p->yoffset;",
+          "new_line_content": "            memset(s->mctmp, 0, 4*p->yoffset*p->stride);",
+          "content_same": false
+        },
+        {
+          "line": 2256,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"Delay frame overflow\\n\")",
+          "old_line_content": "            for (i = 1; s->delay_frames[i]; i++)",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Delay frame overflow\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1998,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"Reference frame overflow\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Reference frame overflow\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1874,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(dsty, 0)",
+          "old_line_content": "                DiracBlock *blocks = s->blmotion + y*s->blwidth;",
+          "new_line_content": "                    start = FFMAX(dsty, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1999,
+          "old_api": null,
+          "new_api": "remove_frame",
+          "old_text": null,
+          "new_text": "remove_frame(s->ref_frames, s->ref_frames[0]->avframe->display_picture_number)",
+          "old_line_content": "    }",
+          "new_line_content": "            remove_frame(s->ref_frames, s->ref_frames[0]->avframe->display_picture_number)->reference &= DELAYED_PIC_REF;",
+          "content_same": false
+        },
+        {
+          "line": 2004,
+          "old_api": null,
+          "new_api": "dirac_unpack_prediction_parameters",
+          "old_text": null,
+          "new_text": "dirac_unpack_prediction_parameters(s)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = dirac_unpack_prediction_parameters(s);  /* [DIRAC_STD] 11.2 Picture Prediction Data. picture_prediction() */",
+          "content_same": false
+        },
+        {
+          "line": 2134,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"framelist full\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"framelist full\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2262,
+          "old_api": null,
+          "new_api": "remove_frame",
+          "old_text": null,
+          "new_text": "remove_frame(s->delay_frames, min_num)",
+          "old_line_content": "        }",
+          "new_line_content": "            delayed_frame = remove_frame(s->delay_frames, min_num);",
+          "content_same": false
+        },
+        {
+          "line": 2263,
+          "old_api": null,
+          "new_api": "add_frame",
+          "old_text": null,
+          "new_text": "add_frame(s->delay_frames, MAX_DELAY, s->current_picture)",
+          "old_line_content": "",
+          "new_line_content": "            add_frame(s->delay_frames, MAX_DELAY, s->current_picture);",
+          "content_same": false
+        },
+        {
+          "line": 1878,
+          "old_api": null,
+          "new_api": "init_obmc_weights",
+          "old_text": null,
+          "new_text": "init_obmc_weights(s, p, y)",
+          "old_line_content": "                if (y == s->blheight-1 || start+p->ybsep > p->height)",
+          "new_line_content": "                init_obmc_weights(s, p, y);",
+          "content_same": false
+        },
+        {
+          "line": 2138,
+          "old_api": null,
+          "new_api": "av_frame_unref",
+          "old_text": null,
+          "new_text": "av_frame_unref(pic->avframe)",
+          "old_line_content": "        /* [DIRAC_STD] Defined in 9.6.1 ... */",
+          "new_line_content": "        av_frame_unref(pic->avframe);",
+          "content_same": false
+        },
+        {
+          "line": 2007,
+          "old_api": null,
+          "new_api": "dirac_unpack_block_motion_data",
+          "old_text": null,
+          "new_text": "dirac_unpack_block_motion_data(s)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = dirac_unpack_block_motion_data(s);      /* [DIRAC_STD] 12. Block motion data syntax                       */",
+          "content_same": false
+        },
+        {
+          "line": 2268,
+          "old_api": null,
+          "new_api": "av_frame_ref",
+          "old_text": null,
+          "new_text": "av_frame_ref(data, delayed_frame->avframe)",
+          "old_line_content": "            *got_frame = 1;",
+          "new_line_content": "            if((ret=av_frame_ref(data, delayed_frame->avframe)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 2011,
+          "old_api": null,
+          "new_api": "dirac_unpack_idwt_params",
+          "old_text": null,
+          "new_text": "dirac_unpack_idwt_params(s)",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    ret = dirac_unpack_idwt_params(s);                /* [DIRAC_STD] 11.3 Wavelet transform data                        */",
+          "content_same": false
+        },
+        {
+          "line": 2143,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"num_refs of 3\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"num_refs of 3\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1887,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(mctmp+2*p->yoffset*p->stride, 0, 2*rowheight)",
+          "old_line_content": "",
+          "new_line_content": "                memset(mctmp+2*p->yoffset*p->stride, 0, 2*rowheight);",
+          "content_same": false
+        },
+        {
+          "line": 1888,
+          "old_api": null,
+          "new_api": "mc_row",
+          "old_text": null,
+          "new_text": "mc_row(s, blocks, mctmp, comp, dsty)",
+          "old_line_content": "                mctmp += (start - dsty)*p->stride + p->xoffset;",
+          "new_line_content": "                mc_row(s, blocks, mctmp, comp, dsty);",
+          "content_same": false
+        },
+        {
+          "line": 2274,
+          "old_api": null,
+          "new_api": "av_frame_ref",
+          "old_text": null,
+          "new_text": "av_frame_ref(data, s->current_picture->avframe)",
+          "old_line_content": "        *got_frame = 1;",
+          "new_line_content": "        if((ret=av_frame_ref(data, s->current_picture->avframe)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1891,
+          "old_api": null,
+          "new_api": "ff_spatial_idwt_slice2",
+          "old_text": null,
+          "new_text": "ff_spatial_idwt_slice2(&d, start + h)",
+          "old_line_content": "                 * idwt.stride is passed as pixels, not in bytes as in the rest of the decoder */",
+          "new_line_content": "                ff_spatial_idwt_slice2(&d, start + h); /* decode */",
+          "content_same": false
+        },
+        {
+          "line": 2015,
+          "old_api": null,
+          "new_api": "init_planes",
+          "old_text": null,
+          "new_text": "init_planes(s)",
+          "old_line_content": "}",
+          "new_line_content": "    init_planes(s);",
+          "content_same": false
+        },
+        {
+          "line": 1894,
+          "old_api": null,
+          "new_api": "add_rect_clamped",
+          "old_text": null,
+          "new_text": "s->diracdsp.add_rect_clamped(frame + start*p->stride, mctmp, p->stride,\n                                             (int16_t*)(p->idwt.buf) + start*(p->idwt.stride >> 1), (p->idwt.stride >> 1), p->width, h)",
+          "old_line_content": "",
+          "new_line_content": "                s->diracdsp.add_rect_clamped(frame + start*p->stride, mctmp, p->stride,",
+          "content_same": false
+        },
+        {
+          "line": 2287,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"BBC Dirac VC-2\")",
+          "old_line_content": "    .id             = AV_CODEC_ID_DIRAC,",
+          "new_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"BBC Dirac VC-2\"),",
+          "content_same": false
+        },
+        {
+          "line": 2162,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"Invalid low delay flag\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Invalid low delay flag\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 2166,
+          "old_api": null,
+          "new_api": "get_buffer_with_edge",
+          "old_text": null,
+          "new_text": "get_buffer_with_edge(avctx, pic->avframe, (parse_code & 0x0C) == 0x0C ? AV_GET_BUFFER_FLAG_REF : 0)",
+          "old_line_content": "        s->current_picture = pic;",
+          "new_line_content": "        if ((ret = get_buffer_with_edge(avctx, pic->avframe, (parse_code & 0x0C) == 0x0C ? AV_GET_BUFFER_FLAG_REF : 0)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1910,
+          "old_api": null,
+          "new_api": "avcodec_get_chroma_sub_sample",
+          "old_text": null,
+          "new_text": "avcodec_get_chroma_sub_sample(avctx->pix_fmt, &chroma_x_shift, &chroma_y_shift)",
+          "old_line_content": "    f->width  = avctx->width  + 2 * EDGE_WIDTH;",
+          "new_line_content": "    avcodec_get_chroma_sub_sample(avctx->pix_fmt, &chroma_x_shift, &chroma_y_shift);",
+          "content_same": false
+        },
+        {
+          "line": 2038,
+          "old_api": null,
+          "new_api": "av_frame_ref",
+          "old_text": null,
+          "new_text": "av_frame_ref(picture, out->avframe)",
+          "old_line_content": "    }",
+          "new_line_content": "        if((ret = av_frame_ref(picture, out->avframe)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1914,
+          "old_api": null,
+          "new_api": "ff_get_buffer",
+          "old_text": null,
+          "new_text": "ff_get_buffer(avctx, f, flags)",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    ret = ff_get_buffer(avctx, f, flags);",
+          "content_same": false
+        },
+        {
+          "line": 2173,
+          "old_api": null,
+          "new_api": "FFABS",
+          "old_text": null,
+          "new_text": "FFABS(s->plane[2].stride)",
+          "old_line_content": "",
+          "new_line_content": "        if (alloc_buffers(s, FFMAX3(FFABS(s->plane[0].stride), FFABS(s->plane[1].stride), FFABS(s->plane[2].stride))) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 2174,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "        /* [DIRAC_STD] 11.1 Picture parse. picture_parse() */",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 2180,
+          "old_api": "dirac_decode_frame_internal",
+          "new_api": null,
+          "old_text": "dirac_decode_frame_internal(s)",
+          "new_text": null,
+          "old_line_content": "        ret = dirac_decode_frame_internal(s);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2066,
+          "old_api": "init_get_bits",
+          "new_api": null,
+          "old_text": "init_get_bits(&s->gb, &buf[13], 8*(size - DATA_UNIT_HEADER_SIZE))",
+          "new_text": null,
+          "old_line_content": "    init_get_bits(&s->gb, &buf[13], 8*(size - DATA_UNIT_HEADER_SIZE));",
+          "new_line_content": "    parse_code = buf[4];",
+          "content_same": false
+        },
+        {
+          "line": 1939,
+          "old_api": "get_bits_long",
+          "new_api": null,
+          "old_text": "get_bits_long(gb, 32)",
+          "new_text": null,
+          "old_line_content": "    picnum = s->current_picture->avframe->display_picture_number = get_bits_long(gb, 32);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1942,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx,AV_LOG_DEBUG,\"PICTURE_NUM: %d\\n\",picnum)",
+          "new_text": null,
+          "old_line_content": "    av_log(s->avctx,AV_LOG_DEBUG,\"PICTURE_NUM: %d\\n\",picnum);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2200,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(s->all_frames[i].avframe)",
+          "new_text": null,
+          "old_line_content": "            av_frame_unref(s->all_frames[i].avframe);",
+          "new_line_content": "    for (i = 0; i < MAX_FRAMES; i++)",
+          "content_same": false
+        },
+        {
+          "line": 2073,
+          "old_api": "av_dirac_parse_sequence_header",
+          "new_api": null,
+          "old_text": "av_dirac_parse_sequence_header(&dsh, buf + DATA_UNIT_HEADER_SIZE, size - DATA_UNIT_HEADER_SIZE, avctx)",
+          "new_text": null,
+          "old_line_content": "        ret = av_dirac_parse_sequence_header(&dsh, buf + DATA_UNIT_HEADER_SIZE, size - DATA_UNIT_HEADER_SIZE, avctx);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2201,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->all_frames[i].interpolated, 0, sizeof(s->all_frames[i].interpolated))",
+          "new_text": null,
+          "old_line_content": "            memset(s->all_frames[i].interpolated, 0, sizeof(s->all_frames[i].interpolated));",
+          "new_line_content": "        if (s->all_frames[i].avframe->data[0] && !s->all_frames[i].reference) {",
+          "content_same": false
+        },
+        {
+          "line": 1821,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height)",
+          "new_text": null,
+          "old_line_content": "            memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);",
+          "new_line_content": "                Plane *p = &s->plane[comp];",
+          "content_same": false
+        },
+        {
+          "line": 2079,
+          "old_api": "ff_set_dimensions",
+          "new_api": null,
+          "old_text": "ff_set_dimensions(avctx, dsh->width, dsh->height)",
+          "new_text": null,
+          "old_line_content": "        ret = ff_set_dimensions(avctx, dsh->width, dsh->height);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1824,
+          "old_api": "decode_lowdelay",
+          "new_api": null,
+          "old_text": "decode_lowdelay(s)",
+          "new_text": null,
+          "old_line_content": "            if ((ret = decode_lowdelay(s)) < 0)",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 2209,
+          "old_api": "get_delayed_pic",
+          "new_api": null,
+          "old_text": "get_delayed_pic(s, (AVFrame *)data, got_frame)",
+          "new_text": null,
+          "old_line_content": "        return get_delayed_pic(s, (AVFrame *)data, got_frame);",
+          "new_line_content": "    /* end of stream, so flush delayed pics */",
+          "content_same": false
+        },
+        {
+          "line": 1951,
+          "old_api": "dirac_get_se_golomb",
+          "new_api": null,
+          "old_text": "dirac_get_se_golomb(gb)",
+          "new_text": null,
+          "old_line_content": "        refnum = (picnum + dirac_get_se_golomb(gb)) & 0xFFFFFFFF;",
+          "new_line_content": "    s->ref_pics[0] = s->ref_pics[1] = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 2085,
+          "old_api": "ff_set_sar",
+          "new_api": null,
+          "old_text": "ff_set_sar(avctx, dsh->sample_aspect_ratio)",
+          "new_text": null,
+          "old_line_content": "        ff_set_sar(avctx, dsh->sample_aspect_ratio);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1958,
+          "old_api": "FFABS",
+          "new_api": null,
+          "old_text": "FFABS(s->ref_frames[j]->avframe->display_picture_number - refnum)",
+          "new_text": null,
+          "old_line_content": "                && FFABS(s->ref_frames[j]->avframe->display_picture_number - refnum) < refdist) {",
+          "new_line_content": "        for (j = 0; j < MAX_REFERENCE_FRAMES && refdist; j++)",
+          "content_same": false
+        },
+        {
+          "line": 1835,
+          "old_api": "FFALIGN",
+          "new_api": null,
+          "old_text": "FFALIGN(p->width, 16)",
+          "new_text": null,
+          "old_line_content": "            s->edge_emu_buffer[i] = s->edge_emu_buffer_base + i*FFALIGN(p->width, 16);",
+          "new_line_content": "        /* FIXME: small resolutions */",
+          "content_same": false
+        },
+        {
+          "line": 1964,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_DEBUG, \"Reference not found\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_DEBUG, \"Reference not found\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1839,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height)",
+          "new_text": null,
+          "old_line_content": "            memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);",
+          "new_line_content": "        if (!s->zero_res && !s->low_delay)",
+          "content_same": false
+        },
+        {
+          "line": 2224,
+          "old_api": "AV_RB32",
+          "new_api": null,
+          "old_text": "AV_RB32(buf+buf_idx+5)",
+          "new_text": null,
+          "old_line_content": "        data_unit_size = AV_RB32(buf+buf_idx+5);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 1840,
+          "old_api": "decode_component",
+          "new_api": null,
+          "old_text": "decode_component(s, comp)",
+          "new_text": null,
+          "old_line_content": "            decode_component(s, comp); /* [DIRAC_STD] 13.4.1 core_transform_data() */",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 2098,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&dsh)",
+          "new_text": null,
+          "old_line_content": "        av_freep(&dsh);",
+          "new_line_content": "        s->version.minor       = dsh->version.minor;",
+          "content_same": false
+        },
+        {
+          "line": 2227,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR,\n                   \"Data unit with size %d is larger than input buffer, discarding\\n\",\n                   data_unit_size)",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR,",
+          "new_line_content": "        if (data_unit_size > buf_size - buf_idx || !data_unit_size) {",
+          "content_same": false
+        },
+        {
+          "line": 1971,
+          "old_api": "get_buffer_with_edge",
+          "new_api": null,
+          "old_text": "get_buffer_with_edge(s->avctx, s->ref_pics[i]->avframe, AV_GET_BUFFER_FLAG_REF)",
+          "new_text": null,
+          "old_line_content": "                    get_buffer_with_edge(s->avctx, s->ref_pics[i]->avframe, AV_GET_BUFFER_FLAG_REF);",
+          "new_line_content": "                if (!s->all_frames[j].avframe->data[0]) {",
+          "content_same": false
+        },
+        {
+          "line": 2102,
+          "old_api": "avcodec_get_chroma_sub_sample",
+          "new_api": null,
+          "old_text": "avcodec_get_chroma_sub_sample(avctx->pix_fmt, &s->chroma_x_shift, &s->chroma_y_shift)",
+          "new_text": null,
+          "old_line_content": "        avcodec_get_chroma_sub_sample(avctx->pix_fmt, &s->chroma_x_shift, &s->chroma_y_shift);",
+          "new_line_content": "        s->pshift = s->bit_depth > 8;",
+          "content_same": false
+        },
+        {
+          "line": 1976,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"Reference could not be allocated\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Reference could not be allocated\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2234,
+          "old_api": "dirac_decode_data_unit",
+          "new_api": null,
+          "old_text": "dirac_decode_data_unit(avctx, buf+buf_idx, data_unit_size)",
+          "new_text": null,
+          "old_line_content": "        ret = dirac_decode_data_unit(avctx, buf+buf_idx, data_unit_size);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1850,
+          "old_api": "ff_spatial_idwt_slice2",
+          "new_api": null,
+          "old_text": "ff_spatial_idwt_slice2(&d, y+16)",
+          "new_text": null,
+          "old_line_content": "                ff_spatial_idwt_slice2(&d, y+16); /* decode */",
+          "new_line_content": "            for (y = 0; y < p->height; y += 16) {",
+          "content_same": false
+        },
+        {
+          "line": 1851,
+          "old_api": "s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,\n                                                         p->stride,\n                                                         p->idwt.buf + y*p->idwt.stride,\n                                                         p->idwt.stride, p->width, 16)",
+          "new_api": null,
+          "old_text": "s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,\n                                                         p->stride,\n                                                         p->idwt.buf + y*p->idwt.stride,\n                                                         p->idwt.stride, p->width, 16)",
+          "new_text": null,
+          "old_line_content": "                s->diracdsp.put_signed_rect_clamped[idx](frame + y*p->stride,",
+          "new_line_content": "                int idx = (s->bit_depth - 8) >> 1;",
+          "content_same": false
+        },
+        {
+          "line": 2237,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR,\"Error in dirac_decode_data_unit\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR,\"Error in dirac_decode_data_unit\\n\");",
+          "new_line_content": "        if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 2110,
+          "old_api": "free_sequence_buffers",
+          "new_api": null,
+          "old_text": "free_sequence_buffers(s)",
+          "new_text": null,
+          "old_line_content": "        free_sequence_buffers(s);",
+          "new_line_content": "        s->seen_sequence_header = 1;",
+          "content_same": false
+        },
+        {
+          "line": 1984,
+          "old_api": "dirac_get_se_golomb",
+          "new_api": null,
+          "old_text": "dirac_get_se_golomb(gb)",
+          "new_text": null,
+          "old_line_content": "        retire = (picnum + dirac_get_se_golomb(gb)) & 0xFFFFFFFF;",
+          "new_line_content": "    /* retire the reference frames that are not used anymore */",
+          "content_same": false
+        },
+        {
+          "line": 1859,
+          "old_api": "select_dsp_funcs",
+          "new_api": null,
+          "old_text": "select_dsp_funcs(s, p->width, p->height, p->xblen, p->yblen)",
+          "new_text": null,
+          "old_line_content": "            select_dsp_funcs(s, p->width, p->height, p->xblen, p->yblen);",
+          "new_line_content": "            int rowheight = p->ybsep*p->stride;",
+          "content_same": false
+        },
+        {
+          "line": 2117,
+          "old_api": "sscanf",
+          "new_api": null,
+          "old_text": "sscanf(buf+14, \"Schroedinger %d.%d.%d\", ver, ver+1, ver+2)",
+          "new_text": null,
+          "old_line_content": "            if (sscanf(buf+14, \"Schroedinger %d.%d.%d\", ver, ver+1, ver+2) == 3)",
+          "new_line_content": "            /* versions older than 1.0.8 don't store quant delta for",
+          "content_same": false
+        },
+        {
+          "line": 1862,
+          "old_api": "interpolate_refplane",
+          "new_api": null,
+          "old_text": "interpolate_refplane(s, s->ref_pics[i], comp, p->width, p->height)",
+          "new_text": null,
+          "old_line_content": "                int ret = interpolate_refplane(s, s->ref_pics[i], comp, p->width, p->height);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2247,
+          "old_api": "remove_frame",
+          "new_api": null,
+          "old_text": "remove_frame(s->delay_frames, s->frame_number)",
+          "new_text": null,
+          "old_line_content": "        DiracFrame *delayed_frame = remove_frame(s->delay_frames, s->frame_number);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1991,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_DEBUG, \"Frame to retire not found\\n\")",
+          "new_text": null,
+          "old_line_content": "                av_log(s->avctx, AV_LOG_DEBUG, \"Frame to retire not found\\n\");",
+          "new_line_content": "                retire_pic->reference &= DELAYED_PIC_REF;",
+          "content_same": false
+        },
+        {
+          "line": 2123,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_DEBUG, \"Dropping frame without sequence header\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_DEBUG, \"Dropping frame without sequence header\\n\");",
+          "new_line_content": "    } else if (parse_code & 0x8) {  /* picture data unit */",
+          "content_same": false
+        },
+        {
+          "line": 2251,
+          "old_api": "add_frame",
+          "new_api": null,
+          "old_text": "add_frame(s->delay_frames, MAX_DELAY, s->current_picture)",
+          "new_text": null,
+          "old_line_content": "        if (add_frame(s->delay_frames, MAX_DELAY, s->current_picture)) {",
+          "new_line_content": "        s->current_picture->reference |= DELAYED_PIC_REF;",
+          "content_same": false
+        },
+        {
+          "line": 1867,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->mctmp, 0, 4*p->yoffset*p->stride)",
+          "new_text": null,
+          "old_line_content": "            memset(s->mctmp, 0, 4*p->yoffset*p->stride);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 2254,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"Delay frame overflow\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Delay frame overflow\\n\");",
+          "new_line_content": "            int min_num = s->delay_frames[0]->avframe->display_picture_number;",
+          "content_same": false
+        },
+        {
+          "line": 1995,
+          "old_api": "add_frame",
+          "new_api": null,
+          "old_text": "add_frame(s->ref_frames, MAX_REFERENCE_FRAMES, s->current_picture)",
+          "new_text": null,
+          "old_line_content": "        while (add_frame(s->ref_frames, MAX_REFERENCE_FRAMES, s->current_picture)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1872,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(dsty, 0)",
+          "new_text": null,
+          "old_line_content": "                    start = FFMAX(dsty, 0);",
+          "new_line_content": "            for (y = 0; y < s->blheight; y++) {",
+          "content_same": false
+        },
+        {
+          "line": 1996,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"Reference frame overflow\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Reference frame overflow\\n\");",
+          "new_line_content": "        /* if reference array is full, remove the oldest as per the spec */",
+          "content_same": false
+        },
+        {
+          "line": 2002,
+          "old_api": "dirac_unpack_prediction_parameters",
+          "new_api": null,
+          "old_text": "dirac_unpack_prediction_parameters(s)",
+          "new_text": null,
+          "old_line_content": "        ret = dirac_unpack_prediction_parameters(s);  /* [DIRAC_STD] 11.2 Picture Prediction Data. picture_prediction() */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2132,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"framelist full\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"framelist full\\n\");",
+          "new_line_content": "                pic = &s->all_frames[i];",
+          "content_same": false
+        },
+        {
+          "line": 2260,
+          "old_api": "remove_frame",
+          "new_api": null,
+          "old_text": "remove_frame(s->delay_frames, min_num)",
+          "new_text": null,
+          "old_line_content": "            delayed_frame = remove_frame(s->delay_frames, min_num);",
+          "new_line_content": "                    min_num = s->delay_frames[i]->avframe->display_picture_number;",
+          "content_same": false
+        },
+        {
+          "line": 2261,
+          "old_api": "add_frame",
+          "new_api": null,
+          "old_text": "add_frame(s->delay_frames, MAX_DELAY, s->current_picture)",
+          "new_text": null,
+          "old_line_content": "            add_frame(s->delay_frames, MAX_DELAY, s->current_picture);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1876,
+          "old_api": "init_obmc_weights",
+          "new_api": null,
+          "old_text": "init_obmc_weights(s, p, y)",
+          "new_text": null,
+          "old_line_content": "                init_obmc_weights(s, p, y);",
+          "new_line_content": "                DiracBlock *blocks = s->blmotion + y*s->blwidth;",
+          "content_same": false
+        },
+        {
+          "line": 2136,
+          "old_api": "av_frame_unref",
+          "new_api": null,
+          "old_text": "av_frame_unref(pic->avframe)",
+          "new_text": null,
+          "old_line_content": "        av_frame_unref(pic->avframe);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 2005,
+          "old_api": "dirac_unpack_block_motion_data",
+          "new_api": null,
+          "old_text": "dirac_unpack_block_motion_data(s)",
+          "new_text": null,
+          "old_line_content": "        ret = dirac_unpack_block_motion_data(s);      /* [DIRAC_STD] 12. Block motion data syntax                       */",
+          "new_line_content": "        if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 2266,
+          "old_api": "av_frame_ref",
+          "new_api": null,
+          "old_text": "av_frame_ref(data, delayed_frame->avframe)",
+          "new_text": null,
+          "old_line_content": "            if((ret=av_frame_ref(data, delayed_frame->avframe)) < 0)",
+          "new_line_content": "        if (delayed_frame) {",
+          "content_same": false
+        },
+        {
+          "line": 2009,
+          "old_api": "dirac_unpack_idwt_params",
+          "new_api": null,
+          "old_text": "dirac_unpack_idwt_params(s)",
+          "new_text": null,
+          "old_line_content": "    ret = dirac_unpack_idwt_params(s);                /* [DIRAC_STD] 11.3 Wavelet transform data                        */",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 2141,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"num_refs of 3\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"num_refs of 3\\n\");",
+          "new_line_content": "        tmp            =  parse_code & 0x03;                   /* [DIRAC_STD] num_refs()      */",
+          "content_same": false
+        },
+        {
+          "line": 1885,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(mctmp+2*p->yoffset*p->stride, 0, 2*rowheight)",
+          "new_text": null,
+          "old_line_content": "                memset(mctmp+2*p->yoffset*p->stride, 0, 2*rowheight);",
+          "new_line_content": "                    break;",
+          "content_same": false
+        },
+        {
+          "line": 1886,
+          "old_api": "mc_row",
+          "new_api": null,
+          "old_text": "mc_row(s, blocks, mctmp, comp, dsty)",
+          "new_text": null,
+          "old_line_content": "                mc_row(s, blocks, mctmp, comp, dsty);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2272,
+          "old_api": "av_frame_ref",
+          "new_api": null,
+          "old_text": "av_frame_ref(data, s->current_picture->avframe)",
+          "new_text": null,
+          "old_line_content": "        if((ret=av_frame_ref(data, s->current_picture->avframe)) < 0)",
+          "new_line_content": "    } else if (s->current_picture->avframe->display_picture_number == s->frame_number) {",
+          "content_same": false
+        },
+        {
+          "line": 1889,
+          "old_api": "ff_spatial_idwt_slice2",
+          "new_api": null,
+          "old_text": "ff_spatial_idwt_slice2(&d, start + h)",
+          "new_text": null,
+          "old_line_content": "                ff_spatial_idwt_slice2(&d, start + h); /* decode */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2013,
+          "old_api": "init_planes",
+          "new_api": null,
+          "old_text": "init_planes(s)",
+          "new_text": null,
+          "old_line_content": "    init_planes(s);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 1892,
+          "old_api": "add_rect_clamped",
+          "new_api": null,
+          "old_text": "s->diracdsp.add_rect_clamped(frame + start*p->stride, mctmp, p->stride,\n                                             (int16_t*)(p->idwt.buf) + start*(p->idwt.stride >> 1), (p->idwt.stride >> 1), p->width, h)",
+          "new_text": null,
+          "old_line_content": "                s->diracdsp.add_rect_clamped(frame + start*p->stride, mctmp, p->stride,",
+          "new_line_content": "                /* NOTE: add_rect_clamped hasn't been templated hence the shifts.",
+          "content_same": false
+        },
+        {
+          "line": 2285,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"BBC Dirac VC-2\")",
+          "new_text": null,
+          "old_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"BBC Dirac VC-2\"),",
+          "new_line_content": "AVCodec ff_dirac_decoder = {",
+          "content_same": false
+        },
+        {
+          "line": 2160,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"Invalid low delay flag\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Invalid low delay flag\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2164,
+          "old_api": "get_buffer_with_edge",
+          "new_api": null,
+          "old_text": "get_buffer_with_edge(avctx, pic->avframe, (parse_code & 0x0C) == 0x0C ? AV_GET_BUFFER_FLAG_REF : 0)",
+          "new_text": null,
+          "old_line_content": "        if ((ret = get_buffer_with_edge(avctx, pic->avframe, (parse_code & 0x0C) == 0x0C ? AV_GET_BUFFER_FLAG_REF : 0)) < 0)",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1908,
+          "old_api": "avcodec_get_chroma_sub_sample",
+          "new_api": null,
+          "old_text": "avcodec_get_chroma_sub_sample(avctx->pix_fmt, &chroma_x_shift, &chroma_y_shift)",
+          "new_text": null,
+          "old_line_content": "    avcodec_get_chroma_sub_sample(avctx->pix_fmt, &chroma_x_shift, &chroma_y_shift);",
+          "new_line_content": "    int ret, i;",
+          "content_same": false
+        },
+        {
+          "line": 2036,
+          "old_api": "av_frame_ref",
+          "new_api": null,
+          "old_text": "av_frame_ref(picture, out->avframe)",
+          "new_text": null,
+          "old_line_content": "        if((ret = av_frame_ref(picture, out->avframe)) < 0)",
+          "new_line_content": "        out->reference ^= DELAYED_PIC_REF;",
+          "content_same": false
+        },
+        {
+          "line": 1912,
+          "old_api": "ff_get_buffer",
+          "new_api": null,
+          "old_text": "ff_get_buffer(avctx, f, flags)",
+          "new_text": null,
+          "old_line_content": "    ret = ff_get_buffer(avctx, f, flags);",
+          "new_line_content": "    f->width  = avctx->width  + 2 * EDGE_WIDTH;",
+          "content_same": false
+        },
+        {
+          "line": 2171,
+          "old_api": "FFABS",
+          "new_api": null,
+          "old_text": "FFABS(s->plane[2].stride)",
+          "new_text": null,
+          "old_line_content": "        if (alloc_buffers(s, FFMAX3(FFABS(s->plane[0].stride), FFABS(s->plane[1].stride), FFABS(s->plane[2].stride))) < 0)",
+          "new_line_content": "        s->plane[2].stride = pic->avframe->linesize[2];",
+          "content_same": false
+        },
+        {
+          "line": 2172,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2175,
+          "old_api": "dirac_decode_picture_header",
+          "new_api": null,
+          "old_text": "dirac_decode_picture_header(s)",
+          "new_text": null,
+          "old_line_content": "        ret = dirac_decode_picture_header(s);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 67,
+      "total_deletions": 67,
+      "total_api_changes": 140
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 140,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          1819,
+          1820,
+          1823
+        ]
+      }
+    },
+    "api_calls_before": 342,
+    "api_calls_after": 342,
+    "diff_info": {
+      "added_lines": 5,
+      "removed_lines": 3,
+      "total_diff_lines": 20
+    }
+  }
+}

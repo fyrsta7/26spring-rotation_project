@@ -1,0 +1,799 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/79941602a317b45dcf3d1c4d700fe4678e02a0fe",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/79941602a317b45dcf3d1c4d700fe4678e02a0fe/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/79941602a317b45dcf3d1c4d700fe4678e02a0fe/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/79941602a317b45dcf3d1c4d700fe4678e02a0fe/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1059,
+          "old_api": "ilog",
+          "new_api": "init_put_bits",
+          "old_text": "ilog(venc->nmodes - 1)",
+          "new_text": "init_put_bits(&pb, avpkt->data, avpkt->size)",
+          "old_line_content": "    if (pb.size_in_bits - put_bits_count(&pb) < 1 + ilog(venc->nmodes - 1)) {",
+          "new_line_content": "    init_put_bits(&pb, avpkt->data, avpkt->size);",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": "AVERROR",
+          "new_api": "ilog",
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": "ilog(venc->nmodes - 1)",
+          "old_line_content": "        return AVERROR(EINVAL);",
+          "new_line_content": "    if (pb.size_in_bits - put_bits_count(&pb) < 1 + ilog(venc->nmodes - 1)) {",
+          "content_same": false
+        },
+        {
+          "line": 1066,
+          "old_api": "ilog",
+          "new_api": "put_bits",
+          "old_text": "ilog(venc->nmodes - 1)",
+          "new_text": "put_bits(&pb, 1, 0)",
+          "old_line_content": "    put_bits(&pb, ilog(venc->nmodes - 1), 0); // 0 bits, the mode",
+          "new_line_content": "    put_bits(&pb, 1, 0); // magic bit",
+          "content_same": false
+        },
+        {
+          "line": 1080,
+          "old_api": "av_log",
+          "new_api": "floor_fit",
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "new_text": "floor_fit(venc, fc, &venc->coeffs[i * samples], posts, samples)",
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "new_line_content": "        floor_fit(venc, fc, &venc->coeffs[i * samples], posts, samples);",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "AVERROR",
+          "new_api": "floor_encode",
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": "floor_encode(venc, fc, &pb, posts, &venc->floor[i * samples], samples)",
+          "old_line_content": "            return AVERROR(EINVAL);",
+          "new_line_content": "        if (floor_encode(venc, fc, &pb, posts, &venc->floor[i * samples], samples)) {",
+          "content_same": false
+        },
+        {
+          "line": 1104,
+          "old_api": "av_log",
+          "new_api": "residue_encode",
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "new_text": "residue_encode(venc, &venc->residues[mapping->residue[mapping->mux[0]]],\n                       &pb, venc->coeffs, samples, venc->channels)",
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "new_line_content": "    if (residue_encode(venc, &venc->residues[mapping->residue[mapping->mux[0]]],",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": "ff_samples_to_time_base",
+          "new_api": "put_bits_count",
+          "old_text": "ff_samples_to_time_base(avctx, avctx->frame_size)",
+          "new_text": "put_bits_count(&pb)",
+          "old_line_content": "    avpkt->duration = ff_samples_to_time_base(avctx, avctx->frame_size);",
+          "new_line_content": "    avpkt->size = put_bits_count(&pb) >> 3;",
+          "content_same": false
+        },
+        {
+          "line": 1178,
+          "old_api": "ff_mdct_end",
+          "new_api": "av_freep",
+          "old_text": "ff_mdct_end(&venc->mdct[0])",
+          "new_text": "av_freep(&venc->fdsp)",
+          "old_line_content": "    ff_mdct_end(&venc->mdct[0]);",
+          "new_line_content": "    av_freep(&venc->fdsp);",
+          "content_same": false
+        },
+        {
+          "line": 1181,
+          "old_api": "av_freep",
+          "new_api": "ff_mdct_end",
+          "old_text": "av_freep(&avctx->extradata)",
+          "new_text": "ff_mdct_end(&venc->mdct[1])",
+          "old_line_content": "    av_freep(&avctx->extradata);",
+          "new_line_content": "    ff_mdct_end(&venc->mdct[1]);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1024,
+          "old_api": null,
+          "new_api": "mdct_calc",
+          "old_text": null,
+          "new_text": "venc->mdct[0].mdct_calc(&venc->mdct[0], venc->coeffs + channel * window_len,\n                     venc->samples + channel * window_len * 2)",
+          "old_line_content": "                     venc->samples + channel * window_len * 2);",
+          "new_line_content": "        venc->mdct[0].mdct_calc(&venc->mdct[0], venc->coeffs + channel * window_len,",
+          "content_same": false
+        },
+        {
+          "line": 1153,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->floors)",
+          "old_line_content": "    if (venc->residues)",
+          "new_line_content": "    av_freep(&venc->floors);",
+          "content_same": false
+        },
+        {
+          "line": 1157,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->residues[i].books)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_freep(&venc->residues[i].books);",
+          "content_same": false
+        },
+        {
+          "line": 1031,
+          "old_api": null,
+          "new_api": "vector_fmul",
+          "old_text": null,
+          "new_text": "fdsp->vector_fmul(offset, audio[channel], win, samples)",
+          "old_line_content": "        }",
+          "new_line_content": "            fdsp->vector_fmul(offset, audio[channel], win, samples);",
+          "content_same": false
+        },
+        {
+          "line": 1032,
+          "old_api": null,
+          "new_api": "vector_fmul_scalar",
+          "old_text": null,
+          "new_text": "fdsp->vector_fmul_scalar(offset, offset, 1/n, samples)",
+          "old_line_content": "        venc->have_saved = 1;",
+          "new_line_content": "            fdsp->vector_fmul_scalar(offset, offset, 1/n, samples);",
+          "content_same": false
+        },
+        {
+          "line": 1160,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->residues)",
+          "old_line_content": "    if (venc->mappings)",
+          "new_line_content": "    av_freep(&venc->residues);",
+          "content_same": false
+        },
+        {
+          "line": 1167,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->mappings[i].magnitude)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_freep(&venc->mappings[i].magnitude);",
+          "content_same": false
+        },
+        {
+          "line": 1177,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->coeffs)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&venc->coeffs);",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "apply_window_and_mdct",
+          "old_text": null,
+          "new_text": "apply_window_and_mdct(venc, audio, samples)",
+          "old_line_content": "    samples = 1 << (venc->log2_blocksize[0] - 1);",
+          "new_line_content": "    if (!apply_window_and_mdct(venc, audio, samples))",
+          "content_same": false
+        },
+        {
+          "line": 1180,
+          "old_api": null,
+          "new_api": "ff_mdct_end",
+          "old_text": null,
+          "new_text": "ff_mdct_end(&venc->mdct[0])",
+          "old_line_content": "",
+          "new_line_content": "    ff_mdct_end(&venc->mdct[0]);",
+          "content_same": false
+        },
+        {
+          "line": 1183,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&avctx->extradata)",
+          "old_line_content": "    return 0 ;",
+          "new_line_content": "    av_freep(&avctx->extradata);",
+          "content_same": false
+        },
+        {
+          "line": 1056,
+          "old_api": null,
+          "new_api": "ff_alloc_packet2",
+          "old_text": null,
+          "new_text": "ff_alloc_packet2(avctx, avpkt, 8192, 0)",
+          "old_line_content": "",
+          "new_line_content": "    if ((ret = ff_alloc_packet2(avctx, avpkt, 8192, 0)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "old_line_content": "    }",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1063,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "",
+          "new_line_content": "        return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 1194,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"Current FFmpeg Vorbis encoder only supports 2 channels.\\n\")",
+          "old_line_content": "    }",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"Current FFmpeg Vorbis encoder only supports 2 channels.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1068,
+          "old_api": null,
+          "new_api": "ilog",
+          "old_text": null,
+          "new_text": "ilog(venc->nmodes - 1)",
+          "old_line_content": "    mode    = &venc->modes[0];",
+          "new_line_content": "    put_bits(&pb, ilog(venc->nmodes - 1), 0); // 0 bits, the mode",
+          "content_same": false
+        },
+        {
+          "line": 1198,
+          "old_api": null,
+          "new_api": "create_vorbis_context",
+          "old_text": null,
+          "new_text": "create_vorbis_context(venc, avctx)",
+          "old_line_content": "",
+          "new_line_content": "    if ((ret = create_vorbis_context(venc, avctx)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1073,
+          "old_api": null,
+          "new_api": "put_bits",
+          "old_text": null,
+          "new_text": "put_bits(&pb, 1, 0)",
+          "old_line_content": "    }",
+          "new_line_content": "        put_bits(&pb, 1, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1074,
+          "old_api": null,
+          "new_api": "put_bits",
+          "old_text": null,
+          "new_text": "put_bits(&pb, 1, 0)",
+          "old_line_content": "",
+          "new_line_content": "        put_bits(&pb, 1, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1208,
+          "old_api": null,
+          "new_api": "put_main_header",
+          "old_text": null,
+          "new_text": "put_main_header(venc, (uint8_t**)&avctx->extradata)",
+          "old_line_content": "    avctx->extradata_size = ret;",
+          "new_line_content": "    if ((ret = put_main_header(venc, (uint8_t**)&avctx->extradata)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1082,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "old_line_content": "        }",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1083,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "    }",
+          "new_line_content": "            return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 1216,
+          "old_api": null,
+          "new_api": "vorbis_encode_close",
+          "old_text": null,
+          "new_text": "vorbis_encode_close(avctx)",
+          "old_line_content": "}",
+          "new_line_content": "    vorbis_encode_close(avctx);",
+          "content_same": false
+        },
+        {
+          "line": 1222,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"Vorbis\")",
+          "old_line_content": "    .id             = AV_CODEC_ID_VORBIS,",
+          "new_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"Vorbis\"),",
+          "content_same": false
+        },
+        {
+          "line": 1106,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "old_line_content": "    }",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1107,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "",
+          "new_line_content": "        return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 1110,
+          "old_api": null,
+          "new_api": "flush_put_bits",
+          "old_text": null,
+          "new_text": "flush_put_bits(&pb)",
+          "old_line_content": "",
+          "new_line_content": "    flush_put_bits(&pb);",
+          "content_same": false
+        },
+        {
+          "line": 1113,
+          "old_api": null,
+          "new_api": "ff_samples_to_time_base",
+          "old_text": null,
+          "new_text": "ff_samples_to_time_base(avctx, avctx->frame_size)",
+          "old_line_content": "        if (frame->pts != AV_NOPTS_VALUE)",
+          "new_line_content": "    avpkt->duration = ff_samples_to_time_base(avctx, avctx->frame_size);",
+          "content_same": false
+        },
+        {
+          "line": 1116,
+          "old_api": null,
+          "new_api": "ff_samples_to_time_base",
+          "old_text": null,
+          "new_text": "ff_samples_to_time_base(avctx, frame->pts)",
+          "old_line_content": "        avpkt->pts = venc->next_pts;",
+          "new_line_content": "            avpkt->pts = ff_samples_to_time_base(avctx, frame->pts);",
+          "content_same": false
+        },
+        {
+          "line": 1138,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->codebooks[i].dimensions)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_freep(&venc->codebooks[i].dimensions);",
+          "content_same": false
+        },
+        {
+          "line": 1141,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->codebooks)",
+          "old_line_content": "    if (venc->floors)",
+          "new_line_content": "    av_freep(&venc->codebooks);",
+          "content_same": false
+        },
+        {
+          "line": 1014,
+          "old_api": null,
+          "new_api": "vector_fmul_reverse",
+          "old_text": null,
+          "new_text": "fdsp->vector_fmul_reverse(offset, audio[channel], win, samples)",
+          "old_line_content": "                offset[i] = audio[channel][i] / n * win[window_len - i - 1];",
+          "new_line_content": "            fdsp->vector_fmul_reverse(offset, audio[channel], win, samples);",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": null,
+          "new_api": "vector_fmul_scalar",
+          "old_text": null,
+          "new_text": "fdsp->vector_fmul_scalar(offset, offset, 1/n, samples)",
+          "old_line_content": "        }",
+          "new_line_content": "            fdsp->vector_fmul_scalar(offset, offset, 1/n, samples);",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(venc->samples + channel * window_len * 2 + window_len,\n                   0, sizeof(float) * window_len)",
+          "old_line_content": "                   0, sizeof(float) * window_len);",
+          "new_line_content": "            memset(venc->samples + channel * window_len * 2 + window_len,",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&venc->floors[i].partition_to_class)",
+          "old_line_content": "        }",
+          "new_line_content": "            av_freep(&venc->floors[i].partition_to_class);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1018,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(venc->samples + channel * window_len * 2 + window_len,\n                   0, sizeof(float) * window_len)",
+          "new_text": null,
+          "old_line_content": "            memset(venc->samples + channel * window_len * 2 + window_len,",
+          "new_line_content": "        for (channel = 0; channel < venc->channels; channel++)",
+          "content_same": false
+        },
+        {
+          "line": 1155,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->residues[i].books)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->residues[i].books);",
+          "new_line_content": "    if (venc->residues)",
+          "content_same": false
+        },
+        {
+          "line": 1156,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->residues[i].maxes)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->residues[i].maxes);",
+          "new_line_content": "        for (i = 0; i < venc->nresidues; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1162,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->mappings[i].mux)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->mappings[i].mux);",
+          "new_line_content": "    if (venc->mappings)",
+          "content_same": false
+        },
+        {
+          "line": 1163,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->mappings[i].floor)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->mappings[i].floor);",
+          "new_line_content": "        for (i = 0; i < venc->nmappings; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->samples)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&venc->samples);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": "apply_window_and_mdct",
+          "new_api": null,
+          "old_text": "apply_window_and_mdct(venc, audio, samples)",
+          "new_text": null,
+          "old_line_content": "    if (!apply_window_and_mdct(venc, audio, samples))",
+          "new_line_content": "    int i, ret;",
+          "content_same": false
+        },
+        {
+          "line": 1179,
+          "old_api": "ff_mdct_end",
+          "new_api": null,
+          "old_text": "ff_mdct_end(&venc->mdct[1])",
+          "new_text": null,
+          "old_line_content": "    ff_mdct_end(&venc->mdct[1]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": "ff_alloc_packet2",
+          "new_api": null,
+          "old_text": "ff_alloc_packet2(avctx, avpkt, 8192, 0)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = ff_alloc_packet2(avctx, avpkt, 8192, 0)) < 0)",
+          "new_line_content": "    samples = 1 << (venc->log2_blocksize[0] - 1);",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": "init_put_bits",
+          "new_api": null,
+          "old_text": "init_put_bits(&pb, avpkt->data, avpkt->size)",
+          "new_text": null,
+          "old_line_content": "    init_put_bits(&pb, avpkt->data, avpkt->size);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1064,
+          "old_api": "put_bits",
+          "new_api": null,
+          "old_text": "put_bits(&pb, 1, 0)",
+          "new_text": null,
+          "old_line_content": "    put_bits(&pb, 1, 0); // magic bit",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1192,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"Current FFmpeg Vorbis encoder only supports 2 channels.\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"Current FFmpeg Vorbis encoder only supports 2 channels.\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1196,
+          "old_api": "create_vorbis_context",
+          "new_api": null,
+          "old_text": "create_vorbis_context(venc, avctx)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = create_vorbis_context(venc, avctx)) < 0)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1071,
+          "old_api": "put_bits",
+          "new_api": null,
+          "old_text": "put_bits(&pb, 1, 0)",
+          "new_text": null,
+          "old_line_content": "        put_bits(&pb, 1, 0);",
+          "new_line_content": "    mapping = &venc->mappings[mode->mapping];",
+          "content_same": false
+        },
+        {
+          "line": 1072,
+          "old_api": "put_bits",
+          "new_api": null,
+          "old_text": "put_bits(&pb, 1, 0)",
+          "new_text": null,
+          "old_line_content": "        put_bits(&pb, 1, 0);",
+          "new_line_content": "    if (mode->blockflag) {",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": "floor_fit",
+          "new_api": null,
+          "old_text": "floor_fit(venc, fc, &venc->coeffs[i * samples], posts, samples)",
+          "new_text": null,
+          "old_line_content": "        floor_fit(venc, fc, &venc->coeffs[i * samples], posts, samples);",
+          "new_line_content": "        vorbis_enc_floor *fc = &venc->floors[mapping->floor[mapping->mux[i]]];",
+          "content_same": false
+        },
+        {
+          "line": 1079,
+          "old_api": "floor_encode",
+          "new_api": null,
+          "old_text": "floor_encode(venc, fc, &pb, posts, &venc->floor[i * samples], samples)",
+          "new_text": null,
+          "old_line_content": "        if (floor_encode(venc, fc, &pb, posts, &venc->floor[i * samples], samples)) {",
+          "new_line_content": "        uint16_t posts[MAX_FLOOR_VALUES];",
+          "content_same": false
+        },
+        {
+          "line": 1206,
+          "old_api": "put_main_header",
+          "new_api": null,
+          "old_text": "put_main_header(venc, (uint8_t**)&avctx->extradata)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = put_main_header(venc, (uint8_t**)&avctx->extradata)) < 0)",
+          "new_line_content": "    venc->quality *= venc->quality;",
+          "content_same": false
+        },
+        {
+          "line": 1214,
+          "old_api": "vorbis_encode_close",
+          "new_api": null,
+          "old_text": "vorbis_encode_close(avctx)",
+          "new_text": null,
+          "old_line_content": "    vorbis_encode_close(avctx);",
+          "new_line_content": "    return 0;",
+          "content_same": false
+        },
+        {
+          "line": 1220,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"Vorbis\")",
+          "new_text": null,
+          "old_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"Vorbis\"),",
+          "new_line_content": "AVCodec ff_vorbis_encoder = {",
+          "content_same": false
+        },
+        {
+          "line": 1102,
+          "old_api": "residue_encode",
+          "new_api": null,
+          "old_text": "residue_encode(venc, &venc->residues[mapping->residue[mapping->mux[0]]],\n                       &pb, venc->coeffs, samples, venc->channels)",
+          "new_text": null,
+          "old_line_content": "    if (residue_encode(venc, &venc->residues[mapping->residue[mapping->mux[0]]],",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(EINVAL);",
+          "new_line_content": "                       &pb, venc->coeffs, samples, venc->channels)) {",
+          "content_same": false
+        },
+        {
+          "line": 1108,
+          "old_api": "flush_put_bits",
+          "new_api": null,
+          "old_text": "flush_put_bits(&pb)",
+          "new_text": null,
+          "old_line_content": "    flush_put_bits(&pb);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1109,
+          "old_api": "put_bits_count",
+          "new_api": null,
+          "old_text": "put_bits_count(&pb)",
+          "new_text": null,
+          "old_line_content": "    avpkt->size = put_bits_count(&pb) >> 3;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1114,
+          "old_api": "ff_samples_to_time_base",
+          "new_api": null,
+          "old_text": "ff_samples_to_time_base(avctx, frame->pts)",
+          "new_text": null,
+          "old_line_content": "            avpkt->pts = ff_samples_to_time_base(avctx, frame->pts);",
+          "new_line_content": "    if (frame) {",
+          "content_same": false
+        },
+        {
+          "line": 1133,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->codebooks[i].lens)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->codebooks[i].lens);",
+          "new_line_content": "    if (venc->codebooks)",
+          "content_same": false
+        },
+        {
+          "line": 1134,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->codebooks[i].codewords)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->codebooks[i].codewords);",
+          "new_line_content": "        for (i = 0; i < venc->ncodebooks; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1146,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->floors[i].classes[j].books)",
+          "new_text": null,
+          "old_line_content": "                    av_freep(&venc->floors[i].classes[j].books);",
+          "new_line_content": "            if (venc->floors[i].classes)",
+          "content_same": false
+        },
+        {
+          "line": 1147,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&venc->floors[i].classes)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&venc->floors[i].classes);",
+          "new_line_content": "                for (j = 0; j < venc->floors[i].nclasses; j++)",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": "mdct_calc",
+          "new_api": null,
+          "old_text": "venc->mdct[0].mdct_calc(&venc->mdct[0], venc->coeffs + channel * window_len,\n                     venc->samples + channel * window_len * 2)",
+          "new_text": null,
+          "old_line_content": "        venc->mdct[0].mdct_calc(&venc->mdct[0], venc->coeffs + channel * window_len,",
+          "new_line_content": "    for (channel = 0; channel < venc->channels; channel++)",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 9,
+      "total_additions": 35,
+      "total_deletions": 31,
+      "total_api_changes": 75
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 10,
+        "api_related_lines": 75,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          995,
+          1029,
+          1030,
+          1012,
+          1013,
+          991
+        ]
+      }
+    },
+    "api_calls_before": 277,
+    "api_calls_after": 281,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 7,
+      "total_diff_lines": 45
+    }
+  }
+}

@@ -1,0 +1,2956 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/9f7dcc0726ab635fb34fb7310e54b1aec9467f14",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/9f7dcc0726ab635fb34fb7310e54b1aec9467f14/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/9f7dcc0726ab635fb34fb7310e54b1aec9467f14/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/9f7dcc0726ab635fb34fb7310e54b1aec9467f14/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 155,
+          "old_api": "mp_image_fill_alloc",
+          "new_api": "mp_image_setfmt",
+          "old_text": "mp_image_fill_alloc(mpi, stride_align, buffer, buffer_size)",
+          "new_text": "mp_image_setfmt(mpi, imgfmt)",
+          "old_line_content": "    if (!mp_image_fill_alloc(mpi, stride_align, buffer, buffer_size))",
+          "new_line_content": "    mp_image_setfmt(mpi, imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "av_buffer_create",
+          "new_api": "mp_image_fill_alloc",
+          "old_text": "av_buffer_create(buffer, buffer_size, free, free_opaque, 0)",
+          "new_text": "mp_image_fill_alloc(mpi, stride_align, buffer, buffer_size)",
+          "old_line_content": "    mpi->bufs[0] = av_buffer_create(buffer, buffer_size, free, free_opaque, 0);",
+          "new_line_content": "    if (!mp_image_fill_alloc(mpi, stride_align, buffer, buffer_size))",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "talloc_free",
+          "new_api": "av_buffer_unref",
+          "old_text": "talloc_free(mpi->ff_side_data)",
+          "new_text": "av_buffer_unref(&mpi->a53_cc)",
+          "old_line_content": "    talloc_free(mpi->ff_side_data);",
+          "new_line_content": "    av_buffer_unref(&mpi->a53_cc);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": "mp_image_set_size",
+          "new_api": "talloc_zero",
+          "old_text": "mp_image_set_size(mpi, w, h)",
+          "new_text": "talloc_zero(NULL, struct mp_image)",
+          "old_line_content": "    mp_image_set_size(mpi, w, h);",
+          "new_line_content": "    struct mp_image *mpi = talloc_zero(NULL, struct mp_image);",
+          "content_same": false
+        },
+        {
+          "line": 257,
+          "old_api": "mp_image_setfmt",
+          "new_api": "talloc_set_destructor",
+          "old_text": "mp_image_setfmt(mpi, imgfmt)",
+          "new_text": "talloc_set_destructor(mpi, mp_image_destructor)",
+          "old_line_content": "    mp_image_setfmt(mpi, imgfmt);",
+          "new_line_content": "    talloc_set_destructor(mpi, mp_image_destructor);",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "talloc_free",
+          "new_api": "mp_image_set_size",
+          "old_text": "talloc_free(mpi)",
+          "new_text": "mp_image_set_size(mpi, w, h)",
+          "old_line_content": "        talloc_free(mpi);",
+          "new_line_content": "    mp_image_set_size(mpi, w, h);",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "mp_image_destructor",
+          "new_api": "assert",
+          "old_text": "mp_image_destructor(dst)",
+          "new_text": "assert(dst->imgfmt == src->imgfmt && dst->w == src->w && dst->h == src->h)",
+          "old_line_content": "    mp_image_destructor(dst); // unref old",
+          "new_line_content": "    assert(dst->imgfmt == src->imgfmt && dst->w == src->w && dst->h == src->h);",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "talloc_free_children",
+          "new_api": "assert",
+          "old_text": "talloc_free_children(dst)",
+          "new_text": "assert(dst->bufs[0] && src->bufs[0])",
+          "old_line_content": "    talloc_free_children(dst);",
+          "new_line_content": "    assert(dst->bufs[0] && src->bufs[0]);",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "talloc_memdup",
+          "new_api": "ref_buffer",
+          "old_text": "talloc_memdup(NULL, new->ff_side_data,\n                        new->num_ff_side_data * sizeof(new->ff_side_data[0]))",
+          "new_text": "ref_buffer(&ok, &new->icc_profile)",
+          "old_line_content": "    new->ff_side_data = talloc_memdup(NULL, new->ff_side_data,",
+          "new_line_content": "    ref_buffer(&ok, &new->icc_profile);",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "ref_buffer",
+          "new_api": "talloc_memdup",
+          "old_text": "ref_buffer(&ok, &new->ff_side_data[n].buf)",
+          "new_text": "talloc_memdup(NULL, new->ff_side_data,\n                        new->num_ff_side_data * sizeof(new->ff_side_data[0]))",
+          "old_line_content": "        ref_buffer(&ok, &new->ff_side_data[n].buf);",
+          "new_line_content": "    new->ff_side_data = talloc_memdup(NULL, new->ff_side_data,",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "mp_image_new_copy",
+          "new_api": "mp_image_is_writeable",
+          "old_text": "mp_image_new_copy(img)",
+          "new_text": "mp_image_is_writeable(img)",
+          "old_line_content": "    struct mp_image *new = mp_image_new_copy(img);",
+          "new_line_content": "    if (mp_image_is_writeable(img))",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "mp_image_plane_w",
+          "new_api": "assert",
+          "old_text": "mp_image_plane_w(dst, n)",
+          "new_text": "assert(dst->w == src->w && dst->h == src->h)",
+          "old_line_content": "        int line_bytes = (mp_image_plane_w(dst, n) * dst->fmt.bpp[n] + 7) / 8;",
+          "new_line_content": "    assert(dst->w == src->w && dst->h == src->h);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "mp_image_plane_h",
+          "new_api": "mp_image_is_writeable",
+          "old_text": "mp_image_plane_h(dst, n)",
+          "new_text": "mp_image_is_writeable(dst)",
+          "old_line_content": "        int plane_h = mp_image_plane_h(dst, n);",
+          "new_line_content": "    assert(mp_image_is_writeable(dst));",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "av_buffer_unref",
+          "new_api": "memcpy",
+          "old_text": "av_buffer_unref(&dst->icc_profile)",
+          "new_text": "memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE)",
+          "old_line_content": "    av_buffer_unref(&dst->icc_profile);",
+          "new_line_content": "                memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": "av_buffer_ref",
+          "new_api": "av_buffer_unref",
+          "old_text": "av_buffer_ref(dst->icc_profile)",
+          "new_text": "av_buffer_unref(&dst->icc_profile)",
+          "old_line_content": "        dst->icc_profile = av_buffer_ref(dst->icc_profile);",
+          "new_line_content": "    av_buffer_unref(&dst->icc_profile);",
+          "content_same": false
+        },
+        {
+          "line": 563,
+          "old_api": "mp_image_crop",
+          "new_api": "assert",
+          "old_text": "mp_image_crop(&area, x0, y0, x1, y1)",
+          "new_text": "assert(!(y0 & (img->fmt.align_y - 1)))",
+          "old_line_content": "    mp_image_crop(&area, x0, y0, x1, y1);",
+          "new_line_content": "    assert(!(y0 & (img->fmt.align_y - 1)));",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "mp_image_plane_h",
+          "new_api": "mp_image_plane_w",
+          "old_text": "mp_image_plane_h(&area, p)",
+          "new_text": "mp_image_plane_w(&area, p)",
+          "old_line_content": "                       mp_image_plane_h(&area, p), area.stride[p]);",
+          "new_line_content": "        int bytes = (mp_image_plane_w(&area, p) * bpp + 7) / 8;",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": "memset16_pic",
+          "new_api": "memset_pic",
+          "old_text": "memset16_pic(area.planes[p], plane_clear[p], (bytes + 1) / 2,\n                         mp_image_plane_h(&area, p), area.stride[p])",
+          "new_text": "memset_pic(area.planes[p], plane_clear[p], bytes,\n                       mp_image_plane_h(&area, p), area.stride[p])",
+          "old_line_content": "            memset16_pic(area.planes[p], plane_clear[p], (bytes + 1) / 2,",
+          "new_line_content": "            memset_pic(area.planes[p], plane_clear[p], bytes,",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "mp_imgfmt_to_name",
+          "new_api": "snprintf",
+          "old_text": "mp_imgfmt_to_name(p->imgfmt)",
+          "new_text": "snprintf(b, bs, \"%dx%d\", p->w, p->h)",
+          "old_line_content": "        mp_snprintf_cat(b, bs, \" %s\", mp_imgfmt_to_name(p->imgfmt));",
+          "new_line_content": "        snprintf(b, bs, \"%dx%d\", p->w, p->h);",
+          "content_same": false
+        },
+        {
+          "line": 629,
+          "old_api": "mp_imgfmt_to_name",
+          "new_api": "mp_snprintf_cat",
+          "old_text": "mp_imgfmt_to_name(p->hw_subfmt)",
+          "new_text": "mp_snprintf_cat(b, bs, \" [%d:%d]\", p->p_w, p->p_h)",
+          "old_line_content": "            mp_snprintf_cat(b, bs, \"[%s]\", mp_imgfmt_to_name(p->hw_subfmt));",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \" [%d:%d]\", p->p_w, p->p_h);",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "mp_snprintf_cat",
+          "new_api": "mp_imgfmt_to_name",
+          "old_text": "mp_snprintf_cat(b, bs, \" %s/%s/%s/%s/%s\",\n                        m_opt_choice_str(mp_csp_names, p->color.space),\n                        m_opt_choice_str(mp_csp_prim_names, p->color.primaries),\n                        m_opt_choice_str(mp_csp_trc_names, p->color.gamma),\n                        m_opt_choice_str(mp_csp_levels_names, p->color.levels),\n                        m_opt_choice_str(mp_csp_light_names, p->color.light))",
+          "new_text": "mp_imgfmt_to_name(p->hw_subfmt)",
+          "old_line_content": "        mp_snprintf_cat(b, bs, \" %s/%s/%s/%s/%s\",",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \"[%s]\", mp_imgfmt_to_name(p->hw_subfmt));",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": "m_opt_choice_str",
+          "new_api": "mp_snprintf_cat",
+          "old_text": "m_opt_choice_str(mp_csp_prim_names, p->color.primaries)",
+          "new_text": "mp_snprintf_cat(b, bs, \"[0x%x]\", p->hw_flags)",
+          "old_line_content": "                        m_opt_choice_str(mp_csp_prim_names, p->color.primaries),",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \"[0x%x]\", p->hw_flags);",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "m_opt_choice_str",
+          "new_api": "mp_snprintf_cat",
+          "old_text": "m_opt_choice_str(mp_csp_trc_names, p->color.gamma)",
+          "new_text": "mp_snprintf_cat(b, bs, \" %s/%s/%s/%s/%s\",\n                        m_opt_choice_str(mp_csp_names, p->color.space),\n                        m_opt_choice_str(mp_csp_prim_names, p->color.primaries),\n                        m_opt_choice_str(mp_csp_trc_names, p->color.gamma),\n                        m_opt_choice_str(mp_csp_levels_names, p->color.levels),\n                        m_opt_choice_str(mp_csp_light_names, p->color.light))",
+          "old_line_content": "                        m_opt_choice_str(mp_csp_trc_names, p->color.gamma),",
+          "new_line_content": "        mp_snprintf_cat(b, bs, \" %s/%s/%s/%s/%s\",",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "mp_snprintf_cat",
+          "new_api": "m_opt_choice_str",
+          "old_text": "mp_snprintf_cat(b, bs, \" SP=%f\", p->color.sig_peak)",
+          "new_text": "m_opt_choice_str(mp_csp_levels_names, p->color.levels)",
+          "old_line_content": "            mp_snprintf_cat(b, bs, \" SP=%f\", p->color.sig_peak);",
+          "new_line_content": "                        m_opt_choice_str(mp_csp_levels_names, p->color.levels),",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "mp_snprintf_cat",
+          "new_api": "m_opt_choice_str",
+          "old_text": "mp_snprintf_cat(b, bs, \" CL=%s\",\n                        m_opt_choice_str(mp_chroma_names, p->chroma_location))",
+          "new_text": "m_opt_choice_str(mp_csp_light_names, p->color.light)",
+          "old_line_content": "        mp_snprintf_cat(b, bs, \" CL=%s\",",
+          "new_line_content": "                        m_opt_choice_str(mp_csp_light_names, p->color.light));",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "MP_STEREO3D_NAME_DEF",
+          "new_api": "mp_snprintf_cat",
+          "old_text": "MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\")",
+          "new_text": "mp_snprintf_cat(b, bs, \" rot=%d\", p->rotate)",
+          "old_line_content": "                            MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\"));",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \" rot=%d\", p->rotate);",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": "avcol_trc_to_mp_csp_trc",
+          "new_api": "avcol_spc_to_mp_csp",
+          "old_text": "avcol_trc_to_mp_csp_trc(src->color_trc)",
+          "new_text": "avcol_spc_to_mp_csp(src->colorspace)",
+          "old_line_content": "        .gamma = avcol_trc_to_mp_csp_trc(src->color_trc),",
+          "new_line_content": "        .space = avcol_spc_to_mp_csp(src->colorspace),",
+          "content_same": false
+        },
+        {
+          "line": 878,
+          "old_api": "avchroma_location_to_mp",
+          "new_api": "avcol_trc_to_mp_csp_trc",
+          "old_text": "avchroma_location_to_mp(src->chroma_location)",
+          "new_text": "avcol_trc_to_mp_csp_trc(src->color_trc)",
+          "old_line_content": "    dst->params.chroma_location = avchroma_location_to_mp(src->chroma_location);",
+          "new_line_content": "        .gamma = avcol_trc_to_mp_csp_trc(src->color_trc),",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": "av_frame_get_side_data",
+          "new_api": "av_q2d",
+          "old_text": "av_frame_get_side_data(src, AV_FRAME_DATA_A53_CC)",
+          "new_text": "av_q2d(mdm->max_luminance)",
+          "old_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_A53_CC);",
+          "new_line_content": "            dst->params.color.sig_peak = av_q2d(mdm->max_luminance) / MP_REF_WHITE;",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": "mp_image_new_ref",
+          "new_api": "complete_image_params",
+          "old_text": "mp_image_new_ref(dst)",
+          "new_text": "fns->complete_image_params(dst)",
+          "old_line_content": "    struct mp_image *res = mp_image_new_ref(dst);",
+          "new_line_content": "            fns->complete_image_params(dst);",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": "talloc_free",
+          "new_api": "mp_image_new_ref",
+          "old_text": "talloc_free(dst->ff_side_data)",
+          "new_text": "mp_image_new_ref(dst)",
+          "old_line_content": "    talloc_free(dst->ff_side_data);",
+          "new_line_content": "    struct mp_image *res = mp_image_new_ref(dst);",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": "talloc_free",
+          "new_api": "mp_image_new_ref",
+          "old_text": "talloc_free(new_ref)",
+          "new_text": "mp_image_new_ref(src)",
+          "old_line_content": "        talloc_free(new_ref);",
+          "new_line_content": "    struct mp_image *new_ref = mp_image_new_ref(src);",
+          "content_same": false
+        },
+        {
+          "line": 948,
+          "old_api": "av_frame_free",
+          "new_api": "av_frame_alloc",
+          "old_text": "av_frame_free(&dst)",
+          "new_text": "av_frame_alloc()",
+          "old_line_content": "        av_frame_free(&dst);",
+          "new_line_content": "    AVFrame *dst = av_frame_alloc();",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": "mp_csp_prim_to_avcol_pri",
+          "new_api": "mp_csp_to_avcol_spc",
+          "old_text": "mp_csp_prim_to_avcol_pri(src->params.color.primaries)",
+          "new_text": "mp_csp_to_avcol_spc(src->params.color.space)",
+          "old_line_content": "        mp_csp_prim_to_avcol_pri(src->params.color.primaries);",
+          "new_line_content": "    dst->colorspace = mp_csp_to_avcol_spc(src->params.color.space);",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": "mp_csp_trc_to_avcol_trc",
+          "new_api": "mp_csp_levels_to_avcol_range",
+          "old_text": "mp_csp_trc_to_avcol_trc(src->params.color.gamma)",
+          "new_text": "mp_csp_levels_to_avcol_range(src->params.color.levels)",
+          "old_line_content": "    dst->color_trc = mp_csp_trc_to_avcol_trc(src->params.color.gamma);",
+          "new_line_content": "    dst->color_range = mp_csp_levels_to_avcol_range(src->params.color.levels);",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": "mp_chroma_location_to_av",
+          "new_api": "mp_csp_prim_to_avcol_pri",
+          "old_text": "mp_chroma_location_to_av(src->params.chroma_location)",
+          "new_text": "mp_csp_prim_to_avcol_pri(src->params.color.primaries)",
+          "old_line_content": "    dst->chroma_location = mp_chroma_location_to_av(src->params.chroma_location);",
+          "new_line_content": "        mp_csp_prim_to_avcol_pri(src->params.color.primaries);",
+          "content_same": false
+        },
+        {
+          "line": 1000,
+          "old_api": "abort",
+          "new_api": "av_frame_new_side_data_from_buf",
+          "old_text": "abort()",
+          "new_text": "av_frame_new_side_data_from_buf(dst, AV_FRAME_DATA_ICC_PROFILE,\n                                            new_ref->icc_profile)",
+          "old_line_content": "            abort();",
+          "new_line_content": "            av_frame_new_side_data_from_buf(dst, AV_FRAME_DATA_ICC_PROFILE,",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": "abort",
+          "new_api": "av_frame_new_side_data_from_buf",
+          "old_text": "abort()",
+          "new_text": "av_frame_new_side_data_from_buf(dst, mpsd->type,\n                                                                  mpsd->buf)",
+          "old_line_content": "                abort();",
+          "new_line_content": "            AVFrameSideData *sd = av_frame_new_side_data_from_buf(dst, mpsd->type,",
+          "content_same": false
+        },
+        {
+          "line": 1029,
+          "old_api": "av_frame_free",
+          "new_api": "talloc_free",
+          "old_text": "av_frame_free(&dst)",
+          "new_text": "talloc_free(new_ref)",
+          "old_line_content": "        av_frame_free(&dst);",
+          "new_line_content": "    talloc_free(new_ref);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 515,
+          "old_api": null,
+          "new_api": "mp_image_params_get_forced_csp",
+          "old_text": null,
+          "new_text": "mp_image_params_get_forced_csp(&dst->params)",
+          "old_line_content": "    if ((dst->fmt.flags & MP_IMGFLAG_PAL) && (src->fmt.flags & MP_IMGFLAG_PAL)) {",
+          "new_line_content": "    if (mp_image_params_get_forced_csp(&dst->params) !=",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": null,
+          "new_api": "mp_image_params_get_forced_csp",
+          "old_text": null,
+          "new_text": "mp_image_params_get_forced_csp(&src->params)",
+          "old_line_content": "        if (dst->planes[1] && src->planes[1]) {",
+          "new_line_content": "        mp_image_params_get_forced_csp(&src->params))",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "mp_image_make_writeable",
+          "old_text": null,
+          "new_text": "mp_image_make_writeable(dst)",
+          "old_line_content": "    }",
+          "new_line_content": "            if (mp_image_make_writeable(dst))",
+          "content_same": false
+        },
+        {
+          "line": 1032,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&dst)",
+          "old_line_content": "",
+          "new_line_content": "        av_frame_free(&dst);",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "av_buffer_ref",
+          "old_text": null,
+          "new_text": "av_buffer_ref(dst->icc_profile)",
+          "old_line_content": "    }",
+          "new_line_content": "        dst->icc_profile = av_buffer_ref(dst->icc_profile);",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": null,
+          "new_api": "mp_image_to_av_frame",
+          "old_text": null,
+          "new_text": "mp_image_to_av_frame(img)",
+          "old_line_content": "}",
+          "new_line_content": "    AVFrame *frame = mp_image_to_av_frame(img);",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "",
+          "new_line_content": "            abort();",
+          "content_same": false
+        },
+        {
+          "line": 1040,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(img)",
+          "old_line_content": "",
+          "new_line_content": "    talloc_free(img);",
+          "content_same": false
+        },
+        {
+          "line": 1047,
+          "old_api": null,
+          "new_api": "memcpy_pic_cb",
+          "old_text": null,
+          "new_text": "memcpy_pic_cb(dst, src, bytesPerLine, height, dstStride, srcStride, memcpy)",
+          "old_line_content": "void memset_pic(void *dst, int fill, int bytesPerLine, int height, int stride)",
+          "new_line_content": "    memcpy_pic_cb(dst, src, bytesPerLine, height, dstStride, srcStride, memcpy);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(x1 <= img->w && y1 <= img->h)",
+          "old_line_content": "",
+          "new_line_content": "    assert(x1 <= img->w && y1 <= img->h);",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!(x0 & (img->fmt.align_x - 1)))",
+          "old_line_content": "    for (int p = 0; p < img->num_planes; ++p) {",
+          "new_line_content": "    assert(!(x0 & (img->fmt.align_x - 1)));",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!(y0 & (img->fmt.align_y - 1)))",
+          "old_line_content": "        img->planes[p] += (y0 >> img->fmt.ys[p]) * img->stride[p] +",
+          "new_line_content": "    assert(!(y0 & (img->fmt.align_y - 1)));",
+          "content_same": false
+        },
+        {
+          "line": 1056,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(dst, fill, bytesPerLine)",
+          "old_line_content": "    }",
+          "new_line_content": "            memset(dst, fill, bytesPerLine);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "mp_image_set_size",
+          "old_text": null,
+          "new_text": "mp_image_set_size(img, x1 - x0, y1 - y0)",
+          "old_line_content": "void mp_image_crop_rc(struct mp_image *img, struct mp_rect rc)",
+          "new_line_content": "    mp_image_set_size(img, x1 - x0, y1 - y0);",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": null,
+          "new_api": "mp_image_crop",
+          "old_text": null,
+          "new_text": "mp_image_crop(img, rc.x0, rc.y0, rc.x1, rc.y1)",
+          "old_line_content": "// Bottom/right border is allowed not to be aligned, but it might implicitly",
+          "new_line_content": "    mp_image_crop(img, rc.x0, rc.y0, rc.x1, rc.y1);",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": null,
+          "new_api": "memset_pic",
+          "old_text": null,
+          "new_text": "memset_pic(dst, 0, unitsPerLine * 2, height, stride)",
+          "old_line_content": "            uint16_t *line = dst;",
+          "new_line_content": "        memset_pic(dst, 0, unitsPerLine * 2, height, stride);",
+          "content_same": false
+        },
+        {
+          "line": 561,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(x1 <= img->w && y1 <= img->h)",
+          "old_line_content": "",
+          "new_line_content": "    assert(x1 <= img->w && y1 <= img->h);",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!(x0 & (img->fmt.align_x - 1)))",
+          "old_line_content": "    struct mp_image area = *img;",
+          "new_line_content": "    assert(!(x0 & (img->fmt.align_x - 1)));",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "mp_image_crop",
+          "old_text": null,
+          "new_text": "mp_image_crop(&area, x0, y0, x1, y1)",
+          "old_line_content": "",
+          "new_line_content": "    mp_image_crop(&area, x0, y0, x1, y1);",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": null,
+          "new_api": "av_le2ne16",
+          "old_text": null,
+          "new_text": "av_le2ne16(0x0080)",
+          "old_line_content": "    } else if (area.fmt.flags & MP_IMGFLAG_YUV_P) {",
+          "new_line_content": "        plane_clear[0] = av_le2ne16(0x0080);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "av_bswap16",
+          "old_text": null,
+          "new_text": "av_bswap16(chroma_clear)",
+          "old_line_content": "    }",
+          "new_line_content": "            chroma_clear = av_bswap16(chroma_clear);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "memset16_pic",
+          "old_text": null,
+          "new_text": "memset16_pic(area.planes[p], plane_clear[p], (bytes + 1) / 2,\n                         mp_image_plane_h(&area, p), area.stride[p])",
+          "old_line_content": "    }",
+          "new_line_content": "            memset16_pic(area.planes[p], plane_clear[p], (bytes + 1) / 2,",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": null,
+          "new_api": "mp_image_plane_h",
+          "old_text": null,
+          "new_text": "mp_image_plane_h(&area, p)",
+          "old_line_content": "}",
+          "new_line_content": "                         mp_image_plane_h(&area, p), area.stride[p]);",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": null,
+          "new_api": "mp_image_plane_h",
+          "old_text": null,
+          "new_text": "mp_image_plane_h(img, p)",
+          "old_line_content": "    }",
+          "new_line_content": "        int plane_h = mp_image_plane_h(img, p);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "MPCLAMP",
+          "old_text": null,
+          "new_text": "MPCLAMP(*d_w * (int64_t)p->p_w / p->p_h, 1, INT_MAX)",
+          "old_line_content": "}",
+          "new_line_content": "        *d_w = MPCLAMP(*d_w * (int64_t)p->p_w / p->p_h, 1, INT_MAX);",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": null,
+          "new_api": "mp_image_layout",
+          "old_text": null,
+          "new_text": "mp_image_layout(imgfmt, w, h, stride_align, stride, plane_offset,\n                           plane_size)",
+          "old_line_content": "",
+          "new_line_content": "    return mp_image_layout(imgfmt, w, h, stride_align, stride, plane_offset,",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "MPCLAMP",
+          "old_text": null,
+          "new_text": "MPCLAMP(*d_h * (int64_t)p->p_h / p->p_w, 1, INT_MAX)",
+          "old_line_content": "void mp_image_params_set_dsize(struct mp_image_params *p, int d_w, int d_h)",
+          "new_line_content": "        *d_h = MPCLAMP(*d_h * (int64_t)p->p_h / p->p_w, 1, INT_MAX);",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "av_div_q",
+          "old_text": null,
+          "new_text": "av_div_q((AVRational){d_w, d_h}, (AVRational){p->w, p->h})",
+          "old_line_content": "}",
+          "new_line_content": "    AVRational ds = av_div_q((AVRational){d_w, d_h}, (AVRational){p->w, p->h});",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": null,
+          "new_api": "mp_image_layout",
+          "old_text": null,
+          "new_text": "mp_image_layout(mpi->imgfmt, mpi->w, mpi->h, stride_align,\n                               stride, plane_offset, plane_size)",
+          "old_line_content": "        return false;",
+          "new_line_content": "    int size = mp_image_layout(mpi->imgfmt, mpi->w, mpi->h, stride_align,",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": null,
+          "new_api": "mp_imgfmt_to_name",
+          "old_text": null,
+          "new_text": "mp_imgfmt_to_name(p->imgfmt)",
+          "old_line_content": "        if (p->hw_flags)",
+          "new_line_content": "        mp_snprintf_cat(b, bs, \" %s\", mp_imgfmt_to_name(p->imgfmt));",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": null,
+          "new_api": "MP_ALIGN_UP",
+          "old_text": null,
+          "new_text": "MP_ALIGN_UP((uintptr_t)buffer, stride_align)",
+          "old_line_content": "    uint8_t *s = buffer;",
+          "new_line_content": "    int align = MP_ALIGN_UP((uintptr_t)buffer, stride_align) - (uintptr_t)buffer;",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "m_opt_choice_str",
+          "old_text": null,
+          "new_text": "m_opt_choice_str(mp_csp_trc_names, p->color.gamma)",
+          "old_line_content": "        if (p->color.sig_peak)",
+          "new_line_content": "                        m_opt_choice_str(mp_csp_trc_names, p->color.gamma),",
+          "content_same": false
+        },
+        {
+          "line": 642,
+          "old_api": null,
+          "new_api": "mp_snprintf_cat",
+          "old_text": null,
+          "new_text": "mp_snprintf_cat(b, bs, \" SP=%f\", p->color.sig_peak)",
+          "old_line_content": "        if (p->rotate)",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \" SP=%f\", p->color.sig_peak);",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": null,
+          "new_api": "m_opt_choice_str",
+          "old_text": null,
+          "new_text": "m_opt_choice_str(mp_chroma_names, p->chroma_location)",
+          "old_line_content": "        if (p->stereo3d > 0) {",
+          "new_line_content": "                        m_opt_choice_str(mp_chroma_names, p->chroma_location));",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "mp_snprintf_cat",
+          "old_text": null,
+          "new_text": "mp_snprintf_cat(b, bs, \" stereo=%s\",\n                            MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\"))",
+          "old_line_content": "        if (p->spherical.type != MP_SPHERICAL_NONE) {",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \" stereo=%s\",",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "MP_STEREO3D_NAME_DEF",
+          "old_text": null,
+          "new_text": "MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\")",
+          "old_line_content": "            const float *a = p->spherical.ref_angles;",
+          "new_line_content": "                            MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\"));",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": null,
+          "new_api": "mp_snprintf_cat",
+          "old_text": null,
+          "new_text": "mp_snprintf_cat(b, bs, \" (%s %f/%f/%f)\",\n                            m_opt_choice_str(mp_spherical_names, p->spherical.type),\n                            a[0], a[1], a[2])",
+          "old_line_content": "        }",
+          "new_line_content": "            mp_snprintf_cat(b, bs, \" (%s %f/%f/%f)\",",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": null,
+          "new_api": "m_opt_choice_str",
+          "old_text": null,
+          "new_text": "m_opt_choice_str(mp_spherical_names, p->spherical.type)",
+          "old_line_content": "    } else {",
+          "new_line_content": "                            m_opt_choice_str(mp_spherical_names, p->spherical.type),",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": null,
+          "new_api": "snprintf",
+          "old_text": null,
+          "new_text": "snprintf(b, bs, \"???\")",
+          "old_line_content": "}",
+          "new_line_content": "        snprintf(b, bs, \"???\");",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": null,
+          "new_api": "mp_image_new_dummy_ref",
+          "old_text": null,
+          "new_text": "mp_image_new_dummy_ref(NULL)",
+          "old_line_content": "",
+          "new_line_content": "    struct mp_image *mpi = mp_image_new_dummy_ref(NULL);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "mp_image_set_size",
+          "old_text": null,
+          "new_text": "mp_image_set_size(mpi, w, h)",
+          "old_line_content": "        goto fail;",
+          "new_line_content": "    mp_image_set_size(mpi, w, h);",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": null,
+          "new_api": "av_buffer_create",
+          "old_text": null,
+          "new_text": "av_buffer_create(buffer, buffer_size, free, free_opaque, 0)",
+          "old_line_content": "",
+          "new_line_content": "    mpi->bufs[0] = av_buffer_create(buffer, buffer_size, free, free_opaque, 0);",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(mpi)",
+          "old_line_content": "",
+          "new_line_content": "    talloc_free(mpi);",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": null,
+          "new_api": "mp_imgfmt_get_desc",
+          "old_text": null,
+          "new_text": "mp_imgfmt_get_desc(p->imgfmt)",
+          "old_line_content": "",
+          "new_line_content": "    struct mp_imgfmt_desc desc = mp_imgfmt_get_desc(p->imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!mpi->planes[0])",
+          "old_line_content": "    int align = SWS_MIN_BYTE_ALIGN;",
+          "new_line_content": "    assert(!mpi->planes[0]);",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!mpi->bufs[0])",
+          "old_line_content": "",
+          "new_line_content": "    assert(!mpi->bufs[0]);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": null,
+          "new_api": "mp_image_get_alloc_size",
+          "old_text": null,
+          "new_text": "mp_image_get_alloc_size(mpi->imgfmt, mpi->w, mpi->h, align)",
+          "old_line_content": "",
+          "new_line_content": "    int size = mp_image_get_alloc_size(mpi->imgfmt, mpi->w, mpi->h, align);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(size + align)",
+          "old_line_content": "",
+          "new_line_content": "    mpi->bufs[0] = av_buffer_alloc(size + align);",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": null,
+          "new_api": "mp_image_fill_alloc",
+          "old_text": null,
+          "new_text": "mp_image_fill_alloc(mpi, align, mpi->bufs[0]->data, mpi->bufs[0]->size)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (!mp_image_fill_alloc(mpi, align, mpi->bufs[0]->data, mpi->bufs[0]->size)) {",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&mpi->bufs[0])",
+          "old_line_content": "",
+          "new_line_content": "        av_buffer_unref(&mpi->bufs[0]);",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "mp_colorspace_equal",
+          "old_text": null,
+          "new_text": "mp_colorspace_equal(p1->color, p2->color)",
+          "old_line_content": "           p1->stereo3d == p2->stereo3d &&",
+          "new_line_content": "           mp_colorspace_equal(p1->color, p2->color) &&",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": null,
+          "new_api": "mp_imgfmt_get_desc",
+          "old_text": null,
+          "new_text": "mp_imgfmt_get_desc(out_fmt)",
+          "old_line_content": "    mpi->imgfmt = fmt.id;",
+          "new_line_content": "    struct mp_imgfmt_desc fmt = mp_imgfmt_get_desc(out_fmt);",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": null,
+          "new_api": "mp_spherical_equal",
+          "old_text": null,
+          "new_text": "mp_spherical_equal(&p1->spherical, &p2->spherical)",
+          "old_line_content": "// Set most image parameters, but not image format or size.",
+          "new_line_content": "           mp_spherical_equal(&p1->spherical, &p2->spherical);",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&mpi->hwctx)",
+          "old_line_content": "    for (int n = 0; n < mpi->num_ff_side_data; n++)",
+          "new_line_content": "    av_buffer_unref(&mpi->hwctx);",
+          "content_same": false
+        },
+        {
+          "line": 727,
+          "old_api": null,
+          "new_api": "mp_image_set_params",
+          "old_text": null,
+          "new_text": "mp_image_set_params(image, &nparams)",
+          "old_line_content": "// If details like params->colorspace/colorlevels are missing, guess them from",
+          "new_line_content": "    mp_image_set_params(image, &nparams);",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&mpi->ff_side_data[n].buf)",
+          "old_line_content": "",
+          "new_line_content": "        av_buffer_unref(&mpi->ff_side_data[n].buf);",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(mpi->ff_side_data)",
+          "old_line_content": "int mp_chroma_div_up(int size, int shift)",
+          "new_line_content": "    talloc_free(mpi->ff_side_data);",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": null,
+          "new_api": "mp_image_params_get_forced_csp",
+          "old_text": null,
+          "new_text": "mp_image_params_get_forced_csp(params)",
+          "old_line_content": "            params->color.space != MP_CSP_BT_709 &&",
+          "new_line_content": "    enum mp_csp forced_csp = mp_image_params_get_forced_csp(params);",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "mp_chroma_div_up",
+          "old_text": null,
+          "new_text": "mp_chroma_div_up(mpi->w, mpi->fmt.xs[plane])",
+          "old_line_content": "// Return the storage height in pixels of the given plane.",
+          "new_line_content": "    return mp_chroma_div_up(mpi->w, mpi->fmt.xs[plane]);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "mp_chroma_div_up",
+          "old_text": null,
+          "new_text": "mp_chroma_div_up(mpi->h, mpi->fmt.ys[plane])",
+          "old_line_content": "// Caller has to make sure this doesn't exceed the allocated plane data/strides.",
+          "new_line_content": "    return mp_chroma_div_up(mpi->h, mpi->fmt.ys[plane]);",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": null,
+          "new_api": "mp_csp_guess_colorspace",
+          "old_text": null,
+          "new_text": "mp_csp_guess_colorspace(params->w, params->h)",
+          "old_line_content": "                params->color.levels = MP_CSP_LEVELS_PC;",
+          "new_line_content": "            params->color.space = mp_csp_guess_colorspace(params->w, params->h);",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(w >= 0 && h >= 0)",
+          "old_line_content": "}",
+          "new_line_content": "    assert(w >= 0 && h >= 0);",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "mp_image_setfmt",
+          "old_text": null,
+          "new_text": "mp_image_setfmt(image, params->imgfmt)",
+          "old_line_content": "}",
+          "new_line_content": "    mp_image_setfmt(image, params->imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": null,
+          "new_api": "mp_image_set_size",
+          "old_text": null,
+          "new_text": "mp_image_set_size(image, params->w, params->h)",
+          "old_line_content": "",
+          "new_line_content": "    mp_image_set_size(image, params->w, params->h);",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": null,
+          "new_api": "mp_csp_guess_primaries",
+          "old_text": null,
+          "new_text": "mp_csp_guess_primaries(params->w, params->h)",
+          "old_line_content": "        if (params->color.gamma == MP_CSP_TRC_AUTO)",
+          "new_line_content": "                params->color.primaries = mp_csp_guess_primaries(params->w, params->h);",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": null,
+          "new_api": "mp_image_setfmt",
+          "old_text": null,
+          "new_text": "mp_image_setfmt(mpi, imgfmt)",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    mp_image_setfmt(mpi, imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "mp_image_alloc_planes",
+          "old_text": null,
+          "new_text": "mp_image_alloc_planes(mpi)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (!mp_image_alloc_planes(mpi)) {",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(mpi)",
+          "old_line_content": "    return mpi;",
+          "new_line_content": "        talloc_free(mpi);",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "mp_image_alloc",
+          "old_text": null,
+          "new_text": "mp_image_alloc(img->imgfmt, img->w, img->h)",
+          "old_line_content": "    mp_image_copy(new, img);",
+          "new_line_content": "    struct mp_image *new = mp_image_alloc(img->imgfmt, img->w, img->h);",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "mp_image_destructor",
+          "old_text": null,
+          "new_text": "mp_image_destructor(dst)",
+          "old_line_content": "    *dst = *src;",
+          "new_line_content": "    mp_image_destructor(dst); // unref old",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": null,
+          "new_api": "talloc_free_children",
+          "old_text": null,
+          "new_text": "talloc_free_children(dst)",
+          "old_line_content": "",
+          "new_line_content": "    talloc_free_children(dst);",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(src)",
+          "old_line_content": "// Unref most data buffer (and clear the data array), but leave other fields",
+          "new_line_content": "    talloc_free(src);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "av_buffer_unref",
+          "old_text": null,
+          "new_text": "av_buffer_unref(&img->bufs[n])",
+          "old_line_content": "",
+          "new_line_content": "        av_buffer_unref(&img->bufs[n]);",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": null,
+          "new_api": "mp_trc_nom_peak",
+          "old_text": null,
+          "new_text": "mp_trc_nom_peak(params->color.gamma)",
+          "old_line_content": "",
+          "new_line_content": "            params->color.sig_peak = mp_trc_nom_peak(params->color.gamma);",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": null,
+          "new_api": "mp_trc_is_hdr",
+          "old_text": null,
+          "new_text": "mp_trc_is_hdr(params->color.gamma)",
+          "old_line_content": "        params->color.sig_peak = 1.0;",
+          "new_line_content": "    if (!mp_trc_is_hdr(params->color.gamma)) {",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "av_buffer_ref",
+          "old_text": null,
+          "new_text": "av_buffer_ref(*dst)",
+          "old_line_content": "    }",
+          "new_line_content": "        *dst = av_buffer_ref(*dst);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "mp_image_new_copy",
+          "old_text": null,
+          "new_text": "mp_image_new_copy(img)",
+          "old_line_content": "    talloc_set_destructor(new, mp_image_destructor);",
+          "new_line_content": "        return mp_image_new_copy(img);",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": null,
+          "new_api": "talloc_ptrtype",
+          "old_text": null,
+          "new_text": "talloc_ptrtype(NULL, new)",
+          "old_line_content": "",
+          "new_line_content": "    struct mp_image *new = talloc_ptrtype(NULL, new);",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": null,
+          "new_api": "ref_buffer",
+          "old_text": null,
+          "new_text": "ref_buffer(&ok, &new->hwctx)",
+          "old_line_content": "",
+          "new_line_content": "    ref_buffer(&ok, &new->hwctx);",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": null,
+          "new_api": "ref_buffer",
+          "old_text": null,
+          "new_text": "ref_buffer(&ok, &new->a53_cc)",
+          "old_line_content": "                        new->num_ff_side_data * sizeof(new->ff_side_data[0]));",
+          "new_line_content": "    ref_buffer(&ok, &new->a53_cc);",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": null,
+          "new_api": "ref_buffer",
+          "old_text": null,
+          "new_text": "ref_buffer(&ok, &new->ff_side_data[n].buf)",
+          "old_line_content": "        return new;",
+          "new_line_content": "        ref_buffer(&ok, &new->ff_side_data[n].buf);",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": null,
+          "new_api": "pixfmt2imgfmt",
+          "old_text": null,
+          "new_text": "pixfmt2imgfmt(src->format)",
+          "old_line_content": "    dst->params.p_w = src->sample_aspect_ratio.num;",
+          "new_line_content": "    mp_image_setfmt(dst, pixfmt2imgfmt(src->format));",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": null,
+          "new_api": "mp_image_set_size",
+          "old_text": null,
+          "new_text": "mp_image_set_size(dst, src->width, src->height)",
+          "old_line_content": "    dst->params.p_h = src->sample_aspect_ratio.den;",
+          "new_line_content": "    mp_image_set_size(dst, src->width, src->height);",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "args->free(args->arg)",
+          "old_line_content": "",
+          "new_line_content": "    args->free(args->arg);",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(args)",
+          "old_line_content": "// Create a new mp_image based on img, but don't set any buffers.",
+          "new_line_content": "    talloc_free(args);",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": null,
+          "new_api": "avcol_range_to_mp_csp_levels",
+          "old_text": null,
+          "new_text": "avcol_range_to_mp_csp_levels(src->color_range)",
+          "old_line_content": "    };",
+          "new_line_content": "        .levels = avcol_range_to_mp_csp_levels(src->color_range),",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": null,
+          "new_api": "avcol_pri_to_mp_csp_prim",
+          "old_text": null,
+          "new_text": "avcol_pri_to_mp_csp_prim(src->color_primaries)",
+          "old_line_content": "",
+          "new_line_content": "        .primaries = avcol_pri_to_mp_csp_prim(src->color_primaries),",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": null,
+          "new_api": "talloc_ptrtype",
+          "old_text": null,
+          "new_text": "talloc_ptrtype(NULL, new)",
+          "old_line_content": "    for (int p = 0; p < MP_MAX_PLANES; p++)",
+          "new_line_content": "    struct mp_image *new = talloc_ptrtype(NULL, new);",
+          "content_same": false
+        },
+        {
+          "line": 881,
+          "old_api": null,
+          "new_api": "avchroma_location_to_mp",
+          "old_text": null,
+          "new_text": "avchroma_location_to_mp(src->chroma_location)",
+          "old_line_content": "        struct mp_image_params *p = (void *)src->opaque_ref->data;",
+          "new_line_content": "    dst->params.chroma_location = avchroma_location_to_mp(src->chroma_location);",
+          "content_same": false
+        },
+        {
+          "line": 893,
+          "old_api": null,
+          "new_api": "av_frame_get_side_data",
+          "old_text": null,
+          "new_text": "av_frame_get_side_data(src, AV_FRAME_DATA_ICC_PROFILE)",
+          "old_line_content": "",
+          "new_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_ICC_PROFILE);",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "av_frame_get_side_data",
+          "old_text": null,
+          "new_text": "av_frame_get_side_data(src, AV_FRAME_DATA_CONTENT_LIGHT_LEVEL)",
+          "old_line_content": "        dst->params.color.sig_peak = clm->MaxCLL / MP_REF_WHITE;",
+          "new_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_CONTENT_LIGHT_LEVEL);",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": null,
+          "new_api": "mp_image_new_dummy_ref",
+          "old_text": null,
+          "new_text": "mp_image_new_dummy_ref(img)",
+          "old_line_content": "    *args = (struct free_args){free_arg, free};",
+          "new_line_content": "    struct mp_image *new = mp_image_new_dummy_ref(img);",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "talloc_ptrtype",
+          "old_text": null,
+          "new_text": "talloc_ptrtype(NULL, args)",
+          "old_line_content": "                                    AV_BUFFER_FLAG_READONLY);",
+          "new_line_content": "    struct free_args *args = talloc_ptrtype(NULL, args);",
+          "content_same": false
+        },
+        {
+          "line": 905,
+          "old_api": null,
+          "new_api": "av_frame_get_side_data",
+          "old_text": null,
+          "new_text": "av_frame_get_side_data(src, AV_FRAME_DATA_MASTERING_DISPLAY_METADATA)",
+          "old_line_content": "        if (mdm->has_luminance)",
+          "new_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_MASTERING_DISPLAY_METADATA);",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": null,
+          "new_api": "av_buffer_create",
+          "old_text": null,
+          "new_text": "av_buffer_create(NULL, 0, call_free, args,\n                                    AV_BUFFER_FLAG_READONLY)",
+          "old_line_content": "        return new;",
+          "new_line_content": "    new->bufs[0] = av_buffer_create(NULL, 0, call_free, args,",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": null,
+          "new_api": "av_frame_get_side_data",
+          "old_text": null,
+          "new_text": "av_frame_get_side_data(src, AV_FRAME_DATA_A53_CC)",
+          "old_line_content": "",
+          "new_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_A53_CC);",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "av_buffer_is_writable",
+          "old_text": null,
+          "new_text": "av_buffer_is_writable(img->bufs[p])",
+          "old_line_content": "    return true;",
+          "new_line_content": "        if (!av_buffer_is_writable(img->bufs[p]))",
+          "content_same": false
+        },
+        {
+          "line": 922,
+          "old_api": null,
+          "new_api": "MP_TARRAY_APPEND",
+          "old_text": null,
+          "new_text": "MP_TARRAY_APPEND(NULL, dst->ff_side_data, dst->num_ff_side_data, mpsd)",
+          "old_line_content": "",
+          "new_line_content": "        MP_TARRAY_APPEND(NULL, dst->ff_side_data, dst->num_ff_side_data, mpsd);",
+          "content_same": false
+        },
+        {
+          "line": 928,
+          "old_api": null,
+          "new_api": "pixfmt2imgfmt",
+          "old_text": null,
+          "new_text": "pixfmt2imgfmt(fctx->sw_format)",
+          "old_line_content": "        if (fns && fns->complete_image_params)",
+          "new_line_content": "        dst->params.hw_subfmt = pixfmt2imgfmt(fctx->sw_format);",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": null,
+          "new_api": "hwdec_get_hwcontext_fns",
+          "old_text": null,
+          "new_text": "hwdec_get_hwcontext_fns(fctx->device_ctx->type)",
+          "old_line_content": "    }",
+          "new_line_content": "            hwdec_get_hwcontext_fns(fctx->device_ctx->type);",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": null,
+          "new_api": "mp_image_new_copy",
+          "old_text": null,
+          "new_text": "mp_image_new_copy(img)",
+          "old_line_content": "    mp_image_steal_data(img, new);",
+          "new_line_content": "    struct mp_image *new = mp_image_new_copy(img);",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(dst->ff_side_data)",
+          "old_line_content": "}",
+          "new_line_content": "    talloc_free(dst->ff_side_data);",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": null,
+          "new_api": "mp_image_is_writeable",
+          "old_text": null,
+          "new_text": "mp_image_is_writeable(img)",
+          "old_line_content": "",
+          "new_line_content": "    assert(mp_image_is_writeable(img));",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(*p_img)",
+          "old_line_content": "}",
+          "new_line_content": "        talloc_free(*p_img);",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "mp_image_new_ref",
+          "old_text": null,
+          "new_text": "mp_image_new_ref(new_value)",
+          "old_line_content": "",
+          "new_line_content": "        *p_img = new_value ? mp_image_new_ref(new_value) : NULL;",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(new_ref)",
+          "old_line_content": "    }",
+          "new_line_content": "        talloc_free(new_ref);",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&dst)",
+          "old_line_content": "",
+          "new_line_content": "        av_frame_free(&dst);",
+          "content_same": false
+        },
+        {
+          "line": 446,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(*p_img)",
+          "old_line_content": "",
+          "new_line_content": "    talloc_free(*p_img);",
+          "content_same": false
+        },
+        {
+          "line": 963,
+          "old_api": null,
+          "new_api": "imgfmt2pixfmt",
+          "old_text": null,
+          "new_text": "imgfmt2pixfmt(src->imgfmt)",
+          "old_line_content": "",
+          "new_line_content": "    dst->format = imgfmt2pixfmt(src->imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": null,
+          "new_api": "cpy",
+          "old_text": null,
+          "new_text": "cpy(dst, src, bytesPerLine)",
+          "old_line_content": "        }",
+          "new_line_content": "            cpy(dst, src, bytesPerLine);",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(dst->imgfmt == src->imgfmt)",
+          "old_line_content": "    for (int n = 0; n < dst->num_planes; n++) {",
+          "new_line_content": "    assert(dst->imgfmt == src->imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 988,
+          "old_api": null,
+          "new_api": "mp_csp_trc_to_avcol_trc",
+          "old_text": null,
+          "new_text": "mp_csp_trc_to_avcol_trc(src->params.color.gamma)",
+          "old_line_content": "",
+          "new_line_content": "    dst->color_trc = mp_csp_trc_to_avcol_trc(src->params.color.gamma);",
+          "content_same": false
+        },
+        {
+          "line": 990,
+          "old_api": null,
+          "new_api": "mp_chroma_location_to_av",
+          "old_text": null,
+          "new_text": "mp_chroma_location_to_av(src->params.chroma_location)",
+          "old_line_content": "    if (!dst->opaque_ref)",
+          "new_line_content": "    dst->chroma_location = mp_chroma_location_to_av(src->params.chroma_location);",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "mp_image_plane_w",
+          "old_text": null,
+          "new_text": "mp_image_plane_w(dst, n)",
+          "old_line_content": "                      dst->stride[n], src->stride[n], cpy);",
+          "new_line_content": "        int line_bytes = (mp_image_plane_w(dst, n) * dst->fmt.bpp[n] + 7) / 8;",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "mp_image_plane_h",
+          "old_text": null,
+          "new_text": "mp_image_plane_h(dst, n)",
+          "old_line_content": "    }",
+          "new_line_content": "        int plane_h = mp_image_plane_h(dst, n);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "memcpy_pic_cb",
+          "old_text": null,
+          "new_text": "memcpy_pic_cb(dst->planes[n], src->planes[n], line_bytes, plane_h,\n                      dst->stride[n], src->stride[n], cpy)",
+          "old_line_content": "    if (dst->fmt.flags & MP_IMGFLAG_PAL)",
+          "new_line_content": "        memcpy_pic_cb(dst->planes[n], src->planes[n], line_bytes, plane_h,",
+          "content_same": false
+        },
+        {
+          "line": 992,
+          "old_api": null,
+          "new_api": "av_buffer_alloc",
+          "old_text": null,
+          "new_text": "av_buffer_alloc(sizeof(struct mp_image_params))",
+          "old_line_content": "    *(struct mp_image_params *)dst->opaque_ref->data = src->params;",
+          "new_line_content": "    dst->opaque_ref = av_buffer_alloc(sizeof(struct mp_image_params));",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "#if LIBAVUTIL_VERSION_MICRO >= 100",
+          "new_line_content": "        abort();",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE)",
+          "old_line_content": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)",
+          "new_line_content": "        memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "mp_image_copy_cb",
+          "old_text": null,
+          "new_text": "mp_image_copy_cb(dst, src, memcpy)",
+          "old_line_content": "static enum mp_csp mp_image_params_get_forced_csp(struct mp_image_params *params)",
+          "new_line_content": "    mp_image_copy_cb(dst, src, memcpy);",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "",
+          "new_line_content": "            abort();",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": null,
+          "new_api": "mp_imgfmt_get_forced_csp",
+          "old_text": null,
+          "new_text": "mp_imgfmt_get_forced_csp(imgfmt)",
+          "old_line_content": "void mp_image_copy_attributes(struct mp_image *dst, struct mp_image *src)",
+          "new_line_content": "    return mp_imgfmt_get_forced_csp(imgfmt);",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": null,
+          "new_api": "av_content_light_metadata_create_side_data",
+          "old_text": null,
+          "new_text": "av_content_light_metadata_create_side_data(dst)",
+          "old_line_content": "        clm->MaxCLL = src->params.color.sig_peak * MP_REF_WHITE;",
+          "new_line_content": "            av_content_light_metadata_create_side_data(dst);",
+          "content_same": false
+        },
+        {
+          "line": 1011,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "",
+          "new_line_content": "            abort();",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": null,
+          "new_api": "av_frame_get_side_data",
+          "old_text": null,
+          "new_text": "av_frame_get_side_data(dst, mpsd->type)",
+          "old_line_content": "            if (!sd)",
+          "new_line_content": "        if (!av_frame_get_side_data(dst, mpsd->type)) {",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "    }",
+          "new_line_content": "                abort();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 512,
+          "old_api": "mp_image_params_get_forced_csp",
+          "new_api": null,
+          "old_text": "mp_image_params_get_forced_csp(&dst->params)",
+          "new_text": null,
+          "old_line_content": "    if (mp_image_params_get_forced_csp(&dst->params) !=",
+          "new_line_content": "    dst->params.spherical = src->params.spherical;",
+          "content_same": false
+        },
+        {
+          "line": 513,
+          "old_api": "mp_image_params_get_forced_csp",
+          "new_api": null,
+          "old_text": "mp_image_params_get_forced_csp(&src->params)",
+          "new_text": null,
+          "old_line_content": "        mp_image_params_get_forced_csp(&src->params))",
+          "new_line_content": "    dst->nominal_fps = src->nominal_fps;",
+          "content_same": false
+        },
+        {
+          "line": 1026,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(new_ref)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(new_ref);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": "mp_image_make_writeable",
+          "new_api": null,
+          "old_text": "mp_image_make_writeable(dst)",
+          "new_text": null,
+          "old_line_content": "            if (mp_image_make_writeable(dst))",
+          "new_line_content": "        dst->params.color = (struct mp_colorspace){0};",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE)",
+          "new_text": null,
+          "old_line_content": "                memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE);",
+          "new_line_content": "    if ((dst->fmt.flags & MP_IMGFLAG_PAL) && (src->fmt.flags & MP_IMGFLAG_PAL)) {",
+          "content_same": false
+        },
+        {
+          "line": 1036,
+          "old_api": "mp_image_to_av_frame",
+          "new_api": null,
+          "old_text": "mp_image_to_av_frame(img)",
+          "new_text": null,
+          "old_line_content": "    AVFrame *frame = mp_image_to_av_frame(img);",
+          "new_line_content": "// Same as mp_image_to_av_frame(), but unref img. (It does so even on failure.)",
+          "content_same": false
+        },
+        {
+          "line": 1037,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(img)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(img);",
+          "new_line_content": "struct AVFrame *mp_image_to_av_frame_and_unref(struct mp_image *img)",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "abort",
+          "new_api": null,
+          "old_text": "abort()",
+          "new_text": null,
+          "old_line_content": "            abort();",
+          "new_line_content": "    if (dst->icc_profile) {",
+          "content_same": false
+        },
+        {
+          "line": 1044,
+          "old_api": "memcpy_pic_cb",
+          "new_api": null,
+          "old_text": "memcpy_pic_cb(dst, src, bytesPerLine, height, dstStride, srcStride, memcpy)",
+          "new_text": null,
+          "old_line_content": "    memcpy_pic_cb(dst, src, bytesPerLine, height, dstStride, srcStride, memcpy);",
+          "new_line_content": "void memcpy_pic(void *dst, const void *src, int bytesPerLine, int height,",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x0 >= 0 && y0 >= 0)",
+          "new_text": null,
+          "old_line_content": "    assert(x0 >= 0 && y0 >= 0);",
+          "new_line_content": "// x0/y0 must be naturally aligned.",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x0 <= x1 && y0 <= y1)",
+          "new_text": null,
+          "old_line_content": "    assert(x0 <= x1 && y0 <= y1);",
+          "new_line_content": "void mp_image_crop(struct mp_image *img, int x0, int y0, int x1, int y1)",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x1 <= img->w && y1 <= img->h)",
+          "new_text": null,
+          "old_line_content": "    assert(x1 <= img->w && y1 <= img->h);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(dst, fill, stride * (height - 1) + bytesPerLine)",
+          "new_text": null,
+          "old_line_content": "        memset(dst, fill, stride * (height - 1) + bytesPerLine);",
+          "new_line_content": "void memset_pic(void *dst, int fill, int bytesPerLine, int height, int stride)",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "mp_image_set_size",
+          "new_api": null,
+          "old_text": "mp_image_set_size(img, x1 - x0, y1 - y0)",
+          "new_text": null,
+          "old_line_content": "    mp_image_set_size(img, x1 - x0, y1 - y0);",
+          "new_line_content": "        img->planes[p] += (y0 >> img->fmt.ys[p]) * img->stride[p] +",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "mp_image_crop",
+          "new_api": null,
+          "old_text": "mp_image_crop(img, rc.x0, rc.y0, rc.x1, rc.y1)",
+          "new_text": null,
+          "old_line_content": "    mp_image_crop(img, rc.x0, rc.y0, rc.x1, rc.y1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": "memset_pic",
+          "new_api": null,
+          "old_text": "memset_pic(dst, 0, unitsPerLine * 2, height, stride)",
+          "new_text": null,
+          "old_line_content": "        memset_pic(dst, 0, unitsPerLine * 2, height, stride);",
+          "new_line_content": "void memset16_pic(void *dst, int fill, int unitsPerLine, int height, int stride)",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x0 >= 0 && y0 >= 0)",
+          "new_text": null,
+          "old_line_content": "    assert(x0 >= 0 && y0 >= 0);",
+          "new_line_content": "// overwrite pixel data until the alignment (align_x/align_y) is reached.",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x0 <= x1 && y0 <= y1)",
+          "new_text": null,
+          "old_line_content": "    assert(x0 <= x1 && y0 <= y1);",
+          "new_line_content": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(x1 <= img->w && y1 <= img->h)",
+          "new_text": null,
+          "old_line_content": "    assert(x1 <= img->w && y1 <= img->h);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "av_le2ne16",
+          "new_api": null,
+          "old_text": "av_le2ne16(0x0080)",
+          "new_text": null,
+          "old_line_content": "        plane_clear[0] = av_le2ne16(0x0080);",
+          "new_line_content": "    uint32_t plane_clear[MP_MAX_PLANES] = {0};",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "av_bswap16",
+          "new_api": null,
+          "old_text": "av_bswap16(chroma_clear)",
+          "new_text": null,
+          "old_line_content": "            chroma_clear = av_bswap16(chroma_clear);",
+          "new_line_content": "    } else if (area.fmt.flags & MP_IMGFLAG_YUV_P) {",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "mp_image_plane_w",
+          "new_api": null,
+          "old_text": "mp_image_plane_w(&area, p)",
+          "new_text": null,
+          "old_line_content": "        int bytes = (mp_image_plane_w(&area, p) * bpp + 7) / 8;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "memset_pic",
+          "new_api": null,
+          "old_text": "memset_pic(area.planes[p], plane_clear[p], bytes,\n                       mp_image_plane_h(&area, p), area.stride[p])",
+          "new_text": null,
+          "old_line_content": "            memset_pic(area.planes[p], plane_clear[p], bytes,",
+          "new_line_content": "        int bpp = area.fmt.bpp[p];",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": "mp_image_plane_h",
+          "new_api": null,
+          "old_text": "mp_image_plane_h(img, p)",
+          "new_text": null,
+          "old_line_content": "        int plane_h = mp_image_plane_h(img, p);",
+          "new_line_content": "void mp_image_vflip(struct mp_image *img)",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "MPCLAMP",
+          "new_api": null,
+          "old_text": "MPCLAMP(*d_w * (int64_t)p->p_w / p->p_h, 1, INT_MAX)",
+          "new_text": null,
+          "old_line_content": "        *d_w = MPCLAMP(*d_w * (int64_t)p->p_w / p->p_h, 1, INT_MAX);",
+          "new_line_content": "    *d_w = p->w;",
+          "content_same": false
+        },
+        {
+          "line": 98,
+          "old_api": "mp_image_layout",
+          "new_api": null,
+          "old_text": "mp_image_layout(imgfmt, w, h, stride_align, stride, plane_offset,\n                           plane_size)",
+          "new_text": null,
+          "old_line_content": "    return mp_image_layout(imgfmt, w, h, stride_align, stride, plane_offset,",
+          "new_line_content": "    int stride[MP_MAX_PLANES];",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "MPCLAMP",
+          "new_api": null,
+          "old_text": "MPCLAMP(*d_h * (int64_t)p->p_h / p->p_w, 1, INT_MAX)",
+          "new_text": null,
+          "old_line_content": "        *d_h = MPCLAMP(*d_h * (int64_t)p->p_h / p->p_w, 1, INT_MAX);",
+          "new_line_content": "    if (p->p_w > p->p_h && p->p_h >= 1)",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": "av_div_q",
+          "new_api": null,
+          "old_text": "av_div_q((AVRational){d_w, d_h}, (AVRational){p->w, p->h})",
+          "new_text": null,
+          "old_line_content": "    AVRational ds = av_div_q((AVRational){d_w, d_h}, (AVRational){p->w, p->h});",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": "snprintf",
+          "new_api": null,
+          "old_text": "snprintf(b, bs, \"%dx%d\", p->w, p->h)",
+          "new_text": null,
+          "old_line_content": "        snprintf(b, bs, \"%dx%d\", p->w, p->h);",
+          "new_line_content": "                                 const struct mp_image_params *p)",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "mp_image_layout",
+          "new_api": null,
+          "old_text": "mp_image_layout(mpi->imgfmt, mpi->w, mpi->h, stride_align,\n                               stride, plane_offset, plane_size)",
+          "new_text": null,
+          "old_line_content": "    int size = mp_image_layout(mpi->imgfmt, mpi->w, mpi->h, stride_align,",
+          "new_line_content": "    int stride[MP_MAX_PLANES];",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "mp_snprintf_cat",
+          "new_api": null,
+          "old_text": "mp_snprintf_cat(b, bs, \" [%d:%d]\", p->p_w, p->p_h)",
+          "new_text": null,
+          "old_line_content": "            mp_snprintf_cat(b, bs, \" [%d:%d]\", p->p_w, p->p_h);",
+          "new_line_content": "    if (p && p->imgfmt) {",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "mp_snprintf_cat",
+          "new_api": null,
+          "old_text": "mp_snprintf_cat(b, bs, \"[0x%x]\", p->hw_flags)",
+          "new_text": null,
+          "old_line_content": "            mp_snprintf_cat(b, bs, \"[0x%x]\", p->hw_flags);",
+          "new_line_content": "        if (p->hw_subfmt)",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": "MP_ALIGN_UP",
+          "new_api": null,
+          "old_text": "MP_ALIGN_UP((uintptr_t)buffer, stride_align)",
+          "new_text": null,
+          "old_line_content": "    int align = MP_ALIGN_UP((uintptr_t)buffer, stride_align) - (uintptr_t)buffer;",
+          "new_line_content": "    if (size < 0 || size > buffer_size)",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "m_opt_choice_str",
+          "new_api": null,
+          "old_text": "m_opt_choice_str(mp_csp_names, p->color.space)",
+          "new_text": null,
+          "old_line_content": "                        m_opt_choice_str(mp_csp_names, p->color.space),",
+          "new_line_content": "        if (p->hw_flags)",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "m_opt_choice_str",
+          "new_api": null,
+          "old_text": "m_opt_choice_str(mp_chroma_names, p->chroma_location)",
+          "new_text": null,
+          "old_line_content": "                        m_opt_choice_str(mp_chroma_names, p->chroma_location));",
+          "new_line_content": "        if (p->color.sig_peak)",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "mp_snprintf_cat",
+          "new_api": null,
+          "old_text": "mp_snprintf_cat(b, bs, \" stereo=%s\",\n                            MP_STEREO3D_NAME_DEF(p->stereo3d, \"?\"))",
+          "new_text": null,
+          "old_line_content": "            mp_snprintf_cat(b, bs, \" stereo=%s\",",
+          "new_line_content": "        if (p->rotate)",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": "mp_snprintf_cat",
+          "new_api": null,
+          "old_text": "mp_snprintf_cat(b, bs, \" (%s %f/%f/%f)\",\n                            m_opt_choice_str(mp_spherical_names, p->spherical.type),\n                            a[0], a[1], a[2])",
+          "new_text": null,
+          "old_line_content": "            mp_snprintf_cat(b, bs, \" (%s %f/%f/%f)\",",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": "m_opt_choice_str",
+          "new_api": null,
+          "old_text": "m_opt_choice_str(mp_spherical_names, p->spherical.type)",
+          "new_text": null,
+          "old_line_content": "                            m_opt_choice_str(mp_spherical_names, p->spherical.type),",
+          "new_line_content": "        if (p->spherical.type != MP_SPHERICAL_NONE) {",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": "snprintf",
+          "new_api": null,
+          "old_text": "snprintf(b, bs, \"???\")",
+          "new_text": null,
+          "old_line_content": "        snprintf(b, bs, \"???\");",
+          "new_line_content": "                            a[0], a[1], a[2]);",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "mp_image_new_dummy_ref",
+          "new_api": null,
+          "old_text": "mp_image_new_dummy_ref(NULL)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *mpi = mp_image_new_dummy_ref(NULL);",
+          "new_line_content": "                                      void *free_opaque,",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "mp_image_setfmt",
+          "new_api": null,
+          "old_text": "mp_image_setfmt(mpi, imgfmt)",
+          "new_text": null,
+          "old_line_content": "    mp_image_setfmt(mpi, imgfmt);",
+          "new_line_content": "                                      void (*free)(void *opaque, uint8_t *data))",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "mp_image_set_size",
+          "new_api": null,
+          "old_text": "mp_image_set_size(mpi, w, h)",
+          "new_text": null,
+          "old_line_content": "    mp_image_set_size(mpi, w, h);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(mpi)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(mpi);",
+          "new_line_content": "    return mpi;",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": "mp_imgfmt_get_desc",
+          "new_api": null,
+          "old_text": "mp_imgfmt_get_desc(p->imgfmt)",
+          "new_text": null,
+          "old_line_content": "    struct mp_imgfmt_desc desc = mp_imgfmt_get_desc(p->imgfmt);",
+          "new_line_content": "    if (p->rotate < 0 || p->rotate >= 360)",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!mpi->planes[0])",
+          "new_text": null,
+          "old_line_content": "    assert(!mpi->planes[0]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!mpi->bufs[0])",
+          "new_text": null,
+          "old_line_content": "    assert(!mpi->bufs[0]);",
+          "new_line_content": "static bool mp_image_alloc_planes(struct mp_image *mpi)",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "mp_image_get_alloc_size",
+          "new_api": null,
+          "old_text": "mp_image_get_alloc_size(mpi->imgfmt, mpi->w, mpi->h, align)",
+          "new_text": null,
+          "old_line_content": "    int size = mp_image_get_alloc_size(mpi->imgfmt, mpi->w, mpi->h, align);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "av_buffer_alloc",
+          "new_api": null,
+          "old_text": "av_buffer_alloc(size + align)",
+          "new_text": null,
+          "old_line_content": "    mpi->bufs[0] = av_buffer_alloc(size + align);",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "mp_image_fill_alloc",
+          "new_api": null,
+          "old_text": "mp_image_fill_alloc(mpi, align, mpi->bufs[0]->data, mpi->bufs[0]->size)",
+          "new_text": null,
+          "old_line_content": "    if (!mp_image_fill_alloc(mpi, align, mpi->bufs[0]->data, mpi->bufs[0]->size)) {",
+          "new_line_content": "    if (!mpi->bufs[0])",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&mpi->bufs[0])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&mpi->bufs[0]);",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": "mp_colorspace_equal",
+          "new_api": null,
+          "old_text": "mp_colorspace_equal(p1->color, p2->color)",
+          "new_text": null,
+          "old_line_content": "           mp_colorspace_equal(p1->color, p2->color) &&",
+          "new_line_content": "           p1->hw_flags == p2->hw_flags &&",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": "mp_imgfmt_get_desc",
+          "new_api": null,
+          "old_text": "mp_imgfmt_get_desc(out_fmt)",
+          "new_text": null,
+          "old_line_content": "    struct mp_imgfmt_desc fmt = mp_imgfmt_get_desc(out_fmt);",
+          "new_line_content": "void mp_image_setfmt(struct mp_image *mpi, int out_fmt)",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "mp_spherical_equal",
+          "new_api": null,
+          "old_text": "mp_spherical_equal(&p1->spherical, &p2->spherical)",
+          "new_text": null,
+          "old_line_content": "           mp_spherical_equal(&p1->spherical, &p2->spherical);",
+          "new_line_content": "           p1->chroma_location == p2->chroma_location &&",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&mpi->bufs[p])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&mpi->bufs[p]);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&mpi->hwctx)",
+          "new_text": null,
+          "old_line_content": "    av_buffer_unref(&mpi->hwctx);",
+          "new_line_content": "    mp_image_t *mpi = ptr;",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&mpi->icc_profile)",
+          "new_text": null,
+          "old_line_content": "    av_buffer_unref(&mpi->icc_profile);",
+          "new_line_content": "    for (int p = 0; p < MP_MAX_PLANES; p++)",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": "mp_image_set_params",
+          "new_api": null,
+          "old_text": "mp_image_set_params(image, &nparams)",
+          "new_text": null,
+          "old_line_content": "    mp_image_set_params(image, &nparams);",
+          "new_line_content": "    nparams.h = image->h;",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": "mp_image_params_get_forced_csp",
+          "new_api": null,
+          "old_text": "mp_image_params_get_forced_csp(params)",
+          "new_text": null,
+          "old_line_content": "    enum mp_csp forced_csp = mp_image_params_get_forced_csp(params);",
+          "new_line_content": "// the colorspace as implied by the pixel format.",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": "mp_chroma_div_up",
+          "new_api": null,
+          "old_text": "mp_chroma_div_up(mpi->w, mpi->fmt.xs[plane])",
+          "new_text": null,
+          "old_line_content": "    return mp_chroma_div_up(mpi->w, mpi->fmt.xs[plane]);",
+          "new_line_content": "// Return the storage width in pixels of the given plane.",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "mp_chroma_div_up",
+          "new_api": null,
+          "old_text": "mp_chroma_div_up(mpi->h, mpi->fmt.ys[plane])",
+          "new_text": null,
+          "old_line_content": "    return mp_chroma_div_up(mpi->h, mpi->fmt.ys[plane]);",
+          "new_line_content": "// Return the storage height in pixels of the given plane.",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "mp_csp_guess_colorspace",
+          "new_api": null,
+          "old_text": "mp_csp_guess_colorspace(params->w, params->h)",
+          "new_text": null,
+          "old_line_content": "            params->color.space = mp_csp_guess_colorspace(params->w, params->h);",
+          "new_line_content": "            params->color.space = MP_CSP_AUTO;",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(w >= 0 && h >= 0)",
+          "new_text": null,
+          "old_line_content": "    assert(w >= 0 && h >= 0);",
+          "new_line_content": "// Caller has to make sure this doesn't exceed the allocated plane data/strides.",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "mp_image_setfmt",
+          "new_api": null,
+          "old_text": "mp_image_setfmt(image, params->imgfmt)",
+          "new_text": null,
+          "old_line_content": "    mp_image_setfmt(image, params->imgfmt);",
+          "new_line_content": "                         const struct mp_image_params *params)",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "mp_image_set_size",
+          "new_api": null,
+          "old_text": "mp_image_set_size(image, params->w, params->h)",
+          "new_text": null,
+          "old_line_content": "    mp_image_set_size(image, params->w, params->h);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": "mp_csp_guess_primaries",
+          "new_api": null,
+          "old_text": "mp_csp_guess_primaries(params->w, params->h)",
+          "new_text": null,
+          "old_line_content": "                params->color.primaries = mp_csp_guess_primaries(params->w, params->h);",
+          "new_line_content": "                params->color.primaries = MP_CSP_PRIM_BT_709;",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "talloc_zero",
+          "new_api": null,
+          "old_text": "talloc_zero(NULL, struct mp_image)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *mpi = talloc_zero(NULL, struct mp_image);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "talloc_set_destructor",
+          "new_api": null,
+          "old_text": "talloc_set_destructor(mpi, mp_image_destructor)",
+          "new_text": null,
+          "old_line_content": "    talloc_set_destructor(mpi, mp_image_destructor);",
+          "new_line_content": "struct mp_image *mp_image_alloc(int imgfmt, int w, int h)",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "mp_image_alloc_planes",
+          "new_api": null,
+          "old_text": "mp_image_alloc_planes(mpi)",
+          "new_text": null,
+          "old_line_content": "    if (!mp_image_alloc_planes(mpi)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": "mp_image_alloc",
+          "new_api": null,
+          "old_text": "mp_image_alloc(img->imgfmt, img->w, img->h)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *new = mp_image_alloc(img->imgfmt, img->w, img->h);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(dst->imgfmt == src->imgfmt && dst->w == src->w && dst->h == src->h)",
+          "new_text": null,
+          "old_line_content": "    assert(dst->imgfmt == src->imgfmt && dst->w == src->w && dst->h == src->h);",
+          "new_line_content": "// Only works with ref-counted images, and can't change image size/format.",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(dst->bufs[0] && src->bufs[0])",
+          "new_text": null,
+          "old_line_content": "    assert(dst->bufs[0] && src->bufs[0]);",
+          "new_line_content": "void mp_image_steal_data(struct mp_image *dst, struct mp_image *src)",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(src)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(src);",
+          "new_line_content": "    *dst = *src;",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "av_buffer_unref",
+          "new_api": null,
+          "old_text": "av_buffer_unref(&img->bufs[n])",
+          "new_text": null,
+          "old_line_content": "        av_buffer_unref(&img->bufs[n]);",
+          "new_line_content": "    for (int n = 0; n < MP_MAX_PLANES; n++) {",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": "mp_trc_nom_peak",
+          "new_api": null,
+          "old_text": "mp_trc_nom_peak(params->color.gamma)",
+          "new_text": null,
+          "old_line_content": "            params->color.sig_peak = mp_trc_nom_peak(params->color.gamma);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": "mp_trc_is_hdr",
+          "new_api": null,
+          "old_text": "mp_trc_is_hdr(params->color.gamma)",
+          "new_text": null,
+          "old_line_content": "    if (!mp_trc_is_hdr(params->color.gamma)) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "av_buffer_ref",
+          "new_api": null,
+          "old_text": "av_buffer_ref(*dst)",
+          "new_text": null,
+          "old_line_content": "        *dst = av_buffer_ref(*dst);",
+          "new_line_content": "static void ref_buffer(bool *ok, AVBufferRef **dst)",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": "mp_image_new_copy",
+          "new_api": null,
+          "old_text": "mp_image_new_copy(img)",
+          "new_text": null,
+          "old_line_content": "        return mp_image_new_copy(img);",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "talloc_ptrtype",
+          "new_api": null,
+          "old_text": "talloc_ptrtype(NULL, new)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *new = talloc_ptrtype(NULL, new);",
+          "new_line_content": "    if (!img->bufs[0])",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": "ref_buffer",
+          "new_api": null,
+          "old_text": "ref_buffer(&ok, &new->bufs[p])",
+          "new_text": null,
+          "old_line_content": "        ref_buffer(&ok, &new->bufs[p]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": "ref_buffer",
+          "new_api": null,
+          "old_text": "ref_buffer(&ok, &new->hwctx)",
+          "new_text": null,
+          "old_line_content": "    ref_buffer(&ok, &new->hwctx);",
+          "new_line_content": "    for (int p = 0; p < MP_MAX_PLANES; p++)",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "ref_buffer",
+          "new_api": null,
+          "old_text": "ref_buffer(&ok, &new->a53_cc)",
+          "new_text": null,
+          "old_line_content": "    ref_buffer(&ok, &new->a53_cc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": "pixfmt2imgfmt",
+          "new_api": null,
+          "old_text": "pixfmt2imgfmt(src->format)",
+          "new_text": null,
+          "old_line_content": "    mp_image_setfmt(dst, pixfmt2imgfmt(src->format));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "mp_image_set_size",
+          "new_api": null,
+          "old_text": "mp_image_set_size(dst, src->width, src->height)",
+          "new_text": null,
+          "old_line_content": "    mp_image_set_size(dst, src->width, src->height);",
+          "new_line_content": "    dst->hwctx = src->hw_frames_ctx;",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "args->free(args->arg)",
+          "new_text": null,
+          "old_line_content": "    args->free(args->arg);",
+          "new_line_content": "static void call_free(void *opaque, uint8_t *data)",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(args)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(args);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "avcol_spc_to_mp_csp",
+          "new_api": null,
+          "old_text": "avcol_spc_to_mp_csp(src->colorspace)",
+          "new_text": null,
+          "old_line_content": "        .space = avcol_spc_to_mp_csp(src->colorspace),",
+          "new_line_content": "        dst->fields |= MP_IMGFIELD_REPEAT_FIRST;",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": "avcol_range_to_mp_csp_levels",
+          "new_api": null,
+          "old_text": "avcol_range_to_mp_csp_levels(src->color_range)",
+          "new_text": null,
+          "old_line_content": "        .levels = avcol_range_to_mp_csp_levels(src->color_range),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "avcol_pri_to_mp_csp_prim",
+          "new_api": null,
+          "old_text": "avcol_pri_to_mp_csp_prim(src->color_primaries)",
+          "new_text": null,
+          "old_line_content": "        .primaries = avcol_pri_to_mp_csp_prim(src->color_primaries),",
+          "new_line_content": "    dst->params.color = (struct mp_colorspace){",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": "talloc_ptrtype",
+          "new_api": null,
+          "old_text": "talloc_ptrtype(NULL, new)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *new = talloc_ptrtype(NULL, new);",
+          "new_line_content": "// a new reference is set.",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": "av_frame_get_side_data",
+          "new_api": null,
+          "old_text": "av_frame_get_side_data(src, AV_FRAME_DATA_ICC_PROFILE)",
+          "new_text": null,
+          "old_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_ICC_PROFILE);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": "av_frame_get_side_data",
+          "new_api": null,
+          "old_text": "av_frame_get_side_data(src, AV_FRAME_DATA_CONTENT_LIGHT_LEVEL)",
+          "new_text": null,
+          "old_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_CONTENT_LIGHT_LEVEL);",
+          "new_line_content": "        dst->icc_profile = sd->buf;",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": "mp_image_new_dummy_ref",
+          "new_api": null,
+          "old_text": "mp_image_new_dummy_ref(img)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *new = mp_image_new_dummy_ref(img);",
+          "new_line_content": "struct mp_image *mp_image_new_custom_ref(struct mp_image *img, void *free_arg,",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": "talloc_ptrtype",
+          "new_api": null,
+          "old_text": "talloc_ptrtype(NULL, args)",
+          "new_text": null,
+          "old_line_content": "    struct free_args *args = talloc_ptrtype(NULL, args);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 902,
+          "old_api": "av_frame_get_side_data",
+          "new_api": null,
+          "old_text": "av_frame_get_side_data(src, AV_FRAME_DATA_MASTERING_DISPLAY_METADATA)",
+          "new_text": null,
+          "old_line_content": "    sd = av_frame_get_side_data(src, AV_FRAME_DATA_MASTERING_DISPLAY_METADATA);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": "av_buffer_create",
+          "new_api": null,
+          "old_text": "av_buffer_create(NULL, 0, call_free, args,\n                                    AV_BUFFER_FLAG_READONLY)",
+          "new_text": null,
+          "old_line_content": "    new->bufs[0] = av_buffer_create(NULL, 0, call_free, args,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": "av_q2d",
+          "new_api": null,
+          "old_text": "av_q2d(mdm->max_luminance)",
+          "new_text": null,
+          "old_line_content": "            dst->params.color.sig_peak = av_q2d(mdm->max_luminance) / MP_REF_WHITE;",
+          "new_line_content": "    if (!dst->params.color.sig_peak && sd) {",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "av_buffer_is_writable",
+          "new_api": null,
+          "old_text": "av_buffer_is_writable(img->bufs[p])",
+          "new_text": null,
+          "old_line_content": "        if (!av_buffer_is_writable(img->bufs[p]))",
+          "new_line_content": "    for (int p = 0; p < MP_MAX_PLANES; p++) {",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": "MP_TARRAY_APPEND",
+          "new_api": null,
+          "old_text": "MP_TARRAY_APPEND(NULL, dst->ff_side_data, dst->num_ff_side_data, mpsd)",
+          "new_text": null,
+          "old_line_content": "        MP_TARRAY_APPEND(NULL, dst->ff_side_data, dst->num_ff_side_data, mpsd);",
+          "new_line_content": "            .type = sd->type,",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": "pixfmt2imgfmt",
+          "new_api": null,
+          "old_text": "pixfmt2imgfmt(fctx->sw_format)",
+          "new_text": null,
+          "old_line_content": "        dst->params.hw_subfmt = pixfmt2imgfmt(fctx->sw_format);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 927,
+          "old_api": "hwdec_get_hwcontext_fns",
+          "new_api": null,
+          "old_text": "hwdec_get_hwcontext_fns(fctx->device_ctx->type)",
+          "new_text": null,
+          "old_line_content": "            hwdec_get_hwcontext_fns(fctx->device_ctx->type);",
+          "new_line_content": "        AVHWFramesContext *fctx = (void *)dst->hwctx->data;",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": "complete_image_params",
+          "new_api": null,
+          "old_text": "fns->complete_image_params(dst)",
+          "new_text": null,
+          "old_line_content": "            fns->complete_image_params(dst);",
+          "new_line_content": "        const struct hwcontext_fns *fns =",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "mp_image_is_writeable",
+          "new_api": null,
+          "old_text": "mp_image_is_writeable(img)",
+          "new_text": null,
+          "old_line_content": "    if (mp_image_is_writeable(img))",
+          "new_line_content": "// Returns success; if false is returned, the image could not be made writeable.",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "mp_image_is_writeable",
+          "new_api": null,
+          "old_text": "mp_image_is_writeable(img)",
+          "new_text": null,
+          "old_line_content": "    assert(mp_image_is_writeable(img));",
+          "new_line_content": "    if (!new)",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "mp_image_new_ref",
+          "new_api": null,
+          "old_text": "mp_image_new_ref(src)",
+          "new_text": null,
+          "old_line_content": "    struct mp_image *new_ref = mp_image_new_ref(src);",
+          "new_line_content": "// Convert the mp_image reference to a AVFrame reference.",
+          "content_same": false
+        },
+        {
+          "line": 945,
+          "old_api": "av_frame_alloc",
+          "new_api": null,
+          "old_text": "av_frame_alloc()",
+          "new_text": null,
+          "old_line_content": "    AVFrame *dst = av_frame_alloc();",
+          "new_line_content": "struct AVFrame *mp_image_to_av_frame(struct mp_image *src)",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(*p_img)",
+          "new_text": null,
+          "old_line_content": "        talloc_free(*p_img);",
+          "new_line_content": "void mp_image_setrefp(struct mp_image **p_img, struct mp_image *new_value)",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "mp_image_new_ref",
+          "new_api": null,
+          "old_text": "mp_image_new_ref(new_value)",
+          "new_text": null,
+          "old_line_content": "        *p_img = new_value ? mp_image_new_ref(new_value) : NULL;",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(*p_img)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(*p_img);",
+          "new_line_content": "// Mere helper function (mp_image can be directly free'd with talloc_free)",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": "imgfmt2pixfmt",
+          "new_api": null,
+          "old_text": "imgfmt2pixfmt(src->imgfmt)",
+          "new_text": null,
+          "old_line_content": "    dst->format = imgfmt2pixfmt(src->imgfmt);",
+          "new_line_content": "    dst->hw_frames_ctx = new_ref->hwctx;",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": "cpy",
+          "new_api": null,
+          "old_text": "cpy(dst, src, srcStride * (height - 1) + bytesPerLine)",
+          "new_text": null,
+          "old_line_content": "        cpy(dst, src, srcStride * (height - 1) + bytesPerLine);",
+          "new_line_content": "            srcStride = -srcStride;",
+          "content_same": false
+        },
+        {
+          "line": 981,
+          "old_api": "mp_csp_to_avcol_spc",
+          "new_api": null,
+          "old_text": "mp_csp_to_avcol_spc(src->params.color.space)",
+          "new_text": null,
+          "old_line_content": "    dst->colorspace = mp_csp_to_avcol_spc(src->params.color.space);",
+          "new_line_content": "    if (src->fields & MP_IMGFIELD_REPEAT_FIRST)",
+          "content_same": false
+        },
+        {
+          "line": 982,
+          "old_api": "mp_csp_levels_to_avcol_range",
+          "new_api": null,
+          "old_text": "mp_csp_levels_to_avcol_range(src->params.color.levels)",
+          "new_text": null,
+          "old_line_content": "    dst->color_range = mp_csp_levels_to_avcol_range(src->params.color.levels);",
+          "new_line_content": "        dst->repeat_pict = 1;",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(dst->imgfmt == src->imgfmt)",
+          "new_text": null,
+          "old_line_content": "    assert(dst->imgfmt == src->imgfmt);",
+          "new_line_content": "static void mp_image_copy_cb(struct mp_image *dst, struct mp_image *src,",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(dst->w == src->w && dst->h == src->h)",
+          "new_text": null,
+          "old_line_content": "    assert(dst->w == src->w && dst->h == src->h);",
+          "new_line_content": "                             memcpy_fn cpy)",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "mp_image_is_writeable",
+          "new_api": null,
+          "old_text": "mp_image_is_writeable(dst)",
+          "new_text": null,
+          "old_line_content": "    assert(mp_image_is_writeable(dst));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 989,
+          "old_api": "av_buffer_alloc",
+          "new_api": null,
+          "old_text": "av_buffer_alloc(sizeof(struct mp_image_params))",
+          "new_text": null,
+          "old_line_content": "    dst->opaque_ref = av_buffer_alloc(sizeof(struct mp_image_params));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "memcpy_pic_cb",
+          "new_api": null,
+          "old_text": "memcpy_pic_cb(dst->planes[n], src->planes[n], line_bytes, plane_h,\n                      dst->stride[n], src->stride[n], cpy)",
+          "new_text": null,
+          "old_line_content": "        memcpy_pic_cb(dst->planes[n], src->planes[n], line_bytes, plane_h,",
+          "new_line_content": "    for (int n = 0; n < dst->num_planes; n++) {",
+          "content_same": false
+        },
+        {
+          "line": 991,
+          "old_api": "abort",
+          "new_api": null,
+          "old_text": "abort()",
+          "new_text": null,
+          "old_line_content": "        abort();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE)",
+          "new_text": null,
+          "old_line_content": "        memcpy(dst->planes[1], src->planes[1], AVPALETTE_SIZE);",
+          "new_line_content": "                      dst->stride[n], src->stride[n], cpy);",
+          "content_same": false
+        },
+        {
+          "line": 997,
+          "old_api": "av_frame_new_side_data_from_buf",
+          "new_api": null,
+          "old_text": "av_frame_new_side_data_from_buf(dst, AV_FRAME_DATA_ICC_PROFILE,\n                                            new_ref->icc_profile)",
+          "new_text": null,
+          "old_line_content": "            av_frame_new_side_data_from_buf(dst, AV_FRAME_DATA_ICC_PROFILE,",
+          "new_line_content": "#if LIBAVUTIL_VERSION_MICRO >= 100",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "mp_image_copy_cb",
+          "new_api": null,
+          "old_text": "mp_image_copy_cb(dst, src, memcpy)",
+          "new_text": null,
+          "old_line_content": "    mp_image_copy_cb(dst, src, memcpy);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": "mp_imgfmt_get_forced_csp",
+          "new_api": null,
+          "old_text": "mp_imgfmt_get_forced_csp(imgfmt)",
+          "new_text": null,
+          "old_line_content": "    return mp_imgfmt_get_forced_csp(imgfmt);",
+          "new_line_content": "static enum mp_csp mp_image_params_get_forced_csp(struct mp_image_params *params)",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": "av_content_light_metadata_create_side_data",
+          "new_api": null,
+          "old_text": "av_content_light_metadata_create_side_data(dst)",
+          "new_text": null,
+          "old_line_content": "            av_content_light_metadata_create_side_data(dst);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1008,
+          "old_api": "abort",
+          "new_api": null,
+          "old_text": "abort()",
+          "new_text": null,
+          "old_line_content": "            abort();",
+          "new_line_content": "        AVContentLightMetadata *clm =",
+          "content_same": false
+        },
+        {
+          "line": 1016,
+          "old_api": "av_frame_get_side_data",
+          "new_api": null,
+          "old_text": "av_frame_get_side_data(dst, mpsd->type)",
+          "new_text": null,
+          "old_line_content": "        if (!av_frame_get_side_data(dst, mpsd->type)) {",
+          "new_line_content": "    // above. Keep in mind that the types above will be out of sync anyway.",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": "av_frame_new_side_data_from_buf",
+          "new_api": null,
+          "old_text": "av_frame_new_side_data_from_buf(dst, mpsd->type,\n                                                                  mpsd->buf)",
+          "new_text": null,
+          "old_line_content": "            AVFrameSideData *sd = av_frame_new_side_data_from_buf(dst, mpsd->type,",
+          "new_line_content": "    for (int n = 0; n < new_ref->num_ff_side_data; n++) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 39,
+      "total_additions": 126,
+      "total_deletions": 126,
+      "total_api_changes": 291
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 291,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          75,
+          76,
+          77
+        ]
+      }
+    },
+    "api_calls_before": 188,
+    "api_calls_after": 188,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 0,
+      "total_diff_lines": 15
+    }
+  }
+}

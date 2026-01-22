@@ -1,0 +1,896 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/271b72abf4fc2942694be21056464a70b8fe37f5",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/271b72abf4fc2942694be21056464a70b8fe37f5/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/271b72abf4fc2942694be21056464a70b8fe37f5/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/271b72abf4fc2942694be21056464a70b8fe37f5/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 195,
+          "old_api": "rbegin",
+          "new_api": "front",
+          "old_text": "stack.rbegin()",
+          "new_text": "sorting_node->children.front()",
+          "old_line_content": "        chassert(parent_node == (stack.rbegin() + 1)->node); /// skip element on top of stack since it's sorting which was just removed",
+          "new_line_content": "                child = sorting_node->children.front();",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "back",
+          "new_api": "front",
+          "old_text": "nodes_affect_order.back()",
+          "new_text": "parent_node->children.front()->step->getOutputStream()",
+          "old_line_content": "            if (typeid_cast<const SortingStep *>(step) && node != nodes_affect_order.back())",
+          "new_line_content": "        const DataStream * input_stream = &parent_node->children.front()->step->getOutputStream();",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": "updateInputStream",
+          "new_api": "dynamic_cast<ITransformingStep *>(step)",
+          "old_text": "trans->updateInputStream(*input_stream)",
+          "new_text": "dynamic_cast<ITransformingStep *>(step)",
+          "old_line_content": "            trans->updateInputStream(*input_stream);",
+          "new_line_content": "            auto * trans = dynamic_cast<ITransformingStep *>(step);",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "get",
+          "new_api": "back",
+          "old_text": "node_affect_order->step.get()",
+          "new_text": "stack.back().node->step.get()",
+          "old_line_content": "        IQueryPlanStep * step_affect_order = node_affect_order->step.get();",
+          "new_line_content": "        chassert(typeid_cast<const SortingStep *>(stack.back().node->step.get()));",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "inOrder",
+          "new_api": "typeid_cast<LimitByStep *>(step_affect_order)",
+          "old_text": "parent_aggr->inOrder()",
+          "new_text": "typeid_cast<LimitByStep *>(step_affect_order)",
+          "old_line_content": "            if (parent_aggr->inOrder())",
+          "new_line_content": "        if (typeid_cast<LimitStep *>(step_affect_order) || typeid_cast<LimitByStep *>(step_affect_order)",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": "typeid_cast<const SortingStep *>(step_affect_order)",
+          "new_api": "removeNullable",
+          "old_text": "typeid_cast<const SortingStep *>(step_affect_order)",
+          "new_text": "removeNullable(data_type)",
+          "old_line_content": "        else if (const auto * next_sorting = typeid_cast<const SortingStep *>(step_affect_order); next_sorting)",
+          "new_line_content": "                    if (WhichDataType(removeNullable(data_type)).isFloat())",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "rend",
+          "new_api": "back",
+          "old_text": "stack.rend()",
+          "new_text": "stack.back().node->step.get()",
+          "old_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "new_line_content": "        chassert(typeid_cast<const SortingStep *>(stack.back().node->step.get()));",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "get",
+          "new_api": "rend",
+          "old_text": "node->step.get()",
+          "new_text": "stack.rend()",
+          "old_line_content": "            const auto * step = node->step.get();",
+          "new_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "getExpression",
+          "new_api": "typeid_cast<const ExpressionStep *>(step)",
+          "old_text": "filter->getExpression()->hasStatefulFunctions()",
+          "new_text": "typeid_cast<const ExpressionStep *>(step)",
+          "old_line_content": "                if (filter->getExpression()->hasStatefulFunctions())",
+          "new_line_content": "            if (const auto * expr = typeid_cast<const ExpressionStep *>(step); expr)",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "dynamic_cast<const ITransformingStep *>(step)",
+          "new_api": "typeid_cast<const FilterStep *>(step)",
+          "old_text": "dynamic_cast<const ITransformingStep *>(step)",
+          "new_text": "typeid_cast<const FilterStep *>(step)",
+          "old_line_content": "                const auto * trans = dynamic_cast<const ITransformingStep *>(step);",
+          "new_line_content": "            else if (const auto * filter = typeid_cast<const FilterStep *>(step); filter)",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "get",
+          "new_api": "rend",
+          "old_text": "node->step.get()",
+          "new_text": "stack.rend()",
+          "old_line_content": "            const auto * step = node->step.get();",
+          "new_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "typeid_cast<const WindowStep *>(step)",
+          "new_api": "typeid_cast<const SortingStep *>(step)",
+          "old_text": "typeid_cast<const WindowStep *>(step)",
+          "new_text": "typeid_cast<const SortingStep *>(step)",
+          "old_line_content": "            if (typeid_cast<const WindowStep *>(step))",
+          "new_line_content": "            if (typeid_cast<const SortingStep *>(step))",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "typeid_cast<const JoinStep *>(step)",
+          "new_api": "logStep",
+          "old_text": "typeid_cast<const JoinStep *>(step)",
+          "new_text": "logStep(\"checking path from current sorting\", node)",
+          "old_line_content": "            if (const auto * join_step = typeid_cast<const JoinStep *>(step); join_step)",
+          "new_line_content": "            logStep(\"checking path from current sorting\", node);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 258,
+          "old_api": null,
+          "new_api": "getParams",
+          "old_text": null,
+          "new_text": "parent_aggr->getParams()",
+          "old_line_content": "                /// sum*() with Floats depends on order",
+          "new_line_content": "            auto const & aggregates = parent_aggr->getParams().aggregates;",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "getName",
+          "old_text": null,
+          "new_text": "aggregate.function->getName()",
+          "old_line_content": "                const auto aggregate_function = aggregate.function;",
+          "new_line_content": "                auto aggregate_function_properties = AggregateFunctionFactory::instance().tryGetProperties(aggregate.function->getName());",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": null,
+          "new_api": "getName",
+          "old_text": null,
+          "new_text": "aggregate_function->getName()",
+          "old_line_content": "            }",
+          "new_line_content": "                const String & func_name = aggregate_function->getName();",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "starts_with",
+          "old_text": null,
+          "new_text": "func_name.starts_with(\"sum\")",
+          "old_line_content": "            return true;",
+          "new_line_content": "                if (func_name.starts_with(\"sum\"))",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "aggregate_function->getArgumentTypes().front()",
+          "old_line_content": "        /// (2) sorting",
+          "new_line_content": "                    DataTypePtr data_type = aggregate_function->getArgumentTypes().front();",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": null,
+          "new_api": "typeid_cast<const SortingStep *>(step_affect_order)",
+          "old_text": null,
+          "new_text": "typeid_cast<const SortingStep *>(step_affect_order)",
+          "old_line_content": "    }",
+          "new_line_content": "        else if (const auto * next_sorting = typeid_cast<const SortingStep *>(step_affect_order); next_sorting)",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "getType",
+          "old_text": null,
+          "new_text": "next_sorting->getType()",
+          "old_line_content": "    bool checkPathFromCurrentSortingNode(const QueryPlan::Node * node_affect_order)",
+          "new_line_content": "            if (next_sorting->getType() == SortingStep::Type::Full)",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "stack.empty()",
+          "old_line_content": "        /// skip element on top of stack since it's sorting",
+          "new_line_content": "        chassert(!stack.empty());",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "node->step.get()",
+          "old_line_content": "            {",
+          "new_line_content": "            const auto * step = node->step.get();",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "typeid_cast<const SortingStep*>(step)",
+          "old_text": null,
+          "new_text": "typeid_cast<const SortingStep*>(step)",
+          "old_line_content": "                    return false;",
+          "new_line_content": "            if (typeid_cast<const SortingStep*>(step))",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "logStep",
+          "old_text": null,
+          "new_text": "logStep(\"checking for stateful function\", node)",
+          "old_line_content": "            {",
+          "new_line_content": "            logStep(\"checking for stateful function\", node);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "getExpression",
+          "old_text": null,
+          "new_text": "expr->getExpression()->hasStatefulFunctions()",
+          "old_line_content": "            }",
+          "new_line_content": "                if (expr->getExpression()->hasStatefulFunctions())",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "getExpression",
+          "old_text": null,
+          "new_text": "filter->getExpression()->hasStatefulFunctions()",
+          "old_line_content": "                    break;",
+          "new_line_content": "                if (filter->getExpression()->hasStatefulFunctions())",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": null,
+          "new_api": "dynamic_cast<const ITransformingStep *>(step)",
+          "old_text": null,
+          "new_text": "dynamic_cast<const ITransformingStep *>(step)",
+          "old_line_content": "        }",
+          "new_line_content": "                const auto * trans = dynamic_cast<const ITransformingStep *>(step);",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "getDataStreamTraits",
+          "old_text": null,
+          "new_text": "trans->getDataStreamTraits()",
+          "old_line_content": "        {",
+          "new_line_content": "                if (!trans->getDataStreamTraits().preserves_sorting)",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "rbegin",
+          "old_text": null,
+          "new_text": "stack.rbegin()",
+          "old_line_content": "                continue;",
+          "new_line_content": "        chassert(parent_node == (stack.rbegin() + 1)->node); /// skip element on top of stack since it's sorting which was just removed",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "rend",
+          "old_text": null,
+          "new_text": "stack.rend()",
+          "old_line_content": "",
+          "new_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "node->step.get()",
+          "old_line_content": "            if (!trans)",
+          "new_line_content": "            auto * step = node->step.get();",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "nodes_affect_order.back()",
+          "old_line_content": "            {",
+          "new_line_content": "            if (typeid_cast<const SortingStep *>(step) && node != nodes_affect_order.back())",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": null,
+          "new_api": "logStep",
+          "old_text": null,
+          "new_text": "logStep(\"update sorting traits\", node)",
+          "old_line_content": "            }",
+          "new_line_content": "            logStep(\"update sorting traits\", node);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "node->step.get()",
+          "old_line_content": "            /// (2) for window function we do ORDER BY in 2 Sorting steps,",
+          "new_line_content": "            const auto * step = node->step.get();",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": null,
+          "new_api": "logStep",
+          "old_text": null,
+          "new_text": "logStep(\"stop update sorting traits: node is not transforming step\", node)",
+          "old_line_content": "            /// update sorting properties though stack until reach node which affects order (inclusive)",
+          "new_line_content": "                logStep(\"stop update sorting traits: node is not transforming step\", node);",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "updateInputStream",
+          "old_text": null,
+          "new_text": "trans->updateInputStream(*input_stream)",
+          "old_line_content": "                break;",
+          "new_line_content": "            trans->updateInputStream(*input_stream);",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "getOutputStream",
+          "old_text": null,
+          "new_text": "trans->getOutputStream()",
+          "old_line_content": "            }",
+          "new_line_content": "            input_stream = &trans->getOutputStream();",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "typeid_cast<const WindowStep *>(step)",
+          "old_text": null,
+          "new_text": "typeid_cast<const WindowStep *>(step)",
+          "old_line_content": "            }",
+          "new_line_content": "            if (typeid_cast<const WindowStep *>(step))",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "nodes_affect_order.back()",
+          "old_line_content": "        return true;",
+          "new_line_content": "            if (node == nodes_affect_order.back())",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": null,
+          "new_api": "typeid_cast<const JoinStep *>(step)",
+          "old_text": null,
+          "new_text": "typeid_cast<const JoinStep *>(step)",
+          "old_line_content": "        return true;",
+          "new_line_content": "            if (const auto * join_step = typeid_cast<const JoinStep *>(step); join_step)",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "logStep",
+          "old_text": null,
+          "new_text": "logStep(\"stop update sorting traits: reached node which affect order\", node)",
+          "old_line_content": "",
+          "new_line_content": "                logStep(\"stop update sorting traits: reached node which affect order\", node);",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "join_step->getJoin().get()",
+          "old_line_content": "};",
+          "new_line_content": "                if (typeid_cast<const FullSortingMergeJoin *>(join_step->getJoin().get()))",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "stack.empty()",
+          "old_line_content": "    {",
+          "new_line_content": "        chassert(!stack.empty());",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": null,
+          "new_api": "visit",
+          "old_text": null,
+          "new_text": "RemoveRedundantSorting(root).visit()",
+          "old_line_content": "",
+          "new_line_content": "    RemoveRedundantSorting(root).visit();",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "nodes_affect_order.back()",
+          "old_line_content": "        /// if there are LIMITs on top of ORDER BY, the ORDER BY is non-removable",
+          "new_line_content": "        return checkNodeAffectingOrder(nodes_affect_order.back()) && checkPathFromCurrentSortingNode(nodes_affect_order.back());",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "node_affect_order->step.get()",
+          "old_line_content": "",
+          "new_line_content": "        IQueryPlanStep * step_affect_order = node_affect_order->step.get();",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "typeid_cast<FillingStep *>(step_affect_order)",
+          "old_text": null,
+          "new_text": "typeid_cast<FillingStep *>(step_affect_order)",
+          "old_line_content": "                return false;",
+          "new_line_content": "            || typeid_cast<FillingStep *>(step_affect_order))",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": null,
+          "new_api": "typeid_cast<AggregatingStep *>(step_affect_order)",
+          "old_text": null,
+          "new_text": "typeid_cast<AggregatingStep *>(step_affect_order)",
+          "old_line_content": "            {",
+          "new_line_content": "        if (const AggregatingStep * parent_aggr = typeid_cast<AggregatingStep *>(step_affect_order); parent_aggr)",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "inOrder",
+          "old_text": null,
+          "new_text": "parent_aggr->inOrder()",
+          "old_line_content": "                if (aggregate_function_properties && aggregate_function_properties->is_order_dependent)",
+          "new_line_content": "            if (parent_aggr->inOrder())",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 262,
+          "old_api": "getName",
+          "new_api": null,
+          "old_text": "aggregate_function->getName()",
+          "new_text": null,
+          "old_line_content": "                const String & func_name = aggregate_function->getName();",
+          "new_line_content": "                if (aggregate_function_properties && aggregate_function_properties->is_order_dependent)",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "starts_with",
+          "new_api": null,
+          "old_text": "func_name.starts_with(\"sum\")",
+          "new_text": null,
+          "old_line_content": "                if (func_name.starts_with(\"sum\"))",
+          "new_line_content": "                    return false;",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "aggregate_function->getArgumentTypes().front()",
+          "new_text": null,
+          "old_line_content": "                    DataTypePtr data_type = aggregate_function->getArgumentTypes().front();",
+          "new_line_content": "                /// sum*() with Floats depends on order",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": "removeNullable",
+          "new_api": null,
+          "old_text": "removeNullable(data_type)",
+          "new_text": null,
+          "old_line_content": "                    if (WhichDataType(removeNullable(data_type)).isFloat())",
+          "new_line_content": "                /// but currently, there is no way to specify property `is_order_dependent` for combination of aggregating function and data type as argument",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "next_sorting->getType()",
+          "new_text": null,
+          "old_line_content": "            if (next_sorting->getType() == SortingStep::Type::Full)",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "stack.empty()",
+          "new_text": null,
+          "old_line_content": "        chassert(!stack.empty());",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "stack.back().node->step.get()",
+          "new_text": null,
+          "old_line_content": "        chassert(typeid_cast<const SortingStep *>(stack.back().node->step.get()));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "typeid_cast<const SortingStep*>(step)",
+          "new_api": null,
+          "old_text": "typeid_cast<const SortingStep*>(step)",
+          "new_text": null,
+          "old_line_content": "            if (typeid_cast<const SortingStep*>(step))",
+          "new_line_content": "            const QueryPlan::Node * node = it->node;",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "logStep",
+          "new_api": null,
+          "old_text": "logStep(\"checking for stateful function\", node)",
+          "new_text": null,
+          "old_line_content": "            logStep(\"checking for stateful function\", node);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "typeid_cast<const ExpressionStep *>(step)",
+          "new_api": null,
+          "old_text": "typeid_cast<const ExpressionStep *>(step)",
+          "new_text": null,
+          "old_line_content": "            if (const auto * expr = typeid_cast<const ExpressionStep *>(step); expr)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "getExpression",
+          "new_api": null,
+          "old_text": "expr->getExpression()->hasStatefulFunctions()",
+          "new_text": null,
+          "old_line_content": "                if (expr->getExpression()->hasStatefulFunctions())",
+          "new_line_content": "            /// skip removed sorting steps",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "typeid_cast<const FilterStep *>(step)",
+          "new_api": null,
+          "old_text": "typeid_cast<const FilterStep *>(step)",
+          "new_text": null,
+          "old_line_content": "            else if (const auto * filter = typeid_cast<const FilterStep *>(step); filter)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "sorting_node->children.front()",
+          "new_text": null,
+          "old_line_content": "        parent_node->children.front() = sorting_node->children.front();",
+          "new_line_content": "        for (auto & child : parent_node->children)",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "getDataStreamTraits",
+          "new_api": null,
+          "old_text": "trans->getDataStreamTraits()",
+          "new_text": null,
+          "old_line_content": "                if (!trans->getDataStreamTraits().preserves_sorting)",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "parent_node->children.front()->step->getOutputStream()",
+          "new_text": null,
+          "old_line_content": "        const DataStream * input_stream = &parent_node->children.front()->step->getOutputStream();",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": "rend",
+          "new_api": null,
+          "old_text": "stack.rend()",
+          "new_text": null,
+          "old_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "rend",
+          "new_api": null,
+          "old_text": "stack.rend()",
+          "new_text": null,
+          "old_line_content": "        for (StackWithParent::const_reverse_iterator it = stack.rbegin() + 1; it != stack.rend(); ++it)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "node->step.get()",
+          "new_text": null,
+          "old_line_content": "            auto * step = node->step.get();",
+          "new_line_content": "        /// sorting removed, so need to update sorting traits for upstream steps",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": "logStep",
+          "new_api": null,
+          "old_text": "logStep(\"update sorting traits\", node)",
+          "new_text": null,
+          "old_line_content": "            logStep(\"update sorting traits\", node);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "dynamic_cast<ITransformingStep *>(step)",
+          "new_api": null,
+          "old_text": "dynamic_cast<ITransformingStep *>(step)",
+          "new_text": null,
+          "old_line_content": "            auto * trans = dynamic_cast<ITransformingStep *>(step);",
+          "new_line_content": "            /// skip removed sorting steps",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "typeid_cast<const SortingStep *>(step)",
+          "new_api": null,
+          "old_text": "typeid_cast<const SortingStep *>(step)",
+          "new_text": null,
+          "old_line_content": "            if (typeid_cast<const SortingStep *>(step))",
+          "new_line_content": "            const QueryPlan::Node * node = it->node;",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": "logStep",
+          "new_api": null,
+          "old_text": "logStep(\"stop update sorting traits: node is not transforming step\", node)",
+          "new_text": null,
+          "old_line_content": "                logStep(\"stop update sorting traits: node is not transforming step\", node);",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "logStep",
+          "new_api": null,
+          "old_text": "logStep(\"checking path from current sorting\", node)",
+          "new_text": null,
+          "old_line_content": "            logStep(\"checking path from current sorting\", node);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "getOutputStream",
+          "new_api": null,
+          "old_text": "trans->getOutputStream()",
+          "new_text": null,
+          "old_line_content": "            input_stream = &trans->getOutputStream();",
+          "new_line_content": "            if (!trans)",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "nodes_affect_order.back()",
+          "new_text": null,
+          "old_line_content": "            if (node == nodes_affect_order.back())",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "logStep",
+          "new_api": null,
+          "old_text": "logStep(\"stop update sorting traits: reached node which affect order\", node)",
+          "new_text": null,
+          "old_line_content": "                logStep(\"stop update sorting traits: reached node which affect order\", node);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "join_step->getJoin().get()",
+          "new_text": null,
+          "old_line_content": "                if (typeid_cast<const FullSortingMergeJoin *>(join_step->getJoin().get()))",
+          "new_line_content": "            /// (2) for window function we do ORDER BY in 2 Sorting steps,",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "stack.empty()",
+          "new_text": null,
+          "old_line_content": "        chassert(!stack.empty());",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "stack.back().node->step.get()",
+          "new_text": null,
+          "old_line_content": "        chassert(typeid_cast<const SortingStep *>(stack.back().node->step.get()));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "visit",
+          "new_api": null,
+          "old_text": "RemoveRedundantSorting(root).visit()",
+          "new_text": null,
+          "old_line_content": "    RemoveRedundantSorting(root).visit();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "nodes_affect_order.back()",
+          "new_text": null,
+          "old_line_content": "        return checkNodeAffectingOrder(nodes_affect_order.back()) && checkPathFromCurrentSortingNode(nodes_affect_order.back());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "typeid_cast<LimitByStep *>(step_affect_order)",
+          "new_api": null,
+          "old_text": "typeid_cast<LimitByStep *>(step_affect_order)",
+          "new_text": null,
+          "old_line_content": "        if (typeid_cast<LimitStep *>(step_affect_order) || typeid_cast<LimitByStep *>(step_affect_order)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "typeid_cast<FillingStep *>(step_affect_order)",
+          "new_api": null,
+          "old_text": "typeid_cast<FillingStep *>(step_affect_order)",
+          "new_text": null,
+          "old_line_content": "            || typeid_cast<FillingStep *>(step_affect_order))",
+          "new_line_content": "    static bool checkNodeAffectingOrder(QueryPlan::Node * node_affect_order)",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "typeid_cast<AggregatingStep *>(step_affect_order)",
+          "new_api": null,
+          "old_text": "typeid_cast<AggregatingStep *>(step_affect_order)",
+          "new_text": null,
+          "old_line_content": "        if (const AggregatingStep * parent_aggr = typeid_cast<AggregatingStep *>(step_affect_order); parent_aggr)",
+          "new_line_content": "        /// if there are LIMITs on top of ORDER BY, the ORDER BY is non-removable",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": "getParams",
+          "new_api": null,
+          "old_text": "parent_aggr->getParams()",
+          "new_text": null,
+          "old_line_content": "            auto const & aggregates = parent_aggr->getParams().aggregates;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "getName",
+          "new_api": null,
+          "old_text": "aggregate.function->getName()",
+          "new_text": null,
+          "old_line_content": "                auto aggregate_function_properties = AggregateFunctionFactory::instance().tryGetProperties(aggregate.function->getName());",
+          "new_line_content": "        {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 13,
+      "total_additions": 36,
+      "total_deletions": 36,
+      "total_api_changes": 85
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 85,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          205,
+          197,
+          199
+        ]
+      }
+    },
+    "api_calls_before": 133,
+    "api_calls_after": 132,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 2,
+      "total_diff_lines": 37
+    }
+  }
+}

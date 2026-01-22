@@ -1,0 +1,17 @@
+diff --git a/src/Storages/IStorage.cpp b/src/Storages/IStorage.cpp
+index d50f335c1c9..2994b3aae5f 100644
+--- a/src/Storages/IStorage.cpp
++++ b/src/Storages/IStorage.cpp
+@@ -133,6 +133,12 @@ void IStorage::read(
+     size_t num_streams)
+ {
+     auto pipe = read(column_names, storage_snapshot, query_info, context, processed_stage, max_block_size, num_streams);
++
++    /// parallelize processing if not yet
++    const size_t output_ports = pipe.numOutputPorts();
++    if (output_ports > 0 && output_ports < num_streams)
++        pipe.resize(num_streams);
++
+     readFromPipe(query_plan, std::move(pipe), column_names, storage_snapshot, query_info, context, getName());
+ }
+ 

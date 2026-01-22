@@ -1,0 +1,17 @@
+diff --git a/lib/SILPasses/Passes.cpp b/lib/SILPasses/Passes.cpp
+index 53680209489..19c73a3d2e5 100644
+--- a/lib/SILPasses/Passes.cpp
++++ b/lib/SILPasses/Passes.cpp
+@@ -286,9 +286,12 @@ void swift::runSILOptimizationPasses(SILModule &Module) {
+ 
+   PM.setStageName("LateLoopOpt");
+   AddLowLevelLoopOptPasses(PM);
++
++  // Perform the final lowering transformations.
+   PM.add(createExternalFunctionDefinitionsElimination());
+   PM.add(createDeadFunctionElimination());
+   PM.add(createMergeCondFails());
++  PM.add(createCropOverflowChecks());
+   PM.runOneIteration();
+ 
+   // Call the CFG viewer.

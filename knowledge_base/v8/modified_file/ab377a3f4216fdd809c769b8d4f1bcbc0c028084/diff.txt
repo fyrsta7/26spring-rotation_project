@@ -1,0 +1,18 @@
+diff --git a/src/objects-inl.h b/src/objects-inl.h
+index 271dd7ebf94..6c1296a7e85 100644
+--- a/src/objects-inl.h
++++ b/src/objects-inl.h
+@@ -1198,7 +1198,12 @@ void String::set_length_field(int value) {
+ 
+ 
+ void String::TryFlatten() {
+-  Flatten();
++  // We don't need to flatten strings that are already flat.  Since this code
++  // is inlined, it can be helpful in the flat case to not call out to Flatten.
++  StringRepresentationTag str_type = representation_tag();
++  if (str_type != kSeqStringTag && str_type != kExternalStringTag) {
++    Flatten();
++  }
+ }
+ 
+ 

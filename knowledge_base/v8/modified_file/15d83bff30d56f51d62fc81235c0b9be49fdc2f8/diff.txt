@@ -1,0 +1,17 @@
+diff --git a/src/compiler/pipeline.cc b/src/compiler/pipeline.cc
+index 87797d5a2f6..a912d15e8bd 100644
+--- a/src/compiler/pipeline.cc
++++ b/src/compiler/pipeline.cc
+@@ -3250,6 +3250,12 @@ void Pipeline::GenerateCodeForWasmFunction(
+   pipeline.Run<MemoryOptimizationPhase>();
+   pipeline.RunPrintAndVerify(MemoryOptimizationPhase::phase_name(), true);
+ 
++  if (FLAG_experimental_wasm_gc) {
++    pipeline.Run<DecompressionOptimizationPhase>();
++    pipeline.RunPrintAndVerify(DecompressionOptimizationPhase::phase_name(),
++                               true);
++  }
++
+   if (FLAG_turbo_splitting && !is_asm_js) {
+     data.info()->set_splitting();
+   }

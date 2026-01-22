@@ -1,0 +1,506 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/git/modified_file/2e2d141afdaa2b086ac5d4228de0dd0003eb69ff",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/git/modified_file/2e2d141afdaa2b086ac5d4228de0dd0003eb69ff/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/git/modified_file/2e2d141afdaa2b086ac5d4228de0dd0003eb69ff/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/git/modified_file/2e2d141afdaa2b086ac5d4228de0dd0003eb69ff/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 51,
+          "old_api": "EWAH_BLOCK",
+          "new_api": "EWAH_MASK",
+          "old_text": "EWAH_BLOCK(pos)",
+          "new_text": "EWAH_MASK(pos)",
+          "old_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "new_line_content": "\tself->words[block] |= EWAH_MASK(pos);",
+          "content_same": false
+        },
+        {
+          "line": 59,
+          "old_api": "EWAH_BLOCK",
+          "new_api": "EWAH_MASK",
+          "old_text": "EWAH_BLOCK(pos)",
+          "new_text": "EWAH_MASK(pos)",
+          "old_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "new_line_content": "\t\tself->words[block] &= ~EWAH_MASK(pos);",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": "ewah_add",
+          "new_api": "ewah_add_empty_words",
+          "old_text": "ewah_add(ewah, last_word)",
+          "new_text": "ewah_add_empty_words(ewah, 0, running_empty_words)",
+          "old_line_content": "\t\t\tewah_add(ewah, last_word);",
+          "new_line_content": "\t\t\tewah_add_empty_words(ewah, 0, running_empty_words);",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "ewah_iterator_init",
+          "new_api": "ALLOC_GROW",
+          "old_text": "ewah_iterator_init(&it, ewah)",
+          "new_text": "ALLOC_GROW(bitmap->words, i + 1, bitmap->word_alloc)",
+          "old_line_content": "\tewah_iterator_init(&it, ewah);",
+          "new_line_content": "\t\tALLOC_GROW(bitmap->words, i + 1, bitmap->word_alloc);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 135,
+          "old_api": null,
+          "new_api": "REALLOC_ARRAY",
+          "old_text": null,
+          "new_text": "REALLOC_ARRAY(self->words, self->word_alloc)",
+          "old_line_content": "",
+          "new_line_content": "\t\tREALLOC_ARRAY(self->words, self->word_alloc);",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(self->words + original_size, 0x0,\n\t\t\t(self->word_alloc - original_size) * sizeof(eword_t))",
+          "old_line_content": "\tif (self->word_alloc < other_final) {",
+          "new_line_content": "\t\tmemset(self->words + original_size, 0x0,",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": null,
+          "new_api": "ewah_iterator_init",
+          "old_text": null,
+          "new_text": "ewah_iterator_init(&it, other)",
+          "old_line_content": "\t\t\t(self->word_alloc - original_size) * sizeof(eword_t));",
+          "new_line_content": "\tewah_iterator_init(&it, other);",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": null,
+          "new_api": "ewah_iterator_next",
+          "old_text": null,
+          "new_text": "ewah_iterator_next(&word, &it)",
+          "old_line_content": "",
+          "new_line_content": "\twhile (ewah_iterator_next(&word, &it))",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "ewah_bit_popcount64",
+          "old_text": null,
+          "new_text": "ewah_bit_popcount64(self->words[i])",
+          "old_line_content": "\tsize_t i, count = 0;",
+          "new_line_content": "\t\tcount += ewah_bit_popcount64(self->words[i]);",
+          "content_same": false
+        },
+        {
+          "line": 41,
+          "old_api": null,
+          "new_api": "ALLOC_GROW",
+          "old_text": null,
+          "new_text": "ALLOC_GROW(self->words, word_alloc, self->word_alloc)",
+          "old_line_content": "\t\tsize_t old_size = self->word_alloc;",
+          "new_line_content": "\tALLOC_GROW(self->words, word_alloc, self->word_alloc);",
+          "content_same": false
+        },
+        {
+          "line": 42,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(self->words + old_size, 0x0,\n\t       (self->word_alloc - old_size) * sizeof(eword_t))",
+          "old_line_content": "\t\tself->word_alloc = word_alloc * 2;",
+          "new_line_content": "\tmemset(self->words + old_size, 0x0,",
+          "content_same": false
+        },
+        {
+          "line": 48,
+          "old_api": null,
+          "new_api": "EWAH_BLOCK",
+          "old_text": null,
+          "new_text": "EWAH_BLOCK(pos)",
+          "old_line_content": "",
+          "new_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "content_same": false
+        },
+        {
+          "line": 50,
+          "old_api": null,
+          "new_api": "bitmap_grow",
+          "old_text": null,
+          "new_text": "bitmap_grow(self, block + 1)",
+          "old_line_content": "{",
+          "new_line_content": "\tbitmap_grow(self, block + 1);",
+          "content_same": false
+        },
+        {
+          "line": 56,
+          "old_api": null,
+          "new_api": "EWAH_BLOCK",
+          "old_text": null,
+          "new_text": "EWAH_BLOCK(pos)",
+          "old_line_content": "",
+          "new_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(bitmap->words, 0x0, bitmap->word_alloc * sizeof(eword_t))",
+          "old_line_content": "",
+          "new_line_content": "\tmemset(bitmap->words, 0x0, bitmap->word_alloc * sizeof(eword_t));",
+          "content_same": false
+        },
+        {
+          "line": 64,
+          "old_api": null,
+          "new_api": "EWAH_BLOCK",
+          "old_text": null,
+          "new_text": "EWAH_BLOCK(pos)",
+          "old_line_content": "",
+          "new_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(bitmap->words)",
+          "old_line_content": "\tif (bitmap == NULL)",
+          "new_line_content": "\tfree(bitmap->words);",
+          "content_same": false
+        },
+        {
+          "line": 66,
+          "old_api": null,
+          "new_api": "EWAH_MASK",
+          "old_text": null,
+          "new_text": "EWAH_MASK(pos)",
+          "old_line_content": "{",
+          "new_line_content": "\t\t(self->words[block] & EWAH_MASK(pos)) != 0;",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(bitmap)",
+          "old_line_content": "\t\treturn;",
+          "new_line_content": "\tfree(bitmap);",
+          "content_same": false
+        },
+        {
+          "line": 71,
+          "old_api": null,
+          "new_api": "ewah_new",
+          "old_text": null,
+          "new_text": "ewah_new()",
+          "old_line_content": "",
+          "new_line_content": "\tstruct ewah_bitmap *ewah = ewah_new();",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": null,
+          "new_api": "ewah_add",
+          "old_text": null,
+          "new_text": "ewah_add(ewah, last_word)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tewah_add(ewah, last_word);",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": null,
+          "new_api": "ewah_add",
+          "old_text": null,
+          "new_text": "ewah_add(ewah, last_word)",
+          "old_line_content": "\t\tlast_word = bitmap->words[i];",
+          "new_line_content": "\tewah_add(ewah, last_word);",
+          "content_same": false
+        },
+        {
+          "line": 98,
+          "old_api": null,
+          "new_api": "bitmap_new",
+          "old_text": null,
+          "new_text": "bitmap_new()",
+          "old_line_content": "",
+          "new_line_content": "\tstruct bitmap *bitmap = bitmap_new();",
+          "content_same": false
+        },
+        {
+          "line": 103,
+          "old_api": null,
+          "new_api": "ewah_iterator_init",
+          "old_text": null,
+          "new_text": "ewah_iterator_init(&it, ewah)",
+          "old_line_content": "\teword_t blowup;",
+          "new_line_content": "\tewah_iterator_init(&it, ewah);",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": null,
+          "new_api": "ewah_iterator_next",
+          "old_text": null,
+          "new_text": "ewah_iterator_next(&blowup, &it)",
+          "old_line_content": "",
+          "new_line_content": "\twhile (ewah_iterator_next(&blowup, &it)) {",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 138,
+          "old_api": "REALLOC_ARRAY",
+          "new_api": null,
+          "old_text": "REALLOC_ARRAY(self->words, self->word_alloc)",
+          "new_text": null,
+          "old_line_content": "\t\tREALLOC_ARRAY(self->words, self->word_alloc);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(self->words + original_size, 0x0,\n\t\t\t(self->word_alloc - original_size) * sizeof(eword_t))",
+          "new_text": null,
+          "old_line_content": "\t\tmemset(self->words + original_size, 0x0,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": "ewah_iterator_init",
+          "new_api": null,
+          "old_text": "ewah_iterator_init(&it, other)",
+          "new_text": null,
+          "old_line_content": "\tewah_iterator_init(&it, other);",
+          "new_line_content": "\t\tself->words[i++] |= word;",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": "ewah_iterator_next",
+          "new_api": null,
+          "old_text": "ewah_iterator_next(&word, &it)",
+          "new_text": null,
+          "old_line_content": "\twhile (ewah_iterator_next(&word, &it))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "ewah_bit_popcount64",
+          "new_api": null,
+          "old_text": "ewah_bit_popcount64(self->words[i])",
+          "new_text": null,
+          "old_line_content": "\t\tcount += ewah_bit_popcount64(self->words[i]);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 43,
+          "old_api": "REALLOC_ARRAY",
+          "new_api": null,
+          "old_text": "REALLOC_ARRAY(self->words, self->word_alloc)",
+          "new_text": null,
+          "old_line_content": "\t\tREALLOC_ARRAY(self->words, self->word_alloc);",
+          "new_line_content": "\t       (self->word_alloc - old_size) * sizeof(eword_t));",
+          "content_same": false
+        },
+        {
+          "line": 44,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(self->words + old_size, 0x0,\n\t\t\t(self->word_alloc - old_size) * sizeof(eword_t))",
+          "new_text": null,
+          "old_line_content": "\t\tmemset(self->words + old_size, 0x0,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 53,
+          "old_api": "bitmap_grow",
+          "new_api": null,
+          "old_text": "bitmap_grow(self, block + 1)",
+          "new_text": null,
+          "old_line_content": "\tbitmap_grow(self, block + 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 54,
+          "old_api": "EWAH_MASK",
+          "new_api": null,
+          "old_text": "EWAH_MASK(pos)",
+          "new_text": null,
+          "old_line_content": "\tself->words[block] |= EWAH_MASK(pos);",
+          "new_line_content": "void bitmap_unset(struct bitmap *self, size_t pos)",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(bitmap->words, 0x0, bitmap->word_alloc * sizeof(eword_t))",
+          "new_text": null,
+          "old_line_content": "\tmemset(bitmap->words, 0x0, bitmap->word_alloc * sizeof(eword_t));",
+          "new_line_content": "void bitmap_free(struct bitmap *bitmap)",
+          "content_same": false
+        },
+        {
+          "line": 62,
+          "old_api": "EWAH_MASK",
+          "new_api": null,
+          "old_text": "EWAH_MASK(pos)",
+          "new_text": null,
+          "old_line_content": "\t\tself->words[block] &= ~EWAH_MASK(pos);",
+          "new_line_content": "int bitmap_get(struct bitmap *self, size_t pos)",
+          "content_same": false
+        },
+        {
+          "line": 67,
+          "old_api": "EWAH_BLOCK",
+          "new_api": null,
+          "old_text": "EWAH_BLOCK(pos)",
+          "new_text": null,
+          "old_line_content": "\tsize_t block = EWAH_BLOCK(pos);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(bitmap->words)",
+          "new_text": null,
+          "old_line_content": "\tfree(bitmap->words);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 69,
+          "old_api": "EWAH_MASK",
+          "new_api": null,
+          "old_text": "EWAH_MASK(pos)",
+          "new_text": null,
+          "old_line_content": "\t\t(self->words[block] & EWAH_MASK(pos)) != 0;",
+          "new_line_content": "struct ewah_bitmap *bitmap_to_ewah(struct bitmap *bitmap)",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(bitmap)",
+          "new_text": null,
+          "old_line_content": "\tfree(bitmap);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 74,
+          "old_api": "ewah_new",
+          "new_api": null,
+          "old_text": "ewah_new()",
+          "new_text": null,
+          "old_line_content": "\tstruct ewah_bitmap *ewah = ewah_new();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 88,
+          "old_api": "ewah_add_empty_words",
+          "new_api": null,
+          "old_text": "ewah_add_empty_words(ewah, 0, running_empty_words)",
+          "new_text": null,
+          "old_line_content": "\t\t\tewah_add_empty_words(ewah, 0, running_empty_words);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 95,
+          "old_api": "ewah_add",
+          "new_api": null,
+          "old_text": "ewah_add(ewah, last_word)",
+          "new_text": null,
+          "old_line_content": "\tewah_add(ewah, last_word);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": "bitmap_new",
+          "new_api": null,
+          "old_text": "bitmap_new()",
+          "new_text": null,
+          "old_line_content": "\tstruct bitmap *bitmap = bitmap_new();",
+          "new_line_content": "\tsize_t i = 0;",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": "ewah_iterator_next",
+          "new_api": null,
+          "old_text": "ewah_iterator_next(&blowup, &it)",
+          "new_text": null,
+          "old_line_content": "\twhile (ewah_iterator_next(&blowup, &it)) {",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": "ALLOC_GROW",
+          "new_api": null,
+          "old_text": "ALLOC_GROW(bitmap->words, i + 1, bitmap->word_alloc)",
+          "new_text": null,
+          "old_line_content": "\t\tALLOC_GROW(bitmap->words, i + 1, bitmap->word_alloc);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 4,
+      "total_additions": 21,
+      "total_deletions": 21,
+      "total_api_changes": 46
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 46,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          40,
+          45,
+          46
+        ]
+      }
+    },
+    "api_calls_before": 28,
+    "api_calls_after": 28,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 7,
+      "total_diff_lines": 23
+    }
+  }
+}

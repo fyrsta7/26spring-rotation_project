@@ -1,0 +1,172 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/35b3d903617ea8993555e59e627501f960698219",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/35b3d903617ea8993555e59e627501f960698219/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/35b3d903617ea8993555e59e627501f960698219/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/35b3d903617ea8993555e59e627501f960698219/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 582,
+          "old_api": "InternalError",
+          "new_api": "run",
+          "old_text": "InternalError(\"Lowering to NVVM IR failed.\")",
+          "new_text": "pm.run(module)",
+          "old_line_content": "    return InternalError(\"Lowering to NVVM IR failed.\");",
+          "new_line_content": "  if (failed(pm.run(module))) {",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "body",
+          "new_api": "walk",
+          "old_text": "nestedModule.body().front()",
+          "new_text": "module.walk([&kernelModule](mlir::gpu::GPUModuleOp nestedModule) {\n    for (auto& fn : nestedModule.body().front()) {\n      kernelModule.push_back(fn.clone());\n    }\n  })",
+          "old_line_content": "    for (auto& fn : nestedModule.body().front()) {",
+          "new_line_content": "  module.walk([&kernelModule](mlir::gpu::GPUModuleOp nestedModule) {",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": "clone",
+          "new_api": "body",
+          "old_text": "fn.clone()",
+          "new_text": "nestedModule.body().front()",
+          "old_line_content": "      kernelModule.push_back(fn.clone());",
+          "new_line_content": "    for (auto& fn : nestedModule.body().front()) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "::mlir::createStripDebugInfoPass()",
+          "old_text": null,
+          "new_text": "::mlir::createStripDebugInfoPass()",
+          "old_line_content": "",
+          "new_line_content": "  pm.addPass(::mlir::createStripDebugInfoPass());",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "InternalError",
+          "old_text": null,
+          "new_text": "InternalError(\"Lowering to NVVM IR failed.\")",
+          "old_line_content": "  }",
+          "new_line_content": "    return InternalError(\"Lowering to NVVM IR failed.\");",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "Status::OK()",
+          "old_text": null,
+          "new_text": "Status::OK()",
+          "old_line_content": "}",
+          "new_line_content": "  return Status::OK();",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "getLoc",
+          "old_text": null,
+          "new_text": "module.getLoc()",
+          "old_line_content": "  // TODO(b/137624192): This also needs to resolve naming conflicts.",
+          "new_line_content": "  auto kernelModule = ::mlir::ModuleOp::create(module.getLoc());",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": null,
+          "new_api": "clone",
+          "old_text": null,
+          "new_text": "fn.clone()",
+          "old_line_content": "    }",
+          "new_line_content": "      kernelModule.push_back(fn.clone());",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 579,
+          "old_api": "::mlir::createStripDebugInfoPass()",
+          "new_api": null,
+          "old_text": "::mlir::createStripDebugInfoPass()",
+          "new_text": null,
+          "old_line_content": "  kernelPm.addPass(::mlir::createStripDebugInfoPass());",
+          "new_line_content": "  // Remove all location information to prevent a debug build.",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "run",
+          "new_api": null,
+          "old_text": "pm.run(module)",
+          "new_text": null,
+          "old_line_content": "  if (failed(pm.run(module))) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "Status::OK()",
+          "new_api": null,
+          "old_text": "Status::OK()",
+          "new_text": null,
+          "old_line_content": "  return Status::OK();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "getLoc",
+          "new_api": null,
+          "old_text": "module.getLoc()",
+          "new_text": null,
+          "old_line_content": "  auto kernelModule = ::mlir::ModuleOp::create(module.getLoc());",
+          "new_line_content": "StatusOr<mlir::ModuleOp> ExtractKernelModule(mlir::ModuleOp module) {",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "walk",
+          "new_api": null,
+          "old_text": "module.walk([&kernelModule](mlir::gpu::GPUModuleOp nestedModule) {\n    for (auto& fn : nestedModule.body().front()) {\n      kernelModule.push_back(fn.clone());\n    }\n  })",
+          "new_text": null,
+          "old_line_content": "  module.walk([&kernelModule](mlir::gpu::GPUModuleOp nestedModule) {",
+          "new_line_content": "  // TODO(b/137624192): This also needs to resolve naming conflicts.",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 3,
+      "total_additions": 5,
+      "total_deletions": 5,
+      "total_api_changes": 13
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 2,
+        "api_related_lines": 13,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 305,
+    "api_calls_after": 305,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 1,
+      "total_diff_lines": 15
+    }
+  }
+}

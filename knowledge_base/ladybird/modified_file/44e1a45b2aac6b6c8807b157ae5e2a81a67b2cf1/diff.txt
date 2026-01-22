@@ -1,0 +1,15 @@
+diff --git a/AK/Vector.h b/AK/Vector.h
+index 575965daee..2870f90671 100644
+--- a/AK/Vector.h
++++ b/AK/Vector.h
+@@ -172,6 +172,10 @@ public:
+ 
+     void append(Vector<T>&& other)
+     {
++        if (!m_impl) {
++            m_impl = move(other.m_impl);
++            return;
++        }
+         Vector<T> tmp = move(other);
+         ensure_capacity(size() + tmp.size());
+         for (auto&& v : tmp) {

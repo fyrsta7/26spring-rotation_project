@@ -1,0 +1,18 @@
+diff --git a/lib/Sema/CSGen.cpp b/lib/Sema/CSGen.cpp
+index 4af283a10d0..194a98b5a73 100644
+--- a/lib/Sema/CSGen.cpp
++++ b/lib/Sema/CSGen.cpp
+@@ -4409,6 +4409,13 @@ swift::resolveValueMember(DeclContext &DC, Type BaseTy, DeclName Name) {
+   if (LookupResult.ViableCandidates.empty())
+     return Result;
+ 
++  // If there's only one viable member, that is the best one.
++  if (LookupResult.ViableCandidates.size() == 1) {
++    Result.Impl->BestIdx = Result.Impl->AllDecls.size();
++    Result.Impl->AllDecls.push_back(LookupResult.ViableCandidates[0].getDecl());
++    return Result;
++  }
++
+   // Try to figure out the best overload.
+   ConstraintLocator *Locator = CS.getConstraintLocator({});
+   TypeVariableType *TV = CS.createTypeVariable(Locator,

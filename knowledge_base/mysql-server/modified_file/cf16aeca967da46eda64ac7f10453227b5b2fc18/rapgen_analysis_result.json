@@ -1,0 +1,669 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/cf16aeca967da46eda64ac7f10453227b5b2fc18",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/cf16aeca967da46eda64ac7f10453227b5b2fc18/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/cf16aeca967da46eda64ac7f10453227b5b2fc18/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/cf16aeca967da46eda64ac7f10453227b5b2fc18/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 590,
+          "old_api": "rt",
+          "new_api": "root_access_path",
+          "old_text": "rt(root_path != nullptr);\n\n ",
+          "new_text": "y_block->join->root_access_path();\n  ",
+          "old_line_content": "  assert(root_path != nullptr);",
+          "new_line_content": "  AccessPath *const root_path = query_block->join->root_access_path();",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": "set_current_query_block",
+          "new_api": "atorsAreNeeded",
+          "old_text": ">lex->set_current_query_block(query_block);\n\n ",
+          "new_text": "atorsAreNeeded(thd, root_path)) {\n",
+          "old_line_content": "  thd->lex->set_current_query_block(query_block);",
+          "new_line_content": "  if (!IteratorsAreNeeded(thd, root_path)) {",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": "filter",
+          "new_api": "current_query_block",
+          "old_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [](AccessPath *path, JOIN *join [[maybe_unused]]) {\n        if (path->type == AccessPath::FILTER) {\n          AccessPath *child = path->filter().child;\n          if (child->type == AccessPath::FILTER &&\n              child->filter().materialize_subqueries ==\n                  path->filter().materialize_subqueries) {\n            // Combine conditions into a single FILTER.\n            Item *condition = new Item_cond_and(child->filter().condition,\n                                                path->filter().condition);\n            condition->quick_fix_field();\n            condition->update_used_tables();\n            condition->apply_is_true();\n            path->filter().condition = condition;\n            path->filter().child = child->filter().child;\n          }\n        }\n        return false;\n      },\n      /*post_order_traversal=*/true);\n\n ",
+          "new_text": ">lex->current_query_block();\n  ",
+          "old_line_content": "  WalkAccessPaths(",
+          "new_line_content": "  Query_block *old_query_block = thd->lex->current_query_block();",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": "quick_fix_field",
+          "new_api": "filter",
+          "old_text": "ition->quick_fix_field();\n  ",
+          "new_text": "d->filter().mat",
+          "old_line_content": "            condition->quick_fix_field();",
+          "new_line_content": "              child->filter().materialize_subqueries ==",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": "update_used_tables",
+          "new_api": "filter",
+          "old_text": "ition->update_used_tables();\n  ",
+          "new_text": "->filter().mat",
+          "old_line_content": "            condition->update_used_tables();",
+          "new_line_content": "                  path->filter().materialize_subqueries) {",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "eq",
+          "new_api": "sort",
+          "old_text": "->eq(other_item, /*binary_cmp=*/true);\n  ",
+          "new_text": "->sort().ord",
+          "old_line_content": "                               return item->eq(other_item, /*binary_cmp=*/true);",
+          "new_line_content": "          for (ORDER *order = path->sort().order; order != nullptr;",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 640,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [&extra_fields_needed](AccessPath *path, JOIN *join) {\n        if (path->type == AccessPath::SORT && ContainsMaterialization(path)) {\n          for (ORDER *order = path->sort().order; order != nullptr;\n               order = order->next) {\n            Item *item = *order->item;\n            if (std::none_of(join->fields->begin(), join->fields->end(),\n                             [item](Item *other_item) {\n                               return item->eq(other_item, /*binary_cmp=*/true);\n                             })) {\n              extra_fields_needed.push_back(std::make_pair(item, item->hidden));\n              item->hidden = true;\n              join->fields->push_front(item);\n            }\n          }\n        }\n        return false;\n      });\n\n ",
+          "old_line_content": "               order = order->next) {",
+          "new_line_content": "  WalkAccessPaths(",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": null,
+          "new_api": "ainsMaterialization",
+          "old_text": null,
+          "new_text": "ainsMaterialization(path)) {\n",
+          "old_line_content": "                             [item](Item *other_item) {",
+          "new_line_content": "        if (path->type == AccessPath::SORT && ContainsMaterialization(path)) {",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "->fields->end(),\n  ",
+          "old_line_content": "              item->hidden = true;",
+          "new_line_content": "            if (std::none_of(join->fields->begin(), join->fields->end(),",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "eq",
+          "old_text": null,
+          "new_text": "->eq(other_item, /*binary_cmp=*/true);\n  ",
+          "old_line_content": "            }",
+          "new_line_content": "                               return item->eq(other_item, /*binary_cmp=*/true);",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": null,
+          "new_api": ":make_pair(item, item->hidden));",
+          "old_text": null,
+          "new_text": ":make_pair(item, item->hidden));\n ",
+          "old_line_content": "        }",
+          "new_line_content": "              extra_fields_needed.push_back(std::make_pair(item, item->hidden));",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": null,
+          "new_api": "push_front",
+          "old_text": null,
+          "new_text": "->fields->push_front(item);\n  ",
+          "old_line_content": "      });",
+          "new_line_content": "              join->fields->push_front(item);",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": null,
+          "new_api": "get_item_ptr",
+          "old_text": null,
+          "new_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [thd, query_block, &applied_replacements, &last_window_temp_table,\n       &num_windows_seen, &error,\n       &after_aggregation](AccessPath *path, JOIN *join) {\n        if (error) return true;\n        DelayedCreateTemporaryTable(thd, query_block, path, after_aggregation,\n                                    &last_window_temp_table, &num_windows_seen);\n\n        const mem_root_deque<Item *> *original_fields = join->fields;\n        UpdateReferencesToMaterializedItems(\n            thd, query_block, path, after_aggregation, &applied_replacements);\n        if (path->type == AccessPath::WINDOW) {\n          FinalizeWindowPath(thd, query_block, *original_fields,\n                             applied_replacements, path);\n        } else if (path->type == AccessPath::AGGREGATE) {\n          for (Cached_item &ci : join->group_fields) {\n            for (const Func_ptr_array *earlier_replacement :\n                 applied_replacements) {\n              thd->change_item_tree(\n                  ci.get_item_ptr(),\n                  FindReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n            }\n          }\n\n          // Set up aggregators, now that fields point into the right temporary\n          // table.\n          const bool need_distinct =\n              true;  // We don't support loose index scan yet.\n          for (Item_sum **func_ptr = join->sum_funcs; *func_ptr != nullptr;\n               ++func_ptr) {\n            Item_sum *func = *func_ptr;\n            Aggregator::Aggregator_type type =\n                need_distinct && func->has_with_distinct()\n                    ? Aggregator::DISTINCT_AGGREGATOR\n                    : Aggregator::SIMPLE_AGGREGATOR;\n            if (func->set_aggregator(type) || func->aggregator_setup(thd)) {\n              error = true;\n              return true;\n            }\n          }\n          after_aggregation = true;\n        }\n        if (AddCachesAroundConstantConditionsInPath(path)) {\n          error = true;\n          return true;\n        }\n        return false;\n      },\n      /*post_order_traversal=*/true);\n\n ",
+          "old_line_content": "        if (error) return true;",
+          "new_line_content": "  WalkAccessPaths(",
+          "content_same": false
+        },
+        {
+          "line": 671,
+          "old_api": null,
+          "new_api": "yedCreateTemporaryTable",
+          "old_text": null,
+          "new_text": "yedCreateTemporaryTable(thd, query_block, path, after_aggregation,\n                                    &last_window_temp_table, &num_windows_seen);\n\n ",
+          "old_line_content": "            thd, query_block, path, after_aggregation, &applied_replacements);",
+          "new_line_content": "        DelayedCreateTemporaryTable(thd, query_block, path, after_aggregation,",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "teReferencesToMaterializedItems",
+          "old_text": null,
+          "new_text": "teReferencesToMaterializedItems(\n            thd, query_block, path, after_aggregation, &applied_replacements);\n  ",
+          "old_line_content": "        } else if (path->type == AccessPath::AGGREGATE) {",
+          "new_line_content": "        UpdateReferencesToMaterializedItems(",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": null,
+          "new_api": "lizeWindowPath",
+          "old_text": null,
+          "new_text": "lizeWindowPath(thd, query_block, *original_fields,\n                             applied_replacements, path);\n  ",
+          "old_line_content": "                 applied_replacements) {",
+          "new_line_content": "          FinalizeWindowPath(thd, query_block, *original_fields,",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "get_item_ptr",
+          "old_text": null,
+          "new_text": ">change_item_tree(\n                  ci.get_item_ptr(),\n                  FindReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n  ",
+          "old_line_content": "            }",
+          "new_line_content": "              thd->change_item_tree(",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": null,
+          "new_api": "et_item_ptr",
+          "old_text": null,
+          "new_text": "et_item_ptr(),\n  ",
+          "old_line_content": "          }",
+          "new_line_content": "                  ci.get_item_ptr(),",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "get_item",
+          "old_text": null,
+          "new_text": "ReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n ",
+          "old_line_content": "",
+          "new_line_content": "                  FindReplacementOrReplaceMaterializedItems(",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": null,
+          "new_api": "et_item",
+          "old_text": null,
+          "new_text": "et_item(), *e",
+          "old_line_content": "          // Set up aggregators, now that fields point into the right temporary",
+          "new_line_content": "                      thd, ci.get_item(), *earlier_replacement,",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": null,
+          "new_api": "has_with_distinct",
+          "old_text": null,
+          "new_text": "->has_with_distinct()\n   ",
+          "old_line_content": "              return true;",
+          "new_line_content": "                need_distinct && func->has_with_distinct()",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": null,
+          "new_api": "aggregator_setup",
+          "old_text": null,
+          "new_text": "->aggregator_setup(thd)) {\n",
+          "old_line_content": "          after_aggregation = true;",
+          "new_line_content": "            if (func->set_aggregator(type) || func->aggregator_setup(thd)) {",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": null,
+          "new_api": "achesAroundConstantConditionsInPath",
+          "old_text": null,
+          "new_text": "achesAroundConstantConditionsInPath(path)) {\n",
+          "old_line_content": "      },",
+          "new_line_content": "        if (AddCachesAroundConstantConditionsInPath(path)) {",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "rt",
+          "old_text": null,
+          "new_text": "rt(root_path != nullptr);\n  ",
+          "old_line_content": "",
+          "new_line_content": "  assert(root_path != nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": null,
+          "new_api": "pop_front",
+          "old_text": null,
+          "new_text": "_fields->pop_front();\n  ",
+          "old_line_content": "",
+          "new_line_content": "    base_fields->pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": null,
+          "new_api": "push_to_engines",
+          "old_text": null,
+          "new_text": "y_block->join->push_to_engines()) re",
+          "old_line_content": "}",
+          "new_line_content": "  if (query_block->join->push_to_engines()) return true;",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "set_current_query_block",
+          "old_text": null,
+          "new_text": ">lex->set_current_query_block(old_query_block);\n  ",
+          "old_line_content": "",
+          "new_line_content": "  thd->lex->set_current_query_block(old_query_block);",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "set_current_query_block",
+          "old_text": null,
+          "new_text": ">lex->set_current_query_block(query_block);\n\n ",
+          "old_line_content": "      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,",
+          "new_line_content": "  thd->lex->set_current_query_block(query_block);",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": null,
+          "new_api": "filter",
+          "old_text": null,
+          "new_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [](AccessPath *path, JOIN *join [[maybe_unused]]) {\n        if (path->type == AccessPath::FILTER) {\n          AccessPath *child = path->filter().child;\n          if (child->type == AccessPath::FILTER &&\n              child->filter().materialize_subqueries ==\n                  path->filter().materialize_subqueries) {\n            // Combine conditions into a single FILTER.\n            Item *condition = new Item_cond_and(child->filter().condition,\n                                                path->filter().condition);\n            condition->quick_fix_field();\n            condition->update_used_tables();\n            condition->apply_is_true();\n            path->filter().condition = condition;\n            path->filter().child = child->filter().child;\n          }\n        }\n        return false;\n      },\n      /*post_order_traversal=*/true);\n\n ",
+          "old_line_content": "          if (child->type == AccessPath::FILTER &&",
+          "new_line_content": "  WalkAccessPaths(",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "quick_fix_field",
+          "old_text": null,
+          "new_text": "ition->quick_fix_field();\n  ",
+          "old_line_content": "          }",
+          "new_line_content": "            condition->quick_fix_field();",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": null,
+          "new_api": "update_used_tables",
+          "old_text": null,
+          "new_text": "ition->update_used_tables();\n  ",
+          "old_line_content": "        }",
+          "new_line_content": "            condition->update_used_tables();",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": null,
+          "new_api": "apply_is_true",
+          "old_text": null,
+          "new_text": "ition->apply_is_true();\n  ",
+          "old_line_content": "        return false;",
+          "new_line_content": "            condition->apply_is_true();",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": null,
+          "new_api": "filter",
+          "old_text": null,
+          "new_text": "->filter().con",
+          "old_line_content": "      },",
+          "new_line_content": "            path->filter().condition = condition;",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": null,
+          "new_api": "filter",
+          "old_text": null,
+          "new_text": "d->filter().chi",
+          "old_line_content": "      /*post_order_traversal=*/true);",
+          "new_line_content": "            path->filter().child = child->filter().child;",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 642,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "->fields->end(),\n  ",
+          "new_text": null,
+          "old_line_content": "            if (std::none_of(join->fields->begin(), join->fields->end(),",
+          "new_line_content": "      [&extra_fields_needed](AccessPath *path, JOIN *join) {",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": ":make_pair(item, item->hidden));",
+          "new_api": null,
+          "old_text": ":make_pair(item, item->hidden));\n ",
+          "new_text": null,
+          "old_line_content": "              extra_fields_needed.push_back(std::make_pair(item, item->hidden));",
+          "new_line_content": "            Item *item = *order->item;",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": "push_front",
+          "new_api": null,
+          "old_text": "->fields->push_front(item);\n  ",
+          "new_text": null,
+          "old_line_content": "              join->fields->push_front(item);",
+          "new_line_content": "                             [item](Item *other_item) {",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "get_item_ptr",
+          "new_api": null,
+          "old_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [thd, query_block, &applied_replacements, &last_window_temp_table,\n       &num_windows_seen, &error,\n       &after_aggregation](AccessPath *path, JOIN *join) {\n        if (error) return true;\n        DelayedCreateTemporaryTable(thd, query_block, path, after_aggregation,\n                                    &last_window_temp_table, &num_windows_seen);\n\n        const mem_root_deque<Item *> *original_fields = join->fields;\n        UpdateReferencesToMaterializedItems(\n            thd, query_block, path, after_aggregation, &applied_replacements);\n        if (path->type == AccessPath::WINDOW) {\n          FinalizeWindowPath(thd, query_block, *original_fields,\n                             applied_replacements, path);\n        } else if (path->type == AccessPath::AGGREGATE) {\n          for (Cached_item &ci : join->group_fields) {\n            for (const Func_ptr_array *earlier_replacement :\n                 applied_replacements) {\n              thd->change_item_tree(\n                  ci.get_item_ptr(),\n                  FindReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n            }\n          }\n\n          // Set up aggregators, now that fields point into the right temporary\n          // table.\n          const bool need_distinct =\n              true;  // We don't support loose index scan yet.\n          for (Item_sum **func_ptr = join->sum_funcs; *func_ptr != nullptr;\n               ++func_ptr) {\n            Item_sum *func = *func_ptr;\n            Aggregator::Aggregator_type type =\n                need_distinct && func->has_with_distinct()\n                    ? Aggregator::DISTINCT_AGGREGATOR\n                    : Aggregator::SIMPLE_AGGREGATOR;\n            if (func->set_aggregator(type) || func->aggregator_setup(thd)) {\n              error = true;\n              return true;\n            }\n          }\n          after_aggregation = true;\n        }\n        if (AddCachesAroundConstantConditionsInPath(path)) {\n          error = true;\n          return true;\n        }\n        return false;\n      },\n      /*post_order_traversal=*/true);\n\n ",
+          "new_text": null,
+          "old_line_content": "  WalkAccessPaths(",
+          "new_line_content": "  Mem_root_array<const Func_ptr_array *> applied_replacements(thd->mem_root);",
+          "content_same": false
+        },
+        {
+          "line": 666,
+          "old_api": "yedCreateTemporaryTable",
+          "new_api": null,
+          "old_text": "yedCreateTemporaryTable(thd, query_block, path, after_aggregation,\n                                    &last_window_temp_table, &num_windows_seen);\n\n ",
+          "new_text": null,
+          "old_line_content": "        DelayedCreateTemporaryTable(thd, query_block, path, after_aggregation,",
+          "new_line_content": "      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "teReferencesToMaterializedItems",
+          "new_api": null,
+          "old_text": "teReferencesToMaterializedItems(\n            thd, query_block, path, after_aggregation, &applied_replacements);\n  ",
+          "new_text": null,
+          "old_line_content": "        UpdateReferencesToMaterializedItems(",
+          "new_line_content": "        if (error) return true;",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": "lizeWindowPath",
+          "new_api": null,
+          "old_text": "lizeWindowPath(thd, query_block, *original_fields,\n                             applied_replacements, path);\n  ",
+          "new_text": null,
+          "old_line_content": "          FinalizeWindowPath(thd, query_block, *original_fields,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": "get_item_ptr",
+          "new_api": null,
+          "old_text": ">change_item_tree(\n                  ci.get_item_ptr(),\n                  FindReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n  ",
+          "new_text": null,
+          "old_line_content": "              thd->change_item_tree(",
+          "new_line_content": "                             applied_replacements, path);",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "et_item_ptr",
+          "new_api": null,
+          "old_text": "et_item_ptr(),\n  ",
+          "new_text": null,
+          "old_line_content": "                  ci.get_item_ptr(),",
+          "new_line_content": "        } else if (path->type == AccessPath::AGGREGATE) {",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "get_item",
+          "new_api": null,
+          "old_text": "ReplacementOrReplaceMaterializedItems(\n                      thd, ci.get_item(), *earlier_replacement,\n                      /*need_exact_match=*/true));\n ",
+          "new_text": null,
+          "old_line_content": "                  FindReplacementOrReplaceMaterializedItems(",
+          "new_line_content": "          for (Cached_item &ci : join->group_fields) {",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "et_item",
+          "new_api": null,
+          "old_text": "et_item(), *e",
+          "new_text": null,
+          "old_line_content": "                      thd, ci.get_item(), *earlier_replacement,",
+          "new_line_content": "            for (const Func_ptr_array *earlier_replacement :",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "has_with_distinct",
+          "new_api": null,
+          "old_text": "->has_with_distinct()\n   ",
+          "new_text": null,
+          "old_line_content": "                need_distinct && func->has_with_distinct()",
+          "new_line_content": "              true;  // We don't support loose index scan yet.",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "aggregator_setup",
+          "new_api": null,
+          "old_text": "->aggregator_setup(thd)) {\n",
+          "new_text": null,
+          "old_line_content": "            if (func->set_aggregator(type) || func->aggregator_setup(thd)) {",
+          "new_line_content": "            Item_sum *func = *func_ptr;",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": "achesAroundConstantConditionsInPath",
+          "new_api": null,
+          "old_text": "achesAroundConstantConditionsInPath(path)) {\n",
+          "new_text": null,
+          "old_line_content": "        if (AddCachesAroundConstantConditionsInPath(path)) {",
+          "new_line_content": "              return true;",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "_fields->pop_front();\n  ",
+          "new_text": null,
+          "old_line_content": "    base_fields->pop_front();",
+          "new_line_content": "      },",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "root_access_path",
+          "new_api": null,
+          "old_text": "y_block->join->root_access_path();\n  ",
+          "new_text": null,
+          "old_line_content": "  AccessPath *const root_path = query_block->join->root_access_path();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": "push_to_engines",
+          "new_api": null,
+          "old_text": "y_block->join->push_to_engines()) re",
+          "new_text": null,
+          "old_line_content": "  if (query_block->join->push_to_engines()) return true;",
+          "new_line_content": "    item_and_hidden.first->hidden = item_and_hidden.second;",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "set_current_query_block",
+          "new_api": null,
+          "old_text": ">lex->set_current_query_block(old_query_block);\n  ",
+          "new_text": null,
+          "old_line_content": "  thd->lex->set_current_query_block(old_query_block);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": "atorsAreNeeded",
+          "new_api": null,
+          "old_text": "atorsAreNeeded(thd, root_path)) {\n",
+          "new_text": null,
+          "old_line_content": "  if (!IteratorsAreNeeded(thd, root_path)) {",
+          "new_line_content": "    return false;",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": "current_query_block",
+          "new_api": null,
+          "old_text": ">lex->current_query_block();\n  ",
+          "new_text": null,
+          "old_line_content": "  Query_block *old_query_block = thd->lex->current_query_block();",
+          "new_line_content": "  // to point into them.",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "filter",
+          "new_api": null,
+          "old_text": "->filter().chi",
+          "new_text": null,
+          "old_line_content": "          AccessPath *child = path->filter().child;",
+          "new_line_content": "  // Combine these into a single FILTER:",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": "filter",
+          "new_api": null,
+          "old_text": "d->filter().mat",
+          "new_text": null,
+          "old_line_content": "              child->filter().materialize_subqueries ==",
+          "new_line_content": "      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "filter",
+          "new_api": null,
+          "old_text": "->filter().mat",
+          "new_text": null,
+          "old_line_content": "                  path->filter().materialize_subqueries) {",
+          "new_line_content": "      [](AccessPath *path, JOIN *join [[maybe_unused]]) {",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": "filter",
+          "new_api": null,
+          "old_text": "->filter().con",
+          "new_text": null,
+          "old_line_content": "                                                path->filter().condition);",
+          "new_line_content": "          if (child->type == AccessPath::FILTER &&",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "apply_is_true",
+          "new_api": null,
+          "old_text": "ition->apply_is_true();\n  ",
+          "new_text": null,
+          "old_line_content": "            condition->apply_is_true();",
+          "new_line_content": "            // Combine conditions into a single FILTER.",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "AccessPaths(\n      root_path, query_block->join, WalkAccessPathPolicy::ENTIRE_QUERY_BLOCK,\n      [&extra_fields_needed](AccessPath *path, JOIN *join) {\n        if (path->type == AccessPath::SORT && ContainsMaterialization(path)) {\n          for (ORDER *order = path->sort().order; order != nullptr;\n               order = order->next) {\n            Item *item = *order->item;\n            if (std::none_of(join->fields->begin(), join->fields->end(),\n                             [item](Item *other_item) {\n                               return item->eq(other_item, /*binary_cmp=*/true);\n                             })) {\n              extra_fields_needed.push_back(std::make_pair(item, item->hidden));\n              item->hidden = true;\n              join->fields->push_front(item);\n            }\n          }\n        }\n        return false;\n      });\n\n ",
+          "new_text": null,
+          "old_line_content": "  WalkAccessPaths(",
+          "new_line_content": "  // removing it at the end of the function.) This is a bit overconservative",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": "ainsMaterialization",
+          "new_api": null,
+          "old_text": "ainsMaterialization(path)) {\n",
+          "new_text": null,
+          "old_line_content": "        if (path->type == AccessPath::SORT && ContainsMaterialization(path)) {",
+          "new_line_content": "  Mem_root_array<std::pair<Item *, bool>> extra_fields_needed(thd->mem_root);",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "sort",
+          "new_api": null,
+          "old_text": "->sort().ord",
+          "new_text": null,
+          "old_line_content": "          for (ORDER *order = path->sort().order; order != nullptr;",
+          "new_line_content": "  mem_root_deque<Item *> *base_fields = query_block->join->fields;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 28,
+      "total_deletions": 28,
+      "total_api_changes": 62
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 62,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          588,
+          718,
+          592,
+          593,
+          594,
+          596
+        ]
+      }
+    },
+    "api_calls_before": 192,
+    "api_calls_after": 192,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 2,
+      "total_diff_lines": 35
+    }
+  }
+}

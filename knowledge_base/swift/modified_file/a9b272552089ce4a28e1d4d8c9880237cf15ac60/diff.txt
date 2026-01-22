@@ -1,0 +1,16 @@
+diff --git a/lib/AST/RequirementMachine/RequirementLowering.cpp b/lib/AST/RequirementMachine/RequirementLowering.cpp
+index 66cd08c6fd1..02f544268b4 100644
+--- a/lib/AST/RequirementMachine/RequirementLowering.cpp
++++ b/lib/AST/RequirementMachine/RequirementLowering.cpp
+@@ -820,6 +820,11 @@ void swift::rewriting::applyInverses(
+     inverses[canSubject] = state;
+   }
+ 
++  // Fast-path: if there are no valid inverses, then there are no requirements
++  // to be removed.
++  if (inverses.empty())
++    return;
++
+   // Scan the structural requirements and cancel out any inferred requirements
+   // based on the inverses we saw.
+   result.erase(llvm::remove_if(result, [&](StructuralRequirement structReq) {

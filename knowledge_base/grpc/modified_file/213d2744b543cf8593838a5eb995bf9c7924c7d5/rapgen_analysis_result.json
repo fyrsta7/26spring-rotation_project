@@ -1,0 +1,405 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/213d2744b543cf8593838a5eb995bf9c7924c7d5",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/213d2744b543cf8593838a5eb995bf9c7924c7d5/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/213d2744b543cf8593838a5eb995bf9c7924c7d5/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/grpc/modified_file/213d2744b543cf8593838a5eb995bf9c7924c7d5/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 217,
+          "old_api": "gpr_log",
+          "new_api": "GRPC_TRACER_ON",
+          "old_text": "gpr_log(\n            GPR_DEBUG,\n            \"EXECUTOR: try to schedule %p (%s) (created %s:%d) to thread %d\",\n            closure, is_short ? \"short\" : \"long\", closure->file_created,\n            closure->line_created, (int)(ts - g_thread_state))",
+          "new_text": "GRPC_TRACER_ON(executor_trace)",
+          "old_line_content": "        gpr_log(",
+          "new_line_content": "      if (GRPC_TRACER_ON(executor_trace)) {",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "gpr_cv_signal",
+          "new_api": "grpc_closure_list_empty",
+          "old_text": "gpr_cv_signal(&ts->cv)",
+          "new_text": "grpc_closure_list_empty(ts->elems)",
+          "old_line_content": "        gpr_cv_signal(&ts->cv);",
+          "new_line_content": "      if (grpc_closure_list_empty(ts->elems)) {",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": "grpc_closure_list_append",
+          "new_api": "gpr_cv_signal",
+          "old_text": "grpc_closure_list_append(&ts->elems, closure, error)",
+          "new_text": "gpr_cv_signal(&ts->cv)",
+          "old_line_content": "      grpc_closure_list_append(&ts->elems, closure, error);",
+          "new_line_content": "        gpr_cv_signal(&ts->cv);",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "gpr_atm_no_barrier_store",
+          "new_api": "gpr_atm_no_barrier_load",
+          "old_text": "gpr_atm_no_barrier_store(&g_cur_threads, cur_thread_count + 1)",
+          "new_text": "gpr_atm_no_barrier_load(&g_cur_threads)",
+          "old_line_content": "        gpr_atm_no_barrier_store(&g_cur_threads, cur_thread_count + 1);",
+          "new_line_content": "      cur_thread_count = (size_t)gpr_atm_no_barrier_load(&g_cur_threads);",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "gpr_thd_options_default",
+          "new_api": "gpr_atm_no_barrier_store",
+          "old_text": "gpr_thd_options_default()",
+          "new_text": "gpr_atm_no_barrier_store(&g_cur_threads, cur_thread_count + 1)",
+          "old_line_content": "        gpr_thd_options opt = gpr_thd_options_default();",
+          "new_line_content": "        gpr_atm_no_barrier_store(&g_cur_threads, cur_thread_count + 1);",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "gpr_thd_new",
+          "new_api": "gpr_thd_options_default",
+          "old_text": "gpr_thd_new(&g_thread_state[cur_thread_count].id, executor_thread,\n                    &g_thread_state[cur_thread_count], &opt)",
+          "new_text": "gpr_thd_options_default()",
+          "old_line_content": "        gpr_thd_new(&g_thread_state[cur_thread_count].id, executor_thread,",
+          "new_line_content": "        gpr_thd_options opt = gpr_thd_options_default();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "gpr_log",
+          "old_text": null,
+          "new_text": "gpr_log(GPR_DEBUG, \"EXECUTOR: try to schedule %p (%s) to thread %d\",\n                closure, is_short ? \"short\" : \"long\",\n                (int)(ts - g_thread_state))",
+          "old_line_content": "                (int)(ts - g_thread_state));",
+          "new_line_content": "        gpr_log(GPR_DEBUG, \"EXECUTOR: try to schedule %p (%s) to thread %d\",",
+          "content_same": false
+        },
+        {
+          "line": 257,
+          "old_api": null,
+          "new_api": "gpr_spinlock_trylock",
+          "old_text": null,
+          "new_text": "gpr_spinlock_trylock(&g_adding_thread_lock)",
+          "old_line_content": "      if (cur_thread_count < g_max_threads) {",
+          "new_line_content": "    if (try_new_thread && gpr_spinlock_trylock(&g_adding_thread_lock)) {",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": null,
+          "new_api": "gpr_mu_lock",
+          "old_text": null,
+          "new_text": "gpr_mu_lock(&ts->mu)",
+          "old_line_content": "        // if there's a long job queued, we never queue anything else to this",
+          "new_line_content": "      gpr_mu_lock(&ts->mu);",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": null,
+          "new_api": "gpr_thd_options_set_joinable",
+          "old_text": null,
+          "new_text": "gpr_thd_options_set_joinable(&opt)",
+          "old_line_content": "                    &g_thread_state[cur_thread_count], &opt);",
+          "new_line_content": "        gpr_thd_options_set_joinable(&opt);",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": null,
+          "new_api": "gpr_thd_new",
+          "old_text": null,
+          "new_text": "gpr_thd_new(&g_thread_state[cur_thread_count].id, executor_thread,\n                    &g_thread_state[cur_thread_count], &opt)",
+          "old_line_content": "      }",
+          "new_line_content": "        gpr_thd_new(&g_thread_state[cur_thread_count].id, executor_thread,",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "gpr_spinlock_unlock",
+          "old_text": null,
+          "new_text": "gpr_spinlock_unlock(&g_adding_thread_lock)",
+          "old_line_content": "    if (retry_push) {",
+          "new_line_content": "      gpr_spinlock_unlock(&g_adding_thread_lock);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "gpr_mu_unlock",
+          "old_text": null,
+          "new_text": "gpr_mu_unlock(&ts->mu)",
+          "old_line_content": "        ts = &g_thread_state[(idx + 1) % cur_thread_count];",
+          "new_line_content": "        gpr_mu_unlock(&ts->mu);",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "executor_push",
+          "old_text": null,
+          "new_text": "executor_push(exec_ctx, closure, error, false)",
+          "old_line_content": "",
+          "new_line_content": "  executor_push(exec_ctx, closure, error, false);",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES",
+          "old_text": null,
+          "new_text": "GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES(exec_ctx)",
+          "old_line_content": "  } while (retry_push);",
+          "new_line_content": "      GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES(exec_ctx);",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": null,
+          "new_api": "grpc_closure_list_append",
+          "old_text": null,
+          "new_text": "grpc_closure_list_append(&ts->local_elems, closure, error)",
+          "old_line_content": "      return;",
+          "new_line_content": "        grpc_closure_list_append(&ts->local_elems, closure, error);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "executor_push",
+          "old_text": null,
+          "new_text": "executor_push(exec_ctx, closure, error, true)",
+          "old_line_content": "",
+          "new_line_content": "  executor_push(exec_ctx, closure, error, true);",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED",
+          "old_text": null,
+          "new_text": "GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED(exec_ctx)",
+          "old_line_content": "      }",
+          "new_line_content": "        GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED(exec_ctx);",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": null,
+          "new_api": "grpc_closure_list_append",
+          "old_text": null,
+          "new_text": "grpc_closure_list_append(&ts->elems, closure, error)",
+          "old_line_content": "                       cur_thread_count < g_max_threads && !ts->shutdown;",
+          "new_line_content": "      grpc_closure_list_append(&ts->elems, closure, error);",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": null,
+          "new_api": "gpr_log",
+          "old_text": null,
+          "new_text": "gpr_log(\n            GPR_DEBUG,\n            \"EXECUTOR: try to schedule %p (%s) (created %s:%d) to thread %d\",\n            closure, is_short ? \"short\" : \"long\", closure->file_created,\n            closure->line_created, (int)(ts - g_thread_state))",
+          "old_line_content": "            \"EXECUTOR: try to schedule %p (%s) (created %s:%d) to thread %d\",",
+          "new_line_content": "        gpr_log(",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": null,
+          "new_api": "gpr_mu_unlock",
+          "old_text": null,
+          "new_text": "gpr_mu_unlock(&ts->mu)",
+          "old_line_content": "    }",
+          "new_line_content": "      gpr_mu_unlock(&ts->mu);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 256,
+          "old_api": "gpr_atm_no_barrier_load",
+          "new_api": null,
+          "old_text": "gpr_atm_no_barrier_load(&g_cur_threads)",
+          "new_text": null,
+          "old_line_content": "      cur_thread_count = (size_t)gpr_atm_no_barrier_load(&g_cur_threads);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "gpr_spinlock_trylock",
+          "new_api": null,
+          "old_text": "gpr_spinlock_trylock(&g_adding_thread_lock)",
+          "new_text": null,
+          "old_line_content": "    if (try_new_thread && gpr_spinlock_trylock(&g_adding_thread_lock)) {",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "gpr_mu_lock",
+          "new_api": null,
+          "old_text": "gpr_mu_lock(&ts->mu)",
+          "new_text": null,
+          "old_line_content": "      gpr_mu_lock(&ts->mu);",
+          "new_line_content": "#endif",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "gpr_thd_options_set_joinable",
+          "new_api": null,
+          "old_text": "gpr_thd_options_set_joinable(&opt)",
+          "new_text": null,
+          "old_line_content": "        gpr_thd_options_set_joinable(&opt);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "gpr_spinlock_unlock",
+          "new_api": null,
+          "old_text": "gpr_spinlock_unlock(&g_adding_thread_lock)",
+          "new_text": null,
+          "old_line_content": "      gpr_spinlock_unlock(&g_adding_thread_lock);",
+          "new_line_content": "                    &g_thread_state[cur_thread_count], &opt);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "gpr_mu_unlock",
+          "new_api": null,
+          "old_text": "gpr_mu_unlock(&ts->mu)",
+          "new_text": null,
+          "old_line_content": "        gpr_mu_unlock(&ts->mu);",
+          "new_line_content": "        // guarantee no starvation)",
+          "content_same": false
+        },
+        {
+          "line": 268,
+          "old_api": "GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES",
+          "new_api": null,
+          "old_text": "GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES(exec_ctx)",
+          "new_text": null,
+          "old_line_content": "      GRPC_STATS_INC_EXECUTOR_PUSH_RETRIES(exec_ctx);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "grpc_closure_list_append",
+          "new_api": null,
+          "old_text": "grpc_closure_list_append(&ts->local_elems, closure, error)",
+          "new_text": null,
+          "old_line_content": "      grpc_closure_list_append(&ts->local_elems, closure, error);",
+          "new_line_content": "      if (!is_short) {",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": "executor_push",
+          "new_api": null,
+          "old_text": "executor_push(exec_ctx, closure, error, true)",
+          "new_text": null,
+          "old_line_content": "  executor_push(exec_ctx, closure, error, true);",
+          "new_line_content": "static void executor_push_short(grpc_exec_ctx *exec_ctx, grpc_closure *closure,",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "grpc_closure_list_empty",
+          "new_api": null,
+          "old_text": "grpc_closure_list_empty(ts->elems)",
+          "new_text": null,
+          "old_line_content": "      if (grpc_closure_list_empty(ts->elems)) {",
+          "new_line_content": "        continue;",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": "GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED",
+          "new_api": null,
+          "old_text": "GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED(exec_ctx)",
+          "new_text": null,
+          "old_line_content": "        GRPC_STATS_INC_EXECUTOR_WAKEUP_INITIATED(exec_ctx);",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": "GRPC_TRACER_ON",
+          "new_api": null,
+          "old_text": "GRPC_TRACER_ON(executor_trace)",
+          "new_text": null,
+          "old_line_content": "      if (GRPC_TRACER_ON(executor_trace)) {",
+          "new_line_content": "    bool try_new_thread;",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": "executor_push",
+          "new_api": null,
+          "old_text": "executor_push(exec_ctx, closure, error, false)",
+          "new_text": null,
+          "old_line_content": "  executor_push(exec_ctx, closure, error, false);",
+          "new_line_content": "static void executor_push_long(grpc_exec_ctx *exec_ctx, grpc_closure *closure,",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "gpr_mu_unlock",
+          "new_api": null,
+          "old_text": "gpr_mu_unlock(&ts->mu)",
+          "new_text": null,
+          "old_line_content": "      gpr_mu_unlock(&ts->mu);",
+          "new_line_content": "                       cur_thread_count < g_max_threads && !ts->shutdown;",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "gpr_log",
+          "new_api": null,
+          "old_text": "gpr_log(GPR_DEBUG, \"EXECUTOR: try to schedule %p (%s) to thread %d\",\n                closure, is_short ? \"short\" : \"long\",\n                (int)(ts - g_thread_state))",
+          "new_text": null,
+          "old_line_content": "        gpr_log(GPR_DEBUG, \"EXECUTOR: try to schedule %p (%s) to thread %d\",",
+          "new_line_content": "            closure->line_created, (int)(ts - g_thread_state));",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 15,
+      "total_deletions": 15,
+      "total_api_changes": 36
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 36,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          210,
+          211
+        ]
+      }
+    },
+    "api_calls_before": 88,
+    "api_calls_after": 88,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 2,
+      "total_diff_lines": 18
+    }
+  }
+}

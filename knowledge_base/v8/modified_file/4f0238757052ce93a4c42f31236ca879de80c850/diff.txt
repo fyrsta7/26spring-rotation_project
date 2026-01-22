@@ -1,0 +1,18 @@
+diff --git a/src/builtins/builtins-async-gen.cc b/src/builtins/builtins-async-gen.cc
+index 4a7654b5693..686c64eab59 100644
+--- a/src/builtins/builtins-async-gen.cc
++++ b/src/builtins/builtins-async-gen.cc
+@@ -73,9 +73,10 @@ Node* AsyncBuiltinsAssembler::AwaitOld(Node* context, Node* generator,
+   {
+     // Initialize Promise
+     StoreMapNoWriteBarrier(wrapped_value, promise_map);
+-    InitializeJSObjectFromMap(
+-        wrapped_value, promise_map,
+-        IntPtrConstant(JSPromise::kSizeWithEmbedderFields));
++    StoreObjectFieldRoot(wrapped_value, JSPromise::kPropertiesOrHashOffset,
++                         RootIndex::kEmptyFixedArray);
++    StoreObjectFieldRoot(wrapped_value, JSPromise::kElementsOffset,
++                         RootIndex::kEmptyFixedArray);
+     PromiseInit(wrapped_value);
+   }
+ 

@@ -1,0 +1,1177 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/c0d32686ddc1184e57b21802838d4654f2fd5389",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/c0d32686ddc1184e57b21802838d4654f2fd5389/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/c0d32686ddc1184e57b21802838d4654f2fd5389/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/c0d32686ddc1184e57b21802838d4654f2fd5389/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 389,
+          "old_api": "get_vlc2",
+          "new_api": "av_log",
+          "old_text": "get_vlc2(&s->gb, h261_mtype_vlc.table, H261_MTYPE_VLC_BITS, 2)",
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"Invalid mtype index %d\\n\",\n               h->mtype)",
+          "old_line_content": "    h->mtype = get_vlc2(&s->gb, h261_mtype_vlc.table, H261_MTYPE_VLC_BITS, 2);",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"Invalid mtype index %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": "get_bits",
+          "new_api": "IS_INTRA4x4",
+          "old_text": "get_bits(&s->gb, 5)",
+          "new_text": "IS_INTRA4x4(h->mtype)",
+          "old_line_content": "        ff_set_qscale(s, get_bits(&s->gb, 5));",
+          "new_line_content": "    s->mb_intra = IS_INTRA4x4(h->mtype);",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": "clear_blocks",
+          "new_api": "h261_decode_block",
+          "old_text": "s->bdsp.clear_blocks(s->block[0])",
+          "new_text": "h261_decode_block(h, s->block[i], i, cbp & 32)",
+          "old_line_content": "        s->bdsp.clear_blocks(s->block[0]);",
+          "new_line_content": "            if (h261_decode_block(h, s->block[i], i, cbp & 32) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "skip_bits1",
+          "new_api": "get_bits1",
+          "old_text": "skip_bits1(&s->gb)",
+          "new_text": "get_bits1(&s->gb)",
+          "old_line_content": "    skip_bits1(&s->gb); /* freeze picture release off */",
+          "new_line_content": "    format = get_bits1(&s->gb);",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "ff_mpv_idct_init",
+          "new_api": "h261_decode_picture_header",
+          "old_text": "ff_mpv_idct_init(s)",
+          "new_text": "h261_decode_picture_header(h)",
+          "old_line_content": "        ff_mpv_idct_init(s);",
+          "new_line_content": "    ret = h261_decode_picture_header(h);",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": "get_consumed_bytes",
+          "new_api": "ff_mpv_frame_start",
+          "old_text": "get_consumed_bytes(s, buf_size)",
+          "new_text": "ff_mpv_frame_start(s, avctx)",
+          "old_line_content": "        return get_consumed_bytes(s, buf_size);",
+          "new_line_content": "    if (ff_mpv_frame_start(s, avctx) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": "h261_resync",
+          "new_api": "h261_decode_gob",
+          "old_text": "h261_resync(h)",
+          "new_text": "h261_decode_gob(h)",
+          "old_line_content": "        if (h261_resync(h) < 0)",
+          "new_line_content": "        h261_decode_gob(h);",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": "h261_decode_gob",
+          "new_api": "ff_mpv_frame_end",
+          "old_text": "h261_decode_gob(h)",
+          "new_text": "ff_mpv_frame_end(s)",
+          "old_line_content": "        h261_decode_gob(h);",
+          "new_line_content": "    ff_mpv_frame_end(s);",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": "ff_mpv_frame_end",
+          "new_api": "av_assert0",
+          "old_text": "ff_mpv_frame_end(s)",
+          "new_text": "av_assert0(s->current_picture.f->pict_type == s->current_picture_ptr->f->pict_type)",
+          "old_line_content": "    ff_mpv_frame_end(s);",
+          "new_line_content": "    av_assert0(s->current_picture.f->pict_type == s->current_picture_ptr->f->pict_type);",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "av_assert0",
+          "new_api": "av_frame_ref",
+          "old_text": "av_assert0(s->current_picture.f->pict_type == s->pict_type)",
+          "new_text": "av_frame_ref(pict, s->current_picture_ptr->f)",
+          "old_line_content": "    av_assert0(s->current_picture.f->pict_type == s->pict_type);",
+          "new_line_content": "    if ((ret = av_frame_ref(pict, s->current_picture_ptr->f)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "av_frame_ref",
+          "new_api": "ff_print_debug_info",
+          "old_text": "av_frame_ref(pict, s->current_picture_ptr->f)",
+          "new_text": "ff_print_debug_info(s, s->current_picture_ptr, pict)",
+          "old_line_content": "    if ((ret = av_frame_ref(pict, s->current_picture_ptr->f)) < 0)",
+          "new_line_content": "    ff_print_debug_info(s, s->current_picture_ptr, pict);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 640,
+          "old_api": null,
+          "new_api": "ff_mpeg_er_frame_start",
+          "old_text": null,
+          "new_text": "ff_mpeg_er_frame_start(s)",
+          "old_line_content": "        return -1;",
+          "new_line_content": "    ff_mpeg_er_frame_start(s);",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": null,
+          "new_api": "ff_update_block_index",
+          "old_text": null,
+          "new_text": "ff_update_block_index(s)",
+          "old_line_content": "    xy      = s->mb_x + s->mb_y * s->mb_stride;",
+          "new_line_content": "    ff_update_block_index(s);",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(&s->gb, h261_mtype_vlc.table, H261_MTYPE_VLC_BITS, 2)",
+          "old_line_content": "",
+          "new_line_content": "    h->mtype = get_vlc2(&s->gb, h261_mtype_vlc.table, H261_MTYPE_VLC_BITS, 2);",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": null,
+          "new_api": "skip_bits1",
+          "old_text": null,
+          "new_text": "skip_bits1(&s->gb)",
+          "old_line_content": "    s->mb_num = s->mb_width * s->mb_height;",
+          "new_line_content": "    skip_bits1(&s->gb); /* still image mode off */",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "skip_bits1",
+          "old_text": null,
+          "new_text": "skip_bits1(&s->gb)",
+          "old_line_content": "",
+          "new_line_content": "    skip_bits1(&s->gb); /* Reserved */",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": null,
+          "new_api": "h261_resync",
+          "old_text": null,
+          "new_text": "h261_resync(h)",
+          "old_line_content": "",
+          "new_line_content": "        if (h261_resync(h) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "FF_ARRAY_ELEMS",
+          "old_text": null,
+          "new_text": "FF_ARRAY_ELEMS(ff_h261_mtype_map)",
+          "old_line_content": "        return SLICE_ERROR;",
+          "new_line_content": "    av_assert0(h->mtype < FF_ARRAY_ELEMS(ff_h261_mtype_map));",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "skip_1stop_8data_bits",
+          "old_text": null,
+          "new_text": "skip_1stop_8data_bits(&s->gb)",
+          "old_line_content": "",
+          "new_line_content": "    if (skip_1stop_8data_bits(&s->gb) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": null,
+          "new_api": "IS_QUANT",
+          "old_text": null,
+          "new_text": "IS_QUANT(h->mtype)",
+          "old_line_content": "",
+          "new_line_content": "    if (IS_QUANT(h->mtype))",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": null,
+          "new_api": "av_assert0",
+          "old_text": null,
+          "new_text": "av_assert0(s->current_picture.f->pict_type == s->pict_type)",
+          "old_line_content": "",
+          "new_line_content": "    av_assert0(s->current_picture.f->pict_type == s->pict_type);",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(&s->gb, 5)",
+          "old_line_content": "    // Read mquant",
+          "new_line_content": "        ff_set_qscale(s, get_bits(&s->gb, 5));",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": null,
+          "new_api": "IS_16X16",
+          "old_text": null,
+          "new_text": "IS_16X16(h->mtype)",
+          "old_line_content": "",
+          "new_line_content": "    if (IS_16X16(h->mtype)) {",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "get_consumed_bytes",
+          "old_text": null,
+          "new_text": "get_consumed_bytes(s, buf_size)",
+          "old_line_content": "    *got_frame = 1;",
+          "new_line_content": "    return get_consumed_bytes(s, buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "ff_set_qscale",
+          "old_text": null,
+          "new_text": "ff_set_qscale(s, s->qscale)",
+          "old_line_content": "    MpegEncContext *const s = &h->s;",
+          "new_line_content": "    ff_set_qscale(s, s->qscale);",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": null,
+          "new_api": "ff_mpv_common_end",
+          "old_text": null,
+          "new_text": "ff_mpv_common_end(s)",
+          "old_line_content": "    MpegEncContext *s = &h->s;",
+          "new_line_content": "    ff_mpv_common_end(s);",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": null,
+          "new_api": "h261_decode_mb",
+          "old_text": null,
+          "new_text": "h261_decode_mb(h)",
+          "old_line_content": "        int ret;",
+          "new_line_content": "        ret = h261_decode_mb(h);",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "decode_mv_component",
+          "old_text": null,
+          "new_text": "decode_mv_component(&s->gb, h->current_mv_x)",
+          "old_line_content": "        }",
+          "new_line_content": "        h->current_mv_x = decode_mv_component(&s->gb, h->current_mv_x);",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": null,
+          "new_api": "decode_mv_component",
+          "old_text": null,
+          "new_text": "decode_mv_component(&s->gb, h->current_mv_y)",
+          "old_line_content": "",
+          "new_line_content": "        h->current_mv_y = decode_mv_component(&s->gb, h->current_mv_y);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "h261_decode_mb_skipped",
+          "old_text": null,
+          "new_text": "h261_decode_mb_skipped(h, h->current_mba, 33)",
+          "old_line_content": "        if (ret < 0) {",
+          "new_line_content": "                h261_decode_mb_skipped(h, h->current_mba, 33);",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"H.261\")",
+          "old_line_content": "AVCodec ff_h261_decoder = {",
+          "new_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"H.261\"),",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"Error at MB: %d\\n\",\n                   s->mb_x + s->mb_y * s->mb_stride)",
+          "old_line_content": "                return 0;",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Error at MB: %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "HAS_CBP",
+          "old_text": null,
+          "new_text": "HAS_CBP(h->mtype)",
+          "old_line_content": "",
+          "new_line_content": "    if (HAS_CBP(h->mtype))",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(&s->gb, h261_cbp_vlc.table, H261_CBP_VLC_BITS, 2)",
+          "old_line_content": "    // Read cbp",
+          "new_line_content": "        cbp = get_vlc2(&s->gb, h261_cbp_vlc.table, H261_CBP_VLC_BITS, 2) + 1;",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": null,
+          "new_api": "h261_decode_mb_skipped",
+          "old_text": null,
+          "new_text": "h261_decode_mb_skipped(h,\n                               h->current_mba - h->mba_diff,\n                               h->current_mba - 1)",
+          "old_line_content": "        }",
+          "new_line_content": "        h261_decode_mb_skipped(h,",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": null,
+          "new_api": "get_bits_count",
+          "old_text": null,
+          "new_text": "get_bits_count(&s->gb)",
+          "old_line_content": "static int get_consumed_bytes(MpegEncContext *s, int buf_size)",
+          "new_line_content": "    int pos = get_bits_count(&s->gb) >> 3;",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": null,
+          "new_api": "HAS_CBP",
+          "old_text": null,
+          "new_text": "HAS_CBP(h->mtype)",
+          "old_line_content": "intra:",
+          "new_line_content": "    if (s->mb_intra || HAS_CBP(h->mtype)) {",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": null,
+          "new_api": "clear_blocks",
+          "old_text": null,
+          "new_text": "s->bdsp.clear_blocks(s->block[0])",
+          "old_line_content": "    /* decode each block */",
+          "new_line_content": "        s->bdsp.clear_blocks(s->block[0]);",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "SHOW_UBITS",
+          "old_text": null,
+          "new_text": "SHOW_UBITS(re, &s->gb, 1)",
+          "old_line_content": "            run--;",
+          "new_line_content": "            if (SHOW_UBITS(re, &s->gb, 1))",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": null,
+          "new_api": "SKIP_COUNTER",
+          "old_text": null,
+          "new_text": "SKIP_COUNTER(re, &s->gb, 1)",
+          "old_line_content": "                level = -level;",
+          "new_line_content": "            SKIP_COUNTER(re, &s->gb, 1);",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(avctx, \"*****frame %d size=%d\\n\", avctx->frame_number, buf_size)",
+          "old_line_content": "    AVFrame *pict = data;",
+          "new_line_content": "    av_dlog(avctx, \"*****frame %d size=%d\\n\", avctx->frame_number, buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(avctx, \"bytes=%x %x %x %x\\n\", buf[0], buf[1], buf[2], buf[3])",
+          "old_line_content": "",
+          "new_line_content": "    av_dlog(avctx, \"bytes=%x %x %x %x\\n\", buf[0], buf[1], buf[2], buf[3]);",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"run overflow at %dx%d\\n\",\n                   s->mb_x, s->mb_y)",
+          "old_line_content": "        if (i >= 64) {",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"run overflow at %dx%d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": null,
+          "new_api": "ff_mpv_decode_mb",
+          "old_text": null,
+          "new_text": "ff_mpv_decode_mb(s, s->block)",
+          "old_line_content": "    }",
+          "new_line_content": "    ff_mpv_decode_mb(s, s->block);",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": null,
+          "new_api": "init_get_bits",
+          "old_text": null,
+          "new_text": "init_get_bits(&s->gb, buf, buf_size * 8)",
+          "old_line_content": "",
+          "new_line_content": "    init_get_bits(&s->gb, buf, buf_size * 8);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "CLOSE_READER",
+          "old_text": null,
+          "new_text": "CLOSE_READER(re, &s->gb)",
+          "old_line_content": "        i++;",
+          "new_line_content": "    CLOSE_READER(re, &s->gb);",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": null,
+          "new_api": "ff_mpv_idct_init",
+          "old_text": null,
+          "new_text": "ff_mpv_idct_init(s)",
+          "old_line_content": "    if (!s->context_initialized)",
+          "new_line_content": "        ff_mpv_idct_init(s);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "get_bits_left",
+          "old_text": null,
+          "new_text": "get_bits_left(&s->gb)",
+          "old_line_content": "    uint32_t startcode = 0;",
+          "new_line_content": "    for (i = get_bits_left(&s->gb); i > 24; i -= 1) {",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"header damaged\\n\")",
+          "old_line_content": "    /* skip if the header was thrashed */",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"header damaged\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(&s->gb, 1)",
+          "old_line_content": "",
+          "new_line_content": "        startcode = ((startcode << 1) | get_bits(&s->gb, 1)) & 0x000FFFFF;",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(&s->gb, h261_mba_vlc.table,\n                               H261_MBA_VLC_BITS, 2)",
+          "old_line_content": "    // Read mba",
+          "new_line_content": "        h->mba_diff = get_vlc2(&s->gb, h261_mba_vlc.table,",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "ff_mpv_common_end",
+          "old_text": null,
+          "new_text": "ff_mpv_common_end(s)",
+          "old_line_content": "        ParseContext pc = s->parse_context; // FIXME move this demuxing hack to libavformat",
+          "new_line_content": "        ff_mpv_common_end(s);",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"Bad picture start code\\n\")",
+          "old_line_content": "",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"Bad picture start code\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "ff_mpv_common_init",
+          "old_text": null,
+          "new_text": "ff_mpv_common_init(s)",
+          "old_line_content": "",
+          "new_line_content": "        if ((ret = ff_mpv_common_init(s)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(&s->gb, 5)",
+          "old_line_content": "",
+          "new_line_content": "    i = get_bits(&s->gb, 5); /* picture timestamp */",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "ff_set_dimensions",
+          "old_text": null,
+          "new_text": "ff_set_dimensions(avctx, s->width, s->height)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = ff_set_dimensions(avctx, s->width, s->height);",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": null,
+          "new_api": "get_bits_left",
+          "old_text": null,
+          "new_text": "get_bits_left(&s->gb)",
+          "old_line_content": "",
+          "new_line_content": "        if (get_bits_left(&s->gb) <= 7)",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"illegal mba at %d %d\\n\", s->mb_x, s->mb_y)",
+          "old_line_content": "            return SLICE_END;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"illegal mba at %d %d\\n\", s->mb_x, s->mb_y);",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": null,
+          "new_api": "skip_bits1",
+          "old_text": null,
+          "new_text": "skip_bits1(&s->gb)",
+          "old_line_content": "",
+          "new_line_content": "    skip_bits1(&s->gb); /* split screen off */",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "skip_bits1",
+          "old_text": null,
+          "new_text": "skip_bits1(&s->gb)",
+          "old_line_content": "    /* PTYPE starts here */",
+          "new_line_content": "    skip_bits1(&s->gb); /* camera  off */",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": null,
+          "new_api": "get_consumed_bytes",
+          "old_text": null,
+          "new_text": "get_consumed_bytes(s, buf_size)",
+          "old_line_content": "        (avctx->skip_frame >= AVDISCARD_NONKEY && s->pict_type != AV_PICTURE_TYPE_I) ||",
+          "new_line_content": "        return get_consumed_bytes(s, buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "ff_init_block_index",
+          "old_text": null,
+          "new_text": "ff_init_block_index(s)",
+          "old_line_content": "    s->mb_y = ((h->gob_number - 1) / 2) * 3 + ((h->current_mba - 1) / 11);",
+          "new_line_content": "    ff_init_block_index(s);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 385,
+          "old_api": "ff_init_block_index",
+          "new_api": null,
+          "old_text": "ff_init_block_index(s)",
+          "new_text": null,
+          "old_line_content": "    ff_init_block_index(s);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 642,
+          "old_api": "ff_mpeg_er_frame_start",
+          "new_api": null,
+          "old_text": "ff_mpeg_er_frame_start(s)",
+          "new_text": null,
+          "old_line_content": "    ff_mpeg_er_frame_start(s);",
+          "new_line_content": "    /* decode each macroblock */",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "ff_update_block_index",
+          "new_api": null,
+          "old_text": "ff_update_block_index(s)",
+          "new_text": null,
+          "old_line_content": "    ff_update_block_index(s);",
+          "new_line_content": "    // Read mtype",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"Invalid mtype index %d\\n\",\n               h->mtype)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"Invalid mtype index %d\\n\",",
+          "new_line_content": "        return SLICE_ERROR;",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "skip_bits1",
+          "new_api": null,
+          "old_text": "skip_bits1(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    skip_bits1(&s->gb); /* still image mode off */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "skip_bits1",
+          "new_api": null,
+          "old_text": "skip_bits1(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    skip_bits1(&s->gb); /* Reserved */",
+          "new_line_content": "    /* PEI */",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "FF_ARRAY_ELEMS",
+          "new_api": null,
+          "old_text": "FF_ARRAY_ELEMS(ff_h261_mtype_map)",
+          "new_text": null,
+          "old_line_content": "    av_assert0(h->mtype < FF_ARRAY_ELEMS(ff_h261_mtype_map));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "skip_1stop_8data_bits",
+          "new_api": null,
+          "old_text": "skip_1stop_8data_bits(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    if (skip_1stop_8data_bits(&s->gb) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": "av_assert0",
+          "new_api": null,
+          "old_text": "av_assert0(s->current_picture.f->pict_type == s->current_picture_ptr->f->pict_type)",
+          "new_text": null,
+          "old_line_content": "    av_assert0(s->current_picture.f->pict_type == s->current_picture_ptr->f->pict_type);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": "IS_QUANT",
+          "new_api": null,
+          "old_text": "IS_QUANT(h->mtype)",
+          "new_text": null,
+          "old_line_content": "    if (IS_QUANT(h->mtype))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "IS_INTRA4x4",
+          "new_api": null,
+          "old_text": "IS_INTRA4x4(h->mtype)",
+          "new_text": null,
+          "old_line_content": "    s->mb_intra = IS_INTRA4x4(h->mtype);",
+          "new_line_content": "    // Read mv",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "ff_print_debug_info",
+          "new_api": null,
+          "old_text": "ff_print_debug_info(s, s->current_picture_ptr, pict)",
+          "new_text": null,
+          "old_line_content": "    ff_print_debug_info(s, s->current_picture_ptr, pict);",
+          "new_line_content": "    *got_frame = 1;",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "IS_16X16",
+          "new_api": null,
+          "old_text": "IS_16X16(h->mtype)",
+          "new_text": null,
+          "old_line_content": "    if (IS_16X16(h->mtype)) {",
+          "new_line_content": "         * obtained from the macroblock vector by subtracting the vector",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": "get_consumed_bytes",
+          "new_api": null,
+          "old_text": "get_consumed_bytes(s, buf_size)",
+          "new_text": null,
+          "old_line_content": "    return get_consumed_bytes(s, buf_size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": "ff_set_qscale",
+          "new_api": null,
+          "old_text": "ff_set_qscale(s, s->qscale)",
+          "new_text": null,
+          "old_line_content": "    ff_set_qscale(s, s->qscale);",
+          "new_line_content": "    /* decode mb's */",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": "ff_mpv_common_end",
+          "new_api": null,
+          "old_text": "ff_mpv_common_end(s)",
+          "new_text": null,
+          "old_line_content": "    ff_mpv_common_end(s);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "h261_decode_mb",
+          "new_api": null,
+          "old_text": "h261_decode_mb(h)",
+          "new_text": null,
+          "old_line_content": "        ret = h261_decode_mb(h);",
+          "new_line_content": "            if (ret == SLICE_END) {",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "decode_mv_component",
+          "new_api": null,
+          "old_text": "decode_mv_component(&s->gb, h->current_mv_x)",
+          "new_text": null,
+          "old_line_content": "        h->current_mv_x = decode_mv_component(&s->gb, h->current_mv_x);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "decode_mv_component",
+          "new_api": null,
+          "old_text": "decode_mv_component(&s->gb, h->current_mv_y)",
+          "new_text": null,
+          "old_line_content": "        h->current_mv_y = decode_mv_component(&s->gb, h->current_mv_y);",
+          "new_line_content": "        h->current_mv_x = 0;",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": "h261_decode_mb_skipped",
+          "new_api": null,
+          "old_text": "h261_decode_mb_skipped(h, h->current_mba, 33)",
+          "new_text": null,
+          "old_line_content": "                h261_decode_mb_skipped(h, h->current_mba, 33);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"H.261\")",
+          "new_text": null,
+          "old_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"H.261\"),",
+          "new_line_content": "    .id             = AV_CODEC_ID_H261,",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"Error at MB: %d\\n\",\n                   s->mb_x + s->mb_y * s->mb_stride)",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"Error at MB: %d\\n\",",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": "HAS_CBP",
+          "new_api": null,
+          "old_text": "HAS_CBP(h->mtype)",
+          "new_text": null,
+          "old_line_content": "    if (HAS_CBP(h->mtype))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(&s->gb, h261_cbp_vlc.table, H261_CBP_VLC_BITS, 2)",
+          "new_text": null,
+          "old_line_content": "        cbp = get_vlc2(&s->gb, h261_cbp_vlc.table, H261_CBP_VLC_BITS, 2) + 1;",
+          "new_line_content": "    if (s->mb_intra) {",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "h261_decode_mb_skipped",
+          "new_api": null,
+          "old_text": "h261_decode_mb_skipped(h,\n                               h->current_mba - h->mba_diff,\n                               h->current_mba - 1)",
+          "new_text": null,
+          "old_line_content": "        h261_decode_mb_skipped(h,",
+          "new_line_content": "                               h->current_mba - 1);",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "get_bits_count",
+          "new_api": null,
+          "old_text": "get_bits_count(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    int pos = get_bits_count(&s->gb) >> 3;",
+          "new_line_content": "        pos = 1;      // avoid infinite loops (i doubt that is needed but ...)",
+          "content_same": false
+        },
+        {
+          "line": 452,
+          "old_api": "HAS_CBP",
+          "new_api": null,
+          "old_text": "HAS_CBP(h->mtype)",
+          "new_text": null,
+          "old_line_content": "    if (s->mb_intra || HAS_CBP(h->mtype)) {",
+          "new_line_content": "        for (i = 0; i < 6; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "h261_decode_block",
+          "new_api": null,
+          "old_text": "h261_decode_block(h, s->block[i], i, cbp & 32)",
+          "new_text": null,
+          "old_line_content": "            if (h261_decode_block(h, s->block[i], i, cbp & 32) < 0)",
+          "new_line_content": "            cbp += cbp;",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "SHOW_UBITS",
+          "new_api": null,
+          "old_text": "SHOW_UBITS(re, &s->gb, 1)",
+          "new_text": null,
+          "old_line_content": "            if (SHOW_UBITS(re, &s->gb, 1))",
+          "new_line_content": "                level = -level;",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": "SKIP_COUNTER",
+          "new_api": null,
+          "old_text": "SKIP_COUNTER(re, &s->gb, 1)",
+          "new_text": null,
+          "old_line_content": "            SKIP_COUNTER(re, &s->gb, 1);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(avctx, \"*****frame %d size=%d\\n\", avctx->frame_number, buf_size)",
+          "new_text": null,
+          "old_line_content": "    av_dlog(avctx, \"*****frame %d size=%d\\n\", avctx->frame_number, buf_size);",
+          "new_line_content": "    s->flags  = avctx->flags;",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(avctx, \"bytes=%x %x %x %x\\n\", buf[0], buf[1], buf[2], buf[3])",
+          "new_text": null,
+          "old_line_content": "    av_dlog(avctx, \"bytes=%x %x %x %x\\n\", buf[0], buf[1], buf[2], buf[3]);",
+          "new_line_content": "    s->flags2 = avctx->flags2;",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"run overflow at %dx%d\\n\",\n                   s->mb_x, s->mb_y)",
+          "new_text": null,
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"run overflow at %dx%d\\n\",",
+          "new_line_content": "                   s->mb_x, s->mb_y);",
+          "content_same": false
+        },
+        {
+          "line": 464,
+          "old_api": "ff_mpv_decode_mb",
+          "new_api": null,
+          "old_text": "ff_mpv_decode_mb(s, s->block)",
+          "new_text": null,
+          "old_line_content": "    ff_mpv_decode_mb(s, s->block);",
+          "new_line_content": "    return SLICE_OK;",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "init_get_bits",
+          "new_api": null,
+          "old_text": "init_get_bits(&s->gb, buf, buf_size * 8)",
+          "new_text": null,
+          "old_line_content": "    init_get_bits(&s->gb, buf, buf_size * 8);",
+          "new_line_content": "    if (!s->context_initialized)",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "CLOSE_READER",
+          "new_api": null,
+          "old_text": "CLOSE_READER(re, &s->gb)",
+          "new_text": null,
+          "old_line_content": "    CLOSE_READER(re, &s->gb);",
+          "new_line_content": "    s->block_last_index[n] = i - 1;",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": "h261_decode_picture_header",
+          "new_api": null,
+          "old_text": "h261_decode_picture_header(h)",
+          "new_text": null,
+          "old_line_content": "    ret = h261_decode_picture_header(h);",
+          "new_line_content": "    /* skip if the header was thrashed */",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "get_bits_left",
+          "new_api": null,
+          "old_text": "get_bits_left(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    for (i = get_bits_left(&s->gb); i > 24; i -= 1) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"header damaged\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"header damaged\\n\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(&s->gb, 1)",
+          "new_text": null,
+          "old_line_content": "        startcode = ((startcode << 1) | get_bits(&s->gb, 1)) & 0x000FFFFF;",
+          "new_line_content": "        if (startcode == 0x10)",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(&s->gb, h261_mba_vlc.table,\n                               H261_MBA_VLC_BITS, 2)",
+          "new_text": null,
+          "old_line_content": "        h->mba_diff = get_vlc2(&s->gb, h261_mba_vlc.table,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": "ff_mpv_common_end",
+          "new_api": null,
+          "old_text": "ff_mpv_common_end(s)",
+          "new_text": null,
+          "old_line_content": "        ff_mpv_common_end(s);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"Bad picture start code\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"Bad picture start code\\n\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 620,
+          "old_api": "ff_mpv_common_init",
+          "new_api": null,
+          "old_text": "ff_mpv_common_init(s)",
+          "new_text": null,
+          "old_line_content": "        if ((ret = ff_mpv_common_init(s)) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "get_bits",
+          "new_api": null,
+          "old_text": "get_bits(&s->gb, 5)",
+          "new_text": null,
+          "old_line_content": "    i = get_bits(&s->gb, 5); /* picture timestamp */",
+          "new_line_content": "        i += 32;",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "ff_set_dimensions",
+          "new_api": null,
+          "old_text": "ff_set_dimensions(avctx, s->width, s->height)",
+          "new_text": null,
+          "old_line_content": "        ret = ff_set_dimensions(avctx, s->width, s->height);",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "get_bits_left",
+          "new_api": null,
+          "old_text": "get_bits_left(&s->gb)",
+          "new_text": null,
+          "old_line_content": "        if (get_bits_left(&s->gb) <= 7)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"illegal mba at %d %d\\n\", s->mb_x, s->mb_y)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"illegal mba at %d %d\\n\", s->mb_x, s->mb_y);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": "skip_bits1",
+          "new_api": null,
+          "old_text": "skip_bits1(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    skip_bits1(&s->gb); /* camera  off */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "get_bits1",
+          "new_api": null,
+          "old_text": "get_bits1(&s->gb)",
+          "new_text": null,
+          "old_line_content": "    format = get_bits1(&s->gb);",
+          "new_line_content": "    // only 2 formats possible",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "ff_mpv_frame_start",
+          "new_api": null,
+          "old_text": "ff_mpv_frame_start(s, avctx)",
+          "new_text": null,
+          "old_line_content": "    if (ff_mpv_frame_start(s, avctx) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 11,
+      "total_additions": 51,
+      "total_deletions": 51,
+      "total_api_changes": 113
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 113,
+        "non_api_lines": 4,
+        "non_api_line_numbers": [
+          321,
+          338,
+          339,
+          333
+        ]
+      }
+    },
+    "api_calls_before": 104,
+    "api_calls_after": 104,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 5,
+      "total_diff_lines": 36
+    }
+  }
+}

@@ -1,0 +1,52 @@
+}
+
+// 23.1.5.2.1 %ArrayIteratorPrototype%.next ( ), https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
+// FIXME: This seems to be CreateArrayIterator (https://tc39.es/ecma262/#sec-createarrayiterator) instead of %ArrayIteratorPrototype%.next.
+JS_DEFINE_NATIVE_FUNCTION(ArrayIteratorPrototype::next)
+{
+    auto& realm = *vm.current_realm();
+
+    auto iterator = TRY(typed_this_value(vm));
+    auto target_array = iterator->array();
+    if (target_array.is_undefined())
+        return create_iterator_result_object(vm, js_undefined(), true);
+    VERIFY(target_array.is_object());
+    auto& array = target_array.as_object();
+
+    auto index = iterator->index();
+    auto iteration_kind = iterator->iteration_kind();
+
+    size_t length;
+
+    if (array.is_typed_array()) {
+        auto& typed_array = static_cast<TypedArrayBase&>(array);
+
+        if (typed_array.viewed_array_buffer()->is_detached())
+            return vm.throw_completion<TypeError>(ErrorType::DetachedArrayBuffer);
+
+        length = typed_array.array_length();
+    } else {
+        length = TRY(length_of_array_like(vm, array));
+    }
+
+    if (index >= length) {
+        iterator->m_array = js_undefined();
+        return create_iterator_result_object(vm, js_undefined(), true);
+    }
+
+    iterator->m_index++;
+    if (iteration_kind == Object::PropertyKind::Key)
+        return create_iterator_result_object(vm, Value(static_cast<i32>(index)), false);
+
+    auto value = TRY([&]() -> ThrowCompletionOr<Value> {
+        // OPTIMIZATION: For objects that don't interfere with indexed property access, we try looking directly at storage.
+        if (!array.may_interfere_with_indexed_property_access() && array.indexed_properties().has_index(index)) {
+            auto value = array.indexed_properties().get(index)->value;
+            if (!value.is_accessor()) {
+                return value;
+            }
+        }
+        return array.get(index);
+    }());
+
+    if (iteration_kind == Object::PropertyKind::Value)

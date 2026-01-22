@@ -1,0 +1,45 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -329,7 +329,7 @@
+  * database(s). Otherwise -1 is returned in the specific case the
+
+  * DB number is out of range, and errno is set to EINVAL. */
+
+ long long emptyDb(int dbnum, int flags, void(callback)(void*)) {
+
+-    int j, async = (flags & EMPTYDB_ASYNC);
+
++    int async = (flags & EMPTYDB_ASYNC);
+
+     long long removed = 0;
+
+ 
+
+     if (dbnum < -1 || dbnum >= server.dbnum) {
+
+@@ -337,7 +337,10 @@
+         return -1;
+
+     }
+
+ 
+
+-    for (j = 0; j < server.dbnum; j++) {
+
++    int j = dbnum == -1 ? 0 : dbnum;
+
++    int dbmax = dbnum == -1 ? server.dbnum : dbnum+1;
+
++
+
++    for (; j < dbmax; j++) {
+
+         if (dbnum != -1 && dbnum != j) continue;
+
+         removed += dictSize(server.db[j].dict);
+
+         if (async) {

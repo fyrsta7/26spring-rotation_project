@@ -1,0 +1,28 @@
+diff --git a/reactos/lib/fast486/opcodes.c b/reactos/lib/fast486/opcodes.c
+index 101361b0251..9337988fd34 100644
+--- a/reactos/lib/fast486/opcodes.c
++++ b/reactos/lib/fast486/opcodes.c
+@@ -4240,11 +4240,6 @@ FAST486_OPCODE_HANDLER(Fast486OpcodeLdsLes)
+         {
+             UCHAR BopCode;
+ 
+-#ifndef FAST486_NO_PREFETCH
+-            /* Invalidate the prefetch since BOP handlers can alter the memory */
+-            State->PrefetchValid = FALSE;
+-#endif
+-
+             /* Fetch the BOP code */
+             if (!Fast486FetchByte(State, &BopCode))
+             {
+@@ -4252,6 +4247,11 @@ FAST486_OPCODE_HANDLER(Fast486OpcodeLdsLes)
+                 return;
+             }
+ 
++#ifndef FAST486_NO_PREFETCH
++            /* Invalidate the prefetch since BOP handlers can alter the memory */
++            State->PrefetchValid = FALSE;
++#endif
++
+             /* Call the BOP handler */
+             State->BopCallback(State, BopCode);
+ 

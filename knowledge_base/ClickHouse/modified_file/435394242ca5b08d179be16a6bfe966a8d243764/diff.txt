@@ -1,0 +1,20 @@
+diff --git a/dbms/src/DataStreams/FilterBlockInputStream.cpp b/dbms/src/DataStreams/FilterBlockInputStream.cpp
+index 3a36d42b710..75de7654b96 100644
+--- a/dbms/src/DataStreams/FilterBlockInputStream.cpp
++++ b/dbms/src/DataStreams/FilterBlockInputStream.cpp
+@@ -88,6 +88,15 @@ Block FilterBlockInputStream::readImpl()
+ 		if (filtered_rows == 0)
+ 			continue;
+ 
++		/// Если через фильтр проходят все строчки.
++		if (filtered_rows == filter.size())
++		{
++			/// Заменим столбец с фильтром на константу.
++			res.getByPosition(filter_column).column = new ColumnConstUInt8(filtered_rows, 1);
++			/// Остальные столбцы трогать не нужно.
++			return res;
++		}
++
+ 		/// Фильтруем остальные столбцы.
+ 		for (size_t i = 0; i < columns; ++i)
+ 		{

@@ -1,0 +1,912 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/714508bcb91057868a96588b9fba4d29c6c4fc77",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/714508bcb91057868a96588b9fba4d29c6c4fc77/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/714508bcb91057868a96588b9fba4d29c6c4fc77/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/714508bcb91057868a96588b9fba4d29c6c4fc77/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1507,
+          "old_api": "get_bits1",
+          "new_api": "av_log",
+          "old_text": "get_bits1(gb)",
+          "new_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Not a Vorbis I audio packet.\\n\")",
+          "old_line_content": "    if (get_bits1(gb)) {",
+          "new_line_content": "        av_log(vc->avccontext, AV_LOG_ERROR, \"Not a Vorbis I audio packet.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1527,
+          "old_api": "get_bits",
+          "new_api": "skip_bits1",
+          "old_text": "get_bits(gb, 1)",
+          "new_text": "skip_bits1(gb)",
+          "old_line_content": "        previous_window = get_bits(gb, 1);",
+          "new_line_content": "        skip_bits1(gb); // next_window",
+          "content_same": false
+        },
+        {
+          "line": 1618,
+          "old_api": "vector_fmul",
+          "new_api": "imdct_half",
+          "old_text": "vc->fdsp.vector_fmul(ch_floor_ptr, ch_floor_ptr, ch_res_ptr, blocksize / 2)",
+          "new_text": "mdct->imdct_half(mdct, ch_res_ptr, ch_floor_ptr)",
+          "old_line_content": "        vc->fdsp.vector_fmul(ch_floor_ptr, ch_floor_ptr, ch_res_ptr, blocksize / 2);",
+          "new_line_content": "        mdct->imdct_half(mdct, ch_res_ptr, ch_floor_ptr);",
+          "content_same": false
+        },
+        {
+          "line": 1637,
+          "old_api": "vector_fmul_window",
+          "new_api": "memcpy",
+          "old_text": "vc->dsp.vector_fmul_window(ret, saved, buf, win, bs0 / 4)",
+          "new_text": "memcpy(ret+bs0/2, buf+bs0/4, ((bs1-bs0)/4) * sizeof(float))",
+          "old_line_content": "            vc->dsp.vector_fmul_window(ret, saved, buf, win, bs0 / 4);",
+          "new_line_content": "            memcpy(ret+bs0/2, buf+bs0/4, ((bs1-bs0)/4) * sizeof(float));",
+          "content_same": false
+        },
+        {
+          "line": 1640,
+          "old_api": "memcpy",
+          "new_api": "vector_fmul_window",
+          "old_text": "memcpy(ret, saved, ((bs1 - bs0) / 4) * sizeof(float))",
+          "new_text": "vc->dsp.vector_fmul_window(ret + (bs1 - bs0) / 4, saved + (bs1 - bs0) / 4, buf, win, bs0 / 4)",
+          "old_line_content": "            memcpy(ret, saved, ((bs1 - bs0) / 4) * sizeof(float));",
+          "new_line_content": "            vc->dsp.vector_fmul_window(ret + (bs1 - bs0) / 4, saved + (bs1 - bs0) / 4, buf, win, bs0 / 4);",
+          "content_same": false
+        },
+        {
+          "line": 1675,
+          "old_api": "av_dlog",
+          "new_api": "get_bits_count",
+          "old_text": "av_dlog(NULL, \"parsed %d bytes %d bits, returned %d samples (*ch*bits) \\n\",\n            get_bits_count(gb) / 8, get_bits_count(gb) % 8, len)",
+          "new_text": "get_bits_count(gb)",
+          "old_line_content": "    av_dlog(NULL, \"parsed %d bytes %d bits, returned %d samples (*ch*bits) \\n\",",
+          "new_line_content": "            get_bits_count(gb) / 8, get_bits_count(gb) % 8, len);",
+          "content_same": false
+        },
+        {
+          "line": 1680,
+          "old_api": "get_buffer",
+          "new_api": "av_log",
+          "old_text": "avccontext->get_buffer(avccontext, &vc->frame)",
+          "new_text": "av_log(avccontext, AV_LOG_ERROR, \"get_buffer() failed\\n\")",
+          "old_line_content": "    if ((ret = avccontext->get_buffer(avccontext, &vc->frame)) < 0) {",
+          "new_line_content": "        av_log(avccontext, AV_LOG_ERROR, \"get_buffer() failed\\n\");",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1665,
+          "old_api": null,
+          "new_api": "vorbis_parse_audio_packet",
+          "old_text": null,
+          "new_text": "vorbis_parse_audio_packet(vc)",
+          "old_line_content": "",
+          "new_line_content": "    if ((len = vorbis_parse_audio_packet(vc)) <= 0)",
+          "content_same": false
+        },
+        {
+          "line": 1411,
+          "old_api": null,
+          "new_api": "FASTDIV",
+          "old_text": null,
+          "new_text": "FASTDIV(voffset << 1, ch <<1)",
+          "old_line_content": "                            } else if (vr_type == 2) {",
+          "new_line_content": "                                unsigned voffs_div = FASTDIV(voffset << 1, ch <<1);",
+          "content_same": false
+        },
+        {
+          "line": 1415,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                for (k = 0; k < step; ++k) {",
+          "new_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "content_same": false
+        },
+        {
+          "line": 1544,
+          "old_api": null,
+          "new_api": "decode",
+          "old_text": null,
+          "new_text": "floor->decode(vc, &floor->data, ch_floor_ptr)",
+          "old_line_content": "",
+          "new_line_content": "        ret = floor->decode(vc, &floor->data, ch_floor_ptr);",
+          "content_same": false
+        },
+        {
+          "line": 1674,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \"parsed %d bytes %d bits, returned %d samples (*ch*bits) \\n\",\n            get_bits_count(gb) / 8, get_bits_count(gb) % 8, len)",
+          "old_line_content": "",
+          "new_line_content": "    av_dlog(NULL, \"parsed %d bytes %d bits, returned %d samples (*ch*bits) \\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1547,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Invalid codebook in vorbis_floor_decode.\\n\")",
+          "old_line_content": "        if (ret < 0) {",
+          "new_line_content": "            av_log(vc->avccontext, AV_LOG_ERROR, \"Invalid codebook in vorbis_floor_decode.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1420,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",\n                                                pass, voffs_div + voffs_mod * vlen,\n                                                vec[voffs_div + voffs_mod * vlen],\n                                                codebook.codevectors[coffs + l], coffs, l)",
+          "old_line_content": "",
+          "new_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1679,
+          "old_api": null,
+          "new_api": "get_buffer",
+          "old_text": null,
+          "new_text": "avccontext->get_buffer(avccontext, &vc->frame)",
+          "old_line_content": "    vc->frame.nb_samples = len;",
+          "new_line_content": "    if ((ret = avccontext->get_buffer(avccontext, &vc->frame)) < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 1694,
+          "old_api": null,
+          "new_api": "float_interleave",
+          "old_text": null,
+          "new_text": "vc->fmt_conv.float_interleave((float *)vc->frame.data[0], channel_ptrs,\n                                      len, vc->audio_channels)",
+          "old_line_content": "    if (avccontext->sample_fmt == AV_SAMPLE_FMT_FLT)",
+          "new_line_content": "        vc->fmt_conv.float_interleave((float *)vc->frame.data[0], channel_ptrs,",
+          "content_same": false
+        },
+        {
+          "line": 1697,
+          "old_api": null,
+          "new_api": "float_to_int16_interleave",
+          "old_text": null,
+          "new_text": "vc->fmt_conv.float_to_int16_interleave((int16_t *)vc->frame.data[0],\n                                               channel_ptrs, len,\n                                               vc->audio_channels)",
+          "old_line_content": "    else",
+          "new_line_content": "        vc->fmt_conv.float_to_int16_interleave((int16_t *)vc->frame.data[0],",
+          "content_same": false
+        },
+        {
+          "line": 1451,
+          "old_api": null,
+          "new_api": "vorbis_residue_decode_internal",
+          "old_text": null,
+          "new_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 2)",
+          "old_line_content": "    if (vr->type == 2)",
+          "new_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 2);",
+          "content_same": false
+        },
+        {
+          "line": 1453,
+          "old_api": null,
+          "new_api": "vorbis_residue_decode_internal",
+          "old_text": null,
+          "new_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 1)",
+          "old_line_content": "    else if (vr->type == 1)",
+          "new_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 1);",
+          "content_same": false
+        },
+        {
+          "line": 1455,
+          "old_api": null,
+          "new_api": "vorbis_residue_decode_internal",
+          "old_text": null,
+          "new_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 0)",
+          "old_line_content": "    else if (vr->type == 0)",
+          "new_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1584,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Too many channels in vorbis_floor_decode.\\n\")",
+          "old_line_content": "        if (ch_left < ch) {",
+          "new_line_content": "            av_log(vc->avccontext, AV_LOG_ERROR, \"Too many channels in vorbis_floor_decode.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1457,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(vc->avccontext, AV_LOG_ERROR, \" Invalid residue type while residue decode?! \\n\")",
+          "old_line_content": "    else {",
+          "new_line_content": "        av_log(vc->avccontext, AV_LOG_ERROR, \" Invalid residue type while residue decode?! \\n\");",
+          "content_same": false
+        },
+        {
+          "line": 1713,
+          "old_api": null,
+          "new_api": "vorbis_free",
+          "old_text": null,
+          "new_text": "vorbis_free(vc)",
+          "old_line_content": "",
+          "new_line_content": "    vorbis_free(vc);",
+          "content_same": false
+        },
+        {
+          "line": 1588,
+          "old_api": null,
+          "new_api": "vorbis_residue_decode",
+          "old_text": null,
+          "new_text": "vorbis_residue_decode(vc, residue, ch, do_not_decode, ch_res_ptr, vlen, ch_left)",
+          "old_line_content": "        if (ch) {",
+          "new_line_content": "            ret = vorbis_residue_decode(vc, residue, ch, do_not_decode, ch_res_ptr, vlen, ch_left);",
+          "content_same": false
+        },
+        {
+          "line": 1723,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(vc->saved, 0, (vc->blocksize[1] / 4) * vc->audio_channels *\n                             sizeof(*vc->saved))",
+          "old_line_content": "    if (vc->saved) {",
+          "new_line_content": "        memset(vc->saved, 0, (vc->blocksize[1] / 4) * vc->audio_channels *",
+          "content_same": false
+        },
+        {
+          "line": 1607,
+          "old_api": null,
+          "new_api": "vorbis_inverse_coupling",
+          "old_text": null,
+          "new_text": "vc->dsp.vorbis_inverse_coupling(mag, ang, blocksize / 2)",
+          "old_line_content": "        ang = vc->channel_residues+res_chan[mapping->angle[i]]     * blocksize / 2;",
+          "new_line_content": "        vc->dsp.vorbis_inverse_coupling(mag, ang, blocksize / 2);",
+          "content_same": false
+        },
+        {
+          "line": 1739,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"Vorbis\")",
+          "old_line_content": "    .capabilities    = CODEC_CAP_DR1,",
+          "new_line_content": "    .long_name       = NULL_IF_CONFIG_SMALL(\"Vorbis\"),",
+          "content_same": false
+        },
+        {
+          "line": 1357,
+          "old_api": null,
+          "new_api": "FASTDIV",
+          "old_text": null,
+          "new_text": "FASTDIV(vr->partition_size << 1, dim << 1)",
+          "old_line_content": "                            unsigned step = dim == 1 ? vr->partition_size",
+          "new_line_content": "                            unsigned step = FASTDIV(vr->partition_size << 1, dim << 1);",
+          "content_same": false
+        },
+        {
+          "line": 1617,
+          "old_api": null,
+          "new_api": "vector_fmul",
+          "old_text": null,
+          "new_text": "vc->fdsp.vector_fmul(ch_floor_ptr, ch_floor_ptr, ch_res_ptr, blocksize / 2)",
+          "old_line_content": "        ch_res_ptr   = vc->channel_residues + res_chan[j] * blocksize / 2;",
+          "new_line_content": "        vc->fdsp.vector_fmul(ch_floor_ptr, ch_floor_ptr, ch_res_ptr, blocksize / 2);",
+          "content_same": false
+        },
+        {
+          "line": 1364,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                for (k = 0; k < step; ++k) {",
+          "new_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "content_same": false
+        },
+        {
+          "line": 1371,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                for (k = 0; k < step; ++k) {",
+          "new_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "content_same": false
+        },
+        {
+          "line": 1375,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d  \\n\",\n                                                pass, voffs, vec[voffs], codebook.codevectors[coffs+l], coffs)",
+          "old_line_content": "",
+          "new_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d  \\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1506,
+          "old_api": null,
+          "new_api": "get_bits1",
+          "old_text": null,
+          "new_text": "get_bits1(gb)",
+          "old_line_content": "",
+          "new_line_content": "    if (get_bits1(gb)) {",
+          "content_same": false
+        },
+        {
+          "line": 1634,
+          "old_api": null,
+          "new_api": "vector_fmul_window",
+          "old_text": null,
+          "new_text": "vc->dsp.vector_fmul_window(ret, saved, buf, win, blocksize / 4)",
+          "old_line_content": "        if (blockflag == previous_window) {",
+          "new_line_content": "            vc->dsp.vector_fmul_window(ret, saved, buf, win, blocksize / 4);",
+          "content_same": false
+        },
+        {
+          "line": 1636,
+          "old_api": null,
+          "new_api": "vector_fmul_window",
+          "old_text": null,
+          "new_text": "vc->dsp.vector_fmul_window(ret, saved, buf, win, bs0 / 4)",
+          "old_line_content": "        } else if (blockflag > previous_window) {",
+          "new_line_content": "            vc->dsp.vector_fmul_window(ret, saved, buf, win, bs0 / 4);",
+          "content_same": false
+        },
+        {
+          "line": 1639,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(ret, saved, ((bs1 - bs0) / 4) * sizeof(float))",
+          "old_line_content": "        } else {",
+          "new_line_content": "            memcpy(ret, saved, ((bs1 - bs0) / 4) * sizeof(float));",
+          "content_same": false
+        },
+        {
+          "line": 1384,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                    for (k = 0; k < step; ++k) {",
+          "new_line_content": "                                        coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * 2;",
+          "content_same": false
+        },
+        {
+          "line": 1514,
+          "old_api": null,
+          "new_api": "ilog",
+          "old_text": null,
+          "new_text": "ilog(vc->mode_count-1)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        GET_VALIDATED_INDEX(mode_number, ilog(vc->mode_count-1), vc->mode_count)",
+          "content_same": false
+        },
+        {
+          "line": 1642,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(saved, buf + blocksize / 4, blocksize / 4 * sizeof(float))",
+          "old_line_content": "        }",
+          "new_line_content": "        memcpy(saved, buf + blocksize / 4, blocksize / 4 * sizeof(float));",
+          "content_same": false
+        },
+        {
+          "line": 1390,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                    for (k = 0; k < step; ++k, voffs += 2) {",
+          "new_line_content": "                                        coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * 4;",
+          "content_same": false
+        },
+        {
+          "line": 1519,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \" Mode number: %u , mapping: %d , blocktype %d\\n\", mode_number,\n            vc->modes[mode_number].mapping, vc->modes[mode_number].blockflag)",
+          "old_line_content": "",
+          "new_line_content": "    av_dlog(NULL, \" Mode number: %u , mapping: %d , blocktype %d\\n\", mode_number,",
+          "content_same": false
+        },
+        {
+          "line": 1398,
+          "old_api": null,
+          "new_api": "get_vlc2",
+          "old_text": null,
+          "new_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "old_line_content": "                                for (k = 0; k < step; ++k) {",
+          "new_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "content_same": false
+        },
+        {
+          "line": 1526,
+          "old_api": null,
+          "new_api": "get_bits",
+          "old_text": null,
+          "new_text": "get_bits(gb, 1)",
+          "old_line_content": "    if (blockflag) {",
+          "new_line_content": "        previous_window = get_bits(gb, 1);",
+          "content_same": false
+        },
+        {
+          "line": 1530,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(ch_res_ptr,   0, sizeof(float) * vc->audio_channels * vlen)",
+          "old_line_content": "",
+          "new_line_content": "    memset(ch_res_ptr,   0, sizeof(float) * vc->audio_channels * vlen); //FIXME can this be removed ?",
+          "content_same": false
+        },
+        {
+          "line": 1403,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",\n                                                pass, voffset / ch + (voffs % ch) * vlen,\n                                                vec[voffset / ch + (voffs % ch) * vlen],\n                                                codebook.codevectors[coffs + l], coffs, l)",
+          "old_line_content": "",
+          "new_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",",
+          "content_same": false
+        },
+        {
+          "line": 1661,
+          "old_api": null,
+          "new_api": "av_dlog",
+          "old_text": null,
+          "new_text": "av_dlog(NULL, \"packet length %d \\n\", buf_size)",
+          "old_line_content": "",
+          "new_line_content": "    av_dlog(NULL, \"packet length %d \\n\", buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 1663,
+          "old_api": null,
+          "new_api": "init_get_bits",
+          "old_text": null,
+          "new_text": "init_get_bits(gb, buf, buf_size*8)",
+          "old_line_content": "",
+          "new_line_content": "    init_get_bits(gb, buf, buf_size*8);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1664,
+          "old_api": "init_get_bits",
+          "new_api": null,
+          "old_text": "init_get_bits(gb, buf, buf_size*8)",
+          "new_text": null,
+          "old_line_content": "    init_get_bits(gb, buf, buf_size*8);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1666,
+          "old_api": "vorbis_parse_audio_packet",
+          "new_api": null,
+          "old_text": "vorbis_parse_audio_packet(vc)",
+          "new_text": null,
+          "old_line_content": "    if ((len = vorbis_parse_audio_packet(vc)) <= 0)",
+          "new_line_content": "        return len;",
+          "content_same": false
+        },
+        {
+          "line": 1412,
+          "old_api": "FASTDIV",
+          "new_api": null,
+          "old_text": "FASTDIV(voffset, ch)",
+          "new_text": null,
+          "old_line_content": "                                unsigned voffs_div = FASTDIV(voffset, ch);",
+          "new_line_content": "                                unsigned voffs_mod = voffset - voffs_div * ch;",
+          "content_same": false
+        },
+        {
+          "line": 1416,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "new_line_content": "                                    for (l = 0; l < dim; ++l) {",
+          "content_same": false
+        },
+        {
+          "line": 1545,
+          "old_api": "decode",
+          "new_api": null,
+          "old_text": "floor->decode(vc, &floor->data, ch_floor_ptr)",
+          "new_text": null,
+          "old_line_content": "        ret = floor->decode(vc, &floor->data, ch_floor_ptr);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1548,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Invalid codebook in vorbis_floor_decode.\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(vc->avccontext, AV_LOG_ERROR, \"Invalid codebook in vorbis_floor_decode.\\n\");",
+          "new_line_content": "            return AVERROR_INVALIDDATA;",
+          "content_same": false
+        },
+        {
+          "line": 1421,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",\n                                                pass, voffs_div + voffs_mod * vlen,\n                                                vec[voffs_div + voffs_mod * vlen],\n                                                codebook.codevectors[coffs + l], coffs, l)",
+          "new_text": null,
+          "old_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",",
+          "new_line_content": "                                                pass, voffs_div + voffs_mod * vlen,",
+          "content_same": false
+        },
+        {
+          "line": 1676,
+          "old_api": "get_bits_count",
+          "new_api": null,
+          "old_text": "get_bits_count(gb)",
+          "new_text": null,
+          "old_line_content": "            get_bits_count(gb) / 8, get_bits_count(gb) % 8, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1681,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avccontext, AV_LOG_ERROR, \"get_buffer() failed\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avccontext, AV_LOG_ERROR, \"get_buffer() failed\\n\");",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 1532,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(ch_floor_ptr, 0, sizeof(float) * vc->audio_channels * vlen)",
+          "new_text": null,
+          "old_line_content": "    memset(ch_floor_ptr, 0, sizeof(float) * vc->audio_channels * vlen); //FIXME can this be removed ?",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1695,
+          "old_api": "float_interleave",
+          "new_api": null,
+          "old_text": "vc->fmt_conv.float_interleave((float *)vc->frame.data[0], channel_ptrs,\n                                      len, vc->audio_channels)",
+          "new_text": null,
+          "old_line_content": "        vc->fmt_conv.float_interleave((float *)vc->frame.data[0], channel_ptrs,",
+          "new_line_content": "                                      len, vc->audio_channels);",
+          "content_same": false
+        },
+        {
+          "line": 1698,
+          "old_api": "float_to_int16_interleave",
+          "new_api": null,
+          "old_text": "vc->fmt_conv.float_to_int16_interleave((int16_t *)vc->frame.data[0],\n                                               channel_ptrs, len,\n                                               vc->audio_channels)",
+          "new_text": null,
+          "old_line_content": "        vc->fmt_conv.float_to_int16_interleave((int16_t *)vc->frame.data[0],",
+          "new_line_content": "                                               channel_ptrs, len,",
+          "content_same": false
+        },
+        {
+          "line": 1452,
+          "old_api": "vorbis_residue_decode_internal",
+          "new_api": null,
+          "old_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 2)",
+          "new_text": null,
+          "old_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 2);",
+          "new_line_content": "    else if (vr->type == 1)",
+          "content_same": false
+        },
+        {
+          "line": 1454,
+          "old_api": "vorbis_residue_decode_internal",
+          "new_api": null,
+          "old_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 1)",
+          "new_text": null,
+          "old_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 1);",
+          "new_line_content": "    else if (vr->type == 0)",
+          "content_same": false
+        },
+        {
+          "line": 1456,
+          "old_api": "vorbis_residue_decode_internal",
+          "new_api": null,
+          "old_text": "vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 0)",
+          "new_text": null,
+          "old_line_content": "        return vorbis_residue_decode_internal(vc, vr, ch, do_not_decode, vec, vlen, ch_left, 0);",
+          "new_line_content": "    else {",
+          "content_same": false
+        },
+        {
+          "line": 1585,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Too many channels in vorbis_floor_decode.\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(vc->avccontext, AV_LOG_ERROR, \"Too many channels in vorbis_floor_decode.\\n\");",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1458,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(vc->avccontext, AV_LOG_ERROR, \" Invalid residue type while residue decode?! \\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(vc->avccontext, AV_LOG_ERROR, \" Invalid residue type while residue decode?! \\n\");",
+          "new_line_content": "        return AVERROR_INVALIDDATA;",
+          "content_same": false
+        },
+        {
+          "line": 1714,
+          "old_api": "vorbis_free",
+          "new_api": null,
+          "old_text": "vorbis_free(vc)",
+          "new_text": null,
+          "old_line_content": "    vorbis_free(vc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1589,
+          "old_api": "vorbis_residue_decode",
+          "new_api": null,
+          "old_text": "vorbis_residue_decode(vc, residue, ch, do_not_decode, ch_res_ptr, vlen, ch_left)",
+          "new_text": null,
+          "old_line_content": "            ret = vorbis_residue_decode(vc, residue, ch, do_not_decode, ch_res_ptr, vlen, ch_left);",
+          "new_line_content": "            if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 1724,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(vc->saved, 0, (vc->blocksize[1] / 4) * vc->audio_channels *\n                             sizeof(*vc->saved))",
+          "new_text": null,
+          "old_line_content": "        memset(vc->saved, 0, (vc->blocksize[1] / 4) * vc->audio_channels *",
+          "new_line_content": "                             sizeof(*vc->saved));",
+          "content_same": false
+        },
+        {
+          "line": 1608,
+          "old_api": "vorbis_inverse_coupling",
+          "new_api": null,
+          "old_text": "vc->dsp.vorbis_inverse_coupling(mag, ang, blocksize / 2)",
+          "new_text": null,
+          "old_line_content": "        vc->dsp.vorbis_inverse_coupling(mag, ang, blocksize / 2);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1740,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"Vorbis\")",
+          "new_text": null,
+          "old_line_content": "    .long_name       = NULL_IF_CONFIG_SMALL(\"Vorbis\"),",
+          "new_line_content": "    .channel_layouts = ff_vorbis_channel_layouts,",
+          "content_same": false
+        },
+        {
+          "line": 1358,
+          "old_api": "FASTDIV",
+          "new_api": null,
+          "old_text": "FASTDIV(vr->partition_size, dim)",
+          "new_text": null,
+          "old_line_content": "                                                     : FASTDIV(vr->partition_size, dim);",
+          "new_line_content": "                            vorbis_codebook codebook = vc->codebooks[vqbook];",
+          "content_same": false
+        },
+        {
+          "line": 1619,
+          "old_api": "imdct_half",
+          "new_api": null,
+          "old_text": "mdct->imdct_half(mdct, ch_res_ptr, ch_floor_ptr)",
+          "new_text": null,
+          "old_line_content": "        mdct->imdct_half(mdct, ch_res_ptr, ch_floor_ptr);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1365,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "new_line_content": "                                    for (l = 0; l < dim; ++l)",
+          "content_same": false
+        },
+        {
+          "line": 1372,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "new_line_content": "                                    for (l = 0; l < dim; ++l, ++voffs) {",
+          "content_same": false
+        },
+        {
+          "line": 1376,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d  \\n\",\n                                                pass, voffs, vec[voffs], codebook.codevectors[coffs+l], coffs)",
+          "new_text": null,
+          "old_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d  \\n\",",
+          "new_line_content": "                                                pass, voffs, vec[voffs], codebook.codevectors[coffs+l], coffs);",
+          "content_same": false
+        },
+        {
+          "line": 1635,
+          "old_api": "vector_fmul_window",
+          "new_api": null,
+          "old_text": "vc->dsp.vector_fmul_window(ret, saved, buf, win, blocksize / 4)",
+          "new_text": null,
+          "old_line_content": "            vc->dsp.vector_fmul_window(ret, saved, buf, win, blocksize / 4);",
+          "new_line_content": "        } else if (blockflag > previous_window) {",
+          "content_same": false
+        },
+        {
+          "line": 1508,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(vc->avccontext, AV_LOG_ERROR, \"Not a Vorbis I audio packet.\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(vc->avccontext, AV_LOG_ERROR, \"Not a Vorbis I audio packet.\\n\");",
+          "new_line_content": "        return AVERROR_INVALIDDATA; // packet type not audio",
+          "content_same": false
+        },
+        {
+          "line": 1638,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(ret+bs0/2, buf+bs0/4, ((bs1-bs0)/4) * sizeof(float))",
+          "new_text": null,
+          "old_line_content": "            memcpy(ret+bs0/2, buf+bs0/4, ((bs1-bs0)/4) * sizeof(float));",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 1385,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                        coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * 2;",
+          "new_line_content": "                                        vec[voffs + k       ] += codebook.codevectors[coffs    ];",
+          "content_same": false
+        },
+        {
+          "line": 1641,
+          "old_api": "vector_fmul_window",
+          "new_api": null,
+          "old_text": "vc->dsp.vector_fmul_window(ret + (bs1 - bs0) / 4, saved + (bs1 - bs0) / 4, buf, win, bs0 / 4)",
+          "new_text": null,
+          "old_line_content": "            vc->dsp.vector_fmul_window(ret + (bs1 - bs0) / 4, saved + (bs1 - bs0) / 4, buf, win, bs0 / 4);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1515,
+          "old_api": "ilog",
+          "new_api": null,
+          "old_text": "ilog(vc->mode_count-1)",
+          "new_text": null,
+          "old_line_content": "        GET_VALIDATED_INDEX(mode_number, ilog(vc->mode_count-1), vc->mode_count)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1643,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(saved, buf + blocksize / 4, blocksize / 4 * sizeof(float))",
+          "new_text": null,
+          "old_line_content": "        memcpy(saved, buf + blocksize / 4, blocksize / 4 * sizeof(float));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1391,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                        coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * 4;",
+          "new_line_content": "                                        vec[voffs           ] += codebook.codevectors[coffs    ];",
+          "content_same": false
+        },
+        {
+          "line": 1520,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(NULL, \" Mode number: %u , mapping: %d , blocktype %d\\n\", mode_number,\n            vc->modes[mode_number].mapping, vc->modes[mode_number].blockflag)",
+          "new_text": null,
+          "old_line_content": "    av_dlog(NULL, \" Mode number: %u , mapping: %d , blocktype %d\\n\", mode_number,",
+          "new_line_content": "            vc->modes[mode_number].mapping, vc->modes[mode_number].blockflag);",
+          "content_same": false
+        },
+        {
+          "line": 1399,
+          "old_api": "get_vlc2",
+          "new_api": null,
+          "old_text": "get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3)",
+          "new_text": null,
+          "old_line_content": "                                    coffs = get_vlc2(gb, codebook.vlc.table, codebook.nb_bits, 3) * dim;",
+          "new_line_content": "                                    for (l = 0; l < dim; l += 2, voffs++) {",
+          "content_same": false
+        },
+        {
+          "line": 1528,
+          "old_api": "skip_bits1",
+          "new_api": null,
+          "old_text": "skip_bits1(gb)",
+          "new_text": null,
+          "old_line_content": "        skip_bits1(gb); // next_window",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1404,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",\n                                                pass, voffset / ch + (voffs % ch) * vlen,\n                                                vec[voffset / ch + (voffs % ch) * vlen],\n                                                codebook.codevectors[coffs + l], coffs, l)",
+          "new_text": null,
+          "old_line_content": "                                        av_dlog(NULL, \" pass %d offs: %d curr: %f change: %f cv offs.: %d+%d  \\n\",",
+          "new_line_content": "                                                pass, voffset / ch + (voffs % ch) * vlen,",
+          "content_same": false
+        },
+        {
+          "line": 1662,
+          "old_api": "av_dlog",
+          "new_api": null,
+          "old_text": "av_dlog(NULL, \"packet length %d \\n\", buf_size)",
+          "new_text": null,
+          "old_line_content": "    av_dlog(NULL, \"packet length %d \\n\", buf_size);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 40,
+      "total_deletions": 40,
+      "total_api_changes": 87
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 87,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 350,
+    "api_calls_after": 350,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 3,
+      "total_diff_lines": 24
+    }
+  }
+}

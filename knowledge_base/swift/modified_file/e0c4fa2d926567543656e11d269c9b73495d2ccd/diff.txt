@@ -1,0 +1,14 @@
+diff --git a/lib/SILOptimizer/PassManager/PassPipeline.cpp b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+index e02810668e5..f44e1bb56f5 100644
+--- a/lib/SILOptimizer/PassManager/PassPipeline.cpp
++++ b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+@@ -453,6 +453,9 @@ static bool addMidLevelPassPipeline(SILPassPipelinePlan &P) {
+   // for CapturePropagation.
+   P.addDeadArgSignatureOpt();
+ 
++  // A LICM pass at mid-level is mainly needed to hoist addressors of globals.
++  // It needs to be before global_init functions are inlined.
++  P.addLICM();
+   // Run loop unrolling after inlining and constant propagation, because loop
+   // trip counts may have became constant.
+   P.addLoopUnroll();

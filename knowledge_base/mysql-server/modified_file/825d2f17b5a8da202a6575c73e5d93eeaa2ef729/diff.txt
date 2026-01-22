@@ -1,0 +1,20 @@
+diff --git a/sql/field_conv.cc b/sql/field_conv.cc
+index aec08139c93..675f165d5e2 100644
+--- a/sql/field_conv.cc
++++ b/sql/field_conv.cc
+@@ -551,6 +551,15 @@ static size_t get_varstring_copy_length(Field_varstring *to,
+   else
+     bytes_to_copy= uint2korr(from->ptr);
+ 
++  if (bytes_to_copy <= to_byte_length)
++  {
++    /*
++      There's room for everything in the destination buffer;
++      no need to truncate.
++    */
++    return bytes_to_copy;
++  }
++
+   if (is_multibyte_charset)
+   {
+     int well_formed_error;

@@ -1,0 +1,14 @@
+diff --git a/ext/dom/node.c b/ext/dom/node.c
+index fb8b0b8eaf..8d7a3d1089 100644
+--- a/ext/dom/node.c
++++ b/ext/dom/node.c
+@@ -1798,7 +1798,8 @@ static void dom_canonicalization(INTERNAL_FUNCTION_PARAMETERS, int mode) /* {{{
+ 
+ 	bool simple_node_parent_lookup_callback = false;
+ 	if (xpath_array == NULL) {
+-		if (nodep->type != XML_DOCUMENT_NODE) {
++		/* Optimization: if the node is a document, all nodes may be included, no extra filtering or nodeset necessary. */
++		if (nodep->type != XML_DOCUMENT_NODE && nodep->type != XML_HTML_DOCUMENT_NODE) {
+ 			simple_node_parent_lookup_callback = true;
+ 		}
+ 	} else {

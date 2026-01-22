@@ -1,0 +1,14 @@
+diff --git a/lib/SILOptimizer/PassManager/Passes.cpp b/lib/SILOptimizer/PassManager/Passes.cpp
+index cb511b1652a..acc66ba4925 100644
+--- a/lib/SILOptimizer/PassManager/Passes.cpp
++++ b/lib/SILOptimizer/PassManager/Passes.cpp
+@@ -250,6 +250,9 @@ void swift::runSILOptimizationPasses(SILModule &Module) {
+ 
+   // Start by cloning functions from stdlib.
+   PM.addSILLinker();
++  // Get rid of apparently dead functions as soon as possible so that
++  // we do not spend time optimizing them.
++  PM.addDeadFunctionElimination();
+   PM.run();
+   PM.resetAndRemoveTransformations();
+ 

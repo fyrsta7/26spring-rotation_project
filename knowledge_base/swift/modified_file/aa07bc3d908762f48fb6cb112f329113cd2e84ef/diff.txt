@@ -1,0 +1,26 @@
+diff --git a/lib/SILPasses/Utils/Local.cpp b/lib/SILPasses/Utils/Local.cpp
+index c9fc256f192..fd3599ce8d1 100644
+--- a/lib/SILPasses/Utils/Local.cpp
++++ b/lib/SILPasses/Utils/Local.cpp
+@@ -1688,7 +1688,10 @@ optimizeUnconditionalCheckedCastAddrInst(UnconditionalCheckedCastAddrInst *Inst)
+                                          TargetType, isSourceTypeExact);
+ 
+   if (Feasibility == DynamicCastFeasibility::MaySucceed) {
+-    return nullptr;
++    // Forced bridged casts can be still simplified here.
++    // If they fail, they fail inside the conversion function.
++    if (!isBridgingCast(SourceType, TargetType))
++      return nullptr;
+   }
+ 
+   if (Feasibility == DynamicCastFeasibility::WillFail) {
+@@ -1712,7 +1715,8 @@ optimizeUnconditionalCheckedCastAddrInst(UnconditionalCheckedCastAddrInst *Inst)
+     WillFailAction();
+   }
+ 
+-  if (Feasibility == DynamicCastFeasibility::WillSucceed) {
++  if (Feasibility == DynamicCastFeasibility::WillSucceed ||
++      Feasibility == DynamicCastFeasibility::MaySucceed) {
+ 
+     bool ResultNotUsed = isa<AllocStackInst>(Dest.getDef());
+     for (auto Use : Dest.getUses()) {

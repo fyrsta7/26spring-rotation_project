@@ -1,0 +1,24 @@
+diff --git a/src/Parsers/ASTLiteral.cpp b/src/Parsers/ASTLiteral.cpp
+index 5c76f6f33bf..14dc80ec8bc 100644
+--- a/src/Parsers/ASTLiteral.cpp
++++ b/src/Parsers/ASTLiteral.cpp
+@@ -86,8 +86,17 @@ void ASTLiteral::appendColumnNameImpl(WriteBuffer & ostr) const
+     }
+     else
+     {
+-        String column_name = applyVisitor(FieldVisitorToString(), value);
+-        writeString(column_name, ostr);
++        /// Special case for huge AST. The `FieldVisitorToString` becomes expensive
++        /// for tons of literals.
++        if (value.getType() == Field::Types::String)
++        {
++            writeQuoted(value.get<String>(), ostr);
++        }
++        else
++        {
++            String column_name = applyVisitor(FieldVisitorToString(), value);
++            writeString(column_name, ostr);
++        }
+     }
+ }
+ 

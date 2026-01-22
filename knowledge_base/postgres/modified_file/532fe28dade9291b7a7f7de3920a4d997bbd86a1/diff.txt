@@ -1,0 +1,22 @@
+diff --git a/src/backend/access/index/genam.c b/src/backend/access/index/genam.c
+index e94c3957f2..d54b669bf3 100644
+--- a/src/backend/access/index/genam.c
++++ b/src/backend/access/index/genam.c
+@@ -293,7 +293,16 @@ systable_beginscan(Relation heapRelation,
+ 	}
+ 	else
+ 	{
+-		sysscan->scan = heap_beginscan(heapRelation, snapshot, nkeys, key);
++		/*
++		 * We disallow synchronized scans when forced to use a heapscan on a
++		 * catalog.  In most cases the desired rows are near the front, so
++		 * that the unpredictable start point of a syncscan is a serious
++		 * disadvantage; and there are no compensating advantages, because
++		 * it's unlikely that such scans will occur in parallel.
++		 */
++		sysscan->scan = heap_beginscan_strat(heapRelation, snapshot,
++											 nkeys, key,
++											 true, false);
+ 		sysscan->iscan = NULL;
+ 	}
+ 

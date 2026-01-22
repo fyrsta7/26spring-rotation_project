@@ -1,0 +1,3815 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/54b1496408ce8df75156028f867a3017e2d673b3",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/54b1496408ce8df75156028f867a3017e2d673b3/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/54b1496408ce8df75156028f867a3017e2d673b3/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/54b1496408ce8df75156028f867a3017e2d673b3/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 329,
+          "old_api": "LOG_TRACE",
+          "new_api": "filterAndSortQueueNodes",
+          "old_text": "LOG_TRACE(log, \"No tasks to schedule\")",
+          "new_text": "filterAndSortQueueNodes(queue_nodes)",
+          "old_line_content": "        LOG_TRACE(log, \"No tasks to schedule\");",
+          "new_line_content": "    filterAndSortQueueNodes(queue_nodes);",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "size",
+          "new_api": "LOG_TRACE",
+          "old_text": "queue_nodes.size()",
+          "new_text": "LOG_TRACE(log, \"No tasks to schedule\")",
+          "old_line_content": "    else if (max_tasks_in_queue < queue_nodes.size())",
+          "new_line_content": "        LOG_TRACE(log, \"No tasks to schedule\");",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "empty",
+          "new_api": "size",
+          "old_text": "current_tasks.empty()",
+          "new_text": "queue_nodes.size()",
+          "old_line_content": "    bool server_startup = current_tasks.empty();",
+          "new_line_content": "    else if (max_tasks_in_queue < queue_nodes.size())",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "begin",
+          "new_api": "set",
+          "old_text": "queue_nodes.begin()",
+          "new_text": "cleanup_event->set()",
+          "old_line_content": "    auto begin_node = queue_nodes.begin();",
+          "new_line_content": "        cleanup_event->set();",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "load",
+          "new_api": "front",
+          "old_text": "t->completely_processed.load()",
+          "new_text": "current_tasks.front()",
+          "old_line_content": "        current_tasks.remove_if([](const DDLTaskPtr & t) { return t->completely_processed.load(); });",
+          "new_line_content": "        auto & min_task = current_tasks.front();",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": "empty",
+          "new_api": "load",
+          "old_text": "current_tasks.empty()",
+          "new_text": "t->completely_processed.load()",
+          "old_line_content": "    assert(current_tasks.empty());",
+          "new_line_content": "        current_tasks.remove_if([](const DDLTaskPtr & t) { return t->completely_processed.load(); });",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "LOG_TRACE",
+          "new_api": "end",
+          "old_text": "LOG_TRACE(log, \"Checking task {}\", entry_name)",
+          "new_text": "queue_nodes.end()",
+          "old_line_content": "        LOG_TRACE(log, \"Checking task {}\", entry_name);",
+          "new_line_content": "    for (auto it = begin_node; it != queue_nodes.end() && !stop_flag; ++it)",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "initAndCheckTask",
+          "new_api": "LOG_TRACE",
+          "old_text": "initAndCheckTask(entry_name, reason, zookeeper)",
+          "new_text": "LOG_TRACE(log, \"Checking task {}\", entry_name)",
+          "old_line_content": "        auto task = initAndCheckTask(entry_name, reason, zookeeper);",
+          "new_line_content": "        LOG_TRACE(log, \"Checking task {}\", entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "LOG_DEBUG",
+          "new_api": "initAndCheckTask",
+          "old_text": "LOG_DEBUG(log, \"Will not execute task {}: {}\", entry_name, reason)",
+          "new_text": "initAndCheckTask(entry_name, reason, zookeeper)",
+          "old_line_content": "            LOG_DEBUG(log, \"Will not execute task {}: {}\", entry_name, reason);",
+          "new_line_content": "        auto task = initAndCheckTask(entry_name, reason, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "processTask",
+          "new_api": "scheduleOrThrowOnError",
+          "old_text": "processTask(saved_task, zookeeper)",
+          "new_text": "worker_pool->scheduleOrThrowOnError([this, &saved_task, zookeeper]()\n            {\n                setThreadName(\"DDLWorkerExec\");\n                processTask(saved_task, zookeeper);\n            })",
+          "old_line_content": "                processTask(saved_task, zookeeper);",
+          "new_line_content": "            worker_pool->scheduleOrThrowOnError([this, &saved_task, zookeeper]()",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "back",
+          "new_api": "load",
+          "old_text": "current_tasks.back()",
+          "new_text": "t->completely_processed.load()",
+          "old_line_content": "    return *current_tasks.back();",
+          "new_line_content": "    current_tasks.remove_if([](const DDLTaskPtr & t) { return t->completely_processed.load(); });",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "executeQuery",
+          "new_api": "makeQueryContext",
+          "old_text": "executeQuery(istr, ostr, !task.is_initial_query, *query_context, {})",
+          "new_text": "task.makeQueryContext(context, zookeeper)",
+          "old_line_content": "        executeQuery(istr, ostr, !task.is_initial_query, *query_context, {});",
+          "new_line_content": "        auto query_context = task.makeQueryContext(context, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "getZooKeeperMetadataTransaction",
+          "new_api": "emplace",
+          "old_text": "query_context->getZooKeeperMetadataTransaction()",
+          "new_text": "query_scope.emplace(*query_context)",
+          "old_line_content": "        if (auto txn = query_context->getZooKeeperMetadataTransaction())",
+          "new_line_content": "            query_scope.emplace(*query_context);",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "compare_exchange_weak",
+          "new_api": "load",
+          "old_text": "max_id.compare_exchange_weak(prev_id, id)",
+          "new_text": "max_id.load(std::memory_order_relaxed)",
+          "old_line_content": "        if (max_id.compare_exchange_weak(prev_id, id))",
+          "new_line_content": "    auto prev_id = max_id.load(std::memory_order_relaxed);",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": "CurrentMetrics::set(*max_entry_metric, id)",
+          "new_api": "compare_exchange_weak",
+          "old_text": "CurrentMetrics::set(*max_entry_metric, id)",
+          "new_text": "max_id.compare_exchange_weak(prev_id, id)",
+          "old_line_content": "                CurrentMetrics::set(*max_entry_metric, id);",
+          "new_line_content": "        if (max_id.compare_exchange_weak(prev_id, id))",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "getFinishedNodePath",
+          "new_api": "LOG_DEBUG",
+          "old_text": "task.getFinishedNodePath()",
+          "new_text": "LOG_DEBUG(log, \"Processing task {} ({})\", task.entry_name, task.entry.query)",
+          "old_line_content": "    String finished_node_path = task.getFinishedNodePath();",
+          "new_line_content": "    LOG_DEBUG(log, \"Processing task {} ({})\", task.entry_name, task.entry.query);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper)",
+          "new_api": "getFinishedNodePath",
+          "old_text": "zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper)",
+          "new_text": "task.getFinishedNodePath()",
+          "old_line_content": "    auto active_node = zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper);",
+          "new_line_content": "    String finished_node_path = task.getFinishedNodePath();",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": "tryCreate",
+          "new_api": "zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper)",
+          "old_text": "zookeeper->tryCreate(active_node_path, {}, zkutil::CreateMode::Ephemeral)",
+          "new_text": "zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper)",
+          "old_line_content": "    auto create_active_res = zookeeper->tryCreate(active_node_path, {}, zkutil::CreateMode::Ephemeral);",
+          "new_line_content": "    auto active_node = zkutil::EphemeralNodeHolder::existing(active_node_path, *zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "tryWait",
+          "new_api": "tryGet",
+          "old_text": "eph_node_disappeared->tryWait(timeout_ms)",
+          "new_text": "zookeeper->tryGet(active_node_path, dummy, nullptr, eph_node_disappeared)",
+          "old_line_content": "                if (!eph_node_disappeared->tryWait(timeout_ms))",
+          "new_line_content": "            if (zookeeper->tryGet(active_node_path, dummy, nullptr, eph_node_disappeared))",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "get",
+          "new_api": "LOG_DEBUG",
+          "old_text": "task.query.get()",
+          "new_text": "LOG_DEBUG(log, \"Executing query: {}\", rewritten_query)",
+          "old_line_content": "            if (auto * query_with_table = dynamic_cast<ASTQueryWithTableAndOutput *>(task.query.get()); query_with_table)",
+          "new_line_content": "            LOG_DEBUG(log, \"Executing query: {}\", rewritten_query);",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "tryResolveStorageID",
+          "new_api": "empty",
+          "old_text": "context.tryResolveStorageID(*query_with_table, Context::ResolveOrdinary)",
+          "new_text": "query_with_table->table.empty()",
+          "old_line_content": "                    auto table_id = context.tryResolveStorageID(*query_with_table, Context::ResolveOrdinary);",
+          "new_line_content": "                if (!query_with_table->table.empty())",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "taskShouldBeExecutedOnLeader",
+          "new_api": "tryGetTable",
+          "old_text": "taskShouldBeExecutedOnLeader(task.query, storage)",
+          "new_text": "DatabaseCatalog::instance().tryGetTable(table_id, context)",
+          "old_line_content": "                task.execute_on_leader = storage && taskShouldBeExecutedOnLeader(task.query, storage) && !task.is_circular_replicated;",
+          "new_line_content": "                    storage = DatabaseCatalog::instance().tryGetTable(table_id, context);",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": "serializeText",
+          "new_api": "empty",
+          "old_text": "task.execution_status.serializeText()",
+          "new_text": "task.ops.empty()",
+          "old_line_content": "                throw Exception(ErrorCodes::UNFINISHED, \"Unexpected error: {}\", task.execution_status.serializeText());",
+          "new_line_content": "            bool status_written_by_table_or_db = task.ops.empty();",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "multi",
+          "new_api": "empty",
+          "old_text": "zookeeper->multi(task.ops)",
+          "new_text": "task.ops.empty()",
+          "old_line_content": "        zookeeper->multi(task.ops);",
+          "new_line_content": "    bool status_written = task.ops.empty();",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "ast_ddl->as<ASTAlterQuery>()",
+          "new_api": "ast_ddl->as<ASTDropQuery>()",
+          "old_text": "ast_ddl->as<ASTAlterQuery>()",
+          "new_text": "ast_ddl->as<ASTDropQuery>()",
+          "old_line_content": "    if (auto * alter = ast_ddl->as<ASTAlterQuery>())",
+          "new_line_content": "    if (!ast_ddl->as<ASTAlterQuery>() && !ast_ddl->as<ASTOptimizeQuery>() && !ast_ddl->as<ASTDropQuery>())",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": "isSettingsAlter",
+          "new_api": "ast_ddl->as<ASTAlterQuery>()",
+          "old_text": "alter->isSettingsAlter()",
+          "new_text": "ast_ddl->as<ASTAlterQuery>()",
+          "old_line_content": "        if (alter->isSettingsAlter())",
+          "new_line_content": "    if (auto * alter = ast_ddl->as<ASTAlterQuery>())",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": "isFreezeAlter",
+          "new_api": "isSettingsAlter",
+          "old_text": "alter->isFreezeAlter()",
+          "new_text": "alter->isSettingsAlter()",
+          "old_line_content": "        if (alter->isFreezeAlter())",
+          "new_line_content": "        if (alter->isSettingsAlter())",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "fs::path(shard_path)",
+          "new_api": "getName",
+          "old_text": "fs::path(shard_path)",
+          "new_text": "storage->getName()",
+          "old_line_content": "    String is_executed_path = fs::path(shard_path) / \"executed\";",
+          "new_line_content": "        throw Exception(ErrorCodes::LOGICAL_ERROR, \"Storage type '{}' is not supported by distributed DDL\", storage->getName());",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": "fs::path(shard_path)",
+          "new_api": "getShardNodePath",
+          "old_text": "fs::path(shard_path)",
+          "new_text": "task.getShardNodePath()",
+          "old_line_content": "    zookeeper->createAncestors(fs::path(shard_path) / \"\"); /* appends \"/\" at the end of shard_path */",
+          "new_line_content": "    String shard_path = task.getShardNodePath();",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "tryCreate",
+          "new_api": "zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent)",
+          "old_text": "zookeeper->tryCreate(tries_to_execute_path, \"0\", zkutil::CreateMode::Persistent)",
+          "new_text": "zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent)",
+          "old_line_content": "    zookeeper->tryCreate(tries_to_execute_path, \"0\", zkutil::CreateMode::Persistent);",
+          "new_line_content": "    auto create_shard_flag = zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent);",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "constexpr",
+          "new_api": "tryCreate",
+          "old_text": "constexpr",
+          "new_text": "zookeeper->tryCreate(tries_to_execute_path, \"0\", zkutil::CreateMode::Persistent)",
+          "old_line_content": "    static constexpr int MAX_EXECUTION_TIMEOUT_SEC = 3600;",
+          "new_line_content": "    zookeeper->tryCreate(tries_to_execute_path, \"0\", zkutil::CreateMode::Persistent);",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": "exists",
+          "new_api": "std::make_shared<Poco::Event>()",
+          "old_text": "zookeeper->exists(is_executed_path, nullptr, event)",
+          "new_text": "std::make_shared<Poco::Event>()",
+          "old_line_content": "    if (zookeeper->exists(is_executed_path, nullptr, event))",
+          "new_line_content": "    zkutil::EventPtr event = std::make_shared<Poco::Event>();",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": "LOG_WARNING",
+          "new_api": "getStorageID",
+          "old_text": "LOG_WARNING(log, \", task {} will not be executed.\", task.entry_name)",
+          "new_text": "replicated_storage->getStorageID()",
+          "old_line_content": "            LOG_WARNING(log, \", task {} will not be executed.\", task.entry_name);",
+          "new_line_content": "        bool all_replicas_likely_detached = status.active_replicas == 0 && !DatabaseCatalog::instance().isTableExist(replicated_storage->getStorageID(), context);",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "tryLock",
+          "new_api": "Exception",
+          "old_text": "lock->tryLock()",
+          "new_text": "Exception(ErrorCodes::NOT_A_LEADER, \"Cannot execute initial query on non-leader replica\")",
+          "old_line_content": "        if (status.is_leader && lock->tryLock())",
+          "new_line_content": "            throw Exception(ErrorCodes::NOT_A_LEADER, \"Cannot execute initial query on non-leader replica\");",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": "pop_back",
+          "new_api": "toString",
+          "old_text": "task.ops.pop_back()",
+          "new_text": "toString(counter + 1)",
+          "old_line_content": "            SCOPE_EXIT({ if (!executed_by_us && !task.ops.empty()) task.ops.pop_back(); });",
+          "new_line_content": "            zookeeper->set(tries_to_execute_path, toString(counter + 1));",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "LOG_WARNING",
+          "new_api": "parse<int>(tries_count)",
+          "old_text": "LOG_WARNING(log, \"Maximum retries count for task {} exceeded, cannot execute replicated DDL query\", task.entry_name)",
+          "new_text": "parse<int>(tries_count)",
+          "old_line_content": "                LOG_WARNING(log, \"Maximum retries count for task {} exceeded, cannot execute replicated DDL query\", task.entry_name);",
+          "new_line_content": "            if (parse<int>(tries_count) > MAX_TRIES_TO_EXECUTE)",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": "ExecutionStatus",
+          "new_api": "elapsedSeconds",
+          "old_text": "ExecutionStatus(ErrorCodes::TIMEOUT_EXCEEDED, \"Cannot execute replicated DDL query, timeout exceeded\")",
+          "new_text": "stopwatch.elapsedSeconds()",
+          "old_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::TIMEOUT_EXCEEDED, \"Cannot execute replicated DDL query, timeout exceeded\");",
+          "new_line_content": "        if (stopwatch.elapsedSeconds() >= MAX_EXECUTION_TIMEOUT_SEC)",
+          "content_same": false
+        },
+        {
+          "line": 783,
+          "old_api": "filterAndSortQueueNodes",
+          "new_api": "LOG_DEBUG",
+          "old_text": "filterAndSortQueueNodes(queue_nodes)",
+          "new_text": "LOG_DEBUG(log, \"Cleaning queue\")",
+          "old_line_content": "    filterAndSortQueueNodes(queue_nodes);",
+          "new_line_content": "    LOG_DEBUG(log, \"Cleaning queue\");",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": "cend",
+          "new_api": "getChildren",
+          "old_text": "queue_nodes.cend()",
+          "new_text": "zookeeper->getChildren(queue_dir)",
+          "old_line_content": "    for (auto it = queue_nodes.cbegin(); it < queue_nodes.cend(); ++it)",
+          "new_line_content": "    Strings queue_nodes = zookeeper->getChildren(queue_dir);",
+          "content_same": false
+        },
+        {
+          "line": 802,
+          "old_api": "canRemoveQueueEntry",
+          "new_api": "exists",
+          "old_text": "canRemoveQueueEntry(node_name, stat)",
+          "new_text": "zookeeper->exists(node_path, &stat)",
+          "old_line_content": "            if (!canRemoveQueueEntry(node_name, stat))",
+          "new_line_content": "            if (!zookeeper->exists(node_path, &stat))",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": "tryMulti",
+          "new_api": "zkutil::makeCheckRequest(node_path, -1)",
+          "old_text": "zookeeper->tryMulti(ops, res)",
+          "new_text": "zkutil::makeCheckRequest(node_path, -1)",
+          "old_line_content": "            auto rm_entry_res = zookeeper->tryMulti(ops, res);",
+          "new_line_content": "            ops.emplace_back(zkutil::makeCheckRequest(node_path, -1));  /// See a comment below",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": "zkutil::KeeperMultiException::check(rm_entry_res, ops, res)",
+          "new_api": "assert",
+          "old_text": "zkutil::KeeperMultiException::check(rm_entry_res, ops, res)",
+          "new_text": "assert(rm_entry_res != Coordination::Error::ZNOTEMPTY)",
+          "old_line_content": "            zkutil::KeeperMultiException::check(rm_entry_res, ops, res);",
+          "new_line_content": "                assert(rm_entry_res != Coordination::Error::ZNOTEMPTY);",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "new_api": "epochTime",
+          "old_text": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "new_text": "Poco::Timestamp().epochTime()",
+          "old_line_content": "    UInt32 entry_number = DDLTaskBase::getLogEntryNumber(entry_name);",
+          "new_line_content": "    bool node_lifetime_is_expired = zookeeper_time_seconds + task_max_lifetime < Poco::Timestamp().epochTime();",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": "tryMulti",
+          "new_api": "fs::path(node_path)",
+          "old_text": "zookeeper->tryMulti(ops, responses)",
+          "new_text": "fs::path(node_path)",
+          "old_line_content": "    Coordination::Error code = zookeeper->tryMulti(ops, responses);",
+          "new_line_content": "    ops.emplace_back(zkutil::makeCreateRequest(fs::path(node_path) / \"finished\", {}, zkutil::CreateMode::Persistent));",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "size",
+          "new_api": "fs::path(node_path)",
+          "old_text": "responses.size()",
+          "new_text": "fs::path(node_path)",
+          "old_line_content": "    bool is_currently_deleting = responses.size() == 2 && responses[0]->error == Coordination::Error::ZOK",
+          "new_line_content": "    assert(!both_already_exists || (zookeeper->exists(fs::path(node_path) / \"active\") && zookeeper->exists(fs::path(node_path) / \"finished\")));",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": "getAndSetZooKeeper",
+          "new_api": "empty",
+          "old_text": "getAndSetZooKeeper()",
+          "new_text": "entry.hosts.empty()",
+          "old_line_content": "    auto zookeeper = getAndSetZooKeeper();",
+          "new_line_content": "    if (entry.hosts.empty())",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": "createAncestors",
+          "new_api": "getAndSetZooKeeper",
+          "old_text": "zookeeper->createAncestors(query_path_prefix)",
+          "new_text": "getAndSetZooKeeper()",
+          "old_line_content": "    zookeeper->createAncestors(query_path_prefix);",
+          "new_line_content": "    auto zookeeper = getAndSetZooKeeper();",
+          "content_same": false
+        },
+        {
+          "line": 915,
+          "old_api": "toString",
+          "new_api": "fs::path(queue_dir)",
+          "old_text": "entry.toString()",
+          "new_text": "fs::path(queue_dir)",
+          "old_line_content": "    String node_path = zookeeper->create(query_path_prefix, entry.toString(), zkutil::CreateMode::PersistentSequential);",
+          "new_line_content": "    String query_path_prefix = fs::path(queue_dir) / \"query-\";",
+          "content_same": false
+        },
+        {
+          "line": 953,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": "Coordination::isHardwareError(e.code)",
+          "old_text": "getCurrentExceptionMessage(true)",
+          "new_text": "Coordination::isHardwareError(e.code)",
+          "old_line_content": "                LOG_ERROR(log, \"ZooKeeper error: {}. Failed to start DDLWorker.\", getCurrentExceptionMessage(true));",
+          "new_line_content": "            if (!Coordination::isHardwareError(e.code))",
+          "content_same": false
+        },
+        {
+          "line": 957,
+          "old_api": "tryLogCurrentException",
+          "new_api": "assert",
+          "old_text": "tryLogCurrentException(__PRETTY_FUNCTION__)",
+          "new_text": "assert(false)",
+          "old_line_content": "            tryLogCurrentException(__PRETTY_FUNCTION__);",
+          "new_line_content": "                assert(false);  /// Catch such failures in tests with debug build",
+          "content_same": false
+        },
+        {
+          "line": 980,
+          "old_api": "reset",
+          "new_api": "std::make_unique<ThreadPool>(pool_size)",
+          "old_text": "last_skipped_entry_name.reset()",
+          "new_text": "std::make_unique<ThreadPool>(pool_size)",
+          "old_line_content": "        last_skipped_entry_name.reset();",
+          "new_line_content": "            worker_pool = std::make_unique<ThreadPool>(pool_size);",
+          "content_same": false
+        },
+        {
+          "line": 982,
+          "old_api": "LOG_INFO",
+          "new_api": "clear",
+          "old_text": "LOG_INFO(log, \"Cleaned DDLWorker state\")",
+          "new_text": "current_tasks.clear()",
+          "old_line_content": "        LOG_INFO(log, \"Cleaned DDLWorker state\");",
+          "new_line_content": "        current_tasks.clear();",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": "setThreadName",
+          "new_api": "LOG_INFO",
+          "old_text": "setThreadName(\"DDLWorker\")",
+          "new_text": "LOG_INFO(log, \"Cleaned DDLWorker state\")",
+          "old_line_content": "    setThreadName(\"DDLWorker\");",
+          "new_line_content": "        LOG_INFO(log, \"Cleaned DDLWorker state\");",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": "set",
+          "new_api": "LOG_DEBUG",
+          "old_text": "cleanup_event->set()",
+          "new_text": "LOG_DEBUG(log, \"Initialized DDLWorker thread\")",
+          "old_line_content": "            cleanup_event->set();",
+          "new_line_content": "                LOG_DEBUG(log, \"Initialized DDLWorker thread\");",
+          "content_same": false
+        },
+        {
+          "line": 1002,
+          "old_api": "LOG_DEBUG",
+          "new_api": "set",
+          "old_text": "LOG_DEBUG(log, \"Waiting for queue updates\")",
+          "new_text": "cleanup_event->set()",
+          "old_line_content": "            LOG_DEBUG(log, \"Waiting for queue updates\");",
+          "new_line_content": "            cleanup_event->set();",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": "wait",
+          "new_api": "scheduleTasks",
+          "old_text": "queue_updated_event->wait()",
+          "new_text": "scheduleTasks()",
+          "old_line_content": "            queue_updated_event->wait();",
+          "new_line_content": "            scheduleTasks();",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": "sleepForSeconds",
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": "sleepForSeconds(1)",
+          "new_text": "getCurrentExceptionMessage(true)",
+          "old_line_content": "            sleepForSeconds(1);",
+          "new_line_content": "                LOG_ERROR(log, \"Unexpected ZooKeeper error, will try to restart main thread: {}\", getCurrentExceptionMessage(true));",
+          "content_same": false
+        },
+        {
+          "line": 1049,
+          "old_api": "LOG_TRACE",
+          "new_api": "epochTime",
+          "old_text": "LOG_TRACE(log, \"Too early to clean queue, will do it later.\")",
+          "new_text": "Poco::Timestamp().epochTime()",
+          "old_line_content": "                LOG_TRACE(log, \"Too early to clean queue, will do it later.\");",
+          "new_line_content": "            Int64 current_time_seconds = Poco::Timestamp().epochTime();",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": "cleanupQueue",
+          "new_api": "expired",
+          "old_text": "cleanupQueue(current_time_seconds, zookeeper)",
+          "new_text": "zookeeper->expired()",
+          "old_line_content": "            cleanupQueue(current_time_seconds, zookeeper);",
+          "new_line_content": "            if (zookeeper->expired())",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1027,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, \"Unexpected error, will try to restart main thread:\")",
+          "old_line_content": "        }",
+          "new_line_content": "            tryLogCurrentException(log, \"Unexpected error, will try to restart main thread:\");",
+          "content_same": false
+        },
+        {
+          "line": 1028,
+          "old_api": null,
+          "new_api": "reset_state",
+          "old_text": null,
+          "new_text": "reset_state()",
+          "old_line_content": "    }",
+          "new_line_content": "            reset_state();",
+          "content_same": false
+        },
+        {
+          "line": 1029,
+          "old_api": null,
+          "new_api": "sleepForSeconds",
+          "old_text": null,
+          "new_text": "sleepForSeconds(5)",
+          "old_line_content": "}",
+          "new_line_content": "            sleepForSeconds(5);",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": null,
+          "new_api": "zkutil::makeRemoveRequest(active_node_path, -1)",
+          "old_text": null,
+          "new_text": "zkutil::makeRemoveRequest(active_node_path, -1)",
+          "old_line_content": "        try",
+          "new_line_content": "        task.ops.emplace_back(zkutil::makeRemoveRequest(active_node_path, -1));",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": null,
+          "new_api": "serializeText",
+          "old_text": null,
+          "new_text": "ExecutionStatus(0).serializeText()",
+          "old_line_content": "        {",
+          "new_line_content": "        task.ops.emplace_back(zkutil::makeCreateRequest(finished_node_path, ExecutionStatus(0).serializeText(), zkutil::CreateMode::Persistent));",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": null,
+          "new_api": "create",
+          "old_text": null,
+          "new_text": "zookeeper->create(active_node_path, {}, zkutil::CreateMode::Ephemeral)",
+          "old_line_content": "    if (!task.was_executed)",
+          "new_line_content": "        zookeeper->create(active_node_path, {}, zkutil::CreateMode::Ephemeral);",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": null,
+          "new_api": "queryToString",
+          "old_text": null,
+          "new_text": "queryToString(task.query)",
+          "old_line_content": "            StoragePtr storage;",
+          "new_line_content": "            String rewritten_query = queryToString(task.query);",
+          "content_same": false
+        },
+        {
+          "line": 1037,
+          "old_api": null,
+          "new_api": "setThreadName",
+          "old_text": null,
+          "new_text": "setThreadName(\"DDLWorkerClnr\")",
+          "old_line_content": "    Int64 last_cleanup_time_seconds = 0;",
+          "new_line_content": "    setThreadName(\"DDLWorkerClnr\");",
+          "content_same": false
+        },
+        {
+          "line": 1038,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Started DDLWorker cleanup thread\")",
+          "old_line_content": "    while (!stop_flag)",
+          "new_line_content": "    LOG_DEBUG(log, \"Started DDLWorker cleanup thread\");",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "task.query.get()",
+          "old_line_content": "                {",
+          "new_line_content": "            if (auto * query_with_table = dynamic_cast<ASTQueryWithTableAndOutput *>(task.query.get()); query_with_table)",
+          "content_same": false
+        },
+        {
+          "line": 1045,
+          "old_api": null,
+          "new_api": "wait",
+          "old_text": null,
+          "new_text": "cleanup_event->wait()",
+          "old_line_content": "",
+          "new_line_content": "            cleanup_event->wait();",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "tryResolveStorageID",
+          "old_text": null,
+          "new_text": "context.tryResolveStorageID(*query_with_table, Context::ResolveOrdinary)",
+          "old_line_content": "",
+          "new_line_content": "                    auto table_id = context.tryResolveStorageID(*query_with_table, Context::ResolveOrdinary);",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": null,
+          "new_api": "taskShouldBeExecutedOnLeader",
+          "old_text": null,
+          "new_text": "taskShouldBeExecutedOnLeader(task.query, storage)",
+          "old_line_content": "            if (task.execute_on_leader)",
+          "new_line_content": "                task.execute_on_leader = storage && taskShouldBeExecutedOnLeader(task.query, storage) && !task.is_circular_replicated;",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "LOG_TRACE",
+          "old_text": null,
+          "new_text": "LOG_TRACE(log, \"Too early to clean queue, will do it later.\")",
+          "old_line_content": "",
+          "new_line_content": "                LOG_TRACE(log, \"Too early to clean queue, will do it later.\");",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": null,
+          "new_api": "tryExecuteQueryOnLeaderReplica",
+          "old_text": null,
+          "new_text": "tryExecuteQueryOnLeaderReplica(task, storage, rewritten_query, task.entry_path, zookeeper)",
+          "old_line_content": "            {",
+          "new_line_content": "                tryExecuteQueryOnLeaderReplica(task, storage, rewritten_query, task.entry_path, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": null,
+          "new_api": "tryGetZooKeeper",
+          "old_text": null,
+          "new_text": "tryGetZooKeeper()",
+          "old_line_content": "",
+          "new_line_content": "            auto zookeeper = tryGetZooKeeper();",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "storage.reset()",
+          "old_line_content": "        }",
+          "new_line_content": "                storage.reset();",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "tryExecuteQuery",
+          "old_text": null,
+          "new_text": "tryExecuteQuery(rewritten_query, task, zookeeper)",
+          "old_line_content": "        catch (const Coordination::Exception &)",
+          "new_line_content": "                tryExecuteQuery(rewritten_query, task, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": null,
+          "new_api": "cleanupQueue",
+          "old_text": null,
+          "new_text": "cleanupQueue(current_time_seconds, zookeeper)",
+          "old_line_content": "        catch (...)",
+          "new_line_content": "            cleanupQueue(current_time_seconds, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 1066,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, __PRETTY_FUNCTION__)",
+          "old_line_content": "}",
+          "new_line_content": "            tryLogCurrentException(log, __PRETTY_FUNCTION__);",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, \"An error occurred before execution of DDL task: \")",
+          "old_line_content": "",
+          "new_line_content": "            tryLogCurrentException(log, \"An error occurred before execution of DDL task: \");",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": null,
+          "new_api": "ExecutionStatus::fromCurrentException(\"An error occurred before execution\")",
+          "old_text": null,
+          "new_text": "ExecutionStatus::fromCurrentException(\"An error occurred before execution\")",
+          "old_line_content": "        if (task.execution_status.code != 0)",
+          "new_line_content": "            task.execution_status = ExecutionStatus::fromCurrentException(\"An error occurred before execution\");",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": null,
+          "new_api": "serializeText",
+          "old_text": null,
+          "new_text": "task.execution_status.serializeText()",
+          "old_line_content": "            {",
+          "new_line_content": "                throw Exception(ErrorCodes::UNFINISHED, \"Unexpected error: {}\", task.execution_status.serializeText());",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": null,
+          "new_api": "serializeText",
+          "old_text": null,
+          "new_text": "task.execution_status.serializeText()",
+          "old_line_content": "",
+          "new_line_content": "                task.ops.emplace_back(zkutil::makeSetRequest(finished_node_path, task.execution_status.serializeText(), -1));",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": null,
+          "new_api": "updateMaxDDLEntryID",
+          "old_text": null,
+          "new_text": "updateMaxDDLEntryID(task.entry_name)",
+          "old_line_content": "    /// NOTE: If ZooKeeper connection is lost here, we will try again to write query status.",
+          "new_line_content": "    updateMaxDDLEntryID(task.entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "multi",
+          "old_text": null,
+          "new_text": "zookeeper->multi(task.ops)",
+          "old_line_content": "",
+          "new_line_content": "        zookeeper->multi(task.ops);",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "task.ops.clear()",
+          "old_line_content": "    /// Active node was removed in multi ops",
+          "new_line_content": "        task.ops.clear();",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": null,
+          "new_api": "setAlreadyRemoved",
+          "old_text": null,
+          "new_text": "active_node->setAlreadyRemoved()",
+          "old_line_content": "}",
+          "new_line_content": "    active_node->setAlreadyRemoved();",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": null,
+          "new_api": "isFreezeAlter",
+          "old_text": null,
+          "new_text": "alter->isFreezeAlter()",
+          "old_line_content": "",
+          "new_line_content": "        if (alter->isFreezeAlter())",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "supportsReplication",
+          "old_text": null,
+          "new_text": "storage->supportsReplication()",
+          "old_line_content": "bool DDLWorker::tryExecuteQueryOnLeaderReplica(",
+          "new_line_content": "    return storage->supportsReplication();",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "storage.get()",
+          "old_line_content": "    if (!replicated_storage)",
+          "new_line_content": "    StorageReplicatedMergeTree * replicated_storage = dynamic_cast<StorageReplicatedMergeTree *>(storage.get());",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "fs::path(shard_path)",
+          "old_text": null,
+          "new_text": "fs::path(shard_path)",
+          "old_line_content": "",
+          "new_line_content": "    String is_executed_path = fs::path(shard_path) / \"executed\";",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": null,
+          "new_api": "fs::path(shard_path)",
+          "old_text": null,
+          "new_text": "fs::path(shard_path)",
+          "old_line_content": "    /// Leader replica creates is_executed_path node on successful query execution.",
+          "new_line_content": "    String tries_to_execute_path = fs::path(shard_path) / \"tries_to_execute\";",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": null,
+          "new_api": "fs::path(shard_path)",
+          "old_text": null,
+          "new_text": "fs::path(shard_path)",
+          "old_line_content": "    /// We will remove create_shard_flag from zk operations list, if current replica is just waiting for leader to execute the query.",
+          "new_line_content": "    zookeeper->createAncestors(fs::path(shard_path) / \"\"); /* appends \"/\" at the end of shard_path */",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "    String executed_by;",
+          "new_line_content": "    static constexpr int MAX_TRIES_TO_EXECUTE = 3;",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "",
+          "new_line_content": "    static constexpr int MAX_EXECUTION_TIMEOUT_SEC = 3600;",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": null,
+          "new_api": "exists",
+          "old_text": null,
+          "new_text": "zookeeper->exists(is_executed_path, nullptr, event)",
+          "old_line_content": "        return true;",
+          "new_line_content": "    if (zookeeper->exists(is_executed_path, nullptr, event))",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "zookeeper->get(is_executed_path)",
+          "old_line_content": "",
+          "new_line_content": "        LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": null,
+          "new_api": "createSimpleZooKeeperLock",
+          "old_text": null,
+          "new_text": "createSimpleZooKeeperLock(zookeeper, shard_path, \"lock\", task.host_id_str)",
+          "old_line_content": "",
+          "new_line_content": "    auto lock = createSimpleZooKeeperLock(zookeeper, shard_path, \"lock\", task.host_id_str);",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "elapsedSeconds",
+          "old_text": null,
+          "new_text": "stopwatch.elapsedSeconds()",
+          "old_line_content": "        // Has to get with zk fields to get active replicas field",
+          "new_line_content": "    while (stopwatch.elapsedSeconds() <= MAX_EXECUTION_TIMEOUT_SEC)",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": null,
+          "new_api": "getStatus",
+          "old_text": null,
+          "new_text": "replicated_storage->getStatus(status, true)",
+          "old_line_content": "        bool replica_dropped = replicated_storage->is_dropped;",
+          "new_line_content": "        replicated_storage->getStatus(status, true);",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \", task {} will not be executed.\", task.entry_name)",
+          "old_line_content": "        }",
+          "new_line_content": "            LOG_WARNING(log, \", task {} will not be executed.\", task.entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": null,
+          "new_api": "ExecutionStatus",
+          "old_text": null,
+          "new_text": "ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, table is dropped or detached permanently\")",
+          "old_line_content": "",
+          "new_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, table is dropped or detached permanently\");",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": null,
+          "new_api": "tryLock",
+          "old_text": null,
+          "new_text": "lock->tryLock()",
+          "old_line_content": "            /// be \"leader\" and took lock, but another \"leader\" replica may have",
+          "new_line_content": "        if (status.is_leader && lock->tryLock())",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": null,
+          "new_api": "tryGet",
+          "old_text": null,
+          "new_text": "zookeeper->tryGet(is_executed_path, executed_by)",
+          "old_line_content": "                executed_by_other_leader = true;",
+          "new_line_content": "            if (zookeeper->tryGet(is_executed_path, executed_by))",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, executed_by)",
+          "old_line_content": "            }",
+          "new_line_content": "                LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, executed_by);",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "zookeeper->get(tries_to_execute_path)",
+          "old_line_content": "",
+          "new_line_content": "            size_t counter = parse<int>(zookeeper->get(tries_to_execute_path));",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "task.ops.push_back(create_shard_flag)",
+          "old_line_content": "            /// If the leader will unexpectedly changed this method will return false",
+          "new_line_content": "            task.ops.push_back(create_shard_flag);",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "pop_back",
+          "old_text": null,
+          "new_text": "task.ops.pop_back()",
+          "old_line_content": "            /// and on the next iteration new leader will take lock",
+          "new_line_content": "            SCOPE_EXIT({ if (!executed_by_us && !task.ops.empty()) task.ops.pop_back(); });",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": null,
+          "new_api": "tryExecuteQuery",
+          "old_text": null,
+          "new_text": "tryExecuteQuery(rewritten_query, task, zookeeper)",
+          "old_line_content": "                break;",
+          "new_line_content": "            if (tryExecuteQuery(rewritten_query, task, zookeeper))",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "unlock",
+          "old_text": null,
+          "new_text": "lock->unlock()",
+          "old_line_content": "        /// Waiting for someone who will execute query and change is_executed_path node",
+          "new_line_content": "            lock->unlock();",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": null,
+          "new_api": "std::uniform_int_distribution<int>(0, 1000)(rng)",
+          "old_text": null,
+          "new_text": "std::uniform_int_distribution<int>(0, 1000)(rng)",
+          "old_line_content": "            executed_by_other_leader = true;",
+          "new_line_content": "        if (event->tryWait(std::uniform_int_distribution<int>(0, 1000)(rng)))",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "zookeeper->get(is_executed_path)",
+          "old_line_content": "        }",
+          "new_line_content": "            LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "tryGet",
+          "old_text": null,
+          "new_text": "zookeeper->tryGet(tries_to_execute_path, tries_count)",
+          "old_line_content": "                /// Nobody will try to execute query again",
+          "new_line_content": "            zookeeper->tryGet(tries_to_execute_path, tries_count);",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \"Maximum retries count for task {} exceeded, cannot execute replicated DDL query\", task.entry_name)",
+          "old_line_content": "            else",
+          "new_line_content": "                LOG_WARNING(log, \"Maximum retries count for task {} exceeded, cannot execute replicated DDL query\", task.entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 748,
+          "old_api": null,
+          "new_api": "LOG_TRACE",
+          "old_text": null,
+          "new_text": "LOG_TRACE(log, \"Task {} still not executed, will try to wait for it or execute ourselves, tries count {}\", task.entry_name, tries_count)",
+          "old_line_content": "    }",
+          "new_line_content": "                LOG_TRACE(log, \"Task {} still not executed, will try to wait for it or execute ourselves, tries count {}\", task.entry_name, tries_count);",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!(executed_by_us && executed_by_other_leader))",
+          "old_line_content": "    if (!executed_by_us && !executed_by_other_leader)",
+          "new_line_content": "    assert(!(executed_by_us && executed_by_other_leader));",
+          "content_same": false
+        },
+        {
+          "line": 761,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \"Task {} was not executed by anyone, maximum timeout {} seconds exceeded\", task.entry_name, MAX_EXECUTION_TIMEOUT_SEC)",
+          "old_line_content": "        else /// If we exceeded amount of tries",
+          "new_line_content": "            LOG_WARNING(log, \"Task {} was not executed by anyone, maximum timeout {} seconds exceeded\", task.entry_name, MAX_EXECUTION_TIMEOUT_SEC);",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": null,
+          "new_api": "ExecutionStatus",
+          "old_text": null,
+          "new_text": "ExecutionStatus(ErrorCodes::TIMEOUT_EXCEEDED, \"Cannot execute replicated DDL query, timeout exceeded\")",
+          "old_line_content": "        {",
+          "new_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::TIMEOUT_EXCEEDED, \"Cannot execute replicated DDL query, timeout exceeded\");",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \"Task {} was not executed by anyone, maximum number of retries exceeded\", task.entry_name)",
+          "old_line_content": "        return false;",
+          "new_line_content": "            LOG_WARNING(log, \"Task {} was not executed by anyone, maximum number of retries exceeded\", task.entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 767,
+          "old_api": null,
+          "new_api": "ExecutionStatus",
+          "old_text": null,
+          "new_text": "ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, maximum retires exceeded\")",
+          "old_line_content": "    }",
+          "new_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, maximum retires exceeded\");",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Task {} executed by current replica\", task.entry_name)",
+          "old_line_content": "",
+          "new_line_content": "        LOG_DEBUG(log, \"Task {} executed by current replica\", task.entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "zookeeper->get(is_executed_path)",
+          "old_line_content": "}",
+          "new_line_content": "        LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": null,
+          "new_api": "filterAndSortQueueNodes",
+          "old_text": null,
+          "new_text": "filterAndSortQueueNodes(queue_nodes)",
+          "old_line_content": "    {",
+          "new_line_content": "    filterAndSortQueueNodes(queue_nodes);",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": null,
+          "new_api": "cend",
+          "old_text": null,
+          "new_text": "queue_nodes.cend()",
+          "old_line_content": "            return;",
+          "new_line_content": "    for (auto it = queue_nodes.cbegin(); it < queue_nodes.cend(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": null,
+          "new_api": "fs::path(queue_dir)",
+          "old_text": null,
+          "new_text": "fs::path(queue_dir)",
+          "old_line_content": "        String dummy;",
+          "new_line_content": "        String node_path = fs::path(queue_dir) / node_name;",
+          "content_same": false
+        },
+        {
+          "line": 805,
+          "old_api": null,
+          "new_api": "canRemoveQueueEntry",
+          "old_text": null,
+          "new_text": "canRemoveQueueEntry(node_name, stat)",
+          "old_line_content": "            /// At first we remove entry/active node to prevent staled hosts from executing entry concurrently",
+          "new_line_content": "            if (!canRemoveQueueEntry(node_name, stat))",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": null,
+          "new_api": "fs::path(node_path)",
+          "old_text": null,
+          "new_text": "fs::path(node_path)",
+          "old_line_content": "                if (rm_active_res == Coordination::Error::ZNOTEMPTY)",
+          "new_line_content": "            auto rm_active_res = zookeeper->tryRemove(fs::path(node_path) / \"active\");",
+          "content_same": false
+        },
+        {
+          "line": 813,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Task {} should be deleted, but there are active workers. Skipping it.\", node_name)",
+          "old_line_content": "                continue;",
+          "new_line_content": "                    LOG_DEBUG(log, \"Task {} should be deleted, but there are active workers. Skipping it.\", node_name);",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "LOG_WARNING",
+          "old_text": null,
+          "new_text": "LOG_WARNING(log, \"Unexpected status code {} on attempt to remove {}/active\", rm_active_res, node_name)",
+          "old_line_content": "",
+          "new_line_content": "                    LOG_WARNING(log, \"Unexpected status code {} on attempt to remove {}/active\", rm_active_res, node_name);",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": null,
+          "new_api": "LOG_INFO",
+          "old_text": null,
+          "new_text": "LOG_INFO(log, \"Task {} is outdated, deleting it\", node_name)",
+          "old_line_content": "            /// creating node_path/active node (see createStatusDirs(...))",
+          "new_line_content": "            LOG_INFO(log, \"Task {} is outdated, deleting it\", node_name);",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": null,
+          "new_api": "tryRemoveChildrenRecursive",
+          "old_text": null,
+          "new_text": "zookeeper->tryRemoveChildrenRecursive(node_path, \"finished\")",
+          "old_line_content": "            Coordination::Requests ops;",
+          "new_line_content": "            zookeeper->tryRemoveChildrenRecursive(node_path, \"finished\");",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": null,
+          "new_api": "fs::path(node_path)",
+          "old_text": null,
+          "new_text": "fs::path(node_path)",
+          "old_line_content": "",
+          "new_line_content": "            ops.emplace_back(zkutil::makeRemoveRequest(fs::path(node_path) / \"finished\", -1));",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "exists",
+          "old_text": null,
+          "new_text": "zookeeper->exists(task->entry_path)",
+          "old_line_content": "        if (task->was_executed && !status_written && task_still_exists)",
+          "new_line_content": "            bool task_still_exists = zookeeper->exists(task->entry_path);",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": null,
+          "new_api": "getFinishedNodePath",
+          "old_text": null,
+          "new_text": "task->getFinishedNodePath()",
+          "old_line_content": "        {",
+          "new_line_content": "            bool status_written = zookeeper->exists(task->getFinishedNodePath());",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": null,
+          "new_api": "zkutil::makeRemoveRequest(node_path, -1)",
+          "old_text": null,
+          "new_text": "zkutil::makeRemoveRequest(node_path, -1)",
+          "old_line_content": "            if (rm_entry_res == Coordination::Error::ZNONODE)",
+          "new_line_content": "            ops.emplace_back(zkutil::makeRemoveRequest(node_path, -1));",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": null,
+          "new_api": "tryMulti",
+          "old_text": null,
+          "new_text": "zookeeper->tryMulti(ops, res)",
+          "old_line_content": "            {",
+          "new_line_content": "            auto rm_entry_res = zookeeper->tryMulti(ops, res);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "processTask",
+          "old_text": null,
+          "new_text": "processTask(*task, zookeeper)",
+          "old_line_content": "    }",
+          "new_line_content": "                processTask(*task, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "getChildren",
+          "old_text": null,
+          "new_text": "zookeeper->getChildren(queue_dir, nullptr, queue_updated_event)",
+          "old_line_content": "    {",
+          "new_line_content": "    Strings queue_nodes = zookeeper->getChildren(queue_dir, nullptr, queue_updated_event);",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "queue_nodes.empty()",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (queue_nodes.empty())",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(res[0]->error == Coordination::Error::ZOK && res[1]->error == Coordination::Error::ZNONODE)",
+          "old_line_content": "                continue;",
+          "new_line_content": "                assert(res[0]->error == Coordination::Error::ZOK && res[1]->error == Coordination::Error::ZNONODE);",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": null,
+          "new_api": "tryRemove",
+          "old_text": null,
+          "new_text": "zookeeper->tryRemove(node_path)",
+          "old_line_content": "            }",
+          "new_line_content": "                rm_entry_res = zookeeper->tryRemove(node_path);",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": null,
+          "new_api": "zkutil::KeeperMultiException::check(rm_entry_res, ops, res)",
+          "old_text": null,
+          "new_text": "zkutil::KeeperMultiException::check(rm_entry_res, ops, res)",
+          "old_line_content": "        {",
+          "new_line_content": "            zkutil::KeeperMultiException::check(rm_entry_res, ops, res);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "current_tasks.empty()",
+          "old_line_content": "    if (!server_startup)",
+          "new_line_content": "    bool server_startup = current_tasks.empty();",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "queue_nodes.begin()",
+          "old_line_content": "    {",
+          "new_line_content": "    auto begin_node = queue_nodes.begin();",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": null,
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": null,
+          "new_text": "getCurrentExceptionMessage(false)",
+          "old_line_content": "}",
+          "new_line_content": "            LOG_INFO(log, \"An error occurred while checking and cleaning task {} from queue: {}\", node_name, getCurrentExceptionMessage(false));",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "std::min(min_task->entry_name, *last_skipped_entry_name)",
+          "old_text": null,
+          "new_text": "std::min(min_task->entry_name, *last_skipped_entry_name)",
+          "old_line_content": "    }",
+          "new_line_content": "        String min_entry_name = last_skipped_entry_name ? std::min(min_task->entry_name, *last_skipped_entry_name) : min_task->entry_name;",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "queue_nodes.end()",
+          "old_line_content": "",
+          "new_line_content": "        begin_node = std::upper_bound(queue_nodes.begin(), queue_nodes.end(), min_entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "",
+          "new_line_content": "    constexpr UInt64 zookeeper_time_resolution = 1000;",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "current_tasks.empty()",
+          "old_line_content": "    {",
+          "new_line_content": "    assert(current_tasks.empty());",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": null,
+          "new_api": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "old_text": null,
+          "new_text": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "old_line_content": "    return node_lifetime_is_expired || node_is_outside_max_window;",
+          "new_line_content": "    UInt32 entry_number = DDLTaskBase::getLogEntryNumber(entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "max_id.load(std::memory_order_relaxed)",
+          "old_line_content": "}",
+          "new_line_content": "    bool node_is_outside_max_window = entry_number + max_tasks_in_queue < max_id.load(std::memory_order_relaxed);",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Will not execute task {}: {}\", entry_name, reason)",
+          "old_line_content": "            continue;",
+          "new_line_content": "            LOG_DEBUG(log, \"Will not execute task {}: {}\", entry_name, reason);",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "updateMaxDDLEntryID",
+          "old_text": null,
+          "new_text": "updateMaxDDLEntryID(entry_name)",
+          "old_line_content": "        }",
+          "new_line_content": "            updateMaxDDLEntryID(entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "emplace",
+          "old_text": null,
+          "new_text": "last_skipped_entry_name.emplace(entry_name)",
+          "old_line_content": "",
+          "new_line_content": "            last_skipped_entry_name.emplace(entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": null,
+          "new_api": "fs::path(node_path)",
+          "old_text": null,
+          "new_text": "fs::path(node_path)",
+          "old_line_content": "    Coordination::Responses responses;",
+          "new_line_content": "    ops.emplace_back(zkutil::makeCreateRequest(fs::path(node_path) / \"active\", {}, zkutil::CreateMode::Persistent));",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": null,
+          "new_api": "std::move(task)",
+          "old_text": null,
+          "new_text": "std::move(task)",
+          "old_line_content": "        {",
+          "new_line_content": "        auto & saved_task = saveTask(std::move(task));",
+          "content_same": false
+        },
+        {
+          "line": 880,
+          "old_api": null,
+          "new_api": "tryMulti",
+          "old_text": null,
+          "new_text": "zookeeper->tryMulti(ops, responses)",
+          "old_line_content": "",
+          "new_line_content": "    Coordination::Error code = zookeeper->tryMulti(ops, responses);",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": null,
+          "new_api": "setThreadName",
+          "old_text": null,
+          "new_text": "setThreadName(\"DDLWorkerExec\")",
+          "old_line_content": "        }",
+          "new_line_content": "                setThreadName(\"DDLWorkerExec\");",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": null,
+          "new_api": "processTask",
+          "old_text": null,
+          "new_text": "processTask(saved_task, zookeeper)",
+          "old_line_content": "        else",
+          "new_line_content": "                processTask(saved_task, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 885,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "responses.size()",
+          "old_line_content": "",
+          "new_line_content": "    bool both_already_exists = responses.size() == 2 && responses[0]->error == Coordination::Error::ZNODEEXISTS",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "responses.size()",
+          "old_line_content": "        return;",
+          "new_line_content": "    bool is_currently_deleting = responses.size() == 2 && responses[0]->error == Coordination::Error::ZOK",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "processTask",
+          "old_text": null,
+          "new_text": "processTask(saved_task, zookeeper)",
+          "old_line_content": "}",
+          "new_line_content": "            processTask(saved_task, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 897,
+          "old_api": null,
+          "new_api": "set",
+          "old_text": null,
+          "new_text": "cleanup_event->set()",
+          "old_line_content": "    }",
+          "new_line_content": "        cleanup_event->set();",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::UNFINISHED, \"Cannot create status dirs for {}, \"\n                        \"most likely because someone is deleting it concurrently\", node_path)",
+          "old_line_content": "",
+          "new_line_content": "        throw Exception(ErrorCodes::UNFINISHED, \"Cannot create status dirs for {}, \"",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "current_tasks.size()",
+          "old_line_content": "}",
+          "new_line_content": "    assert(current_tasks.size() <= pool_size);",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": null,
+          "new_api": "std::move(task)",
+          "old_text": null,
+          "new_text": "std::move(task)",
+          "old_line_content": "",
+          "new_line_content": "    current_tasks.emplace_back(std::move(task));",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "current_tasks.back()",
+          "old_line_content": "bool DDLWorker::tryExecuteQuery(const String & query, DDLTaskBase & task, const ZooKeeperPtr & zookeeper)",
+          "new_line_content": "    return *current_tasks.back();",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": null,
+          "new_api": "Coordination::isHardwareError(code)",
+          "old_text": null,
+          "new_text": "Coordination::isHardwareError(code)",
+          "old_line_content": "",
+          "new_line_content": "    assert(Coordination::isHardwareError(code) || code == Coordination::Error::ZNONODE);",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": null,
+          "new_api": "zkutil::KeeperMultiException::check(code, ops, responses)",
+          "old_text": null,
+          "new_text": "zkutil::KeeperMultiException::check(code, ops, responses)",
+          "old_line_content": "",
+          "new_line_content": "    zkutil::KeeperMultiException::check(code, ops, responses);",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Empty host list in a distributed DDL task\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "",
+          "new_line_content": "        throw Exception(\"Empty host list in a distributed DDL task\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 916,
+          "old_api": null,
+          "new_api": "createAncestors",
+          "old_text": null,
+          "new_text": "zookeeper->createAncestors(query_path_prefix)",
+          "old_line_content": "",
+          "new_line_content": "    zookeeper->createAncestors(query_path_prefix);",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "entry.toString()",
+          "old_line_content": "    /// because we don't know node_path until previous request is executed.",
+          "new_line_content": "    String node_path = zookeeper->create(query_path_prefix, entry.toString(), zkutil::CreateMode::PersistentSequential);",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": null,
+          "new_api": "executeQuery",
+          "old_text": null,
+          "new_text": "executeQuery(istr, ostr, !task.is_initial_query, *query_context, {})",
+          "old_line_content": "        {",
+          "new_line_content": "        executeQuery(istr, ostr, !task.is_initial_query, *query_context, {});",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "getZooKeeperMetadataTransaction",
+          "old_text": null,
+          "new_text": "query_context->getZooKeeperMetadataTransaction()",
+          "old_line_content": "            /// but some queries does not support it, so we have to do it here.",
+          "new_line_content": "        if (auto txn = query_context->getZooKeeperMetadataTransaction())",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": null,
+          "new_api": "createStatusDirs",
+          "old_text": null,
+          "new_text": "createStatusDirs(node_path, zookeeper)",
+          "old_line_content": "    {",
+          "new_line_content": "        createStatusDirs(node_path, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "isExecuted",
+          "old_text": null,
+          "new_text": "txn->isExecuted()",
+          "old_line_content": "    }",
+          "new_line_content": "            if (!txn->isExecuted())",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": null,
+          "new_api": "commit",
+          "old_text": null,
+          "new_text": "txn->commit()",
+          "old_line_content": "    catch (const DB::Exception & e)",
+          "new_line_content": "                txn->commit();",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": null,
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": null,
+          "new_text": "getCurrentExceptionMessage(true)",
+          "old_line_content": "    return node_path;",
+          "new_line_content": "        LOG_INFO(log, \"An error occurred while creating auxiliary ZooKeeper directories in {} . They will be created later. Error : {}\", node_path, getCurrentExceptionMessage(true));",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "ExecutionStatus::fromCurrentException()",
+          "old_text": null,
+          "new_text": "ExecutionStatus::fromCurrentException()",
+          "old_line_content": "        /// We use return value of tryExecuteQuery(...) in tryExecuteQueryOnLeaderReplica(...) to determine",
+          "new_line_content": "        task.execution_status = ExecutionStatus::fromCurrentException();",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\")",
+          "old_line_content": "        /// if replica has stopped being leader and we should retry query.",
+          "new_line_content": "        tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\");",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!initialized)",
+          "old_line_content": "",
+          "new_line_content": "    assert(!initialized);",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": null,
+          "new_api": "setThreadName",
+          "old_text": null,
+          "new_text": "setThreadName(\"DDLWorker\")",
+          "old_line_content": "    while (!stop_flag)",
+          "new_line_content": "    setThreadName(\"DDLWorker\");",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Started DDLWorker thread\")",
+          "old_line_content": "    {",
+          "new_line_content": "    LOG_DEBUG(log, \"Started DDLWorker thread\");",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": null,
+          "new_api": "code",
+          "old_text": null,
+          "new_text": "e.code()",
+          "old_line_content": "        return no_sense_to_retry;",
+          "new_line_content": "                                 e.code() != ErrorCodes::CANNOT_ASSIGN_ALTER &&",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "code",
+          "old_text": null,
+          "new_text": "e.code()",
+          "old_line_content": "    }",
+          "new_line_content": "                                 e.code() != ErrorCodes::CANNOT_ALLOCATE_MEMORY &&",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "code",
+          "old_text": null,
+          "new_text": "e.code()",
+          "old_line_content": "    catch (...)",
+          "new_line_content": "                                 e.code() != ErrorCodes::MEMORY_LIMIT_EXCEEDED;",
+          "content_same": false
+        },
+        {
+          "line": 946,
+          "old_api": null,
+          "new_api": "getAndSetZooKeeper",
+          "old_text": null,
+          "new_text": "getAndSetZooKeeper()",
+          "old_line_content": "            return;",
+          "new_line_content": "            auto zookeeper = getAndSetZooKeeper();",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": null,
+          "new_api": "fs::path(queue_dir)",
+          "old_text": null,
+          "new_text": "fs::path(queue_dir)",
+          "old_line_content": "        }",
+          "new_line_content": "            zookeeper->createAncestors(fs::path(queue_dir) / \"\");",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": null,
+          "new_api": "ExecutionStatus::fromCurrentException()",
+          "old_text": null,
+          "new_text": "ExecutionStatus::fromCurrentException()",
+          "old_line_content": "        /// We don't know what exactly happened, but maybe it's Poco::NetException or std::bad_alloc,",
+          "new_line_content": "        task.execution_status = ExecutionStatus::fromCurrentException();",
+          "content_same": false
+        },
+        {
+          "line": 444,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\")",
+          "old_line_content": "        /// so we consider unknown exception as retryable error.",
+          "new_line_content": "        tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\");",
+          "content_same": false
+        },
+        {
+          "line": 956,
+          "old_api": null,
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": null,
+          "new_text": "getCurrentExceptionMessage(true)",
+          "old_line_content": "",
+          "new_line_content": "                LOG_ERROR(log, \"ZooKeeper error: {}. Failed to start DDLWorker.\", getCurrentExceptionMessage(true));",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(__PRETTY_FUNCTION__)",
+          "old_line_content": "        {",
+          "new_line_content": "            tryLogCurrentException(__PRETTY_FUNCTION__);",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": null,
+          "new_api": "ExecutionStatus",
+          "old_text": null,
+          "new_text": "ExecutionStatus(0)",
+          "old_line_content": "    return true;",
+          "new_line_content": "    task.execution_status = ExecutionStatus(0);",
+          "content_same": false
+        },
+        {
+          "line": 452,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Executed query: {}\", query)",
+          "old_line_content": "}",
+          "new_line_content": "    LOG_DEBUG(log, \"Executed query: {}\", query);",
+          "content_same": false
+        },
+        {
+          "line": 964,
+          "old_api": null,
+          "new_api": "tryLogCurrentException",
+          "old_text": null,
+          "new_text": "tryLogCurrentException(log, \"Cannot initialize DDL queue.\")",
+          "old_line_content": "        /// Avoid busy loop when ZooKeeper is not available.",
+          "new_line_content": "            tryLogCurrentException(log, \"Cannot initialize DDL queue.\");",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": null,
+          "new_api": "sleepForSeconds",
+          "old_text": null,
+          "new_text": "sleepForSeconds(5)",
+          "old_line_content": "",
+          "new_line_content": "        sleepForSeconds(5);",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "old_text": null,
+          "new_text": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "old_line_content": "    {",
+          "new_line_content": "    UInt64 id = DDLTaskBase::getLogEntryNumber(entry_name);",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": null,
+          "new_api": "CurrentMetrics::set(*max_entry_metric, id)",
+          "old_text": null,
+          "new_text": "CurrentMetrics::set(*max_entry_metric, id)",
+          "old_line_content": "    }",
+          "new_line_content": "                CurrentMetrics::set(*max_entry_metric, id);",
+          "content_same": false
+        },
+        {
+          "line": 983,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "last_skipped_entry_name.reset()",
+          "old_line_content": "    };",
+          "new_line_content": "        last_skipped_entry_name.reset();",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "getActiveNodePath",
+          "old_text": null,
+          "new_text": "task.getActiveNodePath()",
+          "old_line_content": "    /// It will tryRemove(...) on exception",
+          "new_line_content": "    String active_node_path = task.getActiveNodePath();",
+          "content_same": false
+        },
+        {
+          "line": 988,
+          "old_api": null,
+          "new_api": "setThreadName",
+          "old_text": null,
+          "new_text": "setThreadName(\"DDLWorker\")",
+          "old_line_content": "    while (!stop_flag)",
+          "new_line_content": "    setThreadName(\"DDLWorker\");",
+          "content_same": false
+        },
+        {
+          "line": 989,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Starting DDLWorker thread\")",
+          "old_line_content": "    {",
+          "new_line_content": "    LOG_DEBUG(log, \"Starting DDLWorker thread\");",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "tryCreate",
+          "old_text": null,
+          "new_text": "zookeeper->tryCreate(active_node_path, {}, zkutil::CreateMode::Ephemeral)",
+          "old_line_content": "        if (create_active_res != Coordination::Error::ZNONODE && create_active_res != Coordination::Error::ZNODEEXISTS)",
+          "new_line_content": "    auto create_active_res = zookeeper->tryCreate(active_node_path, {}, zkutil::CreateMode::Ephemeral);",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": null,
+          "new_api": "initializeMainThread",
+          "old_text": null,
+          "new_text": "initializeMainThread()",
+          "old_line_content": "",
+          "new_line_content": "                initializeMainThread();",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": null,
+          "new_api": "Coordination::isHardwareError(create_active_res)",
+          "old_text": null,
+          "new_text": "Coordination::isHardwareError(create_active_res)",
+          "old_line_content": "",
+          "new_line_content": "            assert(Coordination::isHardwareError(create_active_res));",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": null,
+          "new_api": "Coordination::Exception(create_active_res, active_node_path)",
+          "old_text": null,
+          "new_text": "Coordination::Exception(create_active_res, active_node_path)",
+          "old_line_content": "        /// Status dirs were not created in enqueueQuery(...) or someone is removing entry",
+          "new_line_content": "            throw Coordination::Exception(create_active_res, active_node_path);",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "                                    \"probably it's owned by someone else\", active_node_path);",
+          "new_line_content": "                constexpr int timeout_ms = 5000;",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Waiting for queue updates\")",
+          "old_line_content": "        catch (const Coordination::Exception & e)",
+          "new_line_content": "            LOG_DEBUG(log, \"Waiting for queue updates\");",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "createStatusDirs",
+          "old_text": null,
+          "new_text": "createStatusDirs(task.entry_path, zookeeper)",
+          "old_line_content": "        {",
+          "new_line_content": "            createStatusDirs(task.entry_path, zookeeper);",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": null,
+          "new_api": "wait",
+          "old_text": null,
+          "new_text": "queue_updated_event->wait()",
+          "old_line_content": "        {",
+          "new_line_content": "            queue_updated_event->wait();",
+          "content_same": false
+        },
+        {
+          "line": 1010,
+          "old_api": null,
+          "new_api": "Coordination::isHardwareError(e.code)",
+          "old_text": null,
+          "new_text": "Coordination::isHardwareError(e.code)",
+          "old_line_content": "                /// Wait for pending async tasks",
+          "new_line_content": "            if (Coordination::isHardwareError(e.code))",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "std::make_shared<Poco::Event>()",
+          "old_text": null,
+          "new_text": "std::make_shared<Poco::Event>()",
+          "old_line_content": "            {",
+          "new_line_content": "            zkutil::EventPtr eph_node_disappeared = std::make_shared<Poco::Event>();",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": null,
+          "new_api": "std::make_unique<ThreadPool>(pool_size)",
+          "old_text": null,
+          "new_text": "std::make_unique<ThreadPool>(pool_size)",
+          "old_line_content": "            else",
+          "new_line_content": "                    worker_pool = std::make_unique<ThreadPool>(pool_size);",
+          "content_same": false
+        },
+        {
+          "line": 1016,
+          "old_api": null,
+          "new_api": "getCurrentExceptionMessage",
+          "old_text": null,
+          "new_text": "getCurrentExceptionMessage(true)",
+          "old_line_content": "            {",
+          "new_line_content": "                LOG_INFO(log, \"Lost ZooKeeper connection, will try to connect again: {}\", getCurrentExceptionMessage(true));",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": null,
+          "new_api": "tryWait",
+          "old_text": null,
+          "new_text": "eph_node_disappeared->tryWait(timeout_ms)",
+          "old_line_content": "            }",
+          "new_line_content": "                if (!eph_node_disappeared->tryWait(timeout_ms))",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::LOGICAL_ERROR, \"Ephemeral node {} still exists, \"\n                                    \"probably it's owned by someone else\", active_node_path)",
+          "old_line_content": "        }",
+          "new_line_content": "                    throw Exception(ErrorCodes::LOGICAL_ERROR, \"Ephemeral node {} still exists, \"",
+          "content_same": false
+        },
+        {
+          "line": 1021,
+          "old_api": null,
+          "new_api": "reset_state",
+          "old_text": null,
+          "new_text": "reset_state()",
+          "old_line_content": "        }",
+          "new_line_content": "                reset_state();",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": null,
+          "new_api": "sleepForSeconds",
+          "old_text": null,
+          "new_text": "sleepForSeconds(1)",
+          "old_line_content": "        {",
+          "new_line_content": "            sleepForSeconds(1);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1024,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, \"Unexpected error, will try to restart main thread:\")",
+          "new_text": null,
+          "old_line_content": "            tryLogCurrentException(log, \"Unexpected error, will try to restart main thread:\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1025,
+          "old_api": "reset_state",
+          "new_api": null,
+          "old_text": "reset_state()",
+          "new_text": null,
+          "old_line_content": "            reset_state();",
+          "new_line_content": "        catch (...)",
+          "content_same": false
+        },
+        {
+          "line": 1026,
+          "old_api": "sleepForSeconds",
+          "new_api": null,
+          "old_text": "sleepForSeconds(5)",
+          "new_text": null,
+          "old_line_content": "            sleepForSeconds(5);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": "zkutil::makeRemoveRequest(active_node_path, -1)",
+          "new_api": null,
+          "old_text": "zkutil::makeRemoveRequest(active_node_path, -1)",
+          "new_text": null,
+          "old_line_content": "        task.ops.emplace_back(zkutil::makeRemoveRequest(active_node_path, -1));",
+          "new_line_content": "        /// with other zk operations (such as appending something to ReplicatedMergeTree log, or",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "serializeText",
+          "new_api": null,
+          "old_text": "ExecutionStatus(0).serializeText()",
+          "new_text": null,
+          "old_line_content": "        task.ops.emplace_back(zkutil::makeCreateRequest(finished_node_path, ExecutionStatus(0).serializeText(), zkutil::CreateMode::Persistent));",
+          "new_line_content": "        /// updating metadata in Replicated database), so we make create request for finished_node_path with status \"0\",",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "queryToString",
+          "new_api": null,
+          "old_text": "queryToString(task.query)",
+          "new_text": null,
+          "old_line_content": "            String rewritten_query = queryToString(task.query);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Executing query: {}\", rewritten_query)",
+          "new_text": null,
+          "old_line_content": "            LOG_DEBUG(log, \"Executing query: {}\", rewritten_query);",
+          "new_line_content": "        try",
+          "content_same": false
+        },
+        {
+          "line": 1034,
+          "old_api": "setThreadName",
+          "new_api": null,
+          "old_text": "setThreadName(\"DDLWorkerClnr\")",
+          "new_text": null,
+          "old_line_content": "    setThreadName(\"DDLWorkerClnr\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1035,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Started DDLWorker cleanup thread\")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Started DDLWorker cleanup thread\");",
+          "new_line_content": "void DDLWorker::runCleanupThread()",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "query_with_table->table.empty()",
+          "new_text": null,
+          "old_line_content": "                if (!query_with_table->table.empty())",
+          "new_line_content": "            StoragePtr storage;",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": "wait",
+          "new_api": null,
+          "old_text": "cleanup_event->wait()",
+          "new_text": null,
+          "old_line_content": "            cleanup_event->wait();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "tryGetTable",
+          "new_api": null,
+          "old_text": "DatabaseCatalog::instance().tryGetTable(table_id, context)",
+          "new_text": null,
+          "old_line_content": "                    storage = DatabaseCatalog::instance().tryGetTable(table_id, context);",
+          "new_line_content": "                {",
+          "content_same": false
+        },
+        {
+          "line": 1046,
+          "old_api": "epochTime",
+          "new_api": null,
+          "old_text": "Poco::Timestamp().epochTime()",
+          "new_text": null,
+          "old_line_content": "            Int64 current_time_seconds = Poco::Timestamp().epochTime();",
+          "new_line_content": "            if (stop_flag)",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "tryExecuteQueryOnLeaderReplica",
+          "new_api": null,
+          "old_text": "tryExecuteQueryOnLeaderReplica(task, storage, rewritten_query, task.entry_path, zookeeper)",
+          "new_text": null,
+          "old_line_content": "                tryExecuteQueryOnLeaderReplica(task, storage, rewritten_query, task.entry_path, zookeeper);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": "tryGetZooKeeper",
+          "new_api": null,
+          "old_text": "tryGetZooKeeper()",
+          "new_text": null,
+          "old_line_content": "            auto zookeeper = tryGetZooKeeper();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1055,
+          "old_api": "expired",
+          "new_api": null,
+          "old_text": "zookeeper->expired()",
+          "new_text": null,
+          "old_line_content": "            if (zookeeper->expired())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "storage.reset()",
+          "new_text": null,
+          "old_line_content": "                storage.reset();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "tryExecuteQuery",
+          "new_api": null,
+          "old_text": "tryExecuteQuery(rewritten_query, task, zookeeper)",
+          "new_text": null,
+          "old_line_content": "                tryExecuteQuery(rewritten_query, task, zookeeper);",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 1063,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, __PRETTY_FUNCTION__)",
+          "new_text": null,
+          "old_line_content": "            tryLogCurrentException(log, __PRETTY_FUNCTION__);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, \"An error occurred before execution of DDL task: \")",
+          "new_text": null,
+          "old_line_content": "            tryLogCurrentException(log, \"An error occurred before execution of DDL task: \");",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "ExecutionStatus::fromCurrentException(\"An error occurred before execution\")",
+          "new_api": null,
+          "old_text": "ExecutionStatus::fromCurrentException(\"An error occurred before execution\")",
+          "new_text": null,
+          "old_line_content": "            task.execution_status = ExecutionStatus::fromCurrentException(\"An error occurred before execution\");",
+          "new_line_content": "            if (task.is_initial_query)",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "task.ops.empty()",
+          "new_text": null,
+          "old_line_content": "            bool status_written_by_table_or_db = task.ops.empty();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "serializeText",
+          "new_api": null,
+          "old_text": "task.execution_status.serializeText()",
+          "new_text": null,
+          "old_line_content": "                task.ops.emplace_back(zkutil::makeSetRequest(finished_node_path, task.execution_status.serializeText(), -1));",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": "updateMaxDDLEntryID",
+          "new_api": null,
+          "old_text": "updateMaxDDLEntryID(task.entry_name)",
+          "new_text": null,
+          "old_line_content": "    updateMaxDDLEntryID(task.entry_name);",
+          "new_line_content": "        task.was_executed = true;",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "task.ops.empty()",
+          "new_text": null,
+          "old_line_content": "    bool status_written = task.ops.empty();",
+          "new_line_content": "    /// NOTE: If ZooKeeper connection is lost here, we will try again to write query status.",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "task.ops.clear()",
+          "new_text": null,
+          "old_line_content": "        task.ops.clear();",
+          "new_line_content": "    if (!status_written)",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": "setAlreadyRemoved",
+          "new_api": null,
+          "old_text": "active_node->setAlreadyRemoved()",
+          "new_text": null,
+          "old_line_content": "    active_node->setAlreadyRemoved();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "ast_ddl->as<ASTDropQuery>()",
+          "new_api": null,
+          "old_text": "ast_ddl->as<ASTDropQuery>()",
+          "new_text": null,
+          "old_line_content": "    if (auto * query = ast_ddl->as<ASTDropQuery>(); query && query->kind != ASTDropQuery::Kind::Truncate)",
+          "new_line_content": "bool DDLWorker::taskShouldBeExecutedOnLeader(const ASTPtr & ast_ddl, const StoragePtr storage)",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "supportsReplication",
+          "new_api": null,
+          "old_text": "storage->supportsReplication()",
+          "new_text": null,
+          "old_line_content": "    return storage->supportsReplication();",
+          "new_line_content": "            return false;",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "storage.get()",
+          "new_text": null,
+          "old_line_content": "    StorageReplicatedMergeTree * replicated_storage = dynamic_cast<StorageReplicatedMergeTree *>(storage.get());",
+          "new_line_content": "    const String & /*node_path*/,",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "getName",
+          "new_api": null,
+          "old_text": "storage->getName()",
+          "new_text": null,
+          "old_line_content": "        throw Exception(ErrorCodes::LOGICAL_ERROR, \"Storage type '{}' is not supported by distributed DDL\", storage->getName());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": "getShardNodePath",
+          "new_api": null,
+          "old_text": "task.getShardNodePath()",
+          "new_text": null,
+          "old_line_content": "    String shard_path = task.getShardNodePath();",
+          "new_line_content": "    if (!replicated_storage)",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": "fs::path(shard_path)",
+          "new_api": null,
+          "old_text": "fs::path(shard_path)",
+          "new_text": null,
+          "old_line_content": "    String tries_to_execute_path = fs::path(shard_path) / \"tries_to_execute\";",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent)",
+          "new_api": null,
+          "old_text": "zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent)",
+          "new_text": null,
+          "old_line_content": "    auto create_shard_flag = zkutil::makeCreateRequest(is_executed_path, task.host_id_str, zkutil::CreateMode::Persistent);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "    static constexpr int MAX_TRIES_TO_EXECUTE = 3;",
+          "new_line_content": "    /// Node exists, or we will create or we will get an exception",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": "std::make_shared<Poco::Event>()",
+          "new_api": null,
+          "old_text": "std::make_shared<Poco::Event>()",
+          "new_text": null,
+          "old_line_content": "    zkutil::EventPtr event = std::make_shared<Poco::Event>();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "zookeeper->get(is_executed_path)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "new_line_content": "    /// for non existing node after get request",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": "createSimpleZooKeeperLock",
+          "new_api": null,
+          "old_text": "createSimpleZooKeeperLock(zookeeper, shard_path, \"lock\", task.host_id_str)",
+          "new_text": null,
+          "old_line_content": "    auto lock = createSimpleZooKeeperLock(zookeeper, shard_path, \"lock\", task.host_id_str);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": "elapsedSeconds",
+          "new_api": null,
+          "old_text": "stopwatch.elapsedSeconds()",
+          "new_text": null,
+          "old_line_content": "    while (stopwatch.elapsedSeconds() <= MAX_EXECUTION_TIMEOUT_SEC)",
+          "new_line_content": "    /// Defensive programming. One hour is more than enough to execute almost all DDL queries.",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": "getStatus",
+          "new_api": null,
+          "old_text": "replicated_storage->getStatus(status, true)",
+          "new_text": null,
+          "old_line_content": "        replicated_storage->getStatus(status, true);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "getStorageID",
+          "new_api": null,
+          "old_text": "replicated_storage->getStorageID()",
+          "new_text": null,
+          "old_line_content": "        bool all_replicas_likely_detached = status.active_replicas == 0 && !DatabaseCatalog::instance().isTableExist(replicated_storage->getStorageID(), context);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "ExecutionStatus",
+          "new_api": null,
+          "old_text": "ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, table is dropped or detached permanently\")",
+          "new_text": null,
+          "old_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, table is dropped or detached permanently\");",
+          "new_line_content": "        if (replica_dropped || all_replicas_likely_detached)",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::NOT_A_LEADER, \"Cannot execute initial query on non-leader replica\")",
+          "new_text": null,
+          "old_line_content": "            throw Exception(ErrorCodes::NOT_A_LEADER, \"Cannot execute initial query on non-leader replica\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": "tryGet",
+          "new_api": null,
+          "old_text": "zookeeper->tryGet(is_executed_path, executed_by)",
+          "new_text": null,
+          "old_line_content": "            if (zookeeper->tryGet(is_executed_path, executed_by))",
+          "new_line_content": "            /// In replicated merge tree we can have multiple leaders. So we can",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, executed_by)",
+          "new_text": null,
+          "old_line_content": "                LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, executed_by);",
+          "new_line_content": "            /// already executed this task.",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "zookeeper->get(tries_to_execute_path)",
+          "new_text": null,
+          "old_line_content": "            size_t counter = parse<int>(zookeeper->get(tries_to_execute_path));",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": "toString",
+          "new_api": null,
+          "old_text": "toString(counter + 1)",
+          "new_text": null,
+          "old_line_content": "            zookeeper->set(tries_to_execute_path, toString(counter + 1));",
+          "new_line_content": "            if (counter > MAX_TRIES_TO_EXECUTE)",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "task.ops.push_back(create_shard_flag)",
+          "new_text": null,
+          "old_line_content": "            task.ops.push_back(create_shard_flag);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "tryExecuteQuery",
+          "new_api": null,
+          "old_text": "tryExecuteQuery(rewritten_query, task, zookeeper)",
+          "new_text": null,
+          "old_line_content": "            if (tryExecuteQuery(rewritten_query, task, zookeeper))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "lock->unlock()",
+          "new_text": null,
+          "old_line_content": "            lock->unlock();",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "std::uniform_int_distribution<int>(0, 1000)(rng)",
+          "new_api": null,
+          "old_text": "std::uniform_int_distribution<int>(0, 1000)(rng)",
+          "new_text": null,
+          "old_line_content": "        if (event->tryWait(std::uniform_int_distribution<int>(0, 1000)(rng)))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "zookeeper->get(is_executed_path)",
+          "new_text": null,
+          "old_line_content": "            LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "new_line_content": "        /// Waiting for someone who will execute query and change is_executed_path node",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "tryGet",
+          "new_api": null,
+          "old_text": "zookeeper->tryGet(tries_to_execute_path, tries_count)",
+          "new_text": null,
+          "old_line_content": "            zookeeper->tryGet(tries_to_execute_path, tries_count);",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": "parse<int>(tries_count)",
+          "new_api": null,
+          "old_text": "parse<int>(tries_count)",
+          "new_text": null,
+          "old_line_content": "            if (parse<int>(tries_count) > MAX_TRIES_TO_EXECUTE)",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 745,
+          "old_api": "LOG_TRACE",
+          "new_api": null,
+          "old_text": "LOG_TRACE(log, \"Task {} still not executed, will try to wait for it or execute ourselves, tries count {}\", task.entry_name, tries_count)",
+          "new_text": null,
+          "old_line_content": "                LOG_TRACE(log, \"Task {} still not executed, will try to wait for it or execute ourselves, tries count {}\", task.entry_name, tries_count);",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!(executed_by_us && executed_by_other_leader))",
+          "new_text": null,
+          "old_line_content": "    assert(!(executed_by_us && executed_by_other_leader));",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": "elapsedSeconds",
+          "new_api": null,
+          "old_text": "stopwatch.elapsedSeconds()",
+          "new_text": null,
+          "old_line_content": "        if (stopwatch.elapsedSeconds() >= MAX_EXECUTION_TIMEOUT_SEC)",
+          "new_line_content": "    if (!executed_by_us && !executed_by_other_leader)",
+          "content_same": false
+        },
+        {
+          "line": 758,
+          "old_api": "LOG_WARNING",
+          "new_api": null,
+          "old_text": "LOG_WARNING(log, \"Task {} was not executed by anyone, maximum timeout {} seconds exceeded\", task.entry_name, MAX_EXECUTION_TIMEOUT_SEC)",
+          "new_text": null,
+          "old_line_content": "            LOG_WARNING(log, \"Task {} was not executed by anyone, maximum timeout {} seconds exceeded\", task.entry_name, MAX_EXECUTION_TIMEOUT_SEC);",
+          "new_line_content": "        /// If we failed with timeout",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": "LOG_WARNING",
+          "new_api": null,
+          "old_text": "LOG_WARNING(log, \"Task {} was not executed by anyone, maximum number of retries exceeded\", task.entry_name)",
+          "new_text": null,
+          "old_line_content": "            LOG_WARNING(log, \"Task {} was not executed by anyone, maximum number of retries exceeded\", task.entry_name);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": "ExecutionStatus",
+          "new_api": null,
+          "old_text": "ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, maximum retires exceeded\")",
+          "new_text": null,
+          "old_line_content": "            task.execution_status = ExecutionStatus(ErrorCodes::UNFINISHED, \"Cannot execute replicated DDL query, maximum retires exceeded\");",
+          "new_line_content": "        else /// If we exceeded amount of tries",
+          "content_same": false
+        },
+        {
+          "line": 770,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Task {} executed by current replica\", task.entry_name)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Task {} executed by current replica\", task.entry_name);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "zookeeper->get(is_executed_path)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Task {} has already been executed by replica ({}) of the same shard.\", task.entry_name, zookeeper->get(is_executed_path));",
+          "new_line_content": "    if (executed_by_us)",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Cleaning queue\")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Cleaning queue\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 782,
+          "old_api": "getChildren",
+          "new_api": null,
+          "old_text": "zookeeper->getChildren(queue_dir)",
+          "new_text": null,
+          "old_line_content": "    Strings queue_nodes = zookeeper->getChildren(queue_dir);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "fs::path(queue_dir)",
+          "new_api": null,
+          "old_text": "fs::path(queue_dir)",
+          "new_text": null,
+          "old_line_content": "        String node_path = fs::path(queue_dir) / node_name;",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "exists",
+          "new_api": null,
+          "old_text": "zookeeper->exists(node_path, &stat)",
+          "new_text": null,
+          "old_line_content": "            if (!zookeeper->exists(node_path, &stat))",
+          "new_line_content": "        try",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "fs::path(node_path)",
+          "new_api": null,
+          "old_text": "fs::path(node_path)",
+          "new_text": null,
+          "old_line_content": "            auto rm_active_res = zookeeper->tryRemove(fs::path(node_path) / \"active\");",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Task {} should be deleted, but there are active workers. Skipping it.\", node_name)",
+          "new_text": null,
+          "old_line_content": "                    LOG_DEBUG(log, \"Task {} should be deleted, but there are active workers. Skipping it.\", node_name);",
+          "new_line_content": "            if (rm_active_res != Coordination::Error::ZOK && rm_active_res != Coordination::Error::ZNONODE)",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": "LOG_WARNING",
+          "new_api": null,
+          "old_text": "LOG_WARNING(log, \"Unexpected status code {} on attempt to remove {}/active\", rm_active_res, node_name)",
+          "new_text": null,
+          "old_line_content": "                    LOG_WARNING(log, \"Unexpected status code {} on attempt to remove {}/active\", rm_active_res, node_name);",
+          "new_line_content": "                if (rm_active_res == Coordination::Error::ZNOTEMPTY)",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": "LOG_INFO",
+          "new_api": null,
+          "old_text": "LOG_INFO(log, \"Task {} is outdated, deleting it\", node_name)",
+          "new_text": null,
+          "old_line_content": "            LOG_INFO(log, \"Task {} is outdated, deleting it\", node_name);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": "tryRemoveChildrenRecursive",
+          "new_api": null,
+          "old_text": "zookeeper->tryRemoveChildrenRecursive(node_path, \"finished\")",
+          "new_text": null,
+          "old_line_content": "            zookeeper->tryRemoveChildrenRecursive(node_path, \"finished\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "zkutil::makeCheckRequest(node_path, -1)",
+          "new_api": null,
+          "old_text": "zkutil::makeCheckRequest(node_path, -1)",
+          "new_text": null,
+          "old_line_content": "            ops.emplace_back(zkutil::makeCheckRequest(node_path, -1));  /// See a comment below",
+          "new_line_content": "            /// And then we remove node_path and node_path/finished in a single transaction",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": "fs::path(node_path)",
+          "new_api": null,
+          "old_text": "fs::path(node_path)",
+          "new_text": null,
+          "old_line_content": "            ops.emplace_back(zkutil::makeRemoveRequest(fs::path(node_path) / \"finished\", -1));",
+          "new_line_content": "            Coordination::Requests ops;",
+          "content_same": false
+        },
+        {
+          "line": 828,
+          "old_api": "zkutil::makeRemoveRequest(node_path, -1)",
+          "new_api": null,
+          "old_text": "zkutil::makeRemoveRequest(node_path, -1)",
+          "new_text": null,
+          "old_line_content": "            ops.emplace_back(zkutil::makeRemoveRequest(node_path, -1));",
+          "new_line_content": "            Coordination::Responses res;",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "exists",
+          "new_api": null,
+          "old_text": "zookeeper->exists(task->entry_path)",
+          "new_text": null,
+          "old_line_content": "        bool task_still_exists = zookeeper->exists(task->entry_path);",
+          "new_line_content": "        if (task->was_executed)",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": "getFinishedNodePath",
+          "new_api": null,
+          "old_text": "task->getFinishedNodePath()",
+          "new_text": null,
+          "old_line_content": "        bool status_written = zookeeper->exists(task->getFinishedNodePath());",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "processTask",
+          "new_api": null,
+          "old_text": "processTask(*task, zookeeper)",
+          "new_text": null,
+          "old_line_content": "            processTask(*task, zookeeper);",
+          "new_line_content": "            if (!status_written && task_still_exists)",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "getChildren",
+          "new_api": null,
+          "old_text": "zookeeper->getChildren(queue_dir, nullptr, queue_updated_event)",
+          "new_text": null,
+          "old_line_content": "    Strings queue_nodes = zookeeper->getChildren(queue_dir, nullptr, queue_updated_event);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": "filterAndSortQueueNodes",
+          "new_api": null,
+          "old_text": "filterAndSortQueueNodes(queue_nodes)",
+          "new_text": null,
+          "old_line_content": "    filterAndSortQueueNodes(queue_nodes);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "queue_nodes.empty()",
+          "new_text": null,
+          "old_line_content": "    if (queue_nodes.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 841,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(res[0]->error == Coordination::Error::ZOK && res[1]->error == Coordination::Error::ZNONODE)",
+          "new_text": null,
+          "old_line_content": "                assert(res[0]->error == Coordination::Error::ZOK && res[1]->error == Coordination::Error::ZNONODE);",
+          "new_line_content": "                /// Possible rare case: initiator node has lost connection after enqueueing entry and failed to create status dirs.",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": "tryRemove",
+          "new_api": null,
+          "old_text": "zookeeper->tryRemove(node_path)",
+          "new_text": null,
+          "old_line_content": "                rm_entry_res = zookeeper->tryRemove(node_path);",
+          "new_line_content": "                /// No one has started to process the entry, so node_path/active and node_path/finished nodes were never created, node_path has no children.",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(rm_entry_res != Coordination::Error::ZNOTEMPTY)",
+          "new_text": null,
+          "old_line_content": "                assert(rm_entry_res != Coordination::Error::ZNOTEMPTY);",
+          "new_line_content": "                /// Entry became outdated, but we cannot remove remove it in a transaction with node_path/finished.",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "set",
+          "new_api": null,
+          "old_text": "cleanup_event->set()",
+          "new_text": null,
+          "old_line_content": "        cleanup_event->set();",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": null,
+          "old_text": "getCurrentExceptionMessage(false)",
+          "new_text": null,
+          "old_line_content": "            LOG_INFO(log, \"An error occurred while checking and cleaning task {} from queue: {}\", node_name, getCurrentExceptionMessage(false));",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "current_tasks.front()",
+          "new_text": null,
+          "old_line_content": "        auto & min_task = current_tasks.front();",
+          "new_line_content": "    if (!server_startup)",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "std::min(min_task->entry_name, *last_skipped_entry_name)",
+          "new_api": null,
+          "old_text": "std::min(min_task->entry_name, *last_skipped_entry_name)",
+          "new_text": null,
+          "old_line_content": "        String min_entry_name = last_skipped_entry_name ? std::min(min_task->entry_name, *last_skipped_entry_name) : min_task->entry_name;",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue_nodes.end()",
+          "new_text": null,
+          "old_line_content": "        begin_node = std::upper_bound(queue_nodes.begin(), queue_nodes.end(), min_entry_name);",
+          "new_line_content": "        /// We will recheck status of last executed tasks. It's useful if main thread was just restarted.",
+          "content_same": false
+        },
+        {
+          "line": 858,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "    constexpr UInt64 zookeeper_time_resolution = 1000;",
+          "new_line_content": "bool DDLWorker::canRemoveQueueEntry(const String & entry_name, const Coordination::Stat & stat)",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": "epochTime",
+          "new_api": null,
+          "old_text": "Poco::Timestamp().epochTime()",
+          "new_text": null,
+          "old_line_content": "    bool node_lifetime_is_expired = zookeeper_time_seconds + task_max_lifetime < Poco::Timestamp().epochTime();",
+          "new_line_content": "    /// Delete node if its lifetime is expired (according to task_max_lifetime parameter)",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "queue_nodes.end()",
+          "new_text": null,
+          "old_line_content": "    for (auto it = begin_node; it != queue_nodes.end() && !stop_flag; ++it)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "max_id.load(std::memory_order_relaxed)",
+          "new_text": null,
+          "old_line_content": "    bool node_is_outside_max_window = entry_number + max_tasks_in_queue < max_id.load(std::memory_order_relaxed);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "updateMaxDDLEntryID",
+          "new_api": null,
+          "old_text": "updateMaxDDLEntryID(entry_name)",
+          "new_text": null,
+          "old_line_content": "            updateMaxDDLEntryID(entry_name);",
+          "new_line_content": "        if (!task)",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "emplace",
+          "new_api": null,
+          "old_text": "last_skipped_entry_name.emplace(entry_name)",
+          "new_text": null,
+          "old_line_content": "            last_skipped_entry_name.emplace(entry_name);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": "fs::path(node_path)",
+          "new_api": null,
+          "old_text": "fs::path(node_path)",
+          "new_text": null,
+          "old_line_content": "    ops.emplace_back(zkutil::makeCreateRequest(fs::path(node_path) / \"active\", {}, zkutil::CreateMode::Persistent));",
+          "new_line_content": "void DDLWorker::createStatusDirs(const std::string & node_path, const ZooKeeperPtr & zookeeper)",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "fs::path(node_path)",
+          "new_api": null,
+          "old_text": "fs::path(node_path)",
+          "new_text": null,
+          "old_line_content": "    ops.emplace_back(zkutil::makeCreateRequest(fs::path(node_path) / \"finished\", {}, zkutil::CreateMode::Persistent));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": "std::move(task)",
+          "new_api": null,
+          "old_text": "std::move(task)",
+          "new_text": null,
+          "old_line_content": "        auto & saved_task = saveTask(std::move(task));",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "scheduleOrThrowOnError",
+          "new_api": null,
+          "old_text": "worker_pool->scheduleOrThrowOnError([this, &saved_task, zookeeper]()\n            {\n                setThreadName(\"DDLWorkerExec\");\n                processTask(saved_task, zookeeper);\n            })",
+          "new_text": null,
+          "old_line_content": "            worker_pool->scheduleOrThrowOnError([this, &saved_task, zookeeper]()",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "setThreadName",
+          "new_api": null,
+          "old_text": "setThreadName(\"DDLWorkerExec\")",
+          "new_text": null,
+          "old_line_content": "                setThreadName(\"DDLWorkerExec\");",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "responses.size()",
+          "new_text": null,
+          "old_line_content": "    bool both_already_exists = responses.size() == 2 && responses[0]->error == Coordination::Error::ZNODEEXISTS",
+          "new_line_content": "    bool both_created = code == Coordination::Error::ZOK;",
+          "content_same": false
+        },
+        {
+          "line": 884,
+          "old_api": "fs::path(node_path)",
+          "new_api": null,
+          "old_text": "fs::path(node_path)",
+          "new_text": null,
+          "old_line_content": "    assert(!both_already_exists || (zookeeper->exists(fs::path(node_path) / \"active\") && zookeeper->exists(fs::path(node_path) / \"finished\")));",
+          "new_line_content": "    /// Failed on attempt to create node_path/active because it exists, so node_path/finished must exist too",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": "processTask",
+          "new_api": null,
+          "old_text": "processTask(saved_task, zookeeper)",
+          "new_text": null,
+          "old_line_content": "            processTask(saved_task, zookeeper);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 894,
+          "old_api": "set",
+          "new_api": null,
+          "old_text": "cleanup_event->set()",
+          "new_text": null,
+          "old_line_content": "        cleanup_event->set();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "t->completely_processed.load()",
+          "new_text": null,
+          "old_line_content": "    current_tasks.remove_if([](const DDLTaskPtr & t) { return t->completely_processed.load(); });",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "current_tasks.size()",
+          "new_text": null,
+          "old_line_content": "    assert(current_tasks.size() <= pool_size);",
+          "new_line_content": "DDLTaskBase & DDLWorker::saveTask(DDLTaskPtr && task)",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": "std::move(task)",
+          "new_api": null,
+          "old_text": "std::move(task)",
+          "new_text": null,
+          "old_line_content": "    current_tasks.emplace_back(std::move(task));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::UNFINISHED, \"Cannot create status dirs for {}, \"\n                        \"most likely because someone is deleting it concurrently\", node_path)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(ErrorCodes::UNFINISHED, \"Cannot create status dirs for {}, \"",
+          "new_line_content": "    if (is_currently_deleting)",
+          "content_same": false
+        },
+        {
+          "line": 900,
+          "old_api": "Coordination::isHardwareError(code)",
+          "new_api": null,
+          "old_text": "Coordination::isHardwareError(code)",
+          "new_text": null,
+          "old_line_content": "    assert(Coordination::isHardwareError(code) || code == Coordination::Error::ZNONODE);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "zkutil::KeeperMultiException::check(code, ops, responses)",
+          "new_api": null,
+          "old_text": "zkutil::KeeperMultiException::check(code, ops, responses)",
+          "new_text": null,
+          "old_line_content": "    zkutil::KeeperMultiException::check(code, ops, responses);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "entry.hosts.empty()",
+          "new_text": null,
+          "old_line_content": "    if (entry.hosts.empty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 908,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Empty host list in a distributed DDL task\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "        throw Exception(\"Empty host list in a distributed DDL task\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "String DDLWorker::enqueueQuery(DDLLogEntry & entry)",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": "fs::path(queue_dir)",
+          "new_api": null,
+          "old_text": "fs::path(queue_dir)",
+          "new_text": null,
+          "old_line_content": "    String query_path_prefix = fs::path(queue_dir) / \"query-\";",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "makeQueryContext",
+          "new_api": null,
+          "old_text": "task.makeQueryContext(context, zookeeper)",
+          "new_text": null,
+          "old_line_content": "        auto query_context = task.makeQueryContext(context, zookeeper);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "emplace",
+          "new_api": null,
+          "old_text": "query_scope.emplace(*query_context)",
+          "new_text": null,
+          "old_line_content": "            query_scope.emplace(*query_context);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 922,
+          "old_api": "createStatusDirs",
+          "new_api": null,
+          "old_text": "createStatusDirs(node_path, zookeeper)",
+          "new_text": null,
+          "old_line_content": "        createStatusDirs(node_path, zookeeper);",
+          "new_line_content": "    /// Se we try to create status dirs here or later when we will execute entry.",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": "isExecuted",
+          "new_api": null,
+          "old_text": "txn->isExecuted()",
+          "new_text": null,
+          "old_line_content": "            if (!txn->isExecuted())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "commit",
+          "new_api": null,
+          "old_text": "txn->commit()",
+          "new_text": null,
+          "old_line_content": "                txn->commit();",
+          "new_line_content": "            /// Most queries commit changes to ZooKeeper right before applying local changes,",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": null,
+          "old_text": "getCurrentExceptionMessage(true)",
+          "new_text": null,
+          "old_line_content": "        LOG_INFO(log, \"An error occurred while creating auxiliary ZooKeeper directories in {} . They will be created later. Error : {}\", node_path, getCurrentExceptionMessage(true));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "ExecutionStatus::fromCurrentException()",
+          "new_api": null,
+          "old_text": "ExecutionStatus::fromCurrentException()",
+          "new_text": null,
+          "old_line_content": "        task.execution_status = ExecutionStatus::fromCurrentException();",
+          "new_line_content": "        if (task.is_initial_query)",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\")",
+          "new_text": null,
+          "old_line_content": "        tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\");",
+          "new_line_content": "            throw;",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!initialized)",
+          "new_text": null,
+          "old_line_content": "    assert(!initialized);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": "setThreadName",
+          "new_api": null,
+          "old_text": "setThreadName(\"DDLWorker\")",
+          "new_text": null,
+          "old_line_content": "    setThreadName(\"DDLWorker\");",
+          "new_line_content": "void DDLWorker::initializeMainThread()",
+          "content_same": false
+        },
+        {
+          "line": 937,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Started DDLWorker thread\")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Started DDLWorker thread\");",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": "code",
+          "new_api": null,
+          "old_text": "e.code()",
+          "new_text": null,
+          "old_line_content": "        bool no_sense_to_retry = e.code() != ErrorCodes::KEEPER_EXCEPTION &&",
+          "new_line_content": "        /// However, for the majority of exceptions there is no sense to retry, because most likely we will just",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "code",
+          "new_api": null,
+          "old_text": "e.code()",
+          "new_text": null,
+          "old_line_content": "                                 e.code() != ErrorCodes::NOT_A_LEADER &&",
+          "new_line_content": "        /// get the same exception again. So we return false only for several special exception codes,",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "code",
+          "new_api": null,
+          "old_text": "e.code()",
+          "new_text": null,
+          "old_line_content": "                                 e.code() != ErrorCodes::CANNOT_ASSIGN_ALTER &&",
+          "new_line_content": "        /// and consider query as executed with status \"failed\" and return true in other cases.",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": "getAndSetZooKeeper",
+          "new_api": null,
+          "old_text": "getAndSetZooKeeper()",
+          "new_text": null,
+          "old_line_content": "            auto zookeeper = getAndSetZooKeeper();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "fs::path(queue_dir)",
+          "new_api": null,
+          "old_text": "fs::path(queue_dir)",
+          "new_text": null,
+          "old_line_content": "            zookeeper->createAncestors(fs::path(queue_dir) / \"\");",
+          "new_line_content": "        try",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": "Coordination::isHardwareError(e.code)",
+          "new_api": null,
+          "old_text": "Coordination::isHardwareError(e.code)",
+          "new_text": null,
+          "old_line_content": "            if (!Coordination::isHardwareError(e.code))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "ExecutionStatus::fromCurrentException()",
+          "new_api": null,
+          "old_text": "ExecutionStatus::fromCurrentException()",
+          "new_text": null,
+          "old_line_content": "        task.execution_status = ExecutionStatus::fromCurrentException();",
+          "new_line_content": "        if (task.is_initial_query)",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\")",
+          "new_text": null,
+          "old_line_content": "        tryLogCurrentException(log, \"Query \" + query + \" wasn't finished successfully\");",
+          "new_line_content": "            throw;",
+          "content_same": false
+        },
+        {
+          "line": 954,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(false)",
+          "new_text": null,
+          "old_line_content": "                assert(false);  /// Catch such failures in tests with debug build",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "ExecutionStatus",
+          "new_api": null,
+          "old_text": "ExecutionStatus(0)",
+          "new_text": null,
+          "old_line_content": "    task.execution_status = ExecutionStatus(0);",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Executed query: {}\", query)",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Executed query: {}\", query);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 961,
+          "old_api": "tryLogCurrentException",
+          "new_api": null,
+          "old_text": "tryLogCurrentException(log, \"Cannot initialize DDL queue.\")",
+          "new_text": null,
+          "old_line_content": "            tryLogCurrentException(log, \"Cannot initialize DDL queue.\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "sleepForSeconds",
+          "new_api": null,
+          "old_text": "sleepForSeconds(5)",
+          "new_text": null,
+          "old_line_content": "        sleepForSeconds(5);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "new_api": null,
+          "old_text": "DDLTaskBase::getLogEntryNumber(entry_name)",
+          "new_text": null,
+          "old_line_content": "    UInt64 id = DDLTaskBase::getLogEntryNumber(entry_name);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "max_id.load(std::memory_order_relaxed)",
+          "new_text": null,
+          "old_line_content": "    auto prev_id = max_id.load(std::memory_order_relaxed);",
+          "new_line_content": "void DDLWorker::updateMaxDDLEntryID(const String & entry_name)",
+          "content_same": false
+        },
+        {
+          "line": 977,
+          "old_api": "std::make_unique<ThreadPool>(pool_size)",
+          "new_api": null,
+          "old_text": "std::make_unique<ThreadPool>(pool_size)",
+          "new_text": null,
+          "old_line_content": "            worker_pool = std::make_unique<ThreadPool>(pool_size);",
+          "new_line_content": "        /// It will wait for all threads in pool to finish and will not rethrow exceptions (if any).",
+          "content_same": false
+        },
+        {
+          "line": 979,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "current_tasks.clear()",
+          "new_text": null,
+          "old_line_content": "        current_tasks.clear();",
+          "new_line_content": "        if (1 < pool_size)",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Processing task {} ({})\", task.entry_name, task.entry.query)",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Processing task {} ({})\", task.entry_name, task.entry.query);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "getActiveNodePath",
+          "new_api": null,
+          "old_text": "task.getActiveNodePath()",
+          "new_text": null,
+          "old_line_content": "    String active_node_path = task.getActiveNodePath();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Starting DDLWorker thread\")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Starting DDLWorker thread\");",
+          "new_line_content": "    };",
+          "content_same": false
+        },
+        {
+          "line": 995,
+          "old_api": "initializeMainThread",
+          "new_api": null,
+          "old_text": "initializeMainThread()",
+          "new_text": null,
+          "old_line_content": "                initializeMainThread();",
+          "new_line_content": "            /// Reinitialize DDLWorker state (including ZooKeeper connection) if required",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Initialized DDLWorker thread\")",
+          "new_text": null,
+          "old_line_content": "                LOG_DEBUG(log, \"Initialized DDLWorker thread\");",
+          "new_line_content": "            if (!initialized)",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": "Coordination::isHardwareError(create_active_res)",
+          "new_api": null,
+          "old_text": "Coordination::isHardwareError(create_active_res)",
+          "new_text": null,
+          "old_line_content": "            assert(Coordination::isHardwareError(create_active_res));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "Coordination::Exception(create_active_res, active_node_path)",
+          "new_api": null,
+          "old_text": "Coordination::Exception(create_active_res, active_node_path)",
+          "new_text": null,
+          "old_line_content": "            throw Coordination::Exception(create_active_res, active_node_path);",
+          "new_line_content": "        if (create_active_res != Coordination::Error::ZNONODE && create_active_res != Coordination::Error::ZNODEEXISTS)",
+          "content_same": false
+        },
+        {
+          "line": 1000,
+          "old_api": "scheduleTasks",
+          "new_api": null,
+          "old_text": "scheduleTasks()",
+          "new_text": null,
+          "old_line_content": "            scheduleTasks();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": "createStatusDirs",
+          "new_api": null,
+          "old_text": "createStatusDirs(task.entry_path, zookeeper)",
+          "new_text": null,
+          "old_line_content": "            createStatusDirs(task.entry_path, zookeeper);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1007,
+          "old_api": "Coordination::isHardwareError(e.code)",
+          "new_api": null,
+          "old_text": "Coordination::isHardwareError(e.code)",
+          "new_text": null,
+          "old_line_content": "            if (Coordination::isHardwareError(e.code))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": "std::make_shared<Poco::Event>()",
+          "new_api": null,
+          "old_text": "std::make_shared<Poco::Event>()",
+          "new_text": null,
+          "old_line_content": "            zkutil::EventPtr eph_node_disappeared = std::make_shared<Poco::Event>();",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": "tryGet",
+          "new_api": null,
+          "old_text": "zookeeper->tryGet(active_node_path, dummy, nullptr, eph_node_disappeared)",
+          "new_text": null,
+          "old_line_content": "            if (zookeeper->tryGet(active_node_path, dummy, nullptr, eph_node_disappeared))",
+          "new_line_content": "            /// but our previous ephemeral node still exists.",
+          "content_same": false
+        },
+        {
+          "line": 1012,
+          "old_api": "std::make_unique<ThreadPool>(pool_size)",
+          "new_api": null,
+          "old_text": "std::make_unique<ThreadPool>(pool_size)",
+          "new_text": null,
+          "old_line_content": "                    worker_pool = std::make_unique<ThreadPool>(pool_size);",
+          "new_line_content": "                initialized = false;",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "                constexpr int timeout_ms = 5000;",
+          "new_line_content": "            String dummy;",
+          "content_same": false
+        },
+        {
+          "line": 1013,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": null,
+          "old_text": "getCurrentExceptionMessage(true)",
+          "new_text": null,
+          "old_line_content": "                LOG_INFO(log, \"Lost ZooKeeper connection, will try to connect again: {}\", getCurrentExceptionMessage(true));",
+          "new_line_content": "                /// Wait for pending async tasks",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::LOGICAL_ERROR, \"Ephemeral node {} still exists, \"\n                                    \"probably it's owned by someone else\", active_node_path)",
+          "new_text": null,
+          "old_line_content": "                    throw Exception(ErrorCodes::LOGICAL_ERROR, \"Ephemeral node {} still exists, \"",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": "getCurrentExceptionMessage",
+          "new_api": null,
+          "old_text": "getCurrentExceptionMessage(true)",
+          "new_text": null,
+          "old_line_content": "                LOG_ERROR(log, \"Unexpected ZooKeeper error, will try to restart main thread: {}\", getCurrentExceptionMessage(true));",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1018,
+          "old_api": "reset_state",
+          "new_api": null,
+          "old_text": "reset_state()",
+          "new_text": null,
+          "old_line_content": "                reset_state();",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": "create",
+          "new_api": null,
+          "old_text": "zookeeper->create(active_node_path, {}, zkutil::CreateMode::Ephemeral)",
+          "new_text": null,
+          "old_line_content": "        zookeeper->create(active_node_path, {}, zkutil::CreateMode::Ephemeral);",
+          "new_line_content": "            }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 59,
+      "total_additions": 159,
+      "total_deletions": 159,
+      "total_api_changes": 377
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 377,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          322,
+          324
+        ]
+      }
+    },
+    "api_calls_before": 354,
+    "api_calls_after": 354,
+    "diff_info": {
+      "added_lines": 7,
+      "removed_lines": 4,
+      "total_diff_lines": 24
+    }
+  }
+}

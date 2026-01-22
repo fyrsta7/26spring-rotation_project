@@ -1,0 +1,31 @@
+diff --git a/lib/SILPasses/PerformanceInliner.cpp b/lib/SILPasses/PerformanceInliner.cpp
+index 2fc3f5aa96b..1b2f831334b 100644
+--- a/lib/SILPasses/PerformanceInliner.cpp
++++ b/lib/SILPasses/PerformanceInliner.cpp
+@@ -137,10 +137,24 @@ bool SILPerformanceInliner::inlineCallsIntoFunction(SILFunction *Caller) {
+       continue;
+     }
+ 
++    // Check if the function takes a closure.
++    bool HasClosure = false;
++    for (auto &Op : AI->getAllOperands()) {
++      if (isa<PartialApplyInst>(Op.get().getDef())) {
++        HasClosure = true;
++        break;
++      }
++    }
++
++    // If the function accepts a closure increase the threshold because
++    // inlining has the potential to eliminate the closure.
++    unsigned BoostFactor = HasClosure ? 2 : 1;
++
+     // Calculate the inlining cost of the callee.
+-    unsigned CalleeCost = getFunctionCost(Callee, Caller, InlineCostThreshold);
++    unsigned CalleeCost = getFunctionCost(Callee, Caller,
++                                          InlineCostThreshold * BoostFactor);
+ 
+-    if (CalleeCost > InlineCostThreshold) {
++    if (CalleeCost > InlineCostThreshold * BoostFactor) {
+       DEBUG(llvm::dbgs() << "  Function too big to inline. Skipping.\n");
+       continue;
+     }

@@ -1,0 +1,727 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mongo/modified_file/4f1af057ed0434099fe13dbaa50b00589d84bb48",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mongo/modified_file/4f1af057ed0434099fe13dbaa50b00589d84bb48/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mongo/modified_file/4f1af057ed0434099fe13dbaa50b00589d84bb48/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mongo/modified_file/4f1af057ed0434099fe13dbaa50b00589d84bb48/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 141,
+          "old_api": "str::stream()",
+          "new_api": "Status",
+          "old_text": "str::stream()",
+          "new_text": "Status(ErrorCodes::BadValue,\n                      str::stream() << \"Minimum value for semaphore is 5; given \" << newSize)",
+          "old_line_content": "                      str::stream() << \"Maximum value for semaphore is \" << SEM_VALUE_MAX",
+          "new_line_content": "        return Status(ErrorCodes::BadValue,",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": "release",
+          "new_api": "Status",
+          "old_text": "release()",
+          "new_text": "Status(ErrorCodes::BadValue,\n                      str::stream() << \"Maximum value for semaphore is \" << SEM_VALUE_MAX\n                                    << \"; given \" << newSize)",
+          "old_line_content": "        release();",
+          "new_line_content": "        return Status(ErrorCodes::BadValue,",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": "fetchAndAdd",
+          "new_api": "str::stream()",
+          "old_text": "_outof.fetchAndAdd(1)",
+          "new_text": "str::stream()",
+          "old_line_content": "        _outof.fetchAndAdd(1);",
+          "new_line_content": "                      str::stream() << \"Maximum value for semaphore is \" << SEM_VALUE_MAX",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": "waitForTicket",
+          "new_api": "release",
+          "old_text": "waitForTicket()",
+          "new_text": "release()",
+          "old_line_content": "        waitForTicket();",
+          "new_line_content": "        release();",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "subtractAndFetch",
+          "new_api": "fetchAndAdd",
+          "old_text": "_outof.subtractAndFetch(1)",
+          "new_text": "_outof.fetchAndAdd(1)",
+          "old_line_content": "        _outof.subtractAndFetch(1);",
+          "new_line_content": "        _outof.fetchAndAdd(1);",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": "Status::OK()",
+          "new_api": "waitForTicket",
+          "old_text": "Status::OK()",
+          "new_text": "waitForTicket()",
+          "old_line_content": "    return Status::OK();",
+          "new_line_content": "        waitForTicket();",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": "sem_getvalue",
+          "new_api": "Status::OK()",
+          "old_text": "sem_getvalue(&_sem, &val)",
+          "new_text": "Status::OK()",
+          "old_line_content": "    check(sem_getvalue(&_sem, &val));",
+          "new_line_content": "    return Status::OK();",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "available",
+          "new_api": "sem_getvalue",
+          "old_text": "available()",
+          "new_text": "sem_getvalue(&_sem, &val)",
+          "old_line_content": "    return outof() - available();",
+          "new_line_content": "    check(sem_getvalue(&_sem, &val));",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "store",
+          "new_api": "str",
+          "old_text": "_outof.store(newSize)",
+          "new_text": "ss.str()",
+          "old_line_content": "    _outof.store(newSize);",
+          "new_line_content": "        std::string errmsg = ss.str();",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "load",
+          "new_api": "LOGV2",
+          "old_text": "_outof.load()",
+          "new_text": "LOGV2(23120, \"{errmsg}\", \"errmsg\"_attr = errmsg)",
+          "old_line_content": "    _num = _outof.load() - used;",
+          "new_line_content": "        LOGV2(23120, \"{errmsg}\", \"errmsg\"_attr = errmsg);",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "Status::OK()",
+          "new_api": "store",
+          "old_text": "Status::OK()",
+          "new_text": "_outof.store(newSize)",
+          "old_line_content": "    return Status::OK();",
+          "new_line_content": "    _outof.store(newSize);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 128,
+          "old_api": null,
+          "new_api": "checkForInterrupt",
+          "old_text": null,
+          "new_text": "opCtx->checkForInterrupt()",
+          "old_line_content": "void TicketHolder::release() {",
+          "new_line_content": "            opCtx->checkForInterrupt();",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": null,
+          "new_api": "sem_post",
+          "old_text": null,
+          "new_text": "sem_post(&_sem)",
+          "old_line_content": "",
+          "new_line_content": "    check(sem_post(&_sem));",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": null,
+          "new_api": "str::stream()",
+          "old_text": null,
+          "new_text": "str::stream()",
+          "old_line_content": "                                    << \"; given \" << newSize);",
+          "new_line_content": "                      str::stream() << \"Minimum value for semaphore is 5; given \" << newSize);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "subtractAndFetch",
+          "old_text": null,
+          "new_text": "_outof.subtractAndFetch(1)",
+          "old_line_content": "}",
+          "new_line_content": "        _outof.subtractAndFetch(1);",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "_outof.load()",
+          "old_line_content": "    int val = 0;",
+          "new_line_content": "    invariant(_outof.load() == newSize);",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": null,
+          "new_api": "available",
+          "old_text": null,
+          "new_text": "available()",
+          "old_line_content": "}",
+          "new_line_content": "    return outof() - available();",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "_outof.load()",
+          "old_line_content": "TicketHolder::TicketHolder(int num) : _outof(num), _num(num) {}",
+          "new_line_content": "    return _outof.load();",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": null,
+          "new_api": "_tryAcquire",
+          "old_text": null,
+          "new_text": "_tryAcquire()",
+          "old_line_content": "",
+          "new_line_content": "    return _tryAcquire();",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "_tryAcquire",
+          "old_text": null,
+          "new_text": "_tryAcquire()",
+          "old_line_content": "",
+          "new_line_content": "        opCtx->waitForConditionOrInterrupt(_newTicket, lk, [this] { return _tryAcquire(); });",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "_tryAcquire",
+          "old_text": null,
+          "new_text": "_tryAcquire()",
+          "old_line_content": "    stdx::unique_lock<Latch> lk(_mutex);",
+          "new_line_content": "        _newTicket.wait(lk, [this] { return _tryAcquire(); });",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "waitForConditionOrInterruptUntil",
+          "old_text": null,
+          "new_text": "opCtx->waitForConditionOrInterruptUntil(\n            _newTicket, lk, until, [this] { return _tryAcquire(); })",
+          "old_line_content": "    }",
+          "new_line_content": "        return opCtx->waitForConditionOrInterruptUntil(",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "_tryAcquire",
+          "old_text": null,
+          "new_text": "_tryAcquire()",
+          "old_line_content": "}",
+          "new_line_content": "            _newTicket, lk, until, [this] { return _tryAcquire(); });",
+          "content_same": false
+        },
+        {
+          "line": 205,
+          "old_api": null,
+          "new_api": "wait_until",
+          "old_text": null,
+          "new_text": "_newTicket.wait_until(\n            lk, until.toSystemTimePoint(), [this] { return _tryAcquire(); })",
+          "old_line_content": "void TicketHolder::release() {",
+          "new_line_content": "        return _newTicket.wait_until(",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": null,
+          "new_api": "_tryAcquire",
+          "old_text": null,
+          "new_text": "_tryAcquire()",
+          "old_line_content": "    {",
+          "new_line_content": "            lk, until.toSystemTimePoint(), [this] { return _tryAcquire(); });",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "notify_one",
+          "old_text": null,
+          "new_text": "_newTicket.notify_one()",
+          "old_line_content": "",
+          "new_line_content": "    _newTicket.notify_one();",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "_outof.load()",
+          "old_line_content": "",
+          "new_line_content": "    int used = _outof.load() - _num;",
+          "content_same": false
+        },
+        {
+          "line": 99,
+          "old_api": null,
+          "new_api": "sem_trywait",
+          "old_text": null,
+          "new_text": "sem_trywait(&_sem)",
+          "old_line_content": "    struct timespec ts;",
+          "new_line_content": "    if (sem_trywait(&_sem) == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "Status",
+          "old_text": null,
+          "new_text": "Status(ErrorCodes::BadValue, errmsg)",
+          "old_line_content": "",
+          "new_line_content": "        return Status(ErrorCodes::BadValue, errmsg);",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "_outof.load()",
+          "old_line_content": "}",
+          "new_line_content": "    _num = _outof.load() - used;",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "notify_all",
+          "old_text": null,
+          "new_text": "_newTicket.notify_all()",
+          "old_line_content": "    return _num;",
+          "new_line_content": "    _newTicket.notify_all();",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": null,
+          "new_api": "Status::OK()",
+          "old_text": null,
+          "new_text": "Status::OK()",
+          "old_line_content": "}",
+          "new_line_content": "    return Status::OK();",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": null,
+          "new_api": "Date_t::now()",
+          "old_text": null,
+          "new_text": "Date_t::now()",
+          "old_line_content": "            // If we reached the deadline without being interrupted, we have completely timed out.",
+          "new_line_content": "    Date_t deadline = std::min(until, Date_t::now() + intervalMs);",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": null,
+          "new_api": "tsFromDate",
+          "old_text": null,
+          "new_text": "tsFromDate(deadline, ts)",
+          "old_line_content": "            if (deadline == until)",
+          "new_line_content": "    tsFromDate(deadline, ts);",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": null,
+          "new_api": "sem_timedwait",
+          "old_text": null,
+          "new_text": "sem_timedwait(&_sem, &ts)",
+          "old_line_content": "",
+          "new_line_content": "    while (0 != sem_timedwait(&_sem, &ts)) {",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": null,
+          "new_api": "outof",
+          "old_text": null,
+          "new_text": "outof()",
+          "old_line_content": "}",
+          "new_line_content": "    return outof() - _num;",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": null,
+          "new_api": "Date_t::now()",
+          "old_text": null,
+          "new_text": "Date_t::now()",
+          "old_line_content": "",
+          "new_line_content": "            deadline = std::min(until, Date_t::now() + intervalMs);",
+          "content_same": false
+        },
+        {
+          "line": 120,
+          "old_api": null,
+          "new_api": "tsFromDate",
+          "old_text": null,
+          "new_text": "tsFromDate(deadline, ts)",
+          "old_line_content": "        // To correctly handle errors from sem_timedwait, we should check for interrupts last.",
+          "new_line_content": "            tsFromDate(deadline, ts);",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "_outof.load()",
+          "old_line_content": "        if (_num < 0) {",
+          "new_line_content": "    return _outof.load();",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": null,
+          "new_api": "failWithErrno",
+          "old_text": null,
+          "new_text": "failWithErrno(errno)",
+          "old_line_content": "        if (opCtx)",
+          "new_line_content": "            failWithErrno(errno);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 129,
+          "old_api": "sem_post",
+          "new_api": null,
+          "old_text": "sem_post(&_sem)",
+          "new_text": null,
+          "old_line_content": "    check(sem_post(&_sem));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": "Status",
+          "new_api": null,
+          "old_text": "Status(ErrorCodes::BadValue,\n                      str::stream() << \"Minimum value for semaphore is 5; given \" << newSize)",
+          "new_text": null,
+          "old_line_content": "        return Status(ErrorCodes::BadValue,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": "str::stream()",
+          "new_api": null,
+          "old_text": "str::stream()",
+          "new_text": null,
+          "old_line_content": "                      str::stream() << \"Minimum value for semaphore is 5; given \" << newSize);",
+          "new_line_content": "Status TicketHolder::resize(int newSize) {",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "Status",
+          "new_api": null,
+          "old_text": "Status(ErrorCodes::BadValue,\n                      str::stream() << \"Maximum value for semaphore is \" << SEM_VALUE_MAX\n                                    << \"; given \" << newSize)",
+          "new_text": null,
+          "old_line_content": "        return Status(ErrorCodes::BadValue,",
+          "new_line_content": "    if (newSize < 5)",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "_outof.load()",
+          "new_text": null,
+          "old_line_content": "    while (_outof.load() < newSize) {",
+          "new_line_content": "    if (newSize > SEM_VALUE_MAX)",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "_outof.load()",
+          "new_text": null,
+          "old_line_content": "    return _outof.load();",
+          "new_line_content": "int TicketHolder::used() const {",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "_tryAcquire",
+          "new_api": null,
+          "old_text": "_tryAcquire()",
+          "new_text": null,
+          "old_line_content": "    return _tryAcquire();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "_tryAcquire",
+          "new_api": null,
+          "old_text": "_tryAcquire()",
+          "new_text": null,
+          "old_line_content": "        opCtx->waitForConditionOrInterrupt(_newTicket, lk, [this] { return _tryAcquire(); });",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": "_tryAcquire",
+          "new_api": null,
+          "old_text": "_tryAcquire()",
+          "new_text": null,
+          "old_line_content": "        _newTicket.wait(lk, [this] { return _tryAcquire(); });",
+          "new_line_content": "    stdx::unique_lock<Latch> lk(_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "waitForConditionOrInterruptUntil",
+          "new_api": null,
+          "old_text": "opCtx->waitForConditionOrInterruptUntil(\n            _newTicket, lk, until, [this] { return _tryAcquire(); })",
+          "new_text": null,
+          "old_line_content": "        return opCtx->waitForConditionOrInterruptUntil(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": "_tryAcquire",
+          "new_api": null,
+          "old_text": "_tryAcquire()",
+          "new_text": null,
+          "old_line_content": "            _newTicket, lk, until, [this] { return _tryAcquire(); });",
+          "new_line_content": "bool TicketHolder::waitForTicketUntil(OperationContext* opCtx, Date_t until) {",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "wait_until",
+          "new_api": null,
+          "old_text": "_newTicket.wait_until(\n            lk, until.toSystemTimePoint(), [this] { return _tryAcquire(); })",
+          "new_text": null,
+          "old_line_content": "        return _newTicket.wait_until(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "_tryAcquire",
+          "new_api": null,
+          "old_text": "_tryAcquire()",
+          "new_text": null,
+          "old_line_content": "            lk, until.toSystemTimePoint(), [this] { return _tryAcquire(); });",
+          "new_line_content": "    if (opCtx) {",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": "notify_one",
+          "new_api": null,
+          "old_text": "_newTicket.notify_one()",
+          "new_text": null,
+          "old_line_content": "    _newTicket.notify_one();",
+          "new_line_content": "void TicketHolder::release() {",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "_outof.load()",
+          "new_text": null,
+          "old_line_content": "    int used = _outof.load() - _num;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "str",
+          "new_api": null,
+          "old_text": "ss.str()",
+          "new_text": null,
+          "old_line_content": "        std::string errmsg = ss.str();",
+          "new_line_content": "    if (used > newSize) {",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "LOGV2",
+          "new_api": null,
+          "old_text": "LOGV2(23120, \"{errmsg}\", \"errmsg\"_attr = errmsg)",
+          "new_text": null,
+          "old_line_content": "        LOGV2(23120, \"{errmsg}\", \"errmsg\"_attr = errmsg);",
+          "new_line_content": "        std::stringstream ss;",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "Status",
+          "new_api": null,
+          "old_text": "Status(ErrorCodes::BadValue, errmsg)",
+          "new_text": null,
+          "old_line_content": "        return Status(ErrorCodes::BadValue, errmsg);",
+          "new_line_content": "        ss << \"can't resize since we're using (\" << used << \") \"",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "notify_all",
+          "new_api": null,
+          "old_text": "_newTicket.notify_all()",
+          "new_text": null,
+          "old_line_content": "    _newTicket.notify_all();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": "Date_t::now()",
+          "new_api": null,
+          "old_text": "Date_t::now()",
+          "new_text": null,
+          "old_line_content": "    Date_t deadline = std::min(until, Date_t::now() + intervalMs);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "tsFromDate",
+          "new_api": null,
+          "old_text": "tsFromDate(deadline, ts)",
+          "new_text": null,
+          "old_line_content": "    tsFromDate(deadline, ts);",
+          "new_line_content": "    // To support interrupting ticket acquisition while still benefiting from semaphores, we do a",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": "sem_timedwait",
+          "new_api": null,
+          "old_text": "sem_timedwait(&_sem, &ts)",
+          "new_text": null,
+          "old_line_content": "    while (0 != sem_timedwait(&_sem, &ts)) {",
+          "new_line_content": "    // The wait period interval is the smaller of the default interval and the provided",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": "outof",
+          "new_api": null,
+          "old_text": "outof()",
+          "new_text": null,
+          "old_line_content": "    return outof() - _num;",
+          "new_line_content": "int TicketHolder::available() const {",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "Date_t::now()",
+          "new_api": null,
+          "old_text": "Date_t::now()",
+          "new_text": null,
+          "old_line_content": "            deadline = std::min(until, Date_t::now() + intervalMs);",
+          "new_line_content": "        if (errno == ETIMEDOUT) {",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": "tsFromDate",
+          "new_api": null,
+          "old_text": "tsFromDate(deadline, ts)",
+          "new_text": null,
+          "old_line_content": "            tsFromDate(deadline, ts);",
+          "new_line_content": "            // If we reached the deadline without being interrupted, we have completely timed out.",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "_outof.load()",
+          "new_text": null,
+          "old_line_content": "    return _outof.load();",
+          "new_line_content": "int TicketHolder::used() const {",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": "failWithErrno",
+          "new_api": null,
+          "old_text": "failWithErrno(errno)",
+          "new_text": null,
+          "old_line_content": "            failWithErrno(errno);",
+          "new_line_content": "                return false;",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "checkForInterrupt",
+          "new_api": null,
+          "old_text": "opCtx->checkForInterrupt()",
+          "new_text": null,
+          "old_line_content": "            opCtx->checkForInterrupt();",
+          "new_line_content": "        }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 11,
+      "total_additions": 29,
+      "total_deletions": 28,
+      "total_api_changes": 68
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 68,
+        "non_api_lines": 4,
+        "non_api_line_numbers": [
+          98,
+          100,
+          101,
+          102
+        ]
+      }
+    },
+    "api_calls_before": 64,
+    "api_calls_after": 65,
+    "diff_info": {
+      "added_lines": 5,
+      "removed_lines": 0,
+      "total_diff_lines": 17
+    }
+  }
+}

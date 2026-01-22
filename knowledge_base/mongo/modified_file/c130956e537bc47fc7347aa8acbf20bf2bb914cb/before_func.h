@@ -1,0 +1,5 @@
+
+namespace mongoutils {
+
+    namespace str {
+

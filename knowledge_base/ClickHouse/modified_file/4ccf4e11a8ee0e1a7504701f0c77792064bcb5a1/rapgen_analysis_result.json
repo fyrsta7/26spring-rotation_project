@@ -1,0 +1,2015 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/4ccf4e11a8ee0e1a7504701f0c77792064bcb5a1",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/4ccf4e11a8ee0e1a7504701f0c77792064bcb5a1/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/4ccf4e11a8ee0e1a7504701f0c77792064bcb5a1/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/4ccf4e11a8ee0e1a7504701f0c77792064bcb5a1/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 166,
+          "old_api": "end",
+          "new_api": "std::move(part_ranges)",
+          "old_text": "all_parts_to_read.end()",
+          "new_text": "std::move(part_ranges)",
+          "old_line_content": "        auto the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "new_line_content": "        Part part{.description = std::move(part_ranges), .replicas = {announcement.replica_num}};",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "getPartNameV1",
+          "new_api": "find",
+          "old_text": "part.info.getPartNameV1()",
+          "new_text": "all_parts_to_read.find(part)",
+          "old_line_content": "            [&part] (const Part & other) { return other.description.info.getPartNameV1() == part.info.getPartNameV1(); });",
+          "new_line_content": "        auto the_same_it = all_parts_to_read.find(part);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "end",
+          "new_api": "isDisjoint",
+          "old_text": "all_parts_to_read.end()",
+          "new_text": "other.description.info.isDisjoint(part.description.info)",
+          "old_line_content": "        auto covering_or_the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "new_line_content": "            [&part] (const Part & other) { return !other.description.info.isDisjoint(part.description.info); });",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": "std::move(part)",
+          "new_api": "push_back",
+          "old_text": "std::move(part)",
+          "new_text": "parts_diff.push_back(insert_it)",
+          "old_line_content": "        auto [insert_it, _] = all_parts_to_read.emplace(Part{.description = std::move(part), .replicas = {announcement.replica_num}});",
+          "new_line_content": "        parts_diff.push_back(insert_it);",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": "front",
+          "new_api": "pop_front",
+          "old_text": "parts_diff.front()",
+          "new_text": "parts_diff.pop_front()",
+          "old_line_content": "        auto current_part_it = parts_diff.front();",
+          "new_line_content": "        parts_diff.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "pop_front",
+          "new_api": "computeConsistentHash",
+          "old_text": "parts_diff.pop_front()",
+          "new_text": "computeConsistentHash(current_part_it->description.info)",
+          "old_line_content": "        parts_diff.pop_front();",
+          "new_line_content": "        auto consistent_hash = computeConsistentHash(current_part_it->description.info);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "front",
+          "new_api": "computeConsistentHash",
+          "old_text": "delayed_parts.front()",
+          "new_text": "computeConsistentHash(current_part_it->description.info)",
+          "old_line_content": "        auto current_part_it = delayed_parts.front();",
+          "new_line_content": "        auto consistent_hash = computeConsistentHash(current_part_it->description.info);",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "emplace_back",
+          "new_api": "pop_front",
+          "old_text": "reading_state[consistent_hash].emplace_back(current_part_it)",
+          "new_text": "delayed_parts.pop_front()",
+          "old_line_content": "            reading_state[consistent_hash].emplace_back(current_part_it);",
+          "new_line_content": "            delayed_parts.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": "size",
+          "new_api": "emplace_back",
+          "old_text": "current_part_it->replicas.size()",
+          "new_text": "reading_state[replica].emplace_back(current_part_it)",
+          "old_line_content": "        auto replica = *(std::next(current_part_it->replicas.begin(), thread_local_rng() % current_part_it->replicas.size()));",
+          "new_line_content": "        reading_state[replica].emplace_back(current_part_it);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "emplace_back",
+          "new_api": "pop_front",
+          "old_text": "reading_state[replica].emplace_back(current_part_it)",
+          "new_text": "delayed_parts.pop_front()",
+          "old_line_content": "        reading_state[replica].emplace_back(current_part_it);",
+          "new_line_content": "        delayed_parts.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "back",
+          "new_api": "getNumberOfMarks",
+          "old_text": "response.description.back().ranges.emplace_back(new_range)",
+          "new_text": "new_range.getNumberOfMarks()",
+          "old_line_content": "                response.description.back().ranges.emplace_back(new_range);",
+          "new_line_content": "                current_mark_size += new_range.getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "front",
+          "new_api": "pop_front",
+          "old_text": "part->description.ranges.front()",
+          "new_text": "part->description.ranges.pop_front()",
+          "old_line_content": "            response.description.back().ranges.emplace_back(part->description.ranges.front());",
+          "new_line_content": "            part->description.ranges.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "front",
+          "new_api": "pop_front",
+          "old_text": "delayed_parts.front()",
+          "new_text": "delayed_parts.pop_front()",
+          "old_line_content": "        auto part = delayed_parts.front();",
+          "new_line_content": "        delayed_parts.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "pop_front",
+          "new_api": "emplace_back",
+          "old_text": "delayed_parts.pop_front()",
+          "new_text": "reading_state[request.replica_num].emplace_back(part)",
+          "old_line_content": "        delayed_parts.pop_front();",
+          "new_line_content": "        reading_state[request.replica_num].emplace_back(part);",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "emplace_back",
+          "new_api": "selectPartsAndRanges",
+          "old_text": "reading_state[request.replica_num].emplace_back(part)",
+          "new_text": "selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "old_line_content": "        reading_state[request.replica_num].emplace_back(part);",
+          "new_line_content": "        selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": "end",
+          "new_api": "contains",
+          "old_text": "all_parts_to_read.end()",
+          "new_text": "part.info.contains(other.description.info)",
+          "old_line_content": "        auto covering_or_the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "new_line_content": "            [&part] (const Part & other) { return other.description.info.contains(part.info) ||  part.info.contains(other.description.info); });",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "contains",
+          "new_api": "getPartNameV1",
+          "old_text": "global_part_it->replicas.contains(request.replica_num)",
+          "new_text": "part.info.getPartNameV1()",
+          "old_line_content": "        if (!global_part_it->replicas.contains(request.replica_num))",
+          "new_line_content": "            throw Exception(ErrorCodes::LOGICAL_ERROR, \"Part {} doesn't exist on replica {} according to the global state\", part.info.getPartNameV1(), request.replica_num);",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "emplace_front",
+          "new_api": "getNumberOfMarks",
+          "old_text": "part.ranges.emplace_front(new_range)",
+          "new_text": "new_range.getNumberOfMarks()",
+          "old_line_content": "                    part.ranges.emplace_front(new_range);",
+          "new_line_content": "                    current_mark_size += new_range.getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "back",
+          "new_api": "pop_back",
+          "old_text": "global_part_it->description.ranges.back()",
+          "new_text": "global_part_it->description.ranges.pop_back()",
+          "old_line_content": "                part.ranges.emplace_front(global_part_it->description.ranges.back());",
+          "new_line_content": "                global_part_it->description.ranges.pop_back();",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "emplace_back",
+          "new_api": "getNumberOfMarks",
+          "old_text": "part.ranges.emplace_back(new_range)",
+          "new_text": "new_range.getNumberOfMarks()",
+          "old_line_content": "                    part.ranges.emplace_back(new_range);",
+          "new_line_content": "                    current_mark_size += new_range.getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": "front",
+          "new_api": "pop_front",
+          "old_text": "global_part_it->description.ranges.front()",
+          "new_text": "global_part_it->description.ranges.pop_front()",
+          "old_line_content": "                part.ranges.emplace_back(global_part_it->description.ranges.front());",
+          "new_line_content": "                global_part_it->description.ranges.pop_front();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 514,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.front().getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "                current_mark_size += global_part_it->description.ranges.front().getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "describe",
+          "old_text": null,
+          "new_text": "response.describe()",
+          "old_line_content": "",
+          "new_line_content": "    LOG_TRACE(log, \"Going to respond to replica {} with {}\", request.replica_num, response.describe());",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "initialize",
+          "old_text": null,
+          "new_text": "initialize()",
+          "old_line_content": "        mode = announcement.mode;",
+          "new_line_content": "        initialize();",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "std::move(announcement)",
+          "old_text": null,
+          "new_text": "std::move(announcement)",
+          "old_line_content": "",
+          "new_line_content": "    return pimpl->handleInitialAllRangesAnnouncement(std::move(announcement));",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "initialize",
+          "old_text": null,
+          "new_text": "initialize()",
+          "old_line_content": "        mode = request.mode;",
+          "new_line_content": "        initialize();",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": null,
+          "new_api": "std::move(request)",
+          "old_text": null,
+          "new_text": "std::move(request)",
+          "old_line_content": "",
+          "new_line_content": "    return pimpl->handleRequest(std::move(request));",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "initialize",
+          "old_text": null,
+          "new_text": "initialize()",
+          "old_line_content": "    {",
+          "new_line_content": "        initialize();",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": null,
+          "new_api": "markReplicaAsUnavailable",
+          "old_text": null,
+          "new_text": "pimpl->markReplicaAsUnavailable(replica_number)",
+          "old_line_content": "",
+          "new_line_content": "    return pimpl->markReplicaAsUnavailable(replica_number);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "std::make_unique<DefaultCoordinator>(replicas_count)",
+          "old_text": null,
+          "new_text": "std::make_unique<DefaultCoordinator>(replicas_count)",
+          "old_line_content": "        case CoordinationMode::Default:",
+          "new_line_content": "            pimpl = std::make_unique<DefaultCoordinator>(replicas_count);",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count)",
+          "old_text": null,
+          "new_text": "std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count)",
+          "old_line_content": "        case CoordinationMode::WithOrder:",
+          "new_line_content": "            pimpl = std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count);",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count)",
+          "old_text": null,
+          "new_text": "std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count)",
+          "old_line_content": "        case CoordinationMode::ReverseOrder:",
+          "new_line_content": "            pimpl = std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count);",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": null,
+          "new_api": "std::move(progress_callback)",
+          "old_text": null,
+          "new_text": "std::move(progress_callback)",
+          "old_line_content": "    if (progress_callback)",
+          "new_line_content": "        pimpl->setProgressCallback(std::move(progress_callback));",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": null,
+          "new_api": "std::move(callback)",
+          "old_text": null,
+          "new_text": "std::move(callback)",
+          "old_line_content": "    // store callback since pimpl can be not instantiated yet",
+          "new_line_content": "    progress_callback = std::move(callback);",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": null,
+          "new_api": "std::move(progress_callback)",
+          "old_text": null,
+          "new_text": "std::move(progress_callback)",
+          "old_line_content": "    if (pimpl)",
+          "new_line_content": "        pimpl->setProgressCallback(std::move(progress_callback));",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "        /// We have the same part - add the info about presence on current replica to it",
+          "new_line_content": "        if (the_same_it != all_parts_to_read.end())",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "the_same_it->replicas.insert(announcement.replica_num)",
+          "old_line_content": "        {",
+          "new_line_content": "            the_same_it->replicas.insert(announcement.replica_num);",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "",
+          "new_line_content": "        auto covering_or_the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "        /// It is covering part or we have covering - skip it",
+          "new_line_content": "        if (covering_or_the_same_it != all_parts_to_read.end())",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": null,
+          "new_api": "emplace",
+          "old_text": null,
+          "new_text": "all_parts_to_read.emplace(part)",
+          "old_line_content": "",
+          "new_line_content": "        auto [insert_it, _] = all_parts_to_read.emplace(part);",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "parts_diff.empty()",
+          "old_line_content": "    /// Split all parts by consistent hash",
+          "new_line_content": "    while (!parts_diff.empty())",
+          "content_same": false
+        },
+        {
+          "line": 189,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "parts_diff.front()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto current_part_it = parts_diff.front();",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "contains",
+          "old_text": null,
+          "new_text": "current_part_it->replicas.contains(consistent_hash)",
+          "old_line_content": "        /// Check whether the new part can easy go to replica queue",
+          "new_line_content": "        if (current_part_it->replicas.contains(consistent_hash))",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "reading_state[consistent_hash].emplace_back(current_part_it)",
+          "old_line_content": "        {",
+          "new_line_content": "            reading_state[consistent_hash].emplace_back(current_part_it);",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "delayed_parts.emplace_back(current_part_it)",
+          "old_line_content": "        /// Add to delayed parts",
+          "new_line_content": "        delayed_parts.emplace_back(current_part_it);",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number)",
+          "old_line_content": "{",
+          "new_line_content": "    LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number);",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "finalizeReadingState",
+          "old_text": null,
+          "new_text": "finalizeReadingState()",
+          "old_line_content": "    if (sent_initial_requests == replicas_count - unavailable_replicas_count)",
+          "new_line_content": "        finalizeReadingState();",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "delayed_parts.empty()",
+          "old_line_content": "    /// Clear all the delayed queue",
+          "new_line_content": "    while (!delayed_parts.empty())",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "delayed_parts.front()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto current_part_it = delayed_parts.front();",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "contains",
+          "old_text": null,
+          "new_text": "current_part_it->replicas.contains(consistent_hash)",
+          "old_line_content": "",
+          "new_line_content": "        if (current_part_it->replicas.contains(consistent_hash))",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "reading_state[consistent_hash].emplace_back(current_part_it)",
+          "old_line_content": "        {",
+          "new_line_content": "            reading_state[consistent_hash].emplace_back(current_part_it);",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "current_part_it->replicas.size()",
+          "old_line_content": "        /// In this situation just assign to a random replica which has this part",
+          "new_line_content": "        auto replica = *(std::next(current_part_it->replicas.begin(), thread_local_rng() % current_part_it->replicas.size()));",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": null,
+          "new_api": "progress_callback",
+          "old_text": null,
+          "new_text": "progress_callback(progress)",
+          "old_line_content": "        progress.total_rows_to_read = total_rows_to_read;",
+          "new_line_content": "        progress_callback(progress);",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Total rows to read: {}\", total_rows_to_read)",
+          "old_line_content": "",
+          "new_line_content": "        LOG_DEBUG(log, \"Total rows to read: {}\", total_rows_to_read);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": null,
+          "new_api": "fmt::join(all_parts_to_read, \"; \")",
+          "old_text": null,
+          "new_text": "fmt::join(all_parts_to_read, \"; \")",
+          "old_line_content": "",
+          "new_line_content": "    LOG_DEBUG(log, \"Reading state is fully initialized: {}\", fmt::join(all_parts_to_read, \"; \"));",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "std::move(announcement)",
+          "old_text": null,
+          "new_text": "std::move(announcement)",
+          "old_line_content": "",
+          "new_line_content": "    updateReadingState(std::move(announcement));",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "stats.size()",
+          "old_line_content": "",
+          "new_line_content": "    if (replica_num >= stats.size())",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Sent initial requests: {} Replicas count: {}\", sent_initial_requests, replicas_count)",
+          "old_line_content": "    ++sent_initial_requests;",
+          "new_line_content": "    LOG_DEBUG(log, \"Sent initial requests: {} Replicas count: {}\", sent_initial_requests, replicas_count);",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": null,
+          "new_api": "finalizeReadingState",
+          "old_text": null,
+          "new_text": "finalizeReadingState()",
+          "old_line_content": "    if (sent_initial_requests == replicas_count)",
+          "new_line_content": "        finalizeReadingState();",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": null,
+          "new_api": "LOG_TEST",
+          "old_text": null,
+          "new_text": "LOG_TEST(log, \"Current mark size {} is bigger than min_number_marks {}\", current_mark_size, min_number_of_marks)",
+          "old_line_content": "        {",
+          "new_line_content": "            LOG_TEST(log, \"Current mark size {} is bigger than min_number_marks {}\", current_mark_size, min_number_of_marks);",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "part->description.ranges.empty()",
+          "old_line_content": "",
+          "new_line_content": "        if (part->description.ranges.empty())",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": null,
+          "new_api": "getPartNameV1",
+          "old_text": null,
+          "new_text": "part->description.info.getPartNameV1()",
+          "old_line_content": "        {",
+          "new_line_content": "            LOG_TEST(log, \"Part {} is already empty in reading state\", part->description.info.getPartNameV1());",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "part->replicas.end()",
+          "old_line_content": "",
+          "new_line_content": "        if (std::find(part->replicas.begin(), part->replicas.end(), replica_num) == part->replicas.end())",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "getPartNameV1",
+          "old_text": null,
+          "new_text": "part->description.info.getPartNameV1()",
+          "old_line_content": "        {",
+          "new_line_content": "            LOG_TEST(log, \"Not found part {} on replica {}\", part->description.info.getPartNameV1(), replica_num);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "response.description.push_back({\n            .info = part->description.info,\n            .ranges = {},\n        })",
+          "old_line_content": "",
+          "new_line_content": "        response.description.push_back({",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "part->description.ranges.empty()",
+          "old_line_content": "",
+          "new_line_content": "        while (!part->description.ranges.empty() && current_mark_size < min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "part->description.ranges.front()",
+          "old_line_content": "        {",
+          "new_line_content": "            auto & range = part->description.ranges.front();",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "getNumberOfMarks",
+          "old_text": null,
+          "new_text": "range.getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "            if (range.getNumberOfMarks() > min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "response.description.back().ranges.emplace_back(new_range)",
+          "old_line_content": "",
+          "new_line_content": "                response.description.back().ranges.emplace_back(new_range);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "part->description.ranges.front().getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "            current_mark_size += part->description.ranges.front().getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "LOG_TRACE",
+          "old_text": null,
+          "new_text": "LOG_TRACE(log, \"Handling request from replica {}, minimal marks size is {}\", request.replica_num, request.min_number_of_marks)",
+          "old_line_content": "{",
+          "new_line_content": "    LOG_TRACE(log, \"Handling request from replica {}, minimal marks size is {}\", request.replica_num, request.min_number_of_marks);",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": null,
+          "new_api": "selectPartsAndRanges",
+          "old_text": null,
+          "new_text": "selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "old_line_content": "    /// 1. Try to select from preferred set of parts for current replica",
+          "new_line_content": "    selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "delayed_parts.empty()",
+          "old_line_content": "    /// 2. Try to use parts from delayed queue",
+          "new_line_content": "    while (!delayed_parts.empty() && current_mark_size < request.min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "delayed_parts.front()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto part = delayed_parts.front();",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "selectPartsAndRanges",
+          "old_text": null,
+          "new_text": "selectPartsAndRanges(reading_state[i], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "old_line_content": "            if (i != request.replica_num)",
+          "new_line_content": "                selectPartsAndRanges(reading_state[i], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "response.description.empty()",
+          "old_line_content": "",
+          "new_line_content": "    if (response.description.empty())",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "describe",
+          "old_text": null,
+          "new_text": "response.describe()",
+          "old_line_content": "",
+          "new_line_content": "    LOG_TRACE(log, \"Going to respond to replica {} with {}\", request.replica_num, response.describe());",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": null,
+          "new_api": "maybe_unused",
+          "old_text": null,
+          "new_text": "maybe_unused",
+          "old_line_content": "public:",
+          "new_line_content": "    explicit InOrderCoordinator([[ maybe_unused ]] size_t replicas_count_)",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": null,
+          "new_api": "toString",
+          "old_text": null,
+          "new_text": "toString(stats)",
+          "old_line_content": "    {",
+          "new_line_content": "        LOG_DEBUG(log, \"Coordination done: {}\", toString(stats));",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "maybe_unused",
+          "old_text": null,
+          "new_text": "maybe_unused",
+          "old_line_content": "",
+          "new_line_content": "    ParallelReadResponse handleRequest([[ maybe_unused ]]  ParallelReadRequest request) override;",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "magic_enum::enum_name(mode)",
+          "old_text": null,
+          "new_text": "magic_enum::enum_name(mode)",
+          "old_line_content": "",
+          "new_line_content": "    Poco::Logger * log = &Poco::Logger::get(fmt::format(\"{}{}\", magic_enum::enum_name(mode), \"Coordinator\"));",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number)",
+          "old_line_content": "{",
+          "new_line_content": "    LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number);",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": null,
+          "new_api": "describe",
+          "old_text": null,
+          "new_text": "announcement.describe()",
+          "old_line_content": "{",
+          "new_line_content": "    LOG_TRACE(log, \"Received an announcement {}\", announcement.describe());",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "        /// We have the same part - add the info about presence on current replica to it",
+          "new_line_content": "        if (the_same_it != all_parts_to_read.end())",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "the_same_it->replicas.insert(announcement.replica_num)",
+          "old_line_content": "        {",
+          "new_line_content": "            the_same_it->replicas.insert(announcement.replica_num);",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "",
+          "new_line_content": "        auto covering_or_the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "        /// It is covering part or we have covering - skip it",
+          "new_line_content": "        if (covering_or_the_same_it != all_parts_to_read.end())",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "std::move(part)",
+          "old_text": null,
+          "new_text": "std::move(part)",
+          "old_line_content": "",
+          "new_line_content": "        auto [inserted_it, _] = all_parts_to_read.emplace(Part{.description = std::move(part), .replicas = {announcement.replica_num}});",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "ranges.end()",
+          "old_line_content": "        auto & ranges = inserted_it->description.ranges;",
+          "new_line_content": "        std::sort(ranges.begin(), ranges.end());",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "progress_callback",
+          "old_text": null,
+          "new_text": "progress_callback(progress)",
+          "old_line_content": "        progress.total_rows_to_read = new_rows_to_read;",
+          "new_line_content": "        progress_callback(progress);",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "LOG_DEBUG",
+          "old_text": null,
+          "new_text": "LOG_DEBUG(log, \"Updated total rows to read: added {} rows, total {} rows\", new_rows_to_read, total_rows_to_read)",
+          "old_line_content": "",
+          "new_line_content": "        LOG_DEBUG(log, \"Updated total rows to read: added {} rows, total {} rows\", new_rows_to_read, total_rows_to_read);",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::LOGICAL_ERROR,\n            \"Replica {} decided to read in {} mode, not in {}. This is a bug\",\n            request.replica_num, magic_enum::enum_name(request.mode), magic_enum::enum_name(mode))",
+          "old_line_content": "    if (request.mode != mode)",
+          "new_line_content": "        throw Exception(ErrorCodes::LOGICAL_ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "magic_enum::enum_name(mode)",
+          "old_text": null,
+          "new_text": "magic_enum::enum_name(mode)",
+          "old_line_content": "            \"Replica {} decided to read in {} mode, not in {}. This is a bug\",",
+          "new_line_content": "            request.replica_num, magic_enum::enum_name(request.mode), magic_enum::enum_name(mode));",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": null,
+          "new_api": "describe",
+          "old_text": null,
+          "new_text": "request.describe()",
+          "old_line_content": "",
+          "new_line_content": "    LOG_TRACE(log, \"Got request from replica {}, data {}\", request.replica_num, request.describe());",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto global_part_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "all_parts_to_read.end()",
+          "old_line_content": "",
+          "new_line_content": "        if (global_part_it == all_parts_to_read.end())",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": null,
+          "new_api": "contains",
+          "old_text": null,
+          "new_text": "global_part_it->replicas.contains(request.replica_num)",
+          "old_line_content": "",
+          "new_line_content": "        if (!global_part_it->replicas.contains(request.replica_num))",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.empty()",
+          "old_line_content": "        {",
+          "new_line_content": "            while (!global_part_it->description.ranges.empty() && current_mark_size < request.min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.back()",
+          "old_line_content": "            {",
+          "new_line_content": "                auto range = global_part_it->description.ranges.back();",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "getNumberOfMarks",
+          "old_text": null,
+          "new_text": "range.getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "                if (range.getNumberOfMarks() > request.min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.back()",
+          "old_line_content": "",
+          "new_line_content": "                    global_part_it->description.ranges.back() = range;",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "emplace_front",
+          "old_text": null,
+          "new_text": "part.ranges.emplace_front(new_range)",
+          "old_line_content": "",
+          "new_line_content": "                    part.ranges.emplace_front(new_range);",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.back().getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "                current_mark_size += global_part_it->description.ranges.back().getNumberOfMarks();",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.empty()",
+          "old_line_content": "        {",
+          "new_line_content": "            while (!global_part_it->description.ranges.empty() && current_mark_size < request.min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.front()",
+          "old_line_content": "            {",
+          "new_line_content": "                auto range = global_part_it->description.ranges.front();",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": null,
+          "new_api": "getNumberOfMarks",
+          "old_text": null,
+          "new_text": "range.getNumberOfMarks()",
+          "old_line_content": "",
+          "new_line_content": "                if (range.getNumberOfMarks() > request.min_number_of_marks)",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": null,
+          "new_api": "front",
+          "old_text": null,
+          "new_text": "global_part_it->description.ranges.front()",
+          "old_line_content": "",
+          "new_line_content": "                    global_part_it->description.ranges.front() = range;",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "part.ranges.emplace_back(new_range)",
+          "old_line_content": "",
+          "new_line_content": "                    part.ranges.emplace_back(new_range);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 517,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.pop_front()",
+          "new_text": null,
+          "old_line_content": "                global_part_it->description.ranges.pop_front();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "describe",
+          "new_api": null,
+          "old_text": "response.describe()",
+          "new_text": null,
+          "old_line_content": "    LOG_TRACE(log, \"Going to respond to replica {} with {}\", request.replica_num, response.describe());",
+          "new_line_content": "    return response;",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "initialize",
+          "new_api": null,
+          "old_text": "initialize()",
+          "new_text": null,
+          "old_line_content": "        initialize();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "std::move(announcement)",
+          "new_api": null,
+          "old_text": "std::move(announcement)",
+          "new_text": null,
+          "old_line_content": "    return pimpl->handleInitialAllRangesAnnouncement(std::move(announcement));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": "initialize",
+          "new_api": null,
+          "old_text": "initialize()",
+          "new_text": null,
+          "old_line_content": "        initialize();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "std::move(request)",
+          "new_api": null,
+          "old_text": "std::move(request)",
+          "new_text": null,
+          "old_line_content": "    return pimpl->handleRequest(std::move(request));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "initialize",
+          "new_api": null,
+          "old_text": "initialize()",
+          "new_text": null,
+          "old_line_content": "        initialize();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "markReplicaAsUnavailable",
+          "new_api": null,
+          "old_text": "pimpl->markReplicaAsUnavailable(replica_number)",
+          "new_text": null,
+          "old_line_content": "    return pimpl->markReplicaAsUnavailable(replica_number);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": "std::make_unique<DefaultCoordinator>(replicas_count)",
+          "new_api": null,
+          "old_text": "std::make_unique<DefaultCoordinator>(replicas_count)",
+          "new_text": null,
+          "old_line_content": "            pimpl = std::make_unique<DefaultCoordinator>(replicas_count);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count)",
+          "new_api": null,
+          "old_text": "std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count)",
+          "new_text": null,
+          "old_line_content": "            pimpl = std::make_unique<InOrderCoordinator<CoordinationMode::WithOrder>>(replicas_count);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count)",
+          "new_api": null,
+          "old_text": "std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count)",
+          "new_text": null,
+          "old_line_content": "            pimpl = std::make_unique<InOrderCoordinator<CoordinationMode::ReverseOrder>>(replicas_count);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "std::move(progress_callback)",
+          "new_api": null,
+          "old_text": "std::move(progress_callback)",
+          "new_text": null,
+          "old_line_content": "        pimpl->setProgressCallback(std::move(progress_callback));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "std::move(callback)",
+          "new_api": null,
+          "old_text": "std::move(callback)",
+          "new_text": null,
+          "old_line_content": "    progress_callback = std::move(callback);",
+          "new_line_content": "    if (pimpl)",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": "std::move(progress_callback)",
+          "new_api": null,
+          "old_text": "std::move(progress_callback)",
+          "new_text": null,
+          "old_line_content": "        pimpl->setProgressCallback(std::move(progress_callback));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        if (the_same_it != all_parts_to_read.end())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "the_same_it->replicas.insert(announcement.replica_num)",
+          "new_text": null,
+          "old_line_content": "            the_same_it->replicas.insert(announcement.replica_num);",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "isDisjoint",
+          "new_api": null,
+          "old_text": "other.description.info.isDisjoint(part.info)",
+          "new_text": null,
+          "old_line_content": "            [&part] (const Part & other) { return !other.description.info.isDisjoint(part.info); });",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        if (covering_or_the_same_it != all_parts_to_read.end())",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "parts_diff.push_back(insert_it)",
+          "new_text": null,
+          "old_line_content": "        parts_diff.push_back(insert_it);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "parts_diff.empty()",
+          "new_text": null,
+          "old_line_content": "    while (!parts_diff.empty())",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": "computeConsistentHash",
+          "new_api": null,
+          "old_text": "computeConsistentHash(current_part_it->description.info)",
+          "new_text": null,
+          "old_line_content": "        auto consistent_hash = computeConsistentHash(current_part_it->description.info);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "contains",
+          "new_api": null,
+          "old_text": "current_part_it->replicas.contains(consistent_hash)",
+          "new_text": null,
+          "old_line_content": "        if (current_part_it->replicas.contains(consistent_hash))",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "reading_state[consistent_hash].emplace_back(current_part_it)",
+          "new_text": null,
+          "old_line_content": "            reading_state[consistent_hash].emplace_back(current_part_it);",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "delayed_parts.emplace_back(current_part_it)",
+          "new_text": null,
+          "old_line_content": "        delayed_parts.emplace_back(current_part_it);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number)",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "finalizeReadingState",
+          "new_api": null,
+          "old_text": "finalizeReadingState()",
+          "new_text": null,
+          "old_line_content": "        finalizeReadingState();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "delayed_parts.empty()",
+          "new_text": null,
+          "old_line_content": "    while (!delayed_parts.empty())",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "computeConsistentHash",
+          "new_api": null,
+          "old_text": "computeConsistentHash(current_part_it->description.info)",
+          "new_text": null,
+          "old_line_content": "        auto consistent_hash = computeConsistentHash(current_part_it->description.info);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": "contains",
+          "new_api": null,
+          "old_text": "current_part_it->replicas.contains(consistent_hash)",
+          "new_text": null,
+          "old_line_content": "        if (current_part_it->replicas.contains(consistent_hash))",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "delayed_parts.pop_front()",
+          "new_text": null,
+          "old_line_content": "            delayed_parts.pop_front();",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "delayed_parts.pop_front()",
+          "new_text": null,
+          "old_line_content": "        delayed_parts.pop_front();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "progress_callback",
+          "new_api": null,
+          "old_text": "progress_callback(progress)",
+          "new_text": null,
+          "old_line_content": "        progress_callback(progress);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Total rows to read: {}\", total_rows_to_read)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Total rows to read: {}\", total_rows_to_read);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "fmt::join(all_parts_to_read, \"; \")",
+          "new_api": null,
+          "old_text": "fmt::join(all_parts_to_read, \"; \")",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Reading state is fully initialized: {}\", fmt::join(all_parts_to_read, \"; \"));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "std::move(announcement)",
+          "new_api": null,
+          "old_text": "std::move(announcement)",
+          "new_text": null,
+          "old_line_content": "    updateReadingState(std::move(announcement));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "stats.size()",
+          "new_text": null,
+          "old_line_content": "        throw Exception(ErrorCodes::LOGICAL_ERROR, \"Replica number ({}) is bigger than total replicas count ({})\", replica_num, stats.size());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 268,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Sent initial requests: {} Replicas count: {}\", sent_initial_requests, replicas_count)",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Sent initial requests: {} Replicas count: {}\", sent_initial_requests, replicas_count);",
+          "new_line_content": "    if (sent_initial_requests == replicas_count)",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": "finalizeReadingState",
+          "new_api": null,
+          "old_text": "finalizeReadingState()",
+          "new_text": null,
+          "old_line_content": "        finalizeReadingState();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "LOG_TEST",
+          "new_api": null,
+          "old_text": "LOG_TEST(log, \"Current mark size {} is bigger than min_number_marks {}\", current_mark_size, min_number_of_marks)",
+          "new_text": null,
+          "old_line_content": "            LOG_TEST(log, \"Current mark size {} is bigger than min_number_marks {}\", current_mark_size, min_number_of_marks);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "part->description.ranges.empty()",
+          "new_text": null,
+          "old_line_content": "        if (part->description.ranges.empty())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": "getPartNameV1",
+          "new_api": null,
+          "old_text": "part->description.info.getPartNameV1()",
+          "new_text": null,
+          "old_line_content": "            LOG_TEST(log, \"Part {} is already empty in reading state\", part->description.info.getPartNameV1());",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "part->replicas.end()",
+          "new_text": null,
+          "old_line_content": "        if (std::find(part->replicas.begin(), part->replicas.end(), replica_num) == part->replicas.end())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "getPartNameV1",
+          "new_api": null,
+          "old_text": "part->description.info.getPartNameV1()",
+          "new_text": null,
+          "old_line_content": "            LOG_TEST(log, \"Not found part {} on replica {}\", part->description.info.getPartNameV1(), replica_num);",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "response.description.push_back({\n            .info = part->description.info,\n            .ranges = {},\n        })",
+          "new_text": null,
+          "old_line_content": "        response.description.push_back({",
+          "new_line_content": "            .info = part->description.info,",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "part->description.ranges.empty()",
+          "new_text": null,
+          "old_line_content": "        while (!part->description.ranges.empty() && current_mark_size < min_number_of_marks)",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "part->description.ranges.front()",
+          "new_text": null,
+          "old_line_content": "            auto & range = part->description.ranges.front();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "            if (range.getNumberOfMarks() > min_number_of_marks)",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "new_range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "                current_mark_size += new_range.getNumberOfMarks();",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "part->description.ranges.pop_front()",
+          "new_text": null,
+          "old_line_content": "            part->description.ranges.pop_front();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": "LOG_TRACE",
+          "new_api": null,
+          "old_text": "LOG_TRACE(log, \"Handling request from replica {}, minimal marks size is {}\", request.replica_num, request.min_number_of_marks)",
+          "new_text": null,
+          "old_line_content": "    LOG_TRACE(log, \"Handling request from replica {}, minimal marks size is {}\", request.replica_num, request.min_number_of_marks);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": "selectPartsAndRanges",
+          "new_api": null,
+          "old_text": "selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "new_text": null,
+          "old_line_content": "    selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "delayed_parts.empty()",
+          "new_text": null,
+          "old_line_content": "    while (!delayed_parts.empty() && current_mark_size < request.min_number_of_marks)",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "selectPartsAndRanges",
+          "new_api": null,
+          "old_text": "selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "new_text": null,
+          "old_line_content": "        selectPartsAndRanges(reading_state[request.replica_num], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": "selectPartsAndRanges",
+          "new_api": null,
+          "old_text": "selectPartsAndRanges(reading_state[i], request.replica_num, request.min_number_of_marks, current_mark_size, response)",
+          "new_text": null,
+          "old_line_content": "                selectPartsAndRanges(reading_state[i], request.replica_num, request.min_number_of_marks, current_mark_size, response);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "response.description.empty()",
+          "new_text": null,
+          "old_line_content": "    if (response.description.empty())",
+          "new_line_content": "        response.finish = true;",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "describe",
+          "new_api": null,
+          "old_text": "response.describe()",
+          "new_text": null,
+          "old_line_content": "    LOG_TRACE(log, \"Going to respond to replica {} with {}\", request.replica_num, response.describe());",
+          "new_line_content": "    return response;",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "maybe_unused",
+          "new_api": null,
+          "old_text": "maybe_unused",
+          "new_text": null,
+          "old_line_content": "    explicit InOrderCoordinator([[ maybe_unused ]] size_t replicas_count_)",
+          "new_line_content": "        : ParallelReplicasReadingCoordinator::ImplInterface(replicas_count_)",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": "toString",
+          "new_api": null,
+          "old_text": "toString(stats)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Coordination done: {}\", toString(stats));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "maybe_unused",
+          "new_api": null,
+          "old_text": "maybe_unused",
+          "new_text": null,
+          "old_line_content": "    void handleInitialAllRangesAnnouncement([[ maybe_unused ]]  InitialAllRangesAnnouncement announcement) override;",
+          "new_line_content": "    void markReplicaAsUnavailable(size_t replica_number) override;",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": "magic_enum::enum_name(mode)",
+          "new_api": null,
+          "old_text": "magic_enum::enum_name(mode)",
+          "new_text": null,
+          "old_line_content": "    Poco::Logger * log = &Poco::Logger::get(fmt::format(\"{}{}\", magic_enum::enum_name(mode), \"Coordinator\"));",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number)",
+          "new_text": null,
+          "old_line_content": "    LOG_DEBUG(log, \"Replica number {} is unavailable\", replica_number);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "describe",
+          "new_api": null,
+          "old_text": "announcement.describe()",
+          "new_text": null,
+          "old_line_content": "    LOG_TRACE(log, \"Received an announcement {}\", announcement.describe());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        auto the_same_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "new_line_content": "            [&part] (const Part & other) { return other.description.info == part.info; });",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        if (the_same_it != all_parts_to_read.end())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "the_same_it->replicas.insert(announcement.replica_num)",
+          "new_text": null,
+          "old_line_content": "            the_same_it->replicas.insert(announcement.replica_num);",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "contains",
+          "new_api": null,
+          "old_text": "part.info.contains(other.description.info)",
+          "new_text": null,
+          "old_line_content": "            [&part] (const Part & other) { return other.description.info.contains(part.info) ||  part.info.contains(other.description.info); });",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        if (covering_or_the_same_it != all_parts_to_read.end())",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "std::move(part)",
+          "new_api": null,
+          "old_text": "std::move(part)",
+          "new_text": null,
+          "old_line_content": "        auto [inserted_it, _] = all_parts_to_read.emplace(Part{.description = std::move(part), .replicas = {announcement.replica_num}});",
+          "new_line_content": "        auto & ranges = inserted_it->description.ranges;",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "ranges.end()",
+          "new_text": null,
+          "old_line_content": "        std::sort(ranges.begin(), ranges.end());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "progress_callback",
+          "new_api": null,
+          "old_text": "progress_callback(progress)",
+          "new_text": null,
+          "old_line_content": "        progress_callback(progress);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "LOG_DEBUG",
+          "new_api": null,
+          "old_text": "LOG_DEBUG(log, \"Updated total rows to read: added {} rows, total {} rows\", new_rows_to_read, total_rows_to_read)",
+          "new_text": null,
+          "old_line_content": "        LOG_DEBUG(log, \"Updated total rows to read: added {} rows, total {} rows\", new_rows_to_read, total_rows_to_read);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::LOGICAL_ERROR,\n            \"Replica {} decided to read in {} mode, not in {}. This is a bug\",\n            request.replica_num, magic_enum::enum_name(request.mode), magic_enum::enum_name(mode))",
+          "new_text": null,
+          "old_line_content": "        throw Exception(ErrorCodes::LOGICAL_ERROR,",
+          "new_line_content": "            \"Replica {} decided to read in {} mode, not in {}. This is a bug\",",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "magic_enum::enum_name(mode)",
+          "new_api": null,
+          "old_text": "magic_enum::enum_name(mode)",
+          "new_text": null,
+          "old_line_content": "            request.replica_num, magic_enum::enum_name(request.mode), magic_enum::enum_name(mode));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 452,
+          "old_api": "describe",
+          "new_api": null,
+          "old_text": "request.describe()",
+          "new_text": null,
+          "old_line_content": "    LOG_TRACE(log, \"Got request from replica {}, data {}\", request.replica_num, request.describe());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        auto global_part_it = std::find_if(all_parts_to_read.begin(), all_parts_to_read.end(),",
+          "new_line_content": "            [&part] (const Part & other) { return other.description.info == part.info; });",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "all_parts_to_read.end()",
+          "new_text": null,
+          "old_line_content": "        if (global_part_it == all_parts_to_read.end())",
+          "new_line_content": "            continue;",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "getPartNameV1",
+          "new_api": null,
+          "old_text": "part.info.getPartNameV1()",
+          "new_text": null,
+          "old_line_content": "            throw Exception(ErrorCodes::LOGICAL_ERROR, \"Part {} doesn't exist on replica {} according to the global state\", part.info.getPartNameV1(), request.replica_num);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.empty()",
+          "new_text": null,
+          "old_line_content": "            while (!global_part_it->description.ranges.empty() && current_mark_size < request.min_number_of_marks)",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.back()",
+          "new_text": null,
+          "old_line_content": "                auto range = global_part_it->description.ranges.back();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "                if (range.getNumberOfMarks() > request.min_number_of_marks)",
+          "new_line_content": "                {",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.back()",
+          "new_text": null,
+          "old_line_content": "                    global_part_it->description.ranges.back() = range;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "new_range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "                    current_mark_size += new_range.getNumberOfMarks();",
+          "new_line_content": "                    continue;",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": "pop_back",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.pop_back()",
+          "new_text": null,
+          "old_line_content": "                global_part_it->description.ranges.pop_back();",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.empty()",
+          "new_text": null,
+          "old_line_content": "            while (!global_part_it->description.ranges.empty() && current_mark_size < request.min_number_of_marks)",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.front()",
+          "new_text": null,
+          "old_line_content": "                auto range = global_part_it->description.ranges.front();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "                if (range.getNumberOfMarks() > request.min_number_of_marks)",
+          "new_line_content": "                {",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "global_part_it->description.ranges.front()",
+          "new_text": null,
+          "old_line_content": "                    global_part_it->description.ranges.front() = range;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": "getNumberOfMarks",
+          "new_api": null,
+          "old_text": "new_range.getNumberOfMarks()",
+          "new_text": null,
+          "old_line_content": "                    current_mark_size += new_range.getNumberOfMarks();",
+          "new_line_content": "                    continue;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 21,
+      "total_additions": 88,
+      "total_deletions": 88,
+      "total_api_changes": 197
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 197,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          168,
+          164
+        ]
+      }
+    },
+    "api_calls_before": 185,
+    "api_calls_after": 181,
+    "diff_info": {
+      "added_lines": 5,
+      "removed_lines": 6,
+      "total_diff_lines": 36
+    }
+  }
+}

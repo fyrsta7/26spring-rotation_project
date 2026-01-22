@@ -1,0 +1,439 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/micropython/modified_file/1d399c3c888d1a6b21093b44272531cd14547b33",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/micropython/modified_file/1d399c3c888d1a6b21093b44272531cd14547b33/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/micropython/modified_file/1d399c3c888d1a6b21093b44272531cd14547b33/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/micropython/modified_file/1d399c3c888d1a6b21093b44272531cd14547b33/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 63,
+          "old_api": "sl_FsGetInfo",
+          "new_api": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "old_text": "sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo)",
+          "new_text": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "old_line_content": "            if (sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo) != 0) {",
+          "new_line_content": "        sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER);",
+          "content_same": false
+        },
+        {
+          "line": 64,
+          "old_api": "FS_MODE_OPEN_CREATE",
+          "new_api": "sl_FsGetInfo",
+          "old_text": "FS_MODE_OPEN_CREATE(SFLASH_BLOCK_SIZE, 0)",
+          "new_text": "sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo)",
+          "old_line_content": "                if (!sl_FsOpen(sflash_block_name, FS_MODE_OPEN_CREATE(SFLASH_BLOCK_SIZE, 0), NULL, &fileHandle)) {",
+          "new_line_content": "        if (!sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo)) {",
+          "content_same": false
+        },
+        {
+          "line": 65,
+          "old_api": "sl_FsClose",
+          "new_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_text": "sl_FsClose(fileHandle, NULL, NULL, 0)",
+          "new_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_line_content": "                    sl_FsClose(fileHandle, NULL, NULL, 0);",
+          "new_line_content": "            sl_LockObjUnlock (&wlan_LockObj);",
+          "content_same": false
+        },
+        {
+          "line": 68,
+          "old_api": "sflash_access",
+          "new_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_text": "sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)",
+          "new_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_line_content": "                    if (!sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)) {",
+          "new_line_content": "        sl_LockObjUnlock (&wlan_LockObj);",
+          "content_same": false
+        },
+        {
+          "line": 79,
+          "old_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_api": "memset",
+          "old_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_text": "memset(sflash_block_cache, 0xFF, SFLASH_BLOCK_SIZE)",
+          "old_line_content": "                sl_LockObjUnlock (&wlan_LockObj);",
+          "new_line_content": "                    memset(sflash_block_cache, 0xFF, SFLASH_BLOCK_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE)",
+          "new_api": "print_block_name (sflash_ublock)",
+          "old_text": "memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE)",
+          "new_text": "print_block_name (sflash_ublock)",
+          "old_line_content": "        memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE);",
+          "new_line_content": "            print_block_name (sflash_ublock);",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "sflash_access",
+          "new_api": "sflash_disk_flush",
+          "old_text": "sflash_access(FS_MODE_OPEN_READ, sl_FsRead)",
+          "new_text": "sflash_disk_flush()",
+          "old_line_content": "            if (!sflash_access(FS_MODE_OPEN_READ, sl_FsRead)) {",
+          "new_line_content": "            if (sflash_disk_flush() != RES_OK) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 129,
+          "old_api": null,
+          "new_api": "memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE)",
+          "old_text": null,
+          "new_text": "memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE)",
+          "old_line_content": "DRESULT sflash_disk_write(const BYTE *buff, DWORD sector, UINT count) {",
+          "new_line_content": "        memcpy (buff, &sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], SFLASH_SECTOR_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 164,
+          "old_api": null,
+          "new_api": "memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE)",
+          "old_text": null,
+          "new_text": "memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE)",
+          "old_line_content": "}",
+          "new_line_content": "        memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE);",
+          "content_same": false
+        },
+        {
+          "line": 72,
+          "old_api": null,
+          "new_api": "print_block_name (i)",
+          "old_text": null,
+          "new_text": "print_block_name (i)",
+          "old_line_content": "                else {",
+          "new_line_content": "            print_block_name (i);",
+          "content_same": false
+        },
+        {
+          "line": 73,
+          "old_api": null,
+          "new_api": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "old_text": null,
+          "new_text": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "old_line_content": "                    // Unexpected failure while creating the file",
+          "new_line_content": "            sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER);",
+          "content_same": false
+        },
+        {
+          "line": 75,
+          "old_api": null,
+          "new_api": "sl_FsGetInfo",
+          "old_text": null,
+          "new_text": "sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo)",
+          "old_line_content": "                    return RES_ERROR;",
+          "new_line_content": "            if (sl_FsGetInfo(sflash_block_name, 0, &FsFileInfo) != 0) {",
+          "content_same": false
+        },
+        {
+          "line": 76,
+          "old_api": null,
+          "new_api": "FS_MODE_OPEN_CREATE",
+          "old_text": null,
+          "new_text": "FS_MODE_OPEN_CREATE(SFLASH_BLOCK_SIZE, 0)",
+          "old_line_content": "                }",
+          "new_line_content": "                if (!sl_FsOpen(sflash_block_name, FS_MODE_OPEN_CREATE(SFLASH_BLOCK_SIZE, 0), NULL, &fileHandle)) {",
+          "content_same": false
+        },
+        {
+          "line": 77,
+          "old_api": null,
+          "new_api": "sl_FsClose",
+          "old_text": null,
+          "new_text": "sl_FsClose(fileHandle, NULL, NULL, 0)",
+          "old_line_content": "            } else {",
+          "new_line_content": "                    sl_FsClose(fileHandle, NULL, NULL, 0);",
+          "content_same": false
+        },
+        {
+          "line": 78,
+          "old_api": null,
+          "new_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_text": null,
+          "new_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_line_content": "                // file system exists, break here to speed up booting",
+          "new_line_content": "                    sl_LockObjUnlock (&wlan_LockObj);",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "sflash_access",
+          "old_text": null,
+          "new_text": "sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)",
+          "old_line_content": "}",
+          "new_line_content": "        if (!sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)) {",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": null,
+          "new_api": "sflash_disk_flush",
+          "old_text": null,
+          "new_text": "sflash_disk_flush()",
+          "old_line_content": "        sflash_ublock = (sector + index) / SFLASH_SECTORS_PER_BLOCK;",
+          "new_line_content": "        sflash_disk_flush();",
+          "content_same": false
+        },
+        {
+          "line": 80,
+          "old_api": null,
+          "new_api": "sflash_access",
+          "old_text": null,
+          "new_text": "sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)",
+          "old_line_content": "                break;",
+          "new_line_content": "                    if (!sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)) {",
+          "content_same": false
+        },
+        {
+          "line": 86,
+          "old_api": null,
+          "new_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_text": null,
+          "new_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_line_content": "    }",
+          "new_line_content": "                    sl_LockObjUnlock (&wlan_LockObj);",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": null,
+          "new_api": "sflash_disk_flush",
+          "old_text": null,
+          "new_text": "sflash_disk_flush()",
+          "old_line_content": "                return RES_ERROR;",
+          "new_line_content": "            if (sflash_disk_flush() != RES_OK) {",
+          "content_same": false
+        },
+        {
+          "line": 90,
+          "old_api": null,
+          "new_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_text": null,
+          "new_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "old_line_content": "DRESULT sflash_disk_status(void) {",
+          "new_line_content": "            sl_LockObjUnlock (&wlan_LockObj);",
+          "content_same": false
+        },
+        {
+          "line": 124,
+          "old_api": null,
+          "new_api": "sflash_access",
+          "old_text": null,
+          "new_text": "sflash_access(FS_MODE_OPEN_READ, sl_FsRead)",
+          "old_line_content": "        buff += SFLASH_BLOCK_SIZE;",
+          "new_line_content": "            if (!sflash_access(FS_MODE_OPEN_READ, sl_FsRead)) {",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "print_block_name (sflash_ublock)",
+          "old_text": null,
+          "new_text": "print_block_name (sflash_ublock)",
+          "old_line_content": "        // Copy the input sector to the block cache",
+          "new_line_content": "            print_block_name (sflash_ublock);",
+          "content_same": false
+        },
+        {
+          "line": 62,
+          "old_api": null,
+          "new_api": "print_block_name (SFLASH_BLOCK_COUNT - 1)",
+          "old_text": null,
+          "new_text": "print_block_name (SFLASH_BLOCK_COUNT - 1)",
+          "old_line_content": "            // Create the block file if it doesn't exist",
+          "new_line_content": "        print_block_name (SFLASH_BLOCK_COUNT - 1);",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": null,
+          "new_api": "sflash_access",
+          "old_text": null,
+          "new_text": "sflash_access(FS_MODE_OPEN_READ, sl_FsRead)",
+          "old_line_content": "        buff += SFLASH_BLOCK_SIZE;",
+          "new_line_content": "            if (!sflash_access(FS_MODE_OPEN_READ, sl_FsRead)) {",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 66,
+          "old_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_api": null,
+          "old_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_text": null,
+          "old_line_content": "                    sl_LockObjUnlock (&wlan_LockObj);",
+          "new_line_content": "            return RES_OK;",
+          "content_same": false
+        },
+        {
+          "line": 67,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(sflash_block_cache, 0xFF, SFLASH_BLOCK_SIZE)",
+          "new_text": null,
+          "old_line_content": "                    memset(sflash_block_cache, 0xFF, SFLASH_BLOCK_SIZE);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "sflash_access",
+          "new_api": null,
+          "old_text": "sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)",
+          "new_text": null,
+          "old_line_content": "        if (!sflash_access(FS_MODE_OPEN_WRITE, sl_FsWrite)) {",
+          "new_line_content": "    return RES_OK;",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": "sflash_disk_flush",
+          "new_api": null,
+          "old_text": "sflash_disk_flush()",
+          "new_text": null,
+          "old_line_content": "        sflash_disk_flush();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 74,
+          "old_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_api": null,
+          "old_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_text": null,
+          "old_line_content": "                    sl_LockObjUnlock (&wlan_LockObj);",
+          "new_line_content": "            // Create the block file if it doesn't exist",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": "sflash_disk_flush",
+          "new_api": null,
+          "old_text": "sflash_disk_flush()",
+          "new_text": null,
+          "old_line_content": "            if (sflash_disk_flush() != RES_OK) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_api": null,
+          "old_text": "sl_LockObjUnlock (&wlan_LockObj)",
+          "new_text": null,
+          "old_line_content": "            sl_LockObjUnlock (&wlan_LockObj);",
+          "new_line_content": "                    }",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "sflash_disk_flush",
+          "new_api": null,
+          "old_text": "sflash_disk_flush()",
+          "new_text": null,
+          "old_line_content": "            if (sflash_disk_flush() != RES_OK) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": "print_block_name (sflash_ublock)",
+          "new_api": null,
+          "old_text": "print_block_name (sflash_ublock)",
+          "new_text": null,
+          "old_line_content": "            print_block_name (sflash_ublock);",
+          "new_line_content": "        // See if it's time to read a new block",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": "sflash_access",
+          "new_api": null,
+          "old_text": "sflash_access(FS_MODE_OPEN_READ, sl_FsRead)",
+          "new_text": null,
+          "old_line_content": "            if (!sflash_access(FS_MODE_OPEN_READ, sl_FsRead)) {",
+          "new_line_content": "        if (sflash_prblock != sflash_ublock) {",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "print_block_name (sflash_ublock)",
+          "new_api": null,
+          "old_text": "print_block_name (sflash_ublock)",
+          "new_text": null,
+          "old_line_content": "            print_block_name (sflash_ublock);",
+          "new_line_content": "        // Check if it's a different block than last time",
+          "content_same": false
+        },
+        {
+          "line": 60,
+          "old_api": "print_block_name (i)",
+          "new_api": null,
+          "old_text": "print_block_name (i)",
+          "new_text": null,
+          "old_line_content": "            print_block_name (i);",
+          "new_line_content": "        // In order too speed up booting, check the last block, if exists, then",
+          "content_same": false
+        },
+        {
+          "line": 61,
+          "old_api": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "new_api": null,
+          "old_text": "sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER)",
+          "new_text": null,
+          "old_line_content": "            sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER);",
+          "new_line_content": "        // it means that the file system has been already created",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE)",
+          "new_api": null,
+          "old_text": "memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE)",
+          "new_text": null,
+          "old_line_content": "        memcpy (&sflash_block_cache[(secindex * SFLASH_SECTOR_SIZE)], buff, SFLASH_SECTOR_SIZE);",
+          "new_line_content": "            // Read the block into the cache",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 18,
+      "total_deletions": 14,
+      "total_api_changes": 39
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 19,
+        "api_related_lines": 39,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          69,
+          70,
+          84,
+          85,
+          57,
+          58
+        ]
+      }
+    },
+    "api_calls_before": 31,
+    "api_calls_after": 35,
+    "diff_info": {
+      "added_lines": 13,
+      "removed_lines": 7,
+      "total_diff_lines": 43
+    }
+  }
+}

@@ -1,0 +1,767 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/078fc08a7fcf61636f59a5735d7ac8f67232d3c7",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/078fc08a7fcf61636f59a5735d7ac8f67232d3c7/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/078fc08a7fcf61636f59a5735d7ac8f67232d3c7/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mysql-server/modified_file/078fc08a7fcf61636f59a5735d7ac8f67232d3c7/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 3226,
+          "old_api": "trx_sys_get_new_trx_id",
+          "new_api": "ut_ad",
+          "old_text": "trx_sys_get_new_trx_id()",
+          "new_text": "ut_ad(trx->id == 0)",
+          "old_line_content": "\ttrx->id = trx_sys_get_new_trx_id();",
+          "new_line_content": "\tut_ad(trx->id == 0);",
+          "content_same": false
+        },
+        {
+          "line": 3234,
+          "old_api": "MVCC::set_view_creator_trx_id(trx->read_view, trx->id)",
+          "new_api": "MVCC::is_view_active(trx->read_view)",
+          "old_text": "MVCC::set_view_creator_trx_id(trx->read_view, trx->id)",
+          "new_text": "MVCC::is_view_active(trx->read_view)",
+          "old_line_content": "\t\tMVCC::set_view_creator_trx_id(trx->read_view, trx->id);",
+          "new_line_content": "\tif (MVCC::is_view_active(trx->read_view)) {",
+          "content_same": false
+        },
+        {
+          "line": 3307,
+          "old_api": "trx_mutex_enter",
+          "new_api": "ut_ad",
+          "old_text": "trx_mutex_enter(victim_trx)",
+          "new_text": "ut_ad(version <= victim_trx->version)",
+          "old_line_content": "\t\ttrx_mutex_enter(victim_trx);",
+          "new_line_content": "\t\tut_ad(version <= victim_trx->version);",
+          "content_same": false
+        },
+        {
+          "line": 3349,
+          "old_api": "ut_ad",
+          "new_api": "os_thread_get_curr_id",
+          "old_text": "ut_ad(victim_trx->in_innodb & TRX_FORCE_ROLLBACK_ASYNC)",
+          "new_text": "os_thread_get_curr_id()",
+          "old_line_content": "\t\tut_ad(victim_trx->in_innodb & TRX_FORCE_ROLLBACK_ASYNC);",
+          "new_line_content": "\t\tut_ad(victim_trx->killed_by == os_thread_get_curr_id());",
+          "content_same": false
+        },
+        {
+          "line": 3350,
+          "old_api": "os_thread_get_curr_id",
+          "new_api": "ut_ad",
+          "old_text": "os_thread_get_curr_id()",
+          "new_text": "ut_ad(victim_trx->version == it->m_version)",
+          "old_line_content": "\t\tut_ad(victim_trx->killed_by == os_thread_get_curr_id());",
+          "new_line_content": "\t\tut_ad(victim_trx->version == it->m_version);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 3331,
+          "old_api": null,
+          "new_api": "os_thread_sleep",
+          "old_text": null,
+          "new_text": "os_thread_sleep(sleep_time)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tos_thread_sleep(sleep_time);",
+          "content_same": false
+        },
+        {
+          "line": 3204,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(!trx->read_only)",
+          "old_line_content": "",
+          "new_line_content": "\tut_ad(!trx->read_only);",
+          "content_same": false
+        },
+        {
+          "line": 3333,
+          "old_api": null,
+          "new_api": "trx_mutex_enter",
+          "old_text": null,
+          "new_text": "trx_mutex_enter(victim_trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\ttrx_mutex_enter(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3339,
+          "old_api": null,
+          "new_api": "trx_mutex_exit",
+          "old_text": null,
+          "new_text": "trx_mutex_exit(victim_trx)",
+          "old_line_content": "\t\tif (victim_trx->version != version) {",
+          "new_line_content": "\t\t\ttrx_mutex_exit(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3344,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(victim_trx->mysql_thd != NULL)",
+          "old_line_content": "\t\t/* We should never kill background transactions. */",
+          "new_line_content": "\t\tut_ad(victim_trx->mysql_thd != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3217,
+          "old_api": null,
+          "new_api": "trx_assign_rseg_low",
+          "old_text": null,
+          "new_text": "trx_assign_rseg_low(\n\t\tsrv_rollback_segments,\n\t\tsrv_undo_tablespaces,\n\t\tTRX_RSEG_TYPE_REDO)",
+          "old_line_content": "\t\tsrv_rollback_segments,",
+          "new_line_content": "\ttrx->rsegs.m_redo.rseg = trx_assign_rseg_low(",
+          "content_same": false
+        },
+        {
+          "line": 3346,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(!(trx->in_innodb & TRX_FORCE_ROLLBACK_DISABLE))",
+          "old_line_content": "",
+          "new_line_content": "\t\tut_ad(!(trx->in_innodb & TRX_FORCE_ROLLBACK_DISABLE));",
+          "content_same": false
+        },
+        {
+          "line": 3222,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(trx->rsegs.m_redo.rseg != 0)",
+          "old_line_content": "",
+          "new_line_content": "\tut_ad(trx->rsegs.m_redo.rseg != 0);",
+          "content_same": false
+        },
+        {
+          "line": 3224,
+          "old_api": null,
+          "new_api": "mutex_enter",
+          "old_text": null,
+          "new_text": "mutex_enter(&trx_sys->mutex)",
+          "old_line_content": "",
+          "new_line_content": "\tmutex_enter(&trx_sys->mutex);",
+          "content_same": false
+        },
+        {
+          "line": 3354,
+          "old_api": null,
+          "new_api": "ut_a",
+          "old_text": null,
+          "new_text": "ut_a(!victim_trx->read_only)",
+          "old_line_content": "\t\ttransactions. */",
+          "new_line_content": "\t\tut_a(!victim_trx->read_only);",
+          "content_same": false
+        },
+        {
+          "line": 3227,
+          "old_api": null,
+          "new_api": "trx_sys_get_new_trx_id",
+          "old_text": null,
+          "new_text": "trx_sys_get_new_trx_id()",
+          "old_line_content": "",
+          "new_line_content": "\ttrx->id = trx_sys_get_new_trx_id();",
+          "content_same": false
+        },
+        {
+          "line": 3229,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "trx_sys->rw_trx_ids.push_back(trx->id)",
+          "old_line_content": "",
+          "new_line_content": "\ttrx_sys->rw_trx_ids.push_back(trx->id);",
+          "content_same": false
+        },
+        {
+          "line": 3357,
+          "old_api": null,
+          "new_api": "trx_mutex_exit",
+          "old_text": null,
+          "new_text": "trx_mutex_exit(victim_trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\ttrx_mutex_exit(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3231,
+          "old_api": null,
+          "new_api": "TrxTrack",
+          "old_text": null,
+          "new_text": "TrxTrack(trx->id, trx)",
+          "old_line_content": "",
+          "new_line_content": "\ttrx_sys->rw_trx_set.insert(TrxTrack(trx->id, trx));",
+          "content_same": false
+        },
+        {
+          "line": 3235,
+          "old_api": null,
+          "new_api": "MVCC::set_view_creator_trx_id(trx->read_view, trx->id)",
+          "old_text": null,
+          "new_text": "MVCC::set_view_creator_trx_id(trx->read_view, trx->id)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tMVCC::set_view_creator_trx_id(trx->read_view, trx->id);",
+          "content_same": false
+        },
+        {
+          "line": 3364,
+          "old_api": null,
+          "new_api": "thd_security_context",
+          "old_text": null,
+          "new_text": "thd_security_context(victim_trx->mysql_thd,\n\t\t\t\t\t\tbuffer, sizeof(buffer),\n\t\t\t\t\t\t512)",
+          "old_line_content": "",
+          "new_line_content": "\t\tthr_text = thd_security_context(victim_trx->mysql_thd,",
+          "content_same": false
+        },
+        {
+          "line": 3369,
+          "old_api": null,
+          "new_api": "trx_rollback_for_mysql",
+          "old_text": null,
+          "new_text": "trx_rollback_for_mysql(victim_trx)",
+          "old_line_content": "#endif /* UNIV_DEBUG */",
+          "new_line_content": "\t\ttrx_rollback_for_mysql(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3372,
+          "old_api": null,
+          "new_api": "ib::info()",
+          "old_text": null,
+          "new_text": "ib::info()",
+          "old_line_content": "#ifdef UNIV_DEBUG",
+          "new_line_content": "\t\tib::info() << \"High Priority Transaction (ID): \"",
+          "content_same": false
+        },
+        {
+          "line": 3248,
+          "old_api": null,
+          "new_api": "mutex_exit",
+          "old_text": null,
+          "new_text": "mutex_exit(&trx_sys->mutex)",
+          "old_line_content": "",
+          "new_line_content": "\tmutex_exit(&trx_sys->mutex);",
+          "content_same": false
+        },
+        {
+          "line": 3377,
+          "old_api": null,
+          "new_api": "trx_mutex_enter",
+          "old_text": null,
+          "new_text": "trx_mutex_enter(victim_trx)",
+          "old_line_content": "#endif /* UNIV_DEBUG */",
+          "new_line_content": "\t\ttrx_mutex_enter(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3380,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(victim_trx->version == version)",
+          "old_line_content": "\t\tversion++;",
+          "new_line_content": "\t\tut_ad(victim_trx->version == version);",
+          "content_same": false
+        },
+        {
+          "line": 3383,
+          "old_api": null,
+          "new_api": "os_compare_and_swap_thread_id",
+          "old_text": null,
+          "new_text": "os_compare_and_swap_thread_id(&victim_trx->killed_by,\n\t\t\t\t\t      thread_id, 0)",
+          "old_line_content": "\t\tos_thread_id_t\tthread_id = victim_trx->killed_by;",
+          "new_line_content": "\t\tos_compare_and_swap_thread_id(&victim_trx->killed_by,",
+          "content_same": false
+        },
+        {
+          "line": 3258,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "trx->hit_list.empty()",
+          "old_line_content": "{",
+          "new_line_content": "\tif (trx->hit_list.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 3388,
+          "old_api": null,
+          "new_api": "trx_mutex_exit",
+          "old_text": null,
+          "new_text": "trx_mutex_exit(victim_trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\ttrx_mutex_exit(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3262,
+          "old_api": null,
+          "new_api": "DEBUG_SYNC_C",
+          "old_text": null,
+          "new_text": "DEBUG_SYNC_C(\"trx_kill_blocking_enter\")",
+          "old_line_content": "",
+          "new_line_content": "\tDEBUG_SYNC_C(\"trx_kill_blocking_enter\");",
+          "content_same": false
+        },
+        {
+          "line": 3391,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "trx->hit_list.clear()",
+          "old_line_content": "",
+          "new_line_content": "\ttrx->hit_list.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3395,
+          "old_api": null,
+          "new_api": "row_mysql_freeze_data_dictionary",
+          "old_text": null,
+          "new_text": "row_mysql_freeze_data_dictionary(trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\trow_mysql_freeze_data_dictionary(trx);",
+          "content_same": false
+        },
+        {
+          "line": 3272,
+          "old_api": null,
+          "new_api": "row_mysql_unfreeze_data_dictionary",
+          "old_text": null,
+          "new_text": "row_mysql_unfreeze_data_dictionary(trx)",
+          "old_line_content": "\t\t/* Release foreign key check latch */",
+          "new_line_content": "\t\trow_mysql_unfreeze_data_dictionary(trx);",
+          "content_same": false
+        },
+        {
+          "line": 3285,
+          "old_api": null,
+          "new_api": "ut_a",
+          "old_text": null,
+          "new_text": "ut_a(trx->dict_operation_lock_mode == 0)",
+          "old_line_content": "",
+          "new_line_content": "\tut_a(trx->dict_operation_lock_mode == 0);",
+          "content_same": false
+        },
+        {
+          "line": 3288,
+          "old_api": null,
+          "new_api": "rend",
+          "old_text": null,
+          "new_text": "trx->hit_list.rend()",
+          "old_line_content": "\t/** Kill the transactions in the lock acquisition order old -> new. */",
+          "new_line_content": "\thit_list_t::reverse_iterator\tend = trx->hit_list.rend();",
+          "content_same": false
+        },
+        {
+          "line": 3290,
+          "old_api": null,
+          "new_api": "rbegin",
+          "old_text": null,
+          "new_text": "trx->hit_list.rbegin()",
+          "old_line_content": "",
+          "new_line_content": "\tfor (hit_list_t::reverse_iterator it = trx->hit_list.rbegin();",
+          "content_same": false
+        },
+        {
+          "line": 3298,
+          "old_api": null,
+          "new_api": "ut_ad",
+          "old_text": null,
+          "new_text": "ut_ad(victim_trx != trx)",
+          "old_line_content": "\t\t/* Shouldn't commit suicide. */",
+          "new_line_content": "\t\tut_ad(victim_trx != trx);",
+          "content_same": false
+        },
+        {
+          "line": 3306,
+          "old_api": null,
+          "new_api": "trx_mutex_enter",
+          "old_text": null,
+          "new_text": "trx_mutex_enter(victim_trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\ttrx_mutex_enter(victim_trx);",
+          "content_same": false
+        },
+        {
+          "line": 3316,
+          "old_api": null,
+          "new_api": "trx_mutex_exit",
+          "old_text": null,
+          "new_text": "trx_mutex_exit(victim_trx)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\ttrx_mutex_exit(victim_trx);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 3332,
+          "old_api": "os_thread_sleep",
+          "new_api": null,
+          "old_text": "os_thread_sleep(sleep_time)",
+          "new_text": null,
+          "old_line_content": "\t\t\tos_thread_sleep(sleep_time);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3334,
+          "old_api": "trx_mutex_enter",
+          "new_api": null,
+          "old_text": "trx_mutex_enter(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\t\ttrx_mutex_enter(victim_trx);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3340,
+          "old_api": "trx_mutex_exit",
+          "new_api": null,
+          "old_text": "trx_mutex_exit(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\t\ttrx_mutex_exit(victim_trx);",
+          "new_line_content": "\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 3216,
+          "old_api": "trx_assign_rseg_low",
+          "new_api": null,
+          "old_text": "trx_assign_rseg_low(\n\t\tsrv_rollback_segments,\n\t\tsrv_undo_tablespaces,\n\t\tTRX_RSEG_TYPE_REDO)",
+          "new_text": null,
+          "old_line_content": "\ttrx->rsegs.m_redo.rseg = trx_assign_rseg_low(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3345,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(victim_trx->mysql_thd != NULL)",
+          "new_text": null,
+          "old_line_content": "\t\tut_ad(victim_trx->mysql_thd != NULL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3221,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(trx->rsegs.m_redo.rseg != 0)",
+          "new_text": null,
+          "old_line_content": "\tut_ad(trx->rsegs.m_redo.rseg != 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3223,
+          "old_api": "mutex_enter",
+          "new_api": null,
+          "old_text": "mutex_enter(&trx_sys->mutex)",
+          "new_text": null,
+          "old_line_content": "\tmutex_enter(&trx_sys->mutex);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3351,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(victim_trx->version == it->m_version)",
+          "new_text": null,
+          "old_line_content": "\t\tut_ad(victim_trx->version == it->m_version);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3225,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(trx->id == 0)",
+          "new_text": null,
+          "old_line_content": "\tut_ad(trx->id == 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3228,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "trx_sys->rw_trx_ids.push_back(trx->id)",
+          "new_text": null,
+          "old_line_content": "\ttrx_sys->rw_trx_ids.push_back(trx->id);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3356,
+          "old_api": "ut_a",
+          "new_api": null,
+          "old_text": "ut_a(victim_trx->mysql_thd != NULL)",
+          "new_text": null,
+          "old_line_content": "\t\tut_a(victim_trx->mysql_thd != NULL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3230,
+          "old_api": "TrxTrack",
+          "new_api": null,
+          "old_text": "TrxTrack(trx->id, trx)",
+          "new_text": null,
+          "old_line_content": "\ttrx_sys->rw_trx_set.insert(TrxTrack(trx->id, trx));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3358,
+          "old_api": "trx_mutex_exit",
+          "new_api": null,
+          "old_text": "trx_mutex_exit(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\ttrx_mutex_exit(victim_trx);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3233,
+          "old_api": "MVCC::is_view_active(trx->read_view)",
+          "new_api": null,
+          "old_text": "MVCC::is_view_active(trx->read_view)",
+          "new_text": null,
+          "old_line_content": "\tif (MVCC::is_view_active(trx->read_view)) {",
+          "new_line_content": "\t/* So that we can see our own changes. */",
+          "content_same": false
+        },
+        {
+          "line": 3365,
+          "old_api": "thd_security_context",
+          "new_api": null,
+          "old_text": "thd_security_context(victim_trx->mysql_thd,\n\t\t\t\t\t\tbuffer, sizeof(buffer),\n\t\t\t\t\t\t512)",
+          "new_text": null,
+          "old_line_content": "\t\tthr_text = thd_security_context(victim_trx->mysql_thd,",
+          "new_line_content": "\t\t\t\t\t\tbuffer, sizeof(buffer),",
+          "content_same": false
+        },
+        {
+          "line": 3370,
+          "old_api": "trx_rollback_for_mysql",
+          "new_api": null,
+          "old_text": "trx_rollback_for_mysql(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\ttrx_rollback_for_mysql(victim_trx);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3373,
+          "old_api": "ib::info()",
+          "new_api": null,
+          "old_text": "ib::info()",
+          "new_text": null,
+          "old_line_content": "\t\tib::info() << \"High Priority Transaction (ID): \"",
+          "new_line_content": "\t\t\t   << trx->id << \" killed transaction (ID): \"",
+          "content_same": false
+        },
+        {
+          "line": 3249,
+          "old_api": "mutex_exit",
+          "new_api": null,
+          "old_text": "mutex_exit(&trx_sys->mutex)",
+          "new_text": null,
+          "old_line_content": "\tmutex_exit(&trx_sys->mutex);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3378,
+          "old_api": "trx_mutex_enter",
+          "new_api": null,
+          "old_text": "trx_mutex_enter(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\ttrx_mutex_enter(victim_trx);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3381,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(victim_trx->version == version)",
+          "new_text": null,
+          "old_line_content": "\t\tut_ad(victim_trx->version == version);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3384,
+          "old_api": "os_compare_and_swap_thread_id",
+          "new_api": null,
+          "old_text": "os_compare_and_swap_thread_id(&victim_trx->killed_by,\n\t\t\t\t\t      thread_id, 0)",
+          "new_text": null,
+          "old_line_content": "\t\tos_compare_and_swap_thread_id(&victim_trx->killed_by,",
+          "new_line_content": "\t\t\t\t\t      thread_id, 0);",
+          "content_same": false
+        },
+        {
+          "line": 3259,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "trx->hit_list.empty()",
+          "new_text": null,
+          "old_line_content": "\tif (trx->hit_list.empty()) {",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 3389,
+          "old_api": "trx_mutex_exit",
+          "new_api": null,
+          "old_text": "trx_mutex_exit(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\ttrx_mutex_exit(victim_trx);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 3263,
+          "old_api": "DEBUG_SYNC_C",
+          "new_api": null,
+          "old_text": "DEBUG_SYNC_C(\"trx_kill_blocking_enter\")",
+          "new_text": null,
+          "old_line_content": "\tDEBUG_SYNC_C(\"trx_kill_blocking_enter\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3392,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "trx->hit_list.clear()",
+          "new_text": null,
+          "old_line_content": "\ttrx->hit_list.clear();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3396,
+          "old_api": "row_mysql_freeze_data_dictionary",
+          "new_api": null,
+          "old_text": "row_mysql_freeze_data_dictionary(trx)",
+          "new_text": null,
+          "old_line_content": "\t\trow_mysql_freeze_data_dictionary(trx);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 3273,
+          "old_api": "row_mysql_unfreeze_data_dictionary",
+          "new_api": null,
+          "old_text": "row_mysql_unfreeze_data_dictionary(trx)",
+          "new_text": null,
+          "old_line_content": "\t\trow_mysql_unfreeze_data_dictionary(trx);",
+          "new_line_content": "\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 3286,
+          "old_api": "ut_a",
+          "new_api": null,
+          "old_text": "ut_a(trx->dict_operation_lock_mode == 0)",
+          "new_text": null,
+          "old_line_content": "\tut_a(trx->dict_operation_lock_mode == 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3289,
+          "old_api": "rend",
+          "new_api": null,
+          "old_text": "trx->hit_list.rend()",
+          "new_text": null,
+          "old_line_content": "\thit_list_t::reverse_iterator\tend = trx->hit_list.rend();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3291,
+          "old_api": "rbegin",
+          "new_api": null,
+          "old_text": "trx->hit_list.rbegin()",
+          "new_text": null,
+          "old_line_content": "\tfor (hit_list_t::reverse_iterator it = trx->hit_list.rbegin();",
+          "new_line_content": "\t     it != end;",
+          "content_same": false
+        },
+        {
+          "line": 3300,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(victim_trx->mysql_thd != trx->mysql_thd)",
+          "new_text": null,
+          "old_line_content": "\t\tut_ad(victim_trx->mysql_thd != trx->mysql_thd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3308,
+          "old_api": "ut_ad",
+          "new_api": null,
+          "old_text": "ut_ad(version <= victim_trx->version)",
+          "new_text": null,
+          "old_line_content": "\t\tut_ad(version <= victim_trx->version);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3317,
+          "old_api": "trx_mutex_exit",
+          "new_api": null,
+          "old_text": "trx_mutex_exit(victim_trx)",
+          "new_text": null,
+          "old_line_content": "\t\t\ttrx_mutex_exit(victim_trx);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 5,
+      "total_additions": 34,
+      "total_deletions": 33,
+      "total_api_changes": 72
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 72,
+        "non_api_lines": 4,
+        "non_api_line_numbers": [
+          3243,
+          3244,
+          3246,
+          3247
+        ]
+      }
+    },
+    "api_calls_before": 636,
+    "api_calls_after": 637,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 4,
+      "total_diff_lines": 27
+    }
+  }
+}

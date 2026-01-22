@@ -1,0 +1,16 @@
+diff --git a/include/sql_string.h b/include/sql_string.h
+index bf3527bc264..d83032e054d 100644
+--- a/include/sql_string.h
++++ b/include/sql_string.h
+@@ -551,7 +551,10 @@ class String {
+   size_t charpos(size_t i, size_t offset = 0) const;
+ 
+   bool reserve(size_t space_needed) {
+-    return mem_realloc(m_length + space_needed);
++    if (m_alloced_length < m_length + space_needed) {
++      return mem_realloc(m_length + space_needed);
++    }
++    return false;
+   }
+   bool reserve(size_t space_needed, size_t grow_by);
+ 

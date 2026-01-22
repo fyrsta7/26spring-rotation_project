@@ -1,0 +1,23 @@
+diff --git a/lib/Sema/CSStep.cpp b/lib/Sema/CSStep.cpp
+index 6a1342ecb2f..269121cfc6a 100644
+--- a/lib/Sema/CSStep.cpp
++++ b/lib/Sema/CSStep.cpp
+@@ -640,18 +640,6 @@ bool DisjunctionStep::shortCircuitDisjunctionAt(
+   if (currentChoice->getKind() == ConstraintKind::CheckedCast)
+     return true;
+ 
+-  // Extra checks for binding of operators
+-  if (currentChoice->getKind() == ConstraintKind::BindOverload &&
+-      currentChoice->getOverloadChoice().getDecl()->isOperator() &&
+-      lastSuccessfulChoice->getKind() == ConstraintKind::BindOverload &&
+-      lastSuccessfulChoice->getOverloadChoice().getDecl()->isOperator()) {
+-
+-    // If we have a SIMD operator, and the prior choice was not a SIMD
+-    // Operator, we're done.
+-    if (isSIMDOperator(currentChoice->getOverloadChoice().getDecl()) &&
+-        !isSIMDOperator(lastSuccessfulChoice->getOverloadChoice().getDecl()))
+-      return true;
+-  }
+   return false;
+ }
+ 

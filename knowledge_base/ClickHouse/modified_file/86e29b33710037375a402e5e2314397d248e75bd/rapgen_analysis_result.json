@@ -1,0 +1,242 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/86e29b33710037375a402e5e2314397d248e75bd",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/86e29b33710037375a402e5e2314397d248e75bd/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/86e29b33710037375a402e5e2314397d248e75bd/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/86e29b33710037375a402e5e2314397d248e75bd/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 254,
+          "old_api": "getKind",
+          "new_api": "explainPlan",
+          "old_text": "ast.getKind()",
+          "new_text": "plan.explainPlan(buffer, settings.query_plan_options)",
+          "old_line_content": "    else if (ast.getKind() == ASTExplainQuery::QueryPipeline)",
+          "new_line_content": "        plan.explainPlan(buffer, settings.query_plan_options);",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": "getExplainedQuery",
+          "new_api": "getKind",
+          "old_text": "ast.getExplainedQuery().get()",
+          "new_text": "ast.getKind()",
+          "old_line_content": "        if (!dynamic_cast<const ASTSelectWithUnionQuery *>(ast.getExplainedQuery().get()))",
+          "new_line_content": "    else if (ast.getKind() == ASTExplainQuery::QueryPipeline)",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "getSettings",
+          "new_api": "Exception",
+          "old_text": "ast.getSettings()",
+          "new_text": "Exception(\"Only SELECT is supported for EXPLAIN query\", ErrorCodes::INCORRECT_QUERY)",
+          "old_line_content": "        auto settings = checkAndGetSettings<QueryPipelineSettings>(ast.getSettings());",
+          "new_line_content": "            throw Exception(\"Only SELECT is supported for EXPLAIN query\", ErrorCodes::INCORRECT_QUERY);",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "buildQueryPipeline",
+          "new_api": "SelectQueryOptions",
+          "old_text": "plan.buildQueryPipeline()",
+          "new_text": "SelectQueryOptions()",
+          "old_line_content": "        auto pipeline = plan.buildQueryPipeline();",
+          "new_line_content": "        InterpreterSelectWithUnionQuery interpreter(ast.getExplainedQuery(), context, SelectQueryOptions());",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "std::move(res_columns)",
+          "new_api": "str",
+          "old_text": "std::move(res_columns)",
+          "new_text": "ss.str()",
+          "old_line_content": "    return std::make_shared<OneBlockInputStream>(sample_block.cloneWithColumns(std::move(res_columns)));",
+          "new_line_content": "    fillColumn(*res_columns[0], ss.str());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 258,
+          "old_api": null,
+          "new_api": "getExplainedQuery",
+          "old_text": null,
+          "new_text": "ast.getExplainedQuery().get()",
+          "old_line_content": "",
+          "new_line_content": "        if (!dynamic_cast<const ASTSelectWithUnionQuery *>(ast.getExplainedQuery().get()))",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "getSettings",
+          "old_text": null,
+          "new_text": "ast.getSettings()",
+          "old_line_content": "",
+          "new_line_content": "        auto settings = checkAndGetSettings<QueryPipelineSettings>(ast.getSettings());",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "buildQueryPlan",
+          "old_text": null,
+          "new_text": "interpreter.buildQueryPlan(plan)",
+          "old_line_content": "",
+          "new_line_content": "        interpreter.buildQueryPlan(plan);",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": null,
+          "new_api": "buildQueryPipeline",
+          "old_text": null,
+          "new_text": "plan.buildQueryPipeline()",
+          "old_line_content": "        WriteBufferFromOStream buffer(ss);",
+          "new_line_content": "        auto pipeline = plan.buildQueryPipeline();",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": null,
+          "new_api": "getProcessors",
+          "old_text": null,
+          "new_text": "pipeline->getProcessors()",
+          "old_line_content": "        else",
+          "new_line_content": "                printPipeline(pipeline->getProcessors(), buffer);",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": null,
+          "new_api": "explainPipeline",
+          "old_text": null,
+          "new_text": "plan.explainPipeline(buffer, settings.query_pipeline_options)",
+          "old_line_content": "    }",
+          "new_line_content": "            plan.explainPipeline(buffer, settings.query_pipeline_options);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": null,
+          "new_api": "optimize",
+          "old_text": null,
+          "new_text": "plan.optimize()",
+          "old_line_content": "        WriteBufferFromOStream buffer(ss);",
+          "new_line_content": "        plan.optimize();",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": null,
+          "new_api": "std::move(res_columns)",
+          "old_text": null,
+          "new_text": "std::move(res_columns)",
+          "old_line_content": "",
+          "new_line_content": "    return std::make_shared<OneBlockInputStream>(sample_block.cloneWithColumns(std::move(res_columns)));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 257,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Only SELECT is supported for EXPLAIN query\", ErrorCodes::INCORRECT_QUERY)",
+          "new_text": null,
+          "old_line_content": "            throw Exception(\"Only SELECT is supported for EXPLAIN query\", ErrorCodes::INCORRECT_QUERY);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "SelectQueryOptions",
+          "new_api": null,
+          "old_text": "SelectQueryOptions()",
+          "new_text": null,
+          "old_line_content": "        InterpreterSelectWithUnionQuery interpreter(ast.getExplainedQuery(), context, SelectQueryOptions());",
+          "new_line_content": "        QueryPlan plan;",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "buildQueryPlan",
+          "new_api": null,
+          "old_text": "interpreter.buildQueryPlan(plan)",
+          "new_text": null,
+          "old_line_content": "        interpreter.buildQueryPlan(plan);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "getProcessors",
+          "new_api": null,
+          "old_text": "pipeline->getProcessors()",
+          "new_text": null,
+          "old_line_content": "                printPipelineCompact(pipeline->getProcessors(), buffer, settings.query_pipeline_options.header);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": "explainPipeline",
+          "new_api": null,
+          "old_text": "plan.explainPipeline(buffer, settings.query_pipeline_options)",
+          "new_text": null,
+          "old_line_content": "            plan.explainPipeline(buffer, settings.query_pipeline_options);",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "str",
+          "new_api": null,
+          "old_text": "ss.str()",
+          "new_text": null,
+          "old_line_content": "    fillColumn(*res_columns[0], ss.str());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "explainPlan",
+          "new_api": null,
+          "old_text": "plan.explainPlan(buffer, settings.query_plan_options)",
+          "new_text": null,
+          "old_line_content": "        plan.explainPlan(buffer, settings.query_plan_options);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 5,
+      "total_additions": 8,
+      "total_deletions": 7,
+      "total_api_changes": 20
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 2,
+        "api_related_lines": 20,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 86,
+    "api_calls_after": 87,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 0,
+      "total_diff_lines": 14
+    }
+  }
+}

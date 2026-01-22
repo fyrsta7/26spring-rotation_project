@@ -1,0 +1,15 @@
+diff --git a/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc b/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc
+index 23b68fe5703..054a68664e3 100644
+--- a/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc
++++ b/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc
+@@ -4979,6 +4979,10 @@ bool IsUnrollingColumnReductionBeneficial(
+     return false;
+   }
+ 
++  if (input_shape.dimensions()[input_shape.rank()-1] < 64) {
++    return false;
++  }
++
+   if (IsReductionFromOrToContiguousDimensions(unnested_hlo, layout_analysis)) {
+     return true;
+   }

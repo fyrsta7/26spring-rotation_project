@@ -1,0 +1,14 @@
+diff --git a/src/Columns/IColumn.h b/src/Columns/IColumn.h
+index 11ade9b3b84..2ef2b71b46e 100644
+--- a/src/Columns/IColumn.h
++++ b/src/Columns/IColumn.h
+@@ -306,7 +306,8 @@ public:
+ 
+     static MutablePtr mutate(Ptr ptr)
+     {
+-        MutablePtr res = ptr->shallowMutate();
++        MutablePtr res = ptr->shallowMutate(); /// Now use_count is 2.
++        ptr.reset(); /// Reset use_count to 1.
+         res->forEachSubcolumn([](WrappedPtr & subcolumn) { subcolumn = IColumn::mutate(std::move(subcolumn)); });
+         return res;
+     }

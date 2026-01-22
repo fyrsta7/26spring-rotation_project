@@ -1,0 +1,1376 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6301c3adabd947394682e37c933b0f3f83353b28",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6301c3adabd947394682e37c933b0f3f83353b28/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6301c3adabd947394682e37c933b0f3f83353b28/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6301c3adabd947394682e37c933b0f3f83353b28/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1000,
+          "old_api": "elog",
+          "new_api": "LockRelease",
+          "old_text": "elog(LOG,\n\t\t\t\t \"RecoveryLockLists contains entry for lock no longer recorded by lock manager: xid %u database %u relation %u\",\n\t\t\t\t lock->xid, lock->dbOid, lock->relOid)",
+          "new_text": "LockRelease(&locktag, AccessExclusiveLock, true)",
+          "old_line_content": "\t\t\telog(LOG,",
+          "new_line_content": "\t\tif (!LockRelease(&locktag, AccessExclusiveLock, true))",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": "pfree",
+          "new_api": "Assert",
+          "old_text": "pfree(lock)",
+          "new_text": "Assert(false)",
+          "old_line_content": "\t\tpfree(lock);",
+          "new_line_content": "\t\t\tAssert(false);",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": "hash_search",
+          "new_api": "TransactionIdIsValid",
+          "old_text": "hash_search(RecoveryLockLists, &xid, HASH_FIND, NULL)",
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "\t\tif ((entry = hash_search(RecoveryLockLists, &xid, HASH_FIND, NULL)))",
+          "new_line_content": "\tif (TransactionIdIsValid(xid))",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": "StandbyReleaseLockList",
+          "new_api": "hash_search",
+          "old_text": "StandbyReleaseLockList(entry->locks)",
+          "new_text": "hash_search(RecoveryLockLists, &xid, HASH_FIND, NULL)",
+          "old_line_content": "\t\t\tStandbyReleaseLockList(entry->locks);",
+          "new_line_content": "\t\tif ((entry = hash_search(RecoveryLockLists, &xid, HASH_FIND, NULL)))",
+          "content_same": false
+        },
+        {
+          "line": 1056,
+          "old_api": "hash_seq_init",
+          "new_api": "trace_recovery",
+          "old_text": "hash_seq_init(&status, RecoveryLockLists)",
+          "new_text": "trace_recovery(DEBUG2)",
+          "old_line_content": "\thash_seq_init(&status, RecoveryLockLists);",
+          "new_line_content": "\telog(trace_recovery(DEBUG2), \"release all standby locks\");",
+          "content_same": false
+        },
+        {
+          "line": 1059,
+          "old_api": "StandbyReleaseLockList",
+          "new_api": "hash_seq_search",
+          "old_text": "StandbyReleaseLockList(entry->locks)",
+          "new_text": "hash_seq_search(&status)",
+          "old_line_content": "\t\tStandbyReleaseLockList(entry->locks);",
+          "new_line_content": "\twhile ((entry = hash_seq_search(&status)))",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": "TransactionIdIsValid",
+          "new_api": "hash_seq_search",
+          "old_text": "TransactionIdIsValid(entry->xid)",
+          "new_text": "hash_seq_search(&status)",
+          "old_line_content": "\t\tAssert(TransactionIdIsValid(entry->xid));",
+          "new_line_content": "\twhile ((entry = hash_seq_search(&status)))",
+          "content_same": false
+        },
+        {
+          "line": 1143,
+          "old_api": "ProcessCommittedInvalidationMessages",
+          "new_api": "XLogRecGetData",
+          "old_text": "ProcessCommittedInvalidationMessages(xlrec->msgs,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->nmsgs,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->relcacheInitFileInval,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->dbId,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->tsId)",
+          "new_text": "XLogRecGetData(record)",
+          "old_line_content": "\t\tProcessCommittedInvalidationMessages(xlrec->msgs,",
+          "new_line_content": "\t\txl_invalidations *xlrec = (xl_invalidations *) XLogRecGetData(record);",
+          "content_same": false
+        },
+        {
+          "line": 1234,
+          "old_api": "LogAccessExclusiveLocks",
+          "new_api": "GetRunningTransactionLocks",
+          "old_text": "LogAccessExclusiveLocks(nlocks, locks)",
+          "new_text": "GetRunningTransactionLocks(&nlocks)",
+          "old_line_content": "\t\tLogAccessExclusiveLocks(nlocks, locks);",
+          "new_line_content": "\tlocks = GetRunningTransactionLocks(&nlocks);",
+          "content_same": false
+        },
+        {
+          "line": 1258,
+          "old_api": "LogCurrentRunningXacts",
+          "new_api": "LWLockRelease",
+          "old_text": "LogCurrentRunningXacts(running)",
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "\trecptr = LogCurrentRunningXacts(running);",
+          "new_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 1295,
+          "old_api": "XLogRegisterData",
+          "new_api": "XLogBeginInsert",
+          "old_text": "XLogRegisterData((char *) (&xlrec), MinSizeOfXactRunningXacts)",
+          "new_text": "XLogBeginInsert()",
+          "old_line_content": "\tXLogRegisterData((char *) (&xlrec), MinSizeOfXactRunningXacts);",
+          "new_line_content": "\tXLogBeginInsert();",
+          "content_same": false
+        },
+        {
+          "line": 1348,
+          "old_api": "XLogRegisterData",
+          "new_api": "XLogBeginInsert",
+          "old_text": "XLogRegisterData((char *) locks, nlocks * sizeof(xl_standby_lock))",
+          "new_text": "XLogBeginInsert()",
+          "old_line_content": "\tXLogRegisterData((char *) locks, nlocks * sizeof(xl_standby_lock));",
+          "new_line_content": "\tXLogBeginInsert();",
+          "content_same": false
+        },
+        {
+          "line": 1349,
+          "old_api": "XLogSetRecordFlags",
+          "new_api": "offsetof",
+          "old_text": "XLogSetRecordFlags(XLOG_MARK_UNIMPORTANT)",
+          "new_text": "offsetof(xl_standby_locks, locks)",
+          "old_line_content": "\tXLogSetRecordFlags(XLOG_MARK_UNIMPORTANT);",
+          "new_line_content": "\tXLogRegisterData((char *) &xlrec, offsetof(xl_standby_locks, locks));",
+          "content_same": false
+        },
+        {
+          "line": 1351,
+          "old_api": "XLogInsert",
+          "new_api": "XLogSetRecordFlags",
+          "old_text": "XLogInsert(RM_STANDBY_ID, XLOG_STANDBY_LOCK)",
+          "new_text": "XLogSetRecordFlags(XLOG_MARK_UNIMPORTANT)",
+          "old_line_content": "\t(void) XLogInsert(RM_STANDBY_ID, XLOG_STANDBY_LOCK);",
+          "new_line_content": "\tXLogSetRecordFlags(XLOG_MARK_UNIMPORTANT);",
+          "content_same": false
+        },
+        {
+          "line": 1412,
+          "old_api": "XLogRegisterData",
+          "new_api": "XLogBeginInsert",
+          "old_text": "XLogRegisterData((char *) msgs,\n\t\t\t\t\t nmsgs * sizeof(SharedInvalidationMessage))",
+          "new_text": "XLogBeginInsert()",
+          "old_line_content": "\tXLogRegisterData((char *) msgs,",
+          "new_line_content": "\tXLogBeginInsert();",
+          "content_same": false
+        },
+        {
+          "line": 1414,
+          "old_api": "XLogInsert",
+          "new_api": "XLogRegisterData",
+          "old_text": "XLogInsert(RM_STANDBY_ID, XLOG_INVALIDATIONS)",
+          "new_text": "XLogRegisterData((char *) msgs,\n\t\t\t\t\t nmsgs * sizeof(SharedInvalidationMessage))",
+          "old_line_content": "\tXLogInsert(RM_STANDBY_ID, XLOG_INVALIDATIONS);",
+          "new_line_content": "\tXLogRegisterData((char *) msgs,",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1152,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(PANIC, \"standby_redo: unknown op code %u\", info)",
+          "old_line_content": "",
+          "new_line_content": "\t\telog(PANIC, \"standby_redo: unknown op code %u\", info);",
+          "content_same": false
+        },
+        {
+          "line": 1026,
+          "old_api": null,
+          "new_api": "StandbyReleaseAllLocks",
+          "old_text": null,
+          "new_text": "StandbyReleaseAllLocks()",
+          "old_line_content": "",
+          "new_line_content": "\t\tStandbyReleaseAllLocks();",
+          "content_same": false
+        },
+        {
+          "line": 1413,
+          "old_api": null,
+          "new_api": "XLogRegisterData",
+          "old_text": null,
+          "new_text": "XLogRegisterData((char *) (&xlrec), MinSizeOfInvalidations)",
+          "old_line_content": "\t\t\t\t\t nmsgs * sizeof(SharedInvalidationMessage));",
+          "new_line_content": "\tXLogRegisterData((char *) (&xlrec), MinSizeOfInvalidations);",
+          "content_same": false
+        },
+        {
+          "line": 1416,
+          "old_api": null,
+          "new_api": "XLogInsert",
+          "old_text": null,
+          "new_text": "XLogInsert(RM_STANDBY_ID, XLOG_INVALIDATIONS)",
+          "old_line_content": "",
+          "new_line_content": "\tXLogInsert(RM_STANDBY_ID, XLOG_INVALIDATIONS);",
+          "content_same": false
+        },
+        {
+          "line": 1423,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"unknown reason\")",
+          "old_line_content": "\tswitch (reason)",
+          "new_line_content": "\tconst char *reasonDesc = _(\"unknown reason\");",
+          "content_same": false
+        },
+        {
+          "line": 1296,
+          "old_api": null,
+          "new_api": "XLogSetRecordFlags",
+          "old_text": null,
+          "new_text": "XLogSetRecordFlags(XLOG_MARK_UNIMPORTANT)",
+          "old_line_content": "",
+          "new_line_content": "\tXLogSetRecordFlags(XLOG_MARK_UNIMPORTANT);",
+          "content_same": false
+        },
+        {
+          "line": 1041,
+          "old_api": null,
+          "new_api": "StandbyReleaseLocks",
+          "old_text": null,
+          "new_text": "StandbyReleaseLocks(xid)",
+          "old_line_content": "\tfor (i = 0; i < nsubxids; i++)",
+          "new_line_content": "\tStandbyReleaseLocks(xid);",
+          "content_same": false
+        },
+        {
+          "line": 1297,
+          "old_api": null,
+          "new_api": "XLogRegisterData",
+          "old_text": null,
+          "new_text": "XLogRegisterData((char *) (&xlrec), MinSizeOfXactRunningXacts)",
+          "old_line_content": "\t/* array of TransactionIds */",
+          "new_line_content": "\tXLogRegisterData((char *) (&xlrec), MinSizeOfXactRunningXacts);",
+          "content_same": false
+        },
+        {
+          "line": 1021,
+          "old_api": null,
+          "new_api": "StandbyReleaseLockList",
+          "old_text": null,
+          "new_text": "StandbyReleaseLockList(entry->locks)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tStandbyReleaseLockList(entry->locks);",
+          "content_same": false
+        },
+        {
+          "line": 1044,
+          "old_api": null,
+          "new_api": "StandbyReleaseLocks",
+          "old_text": null,
+          "new_text": "StandbyReleaseLocks(subxids[i])",
+          "old_line_content": "",
+          "new_line_content": "\t\tStandbyReleaseLocks(subxids[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1301,
+          "old_api": null,
+          "new_api": "XLogRegisterData",
+          "old_text": null,
+          "new_text": "XLogRegisterData((char *) CurrRunningXacts->xids,\n\t\t\t\t\t\t (xlrec.xcnt + xlrec.subxcnt) * sizeof(TransactionId))",
+          "old_line_content": "",
+          "new_line_content": "\t\tXLogRegisterData((char *) CurrRunningXacts->xids,",
+          "content_same": false
+        },
+        {
+          "line": 1428,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on buffer pin\")",
+          "old_line_content": "\t\tcase PROCSIG_RECOVERY_CONFLICT_LOCK:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on buffer pin\");",
+          "content_same": false
+        },
+        {
+          "line": 1431,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on lock\")",
+          "old_line_content": "\t\tcase PROCSIG_RECOVERY_CONFLICT_TABLESPACE:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on lock\");",
+          "content_same": false
+        },
+        {
+          "line": 1304,
+          "old_api": null,
+          "new_api": "XLogInsert",
+          "old_text": null,
+          "new_text": "XLogInsert(RM_STANDBY_ID, XLOG_RUNNING_XACTS)",
+          "old_line_content": "\tif (CurrRunningXacts->subxid_overflow)",
+          "new_line_content": "\trecptr = XLogInsert(RM_STANDBY_ID, XLOG_RUNNING_XACTS);",
+          "content_same": false
+        },
+        {
+          "line": 1434,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on tablespace\")",
+          "old_line_content": "\t\tcase PROCSIG_RECOVERY_CONFLICT_SNAPSHOT:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on tablespace\");",
+          "content_same": false
+        },
+        {
+          "line": 1307,
+          "old_api": null,
+          "new_api": "trace_recovery",
+          "old_text": null,
+          "new_text": "trace_recovery(DEBUG2)",
+          "old_line_content": "\t\t\t CurrRunningXacts->xcnt,",
+          "new_line_content": "\t\telog(trace_recovery(DEBUG2),",
+          "content_same": false
+        },
+        {
+          "line": 1437,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on snapshot\")",
+          "old_line_content": "\t\tcase PROCSIG_RECOVERY_CONFLICT_STARTUP_DEADLOCK:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on snapshot\");",
+          "content_same": false
+        },
+        {
+          "line": 1310,
+          "old_api": null,
+          "new_api": "LSN_FORMAT_ARGS",
+          "old_text": null,
+          "new_text": "LSN_FORMAT_ARGS(recptr)",
+          "old_line_content": "\t\t\t CurrRunningXacts->latestCompletedXid,",
+          "new_line_content": "\t\t\t LSN_FORMAT_ARGS(recptr),",
+          "content_same": false
+        },
+        {
+          "line": 1440,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on buffer deadlock\")",
+          "old_line_content": "\t\tcase PROCSIG_RECOVERY_CONFLICT_DATABASE:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on buffer deadlock\");",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": null,
+          "new_api": "hash_seq_init",
+          "old_text": null,
+          "new_text": "hash_seq_init(&status, RecoveryLockLists)",
+          "old_line_content": "\t{",
+          "new_line_content": "\thash_seq_init(&status, RecoveryLockLists);",
+          "content_same": false
+        },
+        {
+          "line": 1315,
+          "old_api": null,
+          "new_api": "trace_recovery",
+          "old_text": null,
+          "new_text": "trace_recovery(DEBUG2)",
+          "old_line_content": "\t\t\t CurrRunningXacts->xcnt, CurrRunningXacts->subxcnt,",
+          "new_line_content": "\t\telog(trace_recovery(DEBUG2),",
+          "content_same": false
+        },
+        {
+          "line": 1443,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"recovery conflict on database\")",
+          "old_line_content": "\t\tdefault:",
+          "new_line_content": "\t\t\treasonDesc = _(\"recovery conflict on database\");",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": null,
+          "new_api": "StandbyReleaseLockList",
+          "old_text": null,
+          "new_text": "StandbyReleaseLockList(entry->locks)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tStandbyReleaseLockList(entry->locks);",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "hash_search",
+          "old_text": null,
+          "new_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "old_line_content": "}",
+          "new_line_content": "\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1318,
+          "old_api": null,
+          "new_api": "LSN_FORMAT_ARGS",
+          "old_text": null,
+          "new_text": "LSN_FORMAT_ARGS(recptr)",
+          "old_line_content": "\t\t\t CurrRunningXacts->latestCompletedXid,",
+          "new_line_content": "\t\t\t LSN_FORMAT_ARGS(recptr),",
+          "content_same": false
+        },
+        {
+          "line": 1332,
+          "old_api": null,
+          "new_api": "XLogSetAsyncXactLSN",
+          "old_text": null,
+          "new_text": "XLogSetAsyncXactLSN(recptr)",
+          "old_line_content": "\treturn recptr;",
+          "new_line_content": "\tXLogSetAsyncXactLSN(recptr);",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "hash_seq_init",
+          "old_text": null,
+          "new_text": "hash_seq_init(&status, RecoveryLockLists)",
+          "old_line_content": "\t{",
+          "new_line_content": "\thash_seq_init(&status, RecoveryLockLists);",
+          "content_same": false
+        },
+        {
+          "line": 1080,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(entry->xid)",
+          "old_line_content": "\t\t/* Skip if prepared transaction. */",
+          "new_line_content": "\t\tAssert(TransactionIdIsValid(entry->xid));",
+          "content_same": false
+        },
+        {
+          "line": 1083,
+          "old_api": null,
+          "new_api": "StandbyTransactionIdIsPrepared",
+          "old_text": null,
+          "new_text": "StandbyTransactionIdIsPrepared(entry->xid)",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (StandbyTransactionIdIsPrepared(entry->xid))",
+          "content_same": false
+        },
+        {
+          "line": 1087,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(entry->xid, oldxid)",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (!TransactionIdPrecedes(entry->xid, oldxid))",
+          "content_same": false
+        },
+        {
+          "line": 1091,
+          "old_api": null,
+          "new_api": "StandbyReleaseLockList",
+          "old_text": null,
+          "new_text": "StandbyReleaseLockList(entry->locks)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tStandbyReleaseLockList(entry->locks);",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": null,
+          "new_api": "hash_search",
+          "old_text": null,
+          "new_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "old_line_content": "}",
+          "new_line_content": "\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 1350,
+          "old_api": null,
+          "new_api": "XLogRegisterData",
+          "old_text": null,
+          "new_text": "XLogRegisterData((char *) locks, nlocks * sizeof(xl_standby_lock))",
+          "old_line_content": "",
+          "new_line_content": "\tXLogRegisterData((char *) locks, nlocks * sizeof(xl_standby_lock));",
+          "content_same": false
+        },
+        {
+          "line": 1353,
+          "old_api": null,
+          "new_api": "XLogInsert",
+          "old_text": null,
+          "new_text": "XLogInsert(RM_STANDBY_ID, XLOG_STANDBY_LOCK)",
+          "old_line_content": "",
+          "new_line_content": "\t(void) XLogInsert(RM_STANDBY_ID, XLOG_STANDBY_LOCK);",
+          "content_same": false
+        },
+        {
+          "line": 1229,
+          "old_api": null,
+          "new_api": "XLogStandbyInfoActive",
+          "old_text": null,
+          "new_text": "XLogStandbyInfoActive()",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tAssert(XLogStandbyInfoActive());",
+          "content_same": false
+        },
+        {
+          "line": 1107,
+          "old_api": null,
+          "new_api": "XLogRecGetInfo",
+          "old_text": null,
+          "new_text": "XLogRecGetInfo(record)",
+          "old_line_content": "\t/* Backup blocks are not used in standby records */",
+          "new_line_content": "\tuint8\t\tinfo = XLogRecGetInfo(record) & ~XLR_INFO_MASK;",
+          "content_same": false
+        },
+        {
+          "line": 1236,
+          "old_api": null,
+          "new_api": "LogAccessExclusiveLocks",
+          "old_text": null,
+          "new_text": "LogAccessExclusiveLocks(nlocks, locks)",
+          "old_line_content": "",
+          "new_line_content": "\t\tLogAccessExclusiveLocks(nlocks, locks);",
+          "content_same": false
+        },
+        {
+          "line": 1237,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(locks)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tpfree(locks);",
+          "content_same": false
+        },
+        {
+          "line": 1110,
+          "old_api": null,
+          "new_api": "XLogRecHasAnyBlockRefs",
+          "old_text": null,
+          "new_text": "XLogRecHasAnyBlockRefs(record)",
+          "old_line_content": "\t/* Do nothing if we're not in hot standby mode */",
+          "new_line_content": "\tAssert(!XLogRecHasAnyBlockRefs(record));",
+          "content_same": false
+        },
+        {
+          "line": 1364,
+          "old_api": null,
+          "new_api": "GetCurrentTransactionId",
+          "old_text": null,
+          "new_text": "GetCurrentTransactionId()",
+          "old_line_content": "\txlrec.dbOid = dbOid;",
+          "new_line_content": "\txlrec.xid = GetCurrentTransactionId();",
+          "content_same": false
+        },
+        {
+          "line": 1369,
+          "old_api": null,
+          "new_api": "LogAccessExclusiveLocks",
+          "old_text": null,
+          "new_text": "LogAccessExclusiveLocks(1, &xlrec)",
+          "old_line_content": "}",
+          "new_line_content": "\tLogAccessExclusiveLocks(1, &xlrec);",
+          "content_same": false
+        },
+        {
+          "line": 1243,
+          "old_api": null,
+          "new_api": "GetRunningTransactionData",
+          "old_text": null,
+          "new_text": "GetRunningTransactionData()",
+          "old_line_content": "\t/*",
+          "new_line_content": "\trunning = GetRunningTransactionData();",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": null,
+          "new_api": "XLogRecGetData",
+          "old_text": null,
+          "new_text": "XLogRecGetData(record)",
+          "old_line_content": "",
+          "new_line_content": "\t\txl_standby_locks *xlrec = (xl_standby_locks *) XLogRecGetData(record);",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "",
+          "new_line_content": "\t\txl_standby_lock *lock = (xl_standby_lock *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 1122,
+          "old_api": null,
+          "new_api": "StandbyAcquireAccessExclusiveLock",
+          "old_text": null,
+          "new_text": "StandbyAcquireAccessExclusiveLock(xlrec->locks[i].xid,\n\t\t\t\t\t\t\t\t\t\t\t  xlrec->locks[i].dbOid,\n\t\t\t\t\t\t\t\t\t\t\t  xlrec->locks[i].relOid)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t  xlrec->locks[i].relOid);",
+          "new_line_content": "\t\t\tStandbyAcquireAccessExclusiveLock(xlrec->locks[i].xid,",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": null,
+          "new_api": "trace_recovery",
+          "old_text": null,
+          "new_text": "trace_recovery(DEBUG4)",
+          "old_line_content": "\t\t\t lock->xid, lock->dbOid, lock->relOid);",
+          "new_line_content": "\t\telog(trace_recovery(DEBUG4),",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": null,
+          "new_api": "SET_LOCKTAG_RELATION",
+          "old_text": null,
+          "new_text": "SET_LOCKTAG_RELATION(locktag, lock->dbOid, lock->relOid)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tSET_LOCKTAG_RELATION(locktag, lock->dbOid, lock->relOid);",
+          "content_same": false
+        },
+        {
+          "line": 1128,
+          "old_api": null,
+          "new_api": "XLogRecGetData",
+          "old_text": null,
+          "new_text": "XLogRecGetData(record)",
+          "old_line_content": "",
+          "new_line_content": "\t\txl_running_xacts *xlrec = (xl_running_xacts *) XLogRecGetData(record);",
+          "content_same": false
+        },
+        {
+          "line": 1002,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(LOG,\n\t\t\t\t \"RecoveryLockLists contains entry for lock no longer recorded by lock manager: xid %u database %u relation %u\",\n\t\t\t\t lock->xid, lock->dbOid, lock->relOid)",
+          "old_line_content": "\t\t\t\t lock->xid, lock->dbOid, lock->relOid);",
+          "new_line_content": "\t\t\telog(LOG,",
+          "content_same": false
+        },
+        {
+          "line": 1260,
+          "old_api": null,
+          "new_api": "LogCurrentRunningXacts",
+          "old_text": null,
+          "new_text": "LogCurrentRunningXacts(running)",
+          "old_line_content": "\t/* Release lock if we kept it longer ... */",
+          "new_line_content": "\trecptr = LogCurrentRunningXacts(running);",
+          "content_same": false
+        },
+        {
+          "line": 1391,
+          "old_api": null,
+          "new_api": "GetCurrentTransactionId",
+          "old_text": null,
+          "new_text": "GetCurrentTransactionId()",
+          "old_line_content": "",
+          "new_line_content": "\t(void) GetCurrentTransactionId();",
+          "content_same": false
+        },
+        {
+          "line": 1264,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "\t/* GetRunningTransactionData() acquired XidGenLock, we must release it */",
+          "new_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": null,
+          "new_api": "list_free_deep",
+          "old_text": null,
+          "new_text": "list_free_deep(locks)",
+          "old_line_content": "",
+          "new_line_content": "\tlist_free_deep(locks);",
+          "content_same": false
+        },
+        {
+          "line": 1139,
+          "old_api": null,
+          "new_api": "ProcArrayApplyRecoveryInfo",
+          "old_text": null,
+          "new_text": "ProcArrayApplyRecoveryInfo(&running)",
+          "old_line_content": "\telse if (info == XLOG_INVALIDATIONS)",
+          "new_line_content": "\t\tProcArrayApplyRecoveryInfo(&running);",
+          "content_same": false
+        },
+        {
+          "line": 1267,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(XidGenLock)",
+          "old_line_content": "\treturn recptr;",
+          "new_line_content": "\tLWLockRelease(XidGenLock);",
+          "content_same": false
+        },
+        {
+          "line": 1145,
+          "old_api": null,
+          "new_api": "ProcessCommittedInvalidationMessages",
+          "old_text": null,
+          "new_text": "ProcessCommittedInvalidationMessages(xlrec->msgs,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->nmsgs,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->relcacheInitFileInval,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->dbId,\n\t\t\t\t\t\t\t\t\t\t\t xlrec->tsId)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t xlrec->relcacheInitFileInval,",
+          "new_line_content": "\t\tProcessCommittedInvalidationMessages(xlrec->msgs,",
+          "content_same": false
+        },
+        {
+          "line": 1405,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(&xlrec, 0, sizeof(xlrec))",
+          "old_line_content": "\txlrec.tsId = MyDatabaseTableSpace;",
+          "new_line_content": "\tmemset(&xlrec, 0, sizeof(xlrec));",
+          "content_same": false
+        },
+        {
+          "line": 1022,
+          "old_api": null,
+          "new_api": "hash_search",
+          "old_text": null,
+          "new_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1024,
+          "old_api": "StandbyReleaseAllLocks",
+          "new_api": null,
+          "old_text": "StandbyReleaseAllLocks()",
+          "new_text": null,
+          "old_line_content": "\t\tStandbyReleaseAllLocks();",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 1410,
+          "old_api": "XLogBeginInsert",
+          "new_api": null,
+          "old_text": "XLogBeginInsert()",
+          "new_text": null,
+          "old_line_content": "\tXLogBeginInsert();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1411,
+          "old_api": "XLogRegisterData",
+          "new_api": null,
+          "old_text": "XLogRegisterData((char *) (&xlrec), MinSizeOfInvalidations)",
+          "new_text": null,
+          "old_line_content": "\tXLogRegisterData((char *) (&xlrec), MinSizeOfInvalidations);",
+          "new_line_content": "\t/* perform insertion */",
+          "content_same": false
+        },
+        {
+          "line": 1293,
+          "old_api": "XLogBeginInsert",
+          "new_api": null,
+          "old_text": "XLogBeginInsert()",
+          "new_text": null,
+          "old_line_content": "\tXLogBeginInsert();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1294,
+          "old_api": "XLogSetRecordFlags",
+          "new_api": null,
+          "old_text": "XLogSetRecordFlags(XLOG_MARK_UNIMPORTANT)",
+          "new_text": null,
+          "old_line_content": "\tXLogSetRecordFlags(XLOG_MARK_UNIMPORTANT);",
+          "new_line_content": "\t/* Header */",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": "StandbyReleaseLocks",
+          "new_api": null,
+          "old_text": "StandbyReleaseLocks(xid)",
+          "new_text": null,
+          "old_line_content": "\tStandbyReleaseLocks(xid);",
+          "new_line_content": "\tint\t\t\ti;",
+          "content_same": false
+        },
+        {
+          "line": 1421,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"unknown reason\")",
+          "new_text": null,
+          "old_line_content": "\tconst char *reasonDesc = _(\"unknown reason\");",
+          "new_line_content": "get_recovery_conflict_desc(ProcSignalReason reason)",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": "StandbyReleaseLocks",
+          "new_api": null,
+          "old_text": "StandbyReleaseLocks(subxids[i])",
+          "new_text": null,
+          "old_line_content": "\t\tStandbyReleaseLocks(subxids[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1299,
+          "old_api": "XLogRegisterData",
+          "new_api": null,
+          "old_text": "XLogRegisterData((char *) CurrRunningXacts->xids,\n\t\t\t\t\t\t (xlrec.xcnt + xlrec.subxcnt) * sizeof(TransactionId))",
+          "new_text": null,
+          "old_line_content": "\t\tXLogRegisterData((char *) CurrRunningXacts->xids,",
+          "new_line_content": "\t/* array of TransactionIds */",
+          "content_same": false
+        },
+        {
+          "line": 1426,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on buffer pin\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on buffer pin\");",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 1429,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on lock\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on lock\");",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1302,
+          "old_api": "XLogInsert",
+          "new_api": null,
+          "old_text": "XLogInsert(RM_STANDBY_ID, XLOG_RUNNING_XACTS)",
+          "new_text": null,
+          "old_line_content": "\trecptr = XLogInsert(RM_STANDBY_ID, XLOG_RUNNING_XACTS);",
+          "new_line_content": "\t\t\t\t\t\t (xlrec.xcnt + xlrec.subxcnt) * sizeof(TransactionId));",
+          "content_same": false
+        },
+        {
+          "line": 1432,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on tablespace\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on tablespace\");",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1305,
+          "old_api": "trace_recovery",
+          "new_api": null,
+          "old_text": "trace_recovery(DEBUG2)",
+          "new_text": null,
+          "old_line_content": "\t\telog(trace_recovery(DEBUG2),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1435,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on snapshot\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on snapshot\");",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1308,
+          "old_api": "LSN_FORMAT_ARGS",
+          "new_api": null,
+          "old_text": "LSN_FORMAT_ARGS(recptr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t LSN_FORMAT_ARGS(recptr),",
+          "new_line_content": "\t\t\t \"snapshot of %u running transactions overflowed (lsn %X/%X oldest xid %u latest complete %u next xid %u)\",",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": "trace_recovery",
+          "new_api": null,
+          "old_text": "trace_recovery(DEBUG2)",
+          "new_text": null,
+          "old_line_content": "\telog(trace_recovery(DEBUG2), \"release all standby locks\");",
+          "new_line_content": "\tRecoveryLockListsEntry *entry;",
+          "content_same": false
+        },
+        {
+          "line": 1438,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on buffer deadlock\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on buffer deadlock\");",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": "hash_seq_search",
+          "new_api": null,
+          "old_text": "hash_seq_search(&status)",
+          "new_text": null,
+          "old_line_content": "\twhile ((entry = hash_seq_search(&status)))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1313,
+          "old_api": "trace_recovery",
+          "new_api": null,
+          "old_text": "trace_recovery(DEBUG2)",
+          "new_text": null,
+          "old_line_content": "\t\telog(trace_recovery(DEBUG2),",
+          "new_line_content": "\t\t\t CurrRunningXacts->nextXid);",
+          "content_same": false
+        },
+        {
+          "line": 1441,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"recovery conflict on database\")",
+          "new_text": null,
+          "old_line_content": "\t\t\treasonDesc = _(\"recovery conflict on database\");",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": "hash_search",
+          "new_api": null,
+          "old_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "new_text": null,
+          "old_line_content": "\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 1316,
+          "old_api": "LSN_FORMAT_ARGS",
+          "new_api": null,
+          "old_text": "LSN_FORMAT_ARGS(recptr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t LSN_FORMAT_ARGS(recptr),",
+          "new_line_content": "\t\t\t \"snapshot of %u+%u running transaction ids (lsn %X/%X oldest xid %u latest complete %u next xid %u)\",",
+          "content_same": false
+        },
+        {
+          "line": 1330,
+          "old_api": "XLogSetAsyncXactLSN",
+          "new_api": null,
+          "old_text": "XLogSetAsyncXactLSN(recptr)",
+          "new_text": null,
+          "old_line_content": "\tXLogSetAsyncXactLSN(recptr);",
+          "new_line_content": "\t * without it.",
+          "content_same": false
+        },
+        {
+          "line": 1075,
+          "old_api": "hash_seq_init",
+          "new_api": null,
+          "old_text": "hash_seq_init(&status, RecoveryLockLists)",
+          "new_text": null,
+          "old_line_content": "\thash_seq_init(&status, RecoveryLockLists);",
+          "new_line_content": "\tRecoveryLockListsEntry *entry;",
+          "content_same": false
+        },
+        {
+          "line": 1076,
+          "old_api": "hash_seq_search",
+          "new_api": null,
+          "old_text": "hash_seq_search(&status)",
+          "new_text": null,
+          "old_line_content": "\twhile ((entry = hash_seq_search(&status)))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "StandbyTransactionIdIsPrepared",
+          "new_api": null,
+          "old_text": "StandbyTransactionIdIsPrepared(entry->xid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (StandbyTransactionIdIsPrepared(entry->xid))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1085,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(entry->xid, oldxid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!TransactionIdPrecedes(entry->xid, oldxid))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1089,
+          "old_api": "StandbyReleaseLockList",
+          "new_api": null,
+          "old_text": "StandbyReleaseLockList(entry->locks)",
+          "new_text": null,
+          "old_line_content": "\t\tStandbyReleaseLockList(entry->locks);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1090,
+          "old_api": "hash_search",
+          "new_api": null,
+          "old_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "new_text": null,
+          "old_line_content": "\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "new_line_content": "\t\t/* Remove all locks and hash table entry. */",
+          "content_same": false
+        },
+        {
+          "line": 1346,
+          "old_api": "XLogBeginInsert",
+          "new_api": null,
+          "old_text": "XLogBeginInsert()",
+          "new_text": null,
+          "old_line_content": "\tXLogBeginInsert();",
+          "new_line_content": "\txlrec.nlocks = nlocks;",
+          "content_same": false
+        },
+        {
+          "line": 1347,
+          "old_api": "offsetof",
+          "new_api": null,
+          "old_text": "offsetof(xl_standby_locks, locks)",
+          "new_text": null,
+          "old_line_content": "\tXLogRegisterData((char *) &xlrec, offsetof(xl_standby_locks, locks));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1227,
+          "old_api": "XLogStandbyInfoActive",
+          "new_api": null,
+          "old_text": "XLogStandbyInfoActive()",
+          "new_text": null,
+          "old_line_content": "\tAssert(XLogStandbyInfoActive());",
+          "new_line_content": "\tint\t\t\tnlocks;",
+          "content_same": false
+        },
+        {
+          "line": 1232,
+          "old_api": "GetRunningTransactionLocks",
+          "new_api": null,
+          "old_text": "GetRunningTransactionLocks(&nlocks)",
+          "new_text": null,
+          "old_line_content": "\tlocks = GetRunningTransactionLocks(&nlocks);",
+          "new_line_content": "\t * Get details of any AccessExclusiveLocks being held at the moment.",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": "XLogRecGetInfo",
+          "new_api": null,
+          "old_text": "XLogRecGetInfo(record)",
+          "new_text": null,
+          "old_line_content": "\tuint8\t\tinfo = XLogRecGetInfo(record) & ~XLR_INFO_MASK;",
+          "new_line_content": "standby_redo(XLogReaderState *record)",
+          "content_same": false
+        },
+        {
+          "line": 1362,
+          "old_api": "GetCurrentTransactionId",
+          "new_api": null,
+          "old_text": "GetCurrentTransactionId()",
+          "new_text": null,
+          "old_line_content": "\txlrec.xid = GetCurrentTransactionId();",
+          "new_line_content": "\txl_standby_lock xlrec;",
+          "content_same": false
+        },
+        {
+          "line": 1235,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(locks)",
+          "new_text": null,
+          "old_line_content": "\tpfree(locks);",
+          "new_line_content": "\tif (nlocks > 0)",
+          "content_same": false
+        },
+        {
+          "line": 1108,
+          "old_api": "XLogRecHasAnyBlockRefs",
+          "new_api": null,
+          "old_text": "XLogRecHasAnyBlockRefs(record)",
+          "new_text": null,
+          "old_line_content": "\tAssert(!XLogRecHasAnyBlockRefs(record));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1367,
+          "old_api": "LogAccessExclusiveLocks",
+          "new_api": null,
+          "old_text": "LogAccessExclusiveLocks(1, &xlrec)",
+          "new_text": null,
+          "old_line_content": "\tLogAccessExclusiveLocks(1, &xlrec);",
+          "new_line_content": "\txlrec.relOid = relOid;",
+          "content_same": false
+        },
+        {
+          "line": 1241,
+          "old_api": "GetRunningTransactionData",
+          "new_api": null,
+          "old_text": "GetRunningTransactionData()",
+          "new_text": null,
+          "old_line_content": "\trunning = GetRunningTransactionData();",
+          "new_line_content": "\t * record we write, because standby will open up when it sees this.",
+          "content_same": false
+        },
+        {
+          "line": 1116,
+          "old_api": "XLogRecGetData",
+          "new_api": null,
+          "old_text": "XLogRecGetData(record)",
+          "new_text": null,
+          "old_line_content": "\t\txl_standby_locks *xlrec = (xl_standby_locks *) XLogRecGetData(record);",
+          "new_line_content": "\tif (info == XLOG_STANDBY_LOCK)",
+          "content_same": false
+        },
+        {
+          "line": 991,
+          "old_api": "linitial",
+          "new_api": null,
+          "old_text": "linitial(locks)",
+          "new_text": null,
+          "old_line_content": "\t\txl_standby_lock *lock = (xl_standby_lock *) linitial(locks);",
+          "new_line_content": "\tforeach(lc, locks)",
+          "content_same": false
+        },
+        {
+          "line": 1120,
+          "old_api": "StandbyAcquireAccessExclusiveLock",
+          "new_api": null,
+          "old_text": "StandbyAcquireAccessExclusiveLock(xlrec->locks[i].xid,\n\t\t\t\t\t\t\t\t\t\t\t  xlrec->locks[i].dbOid,\n\t\t\t\t\t\t\t\t\t\t\t  xlrec->locks[i].relOid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tStandbyAcquireAccessExclusiveLock(xlrec->locks[i].xid,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": "trace_recovery",
+          "new_api": null,
+          "old_text": "trace_recovery(DEBUG4)",
+          "new_text": null,
+          "old_line_content": "\t\telog(trace_recovery(DEBUG4),",
+          "new_line_content": "\t\tLOCKTAG\t\tlocktag;",
+          "content_same": false
+        },
+        {
+          "line": 997,
+          "old_api": "SET_LOCKTAG_RELATION",
+          "new_api": null,
+          "old_text": "SET_LOCKTAG_RELATION(locktag, lock->dbOid, lock->relOid)",
+          "new_text": null,
+          "old_line_content": "\t\tSET_LOCKTAG_RELATION(locktag, lock->dbOid, lock->relOid);",
+          "new_line_content": "\t\t\t \"releasing recovery lock: xid %u db %u rel %u\",",
+          "content_same": false
+        },
+        {
+          "line": 1126,
+          "old_api": "XLogRecGetData",
+          "new_api": null,
+          "old_text": "XLogRecGetData(record)",
+          "new_text": null,
+          "old_line_content": "\t\txl_running_xacts *xlrec = (xl_running_xacts *) XLogRecGetData(record);",
+          "new_line_content": "\telse if (info == XLOG_RUNNING_XACTS)",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": "LockRelease",
+          "new_api": null,
+          "old_text": "LockRelease(&locktag, AccessExclusiveLock, true)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!LockRelease(&locktag, AccessExclusiveLock, true))",
+          "new_line_content": "\t\t\t lock->xid, lock->dbOid, lock->relOid);",
+          "content_same": false
+        },
+        {
+          "line": 1256,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(false)",
+          "new_text": null,
+          "old_line_content": "\t\t\tAssert(false);",
+          "new_line_content": "\t\t\t\t \"RecoveryLockLists contains entry for lock no longer recorded by lock manager: xid %u database %u relation %u\",",
+          "content_same": false
+        },
+        {
+          "line": 1389,
+          "old_api": "GetCurrentTransactionId",
+          "new_api": null,
+          "old_text": "GetCurrentTransactionId()",
+          "new_text": null,
+          "old_line_content": "\t(void) GetCurrentTransactionId();",
+          "new_line_content": "\t * InvalidTransactionId which we later assert cannot happen.",
+          "content_same": false
+        },
+        {
+          "line": 1262,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t/* Release lock if we kept it longer ... */",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": "list_delete_first",
+          "new_api": null,
+          "old_text": "list_delete_first(locks)",
+          "new_text": null,
+          "old_line_content": "\t\tlocks = list_delete_first(locks);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 1137,
+          "old_api": "ProcArrayApplyRecoveryInfo",
+          "new_api": null,
+          "old_text": "ProcArrayApplyRecoveryInfo(&running)",
+          "new_text": null,
+          "old_line_content": "\t\tProcArrayApplyRecoveryInfo(&running);",
+          "new_line_content": "\t\trunning.xids = xlrec->xids;",
+          "content_same": false
+        },
+        {
+          "line": 1265,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(XidGenLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(XidGenLock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1141,
+          "old_api": "XLogRecGetData",
+          "new_api": null,
+          "old_text": "XLogRecGetData(record)",
+          "new_text": null,
+          "old_line_content": "\t\txl_invalidations *xlrec = (xl_invalidations *) XLogRecGetData(record);",
+          "new_line_content": "\telse if (info == XLOG_INVALIDATIONS)",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tif (TransactionIdIsValid(xid))",
+          "new_line_content": "\tRecoveryLockListsEntry *entry;",
+          "content_same": false
+        },
+        {
+          "line": 1403,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(&xlrec, 0, sizeof(xlrec))",
+          "new_text": null,
+          "old_line_content": "\tmemset(&xlrec, 0, sizeof(xlrec));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": "hash_search",
+          "new_api": null,
+          "old_text": "hash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL)",
+          "new_text": null,
+          "old_line_content": "\t\t\thash_search(RecoveryLockLists, entry, HASH_REMOVE, NULL);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(PANIC, \"standby_redo: unknown op code %u\", info)",
+          "new_text": null,
+          "old_line_content": "\t\telog(PANIC, \"standby_redo: unknown op code %u\", info);",
+          "new_line_content": "\t}",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 16,
+      "total_additions": 58,
+      "total_deletions": 59,
+      "total_api_changes": 133
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 133,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          1008,
+          989,
+          990
+        ]
+      }
+    },
+    "api_calls_before": 195,
+    "api_calls_after": 194,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 4,
+      "total_diff_lines": 31
+    }
+  }
+}

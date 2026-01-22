@@ -1,0 +1,25 @@
+diff --git a/LibCore/CEventLoop.cpp b/LibCore/CEventLoop.cpp
+index d84a45fe16..3fca8b9239 100644
+--- a/LibCore/CEventLoop.cpp
++++ b/LibCore/CEventLoop.cpp
+@@ -199,8 +199,8 @@ void CEventLoop::wait_for_event(WaitMode mode)
+         should_wait_forever = false;
+     }
+ 
+-    int rc = select(max_fd + 1, &rfds, &wfds, nullptr, should_wait_forever ? nullptr : &timeout);
+-    if (rc < 0) {
++    int marked_fd_count = select(max_fd + 1, &rfds, &wfds, nullptr, should_wait_forever ? nullptr : &timeout);
++    if (marked_fd_count < 0) {
+         ASSERT_NOT_REACHED();
+     }
+ 
+@@ -224,6 +224,9 @@ void CEventLoop::wait_for_event(WaitMode mode)
+         }
+     }
+ 
++    if (!marked_fd_count)
++        return;
++
+     for (auto& notifier : *s_notifiers) {
+         if (FD_ISSET(notifier->fd(), &rfds)) {
+             if (notifier->on_ready_to_read)

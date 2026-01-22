@@ -1,0 +1,4634 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6897f0ec024582a570868939d3f34a6853374723",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6897f0ec024582a570868939d3f34a6853374723/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6897f0ec024582a570868939d3f34a6853374723/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/6897f0ec024582a570868939d3f34a6853374723/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 2854,
+          "old_api": "TransactionIdIsValid",
+          "new_api": "XidFromFullTransactionId",
+          "old_text": "TransactionIdIsValid(CurrentRunningXacts->nextXid)",
+          "new_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "old_line_content": "\tAssert(TransactionIdIsValid(CurrentRunningXacts->nextXid));",
+          "new_line_content": "\tCurrentRunningXacts->nextXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "content_same": false
+        },
+        {
+          "line": 2902,
+          "old_api": "LWLockAcquire",
+          "new_api": "LWLockRelease",
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": "LWLockRelease(XidGenLock)",
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tLWLockRelease(XidGenLock);",
+          "content_same": false
+        },
+        {
+          "line": 2913,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": "UINT32_ACCESS_ONCE",
+          "old_text": "TransactionIdPrecedes(xid, oldestRunningXid)",
+          "new_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "old_line_content": "\t\tif (TransactionIdPrecedes(xid, oldestRunningXid))",
+          "new_line_content": "\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "content_same": false
+        },
+        {
+          "line": 2977,
+          "old_api": "TransactionIdIsValid",
+          "new_api": "TransactionIdPrecedes",
+          "old_text": "TransactionIdIsValid(procArray->replication_slot_catalog_xmin)",
+          "new_text": "TransactionIdPrecedes(procArray->replication_slot_xmin,\n\t\t\t\t\t\t\t  oldestSafeXid)",
+          "old_line_content": "\t\tTransactionIdIsValid(procArray->replication_slot_catalog_xmin) &&",
+          "new_line_content": "\t\tTransactionIdPrecedes(procArray->replication_slot_xmin,",
+          "content_same": false
+        },
+        {
+          "line": 3011,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": "UINT32_ACCESS_ONCE",
+          "old_text": "TransactionIdPrecedes(xid, oldestSafeXid)",
+          "new_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "old_line_content": "\t\t\tif (TransactionIdPrecedes(xid, oldestSafeXid))",
+          "new_line_content": "\t\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "content_same": false
+        },
+        {
+          "line": 3016,
+          "old_api": "LWLockRelease",
+          "new_api": "TransactionIdPrecedes",
+          "old_text": "LWLockRelease(XidGenLock)",
+          "new_text": "TransactionIdPrecedes(xid, oldestSafeXid)",
+          "old_line_content": "\tLWLockRelease(XidGenLock);",
+          "new_line_content": "\t\t\tif (TransactionIdPrecedes(xid, oldestSafeXid))",
+          "content_same": false
+        },
+        {
+          "line": 3072,
+          "old_api": "LWLockRelease",
+          "new_api": "VirtualTransactionIdIsValid",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "VirtualTransactionIdIsValid(vxid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "content_same": false
+        },
+        {
+          "line": 3367,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": "TransactionIdIsValid",
+          "old_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "new_text": "TransactionIdIsValid(limitXmin)",
+          "old_line_content": "\t\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "new_line_content": "\t\t\tif (!TransactionIdIsValid(limitXmin) ||",
+          "content_same": false
+        },
+        {
+          "line": 3368,
+          "old_api": "VirtualTransactionIdIsValid",
+          "new_api": "TransactionIdPrecedesOrEquals",
+          "old_text": "VirtualTransactionIdIsValid(vxid)",
+          "new_text": "TransactionIdPrecedesOrEquals(pxmin, limitXmin)",
+          "old_line_content": "\t\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "new_line_content": "\t\t\t\tTransactionIdPrecedesOrEquals(pxmin, limitXmin))",
+          "content_same": false
+        },
+        {
+          "line": 3438,
+          "old_api": "LWLockAcquire",
+          "new_api": "ereport",
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_OUT_OF_MEMORY),\n\t\t\t\t\t errmsg(\"out of memory\")))",
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 3468,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": "TransactionIdIsValid",
+          "old_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "new_text": "TransactionIdIsValid(limitXmin)",
+          "old_line_content": "\t\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "new_line_content": "\t\t\tif (!TransactionIdIsValid(limitXmin) ||",
+          "content_same": false
+        },
+        {
+          "line": 3469,
+          "old_api": "VirtualTransactionIdIsValid",
+          "new_api": "TransactionIdFollows",
+          "old_text": "VirtualTransactionIdIsValid(vxid)",
+          "new_text": "TransactionIdFollows(pxmin, limitXmin)",
+          "old_line_content": "\t\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "new_line_content": "\t\t\t\t(TransactionIdIsValid(pxmin) && !TransactionIdFollows(pxmin, limitXmin)))",
+          "content_same": false
+        },
+        {
+          "line": 3618,
+          "old_api": "LWLockRelease",
+          "new_api": "OidIsValid",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "OidIsValid(databaseid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\tif (!OidIsValid(databaseid) ||",
+          "content_same": false
+        },
+        {
+          "line": 3650,
+          "old_api": "LWLockRelease",
+          "new_api": "OidIsValid",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "OidIsValid(databaseid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\tif (!OidIsValid(databaseid) ||",
+          "content_same": false
+        },
+        {
+          "line": 3692,
+          "old_api": "LWLockRelease",
+          "new_api": "SendProcSignal",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "SendProcSignal(pid, sigmode, procvxid.procNumber)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\t\t(void) SendProcSignal(pid, sigmode, procvxid.procNumber);",
+          "content_same": false
+        },
+        {
+          "line": 3852,
+          "old_api": "LWLockRelease",
+          "new_api": "lappend_int",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "lappend_int(pids, proc->pid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\tpids = lappend_int(pids, proc->pid);",
+          "content_same": false
+        },
+        {
+          "line": 3857,
+          "old_api": "errmsg",
+          "new_api": "LWLockRelease",
+          "old_text": "errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",\n\t\t\t\t\t\tget_database_name(databaseId))",
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "\t\t\t\t errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3890,
+          "old_api": "superuser",
+          "new_api": "lfirst_int",
+          "old_text": "superuser()",
+          "new_text": "lfirst_int(lc)",
+          "old_line_content": "\t\t\t\tif (superuser_arg(proc->roleId) && !superuser())",
+          "new_line_content": "\t\t\tint\t\t\tpid = lfirst_int(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3891,
+          "old_api": "ereport",
+          "new_api": "BackendPidGetProc",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),\n\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),\n\t\t\t\t\t\t\t errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",\n\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")))",
+          "new_text": "BackendPidGetProc(pid)",
+          "old_line_content": "\t\t\t\t\tereport(ERROR,",
+          "new_line_content": "\t\t\tPGPROC\t   *proc = BackendPidGetProc(pid);",
+          "content_same": false
+        },
+        {
+          "line": 3897,
+          "old_api": "GetUserId",
+          "new_api": "errcode",
+          "old_text": "GetUserId()",
+          "new_text": "errcode(ERRCODE_INSUFFICIENT_PRIVILEGE)",
+          "old_line_content": "\t\t\t\tif (!has_privs_of_role(GetUserId(), proc->roleId) &&",
+          "new_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),",
+          "content_same": false
+        },
+        {
+          "line": 3898,
+          "old_api": "GetUserId",
+          "new_api": "errmsg",
+          "old_text": "GetUserId()",
+          "new_text": "errmsg(\"permission denied to terminate process\")",
+          "old_line_content": "\t\t\t\t\t!has_privs_of_role(GetUserId(), ROLE_PG_SIGNAL_BACKEND))",
+          "new_line_content": "\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),",
+          "content_same": false
+        },
+        {
+          "line": 3899,
+          "old_api": "ereport",
+          "new_api": "errdetail",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),\n\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),\n\t\t\t\t\t\t\t errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",\n\t\t\t\t\t\t\t\t\t   \"pg_signal_backend\")))",
+          "new_text": "errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",\n\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")",
+          "old_line_content": "\t\t\t\t\tereport(ERROR,",
+          "new_line_content": "\t\t\t\t\t\t\t errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",",
+          "content_same": false
+        },
+        {
+          "line": 3902,
+          "old_api": "errdetail",
+          "new_api": "GetUserId",
+          "old_text": "errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",\n\t\t\t\t\t\t\t\t\t   \"pg_signal_backend\")",
+          "new_text": "GetUserId()",
+          "old_line_content": "\t\t\t\t\t\t\t errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",",
+          "new_line_content": "\t\t\t\tif (!has_privs_of_role(GetUserId(), proc->roleId) &&",
+          "content_same": false
+        },
+        {
+          "line": 4050,
+          "old_api": "TransactionIdEquals",
+          "new_api": "elog",
+          "old_text": "TransactionIdEquals(MyProc->subxids.xids[j], xid)",
+          "new_text": "elog(WARNING, \"did not find subXID %u in MyProc\", anxid)",
+          "old_line_content": "\t\tif (TransactionIdEquals(MyProc->subxids.xids[j], xid))",
+          "new_line_content": "\t\t\telog(WARNING, \"did not find subXID %u in MyProc\", anxid);",
+          "content_same": false
+        },
+        {
+          "line": 4069,
+          "old_api": "LWLockRelease",
+          "new_api": "MaintainLatestCompletedXid",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "MaintainLatestCompletedXid(latestXid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\tMaintainLatestCompletedXid(latestXid);",
+          "content_same": false
+        },
+        {
+          "line": 4330,
+          "old_api": "U64FromFullTransactionId",
+          "new_api": "TransactionIdIsValid",
+          "old_text": "U64FromFullTransactionId(rel)",
+          "new_text": "TransactionIdIsValid(rel_xid)",
+          "old_line_content": "\treturn FullTransactionIdFromU64(U64FromFullTransactionId(rel)",
+          "new_line_content": "\tAssert(TransactionIdIsValid(rel_xid));",
+          "content_same": false
+        },
+        {
+          "line": 4435,
+          "old_api": "Assert",
+          "new_api": "TransactionIdPrecedes",
+          "old_text": "Assert(next_expected_xid == xid)",
+          "new_text": "TransactionIdPrecedes(next_expected_xid, xid)",
+          "old_line_content": "\t\tAssert(next_expected_xid == xid);",
+          "new_line_content": "\t\twhile (TransactionIdPrecedes(next_expected_xid, xid))",
+          "content_same": false
+        },
+        {
+          "line": 4479,
+          "old_api": "LWLockAcquire",
+          "new_api": "Assert",
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": "Assert(standbyState >= STANDBY_INITIALIZED)",
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "\tAssert(standbyState >= STANDBY_INITIALIZED);",
+          "content_same": false
+        },
+        {
+          "line": 4484,
+          "old_api": "MaintainLatestCompletedXidRecovery",
+          "new_api": "LWLockAcquire",
+          "old_text": "MaintainLatestCompletedXidRecovery(max_xid)",
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\tMaintainLatestCompletedXidRecovery(max_xid);",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 4489,
+          "old_api": "LWLockRelease",
+          "new_api": "MaintainLatestCompletedXidRecovery",
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": "MaintainLatestCompletedXidRecovery(max_xid)",
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\tMaintainLatestCompletedXidRecovery(max_xid);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 3077,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 5125,
+          "old_api": null,
+          "new_api": "pg_read_barrier",
+          "old_text": null,
+          "new_text": "pg_read_barrier()",
+          "old_line_content": "\t\tif (KnownAssignedXidsValid[i])",
+          "new_line_content": "\tpg_read_barrier();\t\t\t/* pairs with KnownAssignedXidsAdd */",
+          "content_same": false
+        },
+        {
+          "line": 5139,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(knownXid, *xmin)",
+          "old_line_content": "\t\t\t * of array.",
+          "new_line_content": "\t\t\t\tTransactionIdPrecedes(knownXid, *xmin))",
+          "content_same": false
+        },
+        {
+          "line": 4116,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(RecentXmin)",
+          "old_line_content": "\t\t\tstate = &GlobalVisSharedRels;",
+          "new_line_content": "\tAssert(RecentXmin);",
+          "content_same": false
+        },
+        {
+          "line": 4118,
+          "old_api": null,
+          "new_api": "GlobalVisHorizonKindForRel",
+          "old_text": null,
+          "new_text": "GlobalVisHorizonKindForRel(rel)",
+          "old_line_content": "\t\tcase VISHORIZON_CATALOG:",
+          "new_line_content": "\tswitch (GlobalVisHorizonKindForRel(rel))",
+          "content_same": false
+        },
+        {
+          "line": 3609,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 5146,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xmax)",
+          "old_line_content": "\t\t\txarray[count++] = knownXid;",
+          "new_line_content": "\t\t\tif (TransactionIdIsValid(xmax) &&",
+          "content_same": false
+        },
+        {
+          "line": 3099,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(type != 0)",
+          "old_line_content": "\t{",
+          "new_line_content": "\tAssert(type != 0);",
+          "content_same": false
+        },
+        {
+          "line": 5147,
+          "old_api": null,
+          "new_api": "TransactionIdFollowsOrEquals",
+          "old_text": null,
+          "new_text": "TransactionIdFollowsOrEquals(knownXid, xmax)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\tTransactionIdFollowsOrEquals(knownXid, xmax))",
+          "content_same": false
+        },
+        {
+          "line": 3101,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 3109,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "old_line_content": "\t\t\tint\t\t\ti;",
+          "new_line_content": "\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "content_same": false
+        },
+        {
+          "line": 4134,
+          "old_api": null,
+          "new_api": "FullTransactionIdIsValid",
+          "old_text": null,
+          "new_text": "FullTransactionIdIsValid(state->definitely_needed)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(FullTransactionIdIsValid(state->definitely_needed) &&",
+          "content_same": false
+        },
+        {
+          "line": 4135,
+          "old_api": null,
+          "new_api": "FullTransactionIdIsValid",
+          "old_text": null,
+          "new_text": "FullTransactionIdIsValid(state->maybe_needed)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\t   FullTransactionIdIsValid(state->maybe_needed));",
+          "content_same": false
+        },
+        {
+          "line": 3112,
+          "old_api": null,
+          "new_api": "VirtualTransactionIdIsValid",
+          "old_text": null,
+          "new_text": "VirtualTransactionIdIsValid(vxid)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\tVirtualTransactionIdIsValid(vxid))",
+          "content_same": false
+        },
+        {
+          "line": 3623,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3118,
+          "old_api": null,
+          "new_api": "VirtualTransactionIdEquals",
+          "old_text": null,
+          "new_text": "VirtualTransactionIdEquals(vxid, vxids[i])",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tif (VirtualTransactionIdEquals(vxid, vxids[i]))",
+          "content_same": false
+        },
+        {
+          "line": 5175,
+          "old_api": null,
+          "new_api": "pg_read_barrier",
+          "old_text": null,
+          "new_text": "pg_read_barrier()",
+          "old_line_content": "\t\tif (KnownAssignedXidsValid[i])",
+          "new_line_content": "\tpg_read_barrier();\t\t\t/* pairs with KnownAssignedXidsAdd */",
+          "content_same": false
+        },
+        {
+          "line": 3639,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 3129,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4154,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(ComputeXidHorizonsResultLastXmin)",
+          "old_line_content": "\t * unlikely to be beneficial to refresh boundaries.",
+          "new_line_content": "\tif (!TransactionIdIsValid(ComputeXidHorizonsResultLastXmin))",
+          "content_same": false
+        },
+        {
+          "line": 4161,
+          "old_api": null,
+          "new_api": "FullTransactionIdFollowsOrEquals",
+          "old_text": null,
+          "new_text": "FullTransactionIdFollowsOrEquals(state->maybe_needed,\n\t\t\t\t\t\t\t\t\t\t state->definitely_needed)",
+          "old_line_content": "\treturn RecentXmin != ComputeXidHorizonsResultLastXmin;",
+          "new_line_content": "\tif (FullTransactionIdFollowsOrEquals(state->maybe_needed,",
+          "content_same": false
+        },
+        {
+          "line": 3655,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3148,
+          "old_api": null,
+          "new_api": "GetPGProcByNumber",
+          "old_text": null,
+          "new_text": "GetPGProcByNumber(procNumber)",
+          "old_line_content": "\treturn result;",
+          "new_line_content": "\tresult = GetPGProcByNumber(procNumber);",
+          "content_same": false
+        },
+        {
+          "line": 4173,
+          "old_api": null,
+          "new_api": "FullXidRelativeTo",
+          "old_text": null,
+          "new_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->shared_oldest_nonremovable)",
+          "old_line_content": "\tGlobalVisDataRels.maybe_needed =",
+          "new_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "content_same": false
+        },
+        {
+          "line": 4176,
+          "old_api": null,
+          "new_api": "FullXidRelativeTo",
+          "old_text": null,
+          "new_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->catalog_oldest_nonremovable)",
+          "old_line_content": "\tGlobalVisTempRels.maybe_needed =",
+          "new_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "content_same": false
+        },
+        {
+          "line": 4179,
+          "old_api": null,
+          "new_api": "FullXidRelativeTo",
+          "old_text": null,
+          "new_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->data_oldest_nonremovable)",
+          "old_line_content": "",
+          "new_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "content_same": false
+        },
+        {
+          "line": 4182,
+          "old_api": null,
+          "new_api": "FullXidRelativeTo",
+          "old_text": null,
+          "new_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->temp_oldest_nonremovable)",
+          "old_line_content": "\t * previously needed to treat as running aren't around anymore. So update",
+          "new_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "content_same": false
+        },
+        {
+          "line": 3670,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 5210,
+          "old_api": null,
+          "new_api": "initStringInfo",
+          "old_text": null,
+          "new_text": "initStringInfo(&buf)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\tinitStringInfo(&buf);",
+          "content_same": false
+        },
+        {
+          "line": 4191,
+          "old_api": null,
+          "new_api": "FullTransactionIdNewer",
+          "old_text": null,
+          "new_text": "FullTransactionIdNewer(GlobalVisSharedRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisSharedRels.definitely_needed)",
+          "old_line_content": "\tGlobalVisDataRels.definitely_needed =",
+          "new_line_content": "\t\tFullTransactionIdNewer(GlobalVisSharedRels.maybe_needed,",
+          "content_same": false
+        },
+        {
+          "line": 5217,
+          "old_api": null,
+          "new_api": "appendStringInfo",
+          "old_text": null,
+          "new_text": "appendStringInfo(&buf, \"[%d]=%u \", i, KnownAssignedXids[i])",
+          "old_line_content": "\t\t nxids,",
+          "new_line_content": "\t\t\tappendStringInfo(&buf, \"[%d]=%u \", i, KnownAssignedXids[i]);",
+          "content_same": false
+        },
+        {
+          "line": 4194,
+          "old_api": null,
+          "new_api": "FullTransactionIdNewer",
+          "old_text": null,
+          "new_text": "FullTransactionIdNewer(GlobalVisCatalogRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisCatalogRels.definitely_needed)",
+          "old_line_content": "\tGlobalVisTempRels.definitely_needed = GlobalVisTempRels.maybe_needed;",
+          "new_line_content": "\t\tFullTransactionIdNewer(GlobalVisCatalogRels.maybe_needed,",
+          "content_same": false
+        },
+        {
+          "line": 3682,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(procvxid, *proc)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\tGET_VXID_FROM_PGPROC(procvxid, *proc);",
+          "content_same": false
+        },
+        {
+          "line": 4197,
+          "old_api": null,
+          "new_api": "FullTransactionIdNewer",
+          "old_text": null,
+          "new_text": "FullTransactionIdNewer(GlobalVisDataRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisDataRels.definitely_needed)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tFullTransactionIdNewer(GlobalVisDataRels.maybe_needed,",
+          "content_same": false
+        },
+        {
+          "line": 5221,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(trace_level, \"%d KnownAssignedXids (num=%d tail=%d head=%d) %s\",\n\t\t nxids,\n\t\t pArray->numKnownAssignedXids,\n\t\t pArray->tailKnownAssignedXids,\n\t\t pArray->headKnownAssignedXids,\n\t\t buf.data)",
+          "old_line_content": "\t\t buf.data);",
+          "new_line_content": "\telog(trace_level, \"%d KnownAssignedXids (num=%d tail=%d head=%d) %s\",",
+          "content_same": false
+        },
+        {
+          "line": 3176,
+          "old_api": null,
+          "new_api": "GetPGProcByNumber",
+          "old_text": null,
+          "new_text": "GetPGProcByNumber(procNumber)",
+          "old_line_content": "\tif (proc->pid != 0)",
+          "new_line_content": "\tproc = GetPGProcByNumber(procNumber);",
+          "content_same": false
+        },
+        {
+          "line": 4713,
+          "old_api": null,
+          "new_api": "TimestampTzPlusMilliseconds",
+          "old_text": null,
+          "new_text": "TimestampTzPlusMilliseconds(lastCompressTs,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t KAX_COMPRESS_IDLE_INTERVAL)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\tcompress_after = TimestampTzPlusMilliseconds(lastCompressTs,",
+          "content_same": false
+        },
+        {
+          "line": 4715,
+          "old_api": null,
+          "new_api": "GetCurrentTimestamp",
+          "old_text": null,
+          "new_text": "GetCurrentTimestamp()",
+          "old_line_content": "\t/* Need to compress, so get the lock if we don't have it. */",
+          "new_line_content": "\t\t\tif (GetCurrentTimestamp() < compress_after)",
+          "content_same": false
+        },
+        {
+          "line": 3179,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\t*xmin = proc->xmin;",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 5228,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(buf.data)",
+          "old_line_content": " *\t\tResets KnownAssignedXids to be empty",
+          "new_line_content": "\tpfree(buf.data);",
+          "content_same": false
+        },
+        {
+          "line": 3697,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " */",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4722,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 3189,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " *",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4214,
+          "old_api": null,
+          "new_api": "ComputeXidHorizons",
+          "old_text": null,
+          "new_text": "ComputeXidHorizons(&horizons)",
+          "old_line_content": " *",
+          "new_line_content": "\tComputeXidHorizons(&horizons);",
+          "content_same": false
+        },
+        {
+          "line": 5240,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 5246,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3710,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4738,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(compress_index == pArray->numKnownAssignedXids)",
+          "old_line_content": "\tif (!haveLock)",
+          "new_line_content": "\tAssert(compress_index == pArray->numKnownAssignedXids);",
+          "content_same": false
+        },
+        {
+          "line": 3207,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4744,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4233,
+          "old_api": null,
+          "new_api": "FullTransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "FullTransactionIdPrecedes(fxid, state->maybe_needed)",
+          "old_line_content": "\t * considered running.",
+          "new_line_content": "\tif (FullTransactionIdPrecedes(fxid, state->maybe_needed))",
+          "content_same": false
+        },
+        {
+          "line": 3209,
+          "old_api": null,
+          "new_api": "BackendPidGetProcWithLock",
+          "old_text": null,
+          "new_text": "BackendPidGetProcWithLock(pid)",
+          "old_line_content": "}",
+          "new_line_content": "\tresult = BackendPidGetProcWithLock(pid);",
+          "content_same": false
+        },
+        {
+          "line": 4747,
+          "old_api": null,
+          "new_api": "GetCurrentTimestamp",
+          "old_text": null,
+          "new_text": "GetCurrentTimestamp()",
+          "old_line_content": " *",
+          "new_line_content": "\tlastCompressTs = GetCurrentTimestamp();",
+          "content_same": false
+        },
+        {
+          "line": 3211,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3725,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4240,
+          "old_api": null,
+          "new_api": "FullTransactionIdFollowsOrEquals",
+          "old_text": null,
+          "new_text": "FullTransactionIdFollowsOrEquals(fxid, state->definitely_needed)",
+          "old_line_content": "\t * might not exist a snapshot considering fxid running. If it makes sense,",
+          "new_line_content": "\tif (FullTransactionIdFollowsOrEquals(fxid, state->definitely_needed))",
+          "content_same": false
+        },
+        {
+          "line": 4248,
+          "old_api": null,
+          "new_api": "GlobalVisTestShouldUpdate",
+          "old_text": null,
+          "new_text": "GlobalVisTestShouldUpdate(state)",
+          "old_line_content": "",
+          "new_line_content": "\tif (GlobalVisTestShouldUpdate(state))",
+          "content_same": false
+        },
+        {
+          "line": 4250,
+          "old_api": null,
+          "new_api": "GlobalVisUpdate",
+          "old_text": null,
+          "new_text": "GlobalVisUpdate()",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tGlobalVisUpdate();",
+          "content_same": false
+        },
+        {
+          "line": 4252,
+          "old_api": null,
+          "new_api": "FullTransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "FullTransactionIdPrecedes(fxid, state->definitely_needed)",
+          "old_line_content": "\t\treturn false;",
+          "new_line_content": "\t\tAssert(FullTransactionIdPrecedes(fxid, state->definitely_needed));",
+          "content_same": false
+        },
+        {
+          "line": 4254,
+          "old_api": null,
+          "new_api": "FullTransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "FullTransactionIdPrecedes(fxid, state->maybe_needed)",
+          "old_line_content": "",
+          "new_line_content": "\t\treturn FullTransactionIdPrecedes(fxid, state->maybe_needed);",
+          "content_same": false
+        },
+        {
+          "line": 4772,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedesOrEquals",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedesOrEquals(from_xid, to_xid)",
+          "old_line_content": "\t * way.",
+          "new_line_content": "\tAssert(TransactionIdPrecedesOrEquals(from_xid, to_xid));",
+          "content_same": false
+        },
+        {
+          "line": 4785,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(next_xid, to_xid)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\twhile (TransactionIdPrecedes(next_xid, to_xid))",
+          "content_same": false
+        },
+        {
+          "line": 4788,
+          "old_api": null,
+          "new_api": "TransactionIdAdvance",
+          "old_text": null,
+          "new_text": "TransactionIdAdvance(next_xid)",
+          "old_line_content": "\t * Since only the startup process modifies the head/tail pointers, we",
+          "new_line_content": "\t\t\tTransactionIdAdvance(next_xid);",
+          "content_same": false
+        },
+        {
+          "line": 4280,
+          "old_api": null,
+          "new_api": "FullXidRelativeTo",
+          "old_text": null,
+          "new_text": "FullXidRelativeTo(state->definitely_needed, xid)",
+          "old_line_content": "/*",
+          "new_line_content": "\tfxid = FullXidRelativeTo(state->definitely_needed, xid);",
+          "content_same": false
+        },
+        {
+          "line": 3769,
+          "old_api": null,
+          "new_api": "CHECK_FOR_INTERRUPTS",
+          "old_text": null,
+          "new_text": "CHECK_FOR_INTERRUPTS()",
+          "old_line_content": "",
+          "new_line_content": "\t\tCHECK_FOR_INTERRUPTS();",
+          "content_same": false
+        },
+        {
+          "line": 4282,
+          "old_api": null,
+          "new_api": "GlobalVisTestIsRemovableFullXid",
+          "old_text": null,
+          "new_text": "GlobalVisTestIsRemovableFullXid(state, fxid)",
+          "old_line_content": " * GlobalVisTestIsRemovableFullXid(), see their comments.",
+          "new_line_content": "\treturn GlobalVisTestIsRemovableFullXid(state, fxid);",
+          "content_same": false
+        },
+        {
+          "line": 3773,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4799,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(head >= 0 && head <= pArray->maxKnownAssignedXids)",
+          "old_line_content": "\t * if the last existing element is marked invalid, it must still have a",
+          "new_line_content": "\tAssert(head >= 0 && head <= pArray->maxKnownAssignedXids);",
+          "content_same": false
+        },
+        {
+          "line": 4800,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(tail >= 0 && tail < pArray->maxKnownAssignedXids)",
+          "old_line_content": "\t * correctly sequenced XID value.",
+          "new_line_content": "\tAssert(tail >= 0 && tail < pArray->maxKnownAssignedXids);",
+          "content_same": false
+        },
+        {
+          "line": 4294,
+          "old_api": null,
+          "new_api": "GlobalVisTestFor",
+          "old_text": null,
+          "new_text": "GlobalVisTestFor(rel)",
+          "old_line_content": "/*",
+          "new_line_content": "\tstate = GlobalVisTestFor(rel);",
+          "content_same": false
+        },
+        {
+          "line": 2759,
+          "old_api": null,
+          "new_api": "UINT32_ACCESS_ONCE",
+          "old_text": null,
+          "new_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "old_line_content": "",
+          "new_line_content": "\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "content_same": false
+        },
+        {
+          "line": 4296,
+          "old_api": null,
+          "new_api": "GlobalVisTestIsRemovableFullXid",
+          "old_text": null,
+          "new_text": "GlobalVisTestIsRemovableFullXid(state, fxid)",
+          "old_line_content": " * GlobalVisTestIsRemovableXid(), see their comments.",
+          "new_line_content": "\treturn GlobalVisTestIsRemovableFullXid(state, fxid);",
+          "content_same": false
+        },
+        {
+          "line": 4808,
+          "old_api": null,
+          "new_api": "TransactionIdFollowsOrEquals",
+          "old_text": null,
+          "new_text": "TransactionIdFollowsOrEquals(KnownAssignedXids[head - 1], from_xid)",
+          "old_line_content": "",
+          "new_line_content": "\t\tTransactionIdFollowsOrEquals(KnownAssignedXids[head - 1], from_xid))",
+          "content_same": false
+        },
+        {
+          "line": 4810,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsDisplay",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsDisplay(LOG)",
+          "old_line_content": "\t * If our xids won't fit in the remaining space, compress out free space",
+          "new_line_content": "\t\tKnownAssignedXidsDisplay(LOG);",
+          "content_same": false
+        },
+        {
+          "line": 4811,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"out-of-order XID insertion in KnownAssignedXids\")",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\telog(ERROR, \"out-of-order XID insertion in KnownAssignedXids\");",
+          "content_same": false
+        },
+        {
+          "line": 3270,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 2765,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "\t\t * yet because they will not show as running on a standby server.",
+          "new_line_content": "\t\tif (!TransactionIdIsValid(xid))",
+          "content_same": false
+        },
+        {
+          "line": 4819,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsCompress",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsCompress(KAX_NO_SPACE, exclusive_lock)",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\tKnownAssignedXidsCompress(KAX_NO_SPACE, exclusive_lock);",
+          "content_same": false
+        },
+        {
+          "line": 4308,
+          "old_api": null,
+          "new_api": "GlobalVisTestFor",
+          "old_text": null,
+          "new_text": "GlobalVisTestFor(rel)",
+          "old_line_content": "/*",
+          "new_line_content": "\tstate = GlobalVisTestFor(rel);",
+          "content_same": false
+        },
+        {
+          "line": 2773,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(xid, oldestRunningXid)",
+          "old_line_content": "\t\t * up transaction information held on standbys.",
+          "new_line_content": "\t\tif (TransactionIdPrecedes(xid, oldestRunningXid))",
+          "content_same": false
+        },
+        {
+          "line": 4310,
+          "old_api": null,
+          "new_api": "GlobalVisTestIsRemovableXid",
+          "old_text": null,
+          "new_text": "GlobalVisTestIsRemovableXid(state, xid)",
+          "old_line_content": " * is within MaxTransactionId / 2 of XidFromFullTransactionId(rel).",
+          "new_line_content": "\treturn GlobalVisTestIsRemovableXid(state, xid);",
+          "content_same": false
+        },
+        {
+          "line": 3284,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3799,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4828,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"too many KnownAssignedXids\")",
+          "old_line_content": "\tfor (i = 0; i < nxids; i++)",
+          "new_line_content": "\t\t\telog(ERROR, \"too many KnownAssignedXids\");",
+          "content_same": false
+        },
+        {
+          "line": 2781,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(xid, oldestDatabaseRunningXid)",
+          "old_line_content": "\t\tif (proc->databaseId == MyDatabaseId &&",
+          "new_line_content": "\t\tif (TransactionIdPrecedes(xid, oldestDatabaseRunningXid))",
+          "content_same": false
+        },
+        {
+          "line": 3297,
+          "old_api": null,
+          "new_api": "BackendPidGetProc",
+          "old_text": null,
+          "new_text": "BackendPidGetProc(pid)",
+          "old_line_content": " * GetCurrentVirtualXIDs -- returns an array of currently active VXIDs.",
+          "new_line_content": "\treturn (BackendPidGetProc(pid) != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3811,
+          "old_api": null,
+          "new_api": "kill",
+          "old_text": null,
+          "new_text": "kill(autovac_pids[index], SIGTERM)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t(void) kill(autovac_pids[index], SIGTERM);\t/* ignore any error */",
+          "content_same": false
+        },
+        {
+          "line": 4837,
+          "old_api": null,
+          "new_api": "TransactionIdAdvance",
+          "old_text": null,
+          "new_text": "TransactionIdAdvance(next_xid)",
+          "old_line_content": "\tpArray->numKnownAssignedXids += nxids;",
+          "new_line_content": "\t\tTransactionIdAdvance(next_xid);",
+          "content_same": false
+        },
+        {
+          "line": 3814,
+          "old_api": null,
+          "new_api": "pg_usleep",
+          "old_text": null,
+          "new_text": "pg_usleep(100 * 1000L)",
+          "old_line_content": "",
+          "new_line_content": "\t\tpg_usleep(100 * 1000L); /* 100ms */",
+          "content_same": false
+        },
+        {
+          "line": 4327,
+          "old_api": null,
+          "new_api": "XidFromFullTransactionId",
+          "old_text": null,
+          "new_text": "XidFromFullTransactionId(rel)",
+          "old_line_content": "\t/* not guaranteed to find issues, but likely to catch mistakes */",
+          "new_line_content": "\tTransactionId rel_xid = XidFromFullTransactionId(rel);",
+          "content_same": false
+        },
+        {
+          "line": 4329,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "content_same": false
+        },
+        {
+          "line": 4333,
+          "old_api": null,
+          "new_api": "AssertTransactionIdInAllowableRange",
+          "old_text": null,
+          "new_text": "AssertTransactionIdInAllowableRange(xid)",
+          "old_line_content": "",
+          "new_line_content": "\tAssertTransactionIdInAllowableRange(xid);",
+          "content_same": false
+        },
+        {
+          "line": 4335,
+          "old_api": null,
+          "new_api": "U64FromFullTransactionId",
+          "old_text": null,
+          "new_text": "U64FromFullTransactionId(rel)",
+          "old_line_content": "/* ----------------------------------------------",
+          "new_line_content": "\treturn FullTransactionIdFromU64(U64FromFullTransactionId(rel)",
+          "content_same": false
+        },
+        {
+          "line": 4336,
+          "old_api": null,
+          "new_api": "int32) (xid - rel_xid)",
+          "old_text": null,
+          "new_text": "int32) (xid - rel_xid)",
+          "old_line_content": " *\t\tKnownAssignedTransactionIds sub-module",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t+ (int32) (xid - rel_xid));",
+          "content_same": false
+        },
+        {
+          "line": 4851,
+          "old_api": null,
+          "new_api": "pg_write_barrier",
+          "old_text": null,
+          "new_text": "pg_write_barrier()",
+          "old_line_content": "/*",
+          "new_line_content": "\t\tpg_write_barrier();",
+          "content_same": false
+        },
+        {
+          "line": 3839,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 2826,
+          "old_api": null,
+          "new_api": "pg_read_barrier",
+          "old_text": null,
+          "new_text": "pg_read_barrier()",
+          "old_line_content": "\t\t\t\tsubcount += nsubxids;",
+          "new_line_content": "\t\t\t\tpg_read_barrier();\t/* pairs with GetNewTransactionId */",
+          "content_same": false
+        },
+        {
+          "line": 3339,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(sizeof(VirtualTransactionId) * arrayP->maxProcs)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t\tpalloc(sizeof(VirtualTransactionId) * arrayP->maxProcs);",
+          "content_same": false
+        },
+        {
+          "line": 2828,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(&xids[count], proc->subxids.xids,\n\t\t\t\t\t   nsubxids * sizeof(TransactionId))",
+          "old_line_content": "\t\t\t\t/*",
+          "new_line_content": "\t\t\t\tmemcpy(&xids[count], proc->subxids.xids,",
+          "content_same": false
+        },
+        {
+          "line": 3341,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4883,
+          "old_api": null,
+          "new_api": "pg_read_barrier",
+          "old_text": null,
+          "new_text": "pg_read_barrier()",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\tpg_read_barrier();\t\t/* pairs with KnownAssignedXidsAdd */",
+          "content_same": false
+        },
+        {
+          "line": 3860,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_OBJECT_IN_USE),\n\t\t\t\t errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",\n\t\t\t\t\t\tget_database_name(databaseId)),\n\t\t\t\t errdetail_plural(\"There is %d prepared transaction using the database.\",\n\t\t\t\t\t\t\t\t  \"There are %d prepared transactions using the database.\",\n\t\t\t\t\t\t\t\t  nprepared,\n\t\t\t\t\t\t\t\t  nprepared)))",
+          "old_line_content": "\t\t\t\t\t\t\t\t  \"There are %d prepared transactions using the database.\",",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 3861,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_OBJECT_IN_USE)",
+          "old_line_content": "\t\t\t\t\t\t\t\t  nprepared,",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_OBJECT_IN_USE),",
+          "content_same": false
+        },
+        {
+          "line": 3862,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",\n\t\t\t\t\t\tget_database_name(databaseId))",
+          "old_line_content": "\t\t\t\t\t\t\t\t  nprepared)));",
+          "new_line_content": "\t\t\t\t errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",",
+          "content_same": false
+        },
+        {
+          "line": 3863,
+          "old_api": null,
+          "new_api": "get_database_name",
+          "old_text": null,
+          "new_text": "get_database_name(databaseId)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\tget_database_name(databaseId)),",
+          "content_same": false
+        },
+        {
+          "line": 3864,
+          "old_api": null,
+          "new_api": "errdetail_plural",
+          "old_text": null,
+          "new_text": "errdetail_plural(\"There is %d prepared transaction using the database.\",\n\t\t\t\t\t\t\t\t  \"There are %d prepared transactions using the database.\",\n\t\t\t\t\t\t\t\t  nprepared,\n\t\t\t\t\t\t\t\t  nprepared)",
+          "old_line_content": "\tif (pids)",
+          "new_line_content": "\t\t\t\t errdetail_plural(\"There is %d prepared transaction using the database.\",",
+          "content_same": false
+        },
+        {
+          "line": 3358,
+          "old_api": null,
+          "new_api": "UINT32_ACCESS_ONCE",
+          "old_text": null,
+          "new_text": "UINT32_ACCESS_ONCE(proc->xmin)",
+          "old_line_content": "\t\t\t/*",
+          "new_line_content": "\t\t\tTransactionId pxmin = UINT32_ACCESS_ONCE(proc->xmin);",
+          "content_same": false
+        },
+        {
+          "line": 3360,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(pxmin)",
+          "old_line_content": "\t\t\t * hasn't set xmin yet will not be rejected by this test.",
+          "new_line_content": "\t\t\tif (excludeXmin0 && !TransactionIdIsValid(pxmin))",
+          "content_same": false
+        },
+        {
+          "line": 4904,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(xid, mid_xid)",
+          "old_line_content": "",
+          "new_line_content": "\t\telse if (TransactionIdPrecedes(xid, mid_xid))",
+          "content_same": false
+        },
+        {
+          "line": 2859,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(CurrentRunningXacts->nextXid)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(TransactionIdIsValid(CurrentRunningXacts->nextXid));",
+          "content_same": false
+        },
+        {
+          "line": 2860,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(CurrentRunningXacts->oldestRunningXid)",
+          "old_line_content": "\treturn CurrentRunningXacts;",
+          "new_line_content": "\tAssert(TransactionIdIsValid(CurrentRunningXacts->oldestRunningXid));",
+          "content_same": false
+        },
+        {
+          "line": 2861,
+          "old_api": null,
+          "new_api": "TransactionIdIsNormal",
+          "old_text": null,
+          "new_text": "TransactionIdIsNormal(CurrentRunningXacts->latestCompletedXid)",
+          "old_line_content": "}",
+          "new_line_content": "\tAssert(TransactionIdIsNormal(CurrentRunningXacts->latestCompletedXid));",
+          "content_same": false
+        },
+        {
+          "line": 3372,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "content_same": false
+        },
+        {
+          "line": 3373,
+          "old_api": null,
+          "new_api": "VirtualTransactionIdIsValid",
+          "old_text": null,
+          "new_text": "VirtualTransactionIdIsValid(vxid)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "content_same": false
+        },
+        {
+          "line": 3379,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3895,
+          "old_api": null,
+          "new_api": "superuser",
+          "old_text": null,
+          "new_text": "superuser()",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")));",
+          "new_line_content": "\t\t\t\tif (superuser_arg(proc->roleId) && !superuser())",
+          "content_same": false
+        },
+        {
+          "line": 3896,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),\n\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),\n\t\t\t\t\t\t\t errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",\n\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")))",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 4409,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(standbyState >= STANDBY_INITIALIZED)",
+          "old_line_content": "\t\t xid, latestObservedXid);",
+          "new_line_content": "\tAssert(standbyState >= STANDBY_INITIALIZED);",
+          "content_same": false
+        },
+        {
+          "line": 4410,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "content_same": false
+        },
+        {
+          "line": 4411,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(latestObservedXid)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tAssert(TransactionIdIsValid(latestObservedXid));",
+          "content_same": false
+        },
+        {
+          "line": 4921,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(pArray->numKnownAssignedXids >= 0)",
+          "old_line_content": "\t\t */",
+          "new_line_content": "\t\tAssert(pArray->numKnownAssignedXids >= 0);",
+          "content_same": false
+        },
+        {
+          "line": 4413,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(DEBUG4, \"record known xact %u latestObservedXid %u\",\n\t\t xid, latestObservedXid)",
+          "old_line_content": "\t * *not* the next xid in sequence. When this occurs, we must treat the",
+          "new_line_content": "\telog(DEBUG4, \"record known xact %u latestObservedXid %u\",",
+          "content_same": false
+        },
+        {
+          "line": 3903,
+          "old_api": null,
+          "new_api": "GetUserId",
+          "old_text": null,
+          "new_text": "GetUserId()",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t   \"pg_signal_backend\")));",
+          "new_line_content": "\t\t\t\t\t!has_privs_of_role(GetUserId(), ROLE_PG_SIGNAL_BACKEND))",
+          "content_same": false
+        },
+        {
+          "line": 3904,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),\n\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),\n\t\t\t\t\t\t\t errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",\n\t\t\t\t\t\t\t\t\t   \"pg_signal_backend\")))",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 3905,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_INSUFFICIENT_PRIVILEGE)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),",
+          "content_same": false
+        },
+        {
+          "line": 3906,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"permission denied to terminate process\")",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),",
+          "content_same": false
+        },
+        {
+          "line": 3907,
+          "old_api": null,
+          "new_api": "errdetail",
+          "old_text": null,
+          "new_text": "errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",\n\t\t\t\t\t\t\t\t\t   \"pg_signal_backend\")",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\t\t\t\t\t\t errdetail(\"Only roles with privileges of the role whose process is being terminated or with privileges of the \\\"%s\\\" role may terminate this process.\",",
+          "content_same": false
+        },
+        {
+          "line": 4421,
+          "old_api": null,
+          "new_api": "TransactionIdFollows",
+          "old_text": null,
+          "new_text": "TransactionIdFollows(xid, latestObservedXid)",
+          "old_line_content": "\t\t * Extend subtrans like we do in GetNewTransactionId() during normal",
+          "new_line_content": "\tif (TransactionIdFollows(xid, latestObservedXid))",
+          "content_same": false
+        },
+        {
+          "line": 2891,
+          "old_api": null,
+          "new_api": "RecoveryInProgress",
+          "old_text": null,
+          "new_text": "RecoveryInProgress()",
+          "old_line_content": "\t * Reading a TransactionId is atomic, but we must grab the lock to make",
+          "new_line_content": "\tAssert(!RecoveryInProgress());",
+          "content_same": false
+        },
+        {
+          "line": 3920,
+          "old_api": null,
+          "new_api": "lfirst_int",
+          "old_text": null,
+          "new_text": "lfirst_int(lc)",
+          "old_line_content": "\t\t\t\t/*",
+          "new_line_content": "\t\t\tint\t\t\tpid = lfirst_int(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3921,
+          "old_api": null,
+          "new_api": "BackendPidGetProc",
+          "old_text": null,
+          "new_text": "BackendPidGetProc(pid)",
+          "old_line_content": "\t\t\t\t * If we have setsid(), signal the backend's whole process",
+          "new_line_content": "\t\t\tPGPROC\t   *proc = BackendPidGetProc(pid);",
+          "content_same": false
+        },
+        {
+          "line": 2900,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(XidGenLock, LW_SHARED)",
+          "old_line_content": "\t * Spin over procArray collecting all xids and subxids.",
+          "new_line_content": "\tLWLockAcquire(XidGenLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4437,
+          "old_api": null,
+          "new_api": "TransactionIdAdvance",
+          "old_text": null,
+          "new_text": "TransactionIdAdvance(next_expected_xid)",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\t\tTransactionIdAdvance(next_expected_xid);",
+          "content_same": false
+        },
+        {
+          "line": 4438,
+          "old_api": null,
+          "new_api": "ExtendSUBTRANS",
+          "old_text": null,
+          "new_text": "ExtendSUBTRANS(next_expected_xid)",
+          "old_line_content": "\t\t * If the KnownAssignedXids machinery isn't up yet, there's nothing",
+          "new_line_content": "\t\t\tExtendSUBTRANS(next_expected_xid);",
+          "content_same": false
+        },
+        {
+          "line": 2901,
+          "old_api": null,
+          "new_api": "XidFromFullTransactionId",
+          "old_text": null,
+          "new_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "old_line_content": "\t */",
+          "new_line_content": "\toldestRunningXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "content_same": false
+        },
+        {
+          "line": 4440,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(next_expected_xid == xid)",
+          "old_line_content": "\t\t */",
+          "new_line_content": "\t\tAssert(next_expected_xid == xid);",
+          "content_same": false
+        },
+        {
+          "line": 3930,
+          "old_api": null,
+          "new_api": "kill",
+          "old_text": null,
+          "new_text": "kill(-pid, SIGTERM)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\t(void) kill(-pid, SIGTERM);",
+          "content_same": false
+        },
+        {
+          "line": 2907,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\t/* Fetch xid just once - see GetNewTransactionId */",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4956,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "/*",
+          "new_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "content_same": false
+        },
+        {
+          "line": 3932,
+          "old_api": null,
+          "new_api": "kill",
+          "old_text": null,
+          "new_text": "kill(pid, SIGTERM)",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\t\t(void) kill(pid, SIGTERM);",
+          "content_same": false
+        },
+        {
+          "line": 4958,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsSearch",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsSearch(xid, false)",
+          "old_line_content": " *",
+          "new_line_content": "\treturn KnownAssignedXidsSearch(xid, false);",
+          "content_same": false
+        },
+        {
+          "line": 2915,
+          "old_api": null,
+          "new_api": "TransactionIdIsNormal",
+          "old_text": null,
+          "new_text": "TransactionIdIsNormal(xid)",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (!TransactionIdIsNormal(xid))",
+          "content_same": false
+        },
+        {
+          "line": 2918,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(xid, oldestRunningXid)",
+          "old_line_content": "\t\t * subxids, so we don't need to check if any of the subxids are",
+          "new_line_content": "\t\tif (TransactionIdPrecedes(xid, oldestRunningXid))",
+          "content_same": false
+        },
+        {
+          "line": 4456,
+          "old_api": null,
+          "new_api": "TransactionIdAdvance",
+          "old_text": null,
+          "new_text": "TransactionIdAdvance(next_expected_xid)",
+          "old_line_content": "\t\t */",
+          "new_line_content": "\t\tTransactionIdAdvance(next_expected_xid);",
+          "content_same": false
+        },
+        {
+          "line": 4457,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsAdd",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsAdd(next_expected_xid, xid, false)",
+          "old_line_content": "\t\tlatestObservedXid = xid;",
+          "new_line_content": "\t\tKnownAssignedXidsAdd(next_expected_xid, xid, false);",
+          "content_same": false
+        },
+        {
+          "line": 4969,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "\t * Note: we cannot consider it an error to remove an XID that's not",
+          "new_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "content_same": false
+        },
+        {
+          "line": 4971,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(DEBUG4, \"remove KnownAssignedXid %u\", xid)",
+          "old_line_content": "\t * XLOG_XACT_ASSIGNMENT, to avoid array overflow.  Then those XIDs will be",
+          "new_line_content": "\telog(DEBUG4, \"remove KnownAssignedXid %u\", xid);",
+          "content_same": false
+        },
+        {
+          "line": 3436,
+          "old_api": null,
+          "new_api": "malloc",
+          "old_text": null,
+          "new_text": "malloc(sizeof(VirtualTransactionId) * (arrayP->maxProcs + 1))",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\tmalloc(sizeof(VirtualTransactionId) * (arrayP->maxProcs + 1));",
+          "content_same": false
+        },
+        {
+          "line": 3950,
+          "old_api": null,
+          "new_api": "LWLockHeldByMe",
+          "old_text": null,
+          "new_text": "LWLockHeldByMe(ProcArrayLock)",
+          "old_line_content": "\tprocArray->replication_slot_xmin = xmin;",
+          "new_line_content": "\tAssert(!already_locked || LWLockHeldByMe(ProcArrayLock));",
+          "content_same": false
+        },
+        {
+          "line": 2927,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3439,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_OUT_OF_MEMORY)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t(errcode(ERRCODE_OUT_OF_MEMORY),",
+          "content_same": false
+        },
+        {
+          "line": 4465,
+          "old_api": null,
+          "new_api": "AdvanceNextFullTransactionIdPastXid",
+          "old_text": null,
+          "new_text": "AdvanceNextFullTransactionIdPastXid(latestObservedXid)",
+          "old_line_content": " * ExpireTreeKnownAssignedTransactionIds",
+          "new_line_content": "\t\tAdvanceNextFullTransactionIdPastXid(latestObservedXid);",
+          "content_same": false
+        },
+        {
+          "line": 3440,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"out of memory\")",
+          "old_line_content": "\tfor (index = 0; index < arrayP->numProcs; index++)",
+          "new_line_content": "\t\t\t\t\t errmsg(\"out of memory\")));",
+          "content_same": false
+        },
+        {
+          "line": 3443,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 3953,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\tif (!already_locked)",
+          "new_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 4983,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsSearch",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsSearch(xid, true)",
+          "old_line_content": " *\t\tRemove xid (if it's not InvalidTransactionId) and all the subxids.",
+          "new_line_content": "\t(void) KnownAssignedXidsSearch(xid, true);",
+          "content_same": false
+        },
+        {
+          "line": 3959,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3961,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(DEBUG1, \"xmin required by slots: data %u, catalog %u\",\n\t\t xmin, catalog_xmin)",
+          "old_line_content": " * ProcArrayGetReplicationSlotXmin",
+          "new_line_content": "\telog(DEBUG1, \"xmin required by slots: data %u, catalog %u\",",
+          "content_same": false
+        },
+        {
+          "line": 3454,
+          "old_api": null,
+          "new_api": "OidIsValid",
+          "old_text": null,
+          "new_text": "OidIsValid(dbOid)",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (!OidIsValid(dbOid) ||",
+          "content_same": false
+        },
+        {
+          "line": 3458,
+          "old_api": null,
+          "new_api": "UINT32_ACCESS_ONCE",
+          "old_text": null,
+          "new_text": "UINT32_ACCESS_ONCE(proc->xmin)",
+          "old_line_content": "\t\t\t * with users taking snapshots.  That is not a problem because the",
+          "new_line_content": "\t\t\tTransactionId pxmin = UINT32_ACCESS_ONCE(proc->xmin);",
+          "content_same": false
+        },
+        {
+          "line": 4486,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsRemoveTree",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsRemoveTree(xid, nsubxids, subxids)",
+          "old_line_content": "\t/* ... and xactCompletionCount */",
+          "new_line_content": "\tKnownAssignedXidsRemoveTree(xid, nsubxids, subxids);",
+          "content_same": false
+        },
+        {
+          "line": 4998,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "",
+          "new_line_content": "\tif (TransactionIdIsValid(xid))",
+          "content_same": false
+        },
+        {
+          "line": 4999,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsRemove",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsRemove(xid)",
+          "old_line_content": "\t/* Opportunistically compress the array */",
+          "new_line_content": "\t\tKnownAssignedXidsRemove(xid);",
+          "content_same": false
+        },
+        {
+          "line": 3975,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\tif (catalog_xmin != NULL)",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 2954,
+          "old_api": null,
+          "new_api": "RecoveryInProgress",
+          "old_text": null,
+          "new_text": "RecoveryInProgress()",
+          "old_line_content": "\t * Acquire XidGenLock, so no transactions can acquire an xid while we're",
+          "new_line_content": "\tbool\t\trecovery_in_progress = RecoveryInProgress();",
+          "content_same": false
+        },
+        {
+          "line": 5002,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsRemove",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsRemove(subxids[i])",
+          "old_line_content": "",
+          "new_line_content": "\t\tKnownAssignedXidsRemove(subxids[i]);",
+          "content_same": false
+        },
+        {
+          "line": 2956,
+          "old_api": null,
+          "new_api": "LWLockHeldByMe",
+          "old_text": null,
+          "new_text": "LWLockHeldByMe(ProcArrayLock)",
+          "old_line_content": "\t * could influence the RecentXmin et al.",
+          "new_line_content": "\tAssert(LWLockHeldByMe(ProcArrayLock));",
+          "content_same": false
+        },
+        {
+          "line": 5005,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsCompress",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsCompress(KAX_TRANSACTION_END, true)",
+          "old_line_content": " * then clear the whole table.",
+          "new_line_content": "\tKnownAssignedXidsCompress(KAX_TRANSACTION_END, true);",
+          "content_same": false
+        },
+        {
+          "line": 4494,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " *\t\tRemove all entries in KnownAssignedXids and reset lastOverflowedXid.",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3983,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " *",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3473,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "content_same": false
+        },
+        {
+          "line": 3474,
+          "old_api": null,
+          "new_api": "VirtualTransactionIdIsValid",
+          "old_text": null,
+          "new_text": "VirtualTransactionIdIsValid(vxid)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "content_same": false
+        },
+        {
+          "line": 2966,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(XidGenLock, LW_SHARED)",
+          "old_line_content": "\t * that value, it's guaranteed to be safe since it's computed by this",
+          "new_line_content": "\tLWLockAcquire(XidGenLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 2967,
+          "old_api": null,
+          "new_api": "XidFromFullTransactionId",
+          "old_text": null,
+          "new_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "old_line_content": "\t * routine initially and has been enforced since.  We can always use the",
+          "new_line_content": "\toldestSafeXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "content_same": false
+        },
+        {
+          "line": 4504,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\t * the call of this function.  But do this for unification with what",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 4505,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsRemovePreceding",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsRemovePreceding(InvalidTransactionId)",
+          "old_line_content": "\t * ExpireOldKnownAssignedTransactionIds() do.",
+          "new_line_content": "\tKnownAssignedXidsRemovePreceding(InvalidTransactionId);",
+          "content_same": false
+        },
+        {
+          "line": 3480,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 5023,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(removeXid)",
+          "old_line_content": "\t\treturn;",
+          "new_line_content": "\tif (!TransactionIdIsValid(removeXid))",
+          "content_same": false
+        },
+        {
+          "line": 2976,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(procArray->replication_slot_xmin)",
+          "old_line_content": "\tif (catalogOnly &&",
+          "new_line_content": "\tif (TransactionIdIsValid(procArray->replication_slot_xmin) &&",
+          "content_same": false
+        },
+        {
+          "line": 4513,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " *\t\tRemove KnownAssignedXids entries preceding the given XID and",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 5025,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(DEBUG4, \"removing all KnownAssignedXids\")",
+          "old_line_content": "",
+          "new_line_content": "\t\telog(DEBUG4, \"removing all KnownAssignedXids\");",
+          "content_same": false
+        },
+        {
+          "line": 4003,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(xid)",
+          "old_line_content": "\t * possible this could be relaxed since we know this routine is only used",
+          "new_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "content_same": false
+        },
+        {
+          "line": 2982,
+          "old_api": null,
+          "new_api": "TransactionIdIsValid",
+          "old_text": null,
+          "new_text": "TransactionIdIsValid(procArray->replication_slot_catalog_xmin)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\t\tTransactionIdIsValid(procArray->replication_slot_catalog_xmin) &&",
+          "content_same": false
+        },
+        {
+          "line": 2983,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(procArray->replication_slot_catalog_xmin,\n\t\t\t\t\t\t\t  oldestSafeXid)",
+          "old_line_content": "\t * If we're not in recovery, we walk over the procarray and collect the",
+          "new_line_content": "\t\tTransactionIdPrecedes(procArray->replication_slot_catalog_xmin,",
+          "content_same": false
+        },
+        {
+          "line": 5031,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(DEBUG4, \"prune KnownAssignedXids to %u\", removeXid)",
+          "old_line_content": "\t */",
+          "new_line_content": "\telog(DEBUG4, \"prune KnownAssignedXids to %u\", removeXid);",
+          "content_same": false
+        },
+        {
+          "line": 3497,
+          "old_api": null,
+          "new_api": "SignalVirtualTransaction",
+          "old_text": null,
+          "new_text": "SignalVirtualTransaction(vxid, sigmode, true)",
+          "old_line_content": "\t\t\t\t\t\t bool conflictPending)",
+          "new_line_content": "\treturn SignalVirtualTransaction(vxid, sigmode, true);",
+          "content_same": false
+        },
+        {
+          "line": 4524,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\t * lastOverflowedXid value, which makes extra snapshots be marked as",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 4017,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "old_line_content": "\t * Under normal circumstances xid and xids[] will be in increasing order,",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "content_same": false
+        },
+        {
+          "line": 4532,
+          "old_api": null,
+          "new_api": "TransactionIdPrecedes",
+          "old_text": null,
+          "new_text": "TransactionIdPrecedes(procArray->lastOverflowedXid, xid)",
+          "old_line_content": "",
+          "new_line_content": "\tif (TransactionIdPrecedes(procArray->lastOverflowedXid, xid))",
+          "content_same": false
+        },
+        {
+          "line": 3508,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4534,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsRemovePreceding",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsRemovePreceding(xid)",
+          "old_line_content": " * KnownAssignedTransactionIdsIdleMaintenance",
+          "new_line_content": "\tKnownAssignedXidsRemovePreceding(xid);",
+          "content_same": false
+        },
+        {
+          "line": 4535,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": " *\t\tOpportunistically do maintenance work when the startup process",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 5046,
+          "old_api": null,
+          "new_api": "TransactionIdFollowsOrEquals",
+          "old_text": null,
+          "new_text": "TransactionIdFollowsOrEquals(knownXid, removeXid)",
+          "old_line_content": "\t\t\t\tKnownAssignedXidsValid[i] = false;",
+          "new_line_content": "\t\t\tif (TransactionIdFollowsOrEquals(knownXid, removeXid))",
+          "content_same": false
+        },
+        {
+          "line": 5049,
+          "old_api": null,
+          "new_api": "StandbyTransactionIdIsPrepared",
+          "old_text": null,
+          "new_text": "StandbyTransactionIdIsPrepared(knownXid)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tif (!StandbyTransactionIdIsPrepared(knownXid))",
+          "content_same": false
+        },
+        {
+          "line": 3516,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(procvxid, *proc)",
+          "old_line_content": "\t\t\tproc->recoveryConflictPending = conflictPending;",
+          "new_line_content": "\t\tGET_VXID_FROM_PGPROC(procvxid, *proc);",
+          "content_same": false
+        },
+        {
+          "line": 4032,
+          "old_api": null,
+          "new_api": "TransactionIdEquals",
+          "old_text": null,
+          "new_text": "TransactionIdEquals(MyProc->subxids.xids[j], anxid)",
+          "old_line_content": "\t\t\t\tMyProc->subxidStatus.count--;",
+          "new_line_content": "\t\t\tif (TransactionIdEquals(MyProc->subxids.xids[j], anxid))",
+          "content_same": false
+        },
+        {
+          "line": 4546,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsCompress",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsCompress(KAX_STARTUP_PROCESS_IDLE, false)",
+          "old_line_content": " * Private module functions to manipulate KnownAssignedXids",
+          "new_line_content": "\tKnownAssignedXidsCompress(KAX_STARTUP_PROCESS_IDLE, false);",
+          "content_same": false
+        },
+        {
+          "line": 5058,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(pArray->numKnownAssignedXids >= 0)",
+          "old_line_content": "\tfor (i = tail; i < head; i++)",
+          "new_line_content": "\tAssert(pArray->numKnownAssignedXids >= 0);",
+          "content_same": false
+        },
+        {
+          "line": 4035,
+          "old_api": null,
+          "new_api": "pg_write_barrier",
+          "old_text": null,
+          "new_text": "pg_write_barrier()",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\tpg_write_barrier();",
+          "content_same": false
+        },
+        {
+          "line": 3013,
+          "old_api": null,
+          "new_api": "TransactionIdIsNormal",
+          "old_text": null,
+          "new_text": "TransactionIdIsNormal(xid)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tif (!TransactionIdIsNormal(xid))",
+          "content_same": false
+        },
+        {
+          "line": 3529,
+          "old_api": null,
+          "new_api": "SendProcSignal",
+          "old_text": null,
+          "new_text": "SendProcSignal(pid, sigmode, vxid.procNumber)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t(void) SendProcSignal(pid, sigmode, vxid.procNumber);",
+          "content_same": false
+        },
+        {
+          "line": 3021,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(XidGenLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(XidGenLock);",
+          "content_same": false
+        },
+        {
+          "line": 3535,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 4055,
+          "old_api": null,
+          "new_api": "TransactionIdEquals",
+          "old_text": null,
+          "new_text": "TransactionIdEquals(MyProc->subxids.xids[j], xid)",
+          "old_line_content": "\t\t\tMyProc->subxidStatus.count--;",
+          "new_line_content": "\t\tif (TransactionIdEquals(MyProc->subxids.xids[j], xid))",
+          "content_same": false
+        },
+        {
+          "line": 5080,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsCompress",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsCompress(KAX_PRUNE, true)",
+          "old_line_content": " * We filter out anything >= xmax.",
+          "new_line_content": "\tKnownAssignedXidsCompress(KAX_PRUNE, true);",
+          "content_same": false
+        },
+        {
+          "line": 4058,
+          "old_api": null,
+          "new_api": "pg_write_barrier",
+          "old_text": null,
+          "new_text": "pg_write_barrier()",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\tpg_write_barrier();",
+          "content_same": false
+        },
+        {
+          "line": 4066,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(WARNING, \"did not find subXID %u in MyProc\", xid)",
+          "old_line_content": "\t/* ... and xactCompletionCount */",
+          "new_line_content": "\t\telog(WARNING, \"did not find subXID %u in MyProc\", xid);",
+          "content_same": false
+        },
+        {
+          "line": 5097,
+          "old_api": null,
+          "new_api": "KnownAssignedXidsGetAndSetXmin",
+          "old_text": null,
+          "new_text": "KnownAssignedXidsGetAndSetXmin(xarray, &xtmp, xmax)",
+          "old_line_content": " * we reduce *xmin to the lowest xid value seen if not already lower.",
+          "new_line_content": "\treturn KnownAssignedXidsGetAndSetXmin(xarray, &xtmp, xmax);",
+          "content_same": false
+        },
+        {
+          "line": 4074,
+          "old_api": null,
+          "new_api": "LWLockRelease",
+          "old_text": null,
+          "new_text": "LWLockRelease(ProcArrayLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "content_same": false
+        },
+        {
+          "line": 3054,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(type != 0)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(type != 0);",
+          "content_same": false
+        },
+        {
+          "line": 3058,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(sizeof(VirtualTransactionId) * arrayP->maxProcs)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t\tpalloc(sizeof(VirtualTransactionId) * arrayP->maxProcs);",
+          "content_same": false
+        },
+        {
+          "line": 3060,
+          "old_api": null,
+          "new_api": "LWLockAcquire",
+          "old_text": null,
+          "new_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "old_line_content": "\t\tPGPROC\t   *proc = &allProcs[pgprocno];",
+          "new_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 4085,
+          "old_api": null,
+          "new_api": "fprintf",
+          "old_text": null,
+          "new_text": "fprintf(stderr,\n\t\t\t\"XidCache: xmin: %ld, known: %ld, myxact: %ld, latest: %ld, mainxid: %ld, childxid: %ld, knownassigned: %ld, nooflo: %ld, slow: %ld\\n\",\n\t\t\txc_by_recent_xmin,\n\t\t\txc_by_known_xact,\n\t\t\txc_by_my_xact,\n\t\t\txc_by_latest_xid,\n\t\t\txc_by_main_xid,\n\t\t\txc_by_child_xid,\n\t\t\txc_by_known_assigned,\n\t\t\txc_no_overflow,\n\t\t\txc_slow_answer)",
+          "old_line_content": "\t\t\txc_by_latest_xid,",
+          "new_line_content": "\tfprintf(stderr,",
+          "content_same": false
+        },
+        {
+          "line": 3071,
+          "old_api": null,
+          "new_api": "GET_VXID_FROM_PGPROC",
+          "old_text": null,
+          "new_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 5120,
+          "old_api": "pg_read_barrier",
+          "new_api": null,
+          "old_text": "pg_read_barrier()",
+          "new_text": null,
+          "old_line_content": "\tpg_read_barrier();\t\t\t/* pairs with KnownAssignedXidsAdd */",
+          "new_line_content": "\t * anyway.",
+          "content_same": false
+        },
+        {
+          "line": 5134,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(knownXid, *xmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tTransactionIdPrecedes(knownXid, *xmin))",
+          "new_line_content": "\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4111,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(RecentXmin)",
+          "new_text": null,
+          "old_line_content": "\tAssert(RecentXmin);",
+          "new_line_content": "GlobalVisTestFor(Relation rel)",
+          "content_same": false
+        },
+        {
+          "line": 4113,
+          "old_api": "GlobalVisHorizonKindForRel",
+          "new_api": null,
+          "old_text": "GlobalVisHorizonKindForRel(rel)",
+          "new_text": null,
+          "old_line_content": "\tswitch (GlobalVisHorizonKindForRel(rel))",
+          "new_line_content": "\tGlobalVisState *state = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 3604,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 5141,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xmax)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (TransactionIdIsValid(xmax) &&",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3094,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(type != 0)",
+          "new_text": null,
+          "old_line_content": "\tAssert(type != 0);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 5142,
+          "old_api": "TransactionIdFollowsOrEquals",
+          "new_api": null,
+          "old_text": "TransactionIdFollowsOrEquals(knownXid, xmax)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tTransactionIdFollowsOrEquals(knownXid, xmax))",
+          "new_line_content": "\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 3096,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tProcArrayStruct *arrayP = procArray;",
+          "content_same": false
+        },
+        {
+          "line": 3613,
+          "old_api": "OidIsValid",
+          "new_api": null,
+          "old_text": "OidIsValid(databaseid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!OidIsValid(databaseid) ||",
+          "new_line_content": "\t\tint\t\t\tpgprocno = arrayP->pgprocnos[index];",
+          "content_same": false
+        },
+        {
+          "line": 3104,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": null,
+          "old_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "new_text": null,
+          "old_line_content": "\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4129,
+          "old_api": "FullTransactionIdIsValid",
+          "new_api": null,
+          "old_text": "FullTransactionIdIsValid(state->definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\tAssert(FullTransactionIdIsValid(state->definitely_needed) &&",
+          "new_line_content": "\t\tcase VISHORIZON_TEMP:",
+          "content_same": false
+        },
+        {
+          "line": 4130,
+          "old_api": "FullTransactionIdIsValid",
+          "new_api": null,
+          "old_text": "FullTransactionIdIsValid(state->maybe_needed)",
+          "new_text": null,
+          "old_line_content": "\t\t   FullTransactionIdIsValid(state->maybe_needed));",
+          "new_line_content": "\t\t\tstate = &GlobalVisTempRels;",
+          "content_same": false
+        },
+        {
+          "line": 3107,
+          "old_api": "VirtualTransactionIdIsValid",
+          "new_api": null,
+          "old_text": "VirtualTransactionIdIsValid(vxid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tVirtualTransactionIdIsValid(vxid))",
+          "new_line_content": "\t\tVirtualTransactionId vxid;",
+          "content_same": false
+        },
+        {
+          "line": 3113,
+          "old_api": "VirtualTransactionIdEquals",
+          "new_api": null,
+          "old_text": "VirtualTransactionIdEquals(vxid, vxids[i])",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tif (VirtualTransactionIdEquals(vxid, vxids[i]))",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 5170,
+          "old_api": "pg_read_barrier",
+          "new_api": null,
+          "old_text": "pg_read_barrier()",
+          "new_text": null,
+          "old_line_content": "\tpg_read_barrier();\t\t\t/* pairs with KnownAssignedXidsAdd */",
+          "new_line_content": "\t * Fetch head just once, since it may change while we loop.",
+          "content_same": false
+        },
+        {
+          "line": 3634,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3124,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\tif (result)",
+          "content_same": false
+        },
+        {
+          "line": 4149,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(ComputeXidHorizonsResultLastXmin)",
+          "new_text": null,
+          "old_line_content": "\tif (!TransactionIdIsValid(ComputeXidHorizonsResultLastXmin))",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 4156,
+          "old_api": "FullTransactionIdFollowsOrEquals",
+          "new_api": null,
+          "old_text": "FullTransactionIdFollowsOrEquals(state->maybe_needed,\n\t\t\t\t\t\t\t\t\t\t state->definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\tif (FullTransactionIdFollowsOrEquals(state->maybe_needed,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3645,
+          "old_api": "OidIsValid",
+          "new_api": null,
+          "old_text": "OidIsValid(databaseid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!OidIsValid(databaseid) ||",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3143,
+          "old_api": "GetPGProcByNumber",
+          "new_api": null,
+          "old_text": "GetPGProcByNumber(procNumber)",
+          "new_text": null,
+          "old_line_content": "\tresult = GetPGProcByNumber(procNumber);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4168,
+          "old_api": "FullXidRelativeTo",
+          "new_api": null,
+          "old_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->shared_oldest_nonremovable)",
+          "new_text": null,
+          "old_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4171,
+          "old_api": "FullXidRelativeTo",
+          "new_api": null,
+          "old_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->catalog_oldest_nonremovable)",
+          "new_text": null,
+          "old_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4174,
+          "old_api": "FullXidRelativeTo",
+          "new_api": null,
+          "old_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->data_oldest_nonremovable)",
+          "new_text": null,
+          "old_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "new_line_content": "\t\t\t\t\t\t  horizons->shared_oldest_nonremovable);",
+          "content_same": false
+        },
+        {
+          "line": 4177,
+          "old_api": "FullXidRelativeTo",
+          "new_api": null,
+          "old_text": "FullXidRelativeTo(horizons->latest_completed,\n\t\t\t\t\t\t  horizons->temp_oldest_nonremovable)",
+          "new_text": null,
+          "old_line_content": "\t\tFullXidRelativeTo(horizons->latest_completed,",
+          "new_line_content": "\t\t\t\t\t\t  horizons->catalog_oldest_nonremovable);",
+          "content_same": false
+        },
+        {
+          "line": 3665,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 5205,
+          "old_api": "initStringInfo",
+          "new_api": null,
+          "old_text": "initStringInfo(&buf)",
+          "new_text": null,
+          "old_line_content": "\tinitStringInfo(&buf);",
+          "new_line_content": "\tint\t\t\tnxids = 0;",
+          "content_same": false
+        },
+        {
+          "line": 4186,
+          "old_api": "FullTransactionIdNewer",
+          "new_api": null,
+          "old_text": "FullTransactionIdNewer(GlobalVisSharedRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisSharedRels.definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\t\tFullTransactionIdNewer(GlobalVisSharedRels.maybe_needed,",
+          "new_line_content": "\t * In longer running transactions it's possible that transactions we",
+          "content_same": false
+        },
+        {
+          "line": 5212,
+          "old_api": "appendStringInfo",
+          "new_api": null,
+          "old_text": "appendStringInfo(&buf, \"[%d]=%u \", i, KnownAssignedXids[i])",
+          "new_text": null,
+          "old_line_content": "\t\t\tappendStringInfo(&buf, \"[%d]=%u \", i, KnownAssignedXids[i]);",
+          "new_line_content": "\tfor (i = tail; i < head; i++)",
+          "content_same": false
+        },
+        {
+          "line": 4189,
+          "old_api": "FullTransactionIdNewer",
+          "new_api": null,
+          "old_text": "FullTransactionIdNewer(GlobalVisCatalogRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisCatalogRels.definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\t\tFullTransactionIdNewer(GlobalVisCatalogRels.maybe_needed,",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3677,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": null,
+          "old_text": "GET_VXID_FROM_PGPROC(procvxid, *proc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tGET_VXID_FROM_PGPROC(procvxid, *proc);",
+          "new_line_content": "\t\tif (databaseid == InvalidOid || proc->databaseId == databaseid)",
+          "content_same": false
+        },
+        {
+          "line": 4192,
+          "old_api": "FullTransactionIdNewer",
+          "new_api": null,
+          "old_text": "FullTransactionIdNewer(GlobalVisDataRels.maybe_needed,\n\t\t\t\t\t\t\t   GlobalVisDataRels.definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\t\tFullTransactionIdNewer(GlobalVisDataRels.maybe_needed,",
+          "new_line_content": "\t\t\t\t\t\t\t   GlobalVisSharedRels.definitely_needed);",
+          "content_same": false
+        },
+        {
+          "line": 5216,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(trace_level, \"%d KnownAssignedXids (num=%d tail=%d head=%d) %s\",\n\t\t nxids,\n\t\t pArray->numKnownAssignedXids,\n\t\t pArray->tailKnownAssignedXids,\n\t\t pArray->headKnownAssignedXids,\n\t\t buf.data)",
+          "new_text": null,
+          "old_line_content": "\telog(trace_level, \"%d KnownAssignedXids (num=%d tail=%d head=%d) %s\",",
+          "new_line_content": "\t\t\tnxids++;",
+          "content_same": false
+        },
+        {
+          "line": 3171,
+          "old_api": "GetPGProcByNumber",
+          "new_api": null,
+          "old_text": "GetPGProcByNumber(procNumber)",
+          "new_text": null,
+          "old_line_content": "\tproc = GetPGProcByNumber(procNumber);",
+          "new_line_content": "\t*nsubxid = 0;",
+          "content_same": false
+        },
+        {
+          "line": 4708,
+          "old_api": "TimestampTzPlusMilliseconds",
+          "new_api": null,
+          "old_text": "TimestampTzPlusMilliseconds(lastCompressTs,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t KAX_COMPRESS_IDLE_INTERVAL)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcompress_after = TimestampTzPlusMilliseconds(lastCompressTs,",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 4710,
+          "old_api": "GetCurrentTimestamp",
+          "new_api": null,
+          "old_text": "GetCurrentTimestamp()",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (GetCurrentTimestamp() < compress_after)",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3174,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tif (procNumber < 0 || procNumber >= ProcGlobal->allProcCount)",
+          "content_same": false
+        },
+        {
+          "line": 5223,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(buf.data)",
+          "new_text": null,
+          "old_line_content": "\tpfree(buf.data);",
+          "new_line_content": "\t\t pArray->numKnownAssignedXids,",
+          "content_same": false
+        },
+        {
+          "line": 3687,
+          "old_api": "SendProcSignal",
+          "new_api": null,
+          "old_text": "SendProcSignal(pid, sigmode, procvxid.procNumber)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(void) SendProcSignal(pid, sigmode, procvxid.procNumber);",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 4717,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3184,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t*xmin = proc->xmin;",
+          "content_same": false
+        },
+        {
+          "line": 4209,
+          "old_api": "ComputeXidHorizons",
+          "new_api": null,
+          "old_text": "ComputeXidHorizons(&horizons)",
+          "new_text": null,
+          "old_line_content": "\tComputeXidHorizons(&horizons);",
+          "new_line_content": "GlobalVisUpdate(void)",
+          "content_same": false
+        },
+        {
+          "line": 5235,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "static void",
+          "content_same": false
+        },
+        {
+          "line": 5241,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3705,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4733,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(compress_index == pArray->numKnownAssignedXids)",
+          "new_text": null,
+          "old_line_content": "\tAssert(compress_index == pArray->numKnownAssignedXids);",
+          "new_line_content": "\t\t\tKnownAssignedXids[compress_index] = KnownAssignedXids[i];",
+          "content_same": false
+        },
+        {
+          "line": 3202,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tPGPROC\t   *result;",
+          "content_same": false
+        },
+        {
+          "line": 4739,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4228,
+          "old_api": "FullTransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "FullTransactionIdPrecedes(fxid, state->maybe_needed)",
+          "new_text": null,
+          "old_line_content": "\tif (FullTransactionIdPrecedes(fxid, state->maybe_needed))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3204,
+          "old_api": "BackendPidGetProcWithLock",
+          "new_api": null,
+          "old_text": "BackendPidGetProcWithLock(pid)",
+          "new_text": null,
+          "old_line_content": "\tresult = BackendPidGetProcWithLock(pid);",
+          "new_line_content": "\tif (pid == 0)\t\t\t\t/* never match dummy PGPROCs */",
+          "content_same": false
+        },
+        {
+          "line": 4742,
+          "old_api": "GetCurrentTimestamp",
+          "new_api": null,
+          "old_text": "GetCurrentTimestamp()",
+          "new_text": null,
+          "old_line_content": "\tlastCompressTs = GetCurrentTimestamp();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3206,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3720,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\tcontinue;\t\t\t/* do not count background workers */",
+          "content_same": false
+        },
+        {
+          "line": 4235,
+          "old_api": "FullTransactionIdFollowsOrEquals",
+          "new_api": null,
+          "old_text": "FullTransactionIdFollowsOrEquals(fxid, state->definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\tif (FullTransactionIdFollowsOrEquals(fxid, state->definitely_needed))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4243,
+          "old_api": "GlobalVisTestShouldUpdate",
+          "new_api": null,
+          "old_text": "GlobalVisTestShouldUpdate(state)",
+          "new_text": null,
+          "old_line_content": "\tif (GlobalVisTestShouldUpdate(state))",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4245,
+          "old_api": "GlobalVisUpdate",
+          "new_api": null,
+          "old_text": "GlobalVisUpdate()",
+          "new_text": null,
+          "old_line_content": "\t\tGlobalVisUpdate();",
+          "new_line_content": "\t * might not exist a snapshot considering fxid running. If it makes sense,",
+          "content_same": false
+        },
+        {
+          "line": 4247,
+          "old_api": "FullTransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "FullTransactionIdPrecedes(fxid, state->definitely_needed)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(FullTransactionIdPrecedes(fxid, state->definitely_needed));",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 4249,
+          "old_api": "FullTransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "FullTransactionIdPrecedes(fxid, state->maybe_needed)",
+          "new_text": null,
+          "old_line_content": "\t\treturn FullTransactionIdPrecedes(fxid, state->maybe_needed);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4767,
+          "old_api": "TransactionIdPrecedesOrEquals",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedesOrEquals(from_xid, to_xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdPrecedesOrEquals(from_xid, to_xid));",
+          "new_line_content": "\tint\t\t\thead,",
+          "content_same": false
+        },
+        {
+          "line": 4780,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(next_xid, to_xid)",
+          "new_text": null,
+          "old_line_content": "\t\twhile (TransactionIdPrecedes(next_xid, to_xid))",
+          "new_line_content": "\t\tnxids = to_xid - from_xid + 1;",
+          "content_same": false
+        },
+        {
+          "line": 4783,
+          "old_api": "TransactionIdAdvance",
+          "new_api": null,
+          "old_text": "TransactionIdAdvance(next_xid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTransactionIdAdvance(next_xid);",
+          "new_line_content": "\t\tnxids = 1;",
+          "content_same": false
+        },
+        {
+          "line": 4275,
+          "old_api": "FullXidRelativeTo",
+          "new_api": null,
+          "old_text": "FullXidRelativeTo(state->definitely_needed, xid)",
+          "new_text": null,
+          "old_line_content": "\tfxid = FullXidRelativeTo(state->definitely_needed, xid);",
+          "new_line_content": "\t * [oldestXid, nextXid), i.e. within 2 billion of xid. To avoid taking a",
+          "content_same": false
+        },
+        {
+          "line": 3764,
+          "old_api": "CHECK_FOR_INTERRUPTS",
+          "new_api": null,
+          "old_text": "CHECK_FOR_INTERRUPTS()",
+          "new_text": null,
+          "old_line_content": "\t\tCHECK_FOR_INTERRUPTS();",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4277,
+          "old_api": "GlobalVisTestIsRemovableFullXid",
+          "new_api": null,
+          "old_text": "GlobalVisTestIsRemovableFullXid(state, fxid)",
+          "new_text": null,
+          "old_line_content": "\treturn GlobalVisTestIsRemovableFullXid(state, fxid);",
+          "new_line_content": "\t * state->definitely_needed, which was based on those value at the time",
+          "content_same": false
+        },
+        {
+          "line": 3768,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4794,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(head >= 0 && head <= pArray->maxKnownAssignedXids)",
+          "new_text": null,
+          "old_line_content": "\tAssert(head >= 0 && head <= pArray->maxKnownAssignedXids);",
+          "new_line_content": "\t * don't need a lock to read them here.",
+          "content_same": false
+        },
+        {
+          "line": 4795,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(tail >= 0 && tail < pArray->maxKnownAssignedXids)",
+          "new_text": null,
+          "old_line_content": "\tAssert(tail >= 0 && tail < pArray->maxKnownAssignedXids);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 4289,
+          "old_api": "GlobalVisTestFor",
+          "new_api": null,
+          "old_text": "GlobalVisTestFor(rel)",
+          "new_text": null,
+          "old_line_content": "\tstate = GlobalVisTestFor(rel);",
+          "new_line_content": "bool",
+          "content_same": false
+        },
+        {
+          "line": 3265,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tint\t\t\tindex;",
+          "content_same": false
+        },
+        {
+          "line": 4291,
+          "old_api": "GlobalVisTestIsRemovableFullXid",
+          "new_api": null,
+          "old_text": "GlobalVisTestIsRemovableFullXid(state, fxid)",
+          "new_text": null,
+          "old_line_content": "\treturn GlobalVisTestIsRemovableFullXid(state, fxid);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4803,
+          "old_api": "TransactionIdFollowsOrEquals",
+          "new_api": null,
+          "old_text": "TransactionIdFollowsOrEquals(KnownAssignedXids[head - 1], from_xid)",
+          "new_text": null,
+          "old_line_content": "\t\tTransactionIdFollowsOrEquals(KnownAssignedXids[head - 1], from_xid))",
+          "new_line_content": "\t * Verify that insertions occur in TransactionId sequence.  Note that even",
+          "content_same": false
+        },
+        {
+          "line": 4805,
+          "old_api": "KnownAssignedXidsDisplay",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsDisplay(LOG)",
+          "new_text": null,
+          "old_line_content": "\t\tKnownAssignedXidsDisplay(LOG);",
+          "new_line_content": "\t * correctly sequenced XID value.",
+          "content_same": false
+        },
+        {
+          "line": 4806,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"out-of-order XID insertion in KnownAssignedXids\")",
+          "new_text": null,
+          "old_line_content": "\t\telog(ERROR, \"out-of-order XID insertion in KnownAssignedXids\");",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 2761,
+          "old_api": "UINT32_ACCESS_ONCE",
+          "new_api": null,
+          "old_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "new_text": null,
+          "old_line_content": "\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4814,
+          "old_api": "KnownAssignedXidsCompress",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsCompress(KAX_NO_SPACE, exclusive_lock)",
+          "new_text": null,
+          "old_line_content": "\t\tKnownAssignedXidsCompress(KAX_NO_SPACE, exclusive_lock);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4303,
+          "old_api": "GlobalVisTestFor",
+          "new_api": null,
+          "old_text": "GlobalVisTestFor(rel)",
+          "new_text": null,
+          "old_line_content": "\tstate = GlobalVisTestFor(rel);",
+          "new_line_content": "bool",
+          "content_same": false
+        },
+        {
+          "line": 2767,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!TransactionIdIsValid(xid))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4305,
+          "old_api": "GlobalVisTestIsRemovableXid",
+          "new_api": null,
+          "old_text": "GlobalVisTestIsRemovableXid(state, xid)",
+          "new_text": null,
+          "old_line_content": "\treturn GlobalVisTestIsRemovableXid(state, xid);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3279,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\tresult = proc->pid;",
+          "content_same": false
+        },
+        {
+          "line": 3794,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\t\t\tnautovacs < MAXAUTOVACPIDS)",
+          "content_same": false
+        },
+        {
+          "line": 2775,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(xid, oldestRunningXid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (TransactionIdPrecedes(xid, oldestRunningXid))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4823,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"too many KnownAssignedXids\")",
+          "new_text": null,
+          "old_line_content": "\t\t\telog(ERROR, \"too many KnownAssignedXids\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3292,
+          "old_api": "BackendPidGetProc",
+          "new_api": null,
+          "old_text": "BackendPidGetProc(pid)",
+          "new_text": null,
+          "old_line_content": "\treturn (BackendPidGetProc(pid) != NULL);",
+          "new_line_content": " * This is not called by the backend, but is called by external modules.",
+          "content_same": false
+        },
+        {
+          "line": 2782,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(xid, oldestDatabaseRunningXid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTransactionIdPrecedes(xid, oldestDatabaseRunningXid))",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3806,
+          "old_api": "kill",
+          "new_api": null,
+          "old_text": "kill(autovac_pids[index], SIGTERM)",
+          "new_text": null,
+          "old_line_content": "\t\t\t(void) kill(autovac_pids[index], SIGTERM);\t/* ignore any error */",
+          "new_line_content": "\t\t * postpone this step until after the loop because we don't want to",
+          "content_same": false
+        },
+        {
+          "line": 4832,
+          "old_api": "TransactionIdAdvance",
+          "new_api": null,
+          "old_text": "TransactionIdAdvance(next_xid)",
+          "new_text": null,
+          "old_line_content": "\t\tTransactionIdAdvance(next_xid);",
+          "new_line_content": "\tnext_xid = from_xid;",
+          "content_same": false
+        },
+        {
+          "line": 3809,
+          "old_api": "pg_usleep",
+          "new_api": null,
+          "old_text": "pg_usleep(100 * 1000L)",
+          "new_text": null,
+          "old_line_content": "\t\tpg_usleep(100 * 1000L); /* 100ms */",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 4322,
+          "old_api": "XidFromFullTransactionId",
+          "new_api": null,
+          "old_text": "XidFromFullTransactionId(rel)",
+          "new_text": null,
+          "old_line_content": "\tTransactionId rel_xid = XidFromFullTransactionId(rel);",
+          "new_line_content": " * prevents xid wraparound that way.",
+          "content_same": false
+        },
+        {
+          "line": 4324,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "new_line_content": "static inline FullTransactionId",
+          "content_same": false
+        },
+        {
+          "line": 4325,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(rel_xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(rel_xid));",
+          "new_line_content": "FullXidRelativeTo(FullTransactionId rel, TransactionId xid)",
+          "content_same": false
+        },
+        {
+          "line": 4328,
+          "old_api": "AssertTransactionIdInAllowableRange",
+          "new_api": null,
+          "old_text": "AssertTransactionIdInAllowableRange(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssertTransactionIdInAllowableRange(xid);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4331,
+          "old_api": "int32) (xid - rel_xid)",
+          "new_api": null,
+          "old_text": "int32) (xid - rel_xid)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t+ (int32) (xid - rel_xid));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4846,
+          "old_api": "pg_write_barrier",
+          "new_api": null,
+          "old_text": "pg_write_barrier()",
+          "new_text": null,
+          "old_line_content": "\t\tpg_write_barrier();",
+          "new_line_content": "\t * other processors see the above array updates before they see the head",
+          "content_same": false
+        },
+        {
+          "line": 3834,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "\tProcArrayStruct *arrayP = procArray;",
+          "content_same": false
+        },
+        {
+          "line": 2821,
+          "old_api": "pg_read_barrier",
+          "new_api": null,
+          "old_text": "pg_read_barrier()",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tpg_read_barrier();\t/* pairs with GetNewTransactionId */",
+          "new_line_content": "\t\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 3334,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(sizeof(VirtualTransactionId) * arrayP->maxProcs)",
+          "new_text": null,
+          "old_line_content": "\t\tpalloc(sizeof(VirtualTransactionId) * arrayP->maxProcs);",
+          "new_line_content": "\tint\t\t\tcount = 0;",
+          "content_same": false
+        },
+        {
+          "line": 2823,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(&xids[count], proc->subxids.xids,\n\t\t\t\t\t   nsubxids * sizeof(TransactionId))",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tmemcpy(&xids[count], proc->subxids.xids,",
+          "new_line_content": "\t\t\tif (nsubxids > 0)",
+          "content_same": false
+        },
+        {
+          "line": 3336,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3847,
+          "old_api": "lappend_int",
+          "new_api": null,
+          "old_text": "lappend_int(pids, proc->pid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tpids = lappend_int(pids, proc->pid);",
+          "new_line_content": "\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 4878,
+          "old_api": "pg_read_barrier",
+          "new_api": null,
+          "old_text": "pg_read_barrier()",
+          "new_text": null,
+          "old_line_content": "\t\tpg_read_barrier();\t\t/* pairs with KnownAssignedXidsAdd */",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 3855,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_OBJECT_IN_USE),\n\t\t\t\t errmsg(\"database \\\"%s\\\" is being used by prepared transactions\",\n\t\t\t\t\t\tget_database_name(databaseId)),\n\t\t\t\t errdetail_plural(\"There is %d prepared transaction using the database.\",\n\t\t\t\t\t\t\t\t  \"There are %d prepared transactions using the database.\",\n\t\t\t\t\t\t\t\t  nprepared,\n\t\t\t\t\t\t\t\t  nprepared)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 3856,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_OBJECT_IN_USE)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_OBJECT_IN_USE),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3858,
+          "old_api": "get_database_name",
+          "new_api": null,
+          "old_text": "get_database_name(databaseId)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\tget_database_name(databaseId)),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3859,
+          "old_api": "errdetail_plural",
+          "new_api": null,
+          "old_text": "errdetail_plural(\"There is %d prepared transaction using the database.\",\n\t\t\t\t\t\t\t\t  \"There are %d prepared transactions using the database.\",\n\t\t\t\t\t\t\t\t  nprepared,\n\t\t\t\t\t\t\t\t  nprepared)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errdetail_plural(\"There is %d prepared transaction using the database.\",",
+          "new_line_content": "\tif (nprepared > 0)",
+          "content_same": false
+        },
+        {
+          "line": 3353,
+          "old_api": "UINT32_ACCESS_ONCE",
+          "new_api": null,
+          "old_text": "UINT32_ACCESS_ONCE(proc->xmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTransactionId pxmin = UINT32_ACCESS_ONCE(proc->xmin);",
+          "new_line_content": "\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 3355,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(pxmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (excludeXmin0 && !TransactionIdIsValid(pxmin))",
+          "new_line_content": "\t\tif (allDbs || proc->databaseId == MyDatabaseId)",
+          "content_same": false
+        },
+        {
+          "line": 2849,
+          "old_api": "XidFromFullTransactionId",
+          "new_api": null,
+          "old_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "new_text": null,
+          "old_line_content": "\tCurrentRunningXacts->nextXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3362,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(limitXmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!TransactionIdIsValid(limitXmin) ||",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4899,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(xid, mid_xid)",
+          "new_text": null,
+          "old_line_content": "\t\telse if (TransactionIdPrecedes(xid, mid_xid))",
+          "new_line_content": "\t\tif (xid == mid_xid)",
+          "content_same": false
+        },
+        {
+          "line": 3363,
+          "old_api": "TransactionIdPrecedesOrEquals",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedesOrEquals(pxmin, limitXmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tTransactionIdPrecedesOrEquals(pxmin, limitXmin))",
+          "new_line_content": "\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 2855,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(CurrentRunningXacts->oldestRunningXid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(CurrentRunningXacts->oldestRunningXid));",
+          "new_line_content": "\tCurrentRunningXacts->oldestRunningXid = oldestRunningXid;",
+          "content_same": false
+        },
+        {
+          "line": 2856,
+          "old_api": "TransactionIdIsNormal",
+          "new_api": null,
+          "old_text": "TransactionIdIsNormal(CurrentRunningXacts->latestCompletedXid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsNormal(CurrentRunningXacts->latestCompletedXid));",
+          "new_line_content": "\tCurrentRunningXacts->oldestDatabaseRunningXid = oldestDatabaseRunningXid;",
+          "content_same": false
+        },
+        {
+          "line": 3885,
+          "old_api": "lfirst_int",
+          "new_api": null,
+          "old_text": "lfirst_int(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tint\t\t\tpid = lfirst_int(lc);",
+          "new_line_content": "\t\t * \"PID %d is not a PostgreSQL server process\", because for us already",
+          "content_same": false
+        },
+        {
+          "line": 3374,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\t\t\tvxids[count++] = vxid;",
+          "content_same": false
+        },
+        {
+          "line": 3886,
+          "old_api": "BackendPidGetProc",
+          "new_api": null,
+          "old_text": "BackendPidGetProc(pid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tPGPROC\t   *proc = BackendPidGetProc(pid);",
+          "new_line_content": "\t\t * finished session is not a problem.",
+          "content_same": false
+        },
+        {
+          "line": 4404,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(standbyState >= STANDBY_INITIALIZED)",
+          "new_text": null,
+          "old_line_content": "\tAssert(standbyState >= STANDBY_INITIALIZED);",
+          "new_line_content": " * Called during recovery in analogy with and in place of GetNewTransactionId()",
+          "content_same": false
+        },
+        {
+          "line": 4405,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 4406,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(latestObservedXid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(latestObservedXid));",
+          "new_line_content": "void",
+          "content_same": false
+        },
+        {
+          "line": 4916,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(pArray->numKnownAssignedXids >= 0)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(pArray->numKnownAssignedXids >= 0);",
+          "new_line_content": "\tif (remove)",
+          "content_same": false
+        },
+        {
+          "line": 4408,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(DEBUG4, \"record known xact %u latestObservedXid %u\",\n\t\t xid, latestObservedXid)",
+          "new_text": null,
+          "old_line_content": "\telog(DEBUG4, \"record known xact %u latestObservedXid %u\",",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3892,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_INSUFFICIENT_PRIVILEGE)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3893,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"permission denied to terminate process\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),",
+          "new_line_content": "\t\t\tif (proc != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 3894,
+          "old_api": "errdetail",
+          "new_api": null,
+          "old_text": "errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",\n\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t errdetail(\"Only roles with the %s attribute may terminate processes of roles with the %s attribute.\",",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3900,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_INSUFFICIENT_PRIVILEGE)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t   \"SUPERUSER\", \"SUPERUSER\")));",
+          "content_same": false
+        },
+        {
+          "line": 3901,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"permission denied to terminate process\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t errmsg(\"permission denied to terminate process\"),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4416,
+          "old_api": "TransactionIdFollows",
+          "new_api": null,
+          "old_text": "TransactionIdFollows(xid, latestObservedXid)",
+          "new_text": null,
+          "old_line_content": "\tif (TransactionIdFollows(xid, latestObservedXid))",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 2886,
+          "old_api": "RecoveryInProgress",
+          "new_api": null,
+          "old_text": "RecoveryInProgress()",
+          "new_text": null,
+          "old_line_content": "\tAssert(!RecoveryInProgress());",
+          "new_line_content": "\tProcArrayStruct *arrayP = procArray;",
+          "content_same": false
+        },
+        {
+          "line": 3915,
+          "old_api": "lfirst_int",
+          "new_api": null,
+          "old_text": "lfirst_int(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tint\t\t\tpid = lfirst_int(lc);",
+          "new_line_content": "\t\t * race condition possibility seems too unlikely to worry about.  See",
+          "content_same": false
+        },
+        {
+          "line": 3916,
+          "old_api": "BackendPidGetProc",
+          "new_api": null,
+          "old_text": "BackendPidGetProc(pid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tPGPROC\t   *proc = BackendPidGetProc(pid);",
+          "new_line_content": "\t\t * pg_signal_backend.",
+          "content_same": false
+        },
+        {
+          "line": 4430,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(next_expected_xid, xid)",
+          "new_text": null,
+          "old_line_content": "\t\twhile (TransactionIdPrecedes(next_expected_xid, xid))",
+          "new_line_content": "\t\t * This part has to be done regardless of standbyState since we",
+          "content_same": false
+        },
+        {
+          "line": 2895,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(XidGenLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(XidGenLock, LW_SHARED);",
+          "new_line_content": "\t *",
+          "content_same": false
+        },
+        {
+          "line": 4432,
+          "old_api": "TransactionIdAdvance",
+          "new_api": null,
+          "old_text": "TransactionIdAdvance(next_expected_xid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTransactionIdAdvance(next_expected_xid);",
+          "new_line_content": "\t\t * transactions.",
+          "content_same": false
+        },
+        {
+          "line": 4433,
+          "old_api": "ExtendSUBTRANS",
+          "new_api": null,
+          "old_text": "ExtendSUBTRANS(next_expected_xid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tExtendSUBTRANS(next_expected_xid);",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 2896,
+          "old_api": "XidFromFullTransactionId",
+          "new_api": null,
+          "old_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "new_text": null,
+          "old_line_content": "\toldestRunningXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "new_line_content": "\t * Reading a TransactionId is atomic, but we must grab the lock to make",
+          "content_same": false
+        },
+        {
+          "line": 2897,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(XidGenLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(XidGenLock);",
+          "new_line_content": "\t * sure that all XIDs < nextXid are already present in the proc array (or",
+          "content_same": false
+        },
+        {
+          "line": 3925,
+          "old_api": "kill",
+          "new_api": null,
+          "old_text": "kill(-pid, SIGTERM)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(void) kill(-pid, SIGTERM);",
+          "new_line_content": "\t\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4951,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "new_line_content": " * Caller must hold ProcArrayLock in shared or exclusive mode.",
+          "content_same": false
+        },
+        {
+          "line": 3927,
+          "old_api": "kill",
+          "new_api": null,
+          "old_text": "kill(pid, SIGTERM)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(void) kill(pid, SIGTERM);",
+          "new_line_content": "\t\t\t\t * group",
+          "content_same": false
+        },
+        {
+          "line": 4953,
+          "old_api": "KnownAssignedXidsSearch",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsSearch(xid, false)",
+          "new_text": null,
+          "old_line_content": "\treturn KnownAssignedXidsSearch(xid, false);",
+          "new_line_content": "static bool",
+          "content_same": false
+        },
+        {
+          "line": 2908,
+          "old_api": "UINT32_ACCESS_ONCE",
+          "new_api": null,
+          "old_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "new_text": null,
+          "old_line_content": "\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "new_line_content": "\tfor (index = 0; index < arrayP->numProcs; index++)",
+          "content_same": false
+        },
+        {
+          "line": 2910,
+          "old_api": "TransactionIdIsNormal",
+          "new_api": null,
+          "old_text": "TransactionIdIsNormal(xid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!TransactionIdIsNormal(xid))",
+          "new_line_content": "\t\tTransactionId xid;",
+          "content_same": false
+        },
+        {
+          "line": 4451,
+          "old_api": "TransactionIdAdvance",
+          "new_api": null,
+          "old_text": "TransactionIdAdvance(next_expected_xid)",
+          "new_text": null,
+          "old_line_content": "\t\tTransactionIdAdvance(next_expected_xid);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4452,
+          "old_api": "KnownAssignedXidsAdd",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsAdd(next_expected_xid, xid, false)",
+          "new_text": null,
+          "old_line_content": "\t\tKnownAssignedXidsAdd(next_expected_xid, xid, false);",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4964,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "new_line_content": " * Caller must hold ProcArrayLock in exclusive mode.",
+          "content_same": false
+        },
+        {
+          "line": 4966,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(DEBUG4, \"remove KnownAssignedXid %u\", xid)",
+          "new_text": null,
+          "old_line_content": "\telog(DEBUG4, \"remove KnownAssignedXid %u\", xid);",
+          "new_line_content": "static void",
+          "content_same": false
+        },
+        {
+          "line": 3431,
+          "old_api": "malloc",
+          "new_api": null,
+          "old_text": "malloc(sizeof(VirtualTransactionId) * (arrayP->maxProcs + 1))",
+          "new_text": null,
+          "old_line_content": "\t\t\tmalloc(sizeof(VirtualTransactionId) * (arrayP->maxProcs + 1));",
+          "new_line_content": "\t * result space, remembering room for a terminator.",
+          "content_same": false
+        },
+        {
+          "line": 3433,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_OUT_OF_MEMORY),\n\t\t\t\t\t errmsg(\"out of memory\")))",
+          "new_text": null,
+          "old_line_content": "\t\t\tereport(ERROR,",
+          "new_line_content": "\tif (vxids == NULL)",
+          "content_same": false
+        },
+        {
+          "line": 2922,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t * Top-level XID of a transaction is always less than any of its",
+          "content_same": false
+        },
+        {
+          "line": 3434,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_OUT_OF_MEMORY)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t(errcode(ERRCODE_OUT_OF_MEMORY),",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4460,
+          "old_api": "AdvanceNextFullTransactionIdPastXid",
+          "new_api": null,
+          "old_text": "AdvanceNextFullTransactionIdPastXid(latestObservedXid)",
+          "new_text": null,
+          "old_line_content": "\t\tAdvanceNextFullTransactionIdPastXid(latestObservedXid);",
+          "new_line_content": "\t\t * Now we can advance latestObservedXid",
+          "content_same": false
+        },
+        {
+          "line": 3435,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"out of memory\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t errmsg(\"out of memory\")));",
+          "new_line_content": "\t\tvxids = (VirtualTransactionId *)",
+          "content_same": false
+        },
+        {
+          "line": 3945,
+          "old_api": "LWLockHeldByMe",
+          "new_api": null,
+          "old_text": "LWLockHeldByMe(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tAssert(!already_locked || LWLockHeldByMe(ProcArrayLock));",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 3948,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "\t\t\t\t\t\t\t\tbool already_locked)",
+          "content_same": false
+        },
+        {
+          "line": 4978,
+          "old_api": "KnownAssignedXidsSearch",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsSearch(xid, true)",
+          "new_text": null,
+          "old_line_content": "\t(void) KnownAssignedXidsSearch(xid, true);",
+          "new_line_content": "\t *",
+          "content_same": false
+        },
+        {
+          "line": 3954,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3956,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(DEBUG1, \"xmin required by slots: data %u, catalog %u\",\n\t\t xmin, catalog_xmin)",
+          "new_text": null,
+          "old_line_content": "\telog(DEBUG1, \"xmin required by slots: data %u, catalog %u\",",
+          "new_line_content": "\tprocArray->replication_slot_catalog_xmin = catalog_xmin;",
+          "content_same": false
+        },
+        {
+          "line": 3449,
+          "old_api": "OidIsValid",
+          "new_api": null,
+          "old_text": "OidIsValid(dbOid)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!OidIsValid(dbOid) ||",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4474,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(standbyState >= STANDBY_INITIALIZED)",
+          "new_text": null,
+          "old_line_content": "\tAssert(standbyState >= STANDBY_INITIALIZED);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 3453,
+          "old_api": "UINT32_ACCESS_ONCE",
+          "new_api": null,
+          "old_text": "UINT32_ACCESS_ONCE(proc->xmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTransactionId pxmin = UINT32_ACCESS_ONCE(proc->xmin);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4481,
+          "old_api": "KnownAssignedXidsRemoveTree",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsRemoveTree(xid, nsubxids, subxids)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsRemoveTree(xid, nsubxids, subxids);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 4993,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tif (TransactionIdIsValid(xid))",
+          "new_line_content": "KnownAssignedXidsRemoveTree(TransactionId xid, int nsubxids,",
+          "content_same": false
+        },
+        {
+          "line": 4994,
+          "old_api": "KnownAssignedXidsRemove",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsRemove(xid)",
+          "new_text": null,
+          "old_line_content": "\t\tKnownAssignedXidsRemove(xid);",
+          "new_line_content": "\t\t\t\t\t\t\tTransactionId *subxids)",
+          "content_same": false
+        },
+        {
+          "line": 3970,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 2949,
+          "old_api": "RecoveryInProgress",
+          "new_api": null,
+          "old_text": "RecoveryInProgress()",
+          "new_text": null,
+          "old_line_content": "\tbool\t\trecovery_in_progress = RecoveryInProgress();",
+          "new_line_content": "GetOldestSafeDecodingTransactionId(bool catalogOnly)",
+          "content_same": false
+        },
+        {
+          "line": 4997,
+          "old_api": "KnownAssignedXidsRemove",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsRemove(subxids[i])",
+          "new_text": null,
+          "old_line_content": "\t\tKnownAssignedXidsRemove(subxids[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 2951,
+          "old_api": "LWLockHeldByMe",
+          "new_api": null,
+          "old_text": "LWLockHeldByMe(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tAssert(LWLockHeldByMe(ProcArrayLock));",
+          "new_line_content": "\tProcArrayStruct *arrayP = procArray;",
+          "content_same": false
+        },
+        {
+          "line": 5000,
+          "old_api": "KnownAssignedXidsCompress",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsCompress(KAX_TRANSACTION_END, true)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsCompress(KAX_TRANSACTION_END, true);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3463,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(limitXmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!TransactionIdIsValid(limitXmin) ||",
+          "new_line_content": "\t\t\t * with users taking snapshots.  That is not a problem because the",
+          "content_same": false
+        },
+        {
+          "line": 3464,
+          "old_api": "TransactionIdFollows",
+          "new_api": null,
+          "old_text": "TransactionIdFollows(pxmin, limitXmin)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(TransactionIdIsValid(pxmin) && !TransactionIdFollows(pxmin, limitXmin)))",
+          "new_line_content": "\t\t\t * current xmin is always at least one higher than the latest",
+          "content_same": false
+        },
+        {
+          "line": 3978,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t*xmin = procArray->replication_slot_xmin;",
+          "content_same": false
+        },
+        {
+          "line": 2961,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(XidGenLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(XidGenLock, LW_SHARED);",
+          "new_line_content": "\t * could influence the RecentXmin et al.",
+          "content_same": false
+        },
+        {
+          "line": 2962,
+          "old_api": "XidFromFullTransactionId",
+          "new_api": null,
+          "old_text": "XidFromFullTransactionId(TransamVariables->nextXid)",
+          "new_text": null,
+          "old_line_content": "\toldestSafeXid = XidFromFullTransactionId(TransamVariables->nextXid);",
+          "new_line_content": "\t *",
+          "content_same": false
+        },
+        {
+          "line": 4499,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": " *\t\tRemove all entries in KnownAssignedXids and reset lastOverflowedXid.",
+          "content_same": false
+        },
+        {
+          "line": 4500,
+          "old_api": "KnownAssignedXidsRemovePreceding",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsRemovePreceding(InvalidTransactionId)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsRemovePreceding(InvalidTransactionId);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 3475,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\t\t\tvxids[count++] = vxid;",
+          "content_same": false
+        },
+        {
+          "line": 5018,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(removeXid)",
+          "new_text": null,
+          "old_line_content": "\tif (!TransactionIdIsValid(removeXid))",
+          "new_line_content": "\tint\t\t\tcount = 0;",
+          "content_same": false
+        },
+        {
+          "line": 2971,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(procArray->replication_slot_xmin)",
+          "new_text": null,
+          "old_line_content": "\tif (TransactionIdIsValid(procArray->replication_slot_xmin) &&",
+          "new_line_content": "\t * that value, it's guaranteed to be safe since it's computed by this",
+          "content_same": false
+        },
+        {
+          "line": 4508,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t * Reset lastOverflowedXid.  Currently, lastOverflowedXid has no use after",
+          "content_same": false
+        },
+        {
+          "line": 2972,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(procArray->replication_slot_xmin,\n\t\t\t\t\t\t\t  oldestSafeXid)",
+          "new_text": null,
+          "old_line_content": "\t\tTransactionIdPrecedes(procArray->replication_slot_xmin,",
+          "new_line_content": "\t * routine initially and has been enforced since.  We can always use the",
+          "content_same": false
+        },
+        {
+          "line": 5020,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(DEBUG4, \"removing all KnownAssignedXids\")",
+          "new_text": null,
+          "old_line_content": "\t\telog(DEBUG4, \"removing all KnownAssignedXids\");",
+          "new_line_content": "\t\t\t\ttail,",
+          "content_same": false
+        },
+        {
+          "line": 3998,
+          "old_api": "TransactionIdIsValid",
+          "new_api": null,
+          "old_text": "TransactionIdIsValid(xid)",
+          "new_text": null,
+          "old_line_content": "\tAssert(TransactionIdIsValid(xid));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 2978,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(procArray->replication_slot_catalog_xmin,\n\t\t\t\t\t\t\t  oldestSafeXid)",
+          "new_text": null,
+          "old_line_content": "\t\tTransactionIdPrecedes(procArray->replication_slot_catalog_xmin,",
+          "new_line_content": "\t\t\t\t\t\t\t  oldestSafeXid))",
+          "content_same": false
+        },
+        {
+          "line": 5026,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(DEBUG4, \"prune KnownAssignedXids to %u\", removeXid)",
+          "new_text": null,
+          "old_line_content": "\telog(DEBUG4, \"prune KnownAssignedXids to %u\", removeXid);",
+          "new_line_content": "\t\tpArray->numKnownAssignedXids = 0;",
+          "content_same": false
+        },
+        {
+          "line": 3492,
+          "old_api": "SignalVirtualTransaction",
+          "new_api": null,
+          "old_text": "SignalVirtualTransaction(vxid, sigmode, true)",
+          "new_text": null,
+          "old_line_content": "\treturn SignalVirtualTransaction(vxid, sigmode, true);",
+          "new_line_content": " * Returns pid of the process signaled, or 0 if not found.",
+          "content_same": false
+        },
+        {
+          "line": 4519,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": " *\t\tpotentially reset lastOverflowedXid.",
+          "content_same": false
+        },
+        {
+          "line": 4012,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_EXCLUSIVE)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_EXCLUSIVE);",
+          "new_line_content": "\t * Note that we do not have to be careful about memory ordering of our own",
+          "content_same": false
+        },
+        {
+          "line": 4527,
+          "old_api": "TransactionIdPrecedes",
+          "new_api": null,
+          "old_text": "TransactionIdPrecedes(procArray->lastOverflowedXid, xid)",
+          "new_text": null,
+          "old_line_content": "\tif (TransactionIdPrecedes(procArray->lastOverflowedXid, xid))",
+          "new_line_content": "\t * Reset lastOverflowedXid if we know all transactions that have been",
+          "content_same": false
+        },
+        {
+          "line": 3503,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4529,
+          "old_api": "KnownAssignedXidsRemovePreceding",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsRemovePreceding(xid)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsRemovePreceding(xid);",
+          "new_line_content": "\t * lastOverflowedXid value, which makes extra snapshots be marked as",
+          "content_same": false
+        },
+        {
+          "line": 4530,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t * suboverflowed.",
+          "content_same": false
+        },
+        {
+          "line": 5041,
+          "old_api": "TransactionIdFollowsOrEquals",
+          "new_api": null,
+          "old_text": "TransactionIdFollowsOrEquals(knownXid, removeXid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (TransactionIdFollowsOrEquals(knownXid, removeXid))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 5044,
+          "old_api": "StandbyTransactionIdIsPrepared",
+          "new_api": null,
+          "old_text": "StandbyTransactionIdIsPrepared(knownXid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!StandbyTransactionIdIsPrepared(knownXid))",
+          "new_line_content": "\t\t\tTransactionId knownXid = KnownAssignedXids[i];",
+          "content_same": false
+        },
+        {
+          "line": 3511,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": null,
+          "old_text": "GET_VXID_FROM_PGPROC(procvxid, *proc)",
+          "new_text": null,
+          "old_line_content": "\t\tGET_VXID_FROM_PGPROC(procvxid, *proc);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4027,
+          "old_api": "TransactionIdEquals",
+          "new_api": null,
+          "old_text": "TransactionIdEquals(MyProc->subxids.xids[j], anxid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (TransactionIdEquals(MyProc->subxids.xids[j], anxid))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4541,
+          "old_api": "KnownAssignedXidsCompress",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsCompress(KAX_STARTUP_PROCESS_IDLE, false)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsCompress(KAX_STARTUP_PROCESS_IDLE, false);",
+          "new_line_content": " *\t\tis about to go idle.",
+          "content_same": false
+        },
+        {
+          "line": 5053,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(pArray->numKnownAssignedXids >= 0)",
+          "new_text": null,
+          "old_line_content": "\tAssert(pArray->numKnownAssignedXids >= 0);",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3006,
+          "old_api": "UINT32_ACCESS_ONCE",
+          "new_api": null,
+          "old_text": "UINT32_ACCESS_ONCE(other_xids[index])",
+          "new_text": null,
+          "old_line_content": "\t\t\txid = UINT32_ACCESS_ONCE(other_xids[index]);",
+          "new_line_content": "\t\tfor (index = 0; index < arrayP->numProcs; index++)",
+          "content_same": false
+        },
+        {
+          "line": 3008,
+          "old_api": "TransactionIdIsNormal",
+          "new_api": null,
+          "old_text": "TransactionIdIsNormal(xid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!TransactionIdIsNormal(xid))",
+          "new_line_content": "\t\t\tTransactionId xid;",
+          "content_same": false
+        },
+        {
+          "line": 4030,
+          "old_api": "pg_write_barrier",
+          "new_api": null,
+          "old_text": "pg_write_barrier()",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tpg_write_barrier();",
+          "new_line_content": "\t\tfor (j = MyProc->subxidStatus.count - 1; j >= 0; j--)",
+          "content_same": false
+        },
+        {
+          "line": 3524,
+          "old_api": "SendProcSignal",
+          "new_api": null,
+          "old_text": "SendProcSignal(pid, sigmode, vxid.procNumber)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(void) SendProcSignal(pid, sigmode, vxid.procNumber);",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3530,
+          "old_api": "LWLockRelease",
+          "new_api": null,
+          "old_text": "LWLockRelease(ProcArrayLock)",
+          "new_text": null,
+          "old_line_content": "\tLWLockRelease(ProcArrayLock);",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 4045,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(WARNING, \"did not find subXID %u in MyProc\", anxid)",
+          "new_text": null,
+          "old_line_content": "\t\t\telog(WARNING, \"did not find subXID %u in MyProc\", anxid);",
+          "new_line_content": "\t\t * invoked multiple times for the same subtransaction, in case of an",
+          "content_same": false
+        },
+        {
+          "line": 5075,
+          "old_api": "KnownAssignedXidsCompress",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsCompress(KAX_PRUNE, true)",
+          "new_text": null,
+          "old_line_content": "\tKnownAssignedXidsCompress(KAX_PRUNE, true);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 4053,
+          "old_api": "pg_write_barrier",
+          "new_api": null,
+          "old_text": "pg_write_barrier()",
+          "new_text": null,
+          "old_line_content": "\t\t\tpg_write_barrier();",
+          "new_line_content": "\tfor (j = MyProc->subxidStatus.count - 1; j >= 0; j--)",
+          "content_same": false
+        },
+        {
+          "line": 4061,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(WARNING, \"did not find subXID %u in MyProc\", xid)",
+          "new_text": null,
+          "old_line_content": "\t\telog(WARNING, \"did not find subXID %u in MyProc\", xid);",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 4064,
+          "old_api": "MaintainLatestCompletedXid",
+          "new_api": null,
+          "old_text": "MaintainLatestCompletedXid(latestXid)",
+          "new_text": null,
+          "old_line_content": "\tMaintainLatestCompletedXid(latestXid);",
+          "new_line_content": "\t/* Ordinarily we should have found it, unless the cache has overflowed */",
+          "content_same": false
+        },
+        {
+          "line": 5092,
+          "old_api": "KnownAssignedXidsGetAndSetXmin",
+          "new_api": null,
+          "old_text": "KnownAssignedXidsGetAndSetXmin(xarray, &xtmp, xmax)",
+          "new_text": null,
+          "old_line_content": "\treturn KnownAssignedXidsGetAndSetXmin(xarray, &xtmp, xmax);",
+          "new_line_content": "static int",
+          "content_same": false
+        },
+        {
+          "line": 3049,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(type != 0)",
+          "new_text": null,
+          "old_line_content": "\tAssert(type != 0);",
+          "new_line_content": "\tVirtualTransactionId *vxids;",
+          "content_same": false
+        },
+        {
+          "line": 3053,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(sizeof(VirtualTransactionId) * arrayP->maxProcs)",
+          "new_text": null,
+          "old_line_content": "\t\tpalloc(sizeof(VirtualTransactionId) * arrayP->maxProcs);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3055,
+          "old_api": "LWLockAcquire",
+          "new_api": null,
+          "old_text": "LWLockAcquire(ProcArrayLock, LW_SHARED)",
+          "new_text": null,
+          "old_line_content": "\tLWLockAcquire(ProcArrayLock, LW_SHARED);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4080,
+          "old_api": "fprintf",
+          "new_api": null,
+          "old_text": "fprintf(stderr,\n\t\t\t\"XidCache: xmin: %ld, known: %ld, myxact: %ld, latest: %ld, mainxid: %ld, childxid: %ld, knownassigned: %ld, nooflo: %ld, slow: %ld\\n\",\n\t\t\txc_by_recent_xmin,\n\t\t\txc_by_known_xact,\n\t\t\txc_by_my_xact,\n\t\t\txc_by_latest_xid,\n\t\t\txc_by_main_xid,\n\t\t\txc_by_child_xid,\n\t\t\txc_by_known_assigned,\n\t\t\txc_no_overflow,\n\t\t\txc_slow_answer)",
+          "new_text": null,
+          "old_line_content": "\tfprintf(stderr,",
+          "new_line_content": " * Print stats about effectiveness of XID cache",
+          "content_same": false
+        },
+        {
+          "line": 3066,
+          "old_api": "GET_VXID_FROM_PGPROC",
+          "new_api": null,
+          "old_text": "GET_VXID_FROM_PGPROC(vxid, *proc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tGET_VXID_FROM_PGPROC(vxid, *proc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3067,
+          "old_api": "VirtualTransactionIdIsValid",
+          "new_api": null,
+          "old_text": "VirtualTransactionIdIsValid(vxid)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (VirtualTransactionIdIsValid(vxid))",
+          "new_line_content": "\t\tif ((proc->delayChkptFlags & type) != 0)",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 30,
+      "total_additions": 214,
+      "total_deletions": 214,
+      "total_api_changes": 458
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 13,
+        "api_related_lines": 458,
+        "non_api_lines": 11,
+        "non_api_line_numbers": [
+          2784,
+          2785,
+          2786,
+          2787,
+          2756,
+          2757,
+          2788,
+          2777,
+          2778,
+          2779,
+          2783
+        ]
+      }
+    },
+    "api_calls_before": 640,
+    "api_calls_after": 640,
+    "diff_info": {
+      "added_lines": 11,
+      "removed_lines": 6,
+      "total_diff_lines": 37
+    }
+  }
+}

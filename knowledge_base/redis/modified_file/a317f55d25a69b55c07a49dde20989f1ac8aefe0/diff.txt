@@ -1,0 +1,44 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -705,10 +705,15 @@
+     /* Change the valid/deleted entries count in the master entry. */
+
+     unsigned char *p = lpFirst(lp);
+
+     aux = lpGetInteger(p);
+
+-    lp = lpReplaceInteger(lp,&p,aux-1);
+
+-    p = lpNext(lp,p); /* Seek deleted field. */
+
+-    aux = lpGetInteger(p);
+
+-    lp = lpReplaceInteger(lp,&p,aux+1);
+
++    if (aux == 1) {
+
++        lpFree(lp);
+
++        raxRemove(si->stream->rax,si->ri.key,si->ri.key_len,NULL);
+
++    } else {
+
++        lp = lpReplaceInteger(lp,&p,aux-1);
+
++        p = lpNext(lp,p); /* Seek deleted field. */
+
++        aux = lpGetInteger(p);
+
++        lp = lpReplaceInteger(lp,&p,aux+1);
+
++    }
+
+ 
+
+     /* Update the number of entries counter. */
+
+     si->stream->length--;

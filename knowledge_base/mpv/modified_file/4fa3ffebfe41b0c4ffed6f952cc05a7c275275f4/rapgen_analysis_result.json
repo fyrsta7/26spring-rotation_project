@@ -1,0 +1,1298 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/4fa3ffebfe41b0c4ffed6f952cc05a7c275275f4",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/4fa3ffebfe41b0c4ffed6f952cc05a7c275275f4/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/4fa3ffebfe41b0c4ffed6f952cc05a7c275275f4/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/mpv/modified_file/4fa3ffebfe41b0c4ffed6f952cc05a7c275275f4/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 184,
+          "old_api": "pthread_mutex_lock",
+          "new_api": "pthread_mutex_unlock",
+          "old_text": "pthread_mutex_lock(&p->lock)",
+          "new_text": "pthread_mutex_unlock(&p->lock)",
+          "old_line_content": "    pthread_mutex_lock(&p->lock);",
+          "new_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "pthread_mutex_lock",
+          "new_api": "mp_audio_buffer_get_write_available",
+          "old_text": "pthread_mutex_lock(&p->lock)",
+          "new_text": "mp_audio_buffer_get_write_available(p->buffer)",
+          "old_line_content": "    pthread_mutex_lock(&p->lock);",
+          "new_line_content": "    int write_samples = mp_audio_buffer_get_write_available(p->buffer);",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "wakeup_playthread",
+          "new_api": "pthread_mutex_unlock",
+          "old_text": "wakeup_playthread(ao)",
+          "new_text": "pthread_mutex_unlock(&p->lock)",
+          "old_line_content": "        wakeup_playthread(ao);",
+          "new_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "mp_audio_buffer_peek",
+          "new_api": "get_space",
+          "old_text": "mp_audio_buffer_peek(p->buffer, &data)",
+          "new_text": "ao->driver->get_space(ao)",
+          "old_line_content": "    mp_audio_buffer_peek(p->buffer, &data);",
+          "new_line_content": "    int space = ao->driver->get_space(ao);",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "MP_STATS",
+          "new_api": "MP_WARN",
+          "old_text": "MP_STATS(ao, \"end ao fill\")",
+          "new_text": "MP_WARN(ao, \"Audio device returned non-sense value.\\n\")",
+          "old_line_content": "    MP_STATS(ao, \"end ao fill\");",
+          "new_line_content": "        MP_WARN(ao, \"Audio device returned non-sense value.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 256,
+          "old_api": "mp_audio_buffer_skip",
+          "new_api": "mp_time_sec",
+          "old_text": "mp_audio_buffer_skip(p->buffer, r)",
+          "new_text": "mp_time_sec()",
+          "old_line_content": "    mp_audio_buffer_skip(p->buffer, r);",
+          "new_line_content": "        p->expected_end_time = mp_time_sec() + AO_EOF_DELAY + 0.25; // + margin",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "mp_time_sec",
+          "new_api": "get_delay",
+          "old_text": "mp_time_sec()",
+          "new_text": "ao->driver->get_delay(ao)",
+          "old_line_content": "        p->expected_end_time = mp_time_sec() + AO_EOF_DELAY + 0.25; // + margin",
+          "new_line_content": "            p->expected_end_time += ao->driver->get_delay(ao);",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "pthread_mutex_lock",
+          "new_api": "ao_play_data",
+          "old_text": "pthread_mutex_lock(&p->lock)",
+          "new_text": "ao_play_data(ao)",
+          "old_line_content": "    pthread_mutex_lock(&p->lock);",
+          "new_line_content": "        ao_play_data(ao);",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "unlocked_get_space",
+          "new_api": "mp_input_wakeup",
+          "old_text": "unlocked_get_space(ao)",
+          "new_text": "mp_input_wakeup(ao->input_ctx)",
+          "old_line_content": "        if (!p->buffers_full && unlocked_get_space(ao) > margin) {",
+          "new_line_content": "                mp_input_wakeup(ao->input_ctx);",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "drain",
+          "new_api": "pthread_cond_signal",
+          "old_text": "ao->driver->drain(ao)",
+          "new_text": "pthread_cond_signal(&p->wakeup_drain)",
+          "old_line_content": "                ao->driver->drain(ao);",
+          "new_line_content": "            pthread_cond_signal(&p->wakeup_drain);",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": "MP_TRACE",
+          "new_api": "pthread_cond_wait",
+          "old_text": "MP_TRACE(ao, \"buffer inactive.\\n\")",
+          "new_text": "pthread_cond_wait(&p->wakeup, &p->lock)",
+          "old_line_content": "                MP_TRACE(ao, \"buffer inactive.\\n\");",
+          "new_line_content": "                pthread_cond_wait(&p->wakeup, &p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "pthread_cond_wait",
+          "new_api": "wait",
+          "old_text": "pthread_cond_wait(&p->wakeup, &p->lock)",
+          "new_text": "ao->driver->wait(ao, &p->lock)",
+          "old_line_content": "                pthread_cond_wait(&p->wakeup, &p->lock);",
+          "new_line_content": "                if (!ao->driver->wait || ao->driver->wait(ao, &p->lock) < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "wait",
+          "new_api": "ao_estimate_timeout",
+          "old_text": "ao->driver->wait(ao, &p->lock)",
+          "new_text": "ao_estimate_timeout(ao)",
+          "old_line_content": "                if (!ao->driver->wait || ao->driver->wait(ao, &p->lock) < 0) {",
+          "new_line_content": "                    double timeout = ao_estimate_timeout(ao);",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "pthread_mutex_lock",
+          "new_api": "wakeup_playthread",
+          "old_text": "pthread_mutex_lock(&p->lock)",
+          "new_text": "wakeup_playthread(ao)",
+          "old_line_content": "    pthread_mutex_lock(&p->lock);",
+          "new_line_content": "    wakeup_playthread(ao);",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": "pthread_join",
+          "old_text": "pthread_mutex_unlock(&p->lock)",
+          "new_text": "pthread_join(p->thread, NULL)",
+          "old_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "new_line_content": "    pthread_join(p->thread, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "pthread_join",
+          "new_api": "uninit",
+          "old_text": "pthread_join(p->thread, NULL)",
+          "new_text": "ao->driver->uninit(ao)",
+          "old_line_content": "    pthread_join(p->thread, NULL);",
+          "new_line_content": "    ao->driver->uninit(ao);",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": "close",
+          "new_api": "pthread_cond_destroy",
+          "old_text": "close(p->wakeup_pipe[n])",
+          "new_text": "pthread_cond_destroy(&p->wakeup)",
+          "old_line_content": "        close(p->wakeup_pipe[n]);",
+          "new_line_content": "    pthread_cond_destroy(&p->wakeup);",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "pthread_cond_destroy",
+          "new_api": "pthread_mutex_destroy",
+          "old_text": "pthread_cond_destroy(&p->wakeup)",
+          "new_text": "pthread_mutex_destroy(&p->lock)",
+          "old_line_content": "    pthread_cond_destroy(&p->wakeup);",
+          "new_line_content": "    pthread_mutex_destroy(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "pthread_mutex_init",
+          "new_api": "pthread_cond_init",
+          "old_text": "pthread_mutex_init(&p->lock, NULL)",
+          "new_text": "pthread_cond_init(&p->wakeup_drain, NULL)",
+          "old_line_content": "    pthread_mutex_init(&p->lock, NULL);",
+          "new_line_content": "    pthread_cond_init(&p->wakeup_drain, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "pthread_cond_init",
+          "new_api": "mp_make_wakeup_pipe",
+          "old_text": "pthread_cond_init(&p->wakeup, NULL)",
+          "new_text": "mp_make_wakeup_pipe(p->wakeup_pipe)",
+          "old_line_content": "    pthread_cond_init(&p->wakeup, NULL);",
+          "new_line_content": "    mp_make_wakeup_pipe(p->wakeup_pipe);",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "mp_make_wakeup_pipe",
+          "new_api": "mp_audio_buffer_create",
+          "old_text": "mp_make_wakeup_pipe(p->wakeup_pipe)",
+          "new_text": "mp_audio_buffer_create(ao)",
+          "old_line_content": "    mp_make_wakeup_pipe(p->wakeup_pipe);",
+          "new_line_content": "    p->buffer = mp_audio_buffer_create(ao);",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": "mp_audio_buffer_reinit_fmt",
+          "new_api": "mp_audio_buffer_preallocate_min",
+          "old_text": "mp_audio_buffer_reinit_fmt(p->buffer, ao->format,\n                               &ao->channels, ao->samplerate)",
+          "new_text": "mp_audio_buffer_preallocate_min(p->buffer, ao->buffer)",
+          "old_line_content": "    mp_audio_buffer_reinit_fmt(p->buffer, ao->format,",
+          "new_line_content": "    mp_audio_buffer_preallocate_min(p->buffer, ao->buffer);",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": "mp_audio_buffer_preallocate_min",
+          "new_api": "uninit",
+          "old_text": "mp_audio_buffer_preallocate_min(p->buffer, ao->buffer)",
+          "new_text": "ao->driver->uninit(ao)",
+          "old_line_content": "    mp_audio_buffer_preallocate_min(p->buffer, ao->buffer);",
+          "new_line_content": "        ao->driver->uninit(ao);",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": "AF_FORMAT_IS_SPECIAL",
+          "new_api": "talloc_size",
+          "old_text": "AF_FORMAT_IS_SPECIAL(ao->format)",
+          "new_text": "talloc_size(NULL, samples * ao->sstride)",
+          "old_line_content": "    if (samples <= 0 || AF_FORMAT_IS_SPECIAL(ao->format) || !ao->driver->play)",
+          "new_line_content": "    char *p = talloc_size(NULL, samples * ao->sstride);",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "poll",
+          "new_api": "pthread_mutex_lock",
+          "old_text": "poll(p_fds, num_fds + 1, -1)",
+          "new_text": "pthread_mutex_lock(&p->lock)",
+          "old_line_content": "    int r = poll(p_fds, num_fds + 1, -1);",
+          "new_line_content": "    pthread_mutex_lock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "pthread_mutex_lock",
+          "new_api": "memcpy",
+          "old_text": "pthread_mutex_lock(&p->lock)",
+          "new_text": "memcpy(fds, p_fds, num_fds * sizeof(fds[0]))",
+          "old_line_content": "    pthread_mutex_lock(&p->lock);",
+          "new_line_content": "    memcpy(fds, p_fds, num_fds * sizeof(fds[0]));",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(ao->api == &ao_api_push)",
+          "old_line_content": "int ao_play_silence(struct ao *ao, int samples)",
+          "new_line_content": "    assert(ao->api == &ao_api_push);",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": null,
+          "new_api": "AF_FORMAT_IS_SPECIAL",
+          "old_text": null,
+          "new_text": "AF_FORMAT_IS_SPECIAL(ao->format)",
+          "old_line_content": "{",
+          "new_line_content": "    if (samples <= 0 || AF_FORMAT_IS_SPECIAL(ao->format) || !ao->driver->play)",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "af_fill_silence",
+          "old_text": null,
+          "new_text": "af_fill_silence(p, samples * ao->sstride, ao->format)",
+          "old_line_content": "        return 0;",
+          "new_line_content": "    af_fill_silence(p, samples * ao->sstride, ao->format);",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": null,
+          "new_api": "play",
+          "old_text": null,
+          "new_text": "ao->driver->play(ao, tmp, samples, 0)",
+          "old_line_content": "    for (int n = 0; n < MP_NUM_CHANNELS; n++)",
+          "new_line_content": "    int r = ao->driver->play(ao, tmp, samples, 0);",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "talloc_free",
+          "old_text": null,
+          "new_text": "talloc_free(p)",
+          "old_line_content": "        tmp[n] = p;",
+          "new_line_content": "    talloc_free(p);",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": null,
+          "new_api": "get_delay",
+          "old_text": null,
+          "new_text": "ao->driver->get_delay(ao)",
+          "old_line_content": "    double timeout = 0;",
+          "new_line_content": "        timeout = ao->driver->get_delay(ao) - 0.050;",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": null,
+          "new_api": "MPMAX",
+          "old_text": null,
+          "new_text": "MPMAX(timeout - 0.200, 0.100)",
+          "old_line_content": "        // Keep extra safety margin if the buffers are large",
+          "new_line_content": "            timeout = MPMAX(timeout - 0.200, 0.100);",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&p->lock)",
+          "old_line_content": "    struct ao *ao = arg;",
+          "new_line_content": "    pthread_mutex_lock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(ao->api == &ao_api_push)",
+          "old_line_content": "{",
+          "new_line_content": "    assert(ao->api == &ao_api_push);",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(&p->lock == lock)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    assert(&p->lock == lock);",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": null,
+          "new_api": "unlocked_get_space",
+          "old_text": null,
+          "new_text": "unlocked_get_space(ao)",
+          "old_line_content": "        // Allow a small margin of missing data for AOs that use timeouts.",
+          "new_line_content": "        if (!p->buffers_full && unlocked_get_space(ao) > margin) {",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(p_fds, fds, num_fds * sizeof(p_fds[0]))",
+          "old_line_content": "",
+          "new_line_content": "    memcpy(p_fds, fds, num_fds * sizeof(p_fds[0]));",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "drain",
+          "old_text": null,
+          "new_text": "ao->driver->drain(ao)",
+          "old_line_content": "        if (p->drain && p->avoid_ao_wait) {",
+          "new_line_content": "                ao->driver->drain(ao);",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "MPMIN",
+          "old_text": null,
+          "new_text": "MPMIN(space, missing)",
+          "old_line_content": "        int device_missing = device_space - soft_buffered;",
+          "new_line_content": "        space = MPMIN(space, missing);",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&p->lock)",
+          "old_line_content": "    };",
+          "new_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": null,
+          "new_api": "poll",
+          "old_text": null,
+          "new_text": "poll(p_fds, num_fds + 1, -1)",
+          "old_line_content": "",
+          "new_line_content": "    int r = poll(p_fds, num_fds + 1, -1);",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": null,
+          "new_api": "MP_STATS",
+          "old_text": null,
+          "new_text": "MP_STATS(ao, \"start audio wait\")",
+          "old_line_content": "",
+          "new_line_content": "            MP_STATS(ao, \"start audio wait\");",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&p->lock)",
+          "old_line_content": "{",
+          "new_line_content": "    pthread_mutex_lock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": null,
+          "new_api": "unlocked_get_space",
+          "old_text": null,
+          "new_text": "unlocked_get_space(ao)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    int space = unlocked_get_space(ao);",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": null,
+          "new_api": "MP_TRACE",
+          "old_text": null,
+          "new_text": "MP_TRACE(ao, \"buffer inactive.\\n\")",
+          "old_line_content": "                // The most important part is that the decoder is woken up, so",
+          "new_line_content": "                MP_TRACE(ao, \"buffer inactive.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "mp_input_wakeup",
+          "old_text": null,
+          "new_text": "mp_input_wakeup(ao->input_ctx)",
+          "old_line_content": "                // that the decoder will wake up us in turn.",
+          "new_line_content": "                mp_input_wakeup(ao->input_ctx);",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": null,
+          "new_api": "read",
+          "old_text": null,
+          "new_text": "read(p->wakeup_pipe[0], buf, sizeof(buf))",
+          "old_line_content": "        // that's ok for our use-case",
+          "new_line_content": "        read(p->wakeup_pipe[0], buf, sizeof(buf));",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&p->lock)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    pthread_mutex_lock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": null,
+          "new_api": "mpthread_cond_timedwait_rel",
+          "old_text": null,
+          "new_text": "mpthread_cond_timedwait_rel(&p->wakeup, &p->lock, timeout)",
+          "old_line_content": "                    // Fallback to guessing.",
+          "new_line_content": "                    mpthread_cond_timedwait_rel(&p->wakeup, &p->lock, timeout);",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(ao->api == &ao_api_push)",
+          "old_line_content": "void ao_wakeup_poll(struct ao *ao)",
+          "new_line_content": "    assert(ao->api == &ao_api_push);",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "MPMIN",
+          "old_text": null,
+          "new_text": "MPMIN(write_samples, samples)",
+          "old_line_content": "",
+          "new_line_content": "    write_samples = MPMIN(write_samples, samples);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "MP_STATS",
+          "old_text": null,
+          "new_text": "MP_STATS(ao, \"end audio wait\")",
+          "old_line_content": "                }",
+          "new_line_content": "            MP_STATS(ao, \"end audio wait\");",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "write(p->wakeup_pipe[1], &(char){0}, 1)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    write(p->wakeup_pipe[1], &(char){0}, 1);",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&p->lock)",
+          "old_line_content": "        p->need_wakeup = false;",
+          "new_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_get_format",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_get_format(p->buffer, &audio)",
+          "old_line_content": "",
+          "new_line_content": "    mp_audio_buffer_get_format(p->buffer, &audio);",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_append",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_append(p->buffer, &audio)",
+          "old_line_content": "        audio.planes[n] = data[n];",
+          "new_line_content": "    mp_audio_buffer_append(p->buffer, &audio);",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&p->lock)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    pthread_mutex_lock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&p->lock)",
+          "old_line_content": "    p->terminate = true;",
+          "new_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "close",
+          "old_text": null,
+          "new_text": "close(p->wakeup_pipe[n])",
+          "old_line_content": "",
+          "new_line_content": "        close(p->wakeup_pipe[n]);",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": null,
+          "new_api": "wakeup_playthread",
+          "old_text": null,
+          "new_text": "wakeup_playthread(ao)",
+          "old_line_content": "    if (got_data) {",
+          "new_line_content": "        wakeup_playthread(ao);",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": null,
+          "new_api": "pthread_cond_destroy",
+          "old_text": null,
+          "new_text": "pthread_cond_destroy(&p->wakeup_drain)",
+          "old_line_content": "",
+          "new_line_content": "    pthread_cond_destroy(&p->wakeup_drain);",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "pthread_mutex_init",
+          "old_text": null,
+          "new_text": "pthread_mutex_init(&p->lock, NULL)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    pthread_mutex_init(&p->lock, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_peek",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_peek(p->buffer, &data)",
+          "old_line_content": "    struct ao_push_state *p = ao->api_priv;",
+          "new_line_content": "    mp_audio_buffer_peek(p->buffer, &data);",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": null,
+          "new_api": "pthread_cond_init",
+          "old_text": null,
+          "new_text": "pthread_cond_init(&p->wakeup, NULL)",
+          "old_line_content": "",
+          "new_line_content": "    pthread_cond_init(&p->wakeup, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": null,
+          "new_api": "MPMAX",
+          "old_text": null,
+          "new_text": "MPMAX(space, 0)",
+          "old_line_content": "    int max = data.samples;",
+          "new_line_content": "    space = MPMAX(space, 0);",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_reinit_fmt",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_reinit_fmt(p->buffer, ao->format,\n                               &ao->channels, ao->samplerate)",
+          "old_line_content": "",
+          "new_line_content": "    mp_audio_buffer_reinit_fmt(p->buffer, ao->format,",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": null,
+          "new_api": "pthread_create",
+          "old_text": null,
+          "new_text": "pthread_create(&p->thread, NULL, playthread, ao)",
+          "old_line_content": "                               &ao->channels, ao->samplerate);",
+          "new_line_content": "    if (pthread_create(&p->thread, NULL, playthread, ao)) {",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "MP_STATS",
+          "old_text": null,
+          "new_text": "MP_STATS(ao, \"start ao fill\")",
+          "old_line_content": "    if (p->final_chunk && data.samples == max)",
+          "new_line_content": "    MP_STATS(ao, \"start ao fill\");",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": null,
+          "new_api": "play",
+          "old_text": null,
+          "new_text": "ao->driver->play(ao, data.planes, data.samples, flags)",
+          "old_line_content": "    int r = 0;",
+          "new_line_content": "        r = ao->driver->play(ao, data.planes, data.samples, flags);",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": null,
+          "new_api": "MP_STATS",
+          "old_text": null,
+          "new_text": "MP_STATS(ao, \"end ao fill\")",
+          "old_line_content": "    if (data.samples)",
+          "new_line_content": "    MP_STATS(ao, \"end ao fill\");",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "MPMAX",
+          "old_text": null,
+          "new_text": "MPMAX(r, 0)",
+          "old_line_content": "        r = data.samples;",
+          "new_line_content": "    r = MPMAX(r, 0);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": null,
+          "new_api": "MP_ERR",
+          "old_text": null,
+          "new_text": "MP_ERR(ao, \"Audio output driver seems to ignore AOPLAY_FINAL_CHUNK.\\n\")",
+          "old_line_content": "    bool stuck = r <= 0 && space >= max && data.samples > 0;",
+          "new_line_content": "        MP_ERR(ao, \"Audio output driver seems to ignore AOPLAY_FINAL_CHUNK.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_skip",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_skip(p->buffer, r)",
+          "old_line_content": "        r = max;",
+          "new_line_content": "    mp_audio_buffer_skip(p->buffer, r);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "mp_audio_buffer_samples",
+          "old_text": null,
+          "new_text": "mp_audio_buffer_samples(p->buffer)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (p->final_chunk && mp_audio_buffer_samples(p->buffer) == 0) {",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 257,
+          "old_api": "mp_audio_buffer_samples",
+          "new_api": null,
+          "old_text": "mp_audio_buffer_samples(p->buffer)",
+          "new_text": null,
+          "old_line_content": "    if (p->final_chunk && mp_audio_buffer_samples(p->buffer) == 0) {",
+          "new_line_content": "        if (ao->driver->get_delay)",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "get_delay",
+          "new_api": null,
+          "old_text": "ao->driver->get_delay(ao)",
+          "new_text": null,
+          "old_line_content": "            p->expected_end_time += ao->driver->get_delay(ao);",
+          "new_line_content": "    // In both cases, we have to account for space!=0, but the AO not accepting",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(ao->api == &ao_api_push)",
+          "new_text": null,
+          "old_line_content": "    assert(ao->api == &ao_api_push);",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": "talloc_size",
+          "new_api": null,
+          "old_text": "talloc_size(NULL, samples * ao->sstride)",
+          "new_text": null,
+          "old_line_content": "    char *p = talloc_size(NULL, samples * ao->sstride);",
+          "new_line_content": "    void *tmp[MP_NUM_CHANNELS];",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "af_fill_silence",
+          "new_api": null,
+          "old_text": "af_fill_silence(p, samples * ao->sstride, ao->format)",
+          "new_text": null,
+          "old_line_content": "    af_fill_silence(p, samples * ao->sstride, ao->format);",
+          "new_line_content": "    for (int n = 0; n < MP_NUM_CHANNELS; n++)",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": "play",
+          "new_api": null,
+          "old_text": "ao->driver->play(ao, tmp, samples, 0)",
+          "new_text": null,
+          "old_line_content": "    int r = ao->driver->play(ao, tmp, samples, 0);",
+          "new_line_content": "    return r;",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": "talloc_free",
+          "new_api": null,
+          "old_text": "talloc_free(p)",
+          "new_text": null,
+          "old_line_content": "    talloc_free(p);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "get_delay",
+          "new_api": null,
+          "old_text": "ao->driver->get_delay(ao)",
+          "new_text": null,
+          "old_line_content": "        timeout = ao->driver->get_delay(ao) - 0.050;",
+          "new_line_content": "        if (timeout > 0.100)",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "MPMAX",
+          "new_api": null,
+          "old_text": "MPMAX(timeout, ao->device_buffer * 0.75 / ao->samplerate)",
+          "new_text": null,
+          "old_line_content": "    return MPMAX(timeout, ao->device_buffer * 0.75 / ao->samplerate);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "ao_play_data",
+          "new_api": null,
+          "old_text": "ao_play_data(ao)",
+          "new_text": null,
+          "old_line_content": "        ao_play_data(ao);",
+          "new_line_content": "        // Request new data from decoder if buffer goes below \"full\".",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(ao->api == &ao_api_push)",
+          "new_text": null,
+          "old_line_content": "    assert(ao->api == &ao_api_push);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(&p->lock == lock)",
+          "new_text": null,
+          "old_line_content": "    assert(&p->lock == lock);",
+          "new_line_content": "    if (num_fds > MAX_POLL_FDS || p->wakeup_pipe[0] < 0)",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "mp_input_wakeup",
+          "new_api": null,
+          "old_text": "mp_input_wakeup(ao->input_ctx)",
+          "new_text": null,
+          "old_line_content": "                mp_input_wakeup(ao->input_ctx);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(p_fds, fds, num_fds * sizeof(p_fds[0]))",
+          "new_text": null,
+          "old_line_content": "    memcpy(p_fds, fds, num_fds * sizeof(p_fds[0]));",
+          "new_line_content": "        .fd = p->wakeup_pipe[0],",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": "MPMIN",
+          "new_api": null,
+          "old_text": "MPMIN(space, missing)",
+          "new_text": null,
+          "old_line_content": "        space = MPMIN(space, missing);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "MPMAX",
+          "new_api": null,
+          "old_text": "MPMAX(0, space)",
+          "new_text": null,
+          "old_line_content": "        space = MPMAX(0, space);",
+          "new_line_content": "    return space;",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "pthread_cond_signal",
+          "new_api": null,
+          "old_text": "pthread_cond_signal(&p->wakeup_drain)",
+          "new_text": null,
+          "old_line_content": "            pthread_cond_signal(&p->wakeup_drain);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&p->lock)",
+          "new_text": null,
+          "old_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "new_line_content": "    r = r < 0 ? -errno : 0;",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "MP_STATS",
+          "new_api": null,
+          "old_text": "MP_STATS(ao, \"start audio wait\")",
+          "new_text": null,
+          "old_line_content": "            MP_STATS(ao, \"start audio wait\");",
+          "new_line_content": "                // Avoid busy waiting, because the audio API will still report",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(fds, p_fds, num_fds * sizeof(fds[0]))",
+          "new_text": null,
+          "old_line_content": "    memcpy(fds, p_fds, num_fds * sizeof(fds[0]));",
+          "new_line_content": "    if (p_fds[num_fds].revents & POLLIN) {",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "unlocked_get_space",
+          "new_api": null,
+          "old_text": "unlocked_get_space(ao)",
+          "new_text": null,
+          "old_line_content": "    int space = unlocked_get_space(ao);",
+          "new_line_content": "    return space;",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&p->lock)",
+          "new_text": null,
+          "old_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "read",
+          "new_api": null,
+          "old_text": "read(p->wakeup_pipe[0], buf, sizeof(buf))",
+          "new_text": null,
+          "old_line_content": "        read(p->wakeup_pipe[0], buf, sizeof(buf));",
+          "new_line_content": "    return (r >= 0 || r == -EINTR) ? wakeup : -1;",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "mp_input_wakeup",
+          "new_api": null,
+          "old_text": "mp_input_wakeup(ao->input_ctx)",
+          "new_text": null,
+          "old_line_content": "                mp_input_wakeup(ao->input_ctx);",
+          "new_line_content": "            } else {",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "ao_estimate_timeout",
+          "new_api": null,
+          "old_text": "ao_estimate_timeout(ao)",
+          "new_text": null,
+          "old_line_content": "                    double timeout = ao_estimate_timeout(ao);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "mpthread_cond_timedwait_rel",
+          "new_api": null,
+          "old_text": "mpthread_cond_timedwait_rel(&p->wakeup, &p->lock, timeout)",
+          "new_text": null,
+          "old_line_content": "                    mpthread_cond_timedwait_rel(&p->wakeup, &p->lock, timeout);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(ao->api == &ao_api_push)",
+          "new_text": null,
+          "old_line_content": "    assert(ao->api == &ao_api_push);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": "mp_audio_buffer_get_write_available",
+          "new_api": null,
+          "old_text": "mp_audio_buffer_get_write_available(p->buffer)",
+          "new_text": null,
+          "old_line_content": "    int write_samples = mp_audio_buffer_get_write_available(p->buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "MPMIN",
+          "new_api": null,
+          "old_text": "MPMIN(write_samples, samples)",
+          "new_text": null,
+          "old_line_content": "    write_samples = MPMIN(write_samples, samples);",
+          "new_line_content": "    if (write_samples < samples)",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "MP_STATS",
+          "new_api": null,
+          "old_text": "MP_STATS(ao, \"end audio wait\")",
+          "new_text": null,
+          "old_line_content": "            MP_STATS(ao, \"end audio wait\");",
+          "new_line_content": "        p->need_wakeup = false;",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "write(p->wakeup_pipe[1], &(char){0}, 1)",
+          "new_text": null,
+          "old_line_content": "    write(p->wakeup_pipe[1], &(char){0}, 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&p->lock)",
+          "new_text": null,
+          "old_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": "mp_audio_buffer_get_format",
+          "new_api": null,
+          "old_text": "mp_audio_buffer_get_format(p->buffer, &audio)",
+          "new_text": null,
+          "old_line_content": "    mp_audio_buffer_get_format(p->buffer, &audio);",
+          "new_line_content": "        audio.planes[n] = data[n];",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "mp_audio_buffer_append",
+          "new_api": null,
+          "old_text": "mp_audio_buffer_append(p->buffer, &audio)",
+          "new_text": null,
+          "old_line_content": "    mp_audio_buffer_append(p->buffer, &audio);",
+          "new_line_content": "    bool got_data = write_samples > 0 || p->paused || p->final_chunk != is_final;",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "wakeup_playthread",
+          "new_api": null,
+          "old_text": "wakeup_playthread(ao)",
+          "new_text": null,
+          "old_line_content": "    wakeup_playthread(ao);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "uninit",
+          "new_api": null,
+          "old_text": "ao->driver->uninit(ao)",
+          "new_text": null,
+          "old_line_content": "    ao->driver->uninit(ao);",
+          "new_line_content": "    for (int n = 0; n < 2; n++)",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&p->lock)",
+          "new_text": null,
+          "old_line_content": "    pthread_mutex_unlock(&p->lock);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "pthread_cond_destroy",
+          "new_api": null,
+          "old_text": "pthread_cond_destroy(&p->wakeup_drain)",
+          "new_text": null,
+          "old_line_content": "    pthread_cond_destroy(&p->wakeup_drain);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "pthread_mutex_destroy",
+          "new_api": null,
+          "old_text": "pthread_mutex_destroy(&p->lock)",
+          "new_text": null,
+          "old_line_content": "    pthread_mutex_destroy(&p->lock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "pthread_cond_init",
+          "new_api": null,
+          "old_text": "pthread_cond_init(&p->wakeup_drain, NULL)",
+          "new_text": null,
+          "old_line_content": "    pthread_cond_init(&p->wakeup_drain, NULL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": "get_space",
+          "new_api": null,
+          "old_text": "ao->driver->get_space(ao)",
+          "new_text": null,
+          "old_line_content": "    int space = ao->driver->get_space(ao);",
+          "new_line_content": "    if (data.samples > space)",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "MPMAX",
+          "new_api": null,
+          "old_text": "MPMAX(space, 0)",
+          "new_text": null,
+          "old_line_content": "    space = MPMAX(space, 0);",
+          "new_line_content": "        data.samples = space;",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "mp_audio_buffer_create",
+          "new_api": null,
+          "old_text": "mp_audio_buffer_create(ao)",
+          "new_text": null,
+          "old_line_content": "    p->buffer = mp_audio_buffer_create(ao);",
+          "new_line_content": "                               &ao->channels, ao->samplerate);",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "pthread_create",
+          "new_api": null,
+          "old_text": "pthread_create(&p->thread, NULL, playthread, ao)",
+          "new_text": null,
+          "old_line_content": "    if (pthread_create(&p->thread, NULL, playthread, ao)) {",
+          "new_line_content": "        return -1;",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": "MP_STATS",
+          "new_api": null,
+          "old_text": "MP_STATS(ao, \"start ao fill\")",
+          "new_text": null,
+          "old_line_content": "    MP_STATS(ao, \"start ao fill\");",
+          "new_line_content": "    if (data.samples)",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "uninit",
+          "new_api": null,
+          "old_text": "ao->driver->uninit(ao)",
+          "new_text": null,
+          "old_line_content": "        ao->driver->uninit(ao);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "play",
+          "new_api": null,
+          "old_text": "ao->driver->play(ao, data.planes, data.samples, flags)",
+          "new_text": null,
+          "old_line_content": "        r = ao->driver->play(ao, data.planes, data.samples, flags);",
+          "new_line_content": "    if (r > data.samples) {",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "MP_WARN",
+          "new_api": null,
+          "old_text": "MP_WARN(ao, \"Audio device returned non-sense value.\\n\")",
+          "new_text": null,
+          "old_line_content": "        MP_WARN(ao, \"Audio device returned non-sense value.\\n\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "MPMAX",
+          "new_api": null,
+          "old_text": "MPMAX(r, 0)",
+          "new_text": null,
+          "old_line_content": "    r = MPMAX(r, 0);",
+          "new_line_content": "    bool stuck = r <= 0 && space >= max && data.samples > 0;",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "MP_ERR",
+          "new_api": null,
+          "old_text": "MP_ERR(ao, \"Audio output driver seems to ignore AOPLAY_FINAL_CHUNK.\\n\")",
+          "new_text": null,
+          "old_line_content": "        MP_ERR(ao, \"Audio output driver seems to ignore AOPLAY_FINAL_CHUNK.\\n\");",
+          "new_line_content": "    }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 26,
+      "total_additions": 49,
+      "total_deletions": 50,
+      "total_api_changes": 125
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 125,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          166,
+          170,
+          171,
+          172,
+          174
+        ]
+      }
+    },
+    "api_calls_before": 111,
+    "api_calls_after": 110,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 6,
+      "total_diff_lines": 25
+    }
+  }
+}

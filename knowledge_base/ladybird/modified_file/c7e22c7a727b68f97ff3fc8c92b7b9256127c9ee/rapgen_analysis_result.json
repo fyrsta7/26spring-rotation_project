@@ -1,0 +1,1224 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/c7e22c7a727b68f97ff3fc8c92b7b9256127c9ee",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/c7e22c7a727b68f97ff3fc8c92b7b9256127c9ee/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/c7e22c7a727b68f97ff3fc8c92b7b9256127c9ee/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/c7e22c7a727b68f97ff3fc8c92b7b9256127c9ee/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 421,
+          "old_api": "bounding_rect",
+          "new_api": "visit",
+          "old_text": "command.bounding_rect()",
+          "new_text": "command.visit(\n        [&](auto const& command) -> Optional<Gfx::IntRect> {\n            if constexpr (requires { command.bounding_rect(); })\n                return command.bounding_rect();\n            else\n                return {};\n        })",
+          "old_line_content": "            if constexpr (requires { command.bounding_rect(); })",
+          "new_line_content": "    return command.visit(",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "visit",
+          "new_api": "value",
+          "old_text": "command_with_scroll_id.command.visit(\n                [&](auto& command) {\n                    if constexpr (requires { command.translate_by(scroll_offset); })\n                        command.translate_by(scroll_offset);\n                })",
+          "new_text": "command_with_scroll_id.scroll_frame_id.value()",
+          "old_line_content": "            command_with_scroll_id.command.visit(",
+          "new_line_content": "            auto const& scroll_frame_id = command_with_scroll_id.scroll_frame_id.value();",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "translate_by",
+          "new_api": "visit",
+          "old_text": "command.translate_by(scroll_offset)",
+          "new_text": "command_with_scroll_id.command.visit(\n                [&](auto& command) {\n                    if constexpr (requires { command.translate_by(scroll_offset); })\n                        command.translate_by(scroll_offset);\n                })",
+          "old_line_content": "                    if constexpr (requires { command.translate_by(scroll_offset); })",
+          "new_line_content": "            command_with_scroll_id.command.visit(",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": "glyph_or_emoji.has<Gfx::DrawGlyph>()",
+          "new_api": "command.has<DrawGlyphRun>()",
+          "old_text": "glyph_or_emoji.has<Gfx::DrawGlyph>()",
+          "new_text": "command.has<DrawGlyphRun>()",
+          "old_line_content": "                    if (glyph_or_emoji.has<Gfx::DrawGlyph>()) {",
+          "new_line_content": "            if (command.has<DrawGlyphRun>()) {",
+          "content_same": false
+        },
+        {
+          "line": 452,
+          "old_api": "glyph_or_emoji.get<Gfx::DrawGlyph>()",
+          "new_api": "command.get<DrawGlyphRun>()",
+          "old_text": "glyph_or_emoji.get<Gfx::DrawGlyph>()",
+          "new_text": "command.get<DrawGlyphRun>()",
+          "old_line_content": "                        auto const& glyph = glyph_or_emoji.get<Gfx::DrawGlyph>();",
+          "new_line_content": "                for (auto const& glyph_or_emoji : command.get<DrawGlyphRun>().glyph_run) {",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": "ensure",
+          "new_api": "glyph_or_emoji.has<Gfx::DrawGlyph>()",
+          "old_text": "unique_glyphs.ensure(glyph.font, [] { return HashTable<u32> {}; }).set(glyph.code_point)",
+          "new_text": "glyph_or_emoji.has<Gfx::DrawGlyph>()",
+          "old_line_content": "                        unique_glyphs.ensure(glyph.font, [] { return HashTable<u32> {}; }).set(glyph.code_point);",
+          "new_line_content": "                    if (glyph_or_emoji.has<Gfx::DrawGlyph>()) {",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "ptr",
+          "new_api": "command.has<DrawScaledImmutableBitmap>()",
+          "old_text": "immutable_bitmap.ptr()",
+          "new_text": "command.has<DrawScaledImmutableBitmap>()",
+          "old_line_content": "                immutable_bitmaps.set(immutable_bitmap->id(), immutable_bitmap.ptr());",
+          "new_line_content": "            if (command.has<DrawScaledImmutableBitmap>()) {",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": "command.has<SampleUnderCorners>()",
+          "new_api": "command_bounding_rectangle",
+          "old_text": "command.has<SampleUnderCorners>()",
+          "new_text": "command_bounding_rectangle(command)",
+          "old_line_content": "            if (command.has<SampleUnderCorners>()) {",
+          "new_line_content": "        auto bounding_rect = command_bounding_rectangle(command);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": "command.get<SampleUnderCorners>()",
+          "new_api": "would_be_fully_clipped_by_painter",
+          "old_text": "command.get<SampleUnderCorners>()",
+          "new_text": "executor.would_be_fully_clipped_by_painter(*bounding_rect)",
+          "old_line_content": "                auto const& sample_under_corners = command.get<SampleUnderCorners>();",
+          "new_line_content": "        if (bounding_rect.has_value() && (bounding_rect->is_empty() || executor.would_be_fully_clipped_by_painter(*bounding_rect))) {",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "set",
+          "new_api": "command.has<SampleUnderCorners>()",
+          "old_text": "skipped_sample_corner_commands.set(sample_under_corners.id)",
+          "new_text": "command.has<SampleUnderCorners>()",
+          "old_line_content": "                skipped_sample_corner_commands.set(sample_under_corners.id);",
+          "new_line_content": "            if (command.has<SampleUnderCorners>()) {",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "draw_glyph_run",
+          "new_api": "visit",
+          "old_text": "executor.draw_glyph_run(command.glyph_run, command.color)",
+          "new_text": "command.visit(\n            [&](DrawGlyphRun const& command) {\n                return executor.draw_glyph_run(command.glyph_run, command.color);\n            },\n            [&](DrawText const& command) {\n                return executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font);\n            },\n            [&](FillRect const& command) {\n                return executor.fill_rect(command.rect, command.color);\n            },\n            [&](DrawScaledBitmap const& command) {\n                return executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);\n            },\n            [&](DrawScaledImmutableBitmap const& command) {\n                return executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);\n            },\n            [&](SetClipRect const& command) {\n                return executor.set_clip_rect(command.rect);\n            },\n            [&](ClearClipRect const&) {\n                return executor.clear_clip_rect();\n            },\n            [&](SetFont const& command) {\n                return executor.set_font(command.font);\n            },\n            [&](PushStackingContext const& command) {\n                return executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask);\n            },\n            [&](PopStackingContext const&) {\n                return executor.pop_stacking_context();\n            },\n            [&](PaintLinearGradient const& command) {\n                return executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data);\n            },\n            [&](PaintRadialGradient const& command) {\n                return executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size);\n            },\n            [&](PaintConicGradient const& command) {\n                return executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position);\n            },\n            [&](PaintOuterBoxShadow const& command) {\n                return executor.paint_outer_box_shadow(command.outer_box_shadow_params);\n            },\n            [&](PaintInnerBoxShadow const& command) {\n                return executor.paint_inner_box_shadow(command.outer_box_shadow_params);\n            },\n            [&](PaintTextShadow const& command) {\n                return executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location);\n            },\n            [&](FillRectWithRoundedCorners const& command) {\n                return executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius);\n            },\n            [&](FillPathUsingColor const& command) {\n                return executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation);\n            },\n            [&](FillPathUsingPaintStyle const& command) {\n                return executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation);\n            },\n            [&](StrokePathUsingColor const& command) {\n                return executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation);\n            },\n            [&](StrokePathUsingPaintStyle const& command) {\n                return executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation);\n            },\n            [&](DrawEllipse const& command) {\n                return executor.draw_ellipse(command.rect, command.color, command.thickness);\n            },\n            [&](FillEllipse const& command) {\n                return executor.fill_ellipse(command.rect, command.color, command.blend_mode);\n            },\n            [&](DrawLine const& command) {\n                return executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color);\n            },\n            [&](DrawSignedDistanceField const& command) {\n                return executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing);\n            },\n            [&](PaintFrame const& command) {\n                return executor.paint_frame(command.rect, command.palette, command.style);\n            },\n            [&](ApplyBackdropFilter const& command) {\n                return executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter);\n            },\n            [&](DrawRect const& command) {\n                return executor.draw_rect(command.rect, command.color, command.rough);\n            },\n            [&](DrawTriangleWave const& command) {\n                return executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness);\n            },\n            [&](SampleUnderCorners const& command) {\n                return executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip);\n            },\n            [&](BlitCornerClipping const& command) {\n                if (skipped_sample_corner_commands.contains(command.id)) {\n                    // FIXME: If a sampling command falls outside the viewport and is not executed, the associated blit\n                    //        should also be skipped if it is within the viewport. In a properly generated list of\n                    //        painting commands, sample and blit commands should have matching rectangles, preventing\n                    //        this discrepancy.\n                    dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\");\n                    return CommandResult::Continue;\n                }\n                return executor.blit_corner_clipping(command.id);\n            },\n            [&](PaintBorders const& command) {\n                return executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data);\n            })",
+          "old_line_content": "                return executor.draw_glyph_run(command.glyph_run, command.color);",
+          "new_line_content": "        auto result = command.visit(",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "m_painting_commands[next_command_index].command.has<PopStackingContext>()",
+          "new_api": "m_painting_commands[next_command_index].command.has<PushStackingContext>()",
+          "old_text": "m_painting_commands[next_command_index].command.has<PopStackingContext>()",
+          "new_text": "m_painting_commands[next_command_index].command.has<PushStackingContext>()",
+          "old_line_content": "                } else if (m_painting_commands[next_command_index].command.has<PopStackingContext>()) {",
+          "new_line_content": "                if (m_painting_commands[next_command_index].command.has<PushStackingContext>()) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 512,
+          "old_api": null,
+          "new_api": "set_font",
+          "old_text": null,
+          "new_text": "executor.set_font(command.font)",
+          "old_line_content": "            [&](PushStackingContext const& command) {",
+          "new_line_content": "                return executor.set_font(command.font);",
+          "content_same": false
+        },
+        {
+          "line": 515,
+          "old_api": null,
+          "new_api": "push_stacking_context",
+          "old_text": null,
+          "new_text": "executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask)",
+          "old_line_content": "            [&](PopStackingContext const&) {",
+          "new_line_content": "                return executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "pop_stacking_context",
+          "old_text": null,
+          "new_text": "executor.pop_stacking_context()",
+          "old_line_content": "            [&](PaintLinearGradient const& command) {",
+          "new_line_content": "                return executor.pop_stacking_context();",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": null,
+          "new_api": "paint_linear_gradient",
+          "old_text": null,
+          "new_text": "executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data)",
+          "old_line_content": "            [&](PaintRadialGradient const& command) {",
+          "new_line_content": "                return executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data);",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": null,
+          "new_api": "paint_radial_gradient",
+          "old_text": null,
+          "new_text": "executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size)",
+          "old_line_content": "            [&](PaintConicGradient const& command) {",
+          "new_line_content": "                return executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size);",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "paint_conic_gradient",
+          "old_text": null,
+          "new_text": "executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position)",
+          "old_line_content": "            [&](PaintOuterBoxShadow const& command) {",
+          "new_line_content": "                return executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position);",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": null,
+          "new_api": "paint_outer_box_shadow",
+          "old_text": null,
+          "new_text": "executor.paint_outer_box_shadow(command.outer_box_shadow_params)",
+          "old_line_content": "            [&](PaintInnerBoxShadow const& command) {",
+          "new_line_content": "                return executor.paint_outer_box_shadow(command.outer_box_shadow_params);",
+          "content_same": false
+        },
+        {
+          "line": 533,
+          "old_api": null,
+          "new_api": "paint_inner_box_shadow",
+          "old_text": null,
+          "new_text": "executor.paint_inner_box_shadow(command.outer_box_shadow_params)",
+          "old_line_content": "            [&](PaintTextShadow const& command) {",
+          "new_line_content": "                return executor.paint_inner_box_shadow(command.outer_box_shadow_params);",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": null,
+          "new_api": "paint_text_shadow",
+          "old_text": null,
+          "new_text": "executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location)",
+          "old_line_content": "            [&](FillRectWithRoundedCorners const& command) {",
+          "new_line_content": "                return executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "fill_rect_with_rounded_corners",
+          "old_text": null,
+          "new_text": "executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius)",
+          "old_line_content": "            [&](FillPathUsingColor const& command) {",
+          "new_line_content": "                return executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius);",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": null,
+          "new_api": "fill_path_using_color",
+          "old_text": null,
+          "new_text": "executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation)",
+          "old_line_content": "            [&](FillPathUsingPaintStyle const& command) {",
+          "new_line_content": "                return executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation);",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "push_command",
+          "old_text": null,
+          "new_text": "push_command(PaintBorders { border_rect, corner_radii, borders_data })",
+          "old_line_content": "",
+          "new_line_content": "    push_command(PaintBorders { border_rect, corner_radii, borders_data });",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": null,
+          "new_api": "fill_path_using_paint_style",
+          "old_text": null,
+          "new_text": "executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation)",
+          "old_line_content": "            [&](StrokePathUsingColor const& command) {",
+          "new_line_content": "                return executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "stroke_path_using_color",
+          "old_text": null,
+          "new_text": "executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation)",
+          "old_line_content": "            [&](StrokePathUsingPaintStyle const& command) {",
+          "new_line_content": "                return executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation);",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": null,
+          "new_api": "stroke_path_using_paint_style",
+          "old_text": null,
+          "new_text": "executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation)",
+          "old_line_content": "            [&](DrawEllipse const& command) {",
+          "new_line_content": "                return executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation);",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "bounding_rect",
+          "old_text": null,
+          "new_text": "command.bounding_rect()",
+          "old_line_content": "            else",
+          "new_line_content": "            if constexpr (requires { command.bounding_rect(); })",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "bounding_rect",
+          "old_text": null,
+          "new_text": "command.bounding_rect()",
+          "old_line_content": "                return {};",
+          "new_line_content": "                return command.bounding_rect();",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "draw_ellipse",
+          "old_text": null,
+          "new_text": "executor.draw_ellipse(command.rect, command.color, command.thickness)",
+          "old_line_content": "            [&](FillEllipse const& command) {",
+          "new_line_content": "                return executor.draw_ellipse(command.rect, command.color, command.thickness);",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": null,
+          "new_api": "fill_ellipse",
+          "old_text": null,
+          "new_text": "executor.fill_ellipse(command.rect, command.color, command.blend_mode)",
+          "old_line_content": "            [&](DrawLine const& command) {",
+          "new_line_content": "                return executor.fill_ellipse(command.rect, command.color, command.blend_mode);",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": null,
+          "new_api": "draw_line",
+          "old_text": null,
+          "new_text": "executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color)",
+          "old_line_content": "            [&](DrawSignedDistanceField const& command) {",
+          "new_line_content": "                return executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color);",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": null,
+          "new_api": "has_value",
+          "old_text": null,
+          "new_text": "command_with_scroll_id.scroll_frame_id.has_value()",
+          "old_line_content": "            auto const& scroll_offset = offsets_by_frame_id[scroll_frame_id];",
+          "new_line_content": "        if (command_with_scroll_id.scroll_frame_id.has_value()) {",
+          "content_same": false
+        },
+        {
+          "line": 563,
+          "old_api": null,
+          "new_api": "draw_signed_distance_field",
+          "old_text": null,
+          "new_text": "executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing)",
+          "old_line_content": "            [&](PaintFrame const& command) {",
+          "new_line_content": "                return executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing);",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "paint_frame",
+          "old_text": null,
+          "new_text": "executor.paint_frame(command.rect, command.palette, command.style)",
+          "old_line_content": "            [&](ApplyBackdropFilter const& command) {",
+          "new_line_content": "                return executor.paint_frame(command.rect, command.palette, command.style);",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "translate_by",
+          "old_text": null,
+          "new_text": "command.translate_by(scroll_offset)",
+          "old_line_content": "                });",
+          "new_line_content": "                    if constexpr (requires { command.translate_by(scroll_offset); })",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "translate_by",
+          "old_text": null,
+          "new_text": "command.translate_by(scroll_offset)",
+          "old_line_content": "        }",
+          "new_line_content": "                        command.translate_by(scroll_offset);",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": null,
+          "new_api": "apply_backdrop_filter",
+          "old_text": null,
+          "new_text": "executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter)",
+          "old_line_content": "            [&](DrawRect const& command) {",
+          "new_line_content": "                return executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter);",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": null,
+          "new_api": "draw_rect",
+          "old_text": null,
+          "new_text": "executor.draw_rect(command.rect, command.color, command.rough)",
+          "old_line_content": "            [&](DrawTriangleWave const& command) {",
+          "new_line_content": "                return executor.draw_rect(command.rect, command.color, command.rough);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": null,
+          "new_api": "draw_triangle_wave",
+          "old_text": null,
+          "new_text": "executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness)",
+          "old_line_content": "            [&](SampleUnderCorners const& command) {",
+          "new_line_content": "                return executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness);",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "needs_prepare_glyphs_texture",
+          "old_text": null,
+          "new_text": "executor.needs_prepare_glyphs_texture()",
+          "old_line_content": "        for (auto& command_with_scroll_id : m_painting_commands) {",
+          "new_line_content": "    if (executor.needs_prepare_glyphs_texture()) {",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": null,
+          "new_api": "sample_under_corners",
+          "old_text": null,
+          "new_text": "executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip)",
+          "old_line_content": "            [&](BlitCornerClipping const& command) {",
+          "new_line_content": "                return executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "contains",
+          "old_text": null,
+          "new_text": "skipped_sample_corner_commands.contains(command.id)",
+          "old_line_content": "                    //        should also be skipped if it is within the viewport. In a properly generated list of",
+          "new_line_content": "                if (skipped_sample_corner_commands.contains(command.id)) {",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": null,
+          "new_api": "glyph_or_emoji.get<Gfx::DrawGlyph>()",
+          "old_text": null,
+          "new_text": "glyph_or_emoji.get<Gfx::DrawGlyph>()",
+          "old_line_content": "                    }",
+          "new_line_content": "                        auto const& glyph = glyph_or_emoji.get<Gfx::DrawGlyph>();",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": null,
+          "new_api": "ensure",
+          "old_text": null,
+          "new_text": "unique_glyphs.ensure(glyph.font, [] { return HashTable<u32> {}; }).set(glyph.code_point)",
+          "old_line_content": "                }",
+          "new_line_content": "                        unique_glyphs.ensure(glyph.font, [] { return HashTable<u32> {}; }).set(glyph.code_point);",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "dbgln",
+          "old_text": null,
+          "new_text": "dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\")",
+          "old_line_content": "                }",
+          "new_line_content": "                    dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\");",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": null,
+          "new_api": "prepare_glyph_texture",
+          "old_text": null,
+          "new_text": "executor.prepare_glyph_texture(unique_glyphs)",
+          "old_line_content": "",
+          "new_line_content": "        executor.prepare_glyph_texture(unique_glyphs);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "blit_corner_clipping",
+          "old_text": null,
+          "new_text": "executor.blit_corner_clipping(command.id)",
+          "old_line_content": "            [&](PaintBorders const& command) {",
+          "new_line_content": "                return executor.blit_corner_clipping(command.id);",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": null,
+          "new_api": "needs_update_immutable_bitmap_texture_cache",
+          "old_text": null,
+          "new_text": "executor.needs_update_immutable_bitmap_texture_cache()",
+          "old_line_content": "        for (auto const& command_with_scroll_id : m_painting_commands) {",
+          "new_line_content": "    if (executor.needs_update_immutable_bitmap_texture_cache()) {",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "paint_borders",
+          "old_text": null,
+          "new_text": "executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data)",
+          "old_line_content": "",
+          "new_line_content": "                return executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data);",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": null,
+          "new_api": "command.get<DrawScaledImmutableBitmap>()",
+          "old_text": null,
+          "new_text": "command.get<DrawScaledImmutableBitmap>()",
+          "old_line_content": "            }",
+          "new_line_content": "                auto const& immutable_bitmap = command.get<DrawScaledImmutableBitmap>().bitmap;",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "m_painting_commands.size()",
+          "old_line_content": "                    stacking_context_nesting_level++;",
+          "new_line_content": "            while (next_command_index < m_painting_commands.size()) {",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": null,
+          "new_api": "ptr",
+          "old_text": null,
+          "new_text": "immutable_bitmap.ptr()",
+          "old_line_content": "        }",
+          "new_line_content": "                immutable_bitmaps.set(immutable_bitmap->id(), immutable_bitmap.ptr());",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": null,
+          "new_api": "m_painting_commands[next_command_index].command.has<PopStackingContext>()",
+          "old_text": null,
+          "new_text": "m_painting_commands[next_command_index].command.has<PopStackingContext>()",
+          "old_line_content": "                }",
+          "new_line_content": "                } else if (m_painting_commands[next_command_index].command.has<PopStackingContext>()) {",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "update_immutable_bitmap_texture_cache",
+          "old_text": null,
+          "new_text": "executor.update_immutable_bitmap_texture_cache(immutable_bitmaps)",
+          "old_line_content": "",
+          "new_line_content": "        executor.update_immutable_bitmap_texture_cache(immutable_bitmaps);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "m_painting_commands.size()",
+          "old_line_content": "        auto& command = command_with_scroll_id.command;",
+          "new_line_content": "    while (next_command_index < m_painting_commands.size()) {",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "command.get<SampleUnderCorners>()",
+          "old_text": null,
+          "new_text": "command.get<SampleUnderCorners>()",
+          "old_line_content": "            }",
+          "new_line_content": "                auto const& sample_under_corners = command.get<SampleUnderCorners>();",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": null,
+          "new_api": "set",
+          "old_text": null,
+          "new_text": "skipped_sample_corner_commands.set(sample_under_corners.id)",
+          "old_line_content": "            continue;",
+          "new_line_content": "                skipped_sample_corner_commands.set(sample_under_corners.id);",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": null,
+          "new_api": "draw_glyph_run",
+          "old_text": null,
+          "new_text": "executor.draw_glyph_run(command.glyph_run, command.color)",
+          "old_line_content": "            [&](DrawText const& command) {",
+          "new_line_content": "                return executor.draw_glyph_run(command.glyph_run, command.color);",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "draw_text",
+          "old_text": null,
+          "new_text": "executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font)",
+          "old_line_content": "            [&](FillRect const& command) {",
+          "new_line_content": "                return executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font);",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "fill_rect",
+          "old_text": null,
+          "new_text": "executor.fill_rect(command.rect, command.color)",
+          "old_line_content": "            [&](DrawScaledBitmap const& command) {",
+          "new_line_content": "                return executor.fill_rect(command.rect, command.color);",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "draw_scaled_bitmap",
+          "old_text": null,
+          "new_text": "executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode)",
+          "old_line_content": "            [&](DrawScaledImmutableBitmap const& command) {",
+          "new_line_content": "                return executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": null,
+          "new_api": "draw_scaled_immutable_bitmap",
+          "old_text": null,
+          "new_text": "executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode)",
+          "old_line_content": "            [&](SetClipRect const& command) {",
+          "new_line_content": "                return executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "set_clip_rect",
+          "old_text": null,
+          "new_text": "executor.set_clip_rect(command.rect)",
+          "old_line_content": "            [&](ClearClipRect const&) {",
+          "new_line_content": "                return executor.set_clip_rect(command.rect);",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": null,
+          "new_api": "clear_clip_rect",
+          "old_text": null,
+          "new_text": "executor.clear_clip_rect()",
+          "old_line_content": "            [&](SetFont const& command) {",
+          "new_line_content": "                return executor.clear_clip_rect();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 513,
+          "old_api": "push_stacking_context",
+          "new_api": null,
+          "old_text": "executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask)",
+          "new_text": null,
+          "old_line_content": "                return executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": "pop_stacking_context",
+          "new_api": null,
+          "old_text": "executor.pop_stacking_context()",
+          "new_text": null,
+          "old_line_content": "                return executor.pop_stacking_context();",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": "paint_linear_gradient",
+          "new_api": null,
+          "old_text": "executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "paint_radial_gradient",
+          "new_api": null,
+          "old_text": "executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "paint_conic_gradient",
+          "new_api": null,
+          "old_text": "executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "paint_outer_box_shadow",
+          "new_api": null,
+          "old_text": "executor.paint_outer_box_shadow(command.outer_box_shadow_params)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_outer_box_shadow(command.outer_box_shadow_params);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "paint_inner_box_shadow",
+          "new_api": null,
+          "old_text": "executor.paint_inner_box_shadow(command.outer_box_shadow_params)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_inner_box_shadow(command.outer_box_shadow_params);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": "paint_text_shadow",
+          "new_api": null,
+          "old_text": "executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "fill_rect_with_rounded_corners",
+          "new_api": null,
+          "old_text": "executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius)",
+          "new_text": null,
+          "old_line_content": "                return executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "fill_path_using_color",
+          "new_api": null,
+          "old_text": "executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation)",
+          "new_text": null,
+          "old_line_content": "                return executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "push_command",
+          "new_api": null,
+          "old_text": "push_command(PaintBorders { border_rect, corner_radii, borders_data })",
+          "new_text": null,
+          "old_line_content": "    push_command(PaintBorders { border_rect, corner_radii, borders_data });",
+          "new_line_content": "    if (borders_data.top.width == 0 && borders_data.right.width == 0 && borders_data.bottom.width == 0 && borders_data.left.width == 0)",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "fill_path_using_paint_style",
+          "new_api": null,
+          "old_text": "executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation)",
+          "new_text": null,
+          "old_line_content": "                return executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "stroke_path_using_color",
+          "new_api": null,
+          "old_text": "executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation)",
+          "new_text": null,
+          "old_line_content": "                return executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "visit",
+          "new_api": null,
+          "old_text": "command.visit(\n        [&](auto const& command) -> Optional<Gfx::IntRect> {\n            if constexpr (requires { command.bounding_rect(); })\n                return command.bounding_rect();\n            else\n                return {};\n        })",
+          "new_text": null,
+          "old_line_content": "    return command.visit(",
+          "new_line_content": "static Optional<Gfx::IntRect> command_bounding_rectangle(PaintingCommand const& command)",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "stroke_path_using_paint_style",
+          "new_api": null,
+          "old_text": "executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation)",
+          "new_text": null,
+          "old_line_content": "                return executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "bounding_rect",
+          "new_api": null,
+          "old_text": "command.bounding_rect()",
+          "new_text": null,
+          "old_line_content": "                return command.bounding_rect();",
+          "new_line_content": "        [&](auto const& command) -> Optional<Gfx::IntRect> {",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": "draw_ellipse",
+          "new_api": null,
+          "old_text": "executor.draw_ellipse(command.rect, command.color, command.thickness)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_ellipse(command.rect, command.color, command.thickness);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": "fill_ellipse",
+          "new_api": null,
+          "old_text": "executor.fill_ellipse(command.rect, command.color, command.blend_mode)",
+          "new_text": null,
+          "old_line_content": "                return executor.fill_ellipse(command.rect, command.color, command.blend_mode);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "draw_line",
+          "new_api": null,
+          "old_text": "executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "has_value",
+          "new_api": null,
+          "old_text": "command_with_scroll_id.scroll_frame_id.has_value()",
+          "new_text": null,
+          "old_line_content": "        if (command_with_scroll_id.scroll_frame_id.has_value()) {",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "command_with_scroll_id.scroll_frame_id.value()",
+          "new_text": null,
+          "old_line_content": "            auto const& scroll_frame_id = command_with_scroll_id.scroll_frame_id.value();",
+          "new_line_content": "    for (auto& command_with_scroll_id : m_painting_commands) {",
+          "content_same": false
+        },
+        {
+          "line": 561,
+          "old_api": "draw_signed_distance_field",
+          "new_api": null,
+          "old_text": "executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": "paint_frame",
+          "new_api": null,
+          "old_text": "executor.paint_frame(command.rect, command.palette, command.style)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_frame(command.rect, command.palette, command.style);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "translate_by",
+          "new_api": null,
+          "old_text": "command.translate_by(scroll_offset)",
+          "new_text": null,
+          "old_line_content": "                        command.translate_by(scroll_offset);",
+          "new_line_content": "                [&](auto& command) {",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "apply_backdrop_filter",
+          "new_api": null,
+          "old_text": "executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter)",
+          "new_text": null,
+          "old_line_content": "                return executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "draw_rect",
+          "new_api": null,
+          "old_text": "executor.draw_rect(command.rect, command.color, command.rough)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_rect(command.rect, command.color, command.rough);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": "draw_triangle_wave",
+          "new_api": null,
+          "old_text": "executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": "needs_prepare_glyphs_texture",
+          "new_api": null,
+          "old_text": "executor.needs_prepare_glyphs_texture()",
+          "new_text": null,
+          "old_line_content": "    if (executor.needs_prepare_glyphs_texture()) {",
+          "new_line_content": "void RecordingPainter::execute(PaintingCommandExecutor& executor)",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "sample_under_corners",
+          "new_api": null,
+          "old_text": "executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip)",
+          "new_text": null,
+          "old_line_content": "                return executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": "command.has<DrawGlyphRun>()",
+          "new_api": null,
+          "old_text": "command.has<DrawGlyphRun>()",
+          "new_text": null,
+          "old_line_content": "            if (command.has<DrawGlyphRun>()) {",
+          "new_line_content": "        for (auto& command_with_scroll_id : m_painting_commands) {",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "command.get<DrawGlyphRun>()",
+          "new_api": null,
+          "old_text": "command.get<DrawGlyphRun>()",
+          "new_text": null,
+          "old_line_content": "                for (auto const& glyph_or_emoji : command.get<DrawGlyphRun>().glyph_run) {",
+          "new_line_content": "            auto& command = command_with_scroll_id.command;",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": "contains",
+          "new_api": null,
+          "old_text": "skipped_sample_corner_commands.contains(command.id)",
+          "new_text": null,
+          "old_line_content": "                if (skipped_sample_corner_commands.contains(command.id)) {",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "dbgln",
+          "new_api": null,
+          "old_text": "dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\")",
+          "new_text": null,
+          "old_line_content": "                    dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\");",
+          "new_line_content": "                    //        painting commands, sample and blit commands should have matching rectangles, preventing",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": "prepare_glyph_texture",
+          "new_api": null,
+          "old_text": "executor.prepare_glyph_texture(unique_glyphs)",
+          "new_text": null,
+          "old_line_content": "        executor.prepare_glyph_texture(unique_glyphs);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": "blit_corner_clipping",
+          "new_api": null,
+          "old_text": "executor.blit_corner_clipping(command.id)",
+          "new_text": null,
+          "old_line_content": "                return executor.blit_corner_clipping(command.id);",
+          "new_line_content": "                    return CommandResult::Continue;",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "needs_update_immutable_bitmap_texture_cache",
+          "new_api": null,
+          "old_text": "executor.needs_update_immutable_bitmap_texture_cache()",
+          "new_text": null,
+          "old_line_content": "    if (executor.needs_update_immutable_bitmap_texture_cache()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "paint_borders",
+          "new_api": null,
+          "old_text": "executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data)",
+          "new_text": null,
+          "old_line_content": "                return executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": "command.has<DrawScaledImmutableBitmap>()",
+          "new_api": null,
+          "old_text": "command.has<DrawScaledImmutableBitmap>()",
+          "new_text": null,
+          "old_line_content": "            if (command.has<DrawScaledImmutableBitmap>()) {",
+          "new_line_content": "        for (auto const& command_with_scroll_id : m_painting_commands) {",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "command.get<DrawScaledImmutableBitmap>()",
+          "new_api": null,
+          "old_text": "command.get<DrawScaledImmutableBitmap>()",
+          "new_text": null,
+          "old_line_content": "                auto const& immutable_bitmap = command.get<DrawScaledImmutableBitmap>().bitmap;",
+          "new_line_content": "            auto& command = command_with_scroll_id.command;",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "m_painting_commands.size()",
+          "new_text": null,
+          "old_line_content": "            while (next_command_index < m_painting_commands.size()) {",
+          "new_line_content": "        if (result == CommandResult::SkipStackingContext) {",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": "m_painting_commands[next_command_index].command.has<PushStackingContext>()",
+          "new_api": null,
+          "old_text": "m_painting_commands[next_command_index].command.has<PushStackingContext>()",
+          "new_text": null,
+          "old_line_content": "                if (m_painting_commands[next_command_index].command.has<PushStackingContext>()) {",
+          "new_line_content": "            auto stacking_context_nesting_level = 1;",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "update_immutable_bitmap_texture_cache",
+          "new_api": null,
+          "old_text": "executor.update_immutable_bitmap_texture_cache(immutable_bitmaps)",
+          "new_text": null,
+          "old_line_content": "        executor.update_immutable_bitmap_texture_cache(immutable_bitmaps);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "m_painting_commands.size()",
+          "new_text": null,
+          "old_line_content": "    while (next_command_index < m_painting_commands.size()) {",
+          "new_line_content": "    HashTable<u32> skipped_sample_corner_commands;",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "command_bounding_rectangle",
+          "new_api": null,
+          "old_text": "command_bounding_rectangle(command)",
+          "new_text": null,
+          "old_line_content": "        auto bounding_rect = command_bounding_rectangle(command);",
+          "new_line_content": "        auto& command_with_scroll_id = m_painting_commands[next_command_index++];",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "would_be_fully_clipped_by_painter",
+          "new_api": null,
+          "old_text": "executor.would_be_fully_clipped_by_painter(*bounding_rect)",
+          "new_text": null,
+          "old_line_content": "        if (bounding_rect.has_value() && (bounding_rect->is_empty() || executor.would_be_fully_clipped_by_painter(*bounding_rect))) {",
+          "new_line_content": "        auto& command = command_with_scroll_id.command;",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "visit",
+          "new_api": null,
+          "old_text": "command.visit(\n            [&](DrawGlyphRun const& command) {\n                return executor.draw_glyph_run(command.glyph_run, command.color);\n            },\n            [&](DrawText const& command) {\n                return executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font);\n            },\n            [&](FillRect const& command) {\n                return executor.fill_rect(command.rect, command.color);\n            },\n            [&](DrawScaledBitmap const& command) {\n                return executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);\n            },\n            [&](DrawScaledImmutableBitmap const& command) {\n                return executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);\n            },\n            [&](SetClipRect const& command) {\n                return executor.set_clip_rect(command.rect);\n            },\n            [&](ClearClipRect const&) {\n                return executor.clear_clip_rect();\n            },\n            [&](SetFont const& command) {\n                return executor.set_font(command.font);\n            },\n            [&](PushStackingContext const& command) {\n                return executor.push_stacking_context(command.opacity, command.is_fixed_position, command.source_paintable_rect, command.post_transform_translation, command.image_rendering, command.transform, command.mask);\n            },\n            [&](PopStackingContext const&) {\n                return executor.pop_stacking_context();\n            },\n            [&](PaintLinearGradient const& command) {\n                return executor.paint_linear_gradient(command.gradient_rect, command.linear_gradient_data);\n            },\n            [&](PaintRadialGradient const& command) {\n                return executor.paint_radial_gradient(command.rect, command.radial_gradient_data, command.center, command.size);\n            },\n            [&](PaintConicGradient const& command) {\n                return executor.paint_conic_gradient(command.rect, command.conic_gradient_data, command.position);\n            },\n            [&](PaintOuterBoxShadow const& command) {\n                return executor.paint_outer_box_shadow(command.outer_box_shadow_params);\n            },\n            [&](PaintInnerBoxShadow const& command) {\n                return executor.paint_inner_box_shadow(command.outer_box_shadow_params);\n            },\n            [&](PaintTextShadow const& command) {\n                return executor.paint_text_shadow(command.blur_radius, command.shadow_bounding_rect, command.text_rect, command.glyph_run, command.color, command.fragment_baseline, command.draw_location);\n            },\n            [&](FillRectWithRoundedCorners const& command) {\n                return executor.fill_rect_with_rounded_corners(command.rect, command.color, command.top_left_radius, command.top_right_radius, command.bottom_left_radius, command.bottom_right_radius);\n            },\n            [&](FillPathUsingColor const& command) {\n                return executor.fill_path_using_color(command.path, command.color, command.winding_rule, command.aa_translation);\n            },\n            [&](FillPathUsingPaintStyle const& command) {\n                return executor.fill_path_using_paint_style(command.path, command.paint_style, command.winding_rule, command.opacity, command.aa_translation);\n            },\n            [&](StrokePathUsingColor const& command) {\n                return executor.stroke_path_using_color(command.path, command.color, command.thickness, command.aa_translation);\n            },\n            [&](StrokePathUsingPaintStyle const& command) {\n                return executor.stroke_path_using_paint_style(command.path, command.paint_style, command.thickness, command.opacity, command.aa_translation);\n            },\n            [&](DrawEllipse const& command) {\n                return executor.draw_ellipse(command.rect, command.color, command.thickness);\n            },\n            [&](FillEllipse const& command) {\n                return executor.fill_ellipse(command.rect, command.color, command.blend_mode);\n            },\n            [&](DrawLine const& command) {\n                return executor.draw_line(command.color, command.from, command.to, command.thickness, command.style, command.alternate_color);\n            },\n            [&](DrawSignedDistanceField const& command) {\n                return executor.draw_signed_distance_field(command.rect, command.color, command.sdf, command.smoothing);\n            },\n            [&](PaintFrame const& command) {\n                return executor.paint_frame(command.rect, command.palette, command.style);\n            },\n            [&](ApplyBackdropFilter const& command) {\n                return executor.apply_backdrop_filter(command.backdrop_region, command.backdrop_filter);\n            },\n            [&](DrawRect const& command) {\n                return executor.draw_rect(command.rect, command.color, command.rough);\n            },\n            [&](DrawTriangleWave const& command) {\n                return executor.draw_triangle_wave(command.p1, command.p2, command.color, command.amplitude, command.thickness);\n            },\n            [&](SampleUnderCorners const& command) {\n                return executor.sample_under_corners(command.id, command.corner_radii, command.border_rect, command.corner_clip);\n            },\n            [&](BlitCornerClipping const& command) {\n                if (skipped_sample_corner_commands.contains(command.id)) {\n                    // FIXME: If a sampling command falls outside the viewport and is not executed, the associated blit\n                    //        should also be skipped if it is within the viewport. In a properly generated list of\n                    //        painting commands, sample and blit commands should have matching rectangles, preventing\n                    //        this discrepancy.\n                    dbgln(\"Skipping blit_corner_clipping command because the sample_under_corners command was skipped.\");\n                    return CommandResult::Continue;\n                }\n                return executor.blit_corner_clipping(command.id);\n            },\n            [&](PaintBorders const& command) {\n                return executor.paint_borders(command.border_rect, command.corner_radii, command.borders_data);\n            })",
+          "new_text": null,
+          "old_line_content": "        auto result = command.visit(",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "draw_text",
+          "new_api": null,
+          "old_text": "executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_text(command.rect, command.raw_text, command.alignment, command.color, command.elision, command.wrapping, command.font);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": "fill_rect",
+          "new_api": null,
+          "old_text": "executor.fill_rect(command.rect, command.color)",
+          "new_text": null,
+          "old_line_content": "                return executor.fill_rect(command.rect, command.color);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "draw_scaled_bitmap",
+          "new_api": null,
+          "old_text": "executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_scaled_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": "draw_scaled_immutable_bitmap",
+          "new_api": null,
+          "old_text": "executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode)",
+          "new_text": null,
+          "old_line_content": "                return executor.draw_scaled_immutable_bitmap(command.dst_rect, command.bitmap, command.src_rect, command.scaling_mode);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "set_clip_rect",
+          "new_api": null,
+          "old_text": "executor.set_clip_rect(command.rect)",
+          "new_text": null,
+          "old_line_content": "                return executor.set_clip_rect(command.rect);",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": "clear_clip_rect",
+          "new_api": null,
+          "old_text": "executor.clear_clip_rect()",
+          "new_text": null,
+          "old_line_content": "                return executor.clear_clip_rect();",
+          "new_line_content": "            },",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "set_font",
+          "new_api": null,
+          "old_text": "executor.set_font(command.font)",
+          "new_text": null,
+          "old_line_content": "                return executor.set_font(command.font);",
+          "new_line_content": "            },",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 12,
+      "total_additions": 53,
+      "total_deletions": 53,
+      "total_api_changes": 118
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 2,
+        "api_related_lines": 118,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          415
+        ]
+      }
+    },
+    "api_calls_before": 233,
+    "api_calls_after": 233,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 0,
+      "total_diff_lines": 14
+    }
+  }
+}

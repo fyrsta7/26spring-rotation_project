@@ -1,0 +1,3175 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/85d403a5790cc1f0942800cee352bc0990d25d95",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/85d403a5790cc1f0942800cee352bc0990d25d95/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/85d403a5790cc1f0942800cee352bc0990d25d95/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/85d403a5790cc1f0942800cee352bc0990d25d95/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 427,
+          "old_api": "tif_receive_skb_list",
+          "new_api": "h_type_trans",
+          "old_text": "tif_receive_skb_list(&rx_list);\n",
+          "new_text": "h_type_trans(skb, dev);\n",
+          "old_line_content": "\tnetif_receive_skb_list(&rx_list);",
+          "new_line_content": "\t\tskb->protocol = eth_type_trans(skb, dev);",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": "tif_wake_queue",
+          "new_api": "tif_queue_stopped",
+          "old_text": "tif_wake_queue(dev);\n",
+          "new_text": "tif_queue_stopped(dev) &",
+          "old_line_content": "\t\tnetif_wake_queue(dev);",
+          "new_line_content": "\tif (netif_queue_stopped(dev) && released)",
+          "content_same": false
+        },
+        {
+          "line": 512,
+          "old_api": "m6368_enetsw_receive_queue",
+          "new_api": "in_lock",
+          "old_text": "m6368_enetsw_receive_queue(dev, budget);\n",
+          "new_text": "in_lock(&priv->rx_lock);\n",
+          "old_line_content": "\trx_work_done = bcm6368_enetsw_receive_queue(dev, budget);",
+          "new_line_content": "\tspin_lock(&priv->rx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 513,
+          "old_api": "in_unlock",
+          "new_api": "m6368_enetsw_receive_queue",
+          "old_text": "in_unlock(&priv->rx_lock);\n",
+          "new_text": "m6368_enetsw_receive_queue(dev, budget);\n",
+          "old_line_content": "\tspin_unlock(&priv->rx_lock);",
+          "new_line_content": "\trx_work_done = bcm6368_enetsw_receive_queue(dev, budget);",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "tif_stop_queue",
+          "new_api": "likely",
+          "old_text": "tif_stop_queue(dev);\n",
+          "new_text": "likely(!priv->tx_desc_count)) ",
+          "old_line_content": "\t\tnetif_stop_queue(dev);",
+          "new_line_content": "\tif (unlikely(!priv->tx_desc_count)) {",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "v_err",
+          "new_api": "tif_stop_queue",
+          "old_text": "v_err(&priv->pdev->dev, \"xmit called with no tx desc \"\n\t\t\t\"available?\\n\");\n",
+          "new_text": "tif_stop_queue(dev);\n",
+          "old_line_content": "\t\tdev_err(&priv->pdev->dev, \"xmit called with no tx desc \"",
+          "new_line_content": "\t\tnetif_stop_queue(dev);",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "A_BUFALLOC_REG",
+          "new_api": "a_writel",
+          "old_text": "A_BUFALLOC_REG(priv->rx_chan));",
+          "new_text": "a_writel(priv, DMA_BUFALLOC_FORCE_MASK | 0,\n\t\t   DMA_BUFALLOC_REG(priv->rx_chan));\n",
+          "old_line_content": "\t\t   DMA_BUFALLOC_REG(priv->rx_chan));",
+          "new_line_content": "\tdma_writel(priv, DMA_BUFALLOC_FORCE_MASK | 0,",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": "v_err",
+          "new_api": "m6368_enetsw_refill_rx",
+          "old_text": "v_err(kdev, \"cannot allocate rx buffer queue\\n\");\n",
+          "new_text": "m6368_enetsw_refill_rx(dev, false)) ",
+          "old_line_content": "\t\tdev_err(kdev, \"cannot allocate rx buffer queue\\n\");",
+          "new_line_content": "\tif (bcm6368_enetsw_refill_rx(dev, false)) {",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": "a_writel",
+          "new_api": "b",
+          "old_text": "a_writel(priv, DMA_CFG_EN_MASK, DMA_CFG_REG);\n",
+          "new_text": "b();\n",
+          "old_line_content": "\tdma_writel(priv, DMA_CFG_EN_MASK, DMA_CFG_REG);",
+          "new_line_content": "\twmb();",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": "ac_writel",
+          "new_api": "a_writel",
+          "old_text": "ac_writel(priv, DMAC_CHANCFG_EN_MASK,\n\t\t    DMAC_CHANCFG_REG, priv->rx_chan);\n",
+          "new_text": "a_writel(priv, DMA_CFG_EN_MASK, DMA_CFG_REG);\n",
+          "old_line_content": "\tdmac_writel(priv, DMAC_CHANCFG_EN_MASK,",
+          "new_line_content": "\tdma_writel(priv, DMA_CFG_EN_MASK, DMA_CFG_REG);",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": "tif_start_queue",
+          "new_api": "tif_carrier_on",
+          "old_text": "tif_start_queue(dev);\n",
+          "new_text": "tif_carrier_on(dev);\n",
+          "old_line_content": "\tnetif_start_queue(dev);",
+          "new_line_content": "\tnetif_carrier_on(dev);",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": "pi_disable",
+          "new_api": "tif_stop_queue",
+          "old_text": "pi_disable(&priv->napi);\n",
+          "new_text": "tif_stop_queue(dev);\n",
+          "old_line_content": "\tnapi_disable(&priv->napi);",
+          "new_line_content": "\tnetif_stop_queue(dev);",
+          "content_same": false
+        },
+        {
+          "line": 840,
+          "old_api": "l_timer_sync",
+          "new_api": "pi_disable",
+          "old_text": "l_timer_sync(&priv->rx_timeout);\n",
+          "new_text": "pi_disable(&priv->napi);\n",
+          "old_line_content": "\tdel_timer_sync(&priv->rx_timeout);",
+          "new_line_content": "\tnapi_disable(&priv->napi);",
+          "content_same": false
+        },
+        {
+          "line": 870,
+          "old_api": "a_free_coherent",
+          "new_api": "ree",
+          "old_text": "a_free_coherent(kdev, priv->rx_desc_alloc_size,\n\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);\n",
+          "new_text": "ree(priv->tx_skb);\n",
+          "old_line_content": "\tdma_free_coherent(kdev, priv->rx_desc_alloc_size,",
+          "new_line_content": "\tkfree(priv->tx_skb);",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": "_ERR",
+          "new_api": "npd_dev_pm_attach_by_id",
+          "old_text": "_ERR(priv->pm[i])) ",
+          "new_text": "npd_dev_pm_attach_by_id(dev, i);\n",
+          "old_line_content": "\t\t\tif (IS_ERR(priv->pm[i])) {",
+          "new_line_content": "\t\t\tpriv->pm[i] = genpd_dev_pm_attach_by_id(dev, i);",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": "v_err",
+          "new_api": "_ERR",
+          "old_text": "v_err(dev, \"error getting pm %d\\n\", i);\n",
+          "new_text": "_ERR(priv->pm[i])) ",
+          "old_line_content": "\t\t\t\tdev_err(dev, \"error getting pm %d\\n\", i);",
+          "new_line_content": "\t\t\tif (IS_ERR(priv->pm[i])) {",
+          "content_same": false
+        },
+        {
+          "line": 931,
+          "old_api": "_runtime_no_callbacks",
+          "new_api": "_runtime_enable",
+          "old_text": "_runtime_no_callbacks(dev);\n",
+          "new_text": "_runtime_enable(dev);\n",
+          "old_line_content": "\tpm_runtime_no_callbacks(dev);",
+          "new_line_content": "\tpm_runtime_enable(dev);",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": "_runtime_get_sync",
+          "new_api": "_runtime_no_callbacks",
+          "old_text": "_runtime_get_sync(dev);\n",
+          "new_text": "_runtime_no_callbacks(dev);\n",
+          "old_line_content": "\tret = pm_runtime_get_sync(dev);",
+          "new_line_content": "\tpm_runtime_no_callbacks(dev);",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": "v_info",
+          "new_api": "_runtime_disable",
+          "old_text": "v_info(dev, \"PM prober defer: ret=%d\\n\", ret);\n",
+          "new_text": "_runtime_disable(dev);\n",
+          "old_line_content": "\t\tdev_info(dev, \"PM prober defer: ret=%d\\n\", ret);",
+          "new_line_content": "\t\tpm_runtime_disable(dev);",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": "vm_ioremap_resource",
+          "new_api": "atform_get_resource_byname",
+          "old_text": "vm_ioremap_resource(dev, res);\n",
+          "new_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma\");\n",
+          "old_line_content": "\tpriv->dma_base = devm_ioremap_resource(dev, res);",
+          "new_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma\");",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": "_ERR",
+          "new_api": "vm_ioremap_resource",
+          "old_text": "_ERR(priv->dma_base))\n",
+          "new_text": "vm_ioremap_resource(dev, res);\n",
+          "old_line_content": "\tif (IS_ERR(priv->dma_base))",
+          "new_line_content": "\tpriv->dma_base = devm_ioremap_resource(dev, res);",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": "R_ERR",
+          "new_api": "_ERR",
+          "old_text": "R_ERR(priv->dma_base);\n",
+          "new_text": "_ERR(priv->dma_base))\n",
+          "old_line_content": "\t\treturn PTR_ERR(priv->dma_base);",
+          "new_line_content": "\tif (IS_ERR(priv->dma_base))",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": "_ERR",
+          "new_api": "vm_ioremap_resource",
+          "old_text": "_ERR(priv->dma_chan))\n",
+          "new_text": "vm_ioremap_resource(dev, res);\n",
+          "old_line_content": "\tif (IS_ERR(priv->dma_chan))",
+          "new_line_content": "\tpriv->dma_chan = devm_ioremap_resource(dev, res);",
+          "content_same": false
+        },
+        {
+          "line": 948,
+          "old_api": "R_ERR",
+          "new_api": "_ERR",
+          "old_text": "R_ERR(priv->dma_chan);\n",
+          "new_text": "_ERR(priv->dma_chan))\n",
+          "old_line_content": "\t\treturn PTR_ERR(priv->dma_chan);",
+          "new_line_content": "\tif (IS_ERR(priv->dma_chan))",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": "vm_ioremap_resource",
+          "new_api": "atform_get_resource_byname",
+          "old_text": "vm_ioremap_resource(dev, res);\n",
+          "new_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma-sram\");\n",
+          "old_line_content": "\tpriv->dma_sram = devm_ioremap_resource(dev, res);",
+          "new_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma-sram\");",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": "_ERR",
+          "new_api": "vm_ioremap_resource",
+          "old_text": "_ERR(priv->dma_sram))\n",
+          "new_text": "vm_ioremap_resource(dev, res);\n",
+          "old_line_content": "\tif (IS_ERR(priv->dma_sram))",
+          "new_line_content": "\tpriv->dma_sram = devm_ioremap_resource(dev, res);",
+          "content_same": false
+        },
+        {
+          "line": 953,
+          "old_api": "R_ERR",
+          "new_api": "_ERR",
+          "old_text": "R_ERR(priv->dma_sram);\n",
+          "new_text": "_ERR(priv->dma_sram))\n",
+          "old_line_content": "\t\treturn PTR_ERR(priv->dma_sram);",
+          "new_line_content": "\tif (IS_ERR(priv->dma_sram))",
+          "content_same": false
+        },
+        {
+          "line": 983,
+          "old_api": "_valid_ether_addr",
+          "new_api": "_get_mac_address",
+          "old_text": "_valid_ether_addr(ndev->dev_addr)) ",
+          "new_text": "_get_mac_address(node, ndev->dev_addr);\n",
+          "old_line_content": "\tif (is_valid_ether_addr(ndev->dev_addr)) {",
+          "new_line_content": "\tof_get_mac_address(node, ndev->dev_addr);",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": "v_info",
+          "new_api": "_valid_ether_addr",
+          "old_text": "v_info(dev, \"mtd mac %pM\\n\", ndev->dev_addr);\n",
+          "new_text": "_valid_ether_addr(ndev->dev_addr)) ",
+          "old_line_content": "\t\tdev_info(dev, \"mtd mac %pM\\n\", ndev->dev_addr);",
+          "new_line_content": "\tif (is_valid_ether_addr(ndev->dev_addr)) {",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": "v_info",
+          "new_api": "ndom_ether_addr",
+          "old_text": "v_info(dev, \"random mac %pM\\n\", ndev->dev_addr);\n",
+          "new_text": "ndom_ether_addr(ndev->dev_addr);\n",
+          "old_line_content": "\t\tdev_info(dev, \"random mac %pM\\n\", ndev->dev_addr);",
+          "new_line_content": "\t\trandom_ether_addr(ndev->dev_addr);",
+          "content_same": false
+        },
+        {
+          "line": 1004,
+          "old_api": "_ERR",
+          "new_api": "_clk_get",
+          "old_text": "_ERR(priv->clock[i])) ",
+          "new_text": "_clk_get(node, i);\n",
+          "old_line_content": "\t\tif (IS_ERR(priv->clock[i])) {",
+          "new_line_content": "\t\tpriv->clock[i] = of_clk_get(node, i);",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": "v_err",
+          "new_api": "_ERR",
+          "old_text": "v_err(dev, \"error getting clock %d\\n\", i);\n",
+          "new_text": "_ERR(priv->clock[i])) ",
+          "old_line_content": "\t\t\tdev_err(dev, \"error getting clock %d\\n\", i);",
+          "new_line_content": "\t\tif (IS_ERR(priv->clock[i])) {",
+          "content_same": false
+        },
+        {
+          "line": 1027,
+          "old_api": "_ERR",
+          "new_api": "vm_reset_control_get_by_index",
+          "old_text": "_ERR(priv->reset[i])) ",
+          "new_text": "vm_reset_control_get_by_index(dev, i);\n",
+          "old_line_content": "\t\tif (IS_ERR(priv->reset[i])) {",
+          "new_line_content": "\t\tpriv->reset[i] = devm_reset_control_get_by_index(dev, i);",
+          "content_same": false
+        },
+        {
+          "line": 1028,
+          "old_api": "v_err",
+          "new_api": "_ERR",
+          "old_text": "v_err(dev, \"error getting reset %d\\n\", i);\n",
+          "new_text": "_ERR(priv->reset[i])) ",
+          "old_line_content": "\t\t\tdev_err(dev, \"error getting reset %d\\n\", i);",
+          "new_line_content": "\t\tif (IS_ERR(priv->reset[i])) {",
+          "content_same": false
+        },
+        {
+          "line": 1049,
+          "old_api": "T_NETDEV_DEV",
+          "new_api": "tif_napi_add",
+          "old_text": "T_NETDEV_DEV(ndev, dev);\n",
+          "new_text": "tif_napi_add(ndev, &priv->napi, bcm6368_enetsw_poll, 16);\n",
+          "old_line_content": "\tSET_NETDEV_DEV(ndev, dev);",
+          "new_line_content": "\tnetif_napi_add(ndev, &priv->napi, bcm6368_enetsw_poll, 16);",
+          "content_same": false
+        },
+        {
+          "line": 1056,
+          "old_api": "atform_set_drvdata",
+          "new_api": "tif_carrier_off",
+          "old_text": "atform_set_drvdata(pdev, ndev);\n",
+          "new_text": "tif_carrier_off(ndev);\n",
+          "old_line_content": "\tplatform_set_drvdata(pdev, ndev);",
+          "new_line_content": "\tnetif_carrier_off(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 1076,
+          "old_api": "tdev_priv",
+          "new_api": "atform_get_drvdata",
+          "old_text": "tdev_priv(ndev);\n",
+          "new_text": "atform_get_drvdata(pdev);\n",
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(ndev);",
+          "new_line_content": "\tstruct net_device *ndev = platform_get_drvdata(pdev);",
+          "content_same": false
+        },
+        {
+          "line": 1084,
+          "old_api": "vice_link_del",
+          "new_api": "v_pm_domain_detach",
+          "old_text": "vice_link_del(priv->link_pm[i]);\n",
+          "new_text": "v_pm_domain_detach(priv->pm[i], true);\n",
+          "old_line_content": "\t\tdevice_link_del(priv->link_pm[i]);",
+          "new_line_content": "\t\tdev_pm_domain_detach(priv->pm[i], true);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 514,
+          "old_api": null,
+          "new_api": "in_unlock",
+          "old_text": null,
+          "new_text": "in_unlock(&priv->rx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\tspin_unlock(&priv->rx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 1029,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(dev, \"error getting reset %d\\n\", i);\n",
+          "old_line_content": "\t\t\treturn -EINVAL;",
+          "new_line_content": "\t\t\tdev_err(dev, \"error getting reset %d\\n\", i);",
+          "content_same": false
+        },
+        {
+          "line": 1033,
+          "old_api": null,
+          "new_api": "set_control_reset",
+          "old_text": null,
+          "new_text": "set_control_reset(priv->reset[i]);\n",
+          "old_line_content": "\t\tif (ret) {",
+          "new_line_content": "\t\tret = reset_control_reset(priv->reset[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1035,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(dev, \"error performing reset %d\\n\", i);\n",
+          "old_line_content": "\t\t\treturn ret;",
+          "new_line_content": "\t\t\tdev_err(dev, \"error performing reset %d\\n\", i);",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "pi_complete_done",
+          "old_text": null,
+          "new_text": "pi_complete_done(napi, rx_work_done);\n",
+          "old_line_content": "",
+          "new_line_content": "\tnapi_complete_done(napi, rx_work_done);",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t\t DMAC_IRMASK_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t\t DMAC_IRMASK_REG, priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "content_same": false
+        },
+        {
+          "line": 1040,
+          "old_api": null,
+          "new_api": "in_lock_init",
+          "old_text": null,
+          "new_text": "in_lock_init(&priv->rx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\tspin_lock_init(&priv->rx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": null,
+          "new_api": "mer_setup",
+          "old_text": null,
+          "new_text": "mer_setup(&priv->rx_timeout, bcm6368_enetsw_refill_rx_timer, 0);\n",
+          "old_line_content": "",
+          "new_line_content": "\ttimer_setup(&priv->rx_timeout, bcm6368_enetsw_refill_rx_timer, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": null,
+          "new_api": "T_NETDEV_DEV",
+          "old_text": null,
+          "new_text": "T_NETDEV_DEV(ndev, dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tSET_NETDEV_DEV(ndev, dev);",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "gister_netdev",
+          "old_text": null,
+          "new_text": "gister_netdev(ndev);\n",
+          "old_line_content": "\tif (ret)",
+          "new_line_content": "\tret = register_netdev(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": null,
+          "new_api": "atform_set_drvdata",
+          "old_text": null,
+          "new_text": "atform_set_drvdata(pdev, ndev);\n",
+          "old_line_content": "\tpriv->pdev = pdev;",
+          "new_line_content": "\tplatform_set_drvdata(pdev, ndev);",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": null,
+          "new_api": "pi_schedule",
+          "old_text": null,
+          "new_text": "pi_schedule(&priv->napi);\n",
+          "old_line_content": "",
+          "new_line_content": "\tnapi_schedule(&priv->napi);",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": null,
+          "new_api": "set_control_assert",
+          "old_text": null,
+          "new_text": "set_control_assert(priv->reset[i]);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\treset_control_assert(priv->reset[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1068,
+          "old_api": null,
+          "new_api": "k_disable_unprepare",
+          "old_text": null,
+          "new_text": "k_disable_unprepare(priv->clock[i]);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tclk_disable_unprepare(priv->clock[i]);",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(dev);\n",
+          "old_line_content": "\tstruct bcm6368_enetsw_desc *desc;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "content_same": false
+        },
+        {
+          "line": 563,
+          "old_api": null,
+          "new_api": "in_lock",
+          "old_text": null,
+          "new_text": "in_lock(&priv->tx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\tspin_lock(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(ndev);\n",
+          "old_line_content": "\tunsigned int i;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 1080,
+          "old_api": null,
+          "new_api": "register_netdev",
+          "old_text": null,
+          "new_text": "register_netdev(ndev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tunregister_netdev(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(&priv->pdev->dev, \"xmit called with no tx desc \"\n\t\t\t\"available?\\n\");\n",
+          "old_line_content": "\t\t\t\"available?\\n\");",
+          "new_line_content": "\t\tdev_err(&priv->pdev->dev, \"xmit called with no tx desc \"",
+          "content_same": false
+        },
+        {
+          "line": 1082,
+          "old_api": null,
+          "new_api": "_runtime_put_sync",
+          "old_text": null,
+          "new_text": "_runtime_put_sync(dev);\n",
+          "old_line_content": "\tfor (i = 0; priv->pm && i < priv->num_pms; i++) {",
+          "new_line_content": "\tpm_runtime_put_sync(dev);",
+          "content_same": false
+        },
+        {
+          "line": 1085,
+          "old_api": null,
+          "new_api": "vice_link_del",
+          "old_text": null,
+          "new_text": "vice_link_del(priv->link_pm[i]);\n",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tdevice_link_del(priv->link_pm[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1089,
+          "old_api": null,
+          "new_api": "set_control_assert",
+          "old_text": null,
+          "new_text": "set_control_assert(priv->reset[i]);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\treset_control_assert(priv->reset[i]);",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "b_tailroom",
+          "old_text": null,
+          "new_text": "b_tailroom(skb) <",
+          "old_line_content": "\t\t\tstruct sk_buff *nskb;",
+          "new_line_content": "\t\tif (unlikely(skb_tailroom(skb) < needed)) {",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": null,
+          "new_api": "k_disable_unprepare",
+          "old_text": null,
+          "new_text": "k_disable_unprepare(priv->clock[i]);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tclk_disable_unprepare(priv->clock[i]);",
+          "content_same": false
+        },
+        {
+          "line": 1094,
+          "old_api": null,
+          "new_api": "ee_netdev",
+          "old_text": null,
+          "new_text": "ee_netdev(ndev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tfree_netdev(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "b_copy_expand",
+          "old_text": null,
+          "new_text": "b_copy_expand(skb, 0, needed, GFP_ATOMIC);\n",
+          "old_line_content": "\t\t\tif (!nskb) {",
+          "new_line_content": "\t\t\tnskb = skb_copy_expand(skb, 0, needed, GFP_ATOMIC);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "v_kfree_skb",
+          "old_text": null,
+          "new_text": "v_kfree_skb(skb);\n",
+          "old_line_content": "\t\t\tskb = nskb;",
+          "new_line_content": "\t\t\tdev_kfree_skb(skb);",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "b_put_zero",
+          "old_text": null,
+          "new_text": "b_put_zero(skb, needed);\n",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tdata = skb_put_zero(skb, needed);",
+          "content_same": false
+        },
+        {
+          "line": 1107,
+          "old_api": null,
+          "new_api": "DULE_DEVICE_TABLE",
+          "old_text": null,
+          "new_text": "DULE_DEVICE_TABLE(of, bcm6368_enetsw_of_match);\n",
+          "old_line_content": "",
+          "new_line_content": "MODULE_DEVICE_TABLE(of, bcm6368_enetsw_of_match);",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": null,
+          "new_api": "a_map_single",
+          "old_text": null,
+          "new_text": "a_map_single(&priv->pdev->dev, skb->data, skb->len,\n\t\t\t\t       DMA_TO_DEVICE);\n",
+          "old_line_content": "\t\t\t\t       DMA_TO_DEVICE);",
+          "new_line_content": "\tdesc->address = dma_map_single(&priv->pdev->dev, skb->data, skb->len,",
+          "content_same": false
+        },
+        {
+          "line": 1112,
+          "old_api": null,
+          "new_api": "_match_ptr",
+          "old_text": null,
+          "new_text": "_match_ptr(bcm6368_enetsw_of_match),\n",
+          "old_line_content": "\t},",
+          "new_line_content": "\t\t.of_match_table = of_match_ptr(bcm6368_enetsw_of_match),",
+          "content_same": false
+        },
+        {
+          "line": 1117,
+          "old_api": null,
+          "new_api": "dule_platform_driver",
+          "old_text": null,
+          "new_text": "dule_platform_driver(bcm6368_enetsw_driver);\n",
+          "old_line_content": "",
+          "new_line_content": "module_platform_driver(bcm6368_enetsw_driver);",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": null,
+          "new_api": "b",
+          "old_text": null,
+          "new_text": "b();\n",
+          "old_line_content": "\tdesc->len_stat = len_stat;",
+          "new_line_content": "\twmb();",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "b",
+          "old_text": null,
+          "new_text": "b();\n",
+          "old_line_content": "",
+          "new_line_content": "\twmb();",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_en_mask, DMAC_CHANCFG_REG,\n\t\t    priv->tx_chan);\n",
+          "old_line_content": "\t\t    priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_chan_en_mask, DMAC_CHANCFG_REG,",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": null,
+          "new_api": "tif_stop_queue",
+          "old_text": null,
+          "new_text": "tif_stop_queue(dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tnetif_stop_queue(dev);",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": null,
+          "new_api": "in_unlock",
+          "old_text": null,
+          "new_text": "in_unlock(&priv->tx_lock);\n",
+          "old_line_content": "\treturn ret;",
+          "new_line_content": "\tspin_unlock(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, 0, DMAC_CHANCFG_REG, chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdmac_writel(priv, 0, DMAC_CHANCFG_REG, chan);",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "a_readl",
+          "old_text": null,
+          "new_text": "a_readl(priv, DMAC_CHANCFG_REG, chan);\n",
+          "old_line_content": "\t\tif (!(val & DMAC_CHANCFG_EN_MASK))",
+          "new_line_content": "\t\tval = dma_readl(priv, DMAC_CHANCFG_REG, chan);",
+          "content_same": false
+        },
+        {
+          "line": 653,
+          "old_api": null,
+          "new_api": "elay",
+          "old_text": null,
+          "new_text": "elay(1);\n",
+          "old_line_content": "\t} while (limit--);",
+          "new_line_content": "\t\tudelay(1);",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(dev);\n",
+          "old_line_content": "\tstruct device *kdev = &priv->pdev->dev;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": null,
+          "new_api": "quest_irq",
+          "old_text": null,
+          "new_text": "quest_irq(priv->irq_rx, bcm6368_enetsw_isr_dma,\n\t\t\t  0, dev->name, dev);\n",
+          "old_line_content": "\t\t\t  0, dev->name, dev);",
+          "new_line_content": "\tret = request_irq(priv->irq_rx, bcm6368_enetsw_isr_dma,",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "quest_irq",
+          "old_text": null,
+          "new_text": "quest_irq(priv->irq_tx, bcm6368_enetsw_isr_dma,\n\t\t\t\t  0, dev->name, dev);\n",
+          "old_line_content": "\t\t\t\t  0, dev->name, dev);",
+          "new_line_content": "\t\tret = request_irq(priv->irq_tx, bcm6368_enetsw_isr_dma,",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "a_alloc_coherent",
+          "old_text": null,
+          "new_text": "a_alloc_coherent(kdev, size, &priv->rx_desc_dma, GFP_KERNEL);\n",
+          "old_line_content": "\tif (!p) {",
+          "new_line_content": "\tp = dma_alloc_coherent(kdev, size, &priv->rx_desc_dma, GFP_KERNEL);",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(kdev, \"cannot allocate rx ring %u\\n\", size);\n",
+          "old_line_content": "\t\tret = -ENOMEM;",
+          "new_line_content": "\t\tdev_err(kdev, \"cannot allocate rx ring %u\\n\", size);",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": null,
+          "new_api": "mset",
+          "old_text": null,
+          "new_text": "mset(p, 0, size);\n",
+          "old_line_content": "\tpriv->rx_desc_alloc_size = size;",
+          "new_line_content": "\tmemset(p, 0, size);",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": null,
+          "new_api": "a_alloc_coherent",
+          "old_text": null,
+          "new_text": "a_alloc_coherent(kdev, size, &priv->tx_desc_dma, GFP_KERNEL);\n",
+          "old_line_content": "\tif (!p) {",
+          "new_line_content": "\tp = dma_alloc_coherent(kdev, size, &priv->tx_desc_dma, GFP_KERNEL);",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(kdev, \"cannot allocate tx ring\\n\");\n",
+          "old_line_content": "\t\tret = -ENOMEM;",
+          "new_line_content": "\t\tdev_err(kdev, \"cannot allocate tx ring\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": null,
+          "new_api": "mset",
+          "old_text": null,
+          "new_text": "mset(p, 0, size);\n",
+          "old_line_content": "\tpriv->tx_desc_alloc_size = size;",
+          "new_line_content": "\tmemset(p, 0, size);",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "alloc",
+          "old_text": null,
+          "new_text": "alloc(sizeof(struct sk_buff *) * priv->tx_ring_size,\n\t\t\t       GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t       GFP_KERNEL);",
+          "new_line_content": "\tpriv->tx_skb = kzalloc(sizeof(struct sk_buff *) * priv->tx_ring_size,",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(kdev, \"cannot allocate tx skb queue\\n\");\n",
+          "old_line_content": "\t\tret = -ENOMEM;",
+          "new_line_content": "\t\tdev_err(kdev, \"cannot allocate tx skb queue\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": null,
+          "new_api": "in_lock_init",
+          "old_text": null,
+          "new_text": "in_lock_init(&priv->tx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\tspin_lock_init(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": null,
+          "new_api": "alloc",
+          "old_text": null,
+          "new_text": "alloc(sizeof(unsigned char *) * priv->rx_ring_size,\n\t\t\t       GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t       GFP_KERNEL);",
+          "new_line_content": "\tpriv->rx_buf = kzalloc(sizeof(unsigned char *) * priv->rx_ring_size,",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(kdev, \"cannot allocate rx buffer queue\\n\");\n",
+          "old_line_content": "\t\tret = -ENOMEM;",
+          "new_line_content": "\t\tdev_err(kdev, \"cannot allocate rx buffer queue\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "A_BUFALLOC_REG",
+          "old_text": null,
+          "new_text": "A_BUFALLOC_REG(priv->rx_chan));",
+          "old_line_content": "",
+          "new_line_content": "\t\t   DMA_BUFALLOC_REG(priv->rx_chan));",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(kdev, \"cannot allocate rx buffer queue\\n\");\n",
+          "old_line_content": "\t\tret = -ENOMEM;",
+          "new_line_content": "\t\tdev_err(kdev, \"cannot allocate rx buffer queue\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 745,
+          "old_api": null,
+          "new_api": "as_writel",
+          "old_text": null,
+          "new_text": "as_writel(priv, priv->rx_desc_dma,\n\t\t    DMAS_RSTART_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t    DMAS_RSTART_REG, priv->rx_chan);",
+          "new_line_content": "\tdmas_writel(priv, priv->rx_desc_dma,",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "as_writel",
+          "old_text": null,
+          "new_text": "as_writel(priv, priv->tx_desc_dma,\n\t\t    DMAS_RSTART_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t    DMAS_RSTART_REG, priv->tx_chan);",
+          "new_line_content": "\tdmas_writel(priv, priv->tx_desc_dma,",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": null,
+          "new_api": "as_writel",
+          "old_text": null,
+          "new_text": "as_writel(priv, 0, DMAS_SRAM4_REG, priv->tx_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdmas_writel(priv, 0, DMAS_SRAM4_REG, priv->tx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_maxburst,\n\t\t    DMAC_MAXBURST_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t    DMAC_MAXBURST_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_maxburst,",
+          "content_same": false
+        },
+        {
+          "line": 761,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_maxburst,\n\t\t    DMAC_MAXBURST_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t    DMAC_MAXBURST_REG, priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_maxburst,",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": null,
+          "new_api": "A_FLOWCL_REG",
+          "old_text": null,
+          "new_text": "A_FLOWCL_REG(priv->rx_chan));",
+          "old_line_content": "\tval = (priv->rx_ring_size * 2) / 3;",
+          "new_line_content": "\tdma_writel(priv, val, DMA_FLOWCL_REG(priv->rx_chan));",
+          "content_same": false
+        },
+        {
+          "line": 768,
+          "old_api": null,
+          "new_api": "A_FLOWCH_REG",
+          "old_text": null,
+          "new_text": "A_FLOWCH_REG(priv->rx_chan));",
+          "old_line_content": "",
+          "new_line_content": "\tdma_writel(priv, val, DMA_FLOWCH_REG(priv->rx_chan));",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, DMAC_CHANCFG_EN_MASK,\n\t\t    DMAC_CHANCFG_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t    DMAC_CHANCFG_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, DMAC_CHANCFG_EN_MASK,",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IR_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t    DMAC_IR_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IR_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t    DMAC_IR_REG, priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": null,
+          "new_api": "pi_enable",
+          "old_text": null,
+          "new_text": "pi_enable(&priv->napi);\n",
+          "old_line_content": "",
+          "new_line_content": "\tnapi_enable(&priv->napi);",
+          "content_same": false
+        },
+        {
+          "line": 787,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t    DMAC_IRMASK_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t    DMAC_IRMASK_REG, priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": null,
+          "new_api": "tif_start_queue",
+          "old_text": null,
+          "new_text": "tif_start_queue(dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tnetif_start_queue(dev);",
+          "content_same": false
+        },
+        {
+          "line": 805,
+          "old_api": null,
+          "new_api": "a_unmap_single",
+          "old_text": null,
+          "new_text": "a_unmap_single(kdev, desc->address, priv->rx_buf_size,\n\t\t\t\t DMA_FROM_DEVICE);\n",
+          "old_line_content": "\t\t\t\t DMA_FROM_DEVICE);",
+          "new_line_content": "\t\tdma_unmap_single(kdev, desc->address, priv->rx_buf_size,",
+          "content_same": false
+        },
+        {
+          "line": 807,
+          "old_api": null,
+          "new_api": "b_free_frag",
+          "old_text": null,
+          "new_text": "b_free_frag(priv->rx_buf[i]);\n",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tskb_free_frag(priv->rx_buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": null,
+          "new_api": "ree",
+          "old_text": null,
+          "new_text": "ree(priv->rx_buf);\n",
+          "old_line_content": "",
+          "new_line_content": "\tkfree(priv->rx_buf);",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": null,
+          "new_api": "ree",
+          "old_text": null,
+          "new_text": "ree(priv->tx_skb);\n",
+          "old_line_content": "",
+          "new_line_content": "\tkfree(priv->tx_skb);",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "a_free_coherent",
+          "old_text": null,
+          "new_text": "a_free_coherent(kdev, priv->tx_desc_alloc_size,\n\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);\n",
+          "old_line_content": "\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);",
+          "new_line_content": "\tdma_free_coherent(kdev, priv->tx_desc_alloc_size,",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": null,
+          "new_api": "a_free_coherent",
+          "old_text": null,
+          "new_text": "a_free_coherent(kdev, priv->rx_desc_alloc_size,\n\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);\n",
+          "old_line_content": "\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);",
+          "new_line_content": "\tdma_free_coherent(kdev, priv->rx_desc_alloc_size,",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": null,
+          "new_api": "ee_irq",
+          "old_text": null,
+          "new_text": "ee_irq(priv->irq_tx, dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tfree_irq(priv->irq_tx, dev);",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": null,
+          "new_api": "ee_irq",
+          "old_text": null,
+          "new_text": "ee_irq(priv->irq_rx, dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tfree_irq(priv->irq_rx, dev);",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(dev);\n",
+          "old_line_content": "\tstruct device *kdev = &priv->pdev->dev;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "content_same": false
+        },
+        {
+          "line": 841,
+          "old_api": null,
+          "new_api": "l_timer_sync",
+          "old_text": null,
+          "new_text": "l_timer_sync(&priv->rx_timeout);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdel_timer_sync(&priv->rx_timeout);",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->tx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": null,
+          "new_api": "m6368_enetsw_disable_dma",
+          "old_text": null,
+          "new_text": "m6368_enetsw_disable_dma(priv, priv->rx_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\tbcm6368_enetsw_disable_dma(priv, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": null,
+          "new_api": "m6368_enetsw_tx_reclaim",
+          "old_text": null,
+          "new_text": "m6368_enetsw_tx_reclaim(dev, 1);\n",
+          "old_line_content": "",
+          "new_line_content": "\tbcm6368_enetsw_tx_reclaim(dev, 1);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "IT_LIST_HEAD",
+          "old_text": null,
+          "new_text": "IT_LIST_HEAD(&rx_list);\n",
+          "old_line_content": "",
+          "new_line_content": "\tINIT_LIST_HEAD(&rx_list);",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": null,
+          "new_api": "a_unmap_single_attrs",
+          "old_text": null,
+          "new_text": "a_unmap_single_attrs(kdev, desc->address, priv->rx_buf_size,\n\t\t\t\t       DMA_FROM_DEVICE,\n\t\t\t\t       DMA_ATTR_SKIP_CPU_SYNC);\n",
+          "old_line_content": "\t\t\t\t       DMA_FROM_DEVICE,",
+          "new_line_content": "\t\tdma_unmap_single_attrs(kdev, desc->address, priv->rx_buf_size,",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": null,
+          "new_api": "b_free_frag",
+          "old_text": null,
+          "new_text": "b_free_frag(priv->rx_buf[i]);\n",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tskb_free_frag(priv->rx_buf[i]);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "a_free_coherent",
+          "old_text": null,
+          "new_text": "a_free_coherent(kdev, priv->rx_desc_alloc_size,\n\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);\n",
+          "old_line_content": "\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);",
+          "new_line_content": "\tdma_free_coherent(kdev, priv->rx_desc_alloc_size,",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": null,
+          "new_api": "a_free_coherent",
+          "old_text": null,
+          "new_text": "a_free_coherent(kdev, priv->tx_desc_alloc_size,\n\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);\n",
+          "old_line_content": "\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);",
+          "new_line_content": "\tdma_free_coherent(kdev, priv->tx_desc_alloc_size,",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": null,
+          "new_api": "ee_irq",
+          "old_text": null,
+          "new_text": "ee_irq(priv->irq_rx, dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tfree_irq(priv->irq_rx, dev);",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "loc_etherdev",
+          "old_text": null,
+          "new_text": "loc_etherdev(sizeof(*priv));\n",
+          "old_line_content": "\tif (!ndev)",
+          "new_line_content": "\tndev = alloc_etherdev(sizeof(*priv));",
+          "content_same": false
+        },
+        {
+          "line": 902,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(ndev);\n",
+          "old_line_content": "",
+          "new_line_content": "\tpriv = netdev_priv(ndev);",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": null,
+          "new_api": "_count_phandle_with_args",
+          "old_text": null,
+          "new_text": "_count_phandle_with_args(node, \"power-domains\",\n\t\t\t\t\t\t   \"#power-domain-cells\");\n",
+          "old_line_content": "\t\t\t\t\t\t   \"#power-domain-cells\");",
+          "new_line_content": "\tpriv->num_pms = of_count_phandle_with_args(node, \"power-domains\",",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": null,
+          "new_api": "vm_kcalloc",
+          "old_text": null,
+          "new_text": "vm_kcalloc(dev, priv->num_pms,\n\t\t\t\t\tsizeof(struct device *), GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t\t\tsizeof(struct device *), GFP_KERNEL);",
+          "new_line_content": "\t\tpriv->pm = devm_kcalloc(dev, priv->num_pms,",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": null,
+          "new_api": "vm_kcalloc",
+          "old_text": null,
+          "new_text": "vm_kcalloc(dev, priv->num_pms,\n\t\t\t\t\t     sizeof(struct device_link *),\n\t\t\t\t\t     GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t\t\t     sizeof(struct device_link *),",
+          "new_line_content": "\t\tpriv->link_pm = devm_kcalloc(dev, priv->num_pms,",
+          "content_same": false
+        },
+        {
+          "line": 921,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(dev, \"error getting pm %d\\n\", i);\n",
+          "old_line_content": "\t\t\t\treturn -EINVAL;",
+          "new_line_content": "\t\t\t\tdev_err(dev, \"error getting pm %d\\n\", i);",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": null,
+          "new_api": "vice_link_add",
+          "old_text": null,
+          "new_text": "vice_link_add(dev, priv->pm[i],\n\t\t\t\tDL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |\n\t\t\t\tDL_FLAG_RPM_ACTIVE);\n",
+          "old_line_content": "\t\t\t\tDL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |",
+          "new_line_content": "\t\t\tpriv->link_pm[i] = device_link_add(dev, priv->pm[i],",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": null,
+          "new_api": "_runtime_get_sync",
+          "old_text": null,
+          "new_text": "_runtime_get_sync(dev);\n",
+          "old_line_content": "\tif (ret < 0) {",
+          "new_line_content": "\tret = pm_runtime_get_sync(dev);",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "st_add_tail",
+          "old_text": null,
+          "new_text": "st_add_tail(&skb->list, &rx_list);\n",
+          "old_line_content": "\t\tdev->stats.rx_bytes += len;",
+          "new_line_content": "\t\tlist_add_tail(&skb->list, &rx_list);",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": null,
+          "new_api": "v_info",
+          "old_text": null,
+          "new_text": "v_info(dev, \"PM prober defer: ret=%d\\n\", ret);\n",
+          "old_line_content": "\t\treturn -EPROBE_DEFER;",
+          "new_line_content": "\t\tdev_info(dev, \"PM prober defer: ret=%d\\n\", ret);",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "st_for_each_entry",
+          "old_text": null,
+          "new_text": "st_for_each_entry(skb, &rx_list, list)\n\t",
+          "old_line_content": "",
+          "new_line_content": "\tlist_for_each_entry(skb, &rx_list, list)",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": null,
+          "new_api": "tif_receive_skb_list",
+          "old_text": null,
+          "new_text": "tif_receive_skb_list(&rx_list);\n",
+          "old_line_content": "\tpriv->rx_desc_count -= processed;",
+          "new_line_content": "\tnetif_receive_skb_list(&rx_list);",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": null,
+          "new_api": "R_ERR",
+          "old_text": null,
+          "new_text": "R_ERR(priv->dma_base);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\treturn PTR_ERR(priv->dma_base);",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": null,
+          "new_api": "m6368_enetsw_refill_rx",
+          "old_text": null,
+          "new_text": "m6368_enetsw_refill_rx(dev, true);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tbcm6368_enetsw_refill_rx(dev, true);",
+          "content_same": false
+        },
+        {
+          "line": 945,
+          "old_api": null,
+          "new_api": "atform_get_resource_byname",
+          "old_text": null,
+          "new_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM,\n\t\t\t\t\t   \"dma-channels\");\n",
+          "old_line_content": "\t\t\t\t\t   \"dma-channels\");",
+          "new_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM,",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_en_mask,\n\t\t\t    DMAC_CHANCFG_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t\t    DMAC_CHANCFG_REG, priv->rx_chan);",
+          "new_line_content": "\t\tdmac_writel(priv, priv->dma_chan_en_mask,",
+          "content_same": false
+        },
+        {
+          "line": 949,
+          "old_api": null,
+          "new_api": "R_ERR",
+          "old_text": null,
+          "new_text": "R_ERR(priv->dma_chan);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\treturn PTR_ERR(priv->dma_chan);",
+          "content_same": false
+        },
+        {
+          "line": 954,
+          "old_api": null,
+          "new_api": "R_ERR",
+          "old_text": null,
+          "new_text": "R_ERR(priv->dma_sram);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\treturn PTR_ERR(priv->dma_sram);",
+          "content_same": false
+        },
+        {
+          "line": 956,
+          "old_api": null,
+          "new_api": "atform_get_irq_byname",
+          "old_text": null,
+          "new_text": "atform_get_irq_byname(pdev, \"rx\");\n",
+          "old_line_content": "\tif (!priv->irq_rx)",
+          "new_line_content": "\tpriv->irq_rx = platform_get_irq_byname(pdev, \"rx\");",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "tdev_priv",
+          "old_text": null,
+          "new_text": "tdev_priv(dev);\n",
+          "old_line_content": "\tint released = 0;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": null,
+          "new_api": "atform_get_irq_byname",
+          "old_text": null,
+          "new_text": "atform_get_irq_byname(pdev, \"tx\");\n",
+          "old_line_content": "\tif (!priv->irq_tx)",
+          "new_line_content": "\tpriv->irq_tx = platform_get_irq_byname(pdev, \"tx\");",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": null,
+          "new_api": "vice_property_read_u32",
+          "old_text": null,
+          "new_text": "vice_property_read_u32(dev, \"dma-rx\", &priv->rx_chan))\n",
+          "old_line_content": "\t\treturn -ENODEV;",
+          "new_line_content": "\tif (device_property_read_u32(dev, \"dma-rx\", &priv->rx_chan))",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": null,
+          "new_api": "in_lock",
+          "old_text": null,
+          "new_text": "in_lock(&priv->tx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tspin_lock(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 969,
+          "old_api": null,
+          "new_api": "vice_property_read_u32",
+          "old_text": null,
+          "new_text": "vice_property_read_u32(dev, \"dma-tx\", &priv->tx_chan))\n",
+          "old_line_content": "\t\treturn -ENODEV;",
+          "new_line_content": "\tif (device_property_read_u32(dev, \"dma-tx\", &priv->tx_chan))",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": null,
+          "new_api": "in_unlock",
+          "old_text": null,
+          "new_text": "in_unlock(&priv->tx_lock);\n",
+          "old_line_content": "\t\t\tbreak;",
+          "new_line_content": "\t\t\tspin_unlock(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": null,
+          "new_api": "b",
+          "old_text": null,
+          "new_text": "b();\n",
+          "old_line_content": "",
+          "new_line_content": "\t\trmb();",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": null,
+          "new_api": "a_unmap_single",
+          "old_text": null,
+          "new_text": "a_unmap_single(&priv->pdev->dev, desc->address, skb->len,\n\t\t\t\t DMA_TO_DEVICE);\n",
+          "old_line_content": "\t\t\t\t DMA_TO_DEVICE);",
+          "new_line_content": "\t\tdma_unmap_single(&priv->pdev->dev, desc->address, skb->len,",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": null,
+          "new_api": "v_info",
+          "old_text": null,
+          "new_text": "v_info(dev, \"mtd mac %pM\\n\", ndev->dev_addr);\n",
+          "old_line_content": "\t} else {",
+          "new_line_content": "\t\tdev_info(dev, \"mtd mac %pM\\n\", ndev->dev_addr);",
+          "content_same": false
+        },
+        {
+          "line": 988,
+          "old_api": null,
+          "new_api": "v_info",
+          "old_text": null,
+          "new_text": "v_info(dev, \"random mac %pM\\n\", ndev->dev_addr);\n",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tdev_info(dev, \"random mac %pM\\n\", ndev->dev_addr);",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "in_unlock",
+          "old_text": null,
+          "new_text": "in_unlock(&priv->tx_lock);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tspin_unlock(&priv->tx_lock);",
+          "content_same": false
+        },
+        {
+          "line": 991,
+          "old_api": null,
+          "new_api": "IGN",
+          "old_text": null,
+          "new_text": "IGN(ndev->mtu + ENETSW_MTU_OVERHEAD,\n\t\t\t\t  priv->dma_maxburst * 4);\n",
+          "old_line_content": "\t\t\t\t  priv->dma_maxburst * 4);",
+          "new_line_content": "\tpriv->rx_buf_size = ALIGN(ndev->mtu + ENETSW_MTU_OVERHEAD,",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": null,
+          "new_api": "ETSW_FRAG_SIZE",
+          "old_text": null,
+          "new_text": "ETSW_FRAG_SIZE(priv->rx_buf_size);\n",
+          "old_line_content": "",
+          "new_line_content": "\tpriv->rx_frag_size = ENETSW_FRAG_SIZE(priv->rx_buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": null,
+          "new_api": "pi_consume_skb",
+          "old_text": null,
+          "new_text": "pi_consume_skb(skb, !force);\n",
+          "old_line_content": "\t\treleased++;",
+          "new_line_content": "\t\tnapi_consume_skb(skb, !force);",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": null,
+          "new_api": "_clk_get_parent_count",
+          "old_text": null,
+          "new_text": "_clk_get_parent_count(node);\n",
+          "old_line_content": "\tif (priv->num_clocks) {",
+          "new_line_content": "\tpriv->num_clocks = of_clk_get_parent_count(node);",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": null,
+          "new_api": "vm_kcalloc",
+          "old_text": null,
+          "new_text": "vm_kcalloc(dev, priv->num_clocks,\n\t\t\t\t\t   sizeof(struct clk *), GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t\t\t   sizeof(struct clk *), GFP_KERNEL);",
+          "new_line_content": "\t\tpriv->clock = devm_kcalloc(dev, priv->num_clocks,",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": null,
+          "new_api": "tif_wake_queue",
+          "old_text": null,
+          "new_text": "tif_wake_queue(dev);\n",
+          "old_line_content": "",
+          "new_line_content": "\t\tnetif_wake_queue(dev);",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(dev, \"error getting clock %d\\n\", i);\n",
+          "old_line_content": "\t\t\treturn -EINVAL;",
+          "new_line_content": "\t\t\tdev_err(dev, \"error getting clock %d\\n\", i);",
+          "content_same": false
+        },
+        {
+          "line": 1010,
+          "old_api": null,
+          "new_api": "k_prepare_enable",
+          "old_text": null,
+          "new_text": "k_prepare_enable(priv->clock[i]);\n",
+          "old_line_content": "\t\tif (ret) {",
+          "new_line_content": "\t\tret = clk_prepare_enable(priv->clock[i]);",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "ntainer_of",
+          "old_text": null,
+          "new_text": "ntainer_of(napi, struct bcm6368_enetsw, napi);\n",
+          "old_line_content": "\tstruct net_device *dev = priv->net_dev;",
+          "new_line_content": "\tstruct bcm6368_enetsw *priv = container_of(napi, struct bcm6368_enetsw, napi);",
+          "content_same": false
+        },
+        {
+          "line": 1012,
+          "old_api": null,
+          "new_api": "v_err",
+          "old_text": null,
+          "new_text": "v_err(dev, \"error enabling clock %d\\n\", i);\n",
+          "old_line_content": "\t\t\treturn ret;",
+          "new_line_content": "\t\t\tdev_err(dev, \"error enabling clock %d\\n\", i);",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IR_REG, priv->rx_chan);\n",
+          "old_line_content": "\t\t\t DMAC_IR_REG, priv->rx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": null,
+          "new_api": "_count_phandle_with_args",
+          "old_text": null,
+          "new_text": "_count_phandle_with_args(node, \"resets\",\n\t\t\t\t\t\t      \"#reset-cells\");\n",
+          "old_line_content": "\t\t\t\t\t\t      \"#reset-cells\");",
+          "new_line_content": "\tpriv->num_resets = of_count_phandle_with_args(node, \"resets\",",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "ac_writel",
+          "old_text": null,
+          "new_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IR_REG, priv->tx_chan);\n",
+          "old_line_content": "\t\t\t DMAC_IR_REG, priv->tx_chan);",
+          "new_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": null,
+          "new_api": "vm_kcalloc",
+          "old_text": null,
+          "new_text": "vm_kcalloc(dev, priv->num_resets,\n\t\t\t\t\t   sizeof(struct reset_control *),\n\t\t\t\t\t   GFP_KERNEL);\n",
+          "old_line_content": "\t\t\t\t\t   sizeof(struct reset_control *),",
+          "new_line_content": "\t\tpriv->reset = devm_kcalloc(dev, priv->num_resets,",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "m6368_enetsw_tx_reclaim",
+          "old_text": null,
+          "new_text": "m6368_enetsw_tx_reclaim(dev, 0);\n",
+          "old_line_content": "",
+          "new_line_content": "\tbcm6368_enetsw_tx_reclaim(dev, 0);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1026,
+          "old_api": "vm_reset_control_get_by_index",
+          "new_api": null,
+          "old_text": "vm_reset_control_get_by_index(dev, i);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->reset[i] = devm_reset_control_get_by_index(dev, i);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_resets; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1032,
+          "old_api": "set_control_reset",
+          "new_api": null,
+          "old_text": "set_control_reset(priv->reset[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tret = reset_control_reset(priv->reset[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1034,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(dev, \"error performing reset %d\\n\", i);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tdev_err(dev, \"error performing reset %d\\n\", i);",
+          "new_line_content": "\t\tif (ret) {",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "pi_complete_done",
+          "new_api": null,
+          "old_text": "pi_complete_done(napi, rx_work_done);\n",
+          "new_text": null,
+          "old_line_content": "\tnapi_complete_done(napi, rx_work_done);",
+          "new_line_content": "\t * queue */",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "new_line_content": "\t/* restore rx/tx interrupt */",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "new_line_content": "\t\t\t DMAC_IRMASK_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": "in_lock_init",
+          "new_api": null,
+          "old_text": "in_lock_init(&priv->rx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\tspin_lock_init(&priv->rx_lock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1041,
+          "old_api": "mer_setup",
+          "new_api": null,
+          "old_text": "mer_setup(&priv->rx_timeout, bcm6368_enetsw_refill_rx_timer, 0);\n",
+          "new_text": null,
+          "old_line_content": "\ttimer_setup(&priv->rx_timeout, bcm6368_enetsw_refill_rx_timer, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1048,
+          "old_api": "tif_napi_add",
+          "new_api": null,
+          "old_text": "tif_napi_add(ndev, &priv->napi, bcm6368_enetsw_poll, 16);\n",
+          "new_text": null,
+          "old_line_content": "\tnetif_napi_add(ndev, &priv->napi, bcm6368_enetsw_poll, 16);",
+          "new_line_content": "\tndev->max_mtu = ETH_DATA_LEN + ENETSW_TAG_SIZE;",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": "gister_netdev",
+          "new_api": null,
+          "old_text": "gister_netdev(ndev);\n",
+          "new_text": null,
+          "old_line_content": "\tret = register_netdev(ndev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "new_line_content": "\tstruct net_device *dev = dev_id;",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);",
+          "new_line_content": "\t/* mask rx/tx interrupts */",
+          "content_same": false
+        },
+        {
+          "line": 1055,
+          "old_api": "tif_carrier_off",
+          "new_api": null,
+          "old_text": "tif_carrier_off(ndev);\n",
+          "new_text": null,
+          "old_line_content": "\tnetif_carrier_off(ndev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "pi_schedule",
+          "new_api": null,
+          "old_text": "pi_schedule(&priv->napi);\n",
+          "new_text": null,
+          "old_line_content": "\tnapi_schedule(&priv->napi);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1064,
+          "old_api": "set_control_assert",
+          "new_api": null,
+          "old_text": "set_control_assert(priv->reset[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\treset_control_assert(priv->reset[i]);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_resets; i++)",
+          "content_same": false
+        },
+        {
+          "line": 1067,
+          "old_api": "k_disable_unprepare",
+          "new_api": null,
+          "old_text": "k_disable_unprepare(priv->clock[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tclk_disable_unprepare(priv->clock[i]);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_clocks; i++)",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "in_lock",
+          "new_api": null,
+          "old_text": "in_lock(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\tspin_lock(&priv->tx_lock);",
+          "new_line_content": "\t/* lock against tx reclaim */",
+          "content_same": false
+        },
+        {
+          "line": 1075,
+          "old_api": "atform_get_drvdata",
+          "new_api": null,
+          "old_text": "atform_get_drvdata(pdev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct net_device *ndev = platform_get_drvdata(pdev);",
+          "new_line_content": "\tstruct device *dev = &pdev->dev;",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(!priv->tx_desc_count)) ",
+          "new_text": null,
+          "old_line_content": "\tif (unlikely(!priv->tx_desc_count)) {",
+          "new_line_content": "\t * since we stop queue before it's the case */",
+          "content_same": false
+        },
+        {
+          "line": 1079,
+          "old_api": "register_netdev",
+          "new_api": null,
+          "old_text": "register_netdev(ndev);\n",
+          "new_text": null,
+          "old_line_content": "\tunregister_netdev(ndev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "_runtime_put_sync",
+          "new_api": null,
+          "old_text": "_runtime_put_sync(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tpm_runtime_put_sync(dev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1083,
+          "old_api": "v_pm_domain_detach",
+          "new_api": null,
+          "old_text": "v_pm_domain_detach(priv->pm[i], true);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdev_pm_domain_detach(priv->pm[i], true);",
+          "new_line_content": "\tfor (i = 0; priv->pm && i < priv->num_pms; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1088,
+          "old_api": "set_control_assert",
+          "new_api": null,
+          "old_text": "set_control_assert(priv->reset[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\treset_control_assert(priv->reset[i]);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_resets; i++)",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": "b_tailroom",
+          "new_api": null,
+          "old_text": "b_tailroom(skb) <",
+          "new_text": null,
+          "old_line_content": "\t\tif (unlikely(skb_tailroom(skb) < needed)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1091,
+          "old_api": "k_disable_unprepare",
+          "new_api": null,
+          "old_text": "k_disable_unprepare(priv->clock[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tclk_disable_unprepare(priv->clock[i]);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_clocks; i++)",
+          "content_same": false
+        },
+        {
+          "line": 1093,
+          "old_api": "ee_netdev",
+          "new_api": null,
+          "old_text": "ee_netdev(ndev);\n",
+          "new_text": null,
+          "old_line_content": "\tfree_netdev(ndev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": "b_copy_expand",
+          "new_api": null,
+          "old_text": "b_copy_expand(skb, 0, needed, GFP_ATOMIC);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tnskb = skb_copy_expand(skb, 0, needed, GFP_ATOMIC);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "v_kfree_skb",
+          "new_api": null,
+          "old_text": "v_kfree_skb(skb);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tdev_kfree_skb(skb);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "b_put_zero",
+          "new_api": null,
+          "old_text": "b_put_zero(skb, needed);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdata = skb_put_zero(skb, needed);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 1106,
+          "old_api": "DULE_DEVICE_TABLE",
+          "new_api": null,
+          "old_text": "DULE_DEVICE_TABLE(of, bcm6368_enetsw_of_match);\n",
+          "new_text": null,
+          "old_line_content": "MODULE_DEVICE_TABLE(of, bcm6368_enetsw_of_match);",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "a_map_single",
+          "new_api": null,
+          "old_text": "a_map_single(&priv->pdev->dev, skb->data, skb->len,\n\t\t\t\t       DMA_TO_DEVICE);\n",
+          "new_text": null,
+          "old_line_content": "\tdesc->address = dma_map_single(&priv->pdev->dev, skb->data, skb->len,",
+          "new_line_content": "\t/* fill descriptor */",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": "_match_ptr",
+          "new_api": null,
+          "old_text": "_match_ptr(bcm6368_enetsw_of_match),\n",
+          "new_text": null,
+          "old_line_content": "\t\t.of_match_table = of_match_ptr(bcm6368_enetsw_of_match),",
+          "new_line_content": "\t\t.name = \"bcm6368-enetsw\",",
+          "content_same": false
+        },
+        {
+          "line": 1116,
+          "old_api": "dule_platform_driver",
+          "new_api": null,
+          "old_text": "dule_platform_driver(bcm6368_enetsw_driver);\n",
+          "new_text": null,
+          "old_line_content": "module_platform_driver(bcm6368_enetsw_driver);",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": "b",
+          "new_api": null,
+          "old_text": "b();\n",
+          "new_text": null,
+          "old_line_content": "\twmb();",
+          "new_line_content": "\t * fields in correct order */",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": "b",
+          "new_api": null,
+          "old_text": "b();\n",
+          "new_text": null,
+          "old_line_content": "\twmb();",
+          "new_line_content": "\tdesc->len_stat = len_stat;",
+          "content_same": false
+        },
+        {
+          "line": 620,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_en_mask, DMAC_CHANCFG_REG,\n\t\t    priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_chan_en_mask, DMAC_CHANCFG_REG,",
+          "new_line_content": "\t/* kick tx dma */",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "tif_stop_queue",
+          "new_api": null,
+          "old_text": "tif_stop_queue(dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tnetif_stop_queue(dev);",
+          "new_line_content": "\tif (!priv->tx_desc_count)",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "in_unlock",
+          "new_api": null,
+          "old_text": "in_unlock(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\tspin_unlock(&priv->tx_lock);",
+          "new_line_content": "out_unlock:",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, 0, DMAC_CHANCFG_REG, chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, 0, DMAC_CHANCFG_REG, chan);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": "a_readl",
+          "new_api": null,
+          "old_text": "a_readl(priv, DMAC_CHANCFG_REG, chan);\n",
+          "new_text": null,
+          "old_line_content": "\t\tval = dma_readl(priv, DMAC_CHANCFG_REG, chan);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "elay",
+          "new_api": null,
+          "old_text": "elay(1);\n",
+          "new_text": null,
+          "old_line_content": "\t\tudelay(1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 666,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);",
+          "new_line_content": "\t/* mask all interrupts and request them */",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "quest_irq",
+          "new_api": null,
+          "old_text": "quest_irq(priv->irq_rx, bcm6368_enetsw_isr_dma,\n\t\t\t  0, dev->name, dev);\n",
+          "new_text": null,
+          "old_line_content": "\tret = request_irq(priv->irq_rx, bcm6368_enetsw_isr_dma,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": "quest_irq",
+          "new_api": null,
+          "old_text": "quest_irq(priv->irq_tx, bcm6368_enetsw_isr_dma,\n\t\t\t\t  0, dev->name, dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tret = request_irq(priv->irq_tx, bcm6368_enetsw_isr_dma,",
+          "new_line_content": "\tif (priv->irq_tx != -1) {",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": "a_alloc_coherent",
+          "new_api": null,
+          "old_text": "a_alloc_coherent(kdev, size, &priv->rx_desc_dma, GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\tp = dma_alloc_coherent(kdev, size, &priv->rx_desc_dma, GFP_KERNEL);",
+          "new_line_content": "\tsize = priv->rx_ring_size * sizeof(struct bcm6368_enetsw_desc);",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(kdev, \"cannot allocate rx ring %u\\n\", size);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdev_err(kdev, \"cannot allocate rx ring %u\\n\", size);",
+          "new_line_content": "\tif (!p) {",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "mset",
+          "new_api": null,
+          "old_text": "mset(p, 0, size);\n",
+          "new_text": null,
+          "old_line_content": "\tmemset(p, 0, size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": "a_alloc_coherent",
+          "new_api": null,
+          "old_text": "a_alloc_coherent(kdev, size, &priv->tx_desc_dma, GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\tp = dma_alloc_coherent(kdev, size, &priv->tx_desc_dma, GFP_KERNEL);",
+          "new_line_content": "\tsize = priv->tx_ring_size * sizeof(struct bcm6368_enetsw_desc);",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(kdev, \"cannot allocate tx ring\\n\");\n",
+          "new_text": null,
+          "old_line_content": "\t\tdev_err(kdev, \"cannot allocate tx ring\\n\");",
+          "new_line_content": "\tif (!p) {",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "mset",
+          "new_api": null,
+          "old_text": "mset(p, 0, size);\n",
+          "new_text": null,
+          "old_line_content": "\tmemset(p, 0, size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": "alloc",
+          "new_api": null,
+          "old_text": "alloc(sizeof(struct sk_buff *) * priv->tx_ring_size,\n\t\t\t       GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->tx_skb = kzalloc(sizeof(struct sk_buff *) * priv->tx_ring_size,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(kdev, \"cannot allocate tx skb queue\\n\");\n",
+          "new_text": null,
+          "old_line_content": "\t\tdev_err(kdev, \"cannot allocate tx skb queue\\n\");",
+          "new_line_content": "\tif (!priv->tx_skb) {",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "in_lock_init",
+          "new_api": null,
+          "old_text": "in_lock_init(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\tspin_lock_init(&priv->tx_lock);",
+          "new_line_content": "\tpriv->tx_curr_desc = 0;",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "alloc",
+          "new_api": null,
+          "old_text": "alloc(sizeof(unsigned char *) * priv->rx_ring_size,\n\t\t\t       GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->rx_buf = kzalloc(sizeof(unsigned char *) * priv->rx_ring_size,",
+          "new_line_content": "\t/* init & fill rx ring with buffers */",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(kdev, \"cannot allocate rx buffer queue\\n\");\n",
+          "new_text": null,
+          "old_line_content": "\t\tdev_err(kdev, \"cannot allocate rx buffer queue\\n\");",
+          "new_line_content": "\tif (!priv->rx_buf) {",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "a_writel",
+          "new_api": null,
+          "old_text": "a_writel(priv, DMA_BUFALLOC_FORCE_MASK | 0,\n\t\t   DMA_BUFALLOC_REG(priv->rx_chan));\n",
+          "new_text": null,
+          "old_line_content": "\tdma_writel(priv, DMA_BUFALLOC_FORCE_MASK | 0,",
+          "new_line_content": "\t/* initialize flow control buffer allocation */",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "m6368_enetsw_refill_rx",
+          "new_api": null,
+          "old_text": "m6368_enetsw_refill_rx(dev, false)) ",
+          "new_text": null,
+          "old_line_content": "\tif (bcm6368_enetsw_refill_rx(dev, false)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": "as_writel",
+          "new_api": null,
+          "old_text": "as_writel(priv, priv->rx_desc_dma,\n\t\t    DMAS_RSTART_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmas_writel(priv, priv->rx_desc_dma,",
+          "new_line_content": "\t/* write rx & tx ring addresses */",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "as_writel",
+          "new_api": null,
+          "old_text": "as_writel(priv, priv->tx_desc_dma,\n\t\t    DMAS_RSTART_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmas_writel(priv, priv->tx_desc_dma,",
+          "new_line_content": "\t\t    DMAS_RSTART_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "as_writel",
+          "new_api": null,
+          "old_text": "as_writel(priv, 0, DMAS_SRAM2_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmas_writel(priv, 0, DMAS_SRAM2_REG, priv->rx_chan);",
+          "new_line_content": "\t/* clear remaining state ram for rx & tx channel */",
+          "content_same": false
+        },
+        {
+          "line": 758,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_maxburst,\n\t\t    DMAC_MAXBURST_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_maxburst,",
+          "new_line_content": "\t/* set dma maximum burst len */",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_maxburst,\n\t\t    DMAC_MAXBURST_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_maxburst,",
+          "new_line_content": "\t\t    DMAC_MAXBURST_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 765,
+          "old_api": "A_FLOWCL_REG",
+          "new_api": null,
+          "old_text": "A_FLOWCL_REG(priv->rx_chan));",
+          "new_text": null,
+          "old_line_content": "\tdma_writel(priv, val, DMA_FLOWCL_REG(priv->rx_chan));",
+          "new_line_content": "\tval = priv->rx_ring_size / 3;",
+          "content_same": false
+        },
+        {
+          "line": 767,
+          "old_api": "A_FLOWCH_REG",
+          "new_api": null,
+          "old_text": "A_FLOWCH_REG(priv->rx_chan));",
+          "new_text": null,
+          "old_line_content": "\tdma_writel(priv, val, DMA_FLOWCH_REG(priv->rx_chan));",
+          "new_line_content": "\tval = (priv->rx_ring_size * 2) / 3;",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "b",
+          "new_api": null,
+          "old_text": "b();\n",
+          "new_text": null,
+          "old_line_content": "\twmb();",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IR_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "new_line_content": "\t/* watch \"packet transferred\" interrupt in rx and tx */",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IR_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "new_line_content": "\t\t    DMAC_IR_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 784,
+          "old_api": "pi_enable",
+          "new_api": null,
+          "old_text": "pi_enable(&priv->napi);\n",
+          "new_text": null,
+          "old_line_content": "\tnapi_enable(&priv->napi);",
+          "new_line_content": "\t/* make sure we enable napi before rx interrupt  */",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, DMAC_IR_PKTDONE_MASK,\n\t\t    DMAC_IRMASK_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, DMAC_IR_PKTDONE_MASK,",
+          "new_line_content": "\t\t    DMAC_IRMASK_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "tif_carrier_on",
+          "new_api": null,
+          "old_text": "tif_carrier_on(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tnetif_carrier_on(dev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 804,
+          "old_api": "a_unmap_single",
+          "new_api": null,
+          "old_text": "a_unmap_single(kdev, desc->address, priv->rx_buf_size,\n\t\t\t\t DMA_FROM_DEVICE);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdma_unmap_single(kdev, desc->address, priv->rx_buf_size,",
+          "new_line_content": "\t\tdesc = &priv->rx_desc_cpu[i];",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "b_free_frag",
+          "new_api": null,
+          "old_text": "b_free_frag(priv->rx_buf[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tskb_free_frag(priv->rx_buf[i]);",
+          "new_line_content": "\t\t\t\t DMA_FROM_DEVICE);",
+          "content_same": false
+        },
+        {
+          "line": 808,
+          "old_api": "ree",
+          "new_api": null,
+          "old_text": "ree(priv->rx_buf);\n",
+          "new_text": null,
+          "old_line_content": "\tkfree(priv->rx_buf);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": "ree",
+          "new_api": null,
+          "old_text": "ree(priv->tx_skb);\n",
+          "new_text": null,
+          "old_line_content": "\tkfree(priv->tx_skb);",
+          "new_line_content": "out_free_tx_skb:",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": "a_free_coherent",
+          "new_api": null,
+          "old_text": "a_free_coherent(kdev, priv->tx_desc_alloc_size,\n\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);\n",
+          "new_text": null,
+          "old_line_content": "\tdma_free_coherent(kdev, priv->tx_desc_alloc_size,",
+          "new_line_content": "out_free_tx_ring:",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "a_free_coherent",
+          "new_api": null,
+          "old_text": "a_free_coherent(kdev, priv->rx_desc_alloc_size,\n\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);\n",
+          "new_text": null,
+          "old_line_content": "\tdma_free_coherent(kdev, priv->rx_desc_alloc_size,",
+          "new_line_content": "out_free_rx_ring:",
+          "content_same": false
+        },
+        {
+          "line": 823,
+          "old_api": "ee_irq",
+          "new_api": null,
+          "old_text": "ee_irq(priv->irq_tx, dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tfree_irq(priv->irq_tx, dev);",
+          "new_line_content": "\tif (priv->irq_tx != -1)",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "ee_irq",
+          "new_api": null,
+          "old_text": "ee_irq(priv->irq_rx, dev);\n",
+          "new_text": null,
+          "old_line_content": "\tfree_irq(priv->irq_rx, dev);",
+          "new_line_content": "out_freeirq_rx:",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 838,
+          "old_api": "tif_stop_queue",
+          "new_api": null,
+          "old_text": "tif_stop_queue(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tnetif_stop_queue(dev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, 0, DMAC_IRMASK_REG, priv->rx_chan);",
+          "new_line_content": "\t/* mask all interrupts */",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": "m6368_enetsw_disable_dma",
+          "new_api": null,
+          "old_text": "m6368_enetsw_disable_dma(priv, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tbcm6368_enetsw_disable_dma(priv, priv->tx_chan);",
+          "new_line_content": "\t/* disable dma & mac */",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "m6368_enetsw_tx_reclaim",
+          "new_api": null,
+          "old_text": "m6368_enetsw_tx_reclaim(dev, 1);\n",
+          "new_text": null,
+          "old_line_content": "\tbcm6368_enetsw_tx_reclaim(dev, 1);",
+          "new_line_content": "\t/* force reclaim of all tx buffers */",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "IT_LIST_HEAD",
+          "new_api": null,
+          "old_text": "IT_LIST_HEAD(&rx_list);\n",
+          "new_text": null,
+          "old_line_content": "\tINIT_LIST_HEAD(&rx_list);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": "a_unmap_single_attrs",
+          "new_api": null,
+          "old_text": "a_unmap_single_attrs(kdev, desc->address, priv->rx_buf_size,\n\t\t\t\t       DMA_FROM_DEVICE,\n\t\t\t\t       DMA_ATTR_SKIP_CPU_SYNC);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdma_unmap_single_attrs(kdev, desc->address, priv->rx_buf_size,",
+          "new_line_content": "\t\tdesc = &priv->rx_desc_cpu[i];",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": "b_free_frag",
+          "new_api": null,
+          "old_text": "b_free_frag(priv->rx_buf[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tskb_free_frag(priv->rx_buf[i]);",
+          "new_line_content": "\t\t\t\t       DMA_ATTR_SKIP_CPU_SYNC);",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "ree",
+          "new_api": null,
+          "old_text": "ree(priv->rx_buf);\n",
+          "new_text": null,
+          "old_line_content": "\tkfree(priv->rx_buf);",
+          "new_line_content": "\t/* free remaining allocated memory */",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "a_free_coherent",
+          "new_api": null,
+          "old_text": "a_free_coherent(kdev, priv->tx_desc_alloc_size,\n\t\t\t  priv->tx_desc_cpu, priv->tx_desc_dma);\n",
+          "new_text": null,
+          "old_line_content": "\tdma_free_coherent(kdev, priv->tx_desc_alloc_size,",
+          "new_line_content": "\t\t\t  priv->rx_desc_cpu, priv->rx_desc_dma);",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": "ee_irq",
+          "new_api": null,
+          "old_text": "ee_irq(priv->irq_tx, dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tfree_irq(priv->irq_tx, dev);",
+          "new_line_content": "\tif (priv->irq_tx != -1)",
+          "content_same": false
+        },
+        {
+          "line": 897,
+          "old_api": "loc_etherdev",
+          "new_api": null,
+          "old_text": "loc_etherdev(sizeof(*priv));\n",
+          "new_text": null,
+          "old_line_content": "\tndev = alloc_etherdev(sizeof(*priv));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(ndev);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv = netdev_priv(ndev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": "_count_phandle_with_args",
+          "new_api": null,
+          "old_text": "_count_phandle_with_args(node, \"power-domains\",\n\t\t\t\t\t\t   \"#power-domain-cells\");\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->num_pms = of_count_phandle_with_args(node, \"power-domains\",",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": "vm_kcalloc",
+          "new_api": null,
+          "old_text": "vm_kcalloc(dev, priv->num_pms,\n\t\t\t\t\tsizeof(struct device *), GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->pm = devm_kcalloc(dev, priv->num_pms,",
+          "new_line_content": "\tif (priv->num_pms > 1) {",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": "vm_kcalloc",
+          "new_api": null,
+          "old_text": "vm_kcalloc(dev, priv->num_pms,\n\t\t\t\t\t     sizeof(struct device_link *),\n\t\t\t\t\t     GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->link_pm = devm_kcalloc(dev, priv->num_pms,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "npd_dev_pm_attach_by_id",
+          "new_api": null,
+          "old_text": "npd_dev_pm_attach_by_id(dev, i);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tpriv->pm[i] = genpd_dev_pm_attach_by_id(dev, i);",
+          "new_line_content": "\t\tfor (i = 0; i < priv->num_pms; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 924,
+          "old_api": "vice_link_add",
+          "new_api": null,
+          "old_text": "vice_link_add(dev, priv->pm[i],\n\t\t\t\tDL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |\n\t\t\t\tDL_FLAG_RPM_ACTIVE);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tpriv->link_pm[i] = device_link_add(dev, priv->pm[i],",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": "_runtime_enable",
+          "new_api": null,
+          "old_text": "_runtime_enable(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tpm_runtime_enable(dev);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "h_type_trans",
+          "new_api": null,
+          "old_text": "h_type_trans(skb, dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tskb->protocol = eth_type_trans(skb, dev);",
+          "new_line_content": "\t\tdev->stats.rx_packets++;",
+          "content_same": false
+        },
+        {
+          "line": 934,
+          "old_api": "_runtime_disable",
+          "new_api": null,
+          "old_text": "_runtime_disable(dev);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpm_runtime_disable(dev);",
+          "new_line_content": "\tif (ret < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "st_add_tail",
+          "new_api": null,
+          "old_text": "st_add_tail(&skb->list, &rx_list);\n",
+          "new_text": null,
+          "old_line_content": "\t\tlist_add_tail(&skb->list, &rx_list);",
+          "new_line_content": "\t} while (processed < budget);",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": "atform_get_resource_byname",
+          "new_api": null,
+          "old_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma\");\n",
+          "new_text": null,
+          "old_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "m6368_enetsw_refill_rx",
+          "new_api": null,
+          "old_text": "m6368_enetsw_refill_rx(dev, true);\n",
+          "new_text": null,
+          "old_line_content": "\t\tbcm6368_enetsw_refill_rx(dev, true);",
+          "new_line_content": "\tif (processed || !priv->rx_desc_count) {",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "atform_get_resource_byname",
+          "new_api": null,
+          "old_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM,\n\t\t\t\t\t   \"dma-channels\");\n",
+          "new_text": null,
+          "old_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_en_mask,\n\t\t\t    DMAC_CHANCFG_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdmac_writel(priv, priv->dma_chan_en_mask,",
+          "new_line_content": "\t\t/* kick rx dma */",
+          "content_same": false
+        },
+        {
+          "line": 946,
+          "old_api": "vm_ioremap_resource",
+          "new_api": null,
+          "old_text": "vm_ioremap_resource(dev, res);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->dma_chan = devm_ioremap_resource(dev, res);",
+          "new_line_content": "\t\t\t\t\t   \"dma-channels\");",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": "atform_get_resource_byname",
+          "new_api": null,
+          "old_text": "atform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma-sram\");\n",
+          "new_text": null,
+          "old_line_content": "\tres = platform_get_resource_byname(pdev, IORESOURCE_MEM, \"dma-sram\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 955,
+          "old_api": "atform_get_irq_byname",
+          "new_api": null,
+          "old_text": "atform_get_irq_byname(pdev, \"rx\");\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->irq_rx = platform_get_irq_byname(pdev, \"rx\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 446,
+          "old_api": "tdev_priv",
+          "new_api": null,
+          "old_text": "tdev_priv(dev);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = netdev_priv(dev);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 959,
+          "old_api": "atform_get_irq_byname",
+          "new_api": null,
+          "old_text": "atform_get_irq_byname(pdev, \"tx\");\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->irq_tx = platform_get_irq_byname(pdev, \"tx\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "vice_property_read_u32",
+          "new_api": null,
+          "old_text": "vice_property_read_u32(dev, \"dma-rx\", &priv->rx_chan))\n",
+          "new_text": null,
+          "old_line_content": "\tif (device_property_read_u32(dev, \"dma-rx\", &priv->rx_chan))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "in_lock",
+          "new_api": null,
+          "old_text": "in_lock(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\t\tspin_lock(&priv->tx_lock);",
+          "new_line_content": "\t\t * is called with bh disabled */",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": "vice_property_read_u32",
+          "new_api": null,
+          "old_text": "vice_property_read_u32(dev, \"dma-tx\", &priv->tx_chan))\n",
+          "new_text": null,
+          "old_line_content": "\tif (device_property_read_u32(dev, \"dma-tx\", &priv->tx_chan))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "in_unlock",
+          "new_api": null,
+          "old_text": "in_unlock(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tspin_unlock(&priv->tx_lock);",
+          "new_line_content": "\t\tif (!force && (desc->len_stat & DMADESC_OWNER_MASK)) {",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "b",
+          "new_api": null,
+          "old_text": "b();\n",
+          "new_text": null,
+          "old_line_content": "\t\trmb();",
+          "new_line_content": "\t\t * before we checked ownership */",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "a_unmap_single",
+          "new_api": null,
+          "old_text": "a_unmap_single(&priv->pdev->dev, desc->address, skb->len,\n\t\t\t\t DMA_TO_DEVICE);\n",
+          "new_text": null,
+          "old_line_content": "\t\tdma_unmap_single(&priv->pdev->dev, desc->address, skb->len,",
+          "new_line_content": "\t\tpriv->tx_skb[priv->tx_dirty_desc] = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 982,
+          "old_api": "_get_mac_address",
+          "new_api": null,
+          "old_text": "_get_mac_address(node, ndev->dev_addr);\n",
+          "new_text": null,
+          "old_line_content": "\tof_get_mac_address(node, ndev->dev_addr);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": "ndom_ether_addr",
+          "new_api": null,
+          "old_text": "ndom_ether_addr(ndev->dev_addr);\n",
+          "new_text": null,
+          "old_line_content": "\t\trandom_ether_addr(ndev->dev_addr);",
+          "new_line_content": "\t} else {",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "in_unlock",
+          "new_api": null,
+          "old_text": "in_unlock(&priv->tx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\t\tspin_unlock(&priv->tx_lock);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 990,
+          "old_api": "IGN",
+          "new_api": null,
+          "old_text": "IGN(ndev->mtu + ENETSW_MTU_OVERHEAD,\n\t\t\t\t  priv->dma_maxburst * 4);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->rx_buf_size = ALIGN(ndev->mtu + ENETSW_MTU_OVERHEAD,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": "ETSW_FRAG_SIZE",
+          "new_api": null,
+          "old_text": "ETSW_FRAG_SIZE(priv->rx_buf_size);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->rx_frag_size = ENETSW_FRAG_SIZE(priv->rx_buf_size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "pi_consume_skb",
+          "new_api": null,
+          "old_text": "pi_consume_skb(skb, !force);\n",
+          "new_text": null,
+          "old_line_content": "\t\tnapi_consume_skb(skb, !force);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 995,
+          "old_api": "_clk_get_parent_count",
+          "new_api": null,
+          "old_text": "_clk_get_parent_count(node);\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->num_clocks = of_clk_get_parent_count(node);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 997,
+          "old_api": "vm_kcalloc",
+          "new_api": null,
+          "old_text": "vm_kcalloc(dev, priv->num_clocks,\n\t\t\t\t\t   sizeof(struct clk *), GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->clock = devm_kcalloc(dev, priv->num_clocks,",
+          "new_line_content": "\tif (priv->num_clocks) {",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "tif_queue_stopped",
+          "new_api": null,
+          "old_text": "tif_queue_stopped(dev) &",
+          "new_text": null,
+          "old_line_content": "\tif (netif_queue_stopped(dev) && released)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": "_clk_get",
+          "new_api": null,
+          "old_text": "_clk_get(node, i);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->clock[i] = of_clk_get(node, i);",
+          "new_line_content": "\tfor (i = 0; i < priv->num_clocks; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": "k_prepare_enable",
+          "new_api": null,
+          "old_text": "k_prepare_enable(priv->clock[i]);\n",
+          "new_text": null,
+          "old_line_content": "\t\tret = clk_prepare_enable(priv->clock[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "ntainer_of",
+          "new_api": null,
+          "old_text": "ntainer_of(napi, struct bcm6368_enetsw, napi);\n",
+          "new_text": null,
+          "old_line_content": "\tstruct bcm6368_enetsw *priv = container_of(napi, struct bcm6368_enetsw, napi);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1011,
+          "old_api": "v_err",
+          "new_api": null,
+          "old_text": "v_err(dev, \"error enabling clock %d\\n\", i);\n",
+          "new_text": null,
+          "old_line_content": "\t\t\tdev_err(dev, \"error enabling clock %d\\n\", i);",
+          "new_line_content": "\t\tif (ret) {",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IR_REG, priv->rx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "new_line_content": "\t/* ack interrupts */",
+          "content_same": false
+        },
+        {
+          "line": 1016,
+          "old_api": "_count_phandle_with_args",
+          "new_api": null,
+          "old_text": "_count_phandle_with_args(node, \"resets\",\n\t\t\t\t\t\t      \"#reset-cells\");\n",
+          "new_text": null,
+          "old_line_content": "\tpriv->num_resets = of_count_phandle_with_args(node, \"resets\",",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": "ac_writel",
+          "new_api": null,
+          "old_text": "ac_writel(priv, priv->dma_chan_int_mask,\n\t\t\t DMAC_IR_REG, priv->tx_chan);\n",
+          "new_text": null,
+          "old_line_content": "\tdmac_writel(priv, priv->dma_chan_int_mask,",
+          "new_line_content": "\t\t\t DMAC_IR_REG, priv->rx_chan);",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": "vm_kcalloc",
+          "new_api": null,
+          "old_text": "vm_kcalloc(dev, priv->num_resets,\n\t\t\t\t\t   sizeof(struct reset_control *),\n\t\t\t\t\t   GFP_KERNEL);\n",
+          "new_text": null,
+          "old_line_content": "\t\tpriv->reset = devm_kcalloc(dev, priv->num_resets,",
+          "new_line_content": "\tif (priv->num_resets) {",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": "m6368_enetsw_tx_reclaim",
+          "new_api": null,
+          "old_text": "m6368_enetsw_tx_reclaim(dev, 0);\n",
+          "new_text": null,
+          "old_line_content": "\tbcm6368_enetsw_tx_reclaim(dev, 0);",
+          "new_line_content": "\t/* reclaim sent skb */",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": "in_lock",
+          "new_api": null,
+          "old_text": "in_lock(&priv->rx_lock);\n",
+          "new_text": null,
+          "old_line_content": "\tspin_lock(&priv->rx_lock);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 38,
+      "total_additions": 138,
+      "total_deletions": 137,
+      "total_api_changes": 313
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 313,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          338,
+          350
+        ]
+      }
+    },
+    "api_calls_before": 223,
+    "api_calls_after": 224,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 2,
+      "total_diff_lines": 36
+    }
+  }
+}

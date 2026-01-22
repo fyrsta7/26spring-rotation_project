@@ -1,0 +1,15 @@
+diff --git a/Telegram/SourceFiles/ui/image/image.cpp b/Telegram/SourceFiles/ui/image/image.cpp
+index 157f8e016..8b38382bf 100644
+--- a/Telegram/SourceFiles/ui/image/image.cpp
++++ b/Telegram/SourceFiles/ui/image/image.cpp
+@@ -1011,7 +1011,9 @@ void Image::invalidateSizeCache() const {
+ 
+ Image::~Image() {
+ 	if (this != Empty() && this != BlankMedia()) {
+-		unload();
++		invalidateSizeCache();
++		ActiveCache().decrement(ComputeUsage(_data));
++		_data = QImage();
+ 		ActiveCache().remove(this);
+ 	}
+ }

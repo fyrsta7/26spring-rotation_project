@@ -1,0 +1,12 @@
+    default:
+        VERIFY_NOT_REACHED();
+    }
+}
+
+// 7.1.3 ToNumeric ( value ), https://tc39.es/ecma262/#sec-tonumeric
+FLATTEN ThrowCompletionOr<Value> Value::to_numeric(VM& vm) const
+{
+    // 1. Let primValue be ? ToPrimitive(value, number).
+    auto primitive_value = TRY(to_primitive(vm, Value::PreferredType::Number));
+
+    // 2. If primValue is a BigInt, return primValue.

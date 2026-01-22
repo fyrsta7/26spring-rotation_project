@@ -1,0 +1,30 @@
+diff --git a/sql/sql_planner.cc b/sql/sql_planner.cc
+index 6a5caf4d7d2..d08ccbd4ac9 100644
+--- a/sql/sql_planner.cc
++++ b/sql/sql_planner.cc
+@@ -327,6 +327,12 @@ Key_use* Optimize_table_order::find_best_ref(const JOIN_TAB *tab,
+               prefix_rowcount *
+               table->file->index_only_read_time(key, tmp_fanout);
+           }
++          else if (key == table->s->primary_key &&
++                   table->file->primary_key_is_clustered())
++          {
++            cur_read_cost= prefix_rowcount *
++              table->file->read_time(key, 1, (ha_rows)tmp_fanout);
++          }
+           else
+             cur_read_cost= prefix_rowcount * min(tmp_fanout, tab->worst_seeks);
+         }
+@@ -506,6 +512,12 @@ Key_use* Optimize_table_order::find_best_ref(const JOIN_TAB *tab,
+           cur_read_cost= prefix_rowcount *
+             table->file->index_only_read_time(key, tmp_fanout);
+         }
++        else if (key == table->s->primary_key &&
++                 table->file->primary_key_is_clustered())
++        {
++          cur_read_cost= prefix_rowcount *
++            table->file->read_time(key, 1, (ha_rows)tmp_fanout);
++        }
+         else
+           cur_read_cost= prefix_rowcount * min(tmp_fanout, tab->worst_seeks);
+       }

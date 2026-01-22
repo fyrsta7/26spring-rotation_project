@@ -1,0 +1,3134 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/1bee2d5e08208b01e496efa55c36c28422eaf35f",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/1bee2d5e08208b01e496efa55c36c28422eaf35f/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/1bee2d5e08208b01e496efa55c36c28422eaf35f/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/1bee2d5e08208b01e496efa55c36c28422eaf35f/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 681,
+          "old_api": "ZSTD_wildcopy",
+          "new_api": "ZSTD_copy8",
+          "old_text": "ZSTD_wildcopy(op, *litPtr, sequence.litLength)",
+          "new_text": "ZSTD_copy8(op, *litPtr)",
+          "old_line_content": "    ZSTD_wildcopy(op, *litPtr, sequence.litLength);   /* note : since oLitEnd <= oend-WILDCOPY_OVERLENGTH, no risk of overwrite beyond oend */",
+          "new_line_content": "    ZSTD_copy8(op, *litPtr);",
+          "content_same": false
+        },
+        {
+          "line": 768,
+          "old_api": "FSE_initDState",
+          "new_api": "BIT_initDStream",
+          "old_text": "FSE_initDState(&(seqState.stateLL), &(seqState.DStream), DTableLL)",
+          "new_text": "BIT_initDStream(&(seqState.DStream), ip, iend-ip)",
+          "old_line_content": "        FSE_initDState(&(seqState.stateLL), &(seqState.DStream), DTableLL);",
+          "new_line_content": "        { size_t const errorCode = BIT_initDStream(&(seqState.DStream), ip, iend-ip);",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": "FSE_initDState",
+          "new_api": "ERROR",
+          "old_text": "FSE_initDState(&(seqState.stateOffb), &(seqState.DStream), DTableOffb)",
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "        FSE_initDState(&(seqState.stateOffb), &(seqState.DStream), DTableOffb);",
+          "new_line_content": "          if (ERR_isError(errorCode)) return ERROR(corruption_detected); }",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "BIT_reloadDStream",
+          "new_api": "FSE_initDState",
+          "old_text": "BIT_reloadDStream(&(seqState.DStream))",
+          "new_text": "FSE_initDState(&(seqState.stateML), &(seqState.DStream), DTableML)",
+          "old_line_content": "        for ( ; (BIT_reloadDStream(&(seqState.DStream)) <= BIT_DStream_completed) && nbSeq ; ) {",
+          "new_line_content": "        FSE_initDState(&(seqState.stateML), &(seqState.DStream), DTableML);",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": "ZSTD_decodeSequence",
+          "new_api": "BIT_reloadDStream",
+          "old_text": "ZSTD_decodeSequence(&seqState)",
+          "new_text": "BIT_reloadDStream(&(seqState.DStream))",
+          "old_line_content": "            {   seq_t const sequence = ZSTD_decodeSequence(&seqState);",
+          "new_line_content": "        for ( ; (BIT_reloadDStream(&(seqState.DStream)) <= BIT_DStream_completed) && nbSeq ; ) {",
+          "content_same": false
+        },
+        {
+          "line": 776,
+          "old_api": "ZSTD_isError",
+          "new_api": "ZSTD_decodeSequence",
+          "old_text": "ZSTD_isError(oneSeqSize)",
+          "new_text": "ZSTD_decodeSequence(&seqState)",
+          "old_line_content": "                if (ZSTD_isError(oneSeqSize)) return oneSeqSize;",
+          "new_line_content": "            {   seq_t const sequence = ZSTD_decodeSequence(&seqState);",
+          "content_same": false
+        },
+        {
+          "line": 783,
+          "old_api": "U32)(seqState.prevOffset[i])",
+          "new_api": "ERROR",
+          "old_text": "U32)(seqState.prevOffset[i])",
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "        { U32 i; for (i=0; i<ZSTD_REP_NUM; i++) dctx->rep[i] = (U32)(seqState.prevOffset[i]); }",
+          "new_line_content": "        if (nbSeq) return ERROR(corruption_detected);",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "ZSTD_isError",
+          "new_api": "ZSTD_frameHeaderSize",
+          "old_text": "ZSTD_isError(frameHeaderSize)",
+          "new_text": "ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min)",
+          "old_line_content": "        if (ZSTD_isError(frameHeaderSize)) return frameHeaderSize;",
+          "new_line_content": "    {   size_t const frameHeaderSize = ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min);",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": "ZSTD_decodeFrameHeader",
+          "new_api": "ZSTD_isError",
+          "old_text": "ZSTD_decodeFrameHeader(dctx, src, frameHeaderSize)",
+          "new_text": "ZSTD_isError(frameHeaderSize)",
+          "old_line_content": "        result = ZSTD_decodeFrameHeader(dctx, src, frameHeaderSize);",
+          "new_line_content": "        if (ZSTD_isError(frameHeaderSize)) return frameHeaderSize;",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": "ZSTD_isError",
+          "new_api": "ERROR",
+          "old_text": "ZSTD_isError(result)",
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "        if (ZSTD_isError(result)) return result;",
+          "new_line_content": "        if (srcSize < frameHeaderSize+ZSTD_blockHeaderSize) return ERROR(srcSize_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": "ERROR",
+          "new_api": "XXH64_digest",
+          "old_text": "ERROR(checksum_wrong)",
+          "new_text": "XXH64_digest(&dctx->xxhState)",
+          "old_line_content": "        if (remainingSize<4) return ERROR(checksum_wrong);",
+          "new_line_content": "        U32 const checkCalc = (U32)XXH64_digest(&dctx->xxhState);",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": "ZSTD_decompressFrame",
+          "new_api": "ZSTD_copyDCtx",
+          "old_text": "ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": "ZSTD_copyDCtx(dctx, refDCtx)",
+          "old_line_content": "    return ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "    ZSTD_copyDCtx(dctx, refDCtx);",
+          "content_same": false
+        },
+        {
+          "line": 953,
+          "old_api": "ZSTD_decompressBegin_usingDict",
+          "new_api": "ZSTD_decompressLegacy",
+          "old_text": "ZSTD_decompressBegin_usingDict(dctx, dict, dictSize)",
+          "new_text": "ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, dict, dictSize)",
+          "old_line_content": "    ZSTD_decompressBegin_usingDict(dctx, dict, dictSize);",
+          "new_line_content": "    if (ZSTD_isLegacy(src, srcSize)) return ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 955,
+          "old_api": "ZSTD_decompressFrame",
+          "new_api": "ZSTD_decompressBegin_usingDict",
+          "old_text": "ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": "ZSTD_decompressBegin_usingDict(dctx, dict, dictSize)",
+          "old_line_content": "    return ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "    ZSTD_decompressBegin_usingDict(dctx, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 971,
+          "old_api": "ZSTD_decompressDCtx",
+          "new_api": "ZSTD_createDCtx",
+          "old_text": "ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": "ZSTD_createDCtx()",
+          "old_line_content": "    regenSize = ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "    ZSTD_DCtx* const dctx = ZSTD_createDCtx();",
+          "content_same": false
+        },
+        {
+          "line": 972,
+          "old_api": "ZSTD_freeDCtx",
+          "new_api": "ERROR",
+          "old_text": "ZSTD_freeDCtx(dctx)",
+          "new_text": "ERROR(memory_allocation)",
+          "old_line_content": "    ZSTD_freeDCtx(dctx);",
+          "new_line_content": "    if (dctx==NULL) return ERROR(memory_allocation);",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": "memcpy",
+          "new_api": "ERROR",
+          "old_text": "memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min)",
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "            memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min);",
+          "new_line_content": "        if (srcSize != ZSTD_frameHeaderSize_min) return ERROR(srcSize_wrong);   /* impossible */",
+          "content_same": false
+        },
+        {
+          "line": 1030,
+          "old_api": "memcpy",
+          "new_api": "ZSTD_frameHeaderSize",
+          "old_text": "memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min)",
+          "new_text": "ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min)",
+          "old_line_content": "        memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min);",
+          "new_line_content": "        dctx->headerSize = ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min);",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": "ZSTD_isError",
+          "new_api": "memcpy",
+          "old_text": "ZSTD_isError(result)",
+          "new_text": "memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected)",
+          "old_line_content": "            if (ZSTD_isError(result)) return result;",
+          "new_line_content": "            memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected);",
+          "content_same": false
+        },
+        {
+          "line": 1091,
+          "old_api": "ZSTD_isError",
+          "new_api": "ERROR",
+          "old_text": "ZSTD_isError(rSize)",
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "            if (ZSTD_isError(rSize)) return rSize;",
+          "new_line_content": "                return ERROR(corruption_detected);",
+          "content_same": false
+        },
+        {
+          "line": 1112,
+          "old_api": "ERROR",
+          "new_api": "XXH64_digest",
+          "old_text": "ERROR(checksum_wrong)",
+          "new_text": "XXH64_digest(&dctx->xxhState)",
+          "old_line_content": "            if (check32 != h32) return ERROR(checksum_wrong);",
+          "new_line_content": "        {   U32 const h32 = (U32)XXH64_digest(&dctx->xxhState);",
+          "content_same": false
+        },
+        {
+          "line": 1157,
+          "old_api": "FSE_buildDTable",
+          "new_api": "FSE_readNCount",
+          "old_text": "FSE_buildDTable(dctx->OffTable, offcodeNCount, offcodeMaxValue, offcodeLog)",
+          "new_text": "FSE_readNCount(offcodeNCount, &offcodeMaxValue, &offcodeLog, dictPtr, dictEnd-dictPtr)",
+          "old_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->OffTable, offcodeNCount, offcodeMaxValue, offcodeLog);",
+          "new_line_content": "        size_t const offcodeHeaderSize = FSE_readNCount(offcodeNCount, &offcodeMaxValue, &offcodeLog, dictPtr, dictEnd-dictPtr);",
+          "content_same": false
+        },
+        {
+          "line": 1166,
+          "old_api": "FSE_buildDTable",
+          "new_api": "FSE_readNCount",
+          "old_text": "FSE_buildDTable(dctx->MLTable, matchlengthNCount, matchlengthMaxValue, matchlengthLog)",
+          "new_text": "FSE_readNCount(matchlengthNCount, &matchlengthMaxValue, &matchlengthLog, dictPtr, dictEnd-dictPtr)",
+          "old_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->MLTable, matchlengthNCount, matchlengthMaxValue, matchlengthLog);",
+          "new_line_content": "        size_t const matchlengthHeaderSize = FSE_readNCount(matchlengthNCount, &matchlengthMaxValue, &matchlengthLog, dictPtr, dictEnd-dictPtr);",
+          "content_same": false
+        },
+        {
+          "line": 1175,
+          "old_api": "FSE_buildDTable",
+          "new_api": "FSE_readNCount",
+          "old_text": "FSE_buildDTable(dctx->LLTable, litlengthNCount, litlengthMaxValue, litlengthLog)",
+          "new_text": "FSE_readNCount(litlengthNCount, &litlengthMaxValue, &litlengthLog, dictPtr, dictEnd-dictPtr)",
+          "old_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->LLTable, litlengthNCount, litlengthMaxValue, litlengthLog);",
+          "new_line_content": "        size_t const litlengthHeaderSize = FSE_readNCount(litlengthNCount, &litlengthMaxValue, &litlengthLog, dictPtr, dictEnd-dictPtr);",
+          "content_same": false
+        },
+        {
+          "line": 1195,
+          "old_api": "ZSTD_refDictContent",
+          "new_api": "MEM_readLE32",
+          "old_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "new_text": "MEM_readLE32(dict)",
+          "old_line_content": "            return ZSTD_refDictContent(dctx, dict, dictSize);   /* pure content mode */",
+          "new_line_content": "    {   U32 const magic = MEM_readLE32(dict);",
+          "content_same": false
+        },
+        {
+          "line": 1197,
+          "old_api": "MEM_readLE32",
+          "new_api": "ZSTD_refDictContent",
+          "old_text": "MEM_readLE32((const char*)dict + 4)",
+          "new_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "old_line_content": "    dctx->dictID = MEM_readLE32((const char*)dict + 4);",
+          "new_line_content": "            return ZSTD_refDictContent(dctx, dict, dictSize);   /* pure content mode */",
+          "content_same": false
+        },
+        {
+          "line": 1243,
+          "old_api": "ZSTD_createDCtx_advanced",
+          "new_api": "customAlloc",
+          "old_text": "ZSTD_createDCtx_advanced(customMem)",
+          "new_text": "customMem.customAlloc(customMem.opaque, sizeof(*ddict))",
+          "old_line_content": "        ZSTD_DCtx* const dctx = ZSTD_createDCtx_advanced(customMem);",
+          "new_line_content": "    {   ZSTD_DDict* const ddict = (ZSTD_DDict*) customMem.customAlloc(customMem.opaque, sizeof(*ddict));",
+          "content_same": false
+        },
+        {
+          "line": 1254,
+          "old_api": "ZSTD_isError",
+          "new_api": "memcpy",
+          "old_text": "ZSTD_isError(errorCode)",
+          "new_text": "memcpy(dictContent, dict, dictSize)",
+          "old_line_content": "            if (ZSTD_isError(errorCode)) {",
+          "new_line_content": "        memcpy(dictContent, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1255,
+          "old_api": "customFree",
+          "new_api": "ZSTD_decompressBegin_usingDict",
+          "old_text": "customMem.customFree(customMem.opaque, dictContent)",
+          "new_text": "ZSTD_decompressBegin_usingDict(dctx, dictContent, dictSize)",
+          "old_line_content": "                customMem.customFree(customMem.opaque, dictContent);",
+          "new_line_content": "        {   size_t const errorCode = ZSTD_decompressBegin_usingDict(dctx, dictContent, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1256,
+          "old_api": "customFree",
+          "new_api": "ZSTD_isError",
+          "old_text": "customMem.customFree(customMem.opaque, ddict)",
+          "new_text": "ZSTD_isError(errorCode)",
+          "old_line_content": "                customMem.customFree(customMem.opaque, ddict);",
+          "new_line_content": "            if (ZSTD_isError(errorCode)) {",
+          "content_same": false
+        },
+        {
+          "line": 1283,
+          "old_api": "cFree",
+          "new_api": "ZSTD_freeDCtx",
+          "old_text": "cFree(opaque, ddict)",
+          "new_text": "ZSTD_freeDCtx(ddict->refContext)",
+          "old_line_content": "    cFree(opaque, ddict);",
+          "new_line_content": "    ZSTD_freeDCtx(ddict->refContext);",
+          "content_same": false
+        },
+        {
+          "line": 1298,
+          "old_api": "ZSTD_decompress_usingPreparedDCtx",
+          "new_api": "ZSTD_decompressLegacy",
+          "old_text": "ZSTD_decompress_usingPreparedDCtx(dctx, ddict->refContext,\n                                           dst, dstCapacity,\n                                           src, srcSize)",
+          "new_text": "ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, ddict->dict, ddict->dictSize)",
+          "old_line_content": "    return ZSTD_decompress_usingPreparedDCtx(dctx, ddict->refContext,",
+          "new_line_content": "    if (ZSTD_isLegacy(src, srcSize)) return ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, ddict->dict, ddict->dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1347,
+          "old_api": "memset",
+          "new_api": "customAlloc",
+          "old_text": "memset(zds, 0, sizeof(ZSTD_DStream))",
+          "new_text": "customMem.customAlloc(customMem.opaque, sizeof(ZSTD_DStream))",
+          "old_line_content": "    memset(zds, 0, sizeof(ZSTD_DStream));",
+          "new_line_content": "    zds = (ZSTD_DStream*)customMem.customAlloc(customMem.opaque, sizeof(ZSTD_DStream));",
+          "content_same": false
+        },
+        {
+          "line": 1349,
+          "old_api": "ZSTD_createDCtx_advanced",
+          "new_api": "memset",
+          "old_text": "ZSTD_createDCtx_advanced(customMem)",
+          "new_text": "memset(zds, 0, sizeof(ZSTD_DStream))",
+          "old_line_content": "    zds->zd = ZSTD_createDCtx_advanced(customMem);",
+          "new_line_content": "    memset(zds, 0, sizeof(ZSTD_DStream));",
+          "content_same": false
+        },
+        {
+          "line": 1350,
+          "old_api": "ZSTD_freeDStream",
+          "new_api": "memcpy",
+          "old_text": "ZSTD_freeDStream(zds)",
+          "new_text": "memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem))",
+          "old_line_content": "    if (zds->zd == NULL) { ZSTD_freeDStream(zds); return NULL; }",
+          "new_line_content": "    memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem));",
+          "content_same": false
+        },
+        {
+          "line": 1360,
+          "old_api": "customFree",
+          "new_api": "ZSTD_freeDCtx",
+          "old_text": "zds->customMem.customFree(zds->customMem.opaque, zds->outBuff)",
+          "new_text": "ZSTD_freeDCtx(zds->zd)",
+          "old_line_content": "    if (zds->outBuff) zds->customMem.customFree(zds->customMem.opaque, zds->outBuff);",
+          "new_line_content": "    ZSTD_freeDCtx(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 1428,
+          "old_api": "ZSTD_isError",
+          "new_api": "ZSTD_nextSrcSizeToDecompress",
+          "old_text": "ZSTD_isError(h1Result)",
+          "new_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "old_line_content": "                if (ZSTD_isError(h1Result)) return h1Result;   /* should not happen : already checked */",
+          "new_line_content": "            {   size_t const h1Size = ZSTD_nextSrcSizeToDecompress(zds->zd);  /* == ZSTD_frameHeaderSize_min */",
+          "content_same": false
+        },
+        {
+          "line": 1430,
+          "old_api": "ZSTD_nextSrcSizeToDecompress",
+          "new_api": "ZSTD_isError",
+          "old_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "new_text": "ZSTD_isError(h1Result)",
+          "old_line_content": "                    size_t const h2Size = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "new_line_content": "                if (ZSTD_isError(h1Result)) return h1Result;   /* should not happen : already checked */",
+          "content_same": false
+        },
+        {
+          "line": 1432,
+          "old_api": "ZSTD_isError",
+          "new_api": "ZSTD_nextSrcSizeToDecompress",
+          "old_text": "ZSTD_isError(h2Result)",
+          "new_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "old_line_content": "                    if (ZSTD_isError(h2Result)) return h2Result;",
+          "new_line_content": "                    size_t const h2Size = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 1444,
+          "old_api": "customAlloc",
+          "new_api": "customFree",
+          "old_text": "zds->customMem.customAlloc(zds->customMem.opaque, blockSize)",
+          "new_text": "zds->customMem.customFree(zds->customMem.opaque, zds->inBuff)",
+          "old_line_content": "                    zds->inBuff = (char*)zds->customMem.customAlloc(zds->customMem.opaque, blockSize);",
+          "new_line_content": "                    zds->customMem.customFree(zds->customMem.opaque, zds->inBuff);",
+          "content_same": false
+        },
+        {
+          "line": 1450,
+          "old_api": "customAlloc",
+          "new_api": "customFree",
+          "old_text": "zds->customMem.customAlloc(zds->customMem.opaque, neededOutSize)",
+          "new_text": "zds->customMem.customFree(zds->customMem.opaque, zds->outBuff)",
+          "old_line_content": "                    zds->outBuff = (char*)zds->customMem.customAlloc(zds->customMem.opaque, neededOutSize);",
+          "new_line_content": "                    zds->customMem.customFree(zds->customMem.opaque, zds->outBuff);",
+          "content_same": false
+        },
+        {
+          "line": 1526,
+          "old_api": "ZSTD_nextInputType",
+          "new_api": "ZSTD_nextSrcSizeToDecompress",
+          "old_text": "ZSTD_nextInputType(zds->zd)",
+          "new_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "old_line_content": "        nextSrcSizeHint += ZSTD_blockHeaderSize * (ZSTD_nextInputType(zds->zd) == ZSTDnit_block);",
+          "new_line_content": "    {   size_t nextSrcSizeHint = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1024,
+          "old_api": null,
+          "new_api": "MEM_readLE32",
+          "old_text": null,
+          "new_text": "MEM_readLE32(src)",
+          "old_line_content": "            dctx->expected = ZSTD_skippableHeaderSize - ZSTD_frameHeaderSize_min; /* magic number + skippable frame length */",
+          "new_line_content": "        if ((MEM_readLE32(src) & 0xFFFFFFF0U) == ZSTD_MAGIC_SKIPPABLE_START) {",
+          "content_same": false
+        },
+        {
+          "line": 1025,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min)",
+          "old_line_content": "            dctx->stage = ZSTDds_decodeSkippableHeader;",
+          "new_line_content": "            memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min);",
+          "content_same": false
+        },
+        {
+          "line": 1031,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(dctx->headerSize)",
+          "old_line_content": "        if (dctx->headerSize > ZSTD_frameHeaderSize_min) {",
+          "new_line_content": "        if (ZSTD_isError(dctx->headerSize)) return dctx->headerSize;",
+          "content_same": false
+        },
+        {
+          "line": 1032,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min)",
+          "old_line_content": "            dctx->expected = dctx->headerSize - ZSTD_frameHeaderSize_min;",
+          "new_line_content": "        memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_min);",
+          "content_same": false
+        },
+        {
+          "line": 1043,
+          "old_api": null,
+          "new_api": "ZSTD_decodeFrameHeader",
+          "old_text": null,
+          "new_text": "ZSTD_decodeFrameHeader(dctx, dctx->headerBuffer, dctx->headerSize)",
+          "old_line_content": "            dctx->expected = ZSTD_blockHeaderSize;",
+          "new_line_content": "            result = ZSTD_decodeFrameHeader(dctx, dctx->headerBuffer, dctx->headerSize);",
+          "content_same": false
+        },
+        {
+          "line": 1044,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(result)",
+          "old_line_content": "            dctx->stage = ZSTDds_decodeBlockHeader;",
+          "new_line_content": "            if (ZSTD_isError(result)) return result;",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": null,
+          "new_api": "ZSTD_getcBlockSize",
+          "old_text": null,
+          "new_text": "ZSTD_getcBlockSize(src, ZSTD_blockHeaderSize, &bp)",
+          "old_line_content": "            dctx->expected = cBlockSize;",
+          "new_line_content": "            size_t const cBlockSize = ZSTD_getcBlockSize(src, ZSTD_blockHeaderSize, &bp);",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(cBlockSize)",
+          "old_line_content": "            dctx->bType = bp.blockType;",
+          "new_line_content": "            if (ZSTD_isError(cBlockSize)) return cBlockSize;",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": null,
+          "new_api": "ZSTD_decompressBlock_internal",
+          "old_text": null,
+          "new_text": "ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "            case bt_raw :",
+          "new_line_content": "                rSize = ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1084,
+          "old_api": null,
+          "new_api": "ZSTD_copyRawBlock",
+          "old_text": null,
+          "new_text": "ZSTD_copyRawBlock(dst, dstCapacity, src, srcSize)",
+          "old_line_content": "            case bt_rle :",
+          "new_line_content": "                rSize = ZSTD_copyRawBlock(dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1087,
+          "old_api": null,
+          "new_api": "ZSTD_setRleBlock",
+          "old_text": null,
+          "new_text": "ZSTD_setRleBlock(dst, dstCapacity, src, srcSize, dctx->rleSize)",
+          "old_line_content": "            case bt_reserved :   /* should never happen */",
+          "new_line_content": "                rSize = ZSTD_setRleBlock(dst, dstCapacity, src, srcSize, dctx->rleSize);",
+          "content_same": false
+        },
+        {
+          "line": 1093,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(rSize)",
+          "old_line_content": "",
+          "new_line_content": "            if (ZSTD_isError(rSize)) return rSize;",
+          "content_same": false
+        },
+        {
+          "line": 1094,
+          "old_api": null,
+          "new_api": "XXH64_update",
+          "old_text": null,
+          "new_text": "XXH64_update(&dctx->xxhState, dst, rSize)",
+          "old_line_content": "            if (dctx->stage == ZSTDds_decompressLastBlock) {   /* end of frame */",
+          "new_line_content": "            if (dctx->fParams.checksumFlag) XXH64_update(&dctx->xxhState, dst, rSize);",
+          "content_same": false
+        },
+        {
+          "line": 1113,
+          "old_api": null,
+          "new_api": "MEM_readLE32",
+          "old_text": null,
+          "new_text": "MEM_readLE32(src)",
+          "old_line_content": "            dctx->expected = 0;",
+          "new_line_content": "            U32 const check32 = MEM_readLE32(src);   /* srcSize == 4, guaranteed by dctx->expected */",
+          "content_same": false
+        },
+        {
+          "line": 1114,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(checksum_wrong)",
+          "old_line_content": "            dctx->stage = ZSTDds_getFrameHeaderSize;",
+          "new_line_content": "            if (check32 != h32) return ERROR(checksum_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 1120,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected)",
+          "old_line_content": "            dctx->stage = ZSTDds_skipFrame;",
+          "new_line_content": "        {   memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected);",
+          "content_same": false
+        },
+        {
+          "line": 1121,
+          "old_api": null,
+          "new_api": "MEM_readLE32",
+          "old_text": null,
+          "new_text": "MEM_readLE32(dctx->headerBuffer + 4)",
+          "old_line_content": "            return 0;",
+          "new_line_content": "            dctx->expected = MEM_readLE32(dctx->headerBuffer + 4);",
+          "content_same": false
+        },
+        {
+          "line": 1131,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(GENERIC)",
+          "old_line_content": "}",
+          "new_line_content": "        return ERROR(GENERIC);   /* impossible */",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": null,
+          "new_api": "HUF_readDTableX4",
+          "old_text": null,
+          "new_text": "HUF_readDTableX4(dctx->hufTable, dict, dictSize)",
+          "old_line_content": "        dictPtr += hSize;",
+          "new_line_content": "    {   size_t const hSize = HUF_readDTableX4(dctx->hufTable, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1151,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "    }",
+          "new_line_content": "        if (HUF_isError(hSize)) return ERROR(dictionary_corrupted);",
+          "content_same": false
+        },
+        {
+          "line": 1159,
+          "old_api": null,
+          "new_api": "FSE_buildDTable",
+          "old_text": null,
+          "new_text": "FSE_buildDTable(dctx->OffTable, offcodeNCount, offcodeMaxValue, offcodeLog)",
+          "old_line_content": "        dictPtr += offcodeHeaderSize;",
+          "new_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->OffTable, offcodeNCount, offcodeMaxValue, offcodeLog);",
+          "content_same": false
+        },
+        {
+          "line": 1160,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "    }",
+          "new_line_content": "          if (FSE_isError(errorCode)) return ERROR(dictionary_corrupted); }",
+          "content_same": false
+        },
+        {
+          "line": 1168,
+          "old_api": null,
+          "new_api": "FSE_buildDTable",
+          "old_text": null,
+          "new_text": "FSE_buildDTable(dctx->MLTable, matchlengthNCount, matchlengthMaxValue, matchlengthLog)",
+          "old_line_content": "        dictPtr += matchlengthHeaderSize;",
+          "new_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->MLTable, matchlengthNCount, matchlengthMaxValue, matchlengthLog);",
+          "content_same": false
+        },
+        {
+          "line": 1169,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "    }",
+          "new_line_content": "          if (FSE_isError(errorCode)) return ERROR(dictionary_corrupted); }",
+          "content_same": false
+        },
+        {
+          "line": 1177,
+          "old_api": null,
+          "new_api": "FSE_buildDTable",
+          "old_text": null,
+          "new_text": "FSE_buildDTable(dctx->LLTable, litlengthNCount, litlengthMaxValue, litlengthLog)",
+          "old_line_content": "        dictPtr += litlengthHeaderSize;",
+          "new_line_content": "        { size_t const errorCode = FSE_buildDTable(dctx->LLTable, litlengthNCount, litlengthMaxValue, litlengthLog);",
+          "content_same": false
+        },
+        {
+          "line": 1178,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "    }",
+          "new_line_content": "          if (FSE_isError(errorCode)) return ERROR(dictionary_corrupted); }",
+          "content_same": false
+        },
+        {
+          "line": 1184,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "    dictPtr += 12;",
+          "new_line_content": "    dctx->rep[1] = MEM_readLE32(dictPtr+4); if (dctx->rep[1] >= dictSize) return ERROR(dictionary_corrupted);",
+          "content_same": false
+        },
+        {
+          "line": 1185,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "",
+          "new_line_content": "    dctx->rep[2] = MEM_readLE32(dictPtr+8); if (dctx->rep[2] >= dictSize) return ERROR(dictionary_corrupted);",
+          "content_same": false
+        },
+        {
+          "line": 1194,
+          "old_api": null,
+          "new_api": "ZSTD_refDictContent",
+          "old_text": null,
+          "new_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "old_line_content": "        if (magic != ZSTD_DICT_MAGIC) {",
+          "new_line_content": "    if (dictSize < 8) return ZSTD_refDictContent(dctx, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": null,
+          "new_api": "ZSTD_wildcopy",
+          "old_text": null,
+          "new_text": "ZSTD_wildcopy(op+8, (*litPtr)+8, sequence.litLength - 8)",
+          "old_line_content": "    *litPtr = iLitEnd;   /* update for next sequence */",
+          "new_line_content": "        ZSTD_wildcopy(op+8, (*litPtr)+8, sequence.litLength - 8);   /* note : since oLitEnd <= oend-WILDCOPY_OVERLENGTH, no risk of overwrite beyond oend */",
+          "content_same": false
+        },
+        {
+          "line": 1199,
+          "old_api": null,
+          "new_api": "MEM_readLE32",
+          "old_text": null,
+          "new_text": "MEM_readLE32((const char*)dict + 4)",
+          "old_line_content": "    /* load entropy tables */",
+          "new_line_content": "    dctx->dictID = MEM_readLE32((const char*)dict + 4);",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "        if (match + sequence.matchLength <= dictEnd) {",
+          "new_line_content": "        if (sequence.offset > (size_t)(oLitEnd - vBase)) return ERROR(corruption_detected);",
+          "content_same": false
+        },
+        {
+          "line": 1204,
+          "old_api": null,
+          "new_api": "ZSTD_loadEntropy",
+          "old_text": null,
+          "new_text": "ZSTD_loadEntropy(dctx, dict, dictSize)",
+          "old_line_content": "        dict = (const char*)dict + eSize;",
+          "new_line_content": "    {   size_t const eSize = ZSTD_loadEntropy(dctx, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(oLitEnd, match, sequence.matchLength)",
+          "old_line_content": "        }",
+          "new_line_content": "            memmove(oLitEnd, match, sequence.matchLength);",
+          "content_same": false
+        },
+        {
+          "line": 1205,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "        dictSize -= eSize;",
+          "new_line_content": "        if (ZSTD_isError(eSize)) return ERROR(dictionary_corrupted);",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(oLitEnd, match, length1)",
+          "old_line_content": "            sequence.matchLength -= length1;",
+          "new_line_content": "            memmove(oLitEnd, match, length1);",
+          "content_same": false
+        },
+        {
+          "line": 1211,
+          "old_api": null,
+          "new_api": "ZSTD_refDictContent",
+          "old_text": null,
+          "new_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_refDictContent(dctx, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1217,
+          "old_api": null,
+          "new_api": "ZSTD_decompressBegin",
+          "old_text": null,
+          "new_text": "ZSTD_decompressBegin(dctx)",
+          "old_line_content": "",
+          "new_line_content": "    { size_t const errorCode = ZSTD_decompressBegin(dctx);",
+          "content_same": false
+        },
+        {
+          "line": 1218,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(errorCode)",
+          "old_line_content": "    if (dict && dictSize) {",
+          "new_line_content": "      if (ZSTD_isError(errorCode)) return errorCode; }",
+          "content_same": false
+        },
+        {
+          "line": 1221,
+          "old_api": null,
+          "new_api": "ZSTD_decompress_insertDictionary",
+          "old_text": null,
+          "new_text": "ZSTD_decompress_insertDictionary(dctx, dict, dictSize)",
+          "old_line_content": "    }",
+          "new_line_content": "        size_t const errorCode = ZSTD_decompress_insertDictionary(dctx, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1222,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dictionary_corrupted)",
+          "old_line_content": "",
+          "new_line_content": "        if (ZSTD_isError(errorCode)) return ERROR(dictionary_corrupted);",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "ZSTD_copy4",
+          "old_text": null,
+          "new_text": "ZSTD_copy4(op+4, match)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        ZSTD_copy4(op+4, match);",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": null,
+          "new_api": "ZSTD_copy8",
+          "old_text": null,
+          "new_text": "ZSTD_copy8(op, match)",
+          "old_line_content": "    op += 8; match += 8;",
+          "new_line_content": "        ZSTD_copy8(op, match);",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": null,
+          "new_api": "ZSTD_wildcopy",
+          "old_text": null,
+          "new_text": "ZSTD_wildcopy(op, match, oend_w - op)",
+          "old_line_content": "            op = oend_w;",
+          "new_line_content": "            ZSTD_wildcopy(op, match, oend_w - op);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "ZSTD_wildcopy",
+          "old_text": null,
+          "new_text": "ZSTD_wildcopy(op, match, sequence.matchLength-8)",
+          "old_line_content": "    return sequenceLength;",
+          "new_line_content": "        ZSTD_wildcopy(op, match, sequence.matchLength-8);   /* works even if matchLength < 8 */",
+          "content_same": false
+        },
+        {
+          "line": 1244,
+          "old_api": null,
+          "new_api": "customAlloc",
+          "old_text": null,
+          "new_text": "customMem.customAlloc(customMem.opaque, dictSize)",
+          "old_line_content": "",
+          "new_line_content": "        void* const dictContent = customMem.customAlloc(customMem.opaque, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1245,
+          "old_api": null,
+          "new_api": "ZSTD_createDCtx_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_createDCtx_advanced(customMem)",
+          "old_line_content": "        if (!dictContent || !ddict || !dctx) {",
+          "new_line_content": "        ZSTD_DCtx* const dctx = ZSTD_createDCtx_advanced(customMem);",
+          "content_same": false
+        },
+        {
+          "line": 1249,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "customMem.customFree(customMem.opaque, ddict)",
+          "old_line_content": "            return NULL;",
+          "new_line_content": "            customMem.customFree(customMem.opaque, ddict);",
+          "content_same": false
+        },
+        {
+          "line": 1250,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "customMem.customFree(customMem.opaque, dctx)",
+          "old_line_content": "        }",
+          "new_line_content": "            customMem.customFree(customMem.opaque, dctx);",
+          "content_same": false
+        },
+        {
+          "line": 1258,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "customMem.customFree(customMem.opaque, ddict)",
+          "old_line_content": "                return NULL;",
+          "new_line_content": "                customMem.customFree(customMem.opaque, ddict);",
+          "content_same": false
+        },
+        {
+          "line": 1259,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "customMem.customFree(customMem.opaque, dctx)",
+          "old_line_content": "        }   }",
+          "new_line_content": "                customMem.customFree(customMem.opaque, dctx);",
+          "content_same": false
+        },
+        {
+          "line": 758,
+          "old_api": null,
+          "new_api": "ZSTD_decodeSeqHeaders",
+          "old_text": null,
+          "new_text": "ZSTD_decodeSeqHeaders(&nbSeq, DTableLL, DTableML, DTableOffb, dctx->fseEntropy, ip, seqSize)",
+          "old_line_content": "        ip += seqHSize;",
+          "new_line_content": "    {   size_t const seqHSize = ZSTD_decodeSeqHeaders(&nbSeq, DTableLL, DTableML, DTableOffb, dctx->fseEntropy, ip, seqSize);",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(seqHSize)",
+          "old_line_content": "    }",
+          "new_line_content": "        if (ZSTD_isError(seqHSize)) return seqHSize;",
+          "content_same": false
+        },
+        {
+          "line": 1276,
+          "old_api": null,
+          "new_api": "ZSTD_createDDict_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_createDDict_advanced(dict, dictSize, allocator)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_createDDict_advanced(dict, dictSize, allocator);",
+          "content_same": false
+        },
+        {
+          "line": 771,
+          "old_api": null,
+          "new_api": "FSE_initDState",
+          "old_text": null,
+          "new_text": "FSE_initDState(&(seqState.stateOffb), &(seqState.DStream), DTableOffb)",
+          "old_line_content": "",
+          "new_line_content": "        FSE_initDState(&(seqState.stateOffb), &(seqState.DStream), DTableOffb);",
+          "content_same": false
+        },
+        {
+          "line": 1284,
+          "old_api": null,
+          "new_api": "cFree",
+          "old_text": null,
+          "new_text": "cFree(opaque, ddict->dict)",
+          "old_line_content": "    return 0;",
+          "new_line_content": "    cFree(opaque, ddict->dict);",
+          "content_same": false
+        },
+        {
+          "line": 1285,
+          "old_api": null,
+          "new_api": "cFree",
+          "old_text": null,
+          "new_text": "cFree(opaque, ddict)",
+          "old_line_content": "}",
+          "new_line_content": "    cFree(opaque, ddict);",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": null,
+          "new_api": "ZSTD_execSequence",
+          "old_text": null,
+          "new_text": "ZSTD_execSequence(op, oend, sequence, &litPtr, litLimit_w, base, vBase, dictEnd)",
+          "old_line_content": "                op += oneSeqSize;",
+          "new_line_content": "                size_t const oneSeqSize = ZSTD_execSequence(op, oend, sequence, &litPtr, litLimit_w, base, vBase, dictEnd);",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(oneSeqSize)",
+          "old_line_content": "        }   }",
+          "new_line_content": "                if (ZSTD_isError(oneSeqSize)) return oneSeqSize;",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": null,
+          "new_api": "U32)(seqState.prevOffset[i])",
+          "old_text": null,
+          "new_text": "U32)(seqState.prevOffset[i])",
+          "old_line_content": "",
+          "new_line_content": "        { U32 i; for (i=0; i<ZSTD_REP_NUM; i++) dctx->rep[i] = (U32)(seqState.prevOffset[i]); }",
+          "content_same": false
+        },
+        {
+          "line": 1300,
+          "old_api": null,
+          "new_api": "ZSTD_decompress_usingPreparedDCtx",
+          "old_text": null,
+          "new_text": "ZSTD_decompress_usingPreparedDCtx(dctx, ddict->refContext,\n                                           dst, dstCapacity,\n                                           src, srcSize)",
+          "old_line_content": "                                           src, srcSize);",
+          "new_line_content": "    return ZSTD_decompress_usingPreparedDCtx(dctx, ddict->refContext,",
+          "content_same": false
+        },
+        {
+          "line": 790,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dstSize_tooSmall)",
+          "old_line_content": "        op += lastLLSize;",
+          "new_line_content": "        if (lastLLSize > (size_t)(oend-op)) return ERROR(dstSize_tooSmall);",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(op, litPtr, lastLLSize)",
+          "old_line_content": "    }",
+          "new_line_content": "        memcpy(op, litPtr, lastLLSize);",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "    /* Decode literals sub-block */",
+          "new_line_content": "    if (srcSize >= ZSTD_BLOCKSIZE_ABSOLUTEMAX) return ERROR(srcSize_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": null,
+          "new_api": "ZSTD_decodeLiteralsBlock",
+          "old_text": null,
+          "new_text": "ZSTD_decodeLiteralsBlock(dctx, src, srcSize)",
+          "old_line_content": "        ip += litCSize;",
+          "new_line_content": "    {   size_t const litCSize = ZSTD_decodeLiteralsBlock(dctx, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(litCSize)",
+          "old_line_content": "        srcSize -= litCSize;",
+          "new_line_content": "        if (ZSTD_isError(litCSize)) return litCSize;",
+          "content_same": false
+        },
+        {
+          "line": 1334,
+          "old_api": null,
+          "new_api": "ZSTD_createDStream_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_createDStream_advanced(defaultCustomMem)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_createDStream_advanced(defaultCustomMem);",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": null,
+          "new_api": "ZSTD_decompressSequences",
+          "old_text": null,
+          "new_text": "ZSTD_decompressSequences(dctx, dst, dstCapacity, ip, srcSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_decompressSequences(dctx, dst, dstCapacity, ip, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": null,
+          "new_api": "ZSTD_checkContinuity",
+          "old_text": null,
+          "new_text": "ZSTD_checkContinuity(dctx, dst)",
+          "old_line_content": "    dctx->previousDstEnd = (char*)dst + dSize;",
+          "new_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": null,
+          "new_api": "ZSTD_decompressBlock_internal",
+          "old_text": null,
+          "new_text": "ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "    return dSize;",
+          "new_line_content": "    dSize = ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1351,
+          "old_api": null,
+          "new_api": "ZSTD_createDCtx_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_createDCtx_advanced(customMem)",
+          "old_line_content": "    zds->stage = zdss_init;",
+          "new_line_content": "    zds->zd = ZSTD_createDCtx_advanced(customMem);",
+          "content_same": false
+        },
+        {
+          "line": 1352,
+          "old_api": null,
+          "new_api": "ZSTD_freeDStream",
+          "old_text": null,
+          "new_text": "ZSTD_freeDStream(zds)",
+          "old_line_content": "    return zds;",
+          "new_line_content": "    if (zds->zd == NULL) { ZSTD_freeDStream(zds); return NULL; }",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": null,
+          "new_api": "ZSTD_checkContinuity",
+          "old_text": null,
+          "new_text": "ZSTD_checkContinuity(dctx, blockStart)",
+          "old_line_content": "    return blockSize;",
+          "new_line_content": "    ZSTD_checkContinuity(dctx, blockStart);",
+          "content_same": false
+        },
+        {
+          "line": 1362,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "zds->customMem.customFree(zds->customMem.opaque, zds->outBuff)",
+          "old_line_content": "    return 0;",
+          "new_line_content": "    if (zds->outBuff) zds->customMem.customFree(zds->customMem.opaque, zds->outBuff);",
+          "content_same": false
+        },
+        {
+          "line": 1363,
+          "old_api": null,
+          "new_api": "customFree",
+          "old_text": null,
+          "new_text": "zds->customMem.customFree(zds->customMem.opaque, zds)",
+          "old_line_content": "}",
+          "new_line_content": "    zds->customMem.customFree(zds->customMem.opaque, zds);",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dstSize_tooSmall)",
+          "old_line_content": "    return length;",
+          "new_line_content": "    if (length > dstCapacity) return ERROR(dstSize_tooSmall);",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(dst, byte, length)",
+          "old_line_content": "}",
+          "new_line_content": "    memset(dst, byte, length);",
+          "content_same": false
+        },
+        {
+          "line": 1377,
+          "old_api": null,
+          "new_api": "ZSTD_decompressBegin_usingDict",
+          "old_text": null,
+          "new_text": "ZSTD_decompressBegin_usingDict(zds->zd, dict, dictSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_decompressBegin_usingDict(zds->zd, dict, dictSize);",
+          "content_same": false
+        },
+        {
+          "line": 1382,
+          "old_api": null,
+          "new_api": "ZSTD_initDStream_usingDict",
+          "old_text": null,
+          "new_text": "ZSTD_initDStream_usingDict(zds, NULL, 0)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_initDStream_usingDict(zds, NULL, 0);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "    /* Frame Header */",
+          "new_line_content": "    if (srcSize < ZSTD_frameHeaderSize_min+ZSTD_blockHeaderSize) return ERROR(srcSize_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 878,
+          "old_api": null,
+          "new_api": "ZSTD_decodeFrameHeader",
+          "old_text": null,
+          "new_text": "ZSTD_decodeFrameHeader(dctx, src, frameHeaderSize)",
+          "old_line_content": "        ip += frameHeaderSize; remainingSize -= frameHeaderSize;",
+          "new_line_content": "        result = ZSTD_decodeFrameHeader(dctx, src, frameHeaderSize);",
+          "content_same": false
+        },
+        {
+          "line": 879,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(result)",
+          "old_line_content": "    }",
+          "new_line_content": "        if (ZSTD_isError(result)) return result;",
+          "content_same": false
+        },
+        {
+          "line": 1390,
+          "old_api": null,
+          "new_api": "MIN",
+          "old_text": null,
+          "new_text": "MIN(dstCapacity, srcSize)",
+          "old_line_content": "    return length;",
+          "new_line_content": "    size_t const length = MIN(dstCapacity, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1391,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(dst, src, length)",
+          "old_line_content": "}",
+          "new_line_content": "    memcpy(dst, src, length);",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": null,
+          "new_api": "ZSTD_getcBlockSize",
+          "old_text": null,
+          "new_text": "ZSTD_getcBlockSize(ip, remainingSize, &blockProperties)",
+          "old_line_content": "",
+          "new_line_content": "        size_t const cBlockSize = ZSTD_getcBlockSize(ip, remainingSize, &blockProperties);",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(cBlockSize)",
+          "old_line_content": "        ip += ZSTD_blockHeaderSize;",
+          "new_line_content": "        if (ZSTD_isError(cBlockSize)) return cBlockSize;",
+          "content_same": false
+        },
+        {
+          "line": 892,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "        switch(blockProperties.blockType)",
+          "new_line_content": "        if (cBlockSize > remainingSize) return ERROR(srcSize_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 897,
+          "old_api": null,
+          "new_api": "ZSTD_decompressBlock_internal",
+          "old_text": null,
+          "new_text": "ZSTD_decompressBlock_internal(dctx, op, oend-op, ip, cBlockSize)",
+          "old_line_content": "        case bt_raw :",
+          "new_line_content": "            decodedSize = ZSTD_decompressBlock_internal(dctx, op, oend-op, ip, cBlockSize);",
+          "content_same": false
+        },
+        {
+          "line": 1410,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(init_missing)",
+          "old_line_content": "        case zdss_loadHeader :",
+          "new_line_content": "            return ERROR(init_missing);",
+          "content_same": false
+        },
+        {
+          "line": 900,
+          "old_api": null,
+          "new_api": "ZSTD_copyRawBlock",
+          "old_text": null,
+          "new_text": "ZSTD_copyRawBlock(op, oend-op, ip, cBlockSize)",
+          "old_line_content": "        case bt_rle :",
+          "new_line_content": "            decodedSize = ZSTD_copyRawBlock(op, oend-op, ip, cBlockSize);",
+          "content_same": false
+        },
+        {
+          "line": 1413,
+          "old_api": null,
+          "new_api": "ZSTD_getFrameParams",
+          "old_text": null,
+          "new_text": "ZSTD_getFrameParams(&(zds->fParams), zds->headerBuffer, zds->lhSize)",
+          "old_line_content": "                if (hSize != 0) {   /* need more input */",
+          "new_line_content": "            {   size_t const hSize = ZSTD_getFrameParams(&(zds->fParams), zds->headerBuffer, zds->lhSize);",
+          "content_same": false
+        },
+        {
+          "line": 1414,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(hSize)",
+          "old_line_content": "                    size_t const toLoad = hSize - zds->lhSize;   /* if hSize!=0, hSize > zds->lhSize */",
+          "new_line_content": "                if (ZSTD_isError(hSize)) return hSize;",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": null,
+          "new_api": "ZSTD_generateNxBytes",
+          "old_text": null,
+          "new_text": "ZSTD_generateNxBytes(op, oend-op, *ip, blockProperties.origSize)",
+          "old_line_content": "        case bt_reserved :",
+          "new_line_content": "            decodedSize = ZSTD_generateNxBytes(op, oend-op, *ip, blockProperties.origSize);",
+          "content_same": false
+        },
+        {
+          "line": 1418,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(zds->headerBuffer + zds->lhSize, ip, iend-ip)",
+          "old_line_content": "                        input->pos = input->size;",
+          "new_line_content": "                        memcpy(zds->headerBuffer + zds->lhSize, ip, iend-ip);",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "",
+          "new_line_content": "            return ERROR(corruption_detected);",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(decodedSize)",
+          "old_line_content": "        op += decodedSize;",
+          "new_line_content": "        if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": null,
+          "new_api": "XXH64_update",
+          "old_text": null,
+          "new_text": "XXH64_update(&dctx->xxhState, op, decodedSize)",
+          "old_line_content": "        ip += cBlockSize;",
+          "new_line_content": "        if (dctx->fParams.checksumFlag) XXH64_update(&dctx->xxhState, op, decodedSize);",
+          "content_same": false
+        },
+        {
+          "line": 1423,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad)",
+          "old_line_content": "            }   }",
+          "new_line_content": "                    memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad); zds->lhSize = hSize; ip += toLoad;",
+          "content_same": false
+        },
+        {
+          "line": 1429,
+          "old_api": null,
+          "new_api": "ZSTD_decompressContinue",
+          "old_text": null,
+          "new_text": "ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer, h1Size)",
+          "old_line_content": "                if (h1Size < zds->lhSize) {   /* long header */",
+          "new_line_content": "                size_t const h1Result = ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer, h1Size);",
+          "content_same": false
+        },
+        {
+          "line": 1433,
+          "old_api": null,
+          "new_api": "ZSTD_decompressContinue",
+          "old_text": null,
+          "new_text": "ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer+h1Size, h2Size)",
+          "old_line_content": "            }   }",
+          "new_line_content": "                    size_t const h2Result = ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer+h1Size, h2Size);",
+          "content_same": false
+        },
+        {
+          "line": 922,
+          "old_api": null,
+          "new_api": "MEM_readLE32",
+          "old_text": null,
+          "new_text": "MEM_readLE32(ip)",
+          "old_line_content": "        remainingSize -= 4;",
+          "new_line_content": "        checkRead = MEM_readLE32(ip);",
+          "content_same": false
+        },
+        {
+          "line": 923,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(checksum_wrong)",
+          "old_line_content": "    }",
+          "new_line_content": "        if (checkRead != checkCalc) return ERROR(checksum_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 1434,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(h2Result)",
+          "old_line_content": "",
+          "new_line_content": "                    if (ZSTD_isError(h2Result)) return h2Result;",
+          "content_same": false
+        },
+        {
+          "line": 1437,
+          "old_api": null,
+          "new_api": "MAX",
+          "old_text": null,
+          "new_text": "MAX(zds->fParams.windowSize, 1U << ZSTD_WINDOWLOG_ABSOLUTEMIN)",
+          "old_line_content": "            /* Frame header instruct buffer sizes */",
+          "new_line_content": "            zds->fParams.windowSize = MAX(zds->fParams.windowSize, 1U << ZSTD_WINDOWLOG_ABSOLUTEMIN);",
+          "content_same": false
+        },
+        {
+          "line": 927,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "}",
+          "new_line_content": "    if (remainingSize) return ERROR(srcSize_wrong);",
+          "content_same": false
+        },
+        {
+          "line": 1440,
+          "old_api": null,
+          "new_api": "MIN",
+          "old_text": null,
+          "new_text": "MIN(zds->fParams.windowSize, ZSTD_BLOCKSIZE_ABSOLUTEMAX)",
+          "old_line_content": "                zds->blockSize = blockSize;",
+          "new_line_content": "            {   size_t const blockSize = MIN(zds->fParams.windowSize, ZSTD_BLOCKSIZE_ABSOLUTEMAX);",
+          "content_same": false
+        },
+        {
+          "line": 1446,
+          "old_api": null,
+          "new_api": "customAlloc",
+          "old_text": null,
+          "new_text": "zds->customMem.customAlloc(zds->customMem.opaque, blockSize)",
+          "old_line_content": "                }",
+          "new_line_content": "                    zds->inBuff = (char*)zds->customMem.customAlloc(zds->customMem.opaque, blockSize);",
+          "content_same": false
+        },
+        {
+          "line": 1447,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(memory_allocation)",
+          "old_line_content": "                if (zds->outBuffSize < neededOutSize) {",
+          "new_line_content": "                    if (zds->inBuff == NULL) return ERROR(memory_allocation);",
+          "content_same": false
+        },
+        {
+          "line": 1452,
+          "old_api": null,
+          "new_api": "customAlloc",
+          "old_text": null,
+          "new_text": "zds->customMem.customAlloc(zds->customMem.opaque, neededOutSize)",
+          "old_line_content": "            }   }",
+          "new_line_content": "                    zds->outBuff = (char*)zds->customMem.customAlloc(zds->customMem.opaque, neededOutSize);",
+          "content_same": false
+        },
+        {
+          "line": 1453,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(memory_allocation)",
+          "old_line_content": "            zds->stage = zdss_read;",
+          "new_line_content": "                    if (zds->outBuff == NULL) return ERROR(memory_allocation);",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": null,
+          "new_api": "ZSTD_checkContinuity",
+          "old_text": null,
+          "new_text": "ZSTD_checkContinuity(dctx, dst)",
+          "old_line_content": "}",
+          "new_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": null,
+          "new_api": "ZSTD_decompressFrame",
+          "old_text": null,
+          "new_text": "ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1459,
+          "old_api": null,
+          "new_api": "ZSTD_nextSrcSizeToDecompress",
+          "old_text": null,
+          "new_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "old_line_content": "                    zds->stage = zdss_init;",
+          "new_line_content": "            {   size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 1466,
+          "old_api": null,
+          "new_api": "ZSTD_isSkipFrame",
+          "old_text": null,
+          "new_text": "ZSTD_isSkipFrame(zds->zd)",
+          "old_line_content": "                        zds->outBuff + zds->outStart, (isSkipFrame ? 0 : zds->outBuffSize - zds->outStart),",
+          "new_line_content": "                    const int isSkipFrame = ZSTD_isSkipFrame(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 1467,
+          "old_api": null,
+          "new_api": "ZSTD_decompressContinue",
+          "old_text": null,
+          "new_text": "ZSTD_decompressContinue(zds->zd,\n                        zds->outBuff + zds->outStart, (isSkipFrame ? 0 : zds->outBuffSize - zds->outStart),\n                        ip, neededInSize)",
+          "old_line_content": "                        ip, neededInSize);",
+          "new_line_content": "                    size_t const decodedSize = ZSTD_decompressContinue(zds->zd,",
+          "content_same": false
+        },
+        {
+          "line": 956,
+          "old_api": null,
+          "new_api": "ZSTD_checkContinuity",
+          "old_text": null,
+          "new_text": "ZSTD_checkContinuity(dctx, dst)",
+          "old_line_content": "}",
+          "new_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "content_same": false
+        },
+        {
+          "line": 957,
+          "old_api": null,
+          "new_api": "ZSTD_decompressFrame",
+          "old_text": null,
+          "new_text": "ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_decompressFrame(dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1470,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(decodedSize)",
+          "old_line_content": "                    if (!decodedSize && !isSkipFrame) break;   /* this was just a header */",
+          "new_line_content": "                    if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "content_same": false
+        },
+        {
+          "line": 963,
+          "old_api": null,
+          "new_api": "ZSTD_decompress_usingDict",
+          "old_text": null,
+          "new_text": "ZSTD_decompress_usingDict(dctx, dst, dstCapacity, src, srcSize, NULL, 0)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_decompress_usingDict(dctx, dst, dstCapacity, src, srcSize, NULL, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1483,
+          "old_api": null,
+          "new_api": "ZSTD_nextSrcSizeToDecompress",
+          "old_text": null,
+          "new_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "old_line_content": "                size_t loadedSize;",
+          "new_line_content": "            {   size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 973,
+          "old_api": null,
+          "new_api": "ZSTD_decompressDCtx",
+          "old_text": null,
+          "new_text": "ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "    return regenSize;",
+          "new_line_content": "    regenSize = ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": null,
+          "new_api": "ZSTD_freeDCtx",
+          "old_text": null,
+          "new_text": "ZSTD_freeDCtx(dctx)",
+          "old_line_content": "#else   /* stack mode */",
+          "new_line_content": "    ZSTD_freeDCtx(dctx);",
+          "content_same": false
+        },
+        {
+          "line": 1486,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(corruption_detected)",
+          "old_line_content": "                ip += loadedSize;",
+          "new_line_content": "                if (toLoad > zds->inBuffSize - zds->inPos) return ERROR(corruption_detected);   /* should never happen */",
+          "content_same": false
+        },
+        {
+          "line": 1487,
+          "old_api": null,
+          "new_api": "ZSTD_limitCopy",
+          "old_text": null,
+          "new_text": "ZSTD_limitCopy(zds->inBuff + zds->inPos, toLoad, ip, iend-ip)",
+          "old_line_content": "                zds->inPos += loadedSize;",
+          "new_line_content": "                loadedSize = ZSTD_limitCopy(zds->inBuff + zds->inPos, toLoad, ip, iend-ip);",
+          "content_same": false
+        },
+        {
+          "line": 978,
+          "old_api": null,
+          "new_api": "ZSTD_decompressDCtx",
+          "old_text": null,
+          "new_text": "ZSTD_decompressDCtx(&dctx, dst, dstCapacity, src, srcSize)",
+          "old_line_content": "}",
+          "new_line_content": "    return ZSTD_decompressDCtx(&dctx, dst, dstCapacity, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 1493,
+          "old_api": null,
+          "new_api": "ZSTD_isSkipFrame",
+          "old_text": null,
+          "new_text": "ZSTD_isSkipFrame(zds->zd)",
+          "old_line_content": "                        zds->outBuff + zds->outStart, zds->outBuffSize - zds->outStart,",
+          "new_line_content": "                {  const int isSkipFrame = ZSTD_isSkipFrame(zds->zd);",
+          "content_same": false
+        },
+        {
+          "line": 1494,
+          "old_api": null,
+          "new_api": "ZSTD_decompressContinue",
+          "old_text": null,
+          "new_text": "ZSTD_decompressContinue(zds->zd,\n                        zds->outBuff + zds->outStart, zds->outBuffSize - zds->outStart,\n                        zds->inBuff, neededInSize)",
+          "old_line_content": "                        zds->inBuff, neededInSize);",
+          "new_line_content": "                   size_t const decodedSize = ZSTD_decompressContinue(zds->zd,",
+          "content_same": false
+        },
+        {
+          "line": 1497,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(decodedSize)",
+          "old_line_content": "                    if (!decodedSize && !isSkipFrame) { zds->stage = zdss_read; break; }   /* this was just a header */",
+          "new_line_content": "                    if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "content_same": false
+        },
+        {
+          "line": 1507,
+          "old_api": null,
+          "new_api": "ZSTD_limitCopy",
+          "old_text": null,
+          "new_text": "ZSTD_limitCopy(op, oend-op, zds->outBuff + zds->outStart, toFlushSize)",
+          "old_line_content": "                zds->outStart += flushedSize;",
+          "new_line_content": "                size_t const flushedSize = ZSTD_limitCopy(op, oend-op, zds->outBuff + zds->outStart, toFlushSize);",
+          "content_same": false
+        },
+        {
+          "line": 1520,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(GENERIC)",
+          "old_line_content": "",
+          "new_line_content": "        default: return ERROR(GENERIC);   /* impossible */",
+          "content_same": false
+        },
+        {
+          "line": 1528,
+          "old_api": null,
+          "new_api": "ZSTD_nextInputType",
+          "old_text": null,
+          "new_text": "ZSTD_nextInputType(zds->zd)",
+          "old_line_content": "        nextSrcSizeHint -= zds->inPos;   /* already loaded*/",
+          "new_line_content": "        nextSrcSizeHint += ZSTD_blockHeaderSize * (ZSTD_nextInputType(zds->zd) == ZSTDnit_block);",
+          "content_same": false
+        },
+        {
+          "line": 1529,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(GENERIC)",
+          "old_line_content": "        return nextSrcSizeHint;",
+          "new_line_content": "        if (zds->inPos > nextSrcSizeHint) return ERROR(GENERIC);   /* should never happen */",
+          "content_same": false
+        },
+        {
+          "line": 1018,
+          "old_api": null,
+          "new_api": "ZSTD_checkContinuity",
+          "old_text": null,
+          "new_text": "ZSTD_checkContinuity(dctx, dst)",
+          "old_line_content": "    switch (dctx->stage)",
+          "new_line_content": "    if (dstCapacity) ZSTD_checkContinuity(dctx, dst);",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(srcSize_wrong)",
+          "old_line_content": "",
+          "new_line_content": "    if (srcSize != dctx->expected) return ERROR(srcSize_wrong);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1028,
+          "old_api": "ZSTD_frameHeaderSize",
+          "new_api": null,
+          "old_text": "ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min)",
+          "new_text": null,
+          "old_line_content": "        dctx->headerSize = ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min);",
+          "new_line_content": "            return 0;",
+          "content_same": false
+        },
+        {
+          "line": 1029,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(dctx->headerSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(dctx->headerSize)) return dctx->headerSize;",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1040,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected)",
+          "new_text": null,
+          "old_line_content": "            memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected);",
+          "new_line_content": "    case ZSTDds_decodeFrameHeader:",
+          "content_same": false
+        },
+        {
+          "line": 1041,
+          "old_api": "ZSTD_decodeFrameHeader",
+          "new_api": null,
+          "old_text": "ZSTD_decodeFrameHeader(dctx, dctx->headerBuffer, dctx->headerSize)",
+          "new_text": null,
+          "old_line_content": "            result = ZSTD_decodeFrameHeader(dctx, dctx->headerBuffer, dctx->headerSize);",
+          "new_line_content": "        {   size_t result;",
+          "content_same": false
+        },
+        {
+          "line": 1049,
+          "old_api": "ZSTD_getcBlockSize",
+          "new_api": null,
+          "old_text": "ZSTD_getcBlockSize(src, ZSTD_blockHeaderSize, &bp)",
+          "new_text": null,
+          "old_line_content": "            size_t const cBlockSize = ZSTD_getcBlockSize(src, ZSTD_blockHeaderSize, &bp);",
+          "new_line_content": "    case ZSTDds_decodeBlockHeader:",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(cBlockSize)",
+          "new_text": null,
+          "old_line_content": "            if (ZSTD_isError(cBlockSize)) return cBlockSize;",
+          "new_line_content": "        {   blockProperties_t bp;",
+          "content_same": false
+        },
+        {
+          "line": 1079,
+          "old_api": "ZSTD_decompressBlock_internal",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "                rSize = ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 1082,
+          "old_api": "ZSTD_copyRawBlock",
+          "new_api": null,
+          "old_text": "ZSTD_copyRawBlock(dst, dstCapacity, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "                rSize = ZSTD_copyRawBlock(dst, dstCapacity, src, srcSize);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1085,
+          "old_api": "ZSTD_setRleBlock",
+          "new_api": null,
+          "old_text": "ZSTD_setRleBlock(dst, dstCapacity, src, srcSize, dctx->rleSize)",
+          "new_text": null,
+          "old_line_content": "                rSize = ZSTD_setRleBlock(dst, dstCapacity, src, srcSize, dctx->rleSize);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1089,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "                return ERROR(corruption_detected);",
+          "new_line_content": "            case bt_reserved :   /* should never happen */",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": "XXH64_update",
+          "new_api": null,
+          "old_text": "XXH64_update(&dctx->xxhState, dst, rSize)",
+          "new_text": null,
+          "old_line_content": "            if (dctx->fParams.checksumFlag) XXH64_update(&dctx->xxhState, dst, rSize);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1110,
+          "old_api": "XXH64_digest",
+          "new_api": null,
+          "old_text": "XXH64_digest(&dctx->xxhState)",
+          "new_text": null,
+          "old_line_content": "        {   U32 const h32 = (U32)XXH64_digest(&dctx->xxhState);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": "MEM_readLE32",
+          "new_api": null,
+          "old_text": "MEM_readLE32(src)",
+          "new_text": null,
+          "old_line_content": "            U32 const check32 = MEM_readLE32(src);   /* srcSize == 4, guaranteed by dctx->expected */",
+          "new_line_content": "    case ZSTDds_checkChecksum:",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected)",
+          "new_text": null,
+          "old_line_content": "        {   memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_min, src, dctx->expected);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1119,
+          "old_api": "MEM_readLE32",
+          "new_api": null,
+          "old_text": "MEM_readLE32(dctx->headerBuffer + 4)",
+          "new_text": null,
+          "old_line_content": "            dctx->expected = MEM_readLE32(dctx->headerBuffer + 4);",
+          "new_line_content": "    case ZSTDds_decodeSkippableHeader:",
+          "content_same": false
+        },
+        {
+          "line": 1129,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(GENERIC)",
+          "new_text": null,
+          "old_line_content": "        return ERROR(GENERIC);   /* impossible */",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1148,
+          "old_api": "HUF_readDTableX4",
+          "new_api": null,
+          "old_text": "HUF_readDTableX4(dctx->hufTable, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    {   size_t const hSize = HUF_readDTableX4(dctx->hufTable, dict, dictSize);",
+          "new_line_content": "    const BYTE* const dictEnd = dictPtr + dictSize;",
+          "content_same": false
+        },
+        {
+          "line": 1149,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (HUF_isError(hSize)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1155,
+          "old_api": "FSE_readNCount",
+          "new_api": null,
+          "old_text": "FSE_readNCount(offcodeNCount, &offcodeMaxValue, &offcodeLog, dictPtr, dictEnd-dictPtr)",
+          "new_text": null,
+          "old_line_content": "        size_t const offcodeHeaderSize = FSE_readNCount(offcodeNCount, &offcodeMaxValue, &offcodeLog, dictPtr, dictEnd-dictPtr);",
+          "new_line_content": "    {   short offcodeNCount[MaxOff+1];",
+          "content_same": false
+        },
+        {
+          "line": 1156,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (FSE_isError(offcodeHeaderSize)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "        U32 offcodeMaxValue=MaxOff, offcodeLog=OffFSELog;",
+          "content_same": false
+        },
+        {
+          "line": 1164,
+          "old_api": "FSE_readNCount",
+          "new_api": null,
+          "old_text": "FSE_readNCount(matchlengthNCount, &matchlengthMaxValue, &matchlengthLog, dictPtr, dictEnd-dictPtr)",
+          "new_text": null,
+          "old_line_content": "        size_t const matchlengthHeaderSize = FSE_readNCount(matchlengthNCount, &matchlengthMaxValue, &matchlengthLog, dictPtr, dictEnd-dictPtr);",
+          "new_line_content": "    {   short matchlengthNCount[MaxML+1];",
+          "content_same": false
+        },
+        {
+          "line": 1165,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (FSE_isError(matchlengthHeaderSize)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "        unsigned matchlengthMaxValue = MaxML, matchlengthLog = MLFSELog;",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": "FSE_readNCount",
+          "new_api": null,
+          "old_text": "FSE_readNCount(litlengthNCount, &litlengthMaxValue, &litlengthLog, dictPtr, dictEnd-dictPtr)",
+          "new_text": null,
+          "old_line_content": "        size_t const litlengthHeaderSize = FSE_readNCount(litlengthNCount, &litlengthMaxValue, &litlengthLog, dictPtr, dictEnd-dictPtr);",
+          "new_line_content": "    {   short litlengthNCount[MaxLL+1];",
+          "content_same": false
+        },
+        {
+          "line": 1174,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (FSE_isError(litlengthHeaderSize)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "        unsigned litlengthMaxValue = MaxLL, litlengthLog = LLFSELog;",
+          "content_same": false
+        },
+        {
+          "line": 1180,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "    if (dictPtr+12 > dictEnd) return ERROR(dictionary_corrupted);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1181,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "    dctx->rep[0] = MEM_readLE32(dictPtr+0); if (dctx->rep[0] >= dictSize) return ERROR(dictionary_corrupted);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1192,
+          "old_api": "ZSTD_refDictContent",
+          "new_api": null,
+          "old_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    if (dictSize < 8) return ZSTD_refDictContent(dctx, dict, dictSize);",
+          "new_line_content": "static size_t ZSTD_decompress_insertDictionary(ZSTD_DCtx* dctx, const void* dict, size_t dictSize)",
+          "content_same": false
+        },
+        {
+          "line": 1193,
+          "old_api": "MEM_readLE32",
+          "new_api": null,
+          "old_text": "MEM_readLE32(dict)",
+          "new_text": null,
+          "old_line_content": "    {   U32 const magic = MEM_readLE32(dict);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "        if (sequence.offset > (size_t)(oLitEnd - vBase)) return ERROR(corruption_detected);",
+          "new_line_content": "    if (sequence.offset > (size_t)(oLitEnd - base)) {",
+          "content_same": false
+        },
+        {
+          "line": 1202,
+          "old_api": "ZSTD_loadEntropy",
+          "new_api": null,
+          "old_text": "ZSTD_loadEntropy(dctx, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    {   size_t const eSize = ZSTD_loadEntropy(dctx, dict, dictSize);",
+          "new_line_content": "    dict = (const char*)dict + 8;",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(oLitEnd, match, sequence.matchLength)",
+          "new_text": null,
+          "old_line_content": "            memmove(oLitEnd, match, sequence.matchLength);",
+          "new_line_content": "        match = dictEnd - (base-match);",
+          "content_same": false
+        },
+        {
+          "line": 1203,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(eSize)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "    dictSize -= 8;",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(oLitEnd, match, length1)",
+          "new_text": null,
+          "old_line_content": "            memmove(oLitEnd, match, length1);",
+          "new_line_content": "        /* span extDict & currentPrefixSegment */",
+          "content_same": false
+        },
+        {
+          "line": 1209,
+          "old_api": "ZSTD_refDictContent",
+          "new_api": null,
+          "old_text": "ZSTD_refDictContent(dctx, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_refDictContent(dctx, dict, dictSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1215,
+          "old_api": "ZSTD_decompressBegin",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBegin(dctx)",
+          "new_text": null,
+          "old_line_content": "    { size_t const errorCode = ZSTD_decompressBegin(dctx);",
+          "new_line_content": "size_t ZSTD_decompressBegin_usingDict(ZSTD_DCtx* dctx, const void* dict, size_t dictSize)",
+          "content_same": false
+        },
+        {
+          "line": 1216,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(errorCode)",
+          "new_text": null,
+          "old_line_content": "      if (ZSTD_isError(errorCode)) return errorCode; }",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1219,
+          "old_api": "ZSTD_decompress_insertDictionary",
+          "new_api": null,
+          "old_text": "ZSTD_decompress_insertDictionary(dctx, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "        size_t const errorCode = ZSTD_decompress_insertDictionary(dctx, dict, dictSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1220,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dictionary_corrupted)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(errorCode)) return ERROR(dictionary_corrupted);",
+          "new_line_content": "    if (dict && dictSize) {",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": "ZSTD_copy4",
+          "new_api": null,
+          "old_text": "ZSTD_copy4(op+4, match)",
+          "new_text": null,
+          "old_line_content": "        ZSTD_copy4(op+4, match);",
+          "new_line_content": "        op[3] = match[3];",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "ZSTD_copy8",
+          "new_api": null,
+          "old_text": "ZSTD_copy8(op, match)",
+          "new_text": null,
+          "old_line_content": "        ZSTD_copy8(op, match);",
+          "new_line_content": "        match -= sub2;",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "ZSTD_wildcopy",
+          "new_api": null,
+          "old_text": "ZSTD_wildcopy(op, match, oend_w - op)",
+          "new_text": null,
+          "old_line_content": "            ZSTD_wildcopy(op, match, oend_w - op);",
+          "new_line_content": "    if (oMatchEnd > oend-(16-MINMATCH)) {",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": "ZSTD_wildcopy",
+          "new_api": null,
+          "old_text": "ZSTD_wildcopy(op, match, sequence.matchLength-8)",
+          "new_text": null,
+          "old_line_content": "        ZSTD_wildcopy(op, match, sequence.matchLength-8);   /* works even if matchLength < 8 */",
+          "new_line_content": "        while (op < oMatchEnd) *op++ = *match++;",
+          "content_same": false
+        },
+        {
+          "line": 1241,
+          "old_api": "customAlloc",
+          "new_api": null,
+          "old_text": "customMem.customAlloc(customMem.opaque, sizeof(*ddict))",
+          "new_text": null,
+          "old_line_content": "    {   ZSTD_DDict* const ddict = (ZSTD_DDict*) customMem.customAlloc(customMem.opaque, sizeof(*ddict));",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 1242,
+          "old_api": "customAlloc",
+          "new_api": null,
+          "old_text": "customMem.customAlloc(customMem.opaque, dictSize)",
+          "new_text": null,
+          "old_line_content": "        void* const dictContent = customMem.customAlloc(customMem.opaque, dictSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1246,
+          "old_api": "customFree",
+          "new_api": null,
+          "old_text": "customMem.customFree(customMem.opaque, dictContent)",
+          "new_text": null,
+          "old_line_content": "            customMem.customFree(customMem.opaque, dictContent);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1247,
+          "old_api": "customFree",
+          "new_api": null,
+          "old_text": "customMem.customFree(customMem.opaque, ddict)",
+          "new_text": null,
+          "old_line_content": "            customMem.customFree(customMem.opaque, ddict);",
+          "new_line_content": "        if (!dictContent || !ddict || !dctx) {",
+          "content_same": false
+        },
+        {
+          "line": 1252,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dictContent, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "        memcpy(dictContent, dict, dictSize);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1253,
+          "old_api": "ZSTD_decompressBegin_usingDict",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBegin_usingDict(dctx, dictContent, dictSize)",
+          "new_text": null,
+          "old_line_content": "        {   size_t const errorCode = ZSTD_decompressBegin_usingDict(dctx, dictContent, dictSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": "ZSTD_decodeSeqHeaders",
+          "new_api": null,
+          "old_text": "ZSTD_decodeSeqHeaders(&nbSeq, DTableLL, DTableML, DTableOffb, dctx->fseEntropy, ip, seqSize)",
+          "new_text": null,
+          "old_line_content": "    {   size_t const seqHSize = ZSTD_decodeSeqHeaders(&nbSeq, DTableLL, DTableML, DTableOffb, dctx->fseEntropy, ip, seqSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(seqHSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(seqHSize)) return seqHSize;",
+          "new_line_content": "    /* Build Decoding Tables */",
+          "content_same": false
+        },
+        {
+          "line": 1274,
+          "old_api": "ZSTD_createDDict_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_createDDict_advanced(dict, dictSize, allocator)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_createDDict_advanced(dict, dictSize, allocator);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": "BIT_initDStream",
+          "new_api": null,
+          "old_text": "BIT_initDStream(&(seqState.DStream), ip, iend-ip)",
+          "new_text": null,
+          "old_line_content": "        { size_t const errorCode = BIT_initDStream(&(seqState.DStream), ip, iend-ip);",
+          "new_line_content": "        dctx->fseEntropy = 1;",
+          "content_same": false
+        },
+        {
+          "line": 767,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "          if (ERR_isError(errorCode)) return ERROR(corruption_detected); }",
+          "new_line_content": "        { U32 i; for (i=0; i<ZSTD_REP_NUM; i++) seqState.prevOffset[i] = dctx->rep[i]; }",
+          "content_same": false
+        },
+        {
+          "line": 1281,
+          "old_api": "ZSTD_freeDCtx",
+          "new_api": null,
+          "old_text": "ZSTD_freeDCtx(ddict->refContext)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_freeDCtx(ddict->refContext);",
+          "new_line_content": "    ZSTD_freeFunction const cFree = ddict->refContext->customMem.customFree;",
+          "content_same": false
+        },
+        {
+          "line": 1282,
+          "old_api": "cFree",
+          "new_api": null,
+          "old_text": "cFree(opaque, ddict->dict)",
+          "new_text": null,
+          "old_line_content": "    cFree(opaque, ddict->dict);",
+          "new_line_content": "    void* const opaque = ddict->refContext->customMem.opaque;",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": "ZSTD_execSequence",
+          "new_api": null,
+          "old_text": "ZSTD_execSequence(op, oend, sequence, &litPtr, litLimit_w, base, vBase, dictEnd)",
+          "new_text": null,
+          "old_line_content": "                size_t const oneSeqSize = ZSTD_execSequence(op, oend, sequence, &litPtr, litLimit_w, base, vBase, dictEnd);",
+          "new_line_content": "            nbSeq--;",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "        if (nbSeq) return ERROR(corruption_detected);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1296,
+          "old_api": "ZSTD_decompressLegacy",
+          "new_api": null,
+          "old_text": "ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, ddict->dict, ddict->dictSize)",
+          "new_text": null,
+          "old_line_content": "    if (ZSTD_isLegacy(src, srcSize)) return ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, ddict->dict, ddict->dictSize);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dstSize_tooSmall)",
+          "new_text": null,
+          "old_line_content": "        if (lastLLSize > (size_t)(oend-op)) return ERROR(dstSize_tooSmall);",
+          "new_line_content": "    /* last literal segment */",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(op, litPtr, lastLLSize)",
+          "new_text": null,
+          "old_line_content": "        memcpy(op, litPtr, lastLLSize);",
+          "new_line_content": "    {   size_t const lastLLSize = litEnd - litPtr;",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "    if (srcSize >= ZSTD_BLOCKSIZE_ABSOLUTEMAX) return ERROR(srcSize_wrong);",
+          "new_line_content": "    const BYTE* ip = (const BYTE*)src;",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": "ZSTD_decodeLiteralsBlock",
+          "new_api": null,
+          "old_text": "ZSTD_decodeLiteralsBlock(dctx, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    {   size_t const litCSize = ZSTD_decodeLiteralsBlock(dctx, src, srcSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(litCSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(litCSize)) return litCSize;",
+          "new_line_content": "    /* Decode literals sub-block */",
+          "content_same": false
+        },
+        {
+          "line": 1332,
+          "old_api": "ZSTD_createDStream_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_createDStream_advanced(defaultCustomMem)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_createDStream_advanced(defaultCustomMem);",
+          "new_line_content": "ZSTD_DStream* ZSTD_createDStream(void)",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": "ZSTD_decompressSequences",
+          "new_api": null,
+          "old_text": "ZSTD_decompressSequences(dctx, dst, dstCapacity, ip, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_decompressSequences(dctx, dst, dstCapacity, ip, srcSize);",
+          "new_line_content": "        srcSize -= litCSize;",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "ZSTD_checkContinuity",
+          "new_api": null,
+          "old_text": "ZSTD_checkContinuity(dctx, dst)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "ZSTD_decompressBlock_internal",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    dSize = ZSTD_decompressBlock_internal(dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "    size_t dSize;",
+          "content_same": false
+        },
+        {
+          "line": 1345,
+          "old_api": "customAlloc",
+          "new_api": null,
+          "old_text": "customMem.customAlloc(customMem.opaque, sizeof(ZSTD_DStream))",
+          "new_text": null,
+          "old_line_content": "    zds = (ZSTD_DStream*)customMem.customAlloc(customMem.opaque, sizeof(ZSTD_DStream));",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 1348,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem))",
+          "new_text": null,
+          "old_line_content": "    memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem));",
+          "new_line_content": "    if (zds==NULL) return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": "ZSTD_checkContinuity",
+          "new_api": null,
+          "old_text": "ZSTD_checkContinuity(dctx, blockStart)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_checkContinuity(dctx, blockStart);",
+          "new_line_content": "ZSTDLIB_API size_t ZSTD_insertBlock(ZSTD_DCtx* dctx, const void* blockStart, size_t blockSize)",
+          "content_same": false
+        },
+        {
+          "line": 1358,
+          "old_api": "ZSTD_freeDCtx",
+          "new_api": null,
+          "old_text": "ZSTD_freeDCtx(zds->zd)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_freeDCtx(zds->zd);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1359,
+          "old_api": "customFree",
+          "new_api": null,
+          "old_text": "zds->customMem.customFree(zds->customMem.opaque, zds->inBuff)",
+          "new_text": null,
+          "old_line_content": "    if (zds->inBuff) zds->customMem.customFree(zds->customMem.opaque, zds->inBuff);",
+          "new_line_content": "    if (zds==NULL) return 0;   /* support free on null */",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dstSize_tooSmall)",
+          "new_text": null,
+          "old_line_content": "    if (length > dstCapacity) return ERROR(dstSize_tooSmall);",
+          "new_line_content": "size_t ZSTD_generateNxBytes(void* dst, size_t dstCapacity, BYTE byte, size_t length)",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(dst, byte, length)",
+          "new_text": null,
+          "old_line_content": "    memset(dst, byte, length);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1375,
+          "old_api": "ZSTD_decompressBegin_usingDict",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBegin_usingDict(zds->zd, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_decompressBegin_usingDict(zds->zd, dict, dictSize);",
+          "new_line_content": "    zds->stage = zdss_loadHeader;",
+          "content_same": false
+        },
+        {
+          "line": 1380,
+          "old_api": "ZSTD_initDStream_usingDict",
+          "new_api": null,
+          "old_text": "ZSTD_initDStream_usingDict(zds, NULL, 0)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_initDStream_usingDict(zds, NULL, 0);",
+          "new_line_content": "size_t ZSTD_initDStream(ZSTD_DStream* zds)",
+          "content_same": false
+        },
+        {
+          "line": 869,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "    if (srcSize < ZSTD_frameHeaderSize_min+ZSTD_blockHeaderSize) return ERROR(srcSize_wrong);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "ZSTD_frameHeaderSize",
+          "new_api": null,
+          "old_text": "ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min)",
+          "new_text": null,
+          "old_line_content": "    {   size_t const frameHeaderSize = ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_min);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "        if (srcSize < frameHeaderSize+ZSTD_blockHeaderSize) return ERROR(srcSize_wrong);",
+          "new_line_content": "        size_t result;",
+          "content_same": false
+        },
+        {
+          "line": 1388,
+          "old_api": "MIN",
+          "new_api": null,
+          "old_text": "MIN(dstCapacity, srcSize)",
+          "new_text": null,
+          "old_line_content": "    size_t const length = MIN(dstCapacity, srcSize);",
+          "new_line_content": "MEM_STATIC size_t ZSTD_limitCopy(void* dst, size_t dstCapacity, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 1389,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(dst, src, length)",
+          "new_text": null,
+          "old_line_content": "    memcpy(dst, src, length);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 885,
+          "old_api": "ZSTD_getcBlockSize",
+          "new_api": null,
+          "old_text": "ZSTD_getcBlockSize(ip, remainingSize, &blockProperties)",
+          "new_text": null,
+          "old_line_content": "        size_t const cBlockSize = ZSTD_getcBlockSize(ip, remainingSize, &blockProperties);",
+          "new_line_content": "        size_t decodedSize;",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(cBlockSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(cBlockSize)) return cBlockSize;",
+          "new_line_content": "        blockProperties_t blockProperties;",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "        if (cBlockSize > remainingSize) return ERROR(srcSize_wrong);",
+          "new_line_content": "        ip += ZSTD_blockHeaderSize;",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": "ZSTD_decompressBlock_internal",
+          "new_api": null,
+          "old_text": "ZSTD_decompressBlock_internal(dctx, op, oend-op, ip, cBlockSize)",
+          "new_text": null,
+          "old_line_content": "            decodedSize = ZSTD_decompressBlock_internal(dctx, op, oend-op, ip, cBlockSize);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 1408,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(init_missing)",
+          "new_text": null,
+          "old_line_content": "            return ERROR(init_missing);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": "ZSTD_copyRawBlock",
+          "new_api": null,
+          "old_text": "ZSTD_copyRawBlock(op, oend-op, ip, cBlockSize)",
+          "new_text": null,
+          "old_line_content": "            decodedSize = ZSTD_copyRawBlock(op, oend-op, ip, cBlockSize);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 1411,
+          "old_api": "ZSTD_getFrameParams",
+          "new_api": null,
+          "old_text": "ZSTD_getFrameParams(&(zds->fParams), zds->headerBuffer, zds->lhSize)",
+          "new_text": null,
+          "old_line_content": "            {   size_t const hSize = ZSTD_getFrameParams(&(zds->fParams), zds->headerBuffer, zds->lhSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1412,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(hSize)",
+          "new_text": null,
+          "old_line_content": "                if (ZSTD_isError(hSize)) return hSize;",
+          "new_line_content": "        case zdss_loadHeader :",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "ZSTD_generateNxBytes",
+          "new_api": null,
+          "old_text": "ZSTD_generateNxBytes(op, oend-op, *ip, blockProperties.origSize)",
+          "new_text": null,
+          "old_line_content": "            decodedSize = ZSTD_generateNxBytes(op, oend-op, *ip, blockProperties.origSize);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 1416,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(zds->headerBuffer + zds->lhSize, ip, iend-ip)",
+          "new_text": null,
+          "old_line_content": "                        memcpy(zds->headerBuffer + zds->lhSize, ip, iend-ip);",
+          "new_line_content": "                    size_t const toLoad = hSize - zds->lhSize;   /* if hSize!=0, hSize > zds->lhSize */",
+          "content_same": false
+        },
+        {
+          "line": 905,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "            return ERROR(corruption_detected);",
+          "new_line_content": "        case bt_reserved :",
+          "content_same": false
+        },
+        {
+          "line": 908,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(decodedSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": "XXH64_update",
+          "new_api": null,
+          "old_text": "XXH64_update(&dctx->xxhState, op, decodedSize)",
+          "new_text": null,
+          "old_line_content": "        if (dctx->fParams.checksumFlag) XXH64_update(&dctx->xxhState, op, decodedSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1421,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad)",
+          "new_text": null,
+          "old_line_content": "                    memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad); zds->lhSize = hSize; ip += toLoad;",
+          "new_line_content": "                        return (hSize - zds->lhSize) + ZSTD_blockHeaderSize;   /* remaining header bytes + next block header */",
+          "content_same": false
+        },
+        {
+          "line": 1426,
+          "old_api": "ZSTD_nextSrcSizeToDecompress",
+          "new_api": null,
+          "old_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "new_text": null,
+          "old_line_content": "            {   size_t const h1Size = ZSTD_nextSrcSizeToDecompress(zds->zd);  /* == ZSTD_frameHeaderSize_min */",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1427,
+          "old_api": "ZSTD_decompressContinue",
+          "new_api": null,
+          "old_text": "ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer, h1Size)",
+          "new_text": null,
+          "old_line_content": "                size_t const h1Result = ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer, h1Size);",
+          "new_line_content": "            /* Consume header */",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": "XXH64_digest",
+          "new_api": null,
+          "old_text": "XXH64_digest(&dctx->xxhState)",
+          "new_text": null,
+          "old_line_content": "        U32 const checkCalc = (U32)XXH64_digest(&dctx->xxhState);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1431,
+          "old_api": "ZSTD_decompressContinue",
+          "new_api": null,
+          "old_text": "ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer+h1Size, h2Size)",
+          "new_text": null,
+          "old_line_content": "                    size_t const h2Result = ZSTD_decompressContinue(zds->zd, NULL, 0, zds->headerBuffer+h1Size, h2Size);",
+          "new_line_content": "                if (h1Size < zds->lhSize) {   /* long header */",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": "MEM_readLE32",
+          "new_api": null,
+          "old_text": "MEM_readLE32(ip)",
+          "new_text": null,
+          "old_line_content": "        checkRead = MEM_readLE32(ip);",
+          "new_line_content": "        U32 checkRead;",
+          "content_same": false
+        },
+        {
+          "line": 1435,
+          "old_api": "MAX",
+          "new_api": null,
+          "old_text": "MAX(zds->fParams.windowSize, 1U << ZSTD_WINDOWLOG_ABSOLUTEMIN)",
+          "new_text": null,
+          "old_line_content": "            zds->fParams.windowSize = MAX(zds->fParams.windowSize, 1U << ZSTD_WINDOWLOG_ABSOLUTEMIN);",
+          "new_line_content": "            }   }",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "    if (remainingSize) return ERROR(srcSize_wrong);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1438,
+          "old_api": "MIN",
+          "new_api": null,
+          "old_text": "MIN(zds->fParams.windowSize, ZSTD_BLOCKSIZE_ABSOLUTEMAX)",
+          "new_text": null,
+          "old_line_content": "            {   size_t const blockSize = MIN(zds->fParams.windowSize, ZSTD_BLOCKSIZE_ABSOLUTEMAX);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1442,
+          "old_api": "customFree",
+          "new_api": null,
+          "old_text": "zds->customMem.customFree(zds->customMem.opaque, zds->inBuff)",
+          "new_text": null,
+          "old_line_content": "                    zds->customMem.customFree(zds->customMem.opaque, zds->inBuff);",
+          "new_line_content": "                zds->blockSize = blockSize;",
+          "content_same": false
+        },
+        {
+          "line": 1445,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(memory_allocation)",
+          "new_text": null,
+          "old_line_content": "                    if (zds->inBuff == NULL) return ERROR(memory_allocation);",
+          "new_line_content": "                    zds->inBuffSize = blockSize;",
+          "content_same": false
+        },
+        {
+          "line": 1448,
+          "old_api": "customFree",
+          "new_api": null,
+          "old_text": "zds->customMem.customFree(zds->customMem.opaque, zds->outBuff)",
+          "new_text": null,
+          "old_line_content": "                    zds->customMem.customFree(zds->customMem.opaque, zds->outBuff);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": "ZSTD_copyDCtx",
+          "new_api": null,
+          "old_text": "ZSTD_copyDCtx(dctx, refDCtx)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_copyDCtx(dctx, refDCtx);",
+          "new_line_content": "                                   const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": "ZSTD_checkContinuity",
+          "new_api": null,
+          "old_text": "ZSTD_checkContinuity(dctx, dst)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1451,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(memory_allocation)",
+          "new_text": null,
+          "old_line_content": "                    if (zds->outBuff == NULL) return ERROR(memory_allocation);",
+          "new_line_content": "                    zds->outBuffSize = neededOutSize;",
+          "content_same": false
+        },
+        {
+          "line": 1457,
+          "old_api": "ZSTD_nextSrcSizeToDecompress",
+          "new_api": null,
+          "old_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "new_text": null,
+          "old_line_content": "            {   size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": "ZSTD_decompressLegacy",
+          "new_api": null,
+          "old_text": "ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, dict, dictSize)",
+          "new_text": null,
+          "old_line_content": "    if (ZSTD_isLegacy(src, srcSize)) return ZSTD_decompressLegacy(dst, dstCapacity, src, srcSize, dict, dictSize);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1464,
+          "old_api": "ZSTD_isSkipFrame",
+          "new_api": null,
+          "old_text": "ZSTD_isSkipFrame(zds->zd)",
+          "new_text": null,
+          "old_line_content": "                    const int isSkipFrame = ZSTD_isSkipFrame(zds->zd);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 1465,
+          "old_api": "ZSTD_decompressContinue",
+          "new_api": null,
+          "old_text": "ZSTD_decompressContinue(zds->zd,\n                        zds->outBuff + zds->outStart, (isSkipFrame ? 0 : zds->outBuffSize - zds->outStart),\n                        ip, neededInSize)",
+          "new_text": null,
+          "old_line_content": "                    size_t const decodedSize = ZSTD_decompressContinue(zds->zd,",
+          "new_line_content": "                if ((size_t)(iend-ip) >= neededInSize) {  /* decode directly from src */",
+          "content_same": false
+        },
+        {
+          "line": 954,
+          "old_api": "ZSTD_checkContinuity",
+          "new_api": null,
+          "old_text": "ZSTD_checkContinuity(dctx, dst)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_checkContinuity(dctx, dst);",
+          "new_line_content": "#endif",
+          "content_same": false
+        },
+        {
+          "line": 1468,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(decodedSize)",
+          "new_text": null,
+          "old_line_content": "                    if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "new_line_content": "                        zds->outBuff + zds->outStart, (isSkipFrame ? 0 : zds->outBuffSize - zds->outStart),",
+          "content_same": false
+        },
+        {
+          "line": 961,
+          "old_api": "ZSTD_decompress_usingDict",
+          "new_api": null,
+          "old_text": "ZSTD_decompress_usingDict(dctx, dst, dstCapacity, src, srcSize, NULL, 0)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_decompress_usingDict(dctx, dst, dstCapacity, src, srcSize, NULL, 0);",
+          "new_line_content": "size_t ZSTD_decompressDCtx(ZSTD_DCtx* dctx, void* dst, size_t dstCapacity, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 969,
+          "old_api": "ZSTD_createDCtx",
+          "new_api": null,
+          "old_text": "ZSTD_createDCtx()",
+          "new_text": null,
+          "old_line_content": "    ZSTD_DCtx* const dctx = ZSTD_createDCtx();",
+          "new_line_content": "#if defined(ZSTD_HEAPMODE) && (ZSTD_HEAPMODE==1)",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(memory_allocation)",
+          "new_text": null,
+          "old_line_content": "    if (dctx==NULL) return ERROR(memory_allocation);",
+          "new_line_content": "    size_t regenSize;",
+          "content_same": false
+        },
+        {
+          "line": 1481,
+          "old_api": "ZSTD_nextSrcSizeToDecompress",
+          "new_api": null,
+          "old_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "new_text": null,
+          "old_line_content": "            {   size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1484,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(corruption_detected)",
+          "new_text": null,
+          "old_line_content": "                if (toLoad > zds->inBuffSize - zds->inPos) return ERROR(corruption_detected);   /* should never happen */",
+          "new_line_content": "                size_t const toLoad = neededInSize - zds->inPos;   /* should always be <= remaining space within inBuff */",
+          "content_same": false
+        },
+        {
+          "line": 1485,
+          "old_api": "ZSTD_limitCopy",
+          "new_api": null,
+          "old_text": "ZSTD_limitCopy(zds->inBuff + zds->inPos, toLoad, ip, iend-ip)",
+          "new_text": null,
+          "old_line_content": "                loadedSize = ZSTD_limitCopy(zds->inBuff + zds->inPos, toLoad, ip, iend-ip);",
+          "new_line_content": "                size_t loadedSize;",
+          "content_same": false
+        },
+        {
+          "line": 976,
+          "old_api": "ZSTD_decompressDCtx",
+          "new_api": null,
+          "old_text": "ZSTD_decompressDCtx(&dctx, dst, dstCapacity, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_decompressDCtx(&dctx, dst, dstCapacity, src, srcSize);",
+          "new_line_content": "#else   /* stack mode */",
+          "content_same": false
+        },
+        {
+          "line": 1491,
+          "old_api": "ZSTD_isSkipFrame",
+          "new_api": null,
+          "old_text": "ZSTD_isSkipFrame(zds->zd)",
+          "new_text": null,
+          "old_line_content": "                {  const int isSkipFrame = ZSTD_isSkipFrame(zds->zd);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1492,
+          "old_api": "ZSTD_decompressContinue",
+          "new_api": null,
+          "old_text": "ZSTD_decompressContinue(zds->zd,\n                        zds->outBuff + zds->outStart, zds->outBuffSize - zds->outStart,\n                        zds->inBuff, neededInSize)",
+          "new_text": null,
+          "old_line_content": "                   size_t const decodedSize = ZSTD_decompressContinue(zds->zd,",
+          "new_line_content": "                /* decode loaded input */",
+          "content_same": false
+        },
+        {
+          "line": 1495,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(decodedSize)",
+          "new_text": null,
+          "old_line_content": "                    if (ZSTD_isError(decodedSize)) return decodedSize;",
+          "new_line_content": "                        zds->outBuff + zds->outStart, zds->outBuffSize - zds->outStart,",
+          "content_same": false
+        },
+        {
+          "line": 1505,
+          "old_api": "ZSTD_limitCopy",
+          "new_api": null,
+          "old_text": "ZSTD_limitCopy(op, oend-op, zds->outBuff + zds->outStart, toFlushSize)",
+          "new_text": null,
+          "old_line_content": "                size_t const flushedSize = ZSTD_limitCopy(op, oend-op, zds->outBuff + zds->outStart, toFlushSize);",
+          "new_line_content": "        case zdss_flush:",
+          "content_same": false
+        },
+        {
+          "line": 1518,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(GENERIC)",
+          "new_text": null,
+          "old_line_content": "        default: return ERROR(GENERIC);   /* impossible */",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "    if (srcSize != dctx->expected) return ERROR(srcSize_wrong);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1524,
+          "old_api": "ZSTD_nextSrcSizeToDecompress",
+          "new_api": null,
+          "old_text": "ZSTD_nextSrcSizeToDecompress(zds->zd)",
+          "new_text": null,
+          "old_line_content": "    {   size_t nextSrcSizeHint = ZSTD_nextSrcSizeToDecompress(zds->zd);",
+          "new_line_content": "    input->pos += (size_t)(ip-istart);",
+          "content_same": false
+        },
+        {
+          "line": 1527,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(GENERIC)",
+          "new_text": null,
+          "old_line_content": "        if (zds->inPos > nextSrcSizeHint) return ERROR(GENERIC);   /* should never happen */",
+          "new_line_content": "        if (!nextSrcSizeHint) return (zds->outEnd != zds->outStart);   /* return 0 only if fully flushed too */",
+          "content_same": false
+        },
+        {
+          "line": 1016,
+          "old_api": "ZSTD_checkContinuity",
+          "new_api": null,
+          "old_text": "ZSTD_checkContinuity(dctx, dst)",
+          "new_text": null,
+          "old_line_content": "    if (dstCapacity) ZSTD_checkContinuity(dctx, dst);",
+          "new_line_content": "    /* Sanity check */",
+          "content_same": false
+        },
+        {
+          "line": 1021,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(srcSize_wrong)",
+          "new_text": null,
+          "old_line_content": "        if (srcSize != ZSTD_frameHeaderSize_min) return ERROR(srcSize_wrong);   /* impossible */",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1022,
+          "old_api": "MEM_readLE32",
+          "new_api": null,
+          "old_text": "MEM_readLE32(src)",
+          "new_text": null,
+          "old_line_content": "        if ((MEM_readLE32(src) & 0xFFFFFFF0U) == ZSTD_MAGIC_SKIPPABLE_START) {",
+          "new_line_content": "    case ZSTDds_getFrameHeaderSize :",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 42,
+      "total_additions": 134,
+      "total_deletions": 133,
+      "total_api_changes": 309
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 309,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          682
+        ]
+      }
+    },
+    "api_calls_before": 311,
+    "api_calls_after": 312,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 1,
+      "total_diff_lines": 16
+    }
+  }
+}

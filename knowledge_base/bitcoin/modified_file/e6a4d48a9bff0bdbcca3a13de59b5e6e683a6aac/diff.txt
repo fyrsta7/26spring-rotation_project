@@ -1,0 +1,32 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -4344,10 +4344,12 @@
+                 recentRejects->reset();
+
+             }
+
+ 
+
++            // Use pcoinsTip->HaveCoinsInCache as a quick approximation to exclude
+
++            // requesting or processing some txs which have already been included in a block
+
+             return recentRejects->contains(inv.hash) ||
+
+                    mempool.exists(inv.hash) ||
+
+                    mapOrphanTransactions.count(inv.hash) ||
+
+-                   pcoinsTip->HaveCoins(inv.hash);
+
++                   pcoinsTip->HaveCoinsInCache(inv.hash);
+
+         }
+
+     case MSG_BLOCK:
+
+         return mapBlockIndex.count(inv.hash);

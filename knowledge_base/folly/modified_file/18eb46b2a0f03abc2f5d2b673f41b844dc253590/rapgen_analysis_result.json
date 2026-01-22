@@ -1,0 +1,996 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/18eb46b2a0f03abc2f5d2b673f41b844dc253590",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/18eb46b2a0f03abc2f5d2b673f41b844dc253590/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/18eb46b2a0f03abc2f5d2b673f41b844dc253590/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/18eb46b2a0f03abc2f5d2b673f41b844dc253590/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 285,
+          "old_api": "reinterpret_cast<IOBuf*>(p)",
+          "new_api": "getFreeFn",
+          "old_text": "reinterpret_cast<IOBuf*>(p)",
+          "new_text": "reusableTail_->getFreeFn()",
+          "old_line_content": "        [](void*, void* p) { delete reinterpret_cast<IOBuf*>(p); },",
+          "new_line_content": "    auto tailBuf = reusableTail_->getFreeFn() == freeFn",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "release",
+          "new_api": "getUserData",
+          "old_text": "reusableTail_->cloneOne().release()",
+          "new_text": "reusableTail_->getUserData()",
+          "old_line_content": "        reusableTail_->cloneOne().release());",
+          "new_line_content": "        ? reinterpret_cast<IOBuf*>(reusableTail_->getUserData())",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "tailroom",
+          "new_api": "bufferEnd",
+          "old_text": "reusableTail_->tailroom()",
+          "new_text": "reusableTail_->bufferEnd()",
+          "old_line_content": "    reusableTail_->trimWritableTail(reusableTail_->tailroom());",
+          "new_line_content": "    DCHECK_EQ(tailBuf->bufferEnd(), reusableTail_->bufferEnd());",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "get",
+          "new_api": "release",
+          "old_text": "newTail.get()",
+          "new_text": "IOBuf::takeOwnership(\n        reusableTail_->writableTail(),\n        reusableTail_->tailroom(),\n        0,\n        freeFn,\n        tailBuf->cloneOne().release())",
+          "old_line_content": "    reusableTail_ = newTail.get();",
+          "new_line_content": "    newTail = IOBuf::takeOwnership(",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "std::move(newTail)",
+          "new_api": "tailroom",
+          "old_text": "std::move(newTail)",
+          "new_text": "reusableTail_->tailroom()",
+          "old_line_content": "  head_->prependChain(std::move(newTail));",
+          "new_line_content": "        reusableTail_->tailroom(),",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": "pop",
+          "new_api": "std::underflow_error(\n            \"Attempt to remove more bytes than are present in IOBufQueue\")",
+          "old_text": "head_->pop()",
+          "new_text": "std::underflow_error(\n            \"Attempt to remove more bytes than are present in IOBufQueue\")",
+          "old_line_content": "      unique_ptr<IOBuf> remainder = head_->pop();",
+          "new_line_content": "        throw std::underflow_error(",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": "std::move(clone)",
+          "new_api": "length",
+          "old_text": "std::move(clone)",
+          "new_text": "head_->length()",
+          "old_line_content": "      appendToChain(result, std::move(clone), false);",
+          "new_line_content": "      n -= head_->length();",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": "trimStart",
+          "new_api": "length",
+          "old_text": "head_->trimStart(n)",
+          "new_text": "head_->length()",
+          "old_line_content": "      head_->trimStart(n);",
+          "new_line_content": "      chainLength_ -= head_->length();",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": "UNLIKELY",
+          "new_api": "cloneOne",
+          "old_text": "UNLIKELY(result == nullptr)",
+          "new_text": "head_->cloneOne()",
+          "old_line_content": "  if (UNLIKELY(result == nullptr)) {",
+          "new_line_content": "      unique_ptr<IOBuf> clone = head_->cloneOne();",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "IOBuf::create(0)",
+          "new_api": "length",
+          "old_text": "IOBuf::create(0)",
+          "new_text": "clone->length()",
+          "old_line_content": "    return IOBuf::create(0);",
+          "new_line_content": "      clone->trimEnd(clone->length() - n);",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "new_api": "IOBuf::create(0)",
+          "old_text": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "new_text": "IOBuf::create(0)",
+          "old_line_content": "    throw std::underflow_error(",
+          "new_line_content": "    return IOBuf::create(0);",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "updateGuard",
+          "new_api": "trimStartAtMost",
+          "old_text": "updateGuard()",
+          "new_text": "trimStartAtMost(amount)",
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "  auto trimmed = trimStartAtMost(amount);",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "pop",
+          "new_api": "length",
+          "old_text": "head_->pop()",
+          "new_text": "head_->length()",
+          "old_line_content": "    head_ = head_->pop();",
+          "new_line_content": "    if (head_->length() > amount) {",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "trimEndAtMost",
+          "new_api": "length",
+          "old_text": "trimEndAtMost(amount)",
+          "new_text": "head_->length()",
+          "old_line_content": "  auto trimmed = trimEndAtMost(amount);",
+          "new_line_content": "    amount -= head_->length();",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "new_api": "pop",
+          "old_text": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "new_text": "head_->pop()",
+          "old_line_content": "    throw std::underflow_error(",
+          "new_line_content": "    head_ = head_->pop();",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "updateGuard",
+          "new_api": "trimEndAtMost",
+          "old_text": "updateGuard()",
+          "new_text": "trimEndAtMost(amount)",
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "  auto trimmed = trimEndAtMost(amount);",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "isChained",
+          "new_api": "prev",
+          "old_text": "head_->isChained()",
+          "new_text": "head_->prev()->trimEnd(amount)",
+          "old_line_content": "    if (head_->isChained()) {",
+          "new_line_content": "      head_->prev()->trimEnd(amount);",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": "std::move(best)",
+          "new_api": "pop",
+          "old_text": "std::move(best)",
+          "new_text": "head_->pop()",
+          "old_line_content": "    head_ = std::move(best);",
+          "new_line_content": "    auto buf = std::exchange(head_, head_->pop());",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "reinterpret_cast<const char*>(tailStart_)",
+          "new_api": "size",
+          "old_text": "reinterpret_cast<const char*>(tailStart_)",
+          "new_text": "out.size()",
+          "old_line_content": "        reinterpret_cast<const char*>(tailStart_),",
+          "new_line_content": "  out.reserve(out.size() + len);",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": "gather",
+          "new_api": "reinterpret_cast<const char*>(tailStart_)",
+          "old_text": "head_->gather(maxLength)",
+          "new_text": "reinterpret_cast<const char*>(tailStart_)",
+          "old_line_content": "    head_->gather(maxLength);",
+          "new_line_content": "        reinterpret_cast<const char*>(tailStart_),",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 384,
+          "old_api": null,
+          "new_api": "prev",
+          "old_text": null,
+          "new_text": "head_->prev()->length()",
+          "old_line_content": "  return original - amount;",
+          "new_line_content": "    chainLength_ -= head_->prev()->length();",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": null,
+          "new_api": "isChained",
+          "old_text": null,
+          "new_text": "head_->isChained()",
+          "old_line_content": "",
+          "new_line_content": "    if (head_->isChained()) {",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "prev",
+          "old_text": null,
+          "new_text": "head_->prev()->unlink()",
+          "old_line_content": "std::unique_ptr<folly::IOBuf> IOBufQueue::pop_front() {",
+          "new_line_content": "      head_->prev()->unlink();",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "head_.reset()",
+          "old_line_content": "  if (!head_) {",
+          "new_line_content": "      head_.reset();",
+          "content_same": false
+        },
+        {
+          "line": 396,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "}",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 400,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "head_->length()",
+          "old_line_content": "  std::unique_ptr<folly::IOBuf> best;",
+          "new_line_content": "  chainLength_ -= head_->length();",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": null,
+          "new_api": "std::move(head_)",
+          "old_text": null,
+          "new_text": "std::move(head_)",
+          "old_line_content": "  while (head_) {",
+          "new_line_content": "  std::unique_ptr<folly::IOBuf> retBuf = std::move(head_);",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": null,
+          "new_api": "reinterpret_cast<IOBuf*>(p)",
+          "old_text": null,
+          "new_text": "reinterpret_cast<IOBuf*>(p)",
+          "old_line_content": "    // We know the tail is not shared, so we can clone it and wrap it in a",
+          "new_line_content": "    auto freeFn = [](void*, void* p) { delete reinterpret_cast<IOBuf*>(p); };",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "  }",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": null,
+          "new_api": "isSharedOne",
+          "old_text": null,
+          "new_text": "buf->isSharedOne()",
+          "old_line_content": "  }",
+          "new_line_content": "    if (!buf->isSharedOne() &&",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "capacity",
+          "old_text": null,
+          "new_text": "best->capacity()",
+          "old_line_content": "  chainLength_ = 0;",
+          "new_line_content": "        (best == nullptr || buf->capacity() > best->capacity())) {",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "std::move(buf)",
+          "old_text": null,
+          "new_text": "std::move(buf)",
+          "old_line_content": "}",
+          "new_line_content": "      best = std::move(buf);",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "best->clear()",
+          "old_line_content": "    return;",
+          "new_line_content": "    best->clear();",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "writableTail",
+          "old_text": null,
+          "new_text": "reusableTail_->writableTail()",
+          "old_line_content": "  }",
+          "new_line_content": "        reusableTail_->writableTail(),",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "std::move(best)",
+          "old_text": null,
+          "new_text": "std::move(best)",
+          "old_line_content": "  }",
+          "new_line_content": "    head_ = std::move(best);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "release",
+          "old_text": null,
+          "new_text": "tailBuf->cloneOne().release()",
+          "old_line_content": "unique_ptr<IOBuf> IOBufQueue::split(size_t n, bool throwOnUnderflow) {",
+          "new_line_content": "        tailBuf->cloneOne().release());",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": null,
+          "new_api": "tailroom",
+          "old_text": null,
+          "new_text": "reusableTail_->tailroom()",
+          "old_line_content": "  unique_ptr<IOBuf> result;",
+          "new_line_content": "    reusableTail_->trimWritableTail(reusableTail_->tailroom());",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "newTail.get()",
+          "old_line_content": "  while (n != 0) {",
+          "new_line_content": "    reusableTail_ = newTail.get();",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "std::move(newTail)",
+          "old_text": null,
+          "new_text": "std::move(newTail)",
+          "old_line_content": "      if (throwOnUnderflow) {",
+          "new_line_content": "  head_->prependChain(std::move(newTail));",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": null,
+          "new_api": "computeChainDataLength",
+          "old_text": null,
+          "new_text": "head_->computeChainDataLength()",
+          "old_line_content": "  if (tailStart_ != cachePtr_->cachedRange.first) {",
+          "new_line_content": "      : head_->computeChainDataLength() +",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "        break;",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "range.size()",
+          "old_line_content": "}",
+          "new_line_content": "    out.append(reinterpret_cast<const char*>(range.data()), range.size());",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "append",
+          "old_text": null,
+          "new_text": "out.append(\n        reinterpret_cast<const char*>(tailStart_),\n        cachePtr_->cachedRange.first - tailStart_)",
+          "old_line_content": "  if (head_ != nullptr) {",
+          "new_line_content": "    out.append(",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": null,
+          "new_api": "pop",
+          "old_text": null,
+          "new_text": "head_->pop()",
+          "old_line_content": "      chainLength_ -= n;",
+          "new_line_content": "      unique_ptr<IOBuf> remainder = head_->pop();",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": null,
+          "new_api": "std::move(head_)",
+          "old_text": null,
+          "new_text": "std::move(head_)",
+          "old_line_content": "      break;",
+          "new_line_content": "      appendToChain(result, std::move(head_), false);",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": null,
+          "new_api": "std::move(remainder)",
+          "old_text": null,
+          "new_text": "std::move(remainder)",
+          "old_line_content": "    }",
+          "new_line_content": "      head_ = std::move(remainder);",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "gather",
+          "old_text": null,
+          "new_text": "head_->gather(maxLength)",
+          "old_line_content": "",
+          "new_line_content": "    head_->gather(maxLength);",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": null,
+          "new_api": "std::move(clone)",
+          "old_text": null,
+          "new_text": "std::move(clone)",
+          "old_line_content": "  }",
+          "new_line_content": "      appendToChain(result, std::move(clone), false);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "trimStart",
+          "old_text": null,
+          "new_text": "head_->trimStart(n)",
+          "old_line_content": "  return result;",
+          "new_line_content": "      head_->trimStart(n);",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "UNLIKELY",
+          "old_text": null,
+          "new_text": "UNLIKELY(result == nullptr)",
+          "old_line_content": "  if (trimmed != amount) {",
+          "new_line_content": "  if (UNLIKELY(result == nullptr)) {",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": null,
+          "new_api": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "old_text": null,
+          "new_text": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "old_line_content": "  while (amount > 0) {",
+          "new_line_content": "    throw std::underflow_error(",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "      chainLength_ -= amount;",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "trimStart",
+          "old_text": null,
+          "new_text": "head_->trimStart(amount)",
+          "old_line_content": "  }",
+          "new_line_content": "      head_->trimStart(amount);",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "length",
+          "old_text": null,
+          "new_text": "head_->length()",
+          "old_line_content": "  if (trimmed != amount) {",
+          "new_line_content": "    chainLength_ -= head_->length();",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": null,
+          "new_api": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "old_text": null,
+          "new_text": "std::underflow_error(\n        \"Attempt to trim more bytes than are present in IOBufQueue\")",
+          "old_line_content": "  while (amount > 0) {",
+          "new_line_content": "    throw std::underflow_error(",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": null,
+          "new_api": "updateGuard",
+          "old_text": null,
+          "new_text": "updateGuard()",
+          "old_line_content": "      chainLength_ -= amount;",
+          "new_line_content": "  auto guard = updateGuard();",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": null,
+          "new_api": "prev",
+          "old_text": null,
+          "new_text": "head_->prev()->length()",
+          "old_line_content": "",
+          "new_line_content": "    if (head_->prev()->length() > amount) {",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "prev",
+          "old_text": null,
+          "new_text": "head_->prev()->length()",
+          "old_line_content": "  }",
+          "new_line_content": "    amount -= head_->prev()->length();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 388,
+          "old_api": "updateGuard",
+          "new_api": null,
+          "old_text": "updateGuard()",
+          "new_text": null,
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "  chainLength_ -= head_->length();",
+          "new_line_content": "  return original - amount;",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": "std::move(head_)",
+          "new_api": null,
+          "old_text": "std::move(head_)",
+          "new_text": null,
+          "old_line_content": "  std::unique_ptr<folly::IOBuf> retBuf = std::move(head_);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": "pop",
+          "new_api": null,
+          "old_text": "retBuf->pop()",
+          "new_text": null,
+          "old_line_content": "  head_ = retBuf->pop();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": "updateGuard",
+          "new_api": null,
+          "old_text": "updateGuard()",
+          "new_text": null,
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": "isSharedOne",
+          "new_api": null,
+          "old_text": "buf->isSharedOne()",
+          "new_text": null,
+          "old_line_content": "    if (!buf->isSharedOne() &&",
+          "new_line_content": "  return retBuf;",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "capacity",
+          "new_api": null,
+          "old_text": "best->capacity()",
+          "new_text": null,
+          "old_line_content": "        (best == nullptr || buf->capacity() > best->capacity())) {",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "std::move(buf)",
+          "new_api": null,
+          "old_text": "std::move(buf)",
+          "new_text": null,
+          "old_line_content": "      best = std::move(buf);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "release",
+          "new_api": null,
+          "old_text": "IOBuf::takeOwnership(\n        reusableTail_->writableTail(),\n        reusableTail_->tailroom(),\n        0,\n        [](void*, void* p) { delete reinterpret_cast<IOBuf*>(p); },\n        reusableTail_->cloneOne().release())",
+          "new_text": null,
+          "old_line_content": "    newTail = IOBuf::takeOwnership(",
+          "new_line_content": "    // new (unshared) IOBuf that owns its writable tail to reuse it.",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": "writableTail",
+          "new_api": null,
+          "old_text": "reusableTail_->writableTail()",
+          "new_text": null,
+          "old_line_content": "        reusableTail_->writableTail(),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "tailroom",
+          "new_api": null,
+          "old_text": "reusableTail_->tailroom()",
+          "new_text": null,
+          "old_line_content": "        reusableTail_->tailroom(),",
+          "new_line_content": "    // For the case when we're already dealing with a reused tail, we can",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "best->clear()",
+          "new_text": null,
+          "old_line_content": "    best->clear();",
+          "new_line_content": "  while (head_) {",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "computeChainDataLength",
+          "new_api": null,
+          "old_text": "head_->computeChainDataLength()",
+          "new_text": null,
+          "old_line_content": "      : head_->computeChainDataLength() +",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "updateGuard",
+          "new_api": null,
+          "old_text": "updateGuard()",
+          "new_text": null,
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "    // Adjust the capacity of the old buffer to release ownership of its tail.",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "out.size()",
+          "new_text": null,
+          "old_line_content": "  out.reserve(out.size() + len);",
+          "new_line_content": "void IOBufQueue::appendToString(std::string& out) const {",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "range.size()",
+          "new_text": null,
+          "old_line_content": "    out.append(reinterpret_cast<const char*>(range.data()), range.size());",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "std::underflow_error(\n            \"Attempt to remove more bytes than are present in IOBufQueue\")",
+          "new_api": null,
+          "old_text": "std::underflow_error(\n            \"Attempt to remove more bytes than are present in IOBufQueue\")",
+          "new_text": null,
+          "old_line_content": "        throw std::underflow_error(",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "append",
+          "new_api": null,
+          "old_text": "out.append(\n        reinterpret_cast<const char*>(tailStart_),\n        cachePtr_->cachedRange.first - tailStart_)",
+          "new_text": null,
+          "old_line_content": "    out.append(",
+          "new_line_content": "          (cachePtr_->cachedRange.first - tailStart_);",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "    } else if (head_->length() <= n) {",
+          "new_line_content": "  while (n != 0) {",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "      n -= head_->length();",
+          "new_line_content": "    if (head_ == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "      chainLength_ -= head_->length();",
+          "new_line_content": "      if (throwOnUnderflow) {",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": "std::move(head_)",
+          "new_api": null,
+          "old_text": "std::move(head_)",
+          "new_text": null,
+          "old_line_content": "      appendToChain(result, std::move(head_), false);",
+          "new_line_content": "            \"Attempt to remove more bytes than are present in IOBufQueue\");",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "std::move(remainder)",
+          "new_api": null,
+          "old_text": "std::move(remainder)",
+          "new_text": null,
+          "old_line_content": "      head_ = std::move(remainder);",
+          "new_line_content": "      } else {",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "updateGuard",
+          "new_api": null,
+          "old_text": "updateGuard()",
+          "new_text": null,
+          "old_line_content": "  auto guard = updateGuard();",
+          "new_line_content": "  if (tailStart_ != cachePtr_->cachedRange.first) {",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "cloneOne",
+          "new_api": null,
+          "old_text": "head_->cloneOne()",
+          "new_text": null,
+          "old_line_content": "      unique_ptr<IOBuf> clone = head_->cloneOne();",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "trimStartAtMost",
+          "new_api": null,
+          "old_text": "trimStartAtMost(amount)",
+          "new_text": null,
+          "old_line_content": "  auto trimmed = trimStartAtMost(amount);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "    if (head_->length() > amount) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "trimStart",
+          "new_api": null,
+          "old_text": "head_->trimStart(amount)",
+          "new_text": null,
+          "old_line_content": "      head_->trimStart(amount);",
+          "new_line_content": "size_t IOBufQueue::trimStartAtMost(size_t amount) {",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "    amount -= head_->length();",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "length",
+          "new_api": null,
+          "old_text": "head_->length()",
+          "new_text": null,
+          "old_line_content": "    chainLength_ -= head_->length();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "prev",
+          "new_api": null,
+          "old_text": "head_->prev()->length()",
+          "new_text": null,
+          "old_line_content": "    if (head_->prev()->length() > amount) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "prev",
+          "new_api": null,
+          "old_text": "head_->prev()->trimEnd(amount)",
+          "new_text": null,
+          "old_line_content": "      head_->prev()->trimEnd(amount);",
+          "new_line_content": "size_t IOBufQueue::trimEndAtMost(size_t amount) {",
+          "content_same": false
+        },
+        {
+          "line": 375,
+          "old_api": "prev",
+          "new_api": null,
+          "old_text": "head_->prev()->length()",
+          "new_text": null,
+          "old_line_content": "    amount -= head_->prev()->length();",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": "prev",
+          "new_api": null,
+          "old_text": "head_->prev()->length()",
+          "new_text": null,
+          "old_line_content": "    chainLength_ -= head_->prev()->length();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": "prev",
+          "new_api": null,
+          "old_text": "head_->prev()->unlink()",
+          "new_text": null,
+          "old_line_content": "      head_->prev()->unlink();",
+          "new_line_content": "      chainLength_ -= amount;",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "head_.reset()",
+          "new_text": null,
+          "old_line_content": "      head_.reset();",
+          "new_line_content": "      break;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 20,
+      "total_additions": 39,
+      "total_deletions": 36,
+      "total_api_changes": 95
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 10,
+        "api_related_lines": 95,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          284,
+          293,
+          287
+        ]
+      }
+    },
+    "api_calls_before": 177,
+    "api_calls_after": 183,
+    "diff_info": {
+      "added_lines": 10,
+      "removed_lines": 2,
+      "total_diff_lines": 30
+    }
+  }
+}

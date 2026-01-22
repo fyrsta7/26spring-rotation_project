@@ -1,0 +1,774 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/e11d0145e29c38a2721fe131728d83512e5c30b9",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/e11d0145e29c38a2721fe131728d83512e5c30b9/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/e11d0145e29c38a2721fe131728d83512e5c30b9/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/e11d0145e29c38a2721fe131728d83512e5c30b9/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 523,
+          "old_api": "memmove",
+          "new_api": "av_new_packet",
+          "old_text": "memmove(rm->videobuf + 1 + 8*rm->cur_slice, rm->videobuf + 1 + 8*rm->slices, rm->videobufsize - 1 - 8*rm->slices)",
+          "new_text": "av_new_packet(pkt, rm->videobufpos - 8*(rm->slices - rm->cur_slice))",
+          "old_line_content": "         memmove(rm->videobuf + 1 + 8*rm->cur_slice, rm->videobuf + 1 + 8*rm->slices, rm->videobufsize - 1 - 8*rm->slices);",
+          "new_line_content": "         if(av_new_packet(pkt, rm->videobufpos - 8*(rm->slices - rm->cur_slice)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "get_be16",
+          "new_api": "av_get_packet",
+          "old_text": "get_be16(pb)",
+          "new_text": "av_get_packet(pb, pkt, rm->sub_packet_lengths[0])",
+          "old_line_content": "                    rm->sub_packet_lengths[x] = get_be16(pb);",
+          "new_line_content": "                av_get_packet(pb, pkt, rm->sub_packet_lengths[0]);",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "rm_ac3_swap_bytes",
+          "new_api": "av_get_packet",
+          "old_text": "rm_ac3_swap_bytes(st, pkt)",
+          "new_text": "av_get_packet(pb, pkt, len)",
+          "old_line_content": "            rm_ac3_swap_bytes(st, pkt);",
+          "new_line_content": "        av_get_packet(pb, pkt, len);",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "assert (rm->audio_pkt_cnt > 0)",
+          "new_api": "av_get_packet",
+          "old_text": "assert (rm->audio_pkt_cnt > 0)",
+          "new_text": "av_get_packet(pb, pkt, rm->sub_packet_lengths[rm->sub_packet_cnt - rm->audio_pkt_cnt])",
+          "old_line_content": "    assert (rm->audio_pkt_cnt > 0);",
+          "new_line_content": "        av_get_packet(pb, pkt, rm->sub_packet_lengths[rm->sub_packet_cnt - rm->audio_pkt_cnt]);",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "av_get_packet",
+          "new_api": "memcpy",
+          "old_text": "av_get_packet(pb, pkt, rm->sub_packet_lengths[rm->sub_packet_cnt - rm->audio_pkt_cnt])",
+          "new_text": "memcpy(pkt->data, rm->audiobuf + st->codec->block_align *\n               (rm->sub_packet_h * rm->audio_framesize / st->codec->block_align - rm->audio_pkt_cnt),\n               st->codec->block_align)",
+          "old_line_content": "        av_get_packet(pb, pkt, rm->sub_packet_lengths[rm->sub_packet_cnt - rm->audio_pkt_cnt]);",
+          "new_line_content": "        memcpy(pkt->data, rm->audiobuf + st->codec->block_align *",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": "av_get_packet",
+          "new_api": "AVERROR",
+          "old_text": "av_get_packet(pb, pkt, len)",
+          "new_text": "AVERROR(EIO)",
+          "old_line_content": "            len= av_get_packet(pb, pkt, len);",
+          "new_line_content": "                return AVERROR(EIO);",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "AVERROR",
+          "new_api": "ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp)",
+          "old_text": "AVERROR(EIO)",
+          "new_text": "ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp)",
+          "old_line_content": "            return AVERROR(EIO);",
+          "new_line_content": "        if (ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp) < 0)",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 769,
+          "old_api": null,
+          "new_api": "sync",
+          "old_text": null,
+          "new_text": "sync(s, &dts, &flags, &stream_index2, &pos)",
+          "old_line_content": "        int seq=1;",
+          "new_line_content": "        len=sync(s, &dts, &flags, &stream_index2, &pos);",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "get_byte",
+          "old_text": null,
+          "new_text": "get_byte(&s->pb)",
+          "old_line_content": "",
+          "new_line_content": "            h= get_byte(&s->pb); len--;",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": null,
+          "new_api": "get_byte",
+          "old_text": null,
+          "new_text": "get_byte(&s->pb)",
+          "old_line_content": "        if (st->codec->codec_type == CODEC_TYPE_VIDEO) {",
+          "new_line_content": "                seq = get_byte(&s->pb); len--;",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "         ssize = rm->videobufsize - 8*(rm->slices - rm->cur_slice);",
+          "new_line_content": "             return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(pkt->data, rm->videobuf, 1 + 8*rm->cur_slice)",
+          "old_line_content": "",
+          "new_line_content": "         memcpy(pkt->data, rm->videobuf, 1 + 8*rm->cur_slice);",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(pkt->data + 1 + 8*rm->cur_slice, rm->videobuf + 1 + 8*rm->slices, rm->videobufpos - 1 - 8*rm->slices)",
+          "old_line_content": "         rm->videobuf[0] = rm->cur_slice-1;",
+          "new_line_content": "         memcpy(pkt->data + 1 + 8*rm->cur_slice, rm->videobuf + 1 + 8*rm->slices, rm->videobufpos - 1 - 8*rm->slices);",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": null,
+          "new_api": "assert (rm->audio_pkt_cnt > 0)",
+          "old_text": null,
+          "new_text": "assert (rm->audio_pkt_cnt > 0)",
+          "old_line_content": "    ByteIOContext *pb = &s->pb;",
+          "new_line_content": "    assert (rm->audio_pkt_cnt > 0);",
+          "content_same": false
+        },
+        {
+          "line": 783,
+          "old_api": null,
+          "new_api": "av_add_index_entry",
+          "old_text": null,
+          "new_text": "av_add_index_entry(st, pos, dts, 0, 0, AVINDEX_KEYFRAME)",
+          "old_line_content": "",
+          "new_line_content": "            av_add_index_entry(st, pos, dts, 0, 0, AVINDEX_KEYFRAME);",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": null,
+          "new_api": "av_new_packet",
+          "old_text": null,
+          "new_text": "av_new_packet(pkt, st->codec->block_align)",
+          "old_line_content": "    if (st->codec->codec_id == CODEC_ID_AAC)",
+          "new_line_content": "        av_new_packet(pkt, st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": null,
+          "new_api": "url_fskip",
+          "old_text": null,
+          "new_text": "url_fskip(&s->pb, len)",
+          "old_line_content": "                break;",
+          "new_line_content": "        url_fskip(&s->pb, len);",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": null,
+          "new_api": "ff_rm_retrieve_cache",
+          "old_text": null,
+          "new_text": "ff_rm_retrieve_cache(s, st, pkt)",
+          "old_line_content": "    if (rm->audio_pkt_cnt) {",
+          "new_line_content": "        ff_rm_retrieve_cache(s, st, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "rm_assemble_video_frame",
+          "old_text": null,
+          "new_text": "rm_assemble_video_frame(s, rm, pkt, len)",
+          "old_line_content": "",
+          "new_line_content": "        if(rm_assemble_video_frame(s, rm, pkt, len) == 1)",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "get_buffer",
+          "old_text": null,
+          "new_text": "get_buffer(pb, rm->audiobuf+x*2*rm->audio_framesize+y*rm->coded_framesize, rm->coded_framesize)",
+          "old_line_content": "",
+          "new_line_content": "                    if (get_buffer(pb, rm->audiobuf+x*2*rm->audio_framesize+y*rm->coded_framesize, rm->coded_framesize) <= 0)",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EIO)",
+          "old_line_content": "            for (y = 0; y < rm->sub_packet_h; y++)",
+          "new_line_content": "                        return AVERROR(EIO);",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "av_new_packet",
+          "old_text": null,
+          "new_text": "av_new_packet(pkt, st->codec->block_align)",
+          "old_line_content": "            rm->audio_stream_num = 0;",
+          "new_line_content": "            av_new_packet(pkt, st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(pkt->data, rm->audiobuf, st->codec->block_align)",
+          "old_line_content": "            rm->audio_pkt_cnt = rm->sub_packet_h * rm->audio_framesize / st->codec->block_align - 1;",
+          "new_line_content": "            memcpy(pkt->data, rm->audiobuf, st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": null,
+          "new_api": "av_get_packet",
+          "old_text": null,
+          "new_text": "av_get_packet(pb, pkt, len)",
+          "old_line_content": "        } else {",
+          "new_line_content": "            len= av_get_packet(pb, pkt, len);",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": null,
+          "new_api": "get_buffer",
+          "old_text": null,
+          "new_text": "get_buffer(pb, rm->audiobuf+x*2*w+y*cfs, cfs)",
+          "old_line_content": "            switch(st->codec->codec_id) {",
+          "new_line_content": "                        get_buffer(pb, rm->audiobuf+x*2*w+y*cfs, cfs);",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "rm_ac3_swap_bytes",
+          "old_text": null,
+          "new_text": "rm_ac3_swap_bytes(st, pkt)",
+          "old_line_content": "            }",
+          "new_line_content": "        rm_ac3_swap_bytes(st, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "sync",
+          "old_text": null,
+          "new_text": "sync(s, &timestamp, &flags, &i, &pos)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        len=sync(s, &timestamp, &flags, &i, &pos);",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "get_buffer",
+          "old_text": null,
+          "new_text": "get_buffer(pb, rm->audiobuf+sps*(h*x+((h+1)/2)*(y&1)+(y>>1)), sps)",
+          "old_line_content": "                case CODEC_ID_ATRAC3:",
+          "new_line_content": "                        get_buffer(pb, rm->audiobuf+sps*(h*x+((h+1)/2)*(y&1)+(y>>1)), sps);",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EIO)",
+          "old_line_content": "resync:",
+          "new_line_content": "            return AVERROR(EIO);",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": null,
+          "new_api": "av_add_index_entry",
+          "old_text": null,
+          "new_text": "av_add_index_entry(st, pos, timestamp, 0, 0, AVINDEX_KEYFRAME)",
+          "old_line_content": "",
+          "new_line_content": "                av_add_index_entry(st, pos, timestamp, 0, 0, AVINDEX_KEYFRAME);",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": null,
+          "new_api": "av_new_packet",
+          "old_text": null,
+          "new_text": "av_new_packet(pkt, st->codec->block_align)",
+          "old_line_content": "                rm->audio_stream_num = st->index;",
+          "new_line_content": "                av_new_packet(pkt, st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(pkt->data, rm->audiobuf, st->codec->block_align)",
+          "old_line_content": "                rm->audio_pkt_cnt = h * w / st->codec->block_align - 1;",
+          "new_line_content": "                memcpy(pkt->data, rm->audiobuf, st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": null,
+          "new_api": "get_be16",
+          "old_text": null,
+          "new_text": "get_be16(pb)",
+          "old_line_content": "        } else if (st->codec->codec_id == CODEC_ID_AAC) {",
+          "new_line_content": "            rm->sub_packet_cnt = (get_be16(pb) & 0xf0) >> 4;",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": null,
+          "new_api": "av_free",
+          "old_text": null,
+          "new_text": "av_free(rm->audiobuf)",
+          "old_line_content": "{",
+          "new_line_content": "    av_free(rm->audiobuf);",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": null,
+          "new_api": "av_free",
+          "old_text": null,
+          "new_text": "av_free(rm->videobuf)",
+          "old_line_content": "    RMContext *rm = s->priv_data;",
+          "new_line_content": "    av_free(rm->videobuf);",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": null,
+          "new_api": "av_get_packet",
+          "old_text": null,
+          "new_text": "av_get_packet(pb, pkt, len)",
+          "old_line_content": "                *flags = 2; // Mark first packet as keyframe",
+          "new_line_content": "            av_get_packet(pb, pkt, len);",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": null,
+          "new_api": "rm_ac3_swap_bytes",
+          "old_text": null,
+          "new_text": "rm_ac3_swap_bytes(st, pkt)",
+          "old_line_content": "            }",
+          "new_line_content": "            rm_ac3_swap_bytes(st, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": null,
+          "new_api": "av_free_packet",
+          "old_text": null,
+          "new_text": "av_free_packet(pkt)",
+          "old_line_content": "",
+          "new_line_content": "        av_free_packet(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(NULL, AV_LOG_DEBUG, \"%d %\"PRId64\" %d\\n\", *timestamp, *timestamp*512LL/25, seq)",
+          "old_line_content": "    if (st->codec->codec_type == CODEC_TYPE_VIDEO) {",
+          "new_line_content": "            av_log(NULL, AV_LOG_DEBUG, \"%d %\"PRId64\" %d\\n\", *timestamp, *timestamp*512LL/25, seq);",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": null,
+          "new_api": "url_fseek",
+          "old_text": null,
+          "new_text": "url_fseek(&s->pb, pos, SEEK_SET)",
+          "old_line_content": "    if(rm->old_format)",
+          "new_line_content": "    url_fseek(&s->pb, pos, SEEK_SET);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 772,
+          "old_api": "sync",
+          "new_api": null,
+          "old_text": "sync(s, &dts, &flags, &stream_index2, &pos)",
+          "new_text": null,
+          "old_line_content": "        len=sync(s, &dts, &flags, &stream_index2, &pos);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": "get_byte",
+          "new_api": null,
+          "old_text": "get_byte(&s->pb)",
+          "new_text": null,
+          "old_line_content": "            h= get_byte(&s->pb); len--;",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": "get_byte",
+          "new_api": null,
+          "old_text": "get_byte(&s->pb)",
+          "new_text": null,
+          "old_line_content": "                seq = get_byte(&s->pb); len--;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "av_new_packet",
+          "new_api": null,
+          "old_text": "av_new_packet(pkt, ssize)",
+          "new_text": null,
+          "old_line_content": "         if(av_new_packet(pkt, ssize) < 0)",
+          "new_line_content": "         pkt->pts = AV_NOPTS_VALUE;",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "             return AVERROR(ENOMEM);",
+          "new_line_content": "         pkt->pos = rm->pktpos;",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(pkt->data, rm->videobuf, ssize)",
+          "new_text": null,
+          "old_line_content": "         memcpy(pkt->data, rm->videobuf, ssize);",
+          "new_line_content": "         return 0;",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "av_add_index_entry",
+          "new_api": null,
+          "old_text": "av_add_index_entry(st, pos, dts, 0, 0, AVINDEX_KEYFRAME)",
+          "new_text": null,
+          "old_line_content": "            av_add_index_entry(st, pos, dts, 0, 0, AVINDEX_KEYFRAME);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": "av_new_packet",
+          "new_api": null,
+          "old_text": "av_new_packet(pkt, st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "        av_new_packet(pkt, st->codec->block_align);",
+          "new_line_content": "               st->codec->block_align);",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(pkt->data, rm->audiobuf + st->codec->block_align *\n               (rm->sub_packet_h * rm->audio_framesize / st->codec->block_align - rm->audio_pkt_cnt),\n               st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "        memcpy(pkt->data, rm->audiobuf + st->codec->block_align *",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "url_fskip",
+          "new_api": null,
+          "old_text": "url_fskip(&s->pb, len)",
+          "new_text": null,
+          "old_line_content": "        url_fskip(&s->pb, len);",
+          "new_line_content": "    return dts;",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "ff_rm_retrieve_cache",
+          "new_api": null,
+          "old_text": "ff_rm_retrieve_cache(s, st, pkt)",
+          "new_text": null,
+          "old_line_content": "        ff_rm_retrieve_cache(s, st, pkt);",
+          "new_line_content": "        if (st->codec->codec_id == CODEC_ID_RA_288) {",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "rm_assemble_video_frame",
+          "new_api": null,
+          "old_text": "rm_assemble_video_frame(s, rm, pkt, len)",
+          "new_text": null,
+          "old_line_content": "        if(rm_assemble_video_frame(s, rm, pkt, len) == 1)",
+          "new_line_content": "        if ((st->codec->codec_id == CODEC_ID_RA_288) ||",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "get_buffer",
+          "new_api": null,
+          "old_text": "get_buffer(pb, rm->audiobuf+x*2*rm->audio_framesize+y*rm->coded_framesize, rm->coded_framesize)",
+          "new_text": null,
+          "old_line_content": "                    if (get_buffer(pb, rm->audiobuf+x*2*rm->audio_framesize+y*rm->coded_framesize, rm->coded_framesize) <= 0)",
+          "new_line_content": "            rm->audio_pkt_cnt = rm->sub_packet_h * rm->audio_framesize / st->codec->block_align - 1;",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EIO)",
+          "new_text": null,
+          "old_line_content": "                        return AVERROR(EIO);",
+          "new_line_content": "            // Release first audio packet",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": "av_new_packet",
+          "new_api": null,
+          "old_text": "av_new_packet(pkt, st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "            av_new_packet(pkt, st->codec->block_align);",
+          "new_line_content": "            pkt->stream_index = 0;",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(pkt->data, rm->audiobuf, st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "            memcpy(pkt->data, rm->audiobuf, st->codec->block_align);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EIO)",
+          "new_text": null,
+          "old_line_content": "                return AVERROR(EIO);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "get_buffer",
+          "new_api": null,
+          "old_text": "get_buffer(pb, rm->audiobuf+x*2*w+y*cfs, cfs)",
+          "new_text": null,
+          "old_line_content": "                        get_buffer(pb, rm->audiobuf+x*2*w+y*cfs, cfs);",
+          "new_line_content": "                case CODEC_ID_COOK:",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "rm_ac3_swap_bytes",
+          "new_api": null,
+          "old_text": "rm_ac3_swap_bytes(st, pkt)",
+          "new_text": null,
+          "old_line_content": "        rm_ac3_swap_bytes(st, pkt);",
+          "new_line_content": "resync:",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "sync",
+          "new_api": null,
+          "old_text": "sync(s, &timestamp, &flags, &i, &pos)",
+          "new_text": null,
+          "old_line_content": "        len=sync(s, &timestamp, &flags, &i, &pos);",
+          "new_line_content": "        st = s->streams[i];",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "get_buffer",
+          "new_api": null,
+          "old_text": "get_buffer(pb, rm->audiobuf+sps*(h*x+((h+1)/2)*(y&1)+(y>>1)), sps)",
+          "new_text": null,
+          "old_line_content": "                        get_buffer(pb, rm->audiobuf+sps*(h*x+((h+1)/2)*(y&1)+(y>>1)), sps);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": "ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp)",
+          "new_api": null,
+          "old_text": "ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp)",
+          "new_text": null,
+          "old_line_content": "        if (ff_rm_parse_packet (s, st, len, pkt, &seq, &flags, &timestamp) < 0)",
+          "new_line_content": "        if(flags&2){",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": "av_add_index_entry",
+          "new_api": null,
+          "old_text": "av_add_index_entry(st, pos, timestamp, 0, 0, AVINDEX_KEYFRAME)",
+          "new_text": null,
+          "old_line_content": "                av_add_index_entry(st, pos, timestamp, 0, 0, AVINDEX_KEYFRAME);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "av_new_packet",
+          "new_api": null,
+          "old_text": "av_new_packet(pkt, st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "                av_new_packet(pkt, st->codec->block_align);",
+          "new_line_content": "                *flags = 2; // Mark first packet as keyframe",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(pkt->data, rm->audiobuf, st->codec->block_align)",
+          "new_text": null,
+          "old_line_content": "                memcpy(pkt->data, rm->audiobuf, st->codec->block_align);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": "av_free",
+          "new_api": null,
+          "old_text": "av_free(rm->audiobuf)",
+          "new_text": null,
+          "old_line_content": "    av_free(rm->audiobuf);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "av_free",
+          "new_api": null,
+          "old_text": "av_free(rm->videobuf)",
+          "new_text": null,
+          "old_line_content": "    av_free(rm->videobuf);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": "av_get_packet",
+          "new_api": null,
+          "old_text": "av_get_packet(pb, pkt, rm->sub_packet_lengths[0])",
+          "new_text": null,
+          "old_line_content": "                av_get_packet(pb, pkt, rm->sub_packet_lengths[0]);",
+          "new_line_content": "        } else",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": "av_get_packet",
+          "new_api": null,
+          "old_text": "av_get_packet(pb, pkt, len)",
+          "new_text": null,
+          "old_line_content": "            av_get_packet(pb, pkt, len);",
+          "new_line_content": "    } else",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": "av_get_packet",
+          "new_api": null,
+          "old_text": "av_get_packet(pb, pkt, len)",
+          "new_text": null,
+          "old_line_content": "        av_get_packet(pb, pkt, len);",
+          "new_line_content": "       || st->discard >= AVDISCARD_ALL){",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "av_free_packet",
+          "new_api": null,
+          "old_text": "av_free_packet(pkt)",
+          "new_text": null,
+          "old_line_content": "        av_free_packet(pkt);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(NULL, AV_LOG_DEBUG, \"%d %\"PRId64\" %d\\n\", *timestamp, *timestamp*512LL/25, seq)",
+          "new_text": null,
+          "old_line_content": "            av_log(NULL, AV_LOG_DEBUG, \"%d %\"PRId64\" %d\\n\", *timestamp, *timestamp*512LL/25, seq);",
+          "new_line_content": "            if(seq - *timestamp >  0x2000) seq -= 0x4000;",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": "url_fseek",
+          "new_api": null,
+          "old_text": "url_fseek(&s->pb, pos, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "    url_fseek(&s->pb, pos, SEEK_SET);",
+          "new_line_content": "        int seq=1;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 33,
+      "total_deletions": 33,
+      "total_api_changes": 73
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 73,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          522
+        ]
+      }
+    },
+    "api_calls_before": 236,
+    "api_calls_after": 236,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 6,
+      "total_diff_lines": 23
+    }
+  }
+}

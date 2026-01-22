@@ -1,0 +1,529 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/aca8e90ec9372447624575f0802c3351cca2150c",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/aca8e90ec9372447624575f0802c3351cca2150c/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/aca8e90ec9372447624575f0802c3351cca2150c/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/aca8e90ec9372447624575f0802c3351cca2150c/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1207,
+          "old_api": "equals",
+          "new_api": "cond_const_col->getValue<UInt8>()",
+          "old_text": "arg_then.type->equals(*arg_else.type)",
+          "new_text": "cond_const_col->getValue<UInt8>()",
+          "old_line_content": "            if (arg_then.type->equals(*arg_else.type))",
+          "new_line_content": "            UInt8 value = cond_const_col->getValue<UInt8>();",
+          "content_same": false
+        },
+        {
+          "line": 1209,
+          "old_api": "cond_const_col->getValue<UInt8>()",
+          "new_api": "equals",
+          "old_text": "cond_const_col->getValue<UInt8>()",
+          "new_text": "arg.type->equals(*result_type)",
+          "old_line_content": "                return cond_const_col->getValue<UInt8>()",
+          "new_line_content": "            if (arg.type->equals(*result_type))",
+          "content_same": false
+        },
+        {
+          "line": 1216,
+          "old_api": "convertToFullColumn",
+          "new_api": "getName",
+          "old_text": "cond_const_col->convertToFullColumn()",
+          "new_text": "Exception(ErrorCodes::ILLEGAL_COLUMN, \"Illegal column {} of first argument of function {}. \"\n                \"Must be ColumnUInt8 or ColumnConstUInt8.\", arg_cond.column->getName(), getName())",
+          "old_line_content": "                materialized_cond_col = cond_const_col->convertToFullColumn();",
+          "new_line_content": "            throw Exception(ErrorCodes::ILLEGAL_COLUMN, \"Illegal column {} of first argument of function {}. \"",
+          "content_same": false
+        },
+        {
+          "line": 1217,
+          "old_api": "typeid_cast<const ColumnUInt8 *>(&*materialized_cond_col)",
+          "new_api": "getName",
+          "old_text": "typeid_cast<const ColumnUInt8 *>(&*materialized_cond_col)",
+          "new_text": "getName()",
+          "old_line_content": "                cond_col = typeid_cast<const ColumnUInt8 *>(&*materialized_cond_col);",
+          "new_line_content": "                \"Must be ColumnUInt8 or ColumnConstUInt8.\", arg_cond.column->getName(), getName());",
+          "content_same": false
+        },
+        {
+          "line": 1241,
+          "old_api": "get",
+          "new_api": "isUInt64ThatCanBeInt64",
+          "old_text": "arg_else.type.get()",
+          "new_text": "isUInt64ThatCanBeInt64(right_type)",
+          "old_line_content": "        if (const auto * right_array = checkAndGetDataType<DataTypeArray>(arg_else.type.get()))",
+          "new_line_content": "        if (isNativeInteger(left_type) && isUInt64ThatCanBeInt64(right_type))",
+          "content_same": false
+        },
+        {
+          "line": 1242,
+          "old_api": "getNestedType",
+          "new_api": "std::make_shared<DataTypeInt64>()",
+          "old_text": "right_array->getNestedType()",
+          "new_text": "std::make_shared<DataTypeInt64>()",
+          "old_line_content": "            right_type = right_array->getNestedType();",
+          "new_line_content": "            right_type = std::make_shared<DataTypeInt64>();",
+          "content_same": false
+        },
+        {
+          "line": 1247,
+          "old_api": "isUInt64ThatCanBeInt64",
+          "new_api": "getTypeId",
+          "old_text": "isUInt64ThatCanBeInt64(right_type)",
+          "new_text": "right_type->getTypeId()",
+          "old_line_content": "        if (isNativeInteger(left_type) && isUInt64ThatCanBeInt64(right_type))",
+          "new_line_content": "        TypeIndex right_id = right_type->getTypeId();",
+          "content_same": false
+        },
+        {
+          "line": 1252,
+          "old_api": "getTypeId",
+          "new_api": "executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count)",
+          "old_text": "left_type->getTypeId()",
+          "new_text": "executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count)",
+          "old_line_content": "        TypeIndex left_id = left_type->getTypeId();",
+          "new_line_content": "            || (res = executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count))",
+          "content_same": false
+        },
+        {
+          "line": 1253,
+          "old_api": "getTypeId",
+          "new_api": "executeString",
+          "old_text": "right_type->getTypeId()",
+          "new_text": "executeString(cond_col, arguments, result_type)",
+          "old_line_content": "        TypeIndex right_id = right_type->getTypeId();",
+          "new_line_content": "            || (res = executeString(cond_col, arguments, result_type))",
+          "content_same": false
+        },
+        {
+          "line": 1257,
+          "old_api": "callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "new_api": "executeGeneric",
+          "old_text": "callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "new_text": "executeGeneric(cond_col, arguments, input_rows_count)",
+          "old_line_content": "        if (!(callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "new_line_content": "            return executeGeneric(cond_col, arguments, input_rows_count);",
+          "content_same": false
+        },
+        {
+          "line": 1279,
+          "old_api": "cond_const_col->getValue<UInt8>()",
+          "new_api": "isColumnConst",
+          "old_text": "cond_const_col->getValue<UInt8>()",
+          "new_text": "isColumnConst(*potential_const_column.column)",
+          "old_line_content": "        bool condition_value = cond_const_col->getValue<UInt8>();",
+          "new_line_content": "        if (!potential_const_column.column || !isColumnConst(*potential_const_column.column))",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1282,
+          "old_api": null,
+          "new_api": "castColumn",
+          "old_text": null,
+          "new_text": "castColumn(potential_const_column, result_type)",
+          "old_line_content": "        const ColumnWithTypeAndName & arg_else = arguments[2];",
+          "new_line_content": "        auto result = castColumn(potential_const_column, result_type);",
+          "content_same": false
+        },
+        {
+          "line": 1251,
+          "old_api": null,
+          "new_api": "callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "old_text": null,
+          "new_text": "callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "old_line_content": "",
+          "new_line_content": "        if (!(callOnBasicTypes<true, true, true, false>(left_id, right_id, call)",
+          "content_same": false
+        },
+        {
+          "line": 1283,
+          "old_api": null,
+          "new_api": "isColumnConst",
+          "old_text": null,
+          "new_text": "isColumnConst(*result)",
+          "old_line_content": "        const ColumnWithTypeAndName & potential_const_column = condition_value ? arg_then : arg_else;",
+          "new_line_content": "        if (!isColumnConst(*result))",
+          "content_same": false
+        },
+        {
+          "line": 1254,
+          "old_api": null,
+          "new_api": "executeGenericArray",
+          "old_text": null,
+          "new_text": "executeGenericArray(cond_col, arguments, result_type)",
+          "old_line_content": "",
+          "new_line_content": "            || (res = executeGenericArray(cond_col, arguments, result_type))",
+          "content_same": false
+        },
+        {
+          "line": 1255,
+          "old_api": null,
+          "new_api": "executeTuple",
+          "old_text": null,
+          "new_text": "executeTuple(arguments, result_type, input_rows_count)",
+          "old_line_content": "        /// TODO optimize for map type",
+          "new_line_content": "            || (res = executeTuple(arguments, result_type, input_rows_count))))",
+          "content_same": false
+        },
+        {
+          "line": 1225,
+          "old_api": null,
+          "new_api": "executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count)",
+          "old_text": null,
+          "new_text": "executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count)",
+          "old_line_content": "        auto call = [&](const auto & types) -> bool",
+          "new_line_content": "            res = executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count);",
+          "content_same": false
+        },
+        {
+          "line": 1294,
+          "old_api": null,
+          "new_api": "factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive)",
+          "old_text": null,
+          "new_text": "factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive)",
+          "old_line_content": "};",
+          "new_line_content": "    factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive);",
+          "content_same": false
+        },
+        {
+          "line": 1232,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "arg_then.type.get()",
+          "old_line_content": "            return res != nullptr;",
+          "new_line_content": "        if (const auto * left_array = checkAndGetDataType<DataTypeArray>(arg_then.type.get()))",
+          "content_same": false
+        },
+        {
+          "line": 1233,
+          "old_api": null,
+          "new_api": "getNestedType",
+          "old_text": null,
+          "new_text": "left_array->getNestedType()",
+          "old_line_content": "        };",
+          "new_line_content": "            left_type = left_array->getNestedType();",
+          "content_same": false
+        },
+        {
+          "line": 1266,
+          "old_api": null,
+          "new_api": "isColumnConst",
+          "old_text": null,
+          "new_text": "isColumnConst(*arg_cond.column)",
+          "old_line_content": "        return res;",
+          "new_line_content": "        if (!arg_cond.column || !isColumnConst(*arg_cond.column))",
+          "content_same": false
+        },
+        {
+          "line": 1235,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "arg_else.type.get()",
+          "old_line_content": "        DataTypePtr left_type = arg_then.type;",
+          "new_line_content": "        if (const auto * right_array = checkAndGetDataType<DataTypeArray>(arg_else.type.get()))",
+          "content_same": false
+        },
+        {
+          "line": 1236,
+          "old_api": null,
+          "new_api": "getNestedType",
+          "old_text": null,
+          "new_text": "right_array->getNestedType()",
+          "old_line_content": "        DataTypePtr right_type = arg_else.type;",
+          "new_line_content": "            right_type = right_array->getNestedType();",
+          "content_same": false
+        },
+        {
+          "line": 1244,
+          "old_api": null,
+          "new_api": "std::make_shared<DataTypeInt64>()",
+          "old_text": null,
+          "new_text": "std::make_shared<DataTypeInt64>()",
+          "old_line_content": "        /// Special case when one column is Integer and another is UInt64 that can be actually Int64.",
+          "new_line_content": "            left_type = std::make_shared<DataTypeInt64>();",
+          "content_same": false
+        },
+        {
+          "line": 1269,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "arg_cond.column.get()",
+          "old_line_content": "    ColumnPtr getConstantResultForNonConstArguments(const ColumnsWithTypeAndName & arguments, const DataTypePtr & result_type) const override",
+          "new_line_content": "        const ColumnConst * cond_const_col = checkAndGetColumnConst<ColumnVector<UInt8>>(arg_cond.column.get());",
+          "content_same": false
+        },
+        {
+          "line": 1273,
+          "old_api": null,
+          "new_api": "cond_const_col->getValue<UInt8>()",
+          "old_text": null,
+          "new_text": "cond_const_col->getValue<UInt8>()",
+          "old_line_content": "            return {};",
+          "new_line_content": "        bool condition_value = cond_const_col->getValue<UInt8>();",
+          "content_same": false
+        },
+        {
+          "line": 1243,
+          "old_api": null,
+          "new_api": "isUInt64ThatCanBeInt64",
+          "old_text": null,
+          "new_text": "isUInt64ThatCanBeInt64(left_type)",
+          "old_line_content": "",
+          "new_line_content": "        else if (isNativeInteger(right_type) && isUInt64ThatCanBeInt64(left_type))",
+          "content_same": false
+        },
+        {
+          "line": 1212,
+          "old_api": null,
+          "new_api": "castColumn",
+          "old_text": null,
+          "new_text": "castColumn(arg, result_type)",
+          "old_line_content": "            }",
+          "new_line_content": "                return castColumn(arg, result_type);",
+          "content_same": false
+        },
+        {
+          "line": 1246,
+          "old_api": null,
+          "new_api": "getTypeId",
+          "old_text": null,
+          "new_text": "left_type->getTypeId()",
+          "old_line_content": "        /// so the NumberTraits::ResultOfIf will return Int64 instead if Int128.",
+          "new_line_content": "        TypeIndex left_id = left_type->getTypeId();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1285,
+          "old_api": "isColumnConst",
+          "new_api": null,
+          "old_text": "isColumnConst(*potential_const_column.column)",
+          "new_text": null,
+          "old_line_content": "        if (!potential_const_column.column || !isColumnConst(*potential_const_column.column))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1288,
+          "old_api": "castColumn",
+          "new_api": null,
+          "old_text": "castColumn(potential_const_column, result_type)",
+          "new_text": null,
+          "old_line_content": "        auto result = castColumn(potential_const_column, result_type);",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 1289,
+          "old_api": "isColumnConst",
+          "new_api": null,
+          "old_text": "isColumnConst(*result)",
+          "new_text": null,
+          "old_line_content": "        if (!isColumnConst(*result))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1300,
+          "old_api": "factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive)",
+          "new_api": null,
+          "old_text": "factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive)",
+          "new_text": null,
+          "old_line_content": "    factory.registerFunction<FunctionIf>({}, FunctionFactory::CaseInsensitive);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1222,
+          "old_api": "getName",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::ILLEGAL_COLUMN, \"Illegal column {} of first argument of function {}. \"\n                \"Must be ColumnUInt8 or ColumnConstUInt8.\", arg_cond.column->getName(), getName())",
+          "new_text": null,
+          "old_line_content": "            throw Exception(ErrorCodes::ILLEGAL_COLUMN, \"Illegal column {} of first argument of function {}. \"",
+          "new_line_content": "            using T0 = typename Types::LeftType;",
+          "content_same": false
+        },
+        {
+          "line": 1223,
+          "old_api": "getName",
+          "new_api": null,
+          "old_text": "getName()",
+          "new_text": null,
+          "old_line_content": "                \"Must be ColumnUInt8 or ColumnConstUInt8.\", arg_cond.column->getName(), getName());",
+          "new_line_content": "            using T1 = typename Types::RightType;",
+          "content_same": false
+        },
+        {
+          "line": 1231,
+          "old_api": "executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count)",
+          "new_api": null,
+          "old_text": "executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count)",
+          "new_text": null,
+          "old_line_content": "            res = executeTyped<T0, T1>(cond_col, arguments, result_type, input_rows_count);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1238,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "arg_then.type.get()",
+          "new_text": null,
+          "old_line_content": "        if (const auto * left_array = checkAndGetDataType<DataTypeArray>(arg_then.type.get()))",
+          "new_line_content": "        /// Special case when one column is Integer and another is UInt64 that can be actually Int64.",
+          "content_same": false
+        },
+        {
+          "line": 1239,
+          "old_api": "getNestedType",
+          "new_api": null,
+          "old_text": "left_array->getNestedType()",
+          "new_text": null,
+          "old_line_content": "            left_type = left_array->getNestedType();",
+          "new_line_content": "        /// The result type for this case is Int64 and we need to change UInt64 type to Int64",
+          "content_same": false
+        },
+        {
+          "line": 1248,
+          "old_api": "std::make_shared<DataTypeInt64>()",
+          "new_api": null,
+          "old_text": "std::make_shared<DataTypeInt64>()",
+          "new_text": null,
+          "old_line_content": "            right_type = std::make_shared<DataTypeInt64>();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1249,
+          "old_api": "isUInt64ThatCanBeInt64",
+          "new_api": null,
+          "old_text": "isUInt64ThatCanBeInt64(left_type)",
+          "new_text": null,
+          "old_line_content": "        else if (isNativeInteger(right_type) && isUInt64ThatCanBeInt64(left_type))",
+          "new_line_content": "        /// TODO optimize for map type",
+          "content_same": false
+        },
+        {
+          "line": 1250,
+          "old_api": "std::make_shared<DataTypeInt64>()",
+          "new_api": null,
+          "old_text": "std::make_shared<DataTypeInt64>()",
+          "new_text": null,
+          "old_line_content": "            left_type = std::make_shared<DataTypeInt64>();",
+          "new_line_content": "        /// TODO optimize for nullable type",
+          "content_same": false
+        },
+        {
+          "line": 1258,
+          "old_api": "executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count)",
+          "new_api": null,
+          "old_text": "executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count)",
+          "new_text": null,
+          "old_line_content": "            || (res = executeTyped<UUID, UUID>(cond_col, arguments, result_type, input_rows_count))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1259,
+          "old_api": "executeString",
+          "new_api": null,
+          "old_text": "executeString(cond_col, arguments, result_type)",
+          "new_text": null,
+          "old_line_content": "            || (res = executeString(cond_col, arguments, result_type))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1260,
+          "old_api": "executeGenericArray",
+          "new_api": null,
+          "old_text": "executeGenericArray(cond_col, arguments, result_type)",
+          "new_text": null,
+          "old_line_content": "            || (res = executeGenericArray(cond_col, arguments, result_type))",
+          "new_line_content": "        return res;",
+          "content_same": false
+        },
+        {
+          "line": 1261,
+          "old_api": "executeTuple",
+          "new_api": null,
+          "old_text": "executeTuple(arguments, result_type, input_rows_count)",
+          "new_text": null,
+          "old_line_content": "            || (res = executeTuple(arguments, result_type, input_rows_count))))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1263,
+          "old_api": "executeGeneric",
+          "new_api": null,
+          "old_text": "executeGeneric(cond_col, arguments, input_rows_count)",
+          "new_text": null,
+          "old_line_content": "            return executeGeneric(cond_col, arguments, input_rows_count);",
+          "new_line_content": "    ColumnPtr getConstantResultForNonConstArguments(const ColumnsWithTypeAndName & arguments, const DataTypePtr & result_type) const override",
+          "content_same": false
+        },
+        {
+          "line": 1272,
+          "old_api": "isColumnConst",
+          "new_api": null,
+          "old_text": "isColumnConst(*arg_cond.column)",
+          "new_text": null,
+          "old_line_content": "        if (!arg_cond.column || !isColumnConst(*arg_cond.column))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1275,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "arg_cond.column.get()",
+          "new_text": null,
+          "old_line_content": "        const ColumnConst * cond_const_col = checkAndGetColumnConst<ColumnVector<UInt8>>(arg_cond.column.get());",
+          "new_line_content": "        const ColumnWithTypeAndName & arg_then = arguments[1];",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 11,
+      "total_additions": 18,
+      "total_deletions": 19,
+      "total_api_changes": 48
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 48,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          1218,
+          1208,
+          1210,
+          1211,
+          1214,
+          1215
+        ]
+      }
+    },
+    "api_calls_before": 566,
+    "api_calls_after": 565,
+    "diff_info": {
+      "added_lines": 5,
+      "removed_lines": 11,
+      "total_diff_lines": 29
+    }
+  }
+}

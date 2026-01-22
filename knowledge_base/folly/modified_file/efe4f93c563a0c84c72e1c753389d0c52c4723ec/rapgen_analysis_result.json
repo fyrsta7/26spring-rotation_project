@@ -1,0 +1,1251 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/efe4f93c563a0c84c72e1c753389d0c52c4723ec",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/efe4f93c563a0c84c72e1c753389d0c52c4723ec/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/efe4f93c563a0c84c72e1c753389d0c52c4723ec/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/efe4f93c563a0c84c72e1c753389d0c52c4723ec/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 603,
+          "old_api": "reset",
+          "new_api": "next",
+          "old_text": "reset()",
+          "new_text": "section.next(data_)",
+          "old_line_content": "  reset();",
+          "new_line_content": "  FOLLY_SAFE_CHECK(section.next(data_), \"invalid line number VM\");",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": "readOffset",
+          "new_api": "read<uint16_t>(data_)",
+          "old_text": "readOffset(data_, is64Bit_)",
+          "new_text": "read<uint16_t>(data_)",
+          "old_line_content": "  uint64_t headerLength = readOffset(data_, is64Bit_);",
+          "new_line_content": "  version_ = read<uint16_t>(data_);",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "size",
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": "data_.size()",
+          "new_text": "FOLLY_SAFE_CHECK(version_ >= 2 && version_ <= 4,\n                   \"invalid version in line number VM\")",
+          "old_line_content": "  FOLLY_SAFE_CHECK(headerLength <= data_.size(),",
+          "new_line_content": "  FOLLY_SAFE_CHECK(version_ >= 2 && version_ <= 4,",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "data",
+          "new_api": "readOffset",
+          "old_text": "data_.data()",
+          "new_text": "readOffset(data_, is64Bit_)",
+          "old_line_content": "  folly::StringPiece header(data_.data(), headerLength);",
+          "new_line_content": "  uint64_t headerLength = readOffset(data_, is64Bit_);",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": "end",
+          "new_api": "size",
+          "old_text": "data_.end()",
+          "new_text": "data_.size()",
+          "old_line_content": "  data_.assign(header.end(), data_.end());",
+          "new_line_content": "  FOLLY_SAFE_CHECK(headerLength <= data_.size(),",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": "read<uint8_t>(header)",
+          "new_api": "data",
+          "old_text": "read<uint8_t>(header)",
+          "new_text": "data_.data()",
+          "old_line_content": "  minLength_ = read<uint8_t>(header);",
+          "new_line_content": "  folly::StringPiece header(data_.data(), headerLength);",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": "read<uint8_t>(header)",
+          "old_text": "FOLLY_SAFE_CHECK(maxOpsPerInstruction == 1, \"VLIW not supported\")",
+          "new_text": "read<uint8_t>(header)",
+          "old_line_content": "    FOLLY_SAFE_CHECK(maxOpsPerInstruction == 1, \"VLIW not supported\");",
+          "new_line_content": "  minLength_ = read<uint8_t>(header);",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": "read<int8_t>(header)",
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": "read<int8_t>(header)",
+          "new_text": "FOLLY_SAFE_CHECK(maxOpsPerInstruction == 1, \"VLIW not supported\")",
+          "old_line_content": "  lineBase_ = read<int8_t>(header);  // yes, signed",
+          "new_line_content": "    FOLLY_SAFE_CHECK(maxOpsPerInstruction == 1, \"VLIW not supported\");",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": "read<int8_t>(header)",
+          "old_text": "FOLLY_SAFE_CHECK(opcodeBase_ != 0, \"invalid opcode base\")",
+          "new_text": "read<int8_t>(header)",
+          "old_line_content": "  FOLLY_SAFE_CHECK(opcodeBase_ != 0, \"invalid opcode base\");",
+          "new_line_content": "  lineBase_ = read<int8_t>(header);  // yes, signed",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "data",
+          "new_api": "read<uint8_t>(header)",
+          "old_text": "header.data()",
+          "new_text": "read<uint8_t>(header)",
+          "old_line_content": "  standardOpcodeLengths_ = reinterpret_cast<const uint8_t*>(header.data());",
+          "new_line_content": "  lineRange_ = read<uint8_t>(header);",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "advance",
+          "new_api": "read<uint8_t>(header)",
+          "old_text": "header.advance(opcodeBase_ - 1)",
+          "new_text": "read<uint8_t>(header)",
+          "old_line_content": "  header.advance(opcodeBase_ - 1);",
+          "new_line_content": "  opcodeBase_ = read<uint8_t>(header);",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "data",
+          "new_api": "readNullTerminated",
+          "old_text": "header.data()",
+          "new_text": "readNullTerminated(header)",
+          "old_line_content": "  includeDirectories_.assign(tmp, header.data());",
+          "new_line_content": "  while (!(sp = readNullTerminated(header)).empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "readFileName",
+          "new_api": "data",
+          "old_text": "readFileName(header, fn)",
+          "new_text": "header.data()",
+          "old_line_content": "  while (readFileName(header, fn)) {",
+          "new_line_content": "  tmp = header.data();",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "data",
+          "new_api": "readFileName",
+          "old_text": "header.data()",
+          "new_text": "readFileName(header, fn)",
+          "old_line_content": "  fileNames_.assign(tmp, header.data());",
+          "new_line_content": "  while (readFileName(header, fn)) {",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": "folly::StringPiece()",
+          "old_text": "FOLLY_SAFE_CHECK(index <= includeDirectoryCount_,\n                   \"invalid include directory\")",
+          "new_text": "folly::StringPiece()",
+          "old_line_content": "  FOLLY_SAFE_CHECK(index <= includeDirectoryCount_,",
+          "new_line_content": "    return folly::StringPiece();",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": "readULEB",
+          "new_api": "empty",
+          "old_text": "readULEB(program)",
+          "new_text": "fn.relativeName.empty()",
+          "old_line_content": "  fn.directoryIndex = readULEB(program);",
+          "new_line_content": "  if (fn.relativeName.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": "read<uint8_t>(program)",
+          "new_api": "readULEB",
+          "old_text": "read<uint8_t>(program)",
+          "new_text": "readULEB(program)",
+          "old_line_content": "    read<uint8_t>(program); // extended opcode",
+          "new_line_content": "    auto length = readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 801,
+          "old_api": "readSLEB",
+          "new_api": "readULEB",
+          "old_text": "readSLEB(program)",
+          "new_text": "readULEB(program)",
+          "old_line_content": "      line_ += readSLEB(program);",
+          "new_line_content": "      address_ += minLength_ * readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 804,
+          "old_api": "readULEB",
+          "new_api": "readSLEB",
+          "old_text": "readULEB(program)",
+          "new_text": "readSLEB(program)",
+          "old_line_content": "      file_ = readULEB(program);",
+          "new_line_content": "      line_ += readSLEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": "read<uint8_t>(program)",
+          "new_api": "readULEB",
+          "old_text": "read<uint8_t>(program)",
+          "new_text": "readULEB(program)",
+          "old_line_content": "  auto extendedOpcode = read<uint8_t>(program);",
+          "new_line_content": "  auto length = readULEB(program);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 642,
+          "old_api": null,
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": null,
+          "new_text": "FOLLY_SAFE_CHECK(opcodeBase_ != 0, \"invalid opcode base\")",
+          "old_line_content": "",
+          "new_line_content": "  FOLLY_SAFE_CHECK(opcodeBase_ != 0, \"invalid opcode base\");",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "header.data()",
+          "old_line_content": "  // We don't want to use heap, so we don't keep an unbounded amount of state.",
+          "new_line_content": "  standardOpcodeLengths_ = reinterpret_cast<const uint8_t*>(header.data());",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": null,
+          "new_api": "advance",
+          "old_text": null,
+          "new_text": "header.advance(opcodeBase_ - 1)",
+          "old_line_content": "  // We'll just skip over include directories and file names here, and",
+          "new_line_content": "  header.advance(opcodeBase_ - 1);",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": null,
+          "new_api": "read<uint8_t>(program)",
+          "old_text": null,
+          "new_text": "read<uint8_t>(program)",
+          "old_line_content": "    uint8_t adjustedOpcode = opcode - opcodeBase_;",
+          "new_line_content": "  auto opcode = read<uint8_t>(program);",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "header.data()",
+          "old_line_content": "    ++includeDirectoryCount_;",
+          "new_line_content": "  const char* tmp = header.data();",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "header.data()",
+          "old_line_content": "  FileName fn;",
+          "new_line_content": "  includeDirectories_.assign(tmp, header.data());",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": null,
+          "new_api": "getFileName",
+          "old_text": null,
+          "new_text": "getFileName(prevFile)",
+          "old_line_content": "                    fn.relativeName);",
+          "new_line_content": "        auto fn = getFileName(prevFile);",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": null,
+          "new_api": "Path",
+          "old_text": null,
+          "new_text": "Path(compilationDirectory_,\n                    getIncludeDirectory(fn.directoryIndex),\n                    fn.relativeName)",
+          "old_line_content": "        line = prevLine;",
+          "new_line_content": "        file = Path(compilationDirectory_,",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": null,
+          "new_api": "getIncludeDirectory",
+          "old_text": null,
+          "new_text": "getIncludeDirectory(fn.directoryIndex)",
+          "old_line_content": "        return true;",
+          "new_line_content": "                    getIncludeDirectory(fn.directoryIndex),",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "header.data()",
+          "old_line_content": "bool Dwarf::LineNumberVM::next(folly::StringPiece& program) {",
+          "new_line_content": "  fileNames_.assign(tmp, header.data());",
+          "content_same": false
+        },
+        {
+          "line": 924,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "reset()",
+          "old_line_content": "",
+          "new_line_content": "      reset();",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": null,
+          "new_api": "step",
+          "old_text": null,
+          "new_text": "step(program)",
+          "old_line_content": "  return (ret == COMMIT);",
+          "new_line_content": "    ret = step(program);",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": null,
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": null,
+          "new_text": "FOLLY_SAFE_CHECK(index != 0, \"invalid file index 0\")",
+          "old_line_content": "  if (index <= fileNameCount_) {",
+          "new_line_content": "  FOLLY_SAFE_CHECK(index != 0, \"invalid file index 0\");",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "      isStmt_ = !isStmt_;",
+          "new_line_content": "      column_ = readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": null,
+          "new_api": "readFileName",
+          "old_text": null,
+          "new_text": "readFileName(fileNames, fn)",
+          "old_line_content": "    }",
+          "new_line_content": "      if (!readFileName(fileNames, fn)) {",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "    return fn;",
+          "new_line_content": "        abort();",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "nextDefineFile",
+          "old_text": null,
+          "new_text": "nextDefineFile(program, fn)",
+          "old_line_content": "  return fn;",
+          "new_line_content": "    FOLLY_SAFE_CHECK(nextDefineFile(program, fn), \"invalid file index\");",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": null,
+          "new_api": "read<uint16_t>(program)",
+          "old_text": null,
+          "new_text": "read<uint16_t>(program)",
+          "old_line_content": "      if (version_ == 2) break;  // not supported in version 2",
+          "new_line_content": "      address_ += read<uint16_t>(program);",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": null,
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": null,
+          "new_text": "FOLLY_SAFE_CHECK(index <= includeDirectoryCount_,\n                   \"invalid include directory\")",
+          "old_line_content": "  folly::StringPiece includeDirectories = includeDirectories_;",
+          "new_line_content": "  FOLLY_SAFE_CHECK(index <= includeDirectoryCount_,",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "",
+          "new_line_content": "      isa_ = readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "readNullTerminated",
+          "old_text": null,
+          "new_text": "readNullTerminated(includeDirectories)",
+          "old_line_content": "    }",
+          "new_line_content": "    dir = readNullTerminated(includeDirectories);",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "advance",
+          "old_text": null,
+          "new_text": "infoEntry.advance(offset)",
+          "old_line_content": "  // Slow path (linear scan): Iterate over all .debug_info entries",
+          "new_line_content": "    infoEntry.advance(offset);",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "findLocation",
+          "old_text": null,
+          "new_text": "findLocation(address, infoEntry, locationInfo)",
+          "old_line_content": "  // and look for the address in each compilation unit.",
+          "new_line_content": "    findLocation(address, infoEntry, locationInfo);",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "dir.empty()",
+          "old_line_content": "  }",
+          "new_line_content": "    if (dir.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": null,
+          "new_api": "abort",
+          "old_text": null,
+          "new_text": "abort()",
+          "old_line_content": "",
+          "new_line_content": "      abort();  // BUG",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "  }",
+          "new_line_content": "      readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "infoEntry.empty()",
+          "old_line_content": "  return locationInfo.hasFileAndLine;",
+          "new_line_content": "  while (!infoEntry.empty() && !locationInfo.hasFileAndLine) {",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "findLocation",
+          "old_text": null,
+          "new_text": "findLocation(address, infoEntry, locationInfo)",
+          "old_line_content": "}",
+          "new_line_content": "    findLocation(address, infoEntry, locationInfo);",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": null,
+          "new_api": "readNullTerminated",
+          "old_text": null,
+          "new_text": "readNullTerminated(program)",
+          "old_line_content": "  }",
+          "new_line_content": "  fn.relativeName = readNullTerminated(program);",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": null,
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": null,
+          "new_text": "FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\")",
+          "old_line_content": "",
+          "new_line_content": "  FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\");",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": null,
+          "new_api": "read<uint8_t>(program)",
+          "old_text": null,
+          "new_text": "read<uint8_t>(program)",
+          "old_line_content": "  switch (extendedOpcode) {",
+          "new_line_content": "  auto extendedOpcode = read<uint8_t>(program);",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "}",
+          "new_line_content": "  readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "",
+          "new_line_content": "  readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 858,
+          "old_api": null,
+          "new_api": "read<uintptr_t>(program)",
+          "old_text": null,
+          "new_text": "read<uintptr_t>(program)",
+          "old_line_content": "    // We can't process DW_LNE_define_file here, as it would require us to",
+          "new_line_content": "    address_ = read<uintptr_t>(program);",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": null,
+          "new_api": "is64Bit",
+          "old_text": null,
+          "new_text": "section.is64Bit()",
+          "old_line_content": "}",
+          "new_line_content": "  is64Bit_ = section.is64Bit();",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": null,
+          "new_api": "init",
+          "old_text": null,
+          "new_text": "init()",
+          "old_line_content": "",
+          "new_line_content": "  init();",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "reset()",
+          "old_line_content": "void Dwarf::LineNumberVM::reset() {",
+          "new_line_content": "  reset();",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "program.empty()",
+          "old_line_content": "    if (opcode >= opcodeBase_) {  // special opcode",
+          "new_line_content": "  while (!program.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": null,
+          "new_api": "read<uint8_t>(program)",
+          "old_text": null,
+          "new_text": "read<uint8_t>(program)",
+          "old_line_content": "      continue;",
+          "new_line_content": "    auto opcode = read<uint8_t>(program);",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "",
+          "new_line_content": "    discriminator_ = readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "advance",
+          "old_text": null,
+          "new_text": "program.advance(length)",
+          "old_line_content": "",
+          "new_line_content": "  program.advance(length);",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "readULEB",
+          "old_text": null,
+          "new_text": "readULEB(program)",
+          "old_line_content": "    }",
+          "new_line_content": "        readULEB(program);",
+          "content_same": false
+        },
+        {
+          "line": 755,
+          "old_api": null,
+          "new_api": "FOLLY_SAFE_CHECK",
+          "old_text": null,
+          "new_text": "FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\")",
+          "old_line_content": "",
+          "new_line_content": "    FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\");",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": null,
+          "new_api": "read<uint8_t>(program)",
+          "old_text": null,
+          "new_text": "read<uint8_t>(program)",
+          "old_line_content": "    if (opcode == DW_LNE_define_file) {",
+          "new_line_content": "    read<uint8_t>(program); // extended opcode",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "data_.end()",
+          "old_line_content": "  if (version_ == 4) {  // Version 2 and 3 records don't have this",
+          "new_line_content": "  data_.assign(header.end(), data_.end());",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": null,
+          "new_api": "readFileName",
+          "old_text": null,
+          "new_text": "readFileName(program, fn)",
+          "old_line_content": "    }",
+          "new_line_content": "      FOLLY_SAFE_CHECK(readFileName(program, fn),",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "reset()",
+          "old_line_content": "  uint64_t prevLine = 0;",
+          "new_line_content": "  reset();",
+          "content_same": false
+        },
+        {
+          "line": 765,
+          "old_api": null,
+          "new_api": "advance",
+          "old_text": null,
+          "new_text": "program.advance(length)",
+          "old_line_content": "",
+          "new_line_content": "    program.advance(length);",
+          "content_same": false
+        },
+        {
+          "line": 894,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "program.empty()",
+          "old_line_content": "    if (state == START) {",
+          "new_line_content": "  while (!program.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": null,
+          "new_api": "next",
+          "old_text": null,
+          "new_text": "next(program)",
+          "old_line_content": "      if (!seqEnd) {",
+          "new_line_content": "    bool seqEnd = !next(program);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 771,
+          "old_api": "read<uint8_t>(program)",
+          "new_api": null,
+          "old_text": "read<uint8_t>(program)",
+          "new_text": null,
+          "old_line_content": "  auto opcode = read<uint8_t>(program);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "header.data()",
+          "new_text": null,
+          "old_line_content": "  const char* tmp = header.data();",
+          "new_line_content": "  // We'll just skip over include directories and file names here, and",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": "readNullTerminated",
+          "new_api": null,
+          "old_text": "readNullTerminated(header)",
+          "new_text": null,
+          "old_line_content": "  while (!(sp = readNullTerminated(header)).empty()) {",
+          "new_line_content": "  folly::StringPiece sp;",
+          "content_same": false
+        },
+        {
+          "line": 908,
+          "old_api": "getFileName",
+          "new_api": null,
+          "old_text": "getFileName(prevFile)",
+          "new_text": null,
+          "old_line_content": "        auto fn = getFileName(prevFile);",
+          "new_line_content": "        if (prevFile == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": "Path",
+          "new_api": null,
+          "old_text": "Path(compilationDirectory_,\n                    getIncludeDirectory(fn.directoryIndex),\n                    fn.relativeName)",
+          "new_text": null,
+          "old_line_content": "        file = Path(compilationDirectory_,",
+          "new_line_content": "          return false;",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "header.data()",
+          "new_text": null,
+          "old_line_content": "  tmp = header.data();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": "getIncludeDirectory",
+          "new_api": null,
+          "old_text": "getIncludeDirectory(fn.directoryIndex)",
+          "new_text": null,
+          "old_line_content": "                    getIncludeDirectory(fn.directoryIndex),",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 921,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "reset()",
+          "new_text": null,
+          "old_line_content": "      reset();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 666,
+          "old_api": "step",
+          "new_api": null,
+          "old_text": "step(program)",
+          "new_text": null,
+          "old_line_content": "    ret = step(program);",
+          "new_line_content": "bool Dwarf::LineNumberVM::next(folly::StringPiece& program) {",
+          "content_same": false
+        },
+        {
+          "line": 798,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "      address_ += minLength_ * readULEB(program);",
+          "new_line_content": "      discriminator_ = 0;",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": null,
+          "old_text": "FOLLY_SAFE_CHECK(index != 0, \"invalid file index 0\")",
+          "new_text": null,
+          "old_line_content": "  FOLLY_SAFE_CHECK(index != 0, \"invalid file index 0\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "readFileName",
+          "new_api": null,
+          "old_text": "readFileName(fileNames, fn)",
+          "new_text": null,
+          "old_line_content": "      if (!readFileName(fileNames, fn)) {",
+          "new_line_content": "  if (index <= fileNameCount_) {",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "abort",
+          "new_api": null,
+          "old_text": "abort()",
+          "new_text": null,
+          "old_line_content": "        abort();",
+          "new_line_content": "    folly::StringPiece fileNames = fileNames_;",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "nextDefineFile",
+          "new_api": null,
+          "old_text": "nextDefineFile(program, fn)",
+          "new_text": null,
+          "old_line_content": "    FOLLY_SAFE_CHECK(nextDefineFile(program, fn), \"invalid file index\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "read<uint16_t>(program)",
+          "new_api": null,
+          "old_text": "read<uint16_t>(program)",
+          "new_text": null,
+          "old_line_content": "      address_ += read<uint16_t>(program);",
+          "new_line_content": "      address_ += minLength_ * ((255 - opcodeBase_) / lineRange_);",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": "folly::StringPiece()",
+          "new_api": null,
+          "old_text": "folly::StringPiece()",
+          "new_text": null,
+          "old_line_content": "    return folly::StringPiece();",
+          "new_line_content": "folly::StringPiece Dwarf::LineNumberVM::getIncludeDirectory(uint64_t index)",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "      isa_ = readULEB(program);",
+          "new_line_content": "      return CONTINUE;",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": "advance",
+          "new_api": null,
+          "old_text": "infoEntry.advance(offset)",
+          "new_text": null,
+          "old_line_content": "      infoEntry.advance(offset);",
+          "new_line_content": "      // We could read them from .debug_info but that's too slow.",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "findLocation",
+          "new_api": null,
+          "old_text": "findLocation(address, infoEntry, locationInfo)",
+          "new_text": null,
+          "old_line_content": "      findLocation(address, infoEntry, locationInfo);",
+          "new_line_content": "      // If .debug_aranges is present fast address lookup is assumed.",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": "readNullTerminated",
+          "new_api": null,
+          "old_text": "readNullTerminated(includeDirectories)",
+          "new_text": null,
+          "old_line_content": "    dir = readNullTerminated(includeDirectories);",
+          "new_line_content": "  folly::StringPiece includeDirectories = includeDirectories_;",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "dir.empty()",
+          "new_text": null,
+          "old_line_content": "    if (dir.empty()) {",
+          "new_line_content": "  folly::StringPiece dir;",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "abort",
+          "new_api": null,
+          "old_text": "abort()",
+          "new_text": null,
+          "old_line_content": "      abort();  // BUG",
+          "new_line_content": "  for (; index; --index) {",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "      readULEB(program);",
+          "new_line_content": "    // arguments.",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "  auto length = readULEB(program);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "infoEntry.empty()",
+          "new_text": null,
+          "old_line_content": "  while (!infoEntry.empty() && !locationInfo.hasFileAndLine) {",
+          "new_line_content": "  // Slow path (linear scan): Iterate over all .debug_info entries",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "findLocation",
+          "new_api": null,
+          "old_text": "findLocation(address, infoEntry, locationInfo)",
+          "new_text": null,
+          "old_line_content": "    findLocation(address, infoEntry, locationInfo);",
+          "new_line_content": "  // and look for the address in each compilation unit.",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": "readNullTerminated",
+          "new_api": null,
+          "old_text": "readNullTerminated(program)",
+          "new_text": null,
+          "old_line_content": "  fn.relativeName = readNullTerminated(program);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "fn.relativeName.empty()",
+          "new_text": null,
+          "old_line_content": "  if (fn.relativeName.empty()) {",
+          "new_line_content": "bool Dwarf::LineNumberVM::readFileName(folly::StringPiece& program,",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": null,
+          "old_text": "FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\")",
+          "new_text": null,
+          "old_line_content": "  FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\");",
+          "new_line_content": "  // Extended opcode",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "  readULEB(program);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "read<uintptr_t>(program)",
+          "new_api": null,
+          "old_text": "read<uintptr_t>(program)",
+          "new_text": null,
+          "old_line_content": "    address_ = read<uintptr_t>(program);",
+          "new_line_content": "  case DW_LNE_end_sequence:",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": "next",
+          "new_api": null,
+          "old_text": "section.next(data_)",
+          "new_text": null,
+          "old_line_content": "  FOLLY_SAFE_CHECK(section.next(data_), \"invalid line number VM\");",
+          "new_line_content": "                                  folly::StringPiece compilationDirectory)",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": "is64Bit",
+          "new_api": null,
+          "old_text": "section.is64Bit()",
+          "new_text": null,
+          "old_line_content": "  is64Bit_ = section.is64Bit();",
+          "new_line_content": "  : compilationDirectory_(compilationDirectory) {",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "init",
+          "new_api": null,
+          "old_text": "init()",
+          "new_text": null,
+          "old_line_content": "  init();",
+          "new_line_content": "  Section section(data);",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "program.empty()",
+          "new_text": null,
+          "old_line_content": "  while (!program.empty()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "read<uint8_t>(program)",
+          "new_api": null,
+          "old_text": "read<uint8_t>(program)",
+          "new_text": null,
+          "old_line_content": "    auto opcode = read<uint8_t>(program);",
+          "new_line_content": "bool Dwarf::LineNumberVM::nextDefineFile(folly::StringPiece& program,",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "    discriminator_ = readULEB(program);",
+          "new_line_content": "    // pass (using nextDefineFile()) if necessary.",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "advance",
+          "new_api": null,
+          "old_text": "program.advance(length)",
+          "new_text": null,
+          "old_line_content": "  program.advance(length);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "        readULEB(program);",
+          "new_line_content": "      // Skip, slurp the appropriate number of LEB arguments",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": "read<uint16_t>(data_)",
+          "new_api": null,
+          "old_text": "read<uint16_t>(data_)",
+          "new_text": null,
+          "old_line_content": "  version_ = read<uint16_t>(data_);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": null,
+          "old_text": "FOLLY_SAFE_CHECK(version_ >= 2 && version_ <= 4,\n                   \"invalid version in line number VM\")",
+          "new_text": null,
+          "old_line_content": "  FOLLY_SAFE_CHECK(version_ >= 2 && version_ <= 4,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "readULEB",
+          "new_api": null,
+          "old_text": "readULEB(program)",
+          "new_text": null,
+          "old_line_content": "    auto length = readULEB(program);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 752,
+          "old_api": "FOLLY_SAFE_CHECK",
+          "new_api": null,
+          "old_text": "FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\")",
+          "new_text": null,
+          "old_line_content": "    FOLLY_SAFE_CHECK(length != 0, \"invalid extended opcode length\");",
+          "new_line_content": "    // Extended opcode",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": "readFileName",
+          "new_api": null,
+          "old_text": "readFileName(program, fn)",
+          "new_text": null,
+          "old_line_content": "      FOLLY_SAFE_CHECK(readFileName(program, fn),",
+          "new_line_content": "    --length;",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "reset()",
+          "new_text": null,
+          "old_line_content": "  reset();",
+          "new_line_content": "    HIGH_SEQ",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "read<uint8_t>(header)",
+          "new_api": null,
+          "old_text": "read<uint8_t>(header)",
+          "new_text": null,
+          "old_line_content": "    uint8_t maxOpsPerInstruction = read<uint8_t>(header);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": "advance",
+          "new_api": null,
+          "old_text": "program.advance(length)",
+          "new_text": null,
+          "old_line_content": "    program.advance(length);",
+          "new_line_content": "      return true;",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "program.empty()",
+          "new_text": null,
+          "old_line_content": "  while (!program.empty()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 892,
+          "old_api": "next",
+          "new_api": null,
+          "old_text": "next(program)",
+          "new_text": null,
+          "old_line_content": "    bool seqEnd = !next(program);",
+          "new_line_content": "  uint64_t prevFile = 0;",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": "read<uint8_t>(header)",
+          "new_api": null,
+          "old_text": "read<uint8_t>(header)",
+          "new_text": null,
+          "old_line_content": "  lineRange_ = read<uint8_t>(header);",
+          "new_line_content": "  }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 20,
+      "total_additions": 50,
+      "total_deletions": 50,
+      "total_api_changes": 120
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 12,
+        "api_related_lines": 120,
+        "non_api_lines": 8,
+        "non_api_line_numbers": [
+          576,
+          577,
+          578,
+          581,
+          583,
+          584,
+          587,
+          588
+        ]
+      }
+    },
+    "api_calls_before": 284,
+    "api_calls_after": 284,
+    "diff_info": {
+      "added_lines": 11,
+      "removed_lines": 8,
+      "total_diff_lines": 36
+    }
+  }
+}

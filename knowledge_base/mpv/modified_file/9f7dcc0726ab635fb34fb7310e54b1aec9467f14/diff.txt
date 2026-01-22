@@ -1,0 +1,14 @@
+diff --git a/video/mp_image.c b/video/mp_image.c
+index 92c3e57b95..b5780b08a0 100644
+--- a/video/mp_image.c
++++ b/video/mp_image.c
+@@ -72,6 +72,9 @@ static int mp_image_layout(int imgfmt, int w, int h, int stride_align,
+         int alloc_h = MP_ALIGN_UP(h, 32) >> desc.ys[n];
+         int line_bytes = (alloc_w * desc.bpp[n] + 7) / 8;
+         out_stride[n] = MP_ALIGN_UP(line_bytes, stride_align);
++        // also align to a multiple of desc.bytes[n]
++        while (desc.bytes[n] && out_stride[n] % desc.bytes[n])
++            out_stride[n] += stride_align;
+         out_plane_size[n] = out_stride[n] * alloc_h;
+     }
+     if (desc.flags & MP_IMGFLAG_PAL)

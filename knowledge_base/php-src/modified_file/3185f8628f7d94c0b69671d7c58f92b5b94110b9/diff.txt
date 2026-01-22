@@ -1,0 +1,16 @@
+diff --git a/ext/opcache/Optimizer/dfa_pass.c b/ext/opcache/Optimizer/dfa_pass.c
+index 532597713d..9dbd4d1fb3 100644
+--- a/ext/opcache/Optimizer/dfa_pass.c
++++ b/ext/opcache/Optimizer/dfa_pass.c
+@@ -649,6 +649,11 @@ void zend_dfa_optimize_op_array(zend_op_array *op_array, zend_optimizer_ctx *ctx
+ 						ZVAL_DOUBLE(&tmp, zval_get_double(zv));
+ 						opline->op2.constant = zend_optimizer_add_literal(op_array, &tmp);
+ 					}
++				} else if (opline->opcode == ZEND_CONCAT) {
++					if (!(OP1_INFO() & MAY_BE_OBJECT)
++					 && !(OP2_INFO() & MAY_BE_OBJECT)) {
++						opline->opcode = ZEND_FAST_CONCAT;
++					}
+ 				}
+ 			}
+ 

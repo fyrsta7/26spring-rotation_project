@@ -1,0 +1,28 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -350,7 +350,10 @@
+ 
+
+     /// Avoid leaking of ThreadGroupStatus::finished_threads_counters_memory
+
+     /// (this is in case someone uses system thread but did not call getProfileEventsCountersAndMemoryForThreads())
+
+-    thread_group->getProfileEventsCountersAndMemoryForThreads();
+
++    {
+
++        std::lock_guard guard(thread_group->mutex);
+
++        auto stats = std::move(thread_group->finished_threads_counters_memory);
+
++    }
+
+ 
+
+     thread_group.reset();
+
+ 

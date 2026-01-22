@@ -1,0 +1,18 @@
+diff --git a/lib/SILPasses/Utils/Local.cpp b/lib/SILPasses/Utils/Local.cpp
+index 380bd696738..c9fc256f192 100644
+--- a/lib/SILPasses/Utils/Local.cpp
++++ b/lib/SILPasses/Utils/Local.cpp
+@@ -1624,6 +1624,13 @@ optimizeUnconditionalCheckedCastInst(UnconditionalCheckedCastInst *Inst) {
+   }
+ 
+   if (Feasibility == DynamicCastFeasibility::WillSucceed) {
++
++    if (Inst->use_empty()) {
++      EraseInstAction(Inst);
++      WillSucceedAction();
++      return nullptr;
++    }
++
+     SILBuilderWithScope<1> Builder(Inst);
+ 
+     // Try to apply the bridged casts optimizations

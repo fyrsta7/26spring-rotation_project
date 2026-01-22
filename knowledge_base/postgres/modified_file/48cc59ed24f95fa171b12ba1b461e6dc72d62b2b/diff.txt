@@ -1,0 +1,15 @@
+diff --git a/src/backend/storage/ipc/procarray.c b/src/backend/storage/ipc/procarray.c
+index 8abcfdf841..3da53074b1 100644
+--- a/src/backend/storage/ipc/procarray.c
++++ b/src/backend/storage/ipc/procarray.c
+@@ -493,9 +493,9 @@ ProcArrayGroupClearXid(PGPROC *proc, TransactionId latestXid)
+ 	/* Add ourselves to the list of processes needing a group XID clear. */
+ 	proc->procArrayGroupMember = true;
+ 	proc->procArrayGroupMemberXid = latestXid;
++	nextidx = pg_atomic_read_u32(&procglobal->procArrayGroupFirst);
+ 	while (true)
+ 	{
+-		nextidx = pg_atomic_read_u32(&procglobal->procArrayGroupFirst);
+ 		pg_atomic_write_u32(&proc->procArrayGroupNext, nextidx);
+ 
+ 		if (pg_atomic_compare_exchange_u32(&procglobal->procArrayGroupFirst,

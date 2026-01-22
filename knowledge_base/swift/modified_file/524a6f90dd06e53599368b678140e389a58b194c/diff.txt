@@ -1,0 +1,19 @@
+diff --git a/lib/SILAnalysis/SideEffectAnalysis.cpp b/lib/SILAnalysis/SideEffectAnalysis.cpp
+index 83755932354..60d8f2e0632 100644
+--- a/lib/SILAnalysis/SideEffectAnalysis.cpp
++++ b/lib/SILAnalysis/SideEffectAnalysis.cpp
+@@ -404,8 +404,12 @@ void SideEffectAnalysis::recompute() {
+ }
+ 
+ void SideEffectAnalysis::getEffects(FunctionEffects &FE, FullApplySite FAS) {
+-  CallGraph &CG = CGA->getOrBuildCallGraph();
+-  getEffectsOfApply(FE, FAS, CG, false);
++  CallGraph *CG = CGA->getCallGraphOrNull();
++  if (CG) {
++    getEffectsOfApply(FE, FAS, *CG, false);
++    return;
++  }
++  FE.setWorstEffects();
+ }
+ 
+ SILAnalysis *swift::createSideEffectAnalysis(SILModule *M) {

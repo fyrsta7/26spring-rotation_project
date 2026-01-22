@@ -1,0 +1,15 @@
+    aeDeleteFileEvent(config.el,c->context->fd,AE_WRITABLE);
+    aeDeleteFileEvent(config.el,c->context->fd,AE_READABLE);
+    redisFree(c->context);
+    sdsfree(c->obuf);
+    zfree(c->randptr);
+    zfree(c);
+    config.liveclients--;
+    ln = listSearchKey(config.clients,c);
+    assert(ln != NULL);
+    listDelNode(config.clients,ln);
+}
+
+static void freeAllClients(void) {
+    listNode *ln = config.clients->head, *next;
+

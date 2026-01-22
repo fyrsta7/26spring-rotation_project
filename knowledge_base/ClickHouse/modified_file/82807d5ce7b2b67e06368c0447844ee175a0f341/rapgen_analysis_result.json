@@ -1,0 +1,1260 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/82807d5ce7b2b67e06368c0447844ee175a0f341",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/82807d5ce7b2b67e06368c0447844ee175a0f341/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/82807d5ce7b2b67e06368c0447844ee175a0f341/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/82807d5ce7b2b67e06368c0447844ee175a0f341/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 159,
+          "old_api": "unalignedLoad<T>(pos)",
+          "new_api": "getData",
+          "old_text": "unalignedLoad<T>(pos)",
+          "new_text": "assert_cast<const Self &>(src).getData()",
+          "old_line_content": "        data.emplace_back(unalignedLoad<T>(pos));",
+          "new_line_content": "        ValueType v = assert_cast<const Self &>(src).getData()[position];",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint)",
+          "new_api": "protect",
+          "old_text": "CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint)",
+          "new_text": "data.protect()",
+          "old_line_content": "        return CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint);",
+          "new_line_content": "        data.protect();",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "reserve",
+          "new_api": "this->template hasEqualValuesImpl<Self>()",
+          "old_text": "data.reserve(n)",
+          "new_text": "this->template hasEqualValuesImpl<Self>()",
+          "old_line_content": "        data.reserve(n);",
+          "new_line_content": "        return this->template hasEqualValuesImpl<Self>();",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "Exception",
+          "new_api": "UInt64",
+          "old_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as Int\", TypeName<T>)",
+          "new_text": "UInt64(data[n])",
+          "old_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as Int\", TypeName<T>);",
+          "new_line_content": "            return UInt64(data[n]);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "byteSize",
+          "new_api": "this->template scatterImpl<Self>(num_columns, selector)",
+          "old_text": "byteSize()",
+          "new_text": "this->template scatterImpl<Self>(num_columns, selector)",
+          "old_line_content": "        return {reinterpret_cast<const char*>(data.data()), byteSize()};",
+          "new_line_content": "        return this->template scatterImpl<Self>(num_columns, selector);",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "_mm512_mask_storeu_epi8",
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "new_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "old_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "new_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": "_mm512_mask_storeu_epi8",
+          "old_text": "_mm512_loadu_epi8(data_pos)",
+          "new_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "old_line_content": "        __m512i table1 = _mm512_loadu_epi8(data_pos);",
+          "new_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": "_mm512_mask_blend_epi8",
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": "_mm512_mask_blend_epi8(msb, tmp1, tmp2)",
+          "new_text": "_mm512_loadu_epi8(data_pos + 128)",
+          "old_line_content": "            __m512i out = _mm512_mask_blend_epi8(msb, tmp1, tmp2);",
+          "new_line_content": "            table3 = _mm512_loadu_epi8(data_pos + 128);",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": "_mm512_storeu_epi8",
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "new_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 192)",
+          "old_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "new_line_content": "            table4 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 192);",
+          "content_same": false
+        },
+        {
+          "line": 513,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "new_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "old_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "new_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "_mm512_mask_storeu_epi8",
+          "new_api": "_mm512_storeu_epi8",
+          "old_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "new_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "old_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "new_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "size",
+          "new_api": "_mm512_mask_blend_epi8",
+          "old_text": "indexes.size()",
+          "new_text": "_mm512_mask_blend_epi8(msb, tmp1, tmp2)",
+          "old_line_content": "    assert(limit <= indexes.size());",
+          "new_line_content": "            __m512i out = _mm512_mask_blend_epi8(msb, tmp1, tmp2);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 266,
+          "old_api": null,
+          "new_api": "reserve",
+          "old_text": null,
+          "new_text": "data.reserve(n)",
+          "old_line_content": "        return data[n];",
+          "new_line_content": "        data.reserve(n);",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "old_line_content": "template <typename T>",
+          "new_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": null,
+          "new_api": "_mm512_permutex2var_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "old_line_content": "template <typename Type>",
+          "new_line_content": "            __m512i tmp1 = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "_mm512_permutex2var_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutex2var_epi8(table3, vidx, table4)",
+          "old_line_content": "ColumnPtr ColumnVector<T>::indexImpl(const PaddedPODArray<Type> & indexes, size_t limit) const",
+          "new_line_content": "            __m512i tmp2 = _mm512_permutex2var_epi8(table3, vidx, table4);",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "_mm512_movepi8_mask",
+          "old_text": null,
+          "new_text": "_mm512_movepi8_mask(vidx)",
+          "old_line_content": "{",
+          "new_line_content": "            __mmask64 msb = _mm512_movepi8_mask(vidx);",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "TypeName<T>.data()",
+          "old_line_content": "",
+          "new_line_content": "    const char * getFamilyName() const override { return TypeName<T>.data(); }",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "_mm512_mask_storeu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "old_line_content": "",
+          "new_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "data.size()",
+          "old_line_content": "",
+          "new_line_content": "        assert(n < data.size()); /// This assert is more strict than the corresponding assert inside PODArray.",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "indexes.size()",
+          "old_line_content": "            return res;",
+          "new_line_content": "    assert(limit <= indexes.size());",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "create",
+          "old_text": null,
+          "new_text": "this->create(limit)",
+          "old_line_content": "    }",
+          "new_line_content": "    auto res = this->create(limit);",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": null,
+          "new_api": "getData",
+          "old_text": null,
+          "new_text": "res->getData()",
+          "old_line_content": "#endif",
+          "new_line_content": "    typename Self::Container & res_data = res->getData();",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "data.size()",
+          "old_line_content": "    }",
+          "new_line_content": "        data.resize_fill(data.size() + length, v);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "isArchSupported",
+          "old_text": null,
+          "new_text": "isArchSupported(TargetArch::AVX512VBMI)",
+          "old_line_content": "",
+          "new_line_content": "        if (isArchSupported(TargetArch::AVX512VBMI))",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": null,
+          "new_api": "TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "old_text": null,
+          "new_text": "TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "old_line_content": "",
+          "new_line_content": "            TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": null,
+          "new_api": "field.get<T>()",
+          "old_text": null,
+          "new_text": "field.get<T>()",
+          "old_line_content": "    }",
+          "new_line_content": "        data.resize_fill(data.size() + length, static_cast<T>(field.get<T>()));",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as UInt\", TypeName<T>)",
+          "old_line_content": "",
+          "new_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as UInt\", TypeName<T>);",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "old_text": null,
+          "new_text": "TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "old_line_content": "extern template class ColumnVector<UInt128>;",
+          "new_line_content": "    TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data);",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": null,
+          "new_api": "unalignedLoad<T>(pos)",
+          "old_text": null,
+          "new_text": "unalignedLoad<T>(pos)",
+          "old_line_content": "    }",
+          "new_line_content": "        data.emplace_back(unalignedLoad<T>(pos));",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "T",
+          "old_text": null,
+          "new_text": "T()",
+          "old_line_content": "    }",
+          "new_line_content": "        data.push_back(T());",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "Int64",
+          "old_text": null,
+          "new_text": "Int64(data[n])",
+          "old_line_content": "    }",
+          "new_line_content": "            return Int64(data[n]);",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as Int\", TypeName<T>)",
+          "old_line_content": "    void insert(const Field & x) override",
+          "new_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as Int\", TypeName<T>);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "res_data.data()",
+          "old_line_content": "        /// 64 bytes table lookup using one single permutexvar_epi8",
+          "new_line_content": "    auto res_pos = reinterpret_cast<UInt8 *>(res_data.data());",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": null,
+          "new_api": "T",
+          "old_text": null,
+          "new_text": "T()",
+          "old_line_content": "",
+          "new_line_content": "        data.resize_fill(data.size() + length, T());",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "data.size()",
+          "old_line_content": "    void updateWeakHash32(WeakHash32 & hash) const override;",
+          "new_line_content": "        data.resize_assume_reserved(data.size() - n);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as bool\", TypeName<T>)",
+          "old_line_content": "",
+          "new_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as bool\", TypeName<T>);",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos)",
+          "old_line_content": "        if (limit > limit64)",
+          "new_line_content": "        __m512i table1 = _mm512_maskz_loadu_epi8(last_mask, data_pos);",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "x.get<T>()",
+          "old_text": null,
+          "new_text": "x.get<T>()",
+          "old_line_content": "    ColumnPtr index(const IColumn & indexes, size_t limit) const override;",
+          "new_line_content": "        data.push_back(static_cast<T>(x.get<T>()));",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "_mm512_permutexvar_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutexvar_epi8(vidx, table1)",
+          "old_line_content": "        }",
+          "new_line_content": "            __m512i out = _mm512_permutexvar_epi8(vidx, table1);",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": null,
+          "new_api": "_mm512_storeu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "old_line_content": "    }",
+          "new_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "old_line_content": "",
+          "new_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "data.size()",
+          "old_line_content": "    }",
+          "new_line_content": "        return data.size() * sizeof(data[0]);",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": null,
+          "new_api": "_mm512_permutexvar_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutexvar_epi8(vidx, table1)",
+          "old_line_content": "        /// 128 bytes table lookup using one single permute2xvar_epi8",
+          "new_line_content": "            __m512i out = _mm512_permutexvar_epi8(vidx, table1);",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "_mm512_mask_storeu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "old_line_content": "        while (pos < limit64)",
+          "new_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": null,
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_loadu_epi8(data_pos)",
+          "old_line_content": "        if (limit > limit64)",
+          "new_line_content": "        __m512i table1 = _mm512_loadu_epi8(data_pos);",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 64)",
+          "old_line_content": "        {",
+          "new_line_content": "        __m512i table2 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 64);",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": null,
+          "new_api": "allocated_bytes",
+          "old_text": null,
+          "new_text": "data.allocated_bytes()",
+          "old_line_content": "    }",
+          "new_line_content": "        return data.allocated_bytes();",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "old_line_content": "        }",
+          "new_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": null,
+          "new_api": "_mm512_permutex2var_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "old_line_content": "    }",
+          "new_line_content": "            __m512i out = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "_mm512_storeu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "old_line_content": "    else",
+          "new_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "data.push_back(value)",
+          "old_line_content": "    {",
+          "new_line_content": "        data.push_back(value);",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": null,
+          "new_api": "byteSize",
+          "old_text": null,
+          "new_text": "byteSize()",
+          "old_line_content": "    {",
+          "new_line_content": "        return {reinterpret_cast<const char*>(data.data()), byteSize()};",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "old_line_content": "        }",
+          "new_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "#if USE_EMBEDDED_COMPILER",
+          "new_line_content": "    constexpr int compareAtOther(size_t n, size_t m, const ColumnVector<U> & rhs, int nan_direction_hint) const",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "_mm512_permutex2var_epi8",
+          "old_text": null,
+          "new_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "old_line_content": "",
+          "new_line_content": "            __m512i out = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint)",
+          "old_text": null,
+          "new_text": "CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint)",
+          "old_line_content": "    bool isComparatorCompilable() const override;",
+          "new_line_content": "        return CompareHelper<T, U>::compare(data[n], rhs.data[m], nan_direction_hint);",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": null,
+          "new_api": "reinterpret_cast<const char *>(&data[n])",
+          "old_text": null,
+          "new_text": "reinterpret_cast<const char *>(&data[n])",
+          "old_line_content": "    {",
+          "new_line_content": "        return StringRef(reinterpret_cast<const char *>(&data[n]), sizeof(data[n]));",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "assert_cast<const Self &>(rhs_)",
+          "old_text": null,
+          "new_text": "assert_cast<const Self &>(rhs_)",
+          "old_line_content": "    void compareColumn(const IColumn & rhs, size_t rhs_row_num,",
+          "new_line_content": "        return CompareHelper<T>::compare(data[n], assert_cast<const Self &>(rhs_).data[m], nan_direction_hint);",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "typeid",
+          "old_text": null,
+          "new_text": "typeid(ColumnVector<T>)",
+          "old_line_content": "    }",
+          "new_line_content": "        return typeid(rhs) == typeid(ColumnVector<T>);",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": null,
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_loadu_epi8(data_pos)",
+          "old_line_content": "        {",
+          "new_line_content": "        __m512i table1 = _mm512_loadu_epi8(data_pos);",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "_mm512_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_loadu_epi8(data_pos + 64)",
+          "old_line_content": "            __mmask64 last_mask = MASK64 >> (256 - data_size);",
+          "new_line_content": "        __m512i table2 = _mm512_loadu_epi8(data_pos + 64);",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": null,
+          "new_api": "this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio)",
+          "old_text": null,
+          "new_text": "this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio)",
+          "old_line_content": "    }",
+          "new_line_content": "        return this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio);",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "_mm512_maskz_loadu_epi8",
+          "old_text": null,
+          "new_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 128)",
+          "old_line_content": "        while (pos < limit64)",
+          "new_line_content": "            table3 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 128);",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": null,
+          "new_api": "_mm512_setzero_si512",
+          "old_text": null,
+          "new_text": "_mm512_setzero_si512()",
+          "old_line_content": "        {",
+          "new_line_content": "            table4 = _mm512_setzero_si512();",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": null,
+          "new_api": "this->template getNumberOfDefaultRowsImpl<Self>()",
+          "old_text": null,
+          "new_text": "this->template getNumberOfDefaultRowsImpl<Self>()",
+          "old_line_content": "",
+          "new_line_content": "        return this->template getNumberOfDefaultRowsImpl<Self>();",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "assert_cast<const Self &>(rhs)",
+          "old_text": null,
+          "new_text": "assert_cast<const Self &>(rhs)",
+          "old_line_content": "",
+          "new_line_content": "        return this->template doCompareColumn<Self>(assert_cast<const Self &>(rhs), rhs_row_num, row_indexes,",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit)",
+          "old_text": null,
+          "new_text": "this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit)",
+          "old_line_content": "    Container & getData()",
+          "new_line_content": "        return this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 258,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "TypeName<T>.data()",
+          "new_text": null,
+          "old_line_content": "    const char * getFamilyName() const override { return TypeName<T>.data(); }",
+          "new_line_content": "    void getPermutation(IColumn::PermutationSortDirection direction, IColumn::PermutationSortStability stability,",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "data.size()",
+          "new_text": null,
+          "old_line_content": "        assert(n < data.size()); /// This assert is more strict than the corresponding assert inside PODArray.",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "create",
+          "new_api": null,
+          "old_text": "this->create(limit)",
+          "new_text": null,
+          "old_line_content": "    auto res = this->create(limit);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "getData",
+          "new_api": null,
+          "old_text": "res->getData()",
+          "new_text": null,
+          "old_line_content": "    typename Self::Container & res_data = res->getData();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "isArchSupported",
+          "new_api": null,
+          "old_text": "isArchSupported(TargetArch::AVX512VBMI)",
+          "new_text": null,
+          "old_line_content": "        if (isArchSupported(TargetArch::AVX512VBMI))",
+          "new_line_content": "template <typename Type>",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "new_api": null,
+          "old_text": "TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "new_text": null,
+          "old_line_content": "            TargetSpecific::AVX512VBMI::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "UInt64",
+          "new_api": null,
+          "old_text": "UInt64(data[n])",
+          "new_text": null,
+          "old_line_content": "            return UInt64(data[n]);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as UInt\", TypeName<T>)",
+          "new_text": null,
+          "old_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as UInt\", TypeName<T>);",
+          "new_line_content": "    UInt64 get64(size_t n) const override;",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "new_api": null,
+          "old_text": "TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data)",
+          "new_text": null,
+          "old_line_content": "    TargetSpecific::Default::vectorIndexImpl<Container, Type>(data, indexes, limit, res_data);",
+          "new_line_content": "#if USE_MULTITARGET_CODE",
+          "content_same": false
+        },
+        {
+          "line": 164,
+          "old_api": "T",
+          "new_api": null,
+          "old_text": "T()",
+          "new_text": null,
+          "old_line_content": "        data.push_back(T());",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "Int64",
+          "new_api": null,
+          "old_text": "Int64(data[n])",
+          "new_text": null,
+          "old_line_content": "            return Int64(data[n]);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "res_data.data()",
+          "new_text": null,
+          "old_line_content": "    auto res_pos = reinterpret_cast<UInt8 *>(res_data.data());",
+          "new_line_content": "DECLARE_AVX512VBMI_SPECIFIC_CODE(",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "T",
+          "new_api": null,
+          "old_text": "T()",
+          "new_text": null,
+          "old_line_content": "        data.resize_fill(data.size() + length, T());",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "data.size()",
+          "new_text": null,
+          "old_line_content": "        data.resize_assume_reserved(data.size() - n);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as bool\", TypeName<T>)",
+          "new_text": null,
+          "old_line_content": "            throw Exception(ErrorCodes::NOT_IMPLEMENTED, \"Cannot get the value of {} as bool\", TypeName<T>);",
+          "new_line_content": "        if constexpr (is_arithmetic_v<T>)",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos)",
+          "new_text": null,
+          "old_line_content": "        __m512i table1 = _mm512_maskz_loadu_epi8(last_mask, data_pos);",
+          "new_line_content": "    auto data_pos = reinterpret_cast<const UInt8 *>(data.data());",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": "x.get<T>()",
+          "new_api": null,
+          "old_text": "x.get<T>()",
+          "new_text": null,
+          "old_line_content": "        data.push_back(static_cast<T>(x.get<T>()));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "new_text": null,
+          "old_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "new_line_content": "        return;   /// nothing to do, just return",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": "_mm512_permutexvar_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutexvar_epi8(vidx, table1)",
+          "new_text": null,
+          "old_line_content": "            __m512i out = _mm512_permutexvar_epi8(vidx, table1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": "_mm512_storeu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "new_text": null,
+          "old_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "new_line_content": "    if (data_size <= 64)",
+          "content_same": false
+        },
+        {
+          "line": 446,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "new_text": null,
+          "old_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "new_line_content": "        while (pos < limit64)",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "data.size()",
+          "new_text": null,
+          "old_line_content": "        return data.size() * sizeof(data[0]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": "_mm512_permutexvar_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutexvar_epi8(vidx, table1)",
+          "new_text": null,
+          "old_line_content": "            __m512i out = _mm512_permutexvar_epi8(vidx, table1);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(data_pos)",
+          "new_text": null,
+          "old_line_content": "        __m512i table1 = _mm512_loadu_epi8(data_pos);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 64)",
+          "new_text": null,
+          "old_line_content": "        __m512i table2 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 64);",
+          "new_line_content": "            __mmask64 tail_mask = MASK64 >> (limit64 + 64 - limit);",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "allocated_bytes",
+          "new_api": null,
+          "old_text": "data.allocated_bytes()",
+          "new_text": null,
+          "old_line_content": "        return data.allocated_bytes();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 330,
+          "old_api": "this->template scatterImpl<Self>(num_columns, selector)",
+          "new_api": null,
+          "old_text": "this->template scatterImpl<Self>(num_columns, selector)",
+          "new_text": null,
+          "old_line_content": "        return this->template scatterImpl<Self>(num_columns, selector);",
+          "new_line_content": "    ColumnPtr index(const IColumn & indexes, size_t limit) const override;",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "new_text": null,
+          "old_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "protect",
+          "new_api": null,
+          "old_text": "data.protect()",
+          "new_text": null,
+          "old_line_content": "        data.protect();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": "_mm512_permutex2var_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "new_text": null,
+          "old_line_content": "            __m512i out = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "new_line_content": "    else if (data_size <= 128)",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": "_mm512_storeu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_storeu_epi8(res_pos + pos, out)",
+          "new_text": null,
+          "old_line_content": "            _mm512_storeu_epi8(res_pos + pos, out);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "data.push_back(value)",
+          "new_text": null,
+          "old_line_content": "        data.push_back(value);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos)",
+          "new_text": null,
+          "old_line_content": "            __m512i vidx = _mm512_maskz_loadu_epi8(tail_mask, indexes_pos + pos);",
+          "new_line_content": "        /// 128 bytes table lookup using one single permute2xvar_epi8",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "_mm512_permutex2var_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "new_text": null,
+          "old_line_content": "            __m512i out = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "new_line_content": "        while (pos < limit64)",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "    constexpr int compareAtOther(size_t n, size_t m, const ColumnVector<U> & rhs, int nan_direction_hint) const",
+          "new_line_content": "    void protect() override",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "_mm512_mask_storeu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out)",
+          "new_text": null,
+          "old_line_content": "            _mm512_mask_storeu_epi8(res_pos + pos, tail_mask, out);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "reinterpret_cast<const char *>(&data[n])",
+          "new_api": null,
+          "old_text": "reinterpret_cast<const char *>(&data[n])",
+          "new_text": null,
+          "old_line_content": "        return StringRef(reinterpret_cast<const char *>(&data[n]), sizeof(data[n]));",
+          "new_line_content": "    bool canBeInsideNullable() const override { return true; }",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "assert_cast<const Self &>(rhs_)",
+          "new_api": null,
+          "old_text": "assert_cast<const Self &>(rhs_)",
+          "new_text": null,
+          "old_line_content": "        return CompareHelper<T>::compare(data[n], assert_cast<const Self &>(rhs_).data[m], nan_direction_hint);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": "typeid",
+          "new_api": null,
+          "old_text": "typeid(ColumnVector<T>)",
+          "new_text": null,
+          "old_line_content": "        return typeid(rhs) == typeid(ColumnVector<T>);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(data_pos + 64)",
+          "new_text": null,
+          "old_line_content": "        __m512i table2 = _mm512_loadu_epi8(data_pos + 64);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio)",
+          "new_api": null,
+          "old_text": "this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio)",
+          "new_text": null,
+          "old_line_content": "        return this->template getRatioOfDefaultRowsImpl<Self>(sample_ratio);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 128)",
+          "new_text": null,
+          "old_line_content": "            table3 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 128);",
+          "new_line_content": "            /// byte index will not exceed 256 boundary.",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": "_mm512_setzero_si512",
+          "new_api": null,
+          "old_text": "_mm512_setzero_si512()",
+          "new_text": null,
+          "old_line_content": "            table4 = _mm512_setzero_si512();",
+          "new_line_content": "            data_size = 256;",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "this->template getNumberOfDefaultRowsImpl<Self>()",
+          "new_api": null,
+          "old_text": "this->template getNumberOfDefaultRowsImpl<Self>()",
+          "new_text": null,
+          "old_line_content": "        return this->template getNumberOfDefaultRowsImpl<Self>();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": "assert_cast<const Self &>(rhs)",
+          "new_api": null,
+          "old_text": "assert_cast<const Self &>(rhs)",
+          "new_text": null,
+          "old_line_content": "        return this->template doCompareColumn<Self>(assert_cast<const Self &>(rhs), rhs_row_num, row_indexes,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(data_pos + 128)",
+          "new_text": null,
+          "old_line_content": "            table3 = _mm512_loadu_epi8(data_pos + 128);",
+          "new_line_content": "        __m512i table3, table4;",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit)",
+          "new_api": null,
+          "old_text": "this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit)",
+          "new_text": null,
+          "old_line_content": "        return this->template getIndicesOfNonDefaultRowsImpl<Self>(indices, from, limit);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": "_mm512_maskz_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_maskz_loadu_epi8(last_mask, data_pos + 192)",
+          "new_text": null,
+          "old_line_content": "            table4 = _mm512_maskz_loadu_epi8(last_mask, data_pos + 192);",
+          "new_line_content": "        if (data_size <= 192)",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "this->template hasEqualValuesImpl<Self>()",
+          "new_api": null,
+          "old_text": "this->template hasEqualValuesImpl<Self>()",
+          "new_text": null,
+          "old_line_content": "        return this->template hasEqualValuesImpl<Self>();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "_mm512_loadu_epi8",
+          "new_api": null,
+          "old_text": "_mm512_loadu_epi8(indexes_pos + pos)",
+          "new_text": null,
+          "old_line_content": "            __m512i vidx = _mm512_loadu_epi8(indexes_pos + pos);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "_mm512_permutex2var_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutex2var_epi8(table1, vidx, table2)",
+          "new_text": null,
+          "old_line_content": "            __m512i tmp1 = _mm512_permutex2var_epi8(table1, vidx, table2);",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "_mm512_permutex2var_epi8",
+          "new_api": null,
+          "old_text": "_mm512_permutex2var_epi8(table3, vidx, table4)",
+          "new_text": null,
+          "old_line_content": "            __m512i tmp2 = _mm512_permutex2var_epi8(table3, vidx, table4);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": "_mm512_movepi8_mask",
+          "new_api": null,
+          "old_text": "_mm512_movepi8_mask(vidx)",
+          "new_text": null,
+          "old_line_content": "            __mmask64 msb = _mm512_movepi8_mask(vidx);",
+          "new_line_content": "            __mmask64 last_mask = MASK64 >> (256 - data_size);",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 12,
+      "total_additions": 56,
+      "total_deletions": 53,
+      "total_api_changes": 121
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 121,
+        "non_api_lines": 7,
+        "non_api_line_numbers": [
+          161,
+          162,
+          163,
+          166,
+          167,
+          157,
+          158
+        ]
+      }
+    },
+    "api_calls_before": 112,
+    "api_calls_after": 120,
+    "diff_info": {
+      "added_lines": 11,
+      "removed_lines": 0,
+      "total_diff_lines": 23
+    }
+  }
+}

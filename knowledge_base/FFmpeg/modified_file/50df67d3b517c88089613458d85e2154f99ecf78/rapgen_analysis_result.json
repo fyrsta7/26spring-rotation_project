@@ -1,0 +1,476 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/50df67d3b517c88089613458d85e2154f99ecf78",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/50df67d3b517c88089613458d85e2154f99ecf78/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/50df67d3b517c88089613458d85e2154f99ecf78/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/50df67d3b517c88089613458d85e2154f99ecf78/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 154,
+          "old_api": "FFMIN",
+          "new_api": "FFMAX",
+          "old_text": "FFMIN(minff, ff)",
+          "new_text": "FFMAX(maxff, ff)",
+          "old_line_content": "            minff= FFMIN(minff, ff);",
+          "new_line_content": "            maxff= FFMAX(maxff, ff);",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": "FFMAX",
+          "new_api": "FFMIN",
+          "old_text": "FFMAX(maxsf, sf)",
+          "new_text": "FFMIN(minff, ff)",
+          "old_line_content": "            maxsf= FFMAX(maxsf, sf);",
+          "new_line_content": "            minff= FFMIN(minff, ff);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": "FFMIN",
+          "new_api": "FFMAX",
+          "old_text": "FFMIN(minsf, sf)",
+          "new_text": "FFMAX(maxsf, sf)",
+          "old_line_content": "            minsf= FFMIN(minsf, sf);",
+          "new_line_content": "            maxsf= FFMAX(maxsf, sf);",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": "FFMIN",
+          "new_api": "av_mallocz",
+          "old_text": "FFMIN(out_rate * cutoff / in_rate, 1.0)",
+          "new_text": "av_mallocz(sizeof(AVResampleContext))",
+          "old_line_content": "    double factor= FFMIN(out_rate * cutoff / in_rate, 1.0);",
+          "new_line_content": "    AVResampleContext *c= av_mallocz(sizeof(AVResampleContext));",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "av_mallocz",
+          "new_api": "ceil",
+          "old_text": "av_mallocz(c->filter_length*(phase_count+1)*sizeof(FELEM))",
+          "new_text": "ceil(filter_size/factor)",
+          "old_line_content": "    c->filter_bank= av_mallocz(c->filter_length*(phase_count+1)*sizeof(FELEM));",
+          "new_line_content": "    c->filter_length= FFMAX((int)ceil(filter_size/factor), 1);",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "av_build_filter",
+          "new_api": "av_mallocz",
+          "old_text": "av_build_filter(c->filter_bank, factor, c->filter_length, phase_count, 1<<FILTER_SHIFT, WINDOW_TYPE)",
+          "new_text": "av_mallocz(c->filter_length*(phase_count+1)*sizeof(FELEM))",
+          "old_line_content": "    av_build_filter(c->filter_bank, factor, c->filter_length, phase_count, 1<<FILTER_SHIFT, WINDOW_TYPE);",
+          "new_line_content": "    c->filter_bank= av_mallocz(c->filter_length*(phase_count+1)*sizeof(FELEM));",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": "memcpy",
+          "new_api": "av_build_filter",
+          "old_text": "memcpy(&c->filter_bank[c->filter_length*phase_count+1], c->filter_bank, (c->filter_length-1)*sizeof(FELEM))",
+          "new_text": "av_build_filter(c->filter_bank, factor, c->filter_length, phase_count, 1<<FILTER_SHIFT, WINDOW_TYPE)",
+          "old_line_content": "    memcpy(&c->filter_bank[c->filter_length*phase_count+1], c->filter_bank, (c->filter_length-1)*sizeof(FELEM));",
+          "new_line_content": "    av_build_filter(c->filter_bank, factor, c->filter_length, phase_count, 1<<FILTER_SHIFT, WINDOW_TYPE);",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "av_log",
+          "new_api": "rand",
+          "old_text": "av_log(NULL, AV_LOG_DEBUG, \"%d %d %d\\n\", c->dst_incr, c->ideal_dst_incr, c->compensation_distance)",
+          "new_text": "rand()",
+          "old_line_content": "av_log(NULL, AV_LOG_DEBUG, \"%d %d %d\\n\", c->dst_incr, c->ideal_dst_incr, c->compensation_distance);",
+          "new_line_content": "        av_resample_compensate(c, rand() % (8000*2) - 8000, 8000*2);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 289,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(index, 0)",
+          "old_line_content": "    if(index>=0) index &= c->phase_mask;",
+          "new_line_content": "    *consumed= FFMAX(index, 0) >> c->phase_shift;",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "FFABS",
+          "old_text": null,
+          "new_text": "FFABS(sample_index + i)",
+          "old_line_content": "        }else if(sample_index + c->filter_length > src_size){",
+          "new_line_content": "                val += src[FFABS(sample_index + i) % src_size] * filter[i];",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&c)",
+          "old_line_content": "}",
+          "new_line_content": "    av_freep(&c);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(compensation_distance > 0)",
+          "old_line_content": "    }",
+          "new_line_content": "        assert(compensation_distance > 0);",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": null,
+          "new_api": "sin",
+          "old_text": null,
+          "new_text": "sin(x)",
+          "old_line_content": "            switch(type){",
+          "new_line_content": "            else        y = sin(x) / x;",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": null,
+          "new_api": "fabs",
+          "old_text": null,
+          "new_text": "fabs(((double)(i - center) - (double)ph / phase_count) * factor)",
+          "old_line_content": "                if(x<1.0) y= 1 - 3*x*x + 2*x*x*x + d*(            -x*x + x*x*x);",
+          "new_line_content": "                x = fabs(((double)(i - center) - (double)ph / phase_count) * factor);",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": null,
+          "new_api": "cos",
+          "old_text": null,
+          "new_text": "cos(i*j*M_PI/LEN)",
+          "old_line_content": "            for(j=0; j<LEN; j++){",
+          "new_line_content": "                sine[j]= cos(i*j*M_PI/LEN);",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(dst_size, (src_size-1-index) * (int64_t)c->src_incr / c->dst_incr)",
+          "old_line_content": "",
+          "new_line_content": "        dst_size= FFMIN(dst_size, (src_size-1-index) * (int64_t)c->src_incr / c->dst_incr);",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(out_rate * cutoff / in_rate, 1.0)",
+          "old_line_content": "    int phase_count= 1<<phase_shift;",
+          "new_line_content": "    double factor= FFMIN(out_rate * cutoff / in_rate, 1.0);",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": null,
+          "new_api": "cos",
+          "old_text": null,
+          "new_text": "cos(3*w)",
+          "old_line_content": "                break;",
+          "new_line_content": "                y *= 0.3635819 - 0.4891775 * cos(w) + 0.1365995 * cos(2*w) - 0.0106411 * cos(3*w);",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(NULL, AV_LOG_DEBUG, \"%d %d %d\\n\", c->dst_incr, c->ideal_dst_incr, c->compensation_distance)",
+          "old_line_content": "    }",
+          "new_line_content": "av_log(NULL, AV_LOG_DEBUG, \"%d %d %d\\n\", c->dst_incr, c->ideal_dst_incr, c->compensation_distance);",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(1-w*w, 0)",
+          "old_line_content": "                break;",
+          "new_line_content": "                y *= bessel(type*sqrt(FFMAX(1-w*w, 0)));",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": null,
+          "new_api": "sqrt",
+          "old_text": null,
+          "new_text": "sqrt(2*ff/LEN)",
+          "old_line_content": "            sf= 2*sf/LEN;",
+          "new_line_content": "            ff= sqrt(2*ff/LEN);",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "lrintf",
+          "old_text": null,
+          "new_text": "lrintf(tab[i] * scale / norm)",
+          "old_line_content": "            filter[ph * tap_count + i] = v;",
+          "new_line_content": "            v = av_clip(lrintf(tab[i] * scale / norm), FELEM_MIN, FELEM_MAX);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(minsf, sf)",
+          "old_line_content": "            if(i%11==0){",
+          "new_line_content": "            minsf= FFMIN(minsf, sf);",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(&c->filter_bank[c->filter_length*phase_count+1], c->filter_bank, (c->filter_length-1)*sizeof(FELEM))",
+          "old_line_content": "    c->filter_bank[c->filter_length*phase_count]= c->filter_bank[c->filter_length - 1];",
+          "new_line_content": "    memcpy(&c->filter_bank[c->filter_length*phase_count+1], c->filter_bank, (c->filter_length-1)*sizeof(FELEM));",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(NULL, AV_LOG_ERROR, \"i:%4d ss:%f ff:%f-%f sf:%f-%f\\n\", i, ss, maxff, minff, maxsf, minsf)",
+          "old_line_content": "                minff=minsf= 2;",
+          "new_line_content": "                av_log(NULL, AV_LOG_ERROR, \"i:%4d ss:%f ff:%f-%f sf:%f-%f\\n\", i, ss, maxff, minff, maxsf, minsf);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 288,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(index, 0)",
+          "new_text": null,
+          "old_line_content": "    *consumed= FFMAX(index, 0) >> c->phase_shift;",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&c->filter_bank)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&c->filter_bank);",
+          "new_line_content": "void av_resample_close(AVResampleContext *c){",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(compensation_distance > 0)",
+          "new_text": null,
+          "old_line_content": "        assert(compensation_distance > 0);",
+          "new_line_content": "        compensation_distance -= dst_index;",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": "sin",
+          "new_api": null,
+          "old_text": "sin(x)",
+          "new_text": null,
+          "old_line_content": "            else        y = sin(x) / x;",
+          "new_line_content": "            if (x == 0) y = 1.0;",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": "fabs",
+          "new_api": null,
+          "old_text": "fabs(((double)(i - center) - (double)ph / phase_count) * factor)",
+          "new_text": null,
+          "old_line_content": "                x = fabs(((double)(i - center) - (double)ph / phase_count) * factor);",
+          "new_line_content": "                const float d= -0.5; //first order derivative = -0.5",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "cos",
+          "new_api": null,
+          "old_text": "cos(i*j*M_PI/LEN)",
+          "new_text": null,
+          "old_line_content": "                sine[j]= cos(i*j*M_PI/LEN);",
+          "new_line_content": "            for(j=0; j<LEN+tap_count; j++)",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "av_mallocz",
+          "new_api": null,
+          "old_text": "av_mallocz(sizeof(AVResampleContext))",
+          "new_text": null,
+          "old_line_content": "    AVResampleContext *c= av_mallocz(sizeof(AVResampleContext));",
+          "new_line_content": "AVResampleContext *av_resample_init(int out_rate, int in_rate, int filter_size, int phase_shift, int linear, double cutoff){",
+          "content_same": false
+        },
+        {
+          "line": 76,
+          "old_api": "pow",
+          "new_api": null,
+          "old_text": "pow(x*x/4, i)",
+          "new_text": null,
+          "old_line_content": "        v += pow(x*x/4, i)/(t*t);",
+          "new_line_content": "        t *= x/(i*i);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(dst_size, (src_size-1-index) * (int64_t)c->src_incr / c->dst_incr)",
+          "new_text": null,
+          "old_line_content": "        dst_size= FFMIN(dst_size, (src_size-1-index) * (int64_t)c->src_incr / c->dst_incr);",
+          "new_line_content": "        int64_t incr= (1LL<<32) * c->dst_incr / c->src_incr;",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": "cos",
+          "new_api": null,
+          "old_text": "cos(3*w)",
+          "new_text": null,
+          "old_line_content": "                y *= 0.3635819 - 0.4891775 * cos(w) + 0.1365995 * cos(2*w) - 0.0106411 * cos(3*w);",
+          "new_line_content": "                w = 2.0*x / (factor*tap_count) + M_PI;",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "rand",
+          "new_api": null,
+          "old_text": "rand()",
+          "new_text": null,
+          "old_line_content": "        av_resample_compensate(c, rand() % (8000*2) - 8000, 8000*2);",
+          "new_line_content": "#undef rand",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(1-w*w, 0)",
+          "new_text": null,
+          "old_line_content": "                y *= bessel(type*sqrt(FFMAX(1-w*w, 0)));",
+          "new_line_content": "                w = 2.0*x / (factor*tap_count*M_PI);",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "ceil",
+          "new_api": null,
+          "old_text": "ceil(filter_size/factor)",
+          "new_text": null,
+          "old_line_content": "    c->filter_length= FFMAX((int)ceil(filter_size/factor), 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": "sqrt",
+          "new_api": null,
+          "old_text": "sqrt(2*ss/LEN)",
+          "new_text": null,
+          "old_line_content": "            ss= sqrt(2*ss/LEN);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "FFABS",
+          "new_api": null,
+          "old_text": "FFABS(sample_index + i)",
+          "new_text": null,
+          "old_line_content": "                val += src[FFABS(sample_index + i) % src_size] * filter[i];",
+          "new_line_content": "            for(i=0; i<c->filter_length; i++)",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(maxff, ff)",
+          "new_text": null,
+          "old_line_content": "            maxff= FFMAX(maxff, ff);",
+          "new_line_content": "            sf= 2*sf/LEN;",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "lrintf",
+          "new_api": null,
+          "old_text": "lrintf(tab[i] * scale / norm)",
+          "new_text": null,
+          "old_line_content": "            v = av_clip(lrintf(tab[i] * scale / norm), FELEM_MIN, FELEM_MAX);",
+          "new_line_content": "        for(i=0;i<tap_count;i++) {",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(NULL, AV_LOG_ERROR, \"i:%4d ss:%f ff:%f-%f sf:%f-%f\\n\", i, ss, maxff, minff, maxsf, minsf)",
+          "new_text": null,
+          "old_line_content": "                av_log(NULL, AV_LOG_ERROR, \"i:%4d ss:%f ff:%f-%f sf:%f-%f\\n\", i, ss, maxff, minff, maxsf, minsf);",
+          "new_line_content": "            if(i%11==0){",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 8,
+      "total_additions": 17,
+      "total_deletions": 18,
+      "total_api_changes": 43
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 43,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          74,
+          75,
+          77
+        ]
+      }
+    },
+    "api_calls_before": 35,
+    "api_calls_after": 34,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 2,
+      "total_diff_lines": 18
+    }
+  }
+}

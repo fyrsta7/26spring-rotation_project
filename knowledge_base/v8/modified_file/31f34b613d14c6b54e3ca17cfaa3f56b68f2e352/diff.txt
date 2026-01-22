@@ -1,0 +1,21 @@
+diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
+index a26c98b7ac4..2b0cdd34202 100644
+--- a/src/codegen/compiler.cc
++++ b/src/codegen/compiler.cc
+@@ -1905,12 +1905,13 @@ bool Compiler::CompileOptimized(Handle<JSFunction> function,
+ 
+   Handle<Code> code;
+   if (!GetOptimizedCode(function, mode, code_kind).ToHandle(&code)) {
+-    // Optimization failed, get unoptimized code. Unoptimized code must exist
+-    // already if we are optimizing.
++    // Optimization failed, get the existing code. We could have optimized code
++    // from a lower tier here. Unoptimized code must exist already if we are
++    // optimizing.
+     DCHECK(!isolate->has_pending_exception());
+     DCHECK(function->shared().is_compiled());
+     DCHECK(function->shared().IsInterpreted());
+-    code = BUILTIN_CODE(isolate, InterpreterEntryTrampoline);
++    code = ContinuationForConcurrentOptimization(isolate, function);
+   }
+ 
+   if (!CodeKindIsNativeContextIndependentJSFunction(code_kind)) {

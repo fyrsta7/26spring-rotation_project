@@ -1,0 +1,1615 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/2ee67210e0065f90d14640aa8d5c0243a8b1727e",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/2ee67210e0065f90d14640aa8d5c0243a8b1727e/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/2ee67210e0065f90d14640aa8d5c0243a8b1727e/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/2ee67210e0065f90d14640aa8d5c0243a8b1727e/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 168,
+          "old_api": "AndThen",
+          "new_api": "std::move(state->execute_event)",
+          "old_text": "execute_event.AndThen([state = std::move(state)] {\n    auto cnt = state->pending_sink_nodes.load(std::memory_order_acquire);\n    DCHECK_EQ(cnt, 0)\n        << \"All sink nodes must be completed before execute_event is marked \"\n           \"available.\";\n  })",
+          "new_text": "std::move(state->execute_event)",
+          "old_line_content": "  execute_event.AndThen([state = std::move(state)] {",
+          "new_line_content": "    return std::move(state->execute_event);",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "IsAvailable",
+          "new_api": "IsOkExecuteEvent",
+          "old_text": "execute_event.IsAvailable()",
+          "new_text": "thunk.IsOkExecuteEvent(execute_event)",
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(!execute_event.IsAvailable())) {",
+          "new_line_content": "    if (ABSL_PREDICT_TRUE(thunk.IsOkExecuteEvent(execute_event))) {",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "std::move(event)",
+          "new_api": "IsAvailable",
+          "old_text": "std::move(event)",
+          "new_text": "execute_event.IsAvailable()",
+          "old_line_content": "          ResumeExecuteSequential(it + 1, params, std::move(event));",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(!execute_event.IsAvailable())) {",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "end",
+          "new_api": "Thunk::OkExecuteEventSingleton()",
+          "old_text": "thunk_sequence_.end()",
+          "new_text": "Thunk::OkExecuteEventSingleton()",
+          "old_line_content": "  for (; it != thunk_sequence_.end(); ++it) {",
+          "new_line_content": "  return Thunk::OkExecuteEventSingleton();",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "IsAvailable",
+          "new_api": "IsOkExecuteEvent",
+          "old_text": "execute_event.IsAvailable()",
+          "new_text": "thunk.IsOkExecuteEvent(execute_event)",
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(!execute_event.IsAvailable())) {",
+          "new_line_content": "    if (ABSL_PREDICT_TRUE(thunk.IsOkExecuteEvent(execute_event))) {",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "std::move(event)",
+          "new_api": "IsAvailable",
+          "old_text": "std::move(event)",
+          "new_text": "execute_event.IsAvailable()",
+          "old_line_content": "              ResumeExecuteSequential(it + 1, params, std::move(event));",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(!execute_event.IsAvailable())) {",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "split_threshold",
+          "new_api": "empty",
+          "old_text": "params.session.split_threshold()",
+          "new_text": "ready_queue.empty()",
+          "old_line_content": "  int64_t split_threshold = params.session.split_threshold();",
+          "new_line_content": "  DCHECK(!ready_queue.empty()) << \"Ready queue must not be empty\";",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": "load",
+          "new_api": "split_threshold",
+          "old_text": "node.counter.load(std::memory_order_acquire)",
+          "new_text": "params.session.split_threshold()",
+          "old_line_content": "    int64_t cnt = node.counter.load(std::memory_order_acquire);",
+          "new_line_content": "  int64_t split_threshold = params.session.split_threshold();",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": "ABSL_PREDICT_FALSE",
+          "new_api": "load",
+          "old_text": "ABSL_PREDICT_FALSE(has_runner && num_ready_thunks > split_threshold)",
+          "new_text": "node.counter.load(std::memory_order_acquire)",
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(has_runner && num_ready_thunks > split_threshold)) {",
+          "new_line_content": "    int64_t cnt = node.counter.load(std::memory_order_acquire);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": "SplitReadyQueue",
+          "new_api": "DCHECK_EQ",
+          "old_text": "SplitReadyQueue(state, params, /*start_index=*/i + 1, ready_queue)",
+          "new_text": "DCHECK_EQ(cnt, 0)",
+          "old_line_content": "      SplitReadyQueue(state, params, /*start_index=*/i + 1, ready_queue);",
+          "new_line_content": "    DCHECK_EQ(cnt, 0) << \"Node counter must be 0\";  // Crash Ok",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "AsPtr",
+          "new_api": "Thunk::OkExecuteEventSingleton()",
+          "old_text": "execute_event.AsPtr()",
+          "new_text": "Thunk::OkExecuteEventSingleton()",
+          "old_line_content": "      ProcessOutEdges(state, execute_event.AsPtr(), node, ready_queue);",
+          "new_line_content": "            ? Thunk::OkExecuteEventSingleton()",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "std::move(lock)",
+          "new_api": "ProcessOutEdges",
+          "old_text": "std::move(lock)",
+          "new_text": "state->executor->ProcessOutEdges(state, execute_event, node,\n                                         ready_queue)",
+          "old_line_content": "                                   std::move(lock));",
+          "new_line_content": "        state->executor->ProcessOutEdges(state, execute_event, node,",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "end",
+          "new_api": "std::move(lock)",
+          "old_text": "ready_queue.end()",
+          "new_text": "std::move(lock)",
+          "old_line_content": "  ready_queue.erase(ready_queue.begin() + end_index, ready_queue.end());",
+          "new_line_content": "                               std::move(lock));",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": "fetch_sub",
+          "new_api": "empty",
+          "old_text": "out_node.counter.fetch_sub(1, std::memory_order_release)",
+          "new_text": "node.out_edges->empty()",
+          "old_line_content": "    int64_t cnt = out_node.counter.fetch_sub(1, std::memory_order_release);",
+          "new_line_content": "  bool is_sink = node.out_edges->empty();",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "ABSL_PREDICT_FALSE",
+          "new_api": "fetch_sub",
+          "old_text": "ABSL_PREDICT_FALSE(is_sink)",
+          "new_text": "out_node.counter.fetch_sub(1, std::memory_order_release)",
+          "old_line_content": "  if (ABSL_PREDICT_FALSE(is_sink)) {",
+          "new_line_content": "    int64_t cnt = out_node.counter.fetch_sub(1, std::memory_order_release);",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "ABSL_PREDICT_TRUE",
+          "new_api": "ABSL_PREDICT_FALSE",
+          "old_text": "ABSL_PREDICT_TRUE(!is_done)",
+          "new_text": "ABSL_PREDICT_FALSE(is_sink)",
+          "old_line_content": "    if (ABSL_PREDICT_TRUE(!is_done)) return;",
+          "new_line_content": "  if (ABSL_PREDICT_FALSE(is_sink)) {",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": "SetStateConcrete",
+          "new_api": "ok",
+          "old_text": "state->execute_event.SetStateConcrete()",
+          "new_text": "state->abort_status.ok()",
+          "old_line_content": "      state->execute_event.SetStateConcrete();",
+          "new_line_content": "        DCHECK(!state->abort_status.ok())",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": "DCHECK_EQ",
+          "new_api": "absl::c_find(from.out_edges, to.id)",
+          "old_text": "DCHECK_EQ(has_out_edge, has_in_edge)",
+          "new_text": "absl::c_find(from.out_edges, to.id)",
+          "old_line_content": "  DCHECK_EQ(has_out_edge, has_in_edge) << \"Edges must be symmetric\";",
+          "new_line_content": "  auto out_edge_it = absl::c_find(from.out_edges, to.id);",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "erase",
+          "new_api": "end",
+          "old_text": "from.out_edges.erase(out_edge_it)",
+          "new_text": "from.out_edges.end()",
+          "old_line_content": "    from.out_edges.erase(out_edge_it);",
+          "new_line_content": "  bool has_out_edge = out_edge_it != from.out_edges.end();",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "erase",
+          "new_api": "end",
+          "old_text": "to.in_edges.erase(in_edge_it)",
+          "new_text": "to.in_edges.end()",
+          "old_line_content": "    to.in_edges.erase(in_edge_it);",
+          "new_line_content": "  bool has_in_edge = in_edge_it != to.in_edges.end();",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "pop_back",
+          "new_api": "add_to_stack",
+          "old_text": "stack.pop_back()",
+          "new_text": "add_to_stack(start_id)",
+          "old_line_content": "      stack.pop_back();",
+          "new_line_content": "      for (int64_t start_id : out_node.out_edges) add_to_stack(start_id);",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "add_to_stack",
+          "new_api": "back",
+          "old_text": "add_to_stack(out_id)",
+          "new_text": "stack.back()",
+          "old_line_content": "      for (int64_t out_id : node.out_edges) add_to_stack(out_id);",
+          "new_line_content": "      int64_t node_id = stack.back();",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "info",
+          "new_api": "size",
+          "old_text": "thunk_sequence_[in_edge]->info()",
+          "new_text": "sink_.size()",
+          "old_line_content": "      in_edges[node_def.id].push_back(thunk_sequence_[in_edge]->info().op_name);",
+          "new_line_content": "      source_.size(), sink_.size());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 391,
+          "old_api": null,
+          "new_api": "fetch_sub",
+          "old_text": null,
+          "new_text": "state->pending_sink_nodes.fetch_sub(1, std::memory_order_acq_rel)",
+          "old_line_content": "      auto take_error = [&] {",
+          "new_line_content": "        state->pending_sink_nodes.fetch_sub(1, std::memory_order_acq_rel) == 1;",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": null,
+          "new_api": "ABSL_PREDICT_TRUE",
+          "old_text": null,
+          "new_text": "ABSL_PREDICT_TRUE(!is_done)",
+          "old_line_content": "        absl::MutexLock lock(&state->abort_mutex);",
+          "new_line_content": "    if (ABSL_PREDICT_TRUE(!is_done)) return;",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "DCHECK",
+          "old_text": null,
+          "new_text": "DCHECK(lock)",
+          "old_line_content": "",
+          "new_line_content": "  DCHECK(lock) << \"Execute session lock must be set\";",
+          "content_same": false
+        },
+        {
+          "line": 396,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "state->abort.load(std::memory_order_relaxed)",
+          "old_line_content": "      };",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(state->abort.load(std::memory_order_relaxed))) {",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "ready_queue.size()",
+          "old_line_content": "",
+          "new_line_content": "  for (int64_t i = 0; i < ready_queue.size(); ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": null,
+          "new_api": "std::move(state->abort_status)",
+          "old_text": null,
+          "new_text": "std::move(state->abort_status)",
+          "old_line_content": "  }",
+          "new_line_content": "        return std::move(state->abort_status);",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": null,
+          "new_api": "take_error",
+          "old_text": null,
+          "new_text": "take_error()",
+          "old_line_content": "",
+          "new_line_content": "      state->execute_event.SetError(take_error());",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": null,
+          "new_api": "SetStateConcrete",
+          "old_text": null,
+          "new_text": "state->execute_event.SetStateConcrete()",
+          "old_line_content": "//",
+          "new_line_content": "      state->execute_event.SetStateConcrete();",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "ready_queue.size()",
+          "old_line_content": "    // processing the nodes DAG without executing thunks.",
+          "new_line_content": "    int64_t num_ready_thunks = ready_queue.size() - i;",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "ABSL_PREDICT_FALSE",
+          "old_text": null,
+          "new_text": "ABSL_PREDICT_FALSE(has_runner && num_ready_thunks > split_threshold)",
+          "old_line_content": "    Thunk& thunk = *state->executor->thunk_sequence_[id];",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(has_runner && num_ready_thunks > split_threshold)) {",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": null,
+          "new_api": "SplitReadyQueue",
+          "old_text": null,
+          "new_text": "SplitReadyQueue(state, params, /*start_index=*/i + 1, ready_queue)",
+          "old_line_content": "    tsl::AsyncValueRef<ExecuteEvent> execute_event =",
+          "new_line_content": "      SplitReadyQueue(state, params, /*start_index=*/i + 1, ready_queue);",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "absl::c_find(to.in_edges, from.id)",
+          "old_text": null,
+          "new_text": "absl::c_find(to.in_edges, from.id)",
+          "old_line_content": "",
+          "new_line_content": "  auto in_edge_it = absl::c_find(to.in_edges, from.id);",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "state->abort.load(std::memory_order_relaxed)",
+          "old_line_content": "      // thread and keep working on the ready queue.",
+          "new_line_content": "        ABSL_PREDICT_FALSE(state->abort.load(std::memory_order_relaxed))",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": null,
+          "new_api": "Execute",
+          "old_text": null,
+          "new_text": "thunk.Execute(params)",
+          "old_line_content": "",
+          "new_line_content": "            : thunk.Execute(params);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "IsAvailable",
+          "old_text": null,
+          "new_text": "execute_event.IsAvailable()",
+          "old_line_content": "      // If thunk execution is not completed yet, attach a continuation to the",
+          "new_line_content": "    if (ABSL_PREDICT_TRUE(execute_event.IsAvailable())) {",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": null,
+          "new_api": "IsAvailable",
+          "old_text": null,
+          "new_text": "state->execute_event.IsAvailable()",
+          "old_line_content": "  auto execute_event = state->execute_event;",
+          "new_line_content": "  if (ABSL_PREDICT_TRUE(state->execute_event.IsAvailable())) {",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": null,
+          "new_api": "DCHECK_EQ",
+          "old_text": null,
+          "new_text": "DCHECK_EQ(has_out_edge, has_in_edge)",
+          "old_line_content": "  }",
+          "new_line_content": "  DCHECK_EQ(has_out_edge, has_in_edge) << \"Edges must be symmetric\";",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "AsPtr",
+          "old_text": null,
+          "new_text": "execute_event.AsPtr()",
+          "old_line_content": "      //",
+          "new_line_content": "      ProcessOutEdges(state, execute_event.AsPtr(), node, ready_queue);",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "from.out_edges.erase(out_edge_it)",
+          "old_line_content": "}",
+          "new_line_content": "    from.out_edges.erase(out_edge_it);",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "to.in_edges.erase(in_edge_it)",
+          "old_line_content": "",
+          "new_line_content": "    to.in_edges.erase(in_edge_it);",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "AndThen",
+          "old_text": null,
+          "new_text": "execute_event.AndThen([state = std::move(state)] {\n    auto cnt = state->pending_sink_nodes.load(std::memory_order_acquire);\n    DCHECK_EQ(cnt, 0)\n        << \"All sink nodes must be completed before execute_event is marked \"\n           \"available.\";\n  })",
+          "old_line_content": "",
+          "new_line_content": "  execute_event.AndThen([state = std::move(state)] {",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "state->pending_sink_nodes.load(std::memory_order_acquire)",
+          "old_line_content": "  return execute_event;",
+          "new_line_content": "    auto cnt = state->pending_sink_nodes.load(std::memory_order_acquire);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "DCHECK_EQ",
+          "old_text": null,
+          "new_text": "DCHECK_EQ(cnt, 0)",
+          "old_line_content": "}",
+          "new_line_content": "    DCHECK_EQ(cnt, 0)",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": null,
+          "new_api": "AndThen",
+          "old_text": null,
+          "new_text": "execute_event.AndThen([&params, &node, state,\n                             execute_event = execute_event.AsPtr(),\n                             lock = params.session.Join()]() mutable {\n        ReadyQueue ready_queue;\n        state->executor->ProcessOutEdges(state, execute_event, node,\n                                         ready_queue);\n        // If ready queue is empty it might mean that we have completed an\n        // execution and destroyed the `state`.\n        if (ABSL_PREDICT_TRUE(!ready_queue.empty())) {\n          state->executor->Execute(state, params, std::move(ready_queue),\n                                   std::move(lock));\n        }\n      })",
+          "old_line_content": "        // If ready queue is empty it might mean that we have completed an",
+          "new_line_content": "      execute_event.AndThen([&params, &node, state,",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "thunk_sequence_.end()",
+          "old_line_content": "      continue;",
+          "new_line_content": "  for (auto it = thunk_sequence_.begin(); it != thunk_sequence_.end(); ++it) {",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "ready_queue.empty()",
+          "old_line_content": "  }",
+          "new_line_content": "        if (ABSL_PREDICT_TRUE(!ready_queue.empty())) {",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": null,
+          "new_api": "Execute",
+          "old_text": null,
+          "new_text": "thunk.Execute(params)",
+          "old_line_content": "",
+          "new_line_content": "    auto execute_event = thunk.Execute(params);",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": null,
+          "new_api": "std::move(ready_queue)",
+          "old_text": null,
+          "new_text": "std::move(ready_queue)",
+          "old_line_content": "}",
+          "new_line_content": "          state->executor->Execute(state, params, std::move(ready_queue),",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": null,
+          "new_api": "std::move(lock)",
+          "old_text": null,
+          "new_text": "std::move(lock)",
+          "old_line_content": "",
+          "new_line_content": "                                   std::move(lock));",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "stack.push_back(node_id)",
+          "old_line_content": "  // connect source node with the node reachable via DFS.",
+          "new_line_content": "      stack.push_back(node_id);",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "nodes_defs_.size()",
+          "old_line_content": "",
+          "new_line_content": "  for (int64_t i = 0; i < nodes_defs_.size(); ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "stack.clear()",
+          "old_line_content": "    for (int64_t out_id : source_node.out_edges) {",
+          "new_line_content": "    stack.clear();",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": null,
+          "new_api": "tsl::MakeConstructedAsyncValueRef<ExecuteEvent>()",
+          "old_text": null,
+          "new_text": "tsl::MakeConstructedAsyncValueRef<ExecuteEvent>()",
+          "old_line_content": "        }",
+          "new_line_content": "      auto event = tsl::MakeConstructedAsyncValueRef<ExecuteEvent>();",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": null,
+          "new_api": "AndThen",
+          "old_text": null,
+          "new_text": "execute_event.AndThen([this, &params, it, event](absl::Status status) {\n        if (ABSL_PREDICT_FALSE(!status.ok())) {\n          event.SetError(std::move(status));\n        } else {\n          ResumeExecuteSequential(it + 1, params, std::move(event));\n        }\n      })",
+          "old_line_content": "      });",
+          "new_line_content": "      execute_event.AndThen([this, &params, it, event](absl::Status status) {",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": null,
+          "new_api": "ok",
+          "old_text": null,
+          "new_text": "status.ok()",
+          "old_line_content": "      return event;",
+          "new_line_content": "        if (ABSL_PREDICT_FALSE(!status.ok())) {",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": null,
+          "new_api": "std::move(status)",
+          "old_text": null,
+          "new_text": "std::move(status)",
+          "old_line_content": "    }",
+          "new_line_content": "          event.SetError(std::move(status));",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "DCHECK",
+          "old_text": null,
+          "new_text": "DCHECK(state->runner)",
+          "old_line_content": "  // we have a long tail of work that is processed by a single thread.",
+          "new_line_content": "  DCHECK(state->runner) << \"TaskRunner must be set\";",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "std::move(event)",
+          "old_text": null,
+          "new_text": "std::move(event)",
+          "old_line_content": "    // Abort execution if any of the thunks failed.",
+          "new_line_content": "          ResumeExecuteSequential(it + 1, params, std::move(event));",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "ready_queue.size()",
+          "old_line_content": "  while (end_index > start_index) {",
+          "new_line_content": "  int64_t end_index = ready_queue.size();",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "nodes_defs_.size()",
+          "old_line_content": "      NodeDef& out_node = nodes_defs_[out_id];",
+          "new_line_content": "    visited.assign(nodes_defs_.size(), false);",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "stack.empty()",
+          "old_line_content": "",
+          "new_line_content": "    while (!stack.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "IsError",
+          "old_text": null,
+          "new_text": "execute_event.IsError()",
+          "old_line_content": "  // succeeded.",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(execute_event.IsError())) {",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": null,
+          "new_api": "TryJoin",
+          "old_text": null,
+          "new_text": "params.session.TryJoin()",
+          "old_line_content": "    int64_t mid_index = (start_index + end_index) / 2;",
+          "new_line_content": "    Thunk::ExecuteSession::Lock task_runner_lock = params.session.TryJoin();",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": null,
+          "new_api": "pop_back",
+          "old_text": null,
+          "new_text": "stack.pop_back()",
+          "old_line_content": "    }",
+          "new_line_content": "      stack.pop_back();",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": null,
+          "new_api": "EraseEdge",
+          "old_text": null,
+          "new_text": "EraseEdge(source_node, node)",
+          "old_line_content": "  return num_erased_edges;",
+          "new_line_content": "      num_erased_edges += EraseEdge(source_node, node);",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "add_to_stack",
+          "old_text": null,
+          "new_text": "add_to_stack(out_id)",
+          "old_line_content": "",
+          "new_line_content": "      for (int64_t out_id : node.out_edges) add_to_stack(out_id);",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "*state->runner)([&params, state,\n                      ready_queue = ReadyQueue(ready_queue.begin() + mid_index,\n                                               ready_queue.begin() + end_index),\n                      lock = std::move(task_runner_lock)]() mutable {\n      state->executor->Execute(state, params, std::move(ready_queue),\n                               std::move(lock));\n    })",
+          "old_line_content": "    });",
+          "new_line_content": "    (*state->runner)([&params, state,",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "std::move(ready_queue)",
+          "old_text": null,
+          "new_text": "std::move(ready_queue)",
+          "old_line_content": "  // Erase ready nodes passed to the task runner.",
+          "new_line_content": "      state->executor->Execute(state, params, std::move(ready_queue),",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "thunk_sequence_.end()",
+          "old_line_content": "      continue;",
+          "new_line_content": "  for (; it != thunk_sequence_.end(); ++it) {",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "absl::StrFormat(\n      \"ThunkExecutor: #thunks=%d #source_nodes=%d #sink_nodes=%d\", num_thunks_,\n      source_.size(), sink_.size())",
+          "old_line_content": "  for (const auto& node_def : nodes_defs_) {",
+          "new_line_content": "  std::string str = absl::StrFormat(",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "Execute",
+          "old_text": null,
+          "new_text": "thunk.Execute(params)",
+          "old_line_content": "",
+          "new_line_content": "    auto execute_event = thunk.Execute(params);",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "ready_queue.end()",
+          "old_line_content": "  // If thunk execution failed, mark execution as aborted and record the error.",
+          "new_line_content": "  ready_queue.erase(ready_queue.begin() + end_index, ready_queue.end());",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": null,
+          "new_api": "info",
+          "old_text": null,
+          "new_text": "thunk_sequence_[in_edge]->info()",
+          "old_line_content": "    const Thunk& thunk = *thunk_sequence_[i];",
+          "new_line_content": "      in_edges[node_def.id].push_back(thunk_sequence_[in_edge]->info().op_name);",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": null,
+          "new_api": "AndThen",
+          "old_text": null,
+          "new_text": "execute_event.AndThen(\n          [this, &params, it, event = std::move(event)](absl::Status status) {\n            if (ABSL_PREDICT_FALSE(!status.ok())) {\n              event.SetError(std::move(status));\n            } else {\n              ResumeExecuteSequential(it + 1, params, std::move(event));\n            }\n          })",
+          "old_line_content": "            }",
+          "new_line_content": "      execute_event.AndThen(",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": null,
+          "new_api": "ok",
+          "old_text": null,
+          "new_text": "status.ok()",
+          "old_line_content": "      return;",
+          "new_line_content": "            if (ABSL_PREDICT_FALSE(!status.ok())) {",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "std::move(status)",
+          "old_text": null,
+          "new_text": "std::move(status)",
+          "old_line_content": "    }",
+          "new_line_content": "              event.SetError(std::move(status));",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": null,
+          "new_api": "IsError",
+          "old_text": null,
+          "new_text": "node_event.IsError()",
+          "old_line_content": "  // Load `is_sink` before dropping node counters because otherwise it might",
+          "new_line_content": "  if (ABSL_PREDICT_FALSE(node_event.IsError())) {",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": null,
+          "new_api": "std::move(event)",
+          "old_text": null,
+          "new_text": "std::move(event)",
+          "old_line_content": "    // Abort execution if any of the thunks failed.",
+          "new_line_content": "              ResumeExecuteSequential(it + 1, params, std::move(event));",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": null,
+          "new_api": "GetError",
+          "old_text": null,
+          "new_text": "node_event.GetError()",
+          "old_line_content": "",
+          "new_line_content": "    state->abort_status.Update(node_event.GetError());",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "source_.end()",
+          "old_line_content": "        is_sink);",
+          "new_line_content": "    bool is_source = absl::c_find(source_, i) != source_.end();",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "sink_.end()",
+          "old_line_content": "  }",
+          "new_line_content": "    bool is_sink = absl::c_find(sink_, i) != sink_.end();",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "info",
+          "old_text": null,
+          "new_text": "absl::StrAppendFormat(\n        &str,\n        \"\\n thunk #%05d: op_name=%s, dependencies=[%s], source=%v, sink=%v\", i,\n        thunk.info().op_name, absl::StrJoin(in_edges[i], \", \"), is_source,\n        is_sink)",
+          "old_line_content": "",
+          "new_line_content": "    absl::StrAppendFormat(",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "absl::StrJoin(in_edges[i], \", \")",
+          "old_text": null,
+          "new_text": "absl::StrJoin(in_edges[i], \", \")",
+          "old_line_content": "",
+          "new_line_content": "        thunk.info().op_name, absl::StrJoin(in_edges[i], \", \"), is_source,",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "IsError",
+          "old_text": null,
+          "new_text": "execute_event.IsError()",
+          "old_line_content": "  // If we got to the end of the sequence it means that all thunks have",
+          "new_line_content": "    if (ABSL_PREDICT_FALSE(execute_event.IsError())) {",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "GetError",
+          "old_text": null,
+          "new_text": "execute_event.GetError()",
+          "old_line_content": "  // succeeded.",
+          "new_line_content": "      event.SetError(execute_event.GetError());",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": null,
+          "new_api": "DCHECK_GE",
+          "old_text": null,
+          "new_text": "DCHECK_GE(cnt, 1)",
+          "old_line_content": "    // Check if it was the last sink node and thunk executor is done. We update",
+          "new_line_content": "    DCHECK_GE(cnt, 1) << \"Node counter can't drop below 0\";",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "ready_queue.push_back(out_edge)",
+          "old_line_content": "    // the counter using `std::memory_order_acq_rel` to ensure that the",
+          "new_line_content": "    if (cnt == 1) ready_queue.push_back(out_edge);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "SetStateConcrete",
+          "old_text": null,
+          "new_text": "event.SetStateConcrete()",
+          "old_line_content": "                            Thunk::ExecuteSession::Lock lock) {",
+          "new_line_content": "  event.SetStateConcrete();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 385,
+          "old_api": "fetch_sub",
+          "new_api": null,
+          "old_text": "state->pending_sink_nodes.fetch_sub(1, std::memory_order_acq_rel)",
+          "new_text": null,
+          "old_line_content": "        state->pending_sink_nodes.fetch_sub(1, std::memory_order_acq_rel) == 1;",
+          "new_line_content": "  // Drop the pending sink nodes counter if the node is a sink.",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "ready_queue.empty()",
+          "new_text": null,
+          "old_line_content": "  DCHECK(!ready_queue.empty()) << \"Ready queue must not be empty\";",
+          "new_line_content": "void ThunkExecutor::Execute(ExecuteState* state,",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "DCHECK",
+          "new_api": null,
+          "old_text": "DCHECK(lock)",
+          "new_text": null,
+          "old_line_content": "  DCHECK(lock) << \"Execute session lock must be set\";",
+          "new_line_content": "                            const Thunk::ExecuteParams& params,",
+          "content_same": false
+        },
+        {
+          "line": 390,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "state->abort.load(std::memory_order_relaxed)",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(state->abort.load(std::memory_order_relaxed))) {",
+          "new_line_content": "    bool is_done =",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "state->abort_status.ok()",
+          "new_text": null,
+          "old_line_content": "        DCHECK(!state->abort_status.ok())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "ready_queue.size()",
+          "new_text": null,
+          "old_line_content": "  for (int64_t i = 0; i < ready_queue.size(); ++i) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "std::move(state->abort_status)",
+          "new_api": null,
+          "old_text": "std::move(state->abort_status)",
+          "new_text": null,
+          "old_line_content": "        return std::move(state->abort_status);",
+          "new_line_content": "    // forward it to the caller via the execute event.",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": "take_error",
+          "new_api": null,
+          "old_text": "take_error()",
+          "new_text": null,
+          "old_line_content": "      state->execute_event.SetError(take_error());",
+          "new_line_content": "      auto take_error = [&] {",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "DCHECK_EQ",
+          "new_api": null,
+          "old_text": "DCHECK_EQ(cnt, 0)",
+          "new_text": null,
+          "old_line_content": "    DCHECK_EQ(cnt, 0) << \"Node counter must be 0\";  // Crash Ok",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "ready_queue.size()",
+          "new_text": null,
+          "old_line_content": "    int64_t num_ready_thunks = ready_queue.size() - i;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": "absl::c_find(from.out_edges, to.id)",
+          "new_api": null,
+          "old_text": "absl::c_find(from.out_edges, to.id)",
+          "new_text": null,
+          "old_line_content": "  auto out_edge_it = absl::c_find(from.out_edges, to.id);",
+          "new_line_content": "// Erases edge from `from` node to `to` node if it exists.",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": "absl::c_find(to.in_edges, from.id)",
+          "new_api": null,
+          "old_text": "absl::c_find(to.in_edges, from.id)",
+          "new_text": null,
+          "old_line_content": "  auto in_edge_it = absl::c_find(to.in_edges, from.id);",
+          "new_line_content": "//",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "state->abort.load(std::memory_order_relaxed)",
+          "new_text": null,
+          "old_line_content": "        ABSL_PREDICT_FALSE(state->abort.load(std::memory_order_relaxed))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": "Thunk::OkExecuteEventSingleton()",
+          "new_api": null,
+          "old_text": "Thunk::OkExecuteEventSingleton()",
+          "new_text": null,
+          "old_line_content": "            ? Thunk::OkExecuteEventSingleton()",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "Execute",
+          "new_api": null,
+          "old_text": "thunk.Execute(params)",
+          "new_text": null,
+          "old_line_content": "            : thunk.Execute(params);",
+          "new_line_content": "    // Execute thunk for the given node id. If execution is aborted, we keep",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "from.out_edges.end()",
+          "new_text": null,
+          "old_line_content": "  bool has_out_edge = out_edge_it != from.out_edges.end();",
+          "new_line_content": "// order respectively. We can use binary search to speed up this function.",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "IsAvailable",
+          "new_api": null,
+          "old_text": "execute_event.IsAvailable()",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_TRUE(execute_event.IsAvailable())) {",
+          "new_line_content": "    Thunk& thunk = *state->executor->thunk_sequence_[id];",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "to.in_edges.end()",
+          "new_text": null,
+          "old_line_content": "  bool has_in_edge = in_edge_it != to.in_edges.end();",
+          "new_line_content": "static int64_t EraseEdge(ThunkExecutor::NodeDef& from,",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "state->pending_sink_nodes.load(std::memory_order_acquire)",
+          "new_text": null,
+          "old_line_content": "    auto cnt = state->pending_sink_nodes.load(std::memory_order_acquire);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "DCHECK_EQ",
+          "new_api": null,
+          "old_text": "DCHECK_EQ(cnt, 0)",
+          "new_text": null,
+          "old_line_content": "    DCHECK_EQ(cnt, 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": "AndThen",
+          "new_api": null,
+          "old_text": "execute_event.AndThen([&params, &node, state,\n                             execute_event = execute_event.AsPtr(),\n                             lock = params.session.Join()]() mutable {\n        ReadyQueue ready_queue;\n        state->executor->ProcessOutEdges(state, execute_event, node,\n                                         ready_queue);\n        // If ready queue is empty it might mean that we have completed an\n        // execution and destroyed the `state`.\n        if (ABSL_PREDICT_TRUE(!ready_queue.empty())) {\n          state->executor->Execute(state, params, std::move(ready_queue),\n                                   std::move(lock));\n        }\n      })",
+          "new_text": null,
+          "old_line_content": "      execute_event.AndThen([&params, &node, state,",
+          "new_line_content": "      // event and resume execution on the continuation thread (ready queue",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "ProcessOutEdges",
+          "new_api": null,
+          "old_text": "state->executor->ProcessOutEdges(state, execute_event, node,\n                                         ready_queue)",
+          "new_text": null,
+          "old_line_content": "        state->executor->ProcessOutEdges(state, execute_event, node,",
+          "new_line_content": "      // execute event means that we have at least one thread that is processing",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "thunk_sequence_.end()",
+          "new_text": null,
+          "old_line_content": "  for (auto it = thunk_sequence_.begin(); it != thunk_sequence_.end(); ++it) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "ready_queue.empty()",
+          "new_text": null,
+          "old_line_content": "        if (ABSL_PREDICT_TRUE(!ready_queue.empty())) {",
+          "new_line_content": "                             lock = params.session.Join()]() mutable {",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "Execute",
+          "new_api": null,
+          "old_text": "thunk.Execute(params)",
+          "new_text": null,
+          "old_line_content": "    auto execute_event = thunk.Execute(params);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "std::move(ready_queue)",
+          "new_api": null,
+          "old_text": "std::move(ready_queue)",
+          "new_text": null,
+          "old_line_content": "          state->executor->Execute(state, params, std::move(ready_queue),",
+          "new_line_content": "        ReadyQueue ready_queue;",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "stack.push_back(node_id)",
+          "new_text": null,
+          "old_line_content": "      stack.push_back(node_id);",
+          "new_line_content": "  // Keep workspace for DFS traversal between iterations.",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "IsOkExecuteEvent",
+          "new_api": null,
+          "old_text": "thunk.IsOkExecuteEvent(execute_event)",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_TRUE(thunk.IsOkExecuteEvent(execute_event))) {",
+          "new_line_content": "ThunkExecutor::ExecuteSequential(const Thunk::ExecuteParams& params) {",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "nodes_defs_.size()",
+          "new_text": null,
+          "old_line_content": "  for (int64_t i = 0; i < nodes_defs_.size(); ++i) {",
+          "new_line_content": "      visited[node_id] = true;",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "stack.clear()",
+          "new_text": null,
+          "old_line_content": "    stack.clear();",
+          "new_line_content": "  // For each node we do a DFS traversal and delete redundant edges that",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": "tsl::MakeConstructedAsyncValueRef<ExecuteEvent>()",
+          "new_api": null,
+          "old_text": "tsl::MakeConstructedAsyncValueRef<ExecuteEvent>()",
+          "new_text": null,
+          "old_line_content": "      auto event = tsl::MakeConstructedAsyncValueRef<ExecuteEvent>();",
+          "new_line_content": "      continue;",
+          "content_same": false
+        },
+        {
+          "line": 193,
+          "old_api": "AndThen",
+          "new_api": null,
+          "old_text": "execute_event.AndThen([this, &params, it, event](absl::Status status) {\n        if (ABSL_PREDICT_FALSE(!status.ok())) {\n          event.SetError(std::move(status));\n        } else {\n          ResumeExecuteSequential(it + 1, params, std::move(event));\n        }\n      })",
+          "new_text": null,
+          "old_line_content": "      execute_event.AndThen([this, &params, it, event](absl::Status status) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "status.ok()",
+          "new_text": null,
+          "old_line_content": "        if (ABSL_PREDICT_FALSE(!status.ok())) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "std::move(status)",
+          "new_api": null,
+          "old_text": "std::move(status)",
+          "new_text": null,
+          "old_line_content": "          event.SetError(std::move(status));",
+          "new_line_content": "    // If thunk execution is not completed yet, attach a continuation to",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "DCHECK",
+          "new_api": null,
+          "old_text": "DCHECK(state->runner)",
+          "new_text": null,
+          "old_line_content": "  DCHECK(state->runner) << \"TaskRunner must be set\";",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "ready_queue.size()",
+          "new_text": null,
+          "old_line_content": "  int64_t end_index = ready_queue.size();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "nodes_defs_.size()",
+          "new_text": null,
+          "old_line_content": "    visited.assign(nodes_defs_.size(), false);",
+          "new_line_content": "  // connect source node with the node reachable via DFS.",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "add_to_stack",
+          "new_api": null,
+          "old_text": "add_to_stack(start_id)",
+          "new_text": null,
+          "old_line_content": "      for (int64_t start_id : out_node.out_edges) add_to_stack(start_id);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "stack.empty()",
+          "new_text": null,
+          "old_line_content": "    while (!stack.empty()) {",
+          "new_line_content": "    for (int64_t out_id : source_node.out_edges) {",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": "IsError",
+          "new_api": null,
+          "old_text": "execute_event.IsError()",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(execute_event.IsError())) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "TryJoin",
+          "new_api": null,
+          "old_text": "params.session.TryJoin()",
+          "new_text": null,
+          "old_line_content": "    Thunk::ExecuteSession::Lock task_runner_lock = params.session.TryJoin();",
+          "new_line_content": "  // we have a long tail of work that is processed by a single thread.",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "stack.back()",
+          "new_text": null,
+          "old_line_content": "      int64_t node_id = stack.back();",
+          "new_line_content": "      NodeDef& out_node = nodes_defs_[out_id];",
+          "content_same": false
+        },
+        {
+          "line": 464,
+          "old_api": "EraseEdge",
+          "new_api": null,
+          "old_text": "EraseEdge(source_node, node)",
+          "new_text": null,
+          "old_line_content": "      num_erased_edges += EraseEdge(source_node, node);",
+          "new_line_content": "    // Traverse the graph and delete redundant edges.",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "Thunk::OkExecuteEventSingleton()",
+          "new_api": null,
+          "old_text": "Thunk::OkExecuteEventSingleton()",
+          "new_text": null,
+          "old_line_content": "  return Thunk::OkExecuteEventSingleton();",
+          "new_line_content": "      return execute_event;",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "*state->runner)([&params, state,\n                      ready_queue = ReadyQueue(ready_queue.begin() + mid_index,\n                                               ready_queue.begin() + end_index),\n                      lock = std::move(task_runner_lock)]() mutable {\n      state->executor->Execute(state, params, std::move(ready_queue),\n                               std::move(lock));\n    })",
+          "new_text": null,
+          "old_line_content": "    (*state->runner)([&params, state,",
+          "new_line_content": "    if (!task_runner_lock) {",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "std::move(ready_queue)",
+          "new_api": null,
+          "old_text": "std::move(ready_queue)",
+          "new_text": null,
+          "old_line_content": "      state->executor->Execute(state, params, std::move(ready_queue),",
+          "new_line_content": "    // Execute [mid_index, end_index) nodes in the task runner.",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "std::move(lock)",
+          "new_api": null,
+          "old_text": "std::move(lock)",
+          "new_text": null,
+          "old_line_content": "                               std::move(lock));",
+          "new_line_content": "    int64_t mid_index = (start_index + end_index) / 2;",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "absl::StrFormat(\n      \"ThunkExecutor: #thunks=%d #source_nodes=%d #sink_nodes=%d\", num_thunks_,\n      source_.size(), sink_.size())",
+          "new_text": null,
+          "old_line_content": "  std::string str = absl::StrFormat(",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "Execute",
+          "new_api": null,
+          "old_text": "thunk.Execute(params)",
+          "new_text": null,
+          "old_line_content": "    auto execute_event = thunk.Execute(params);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "sink_.size()",
+          "new_text": null,
+          "old_line_content": "      source_.size(), sink_.size());",
+          "new_line_content": "  return num_erased_edges;",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "IsOkExecuteEvent",
+          "new_api": null,
+          "old_text": "thunk.IsOkExecuteEvent(execute_event)",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_TRUE(thunk.IsOkExecuteEvent(execute_event))) {",
+          "new_line_content": "    tsl::AsyncValueRef<ExecuteEvent> event) {",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "AndThen",
+          "new_api": null,
+          "old_text": "execute_event.AndThen(\n          [this, &params, it, event = std::move(event)](absl::Status status) {\n            if (ABSL_PREDICT_FALSE(!status.ok())) {\n              event.SetError(std::move(status));\n            } else {\n              ResumeExecuteSequential(it + 1, params, std::move(event));\n            }\n          })",
+          "new_text": null,
+          "old_line_content": "      execute_event.AndThen(",
+          "new_line_content": "      continue;",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "status.ok()",
+          "new_text": null,
+          "old_line_content": "            if (ABSL_PREDICT_FALSE(!status.ok())) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "std::move(status)",
+          "new_api": null,
+          "old_text": "std::move(status)",
+          "new_text": null,
+          "old_line_content": "              event.SetError(std::move(status));",
+          "new_line_content": "    // If thunk execution is not completed yet, attach a continuation to",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "IsError",
+          "new_api": null,
+          "old_text": "node_event.IsError()",
+          "new_text": null,
+          "old_line_content": "  if (ABSL_PREDICT_FALSE(node_event.IsError())) {",
+          "new_line_content": "void ThunkExecutor::ProcessOutEdges(",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "source_.end()",
+          "new_text": null,
+          "old_line_content": "    bool is_source = absl::c_find(source_, i) != source_.end();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "GetError",
+          "new_api": null,
+          "old_text": "node_event.GetError()",
+          "new_text": null,
+          "old_line_content": "    state->abort_status.Update(node_event.GetError());",
+          "new_line_content": "  // If thunk execution failed, mark execution as aborted and record the error.",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "sink_.end()",
+          "new_text": null,
+          "old_line_content": "    bool is_sink = absl::c_find(sink_, i) != sink_.end();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": "info",
+          "new_api": null,
+          "old_text": "absl::StrAppendFormat(\n        &str,\n        \"\\n thunk #%05d: op_name=%s, dependencies=[%s], source=%v, sink=%v\", i,\n        thunk.info().op_name, absl::StrJoin(in_edges[i], \", \"), is_source,\n        is_sink)",
+          "new_text": null,
+          "old_line_content": "    absl::StrAppendFormat(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "absl::StrJoin(in_edges[i], \", \")",
+          "new_api": null,
+          "old_text": "absl::StrJoin(in_edges[i], \", \")",
+          "new_text": null,
+          "old_line_content": "        thunk.info().op_name, absl::StrJoin(in_edges[i], \", \"), is_source,",
+          "new_line_content": "    const Thunk& thunk = *thunk_sequence_[i];",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "node.out_edges->empty()",
+          "new_text": null,
+          "old_line_content": "  bool is_sink = node.out_edges->empty();",
+          "new_line_content": "    state->abort = true;",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "IsError",
+          "new_api": null,
+          "old_text": "execute_event.IsError()",
+          "new_text": null,
+          "old_line_content": "    if (ABSL_PREDICT_FALSE(execute_event.IsError())) {",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "GetError",
+          "new_api": null,
+          "old_text": "execute_event.GetError()",
+          "new_text": null,
+          "old_line_content": "      event.SetError(execute_event.GetError());",
+          "new_line_content": "          });",
+          "content_same": false
+        },
+        {
+          "line": 375,
+          "old_api": "DCHECK_GE",
+          "new_api": null,
+          "old_text": "DCHECK_GE(cnt, 1)",
+          "new_text": null,
+          "old_line_content": "    DCHECK_GE(cnt, 1) << \"Node counter can't drop below 0\";",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "ready_queue.push_back(out_edge)",
+          "new_text": null,
+          "old_line_content": "    if (cnt == 1) ready_queue.push_back(out_edge);",
+          "new_line_content": "  // Append ready nodes to the back of the ready queue.",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "SetStateConcrete",
+          "new_api": null,
+          "old_text": "event.SetStateConcrete()",
+          "new_text": null,
+          "old_line_content": "  event.SetStateConcrete();",
+          "new_line_content": "      return;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 23,
+      "total_additions": 68,
+      "total_deletions": 66,
+      "total_api_changes": 157
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 157,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          165,
+          166
+        ]
+      }
+    },
+    "api_calls_before": 189,
+    "api_calls_after": 192,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 0,
+      "total_diff_lines": 18
+    }
+  }
+}

@@ -1,0 +1,14 @@
+diff --git a/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc b/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
+index 3d21379a624..46c55c26aa3 100644
+--- a/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
++++ b/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
+@@ -576,7 +576,8 @@ Status LowerKernelBodiesToNVVM(mlir::ModuleOp module) {
+   // Some basic cleanup.
+   kernelPm.addNestedPass<::mlir::FuncOp>(::mlir::createCanonicalizerPass());
+   kernelPm.addNestedPass<::mlir::FuncOp>(::mlir::createCSEPass());
+-  kernelPm.addPass(::mlir::createStripDebugInfoPass());
++  // Remove all location information to prevent a debug build.
++  pm.addPass(::mlir::createStripDebugInfoPass());
+ 
+   if (failed(pm.run(module))) {
+     return InternalError("Lowering to NVVM IR failed.");

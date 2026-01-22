@@ -1,0 +1,1080 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/32cda86440e0b16ff173b53dc2518e94cff22ccf",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/32cda86440e0b16ff173b53dc2518e94cff22ccf/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/32cda86440e0b16ff173b53dc2518e94cff22ccf/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/duckdb/modified_file/32cda86440e0b16ff173b53dc2518e94cff22ccf/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 654,
+          "old_api": "IsOccupied",
+          "new_api": "get_index",
+          "old_text": "entry.IsOccupied()",
+          "new_text": "sel_vector->get_index(i)",
+          "old_line_content": "\t\t\t\tif (!entry.IsOccupied()) { // Unoccupied: claim it",
+          "new_line_content": "\t\t\tconst auto index = sel_vector->get_index(i);",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": "GetSalt",
+          "new_api": "IsOccupied",
+          "old_text": "entry.GetSalt()",
+          "new_text": "entry.IsOccupied()",
+          "old_line_content": "\t\t\t\tif (DUCKDB_LIKELY(entry.GetSalt() == salt)) { // Matching salt: compare groups",
+          "new_line_content": "\t\t\t\tif (!entry.IsOccupied()) { // Unoccupied: claim it",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": "set_index",
+          "new_api": "SetSalt",
+          "old_text": "state.group_compare_vector.set_index(need_compare_count++, index)",
+          "new_text": "entry.SetSalt(salt)",
+          "old_line_content": "\t\t\t\t\tstate.group_compare_vector.set_index(need_compare_count++, index);",
+          "new_line_content": "\t\t\t\t\tentry.SetSalt(salt);",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "DUCKDB_UNLIKELY",
+          "new_api": "set_index",
+          "old_text": "DUCKDB_UNLIKELY(inner_iteration_count == capacity)",
+          "new_text": "state.group_compare_vector.set_index(need_compare_count++, index)",
+          "old_line_content": "\t\t\tif (DUCKDB_UNLIKELY(inner_iteration_count == capacity)) {",
+          "new_line_content": "\t\t\t\t\tstate.group_compare_vector.set_index(need_compare_count++, index);",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "get",
+          "new_api": "DUCKDB_UNLIKELY",
+          "old_text": "unpartitioned_data.get()",
+          "new_text": "DUCKDB_UNLIKELY(occupied_count > new_entry_count + need_compare_count)",
+          "old_line_content": "\t\t\t\tdata = unpartitioned_data.get();",
+          "new_line_content": "\t\tif (DUCKDB_UNLIKELY(occupied_count > new_entry_count + need_compare_count)) {",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "get",
+          "new_api": "InternalException",
+          "old_text": "partitioned_data.get()",
+          "new_text": "InternalException(\"Internal validation failed in GroupedAggregateHashTable\")",
+          "old_line_content": "\t\t\t\tdata = partitioned_data.get();",
+          "new_line_content": "\t\t\tthrow InternalException(\"Internal validation failed in GroupedAggregateHashTable\");",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": "SetPointer",
+          "new_api": "AppendUnified",
+          "old_text": "entry.SetPointer(row_location)",
+          "new_text": "data->AppendUnified(*append_state, state.group_chunk, state.empty_vector, new_entry_count)",
+          "old_line_content": "\t\t\t\tentry.SetPointer(row_location);",
+          "new_line_content": "\t\t\tdata->AppendUnified(*append_state, state.group_chunk, state.empty_vector, new_entry_count);",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "Match",
+          "new_api": "SetPointer",
+          "old_text": "row_matcher.Match(state.group_chunk, state.partitioned_append_state.chunk_state.vector_data,\n\t\t\t                  state.group_compare_vector, need_compare_count, layout, addresses_v,\n\t\t\t                  &state.no_match_vector, no_match_count)",
+          "new_text": "entry.SetPointer(row_location)",
+          "old_line_content": "\t\t\trow_matcher.Match(state.group_chunk, state.partitioned_append_state.chunk_state.vector_data,",
+          "new_line_content": "\t\t\t\tentry.SetPointer(row_location);",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": "GetLayout",
+          "new_api": "FindOrCreateGroups",
+          "old_text": "collection.GetLayout()",
+          "new_text": "FindOrCreateGroups(groups, addresses, state.new_groups)",
+          "old_line_content": "\t\tconst auto &layout = collection.GetLayout();",
+          "new_line_content": "\tFindOrCreateGroups(groups, addresses, state.new_groups);",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": "InitializeScan",
+          "new_api": "Hash",
+          "old_text": "collection.InitializeScan(scan_state, column_ids, TupleDataPinProperties::DESTROY_AFTER_DONE)",
+          "new_text": "groups.Hash(hashes)",
+          "old_line_content": "\t\tcollection.InitializeScan(scan_state, column_ids, TupleDataPinProperties::DESTROY_AFTER_DONE);",
+          "new_line_content": "\tgroups.Hash(hashes);",
+          "content_same": false
+        },
+        {
+          "line": 767,
+          "old_api": "InitializeScanChunk",
+          "new_api": "FindOrCreateGroups",
+          "old_text": "collection.InitializeScanChunk(scan_state, groups)",
+          "new_text": "FindOrCreateGroups(groups, hashes, addresses_out, new_groups_out)",
+          "old_line_content": "\t\tcollection.InitializeScanChunk(scan_state, groups);",
+          "new_line_content": "\treturn FindOrCreateGroups(groups, hashes, addresses_out, new_groups_out);",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": "FlatVector::IncrementalSelectionVector()",
+          "new_api": "GetLayout",
+          "old_text": "FlatVector::IncrementalSelectionVector()",
+          "new_text": "collection.GetLayout()",
+          "old_line_content": "\t\t\t                  groups.size(), hash_col_idx, hashes, *FlatVector::IncrementalSelectionVector(), nullptr);",
+          "new_line_content": "\t\tconst auto &layout = collection.GetLayout();",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": "FinalizePinState",
+          "new_api": "emplace_back",
+          "old_text": "collection.FinalizePinState(scan_state.pin_state)",
+          "new_text": "column_ids.emplace_back(col_idx)",
+          "old_line_content": "\t\tcollection.FinalizePinState(scan_state.pin_state);",
+          "new_line_content": "\t\t\tcolumn_ids.emplace_back(col_idx);",
+          "content_same": false
+        },
+        {
+          "line": 808,
+          "old_api": "GetRowWidth",
+          "new_api": "AcquirePartitionedData",
+          "old_text": "layout.GetRowWidth()",
+          "new_text": "other.AcquirePartitionedData()",
+          "old_line_content": "\tD_ASSERT(other_data.GetLayout().GetRowWidth() == layout.GetRowWidth());",
+          "new_line_content": "\tauto other_partitioned_data = other.AcquirePartitionedData();",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": "Count",
+          "new_api": "Combine",
+          "old_text": "other_data.Count()",
+          "new_text": "Combine(*other_data)",
+          "old_line_content": "\tif (other_data.Count() == 0) {",
+          "new_line_content": "\tCombine(*other_data);",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "size",
+          "new_api": "GetAggrWidth",
+          "old_text": "fm_state.groups.size()",
+          "new_text": "layout.GetAggrWidth()",
+          "old_line_content": "\t\tconst auto input_chunk_size = fm_state.groups.size();",
+          "new_line_content": "\tD_ASSERT(other_data.GetLayout().GetAggrWidth() == layout.GetAggrWidth());",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": "FindOrCreateGroups",
+          "new_api": "GetDataWidth",
+          "old_text": "FindOrCreateGroups(fm_state.groups, fm_state.hashes, fm_state.group_addresses, fm_state.new_groups_sel)",
+          "new_text": "layout.GetDataWidth()",
+          "old_line_content": "\t\tFindOrCreateGroups(fm_state.groups, fm_state.hashes, fm_state.group_addresses, fm_state.new_groups_sel);",
+          "new_line_content": "\tD_ASSERT(other_data.GetLayout().GetDataWidth() == layout.GetDataWidth());",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": "RowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t                             fm_state.group_addresses, input_chunk_size)",
+          "new_api": "GetRowWidth",
+          "old_text": "RowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t                             fm_state.group_addresses, input_chunk_size)",
+          "new_text": "layout.GetRowWidth()",
+          "old_line_content": "\t\tRowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,",
+          "new_line_content": "\tD_ASSERT(other_data.GetLayout().GetRowWidth() == layout.GetRowWidth());",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": "HasDestructor",
+          "new_api": "Count",
+          "old_text": "layout.HasDestructor()",
+          "new_text": "other_data.Count()",
+          "old_line_content": "\t\tif (layout.HasDestructor()) {",
+          "new_line_content": "\tif (other_data.Count() == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": "Verify",
+          "new_api": "size",
+          "old_text": "Verify()",
+          "new_text": "fm_state.groups.size()",
+          "old_line_content": "\tVerify();",
+          "new_line_content": "\t\tconst auto input_chunk_size = fm_state.groups.size();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 640,
+          "old_api": null,
+          "new_api": "D_ASSERT",
+          "old_text": null,
+          "new_text": "D_ASSERT(ht_offset == hash % capacity)",
+          "old_line_content": "\tfor (iteration_count = 0; remaining_entries > 0 && iteration_count < capacity; iteration_count++) {",
+          "new_line_content": "\t\tD_ASSERT(ht_offset == hash % capacity);",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": null,
+          "new_api": "ht_entry_t::ExtractSalt(hash)",
+          "old_text": null,
+          "new_text": "ht_entry_t::ExtractSalt(hash)",
+          "old_line_content": "\t\tidx_t new_entry_count = 0;",
+          "new_line_content": "\t\thash_salts[r] = ht_entry_t::ExtractSalt(hash);",
+          "content_same": false
+        },
+        {
+          "line": 771,
+          "old_api": null,
+          "new_api": "explicit",
+          "old_text": null,
+          "new_text": "explicit",
+          "old_line_content": "\tbool Scan() {",
+          "new_line_content": "\texplicit FlushMoveState(TupleDataCollection &collection_p)",
+          "content_same": false
+        },
+        {
+          "line": 776,
+          "old_api": null,
+          "new_api": "ColumnCount",
+          "old_text": null,
+          "new_text": "layout.ColumnCount()",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\tcolumn_ids.reserve(layout.ColumnCount() - 1);",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": null,
+          "new_api": "ColumnCount",
+          "old_text": null,
+          "new_text": "layout.ColumnCount()",
+          "old_line_content": "",
+          "new_line_content": "\t\tfor (idx_t col_idx = 0; col_idx < layout.ColumnCount() - 1; col_idx++) {",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": null,
+          "new_api": "InitializeScan",
+          "old_text": null,
+          "new_text": "collection.InitializeScan(scan_state, column_ids, TupleDataPinProperties::DESTROY_AFTER_DONE)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tcollection.InitializeScan(scan_state, column_ids, TupleDataPinProperties::DESTROY_AFTER_DONE);",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "InitializeScanChunk",
+          "old_text": null,
+          "new_text": "collection.InitializeScanChunk(scan_state, groups)",
+          "old_line_content": "",
+          "new_line_content": "\t\tcollection.InitializeScanChunk(scan_state, groups);",
+          "content_same": false
+        },
+        {
+          "line": 782,
+          "old_api": null,
+          "new_api": "ColumnCount",
+          "old_text": null,
+          "new_text": "layout.ColumnCount()",
+          "old_line_content": "\tTupleDataCollection &collection;",
+          "new_line_content": "\t\thash_col_idx = layout.ColumnCount() - 1;",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": null,
+          "new_api": "Scan",
+          "old_text": null,
+          "new_text": "collection.Scan(scan_state, groups)",
+          "old_line_content": "\tidx_t hash_col_idx;",
+          "new_line_content": "\t\tif (collection.Scan(scan_state, groups)) {",
+          "content_same": false
+        },
+        {
+          "line": 787,
+          "old_api": null,
+          "new_api": "FlatVector::IncrementalSelectionVector()",
+          "old_text": null,
+          "new_text": "FlatVector::IncrementalSelectionVector()",
+          "old_line_content": "\tVector hashes;",
+          "new_line_content": "\t\t\tcollection.Gather(scan_state.chunk_state.row_locations, *FlatVector::IncrementalSelectionVector(),",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": null,
+          "new_api": "FlatVector::IncrementalSelectionVector()",
+          "old_text": null,
+          "new_text": "FlatVector::IncrementalSelectionVector()",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t                  groups.size(), hash_col_idx, hashes, *FlatVector::IncrementalSelectionVector(), nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "set_index",
+          "old_text": null,
+          "new_text": "state.empty_vector.set_index(new_entry_count++, index)",
+          "old_line_content": "\t\t\t\t\tbreak;",
+          "new_line_content": "\t\t\t\t\tstate.empty_vector.set_index(new_entry_count++, index);",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": null,
+          "new_api": "set_index",
+          "old_text": null,
+          "new_text": "new_groups_out.set_index(new_group_count++, index)",
+          "old_line_content": "\t\t\t\t}",
+          "new_line_content": "\t\t\t\t\tnew_groups_out.set_index(new_group_count++, index);",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": null,
+          "new_api": "FinalizePinState",
+          "old_text": null,
+          "new_text": "collection.FinalizePinState(scan_state.pin_state)",
+          "old_line_content": "",
+          "new_line_content": "\t\tcollection.FinalizePinState(scan_state.pin_state);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": null,
+          "new_api": "GetSalt",
+          "old_text": null,
+          "new_text": "entry.GetSalt()",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tif (DUCKDB_LIKELY(entry.GetSalt() == salt)) { // Matching salt: compare groups",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": null,
+          "new_api": "IncrementAndWrap",
+          "old_text": null,
+          "new_text": "IncrementAndWrap(ht_offset, bitmask)",
+          "old_line_content": "\t\tif (new_entry_count != 0) {",
+          "new_line_content": "\t\t\t\tIncrementAndWrap(ht_offset, bitmask);",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "DUCKDB_UNLIKELY",
+          "old_text": null,
+          "new_text": "DUCKDB_UNLIKELY(inner_iteration_count == capacity)",
+          "old_line_content": "\t\t\toptional_ptr<PartitionedTupleData> data;",
+          "new_line_content": "\t\t\tif (DUCKDB_UNLIKELY(inner_iteration_count == capacity)) {",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": null,
+          "new_api": "InternalException",
+          "old_text": null,
+          "new_text": "InternalException(\"Maximum inner iteration count reached in GroupedAggregateHashTable\")",
+          "old_line_content": "\t\t\toptional_ptr<PartitionedTupleDataAppendState> append_state;",
+          "new_line_content": "\t\t\t\tthrow InternalException(\"Maximum inner iteration count reached in GroupedAggregateHashTable\");",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": null,
+          "new_api": "GetUnpartitioned",
+          "old_text": null,
+          "new_text": "other_partitioned_data->GetUnpartitioned()",
+          "old_line_content": "",
+          "new_line_content": "\tauto other_data = other_partitioned_data->GetUnpartitioned();",
+          "content_same": false
+        },
+        {
+          "line": 813,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "stored_allocators.emplace_back(other.aggregate_allocator)",
+          "old_line_content": "",
+          "new_line_content": "\tstored_allocators.emplace_back(other.aggregate_allocator);",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "stored_allocators.emplace_back(stored_allocator)",
+          "old_line_content": "\tRowOperationsState row_state(*aggregate_allocator);",
+          "new_line_content": "\t\tstored_allocators.emplace_back(stored_allocator);",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": null,
+          "new_api": "RadixPartitioning::NumberOfPartitions(radix_bits)",
+          "old_text": null,
+          "new_text": "RadixPartitioning::NumberOfPartitions(radix_bits)",
+          "old_line_content": "\t\t\tconst auto &row_sel = append_state->reverse_partition_sel;",
+          "new_line_content": "\t\t\t    new_entry_count / RadixPartitioning::NumberOfPartitions(radix_bits) <= 4) {",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "TupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk)",
+          "old_text": null,
+          "new_text": "TupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk)",
+          "old_line_content": "\t\t\tfor (idx_t new_entry_idx = 0; new_entry_idx < new_entry_count; new_entry_idx++) {",
+          "new_line_content": "\t\t\t\tTupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk);",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "unpartitioned_data.get()",
+          "old_line_content": "\t\t\t\tconst auto &index = state.empty_vector[new_entry_idx];",
+          "new_line_content": "\t\t\t\tdata = unpartitioned_data.get();",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "partitioned_data.get()",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tdata = partitioned_data.get();",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": null,
+          "new_api": "RowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,\n\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count)",
+          "old_text": null,
+          "new_text": "RowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,\n\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count)",
+          "old_line_content": "\t\t\t\taddresses[index] = row_location;",
+          "new_line_content": "\t\t\tRowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": null,
+          "new_api": "FlatVector::IncrementalSelectionVector()",
+          "old_text": null,
+          "new_text": "FlatVector::IncrementalSelectionVector()",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count);",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": null,
+          "new_api": "ChunkCount",
+          "old_text": null,
+          "new_text": "other_data.ChunkCount()",
+          "old_line_content": "\t}",
+          "new_line_content": "\tconst auto chunk_count = other_data.ChunkCount();",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": null,
+          "new_api": "Scan",
+          "old_text": null,
+          "new_text": "fm_state.Scan()",
+          "old_line_content": "",
+          "new_line_content": "\twhile (fm_state.Scan()) {",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": null,
+          "new_api": "FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations)",
+          "old_text": null,
+          "new_text": "FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations)",
+          "old_line_content": "\t\tif (need_compare_count != 0) {",
+          "new_line_content": "\t\t\tconst auto row_locations = FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations);",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": null,
+          "new_api": "FindOrCreateGroups",
+          "old_text": null,
+          "new_text": "FindOrCreateGroups(fm_state.groups, fm_state.hashes, fm_state.group_addresses, fm_state.new_groups_sel)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tFindOrCreateGroups(fm_state.groups, fm_state.hashes, fm_state.group_addresses, fm_state.new_groups_sel);",
+          "content_same": false
+        },
+        {
+          "line": 836,
+          "old_api": null,
+          "new_api": "RowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t                             fm_state.group_addresses, input_chunk_size)",
+          "old_text": null,
+          "new_text": "RowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t                             fm_state.group_addresses, input_chunk_size)",
+          "old_line_content": "",
+          "new_line_content": "\t\tRowOperations::CombineStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,",
+          "content_same": false
+        },
+        {
+          "line": 838,
+          "old_api": null,
+          "new_api": "HasDestructor",
+          "old_text": null,
+          "new_text": "layout.HasDestructor()",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (layout.HasDestructor()) {",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": null,
+          "new_api": "RowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t\t                             input_chunk_size)",
+          "old_text": null,
+          "new_text": "RowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t\t                             input_chunk_size)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tRowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": null,
+          "new_api": "static_cast<double>(chunk_count)",
+          "old_text": null,
+          "new_text": "static_cast<double>(chunk_count)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t*progress = static_cast<double>(++chunk_idx) / static_cast<double>(chunk_count);",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": null,
+          "new_api": "Verify",
+          "old_text": null,
+          "new_text": "Verify()",
+          "old_line_content": "",
+          "new_line_content": "\tVerify();",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "GetPointer",
+          "old_text": null,
+          "new_text": "entry.GetPointer()",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\taddresses[index] = entry.GetPointer();",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": null,
+          "new_api": "Match",
+          "old_text": null,
+          "new_text": "row_matcher.Match(state.group_chunk, state.partitioned_append_state.chunk_state.vector_data,\n\t\t\t                  state.group_compare_vector, need_compare_count, layout, addresses_v,\n\t\t\t                  &state.no_match_vector, no_match_count)",
+          "old_line_content": "\tif (iteration_count == capacity) {",
+          "new_line_content": "\t\t\trow_matcher.Match(state.group_chunk, state.partitioned_append_state.chunk_state.vector_data,",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "IncrementAndWrap",
+          "old_text": null,
+          "new_text": "IncrementAndWrap(ht_offset, bitmask)",
+          "old_line_content": "// have already seen a value for a group",
+          "new_line_content": "\t\t\tIncrementAndWrap(ht_offset, bitmask);",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": null,
+          "new_api": "InternalException",
+          "old_text": null,
+          "new_text": "InternalException(\"Maximum outer iteration count reached in GroupedAggregateHashTable\")",
+          "old_line_content": "void GroupedAggregateHashTable::FindOrCreateGroups(DataChunk &groups, Vector &addresses) {",
+          "new_line_content": "\t\tthrow InternalException(\"Maximum outer iteration count reached in GroupedAggregateHashTable\");",
+          "content_same": false
+        },
+        {
+          "line": 755,
+          "old_api": null,
+          "new_api": "FindOrCreateGroupsInternal",
+          "old_text": null,
+          "new_text": "FindOrCreateGroupsInternal(groups, group_hashes, addresses_out, new_groups_out)",
+          "old_line_content": "",
+          "new_line_content": "\treturn FindOrCreateGroupsInternal(groups, group_hashes, addresses_out, new_groups_out);",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "ApplyBitMask",
+          "old_text": null,
+          "new_text": "ApplyBitMask(hash)",
+          "old_line_content": "\tidx_t remaining_entries = chunk_size;",
+          "new_line_content": "\t\tht_offset = ApplyBitMask(hash);",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": null,
+          "new_api": "IsOccupied",
+          "old_text": null,
+          "new_text": "entries[ht_offset].IsOccupied()",
+          "old_line_content": "\tidx_t iteration_count;",
+          "new_line_content": "\t\toccupied_count += entries[ht_offset].IsOccupied(); // Lookup",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 768,
+          "old_api": "ColumnCount",
+          "new_api": null,
+          "old_text": "layout.ColumnCount()",
+          "new_text": null,
+          "old_line_content": "\t\thash_col_idx = layout.ColumnCount() - 1;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "Scan",
+          "new_api": null,
+          "old_text": "collection.Scan(scan_state, groups)",
+          "new_text": null,
+          "old_line_content": "\t\tif (collection.Scan(scan_state, groups)) {",
+          "new_line_content": "\t    : collection(collection_p), hashes(LogicalType::HASH), group_addresses(LogicalType::POINTER),",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": "FlatVector::IncrementalSelectionVector()",
+          "new_api": null,
+          "old_text": "FlatVector::IncrementalSelectionVector()",
+          "new_text": null,
+          "old_line_content": "\t\t\tcollection.Gather(scan_state.chunk_state.row_locations, *FlatVector::IncrementalSelectionVector(),",
+          "new_line_content": "\t      new_groups_sel(STANDARD_VECTOR_SIZE) {",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "get_index",
+          "new_api": null,
+          "old_text": "sel_vector->get_index(i)",
+          "new_text": null,
+          "old_line_content": "\t\t\tconst auto index = sel_vector->get_index(i);",
+          "new_line_content": "\tfor (iteration_count = 0; remaining_entries > 0 && iteration_count < capacity; iteration_count++) {",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": "SetSalt",
+          "new_api": null,
+          "old_text": "entry.SetSalt(salt)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tentry.SetSalt(salt);",
+          "new_line_content": "\t\t\tconst auto salt = hash_salts[index];",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "set_index",
+          "new_api": null,
+          "old_text": "state.empty_vector.set_index(new_entry_count++, index)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tstate.empty_vector.set_index(new_entry_count++, index);",
+          "new_line_content": "\t\t\tauto &ht_offset = ht_offsets[index];",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "set_index",
+          "new_api": null,
+          "old_text": "new_groups_out.set_index(new_group_count++, index)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tnew_groups_out.set_index(new_group_count++, index);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": "AcquirePartitionedData",
+          "new_api": null,
+          "old_text": "other.AcquirePartitionedData()",
+          "new_text": null,
+          "old_line_content": "\tauto other_partitioned_data = other.AcquirePartitionedData();",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": "IncrementAndWrap",
+          "new_api": null,
+          "old_text": "IncrementAndWrap(ht_offset, bitmask)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tIncrementAndWrap(ht_offset, bitmask);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 795,
+          "old_api": "GetUnpartitioned",
+          "new_api": null,
+          "old_text": "other_partitioned_data->GetUnpartitioned()",
+          "new_text": null,
+          "old_line_content": "\tauto other_data = other_partitioned_data->GetUnpartitioned();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 796,
+          "old_api": "Combine",
+          "new_api": null,
+          "old_text": "Combine(*other_data)",
+          "new_text": null,
+          "old_line_content": "\tCombine(*other_data);",
+          "new_line_content": "\tTupleDataCollection &collection;",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "InternalException",
+          "new_api": null,
+          "old_text": "InternalException(\"Maximum inner iteration count reached in GroupedAggregateHashTable\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tthrow InternalException(\"Maximum inner iteration count reached in GroupedAggregateHashTable\");",
+          "new_line_content": "\t\t\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "stored_allocators.emplace_back(other.aggregate_allocator)",
+          "new_text": null,
+          "old_line_content": "\tstored_allocators.emplace_back(other.aggregate_allocator);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 801,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "stored_allocators.emplace_back(stored_allocator)",
+          "new_text": null,
+          "old_line_content": "\t\tstored_allocators.emplace_back(stored_allocator);",
+          "new_line_content": "\tVector hashes;",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "GetAggrWidth",
+          "new_api": null,
+          "old_text": "layout.GetAggrWidth()",
+          "new_text": null,
+          "old_line_content": "\tD_ASSERT(other_data.GetLayout().GetAggrWidth() == layout.GetAggrWidth());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": "RadixPartitioning::NumberOfPartitions(radix_bits)",
+          "new_api": null,
+          "old_text": "RadixPartitioning::NumberOfPartitions(radix_bits)",
+          "new_text": null,
+          "old_line_content": "\t\t\t    new_entry_count / RadixPartitioning::NumberOfPartitions(radix_bits) <= 4) {",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "TupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk)",
+          "new_api": null,
+          "old_text": "TupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tTupleDataCollection::ToUnifiedFormat(state.unpartitioned_append_state.chunk_state, state.group_chunk);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 807,
+          "old_api": "GetDataWidth",
+          "new_api": null,
+          "old_text": "layout.GetDataWidth()",
+          "new_text": null,
+          "old_line_content": "\tD_ASSERT(other_data.GetLayout().GetDataWidth() == layout.GetDataWidth());",
+          "new_line_content": "void GroupedAggregateHashTable::Combine(GroupedAggregateHashTable &other) {",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": "AppendUnified",
+          "new_api": null,
+          "old_text": "data->AppendUnified(*append_state, state.group_chunk, state.empty_vector, new_entry_count)",
+          "new_text": null,
+          "old_line_content": "\t\t\tdata->AppendUnified(*append_state, state.group_chunk, state.empty_vector, new_entry_count);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "RowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,\n\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count)",
+          "new_api": null,
+          "old_text": "RowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,\n\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count)",
+          "new_text": null,
+          "old_line_content": "\t\t\tRowOperations::InitializeStates(layout, append_state->chunk_state.row_locations,",
+          "new_line_content": "\t\tif (new_entry_count != 0) {",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": "FlatVector::IncrementalSelectionVector()",
+          "new_api": null,
+          "old_text": "FlatVector::IncrementalSelectionVector()",
+          "new_text": null,
+          "old_line_content": "\t\t\t                                *FlatVector::IncrementalSelectionVector(), new_entry_count);",
+          "new_line_content": "\t\t\t// Append everything that belongs to an empty group",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "ChunkCount",
+          "new_api": null,
+          "old_text": "other_data.ChunkCount()",
+          "new_text": null,
+          "old_line_content": "\tconst auto chunk_count = other_data.ChunkCount();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "Scan",
+          "new_api": null,
+          "old_text": "fm_state.Scan()",
+          "new_text": null,
+          "old_line_content": "\twhile (fm_state.Scan()) {",
+          "new_line_content": "void GroupedAggregateHashTable::Combine(TupleDataCollection &other_data, optional_ptr<atomic<double>> progress) {",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations)",
+          "new_api": null,
+          "old_text": "FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations)",
+          "new_text": null,
+          "old_line_content": "\t\t\tconst auto row_locations = FlatVector::GetData<data_ptr_t>(append_state->chunk_state.row_locations);",
+          "new_line_content": "\t\t\tif (radix_bits >= UNPARTITIONED_RADIX_BITS_THRESHOLD &&",
+          "content_same": false
+        },
+        {
+          "line": 825,
+          "old_api": "RowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t\t                             input_chunk_size)",
+          "new_api": null,
+          "old_text": "RowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,\n\t\t\t                             input_chunk_size)",
+          "new_text": null,
+          "old_line_content": "\t\t\tRowOperations::DestroyStates(row_state, layout, fm_state.scan_state.chunk_state.row_locations,",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": "static_cast<double>(chunk_count)",
+          "new_api": null,
+          "old_text": "static_cast<double>(chunk_count)",
+          "new_text": null,
+          "old_line_content": "\t\t\t*progress = static_cast<double>(++chunk_idx) / static_cast<double>(chunk_count);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "GetPointer",
+          "new_api": null,
+          "old_text": "entry.GetPointer()",
+          "new_text": null,
+          "old_line_content": "\t\t\t\taddresses[index] = entry.GetPointer();",
+          "new_line_content": "\t\t\t\tconst auto &row_location = row_locations[row_idx];",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": "IncrementAndWrap",
+          "new_api": null,
+          "old_text": "IncrementAndWrap(ht_offset, bitmask)",
+          "new_text": null,
+          "old_line_content": "\t\t\tIncrementAndWrap(ht_offset, bitmask);",
+          "new_line_content": "\t\t\t\tconst auto &entry = entries[ht_offsets[index]];",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "InternalException",
+          "new_api": null,
+          "old_text": "InternalException(\"Maximum outer iteration count reached in GroupedAggregateHashTable\")",
+          "new_text": null,
+          "old_line_content": "\t\tthrow InternalException(\"Maximum outer iteration count reached in GroupedAggregateHashTable\");",
+          "new_line_content": "\t\t\t                  state.group_compare_vector, need_compare_count, layout, addresses_v,",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": "ColumnCount",
+          "new_api": null,
+          "old_text": "layout.ColumnCount()",
+          "new_text": null,
+          "old_line_content": "\t\tcolumn_ids.reserve(layout.ColumnCount() - 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": "FindOrCreateGroupsInternal",
+          "new_api": null,
+          "old_text": "FindOrCreateGroupsInternal(groups, group_hashes, addresses_out, new_groups_out)",
+          "new_text": null,
+          "old_line_content": "\treturn FindOrCreateGroupsInternal(groups, group_hashes, addresses_out, new_groups_out);",
+          "new_line_content": "\t\tremaining_entries = no_match_count;",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "FindOrCreateGroups",
+          "new_api": null,
+          "old_text": "FindOrCreateGroups(groups, addresses, state.new_groups)",
+          "new_text": null,
+          "old_line_content": "\tFindOrCreateGroups(groups, addresses, state.new_groups);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 752,
+          "old_api": "Hash",
+          "new_api": null,
+          "old_text": "groups.Hash(hashes)",
+          "new_text": null,
+          "old_line_content": "\tgroups.Hash(hashes);",
+          "new_line_content": "// have already seen a value for a group",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": "FindOrCreateGroups",
+          "new_api": null,
+          "old_text": "FindOrCreateGroups(groups, hashes, addresses_out, new_groups_out)",
+          "new_text": null,
+          "old_line_content": "\treturn FindOrCreateGroups(groups, hashes, addresses_out, new_groups_out);",
+          "new_line_content": "idx_t GroupedAggregateHashTable::FindOrCreateGroups(DataChunk &groups, Vector &group_hashes, Vector &addresses_out,",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": "explicit",
+          "new_api": null,
+          "old_text": "explicit",
+          "new_text": null,
+          "old_line_content": "\texplicit FlushMoveState(TupleDataCollection &collection_p)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "ApplyBitMask",
+          "new_api": null,
+          "old_text": "ApplyBitMask(hash)",
+          "new_text": null,
+          "old_line_content": "\t\tht_offsets[r] = ApplyBitMask(hash);",
+          "new_line_content": "\t// However, this loop is branchless, while the main lookup loop below is not.",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "D_ASSERT",
+          "new_api": null,
+          "old_text": "D_ASSERT(ht_offsets[r] == hash % capacity)",
+          "new_text": null,
+          "old_line_content": "\t\tD_ASSERT(ht_offsets[r] == hash % capacity);",
+          "new_line_content": "\t// So, by doing the lookups here, we better amortize cache misses.",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": "ht_entry_t::ExtractSalt(hash)",
+          "new_api": null,
+          "old_text": "ht_entry_t::ExtractSalt(hash)",
+          "new_text": null,
+          "old_line_content": "\t\thash_salts[r] = ht_entry_t::ExtractSalt(hash);",
+          "new_line_content": "\tidx_t occupied_count = 0;",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": "ColumnCount",
+          "new_api": null,
+          "old_text": "layout.ColumnCount()",
+          "new_text": null,
+          "old_line_content": "\t\tfor (idx_t col_idx = 0; col_idx < layout.ColumnCount() - 1; col_idx++) {",
+          "new_line_content": "idx_t GroupedAggregateHashTable::FindOrCreateGroups(DataChunk &groups, Vector &addresses_out,",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "column_ids.emplace_back(col_idx)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcolumn_ids.emplace_back(col_idx);",
+          "new_line_content": "                                                    SelectionVector &new_groups_out) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 20,
+      "total_additions": 43,
+      "total_deletions": 40,
+      "total_api_changes": 103
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 16,
+        "api_related_lines": 103,
+        "non_api_lines": 7,
+        "non_api_line_numbers": [
+          682,
+          683,
+          685,
+          686,
+          630,
+          631,
+          637
+        ]
+      }
+    },
+    "api_calls_before": 361,
+    "api_calls_after": 364,
+    "diff_info": {
+      "added_lines": 16,
+      "removed_lines": 2,
+      "total_diff_lines": 39
+    }
+  }
+}

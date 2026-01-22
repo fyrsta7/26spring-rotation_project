@@ -1,0 +1,645 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/f4a02f6e9bc0901fd9b21544f34e36c93ba9cfc1",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/f4a02f6e9bc0901fd9b21544f34e36c93ba9cfc1/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/f4a02f6e9bc0901fd9b21544f34e36c93ba9cfc1/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/f4a02f6e9bc0901fd9b21544f34e36c93ba9cfc1/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 780,
+          "old_api": "vec_avg",
+          "new_api": "vec_nor",
+          "old_text": "vec_avg(p1, q1minus)",
+          "new_text": "vec_nor(p0, p0)",
+          "old_line_content": "    stage1 = vec_avg(p1, q1minus);             /* (p1 - q1 + 256)>>1 */                           \\",
+          "new_line_content": "    p0minus = vec_nor(p0, p0);                 /* 255 - p0 */                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": "vec_splat_u8",
+          "new_api": "vec_avg",
+          "old_text": "vec_splat_u8(1)",
+          "new_text": "vec_avg(q0, p0minus)",
+          "old_line_content": "    stage2 = vec_sr(stage1, vec_splat_u8(1));  /* (p1 - q1 + 256)>>2 = 64 + (p1 - q1) >> 2 */     \\",
+          "new_line_content": "    stage1 = vec_avg(q0, p0minus);             /* (q0 - p0 + 256)>>1 */                           \\",
+          "content_same": false
+        },
+        {
+          "line": 782,
+          "old_api": "vec_xor",
+          "new_api": "vec_splat_u8",
+          "old_text": "vec_xor(temp, p0)",
+          "new_text": "vec_splat_u8(1)",
+          "old_line_content": "    p0minus = vec_xor(temp, p0);               /* 255 - p0 */                                     \\",
+          "new_line_content": "    pq0bit = vec_and(pq0bit, vec_splat_u8(1));                                                    \\",
+          "content_same": false
+        },
+        {
+          "line": 784,
+          "old_api": "vec_splat_u8",
+          "new_api": "vec_adds",
+          "old_text": "vec_splat_u8(1)",
+          "new_text": "vec_adds(stage2, stage1)",
+          "old_line_content": "    pq0bit = vec_and(pq0bit, vec_splat_u8(1));                                                    \\",
+          "new_line_content": "    stage2 = vec_adds(stage2, stage1);         /* 160 + ((p0 - q0) + (p1 - q1) >> 2 + 1) >> 1 */  \\",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": "vec_avg",
+          "new_api": "vec_ld",
+          "old_text": "vec_avg(stage2, pq0bit)",
+          "new_text": "vec_ld(0, &A0v)",
+          "old_line_content": "    stage2 = vec_avg(stage2, pq0bit);          /* 32 + ((q0 - p0)&1 + (p1 - q1) >> 2 + 1) >> 1 */ \\",
+          "new_line_content": "    vec160 = vec_ld(0, &A0v);                                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "vec_adds",
+          "new_api": "vec_subs",
+          "old_text": "vec_adds(stage2, stage1)",
+          "new_text": "vec_subs(vec160, stage2)",
+          "old_line_content": "    stage2 = vec_adds(stage2, stage1);         /* 160 + ((p0 - q0) + (p1 - q1) >> 2 + 1) >> 1 */  \\",
+          "new_line_content": "    deltaneg = vec_subs(vec160, stage2);       /* -d */                                           \\",
+          "content_same": false
+        },
+        {
+          "line": 787,
+          "old_api": "vec_ld",
+          "new_api": "vec_subs",
+          "old_text": "vec_ld(0, &A0v)",
+          "new_text": "vec_subs(stage2, vec160)",
+          "old_line_content": "    vec160 = vec_ld(0, &A0v);                                                                     \\",
+          "new_line_content": "    delta = vec_subs(stage2, vec160);          /* d */                                            \\",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": "vec_subs",
+          "new_api": "vec_min",
+          "old_text": "vec_subs(vec160, stage2)",
+          "new_text": "vec_min(tc0masked, deltaneg)",
+          "old_line_content": "    deltaneg = vec_subs(vec160, stage2);       /* -d */                                           \\",
+          "new_line_content": "    deltaneg = vec_min(tc0masked, deltaneg);                                                      \\",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "vec_subs",
+          "new_api": "vec_min",
+          "old_text": "vec_subs(stage2, vec160)",
+          "new_text": "vec_min(tc0masked, delta)",
+          "old_line_content": "    delta = vec_subs(stage2, vec160);          /* d */                                            \\",
+          "new_line_content": "    delta = vec_min(tc0masked, delta);                                                            \\",
+          "content_same": false
+        },
+        {
+          "line": 790,
+          "old_api": "vec_min",
+          "new_api": "vec_subs",
+          "old_text": "vec_min(tc0masked, deltaneg)",
+          "new_text": "vec_subs(p0, deltaneg)",
+          "old_line_content": "    deltaneg = vec_min(tc0masked, deltaneg);                                                      \\",
+          "new_line_content": "    p0 = vec_subs(p0, deltaneg);                                                                  \\",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "vec_min",
+          "new_api": "vec_subs",
+          "old_text": "vec_min(tc0masked, delta)",
+          "new_text": "vec_subs(q0, delta)",
+          "old_line_content": "    delta = vec_min(tc0masked, delta);                                                            \\",
+          "new_line_content": "    q0 = vec_subs(q0, delta);                                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": "vec_subs",
+          "new_api": "vec_adds",
+          "old_text": "vec_subs(p0, deltaneg)",
+          "new_text": "vec_adds(p0, delta)",
+          "old_line_content": "    p0 = vec_subs(p0, deltaneg);                                                                  \\",
+          "new_line_content": "    p0 = vec_adds(p0, delta);                                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": "vec_subs",
+          "new_api": "vec_adds",
+          "old_text": "vec_subs(q0, delta)",
+          "new_text": "vec_adds(q0, deltaneg)",
+          "old_line_content": "    q0 = vec_subs(q0, delta);                                                                     \\",
+          "new_line_content": "    q0 = vec_adds(q0, deltaneg);                                                                  \\",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": "vec_ld",
+          "new_api": "vec_mergeh",
+          "old_text": "vec_ld(0, temp)",
+          "new_text": "vec_mergeh(tc0vec, tc0vec)",
+          "old_line_content": "    tc0vec = vec_ld(0, temp);                                                                \\",
+          "new_line_content": "    tc0vec = vec_mergeh(tc0vec, tc0vec);                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "vec_mergeh",
+          "new_api": "vec_splat_u8",
+          "old_text": "vec_mergeh(tc0vec, tc0vec)",
+          "new_text": "vec_splat_u8(-1)",
+          "old_line_content": "    tc0vec = vec_mergeh(tc0vec, tc0vec);                                                     \\",
+          "new_line_content": "    mask = vec_and(mask, vec_cmpgt(tc0vec, vec_splat_u8(-1)));  /* if tc0[i] >= 0 */         \\",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "vec_mergeh",
+          "new_api": "vec_and",
+          "old_text": "vec_mergeh(tc0vec, tc0vec)",
+          "new_text": "vec_and(tc0vec, mask)",
+          "old_line_content": "    tc0vec = vec_mergeh(tc0vec, tc0vec);                                                     \\",
+          "new_line_content": "    finaltc0 = vec_and(tc0vec, mask);                           /*tc = tc0[i]*/              \\",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": "vec_and",
+          "new_api": "diff_lt_altivec",
+          "old_text": "vec_and(tc0vec, mask)",
+          "new_text": "diff_lt_altivec(p2, p0, betavec)",
+          "old_line_content": "    finaltc0 = vec_and(tc0vec, mask);                           /*tc = tc0[i]*/              \\",
+          "new_line_content": "    p1mask = diff_lt_altivec(p2, p0, betavec);                                               \\",
+          "content_same": false
+        },
+        {
+          "line": 823,
+          "old_api": "diff_lt_altivec",
+          "new_api": "vec_and",
+          "old_text": "diff_lt_altivec(p2, p0, betavec)",
+          "new_text": "vec_and(p1mask, tc0vec)",
+          "old_line_content": "    p1mask = diff_lt_altivec(p2, p0, betavec);                                               \\",
+          "new_line_content": "    tc0masked = vec_and(p1mask, tc0vec);                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": "vec_and",
+          "new_api": "vec_sub",
+          "old_text": "vec_and(p1mask, mask)",
+          "new_text": "vec_sub(finaltc0, p1mask)",
+          "old_line_content": "    p1mask = vec_and(p1mask, mask);                             /* if( |p2 - p0| < beta) */  \\",
+          "new_line_content": "    finaltc0 = vec_sub(finaltc0, p1mask);                       /* tc++ */                   \\",
+          "content_same": false
+        },
+        {
+          "line": 825,
+          "old_api": "vec_and",
+          "new_api": "h264_deblock_q1",
+          "old_text": "vec_and(p1mask, tc0vec)",
+          "new_text": "h264_deblock_q1(p0, p1, p2, q0, tc0masked)",
+          "old_line_content": "    tc0masked = vec_and(p1mask, tc0vec);                                                     \\",
+          "new_line_content": "    h264_deblock_q1(p0, p1, p2, q0, tc0masked);                                              \\",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": "diff_lt_altivec",
+          "new_api": "vec_and",
+          "old_text": "diff_lt_altivec(q2, q0, betavec)",
+          "new_text": "vec_and(q1mask, tc0vec)",
+          "old_line_content": "    q1mask = diff_lt_altivec(q2, q0, betavec);                                               \\",
+          "new_line_content": "    tc0masked = vec_and(q1mask, tc0vec);                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "vec_and",
+          "new_api": "vec_sub",
+          "old_text": "vec_and(q1mask, mask)",
+          "new_text": "vec_sub(finaltc0, q1mask)",
+          "old_line_content": "    q1mask = vec_and(q1mask, mask);                             /* if ( |q2 - q0| < beta ) */\\",
+          "new_line_content": "    finaltc0 = vec_sub(finaltc0, q1mask);                       /* tc++ */                   \\",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "vec_and",
+          "new_api": "h264_deblock_q1",
+          "old_text": "vec_and(q1mask, tc0vec)",
+          "new_text": "h264_deblock_q1(p0, q1, q2, q0, tc0masked)",
+          "old_line_content": "    tc0masked = vec_and(q1mask, tc0vec);                                                     \\",
+          "new_line_content": "    h264_deblock_q1(p0, q1, q2, q0, tc0masked);                                              \\",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": "vec_ld",
+          "new_api": "h264_loop_filter_luma_altivec",
+          "old_text": "vec_ld(stride, pix)",
+          "new_text": "h264_loop_filter_luma_altivec(p2, p1, p0, q0, q1, q2, alpha, beta, tc0)",
+          "old_line_content": "        register vector unsigned char q1 = vec_ld(stride, pix);",
+          "new_line_content": "        h264_loop_filter_luma_altivec(p2, p1, p0, q0, q1, q2, alpha, beta, tc0);",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": "vec_ld",
+          "new_api": "vec_st",
+          "old_text": "vec_ld(2*stride, pix)",
+          "new_text": "vec_st(p1, -2*stride, pix)",
+          "old_line_content": "        register vector unsigned char q2 = vec_ld(2*stride, pix);",
+          "new_line_content": "        vec_st(p1, -2*stride, pix);",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": "h264_loop_filter_luma_altivec",
+          "new_api": "vec_st",
+          "old_text": "h264_loop_filter_luma_altivec(p2, p1, p0, q0, q1, q2, alpha, beta, tc0)",
+          "new_text": "vec_st(p0, -1*stride, pix)",
+          "old_line_content": "        h264_loop_filter_luma_altivec(p2, p1, p0, q0, q1, q2, alpha, beta, tc0);",
+          "new_line_content": "        vec_st(p0, -1*stride, pix);",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": "readAndTranspose16x6",
+          "new_api": "transpose4x16",
+          "old_text": "readAndTranspose16x6(pix-3, stride, line0, line1, line2, line3, line4, line5)",
+          "new_text": "transpose4x16(line1, line2, line3, line4)",
+          "old_line_content": "    readAndTranspose16x6(pix-3, stride, line0, line1, line2, line3, line4, line5);",
+          "new_line_content": "    transpose4x16(line1, line2, line3, line4);",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": "h264_loop_filter_luma_altivec",
+          "new_api": "write16x4",
+          "old_text": "h264_loop_filter_luma_altivec(line0, line1, line2, line3, line4, line5, alpha, beta, tc0)",
+          "new_text": "write16x4(pix-2, stride, line1, line2, line3, line4)",
+          "old_line_content": "    h264_loop_filter_luma_altivec(line0, line1, line2, line3, line4, line5, alpha, beta, tc0);",
+          "new_line_content": "    write16x4(pix-2, stride, line1, line2, line3, line4);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "dspfunc",
+          "old_text": null,
+          "new_text": "dspfunc(put_h264_qpel, 0, 16)",
+          "old_line_content": "    c->PFX ## _pixels_tab[IDX][15] = PFX ## NUM ## _mc33_altivec",
+          "new_line_content": "    dspfunc(put_h264_qpel, 0, 16);",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": null,
+          "new_api": "h264_deblock_p0_q0",
+          "old_text": null,
+          "new_text": "h264_deblock_p0_q0(p0, p1, q0, q1, finaltc0)",
+          "old_line_content": "    /*end if*/                                                                               \\",
+          "new_line_content": "    h264_deblock_p0_q0(p0, p1, q0, q1, finaltc0);                                            \\",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": null,
+          "new_api": "dspfunc",
+          "old_text": null,
+          "new_text": "dspfunc(avg_h264_qpel, 0, 16)",
+          "old_line_content": "",
+          "new_line_content": "    dspfunc(avg_h264_qpel, 0, 16);",
+          "content_same": false
+        },
+        {
+          "line": 869,
+          "old_api": null,
+          "new_api": "has_altivec",
+          "old_text": null,
+          "new_text": "has_altivec()",
+          "old_line_content": "",
+          "new_line_content": "  if (has_altivec()) {",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": null,
+          "new_api": "readAndTranspose16x6",
+          "old_text": null,
+          "new_text": "readAndTranspose16x6(pix-3, stride, line0, line1, line2, line3, line4, line5)",
+          "old_line_content": "    if((tc0[0] & tc0[1] & tc0[2] & tc0[3]) < 0)",
+          "new_line_content": "    readAndTranspose16x6(pix-3, stride, line0, line1, line2, line3, line4, line5);",
+          "content_same": false
+        },
+        {
+          "line": 841,
+          "old_api": null,
+          "new_api": "vec_ld",
+          "old_text": null,
+          "new_text": "vec_ld(-3*stride, pix)",
+          "old_line_content": "",
+          "new_line_content": "        register vector unsigned char p2 = vec_ld(-3*stride, pix);",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": null,
+          "new_api": "vec_avg",
+          "old_text": null,
+          "new_text": "vec_avg(p1, q1minus)",
+          "old_line_content": "    temp = (vector unsigned char)vec_cmpeq(p0, p0);                                               \\",
+          "new_line_content": "    stage1 = vec_avg(p1, q1minus);             /* (p1 - q1 + 256)>>1 */                           \\",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": null,
+          "new_api": "vec_splat_u8",
+          "old_text": null,
+          "new_text": "vec_splat_u8(1)",
+          "old_line_content": "    q1minus = vec_xor(temp, q1);               /* 255 - q1 */                                     \\",
+          "new_line_content": "    stage2 = vec_sr(stage1, vec_splat_u8(1));  /* (p1 - q1 + 256)>>2 = 64 + (p1 - q1) >> 2 */     \\",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": null,
+          "new_api": "vec_ld",
+          "old_text": null,
+          "new_text": "vec_ld(-2*stride, pix)",
+          "old_line_content": "    if((tc0[0] & tc0[1] & tc0[2] & tc0[3]) >= 0) {",
+          "new_line_content": "        register vector unsigned char p1 = vec_ld(-2*stride, pix);",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": null,
+          "new_api": "h264_loop_filter_luma_altivec",
+          "old_text": null,
+          "new_text": "h264_loop_filter_luma_altivec(line0, line1, line2, line3, line4, line5, alpha, beta, tc0)",
+          "old_line_content": "        return;",
+          "new_line_content": "    h264_loop_filter_luma_altivec(line0, line1, line2, line3, line4, line5, alpha, beta, tc0);",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "vec_ld",
+          "old_text": null,
+          "new_text": "vec_ld(0, temp)",
+          "old_line_content": "                                                                                             \\",
+          "new_line_content": "    tc0vec = vec_ld(0, temp);                                                                \\",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": null,
+          "new_api": "vec_mergeh",
+          "old_text": null,
+          "new_text": "vec_mergeh(tc0vec, tc0vec)",
+          "old_line_content": "    *((int *)temp) = *((int *)tc0);                                                          \\",
+          "new_line_content": "    tc0vec = vec_mergeh(tc0vec, tc0vec);                                                     \\",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": null,
+          "new_api": "vec_and",
+          "old_text": null,
+          "new_text": "vec_and(p1mask, mask)",
+          "old_line_content": "                                                                                             \\",
+          "new_line_content": "    p1mask = vec_and(p1mask, mask);                             /* if( |p2 - p0| < beta) */  \\",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "register",
+          "old_text": null,
+          "new_text": "register",
+          "old_line_content": "static void h264_h_loop_filter_luma_altivec(uint8_t *pix, int stride, int alpha, int beta, int8_t *tc0) {",
+          "new_line_content": "    register vector unsigned char line0, line1, line2, line3, line4, line5;",
+          "content_same": false
+        },
+        {
+          "line": 828,
+          "old_api": null,
+          "new_api": "diff_lt_altivec",
+          "old_text": null,
+          "new_text": "diff_lt_altivec(q2, q0, betavec)",
+          "old_line_content": "    /*end if*/                                                                               \\",
+          "new_line_content": "    q1mask = diff_lt_altivec(q2, q0, betavec);                                               \\",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": null,
+          "new_api": "vec_and",
+          "old_text": null,
+          "new_text": "vec_and(q1mask, mask)",
+          "old_line_content": "                                                                                             \\",
+          "new_line_content": "    q1mask = vec_and(q1mask, mask);                             /* if ( |q2 - q0| < beta ) */\\",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 864,
+          "old_api": "transpose4x16",
+          "new_api": null,
+          "old_text": "transpose4x16(line1, line2, line3, line4)",
+          "new_text": null,
+          "old_line_content": "    transpose4x16(line1, line2, line3, line4);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": "vec_sub",
+          "new_api": null,
+          "old_text": "vec_sub(finaltc0, q1mask)",
+          "new_text": null,
+          "old_line_content": "    finaltc0 = vec_sub(finaltc0, q1mask);                       /* tc++ */                   \\",
+          "new_line_content": "    /*end if*/                                                                               \\",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": "h264_deblock_q1",
+          "new_api": null,
+          "old_text": "h264_deblock_q1(p0, q1, q2, q0, tc0masked)",
+          "new_text": null,
+          "old_line_content": "    h264_deblock_q1(p0, q1, q2, q0, tc0masked);                                              \\",
+          "new_line_content": "                                                                                             \\",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": "register",
+          "new_api": null,
+          "old_text": "register",
+          "new_text": null,
+          "old_line_content": "    register vector unsigned char line0, line1, line2, line3, line4, line5;",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "write16x4",
+          "new_api": null,
+          "old_text": "write16x4(pix-2, stride, line1, line2, line3, line4)",
+          "new_text": null,
+          "old_line_content": "    write16x4(pix-2, stride, line1, line2, line3, line4);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 837,
+          "old_api": "h264_deblock_p0_q0",
+          "new_api": null,
+          "old_text": "h264_deblock_p0_q0(p0, p1, q0, q1, finaltc0)",
+          "new_text": null,
+          "old_line_content": "    h264_deblock_p0_q0(p0, p1, q0, q1, finaltc0);                                            \\",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 900,
+          "old_api": "dspfunc",
+          "new_api": null,
+          "old_text": "dspfunc(put_h264_qpel, 0, 16)",
+          "new_text": null,
+          "old_line_content": "    dspfunc(put_h264_qpel, 0, 16);",
+          "new_line_content": "#undef dspfunc",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": "has_altivec",
+          "new_api": null,
+          "old_text": "has_altivec()",
+          "new_text": null,
+          "old_line_content": "  if (has_altivec()) {",
+          "new_line_content": "    c->put_no_rnd_h264_chroma_pixels_tab[0] = put_no_rnd_h264_chroma_mc8_altivec;",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "dspfunc",
+          "new_api": null,
+          "old_text": "dspfunc(avg_h264_qpel, 0, 16)",
+          "new_text": null,
+          "old_line_content": "    dspfunc(avg_h264_qpel, 0, 16);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": "vec_adds",
+          "new_api": null,
+          "old_text": "vec_adds(p0, delta)",
+          "new_text": null,
+          "old_line_content": "    p0 = vec_adds(p0, delta);                                                                     \\",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 795,
+          "old_api": "vec_adds",
+          "new_api": null,
+          "old_text": "vec_adds(q0, deltaneg)",
+          "new_text": null,
+          "old_line_content": "    q0 = vec_adds(q0, deltaneg);                                                                  \\",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "vec_splat_u8",
+          "new_api": null,
+          "old_text": "vec_splat_u8(-1)",
+          "new_text": null,
+          "old_line_content": "    mask = vec_and(mask, vec_cmpgt(tc0vec, vec_splat_u8(-1)));  /* if tc0[i] >= 0 */         \\",
+          "new_line_content": "                                                                                             \\",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": "vec_st",
+          "new_api": null,
+          "old_text": "vec_st(q0, 0, pix)",
+          "new_text": null,
+          "old_line_content": "        vec_st(q0, 0, pix);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": "vec_st",
+          "new_api": null,
+          "old_text": "vec_st(q1, stride, pix)",
+          "new_text": null,
+          "old_line_content": "        vec_st(q1, stride, pix);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "vec_sub",
+          "new_api": null,
+          "old_text": "vec_sub(finaltc0, p1mask)",
+          "new_text": null,
+          "old_line_content": "    finaltc0 = vec_sub(finaltc0, p1mask);                       /* tc++ */                   \\",
+          "new_line_content": "    /*end if*/                                                                               \\",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": "h264_deblock_q1",
+          "new_api": null,
+          "old_text": "h264_deblock_q1(p0, p1, p2, q0, tc0masked)",
+          "new_text": null,
+          "old_line_content": "    h264_deblock_q1(p0, p1, p2, q0, tc0masked);                                              \\",
+          "new_line_content": "                                                                                             \\",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 28,
+      "total_additions": 16,
+      "total_deletions": 16,
+      "total_api_changes": 60
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 60,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          769,
+          777
+        ]
+      }
+    },
+    "api_calls_before": 342,
+    "api_calls_after": 342,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 4,
+      "total_diff_lines": 27
+    }
+  }
+}

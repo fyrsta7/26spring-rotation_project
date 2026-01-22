@@ -1,0 +1,404 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/75c576d4c4763785c665e3211b17868b3ed8e819",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/75c576d4c4763785c665e3211b17868b3ed8e819/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/75c576d4c4763785c665e3211b17868b3ed8e819/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/openwrt/modified_file/75c576d4c4763785c665e3211b17868b3ed8e819/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 245,
+          "old_api": "cpumask_of",
+          "new_api": "RTTM_DEBUG",
+          "old_text": "cpumask_of(cpu)",
+          "new_text": "RTTM_DEBUG(to->of_base.base)",
+          "old_line_content": "\tto->clkevt.cpumask = cpumask_of(cpu);",
+          "new_line_content": "\tRTTM_DEBUG(to->of_base.base);",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "irq_set_affinity",
+          "new_api": "cpumask_of",
+          "old_text": "irq_set_affinity(to->of_irq.irq, to->clkevt.cpumask)",
+          "new_text": "cpumask_of(cpu)",
+          "old_line_content": "\tirq_set_affinity(to->of_irq.irq, to->clkevt.cpumask);",
+          "new_line_content": "\tto->clkevt.cpumask = cpumask_of(cpu);",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "clockevents_config_and_register",
+          "new_api": "irq_set_affinity",
+          "old_text": "clockevents_config_and_register(&to->clkevt, RTTM_TICKS_PER_SEC,\n\t\t\t\t\tRTTM_MIN_DELTA, RTTM_MAX_DELTA)",
+          "new_text": "irq_set_affinity(to->of_irq.irq, to->clkevt.cpumask)",
+          "old_line_content": "\tclockevents_config_and_register(&to->clkevt, RTTM_TICKS_PER_SEC,",
+          "new_line_content": "\tirq_set_affinity(to->of_irq.irq, to->clkevt.cpumask);",
+          "content_same": false
+        },
+        {
+          "line": 266,
+          "old_api": "pr_err",
+          "new_api": "timer_of_init",
+          "old_text": "pr_err(\"%s: setup of timer %d failed\\n\", __func__, cpu)",
+          "new_text": "timer_of_init(np, to)",
+          "old_line_content": "\t\t\tpr_err(\"%s: setup of timer %d failed\\n\", __func__, cpu);",
+          "new_line_content": "\t\tif (timer_of_init(np, to)) {",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "sched_clock_register",
+          "new_api": "clocksource_register_hz",
+          "old_text": "sched_clock_register(rttm_read_clock, RTTM_BIT_COUNT, RTTM_TICKS_PER_SEC)",
+          "new_text": "clocksource_register_hz(&rttm_cs.cs, RTTM_TICKS_PER_SEC)",
+          "old_line_content": "\t\tsched_clock_register(rttm_read_clock, RTTM_BIT_COUNT, RTTM_TICKS_PER_SEC);",
+          "new_line_content": "\t\tclocksource_register_hz(&rttm_cs.cs, RTTM_TICKS_PER_SEC);",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "timer_of_cleanup",
+          "new_api": "per_cpu_ptr",
+          "old_text": "timer_of_cleanup(to)",
+          "new_text": "per_cpu_ptr(&rttm_to, cpu_rollback)",
+          "old_line_content": "\t\ttimer_of_cleanup(to);",
+          "new_line_content": "\t\tto = per_cpu_ptr(&rttm_to, cpu_rollback);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "pr_err",
+          "old_text": null,
+          "new_text": "pr_err(\"%s: timer registration failed\\n\", __func__)",
+          "old_line_content": "\tfor_each_possible_cpu(cpu_rollback) {",
+          "new_line_content": "\tpr_err(\"%s: timer registration failed\\n\", __func__);",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "clockevents_config_and_register",
+          "old_text": null,
+          "new_text": "clockevents_config_and_register(&to->clkevt, RTTM_TICKS_PER_SEC,\n\t\t\t\t\tRTTM_MIN_DELTA, RTTM_MAX_DELTA)",
+          "old_line_content": "\t\t\t\t\tRTTM_MIN_DELTA, RTTM_MAX_DELTA);",
+          "new_line_content": "\tclockevents_config_and_register(&to->clkevt, RTTM_TICKS_PER_SEC,",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "num_possible_cpus",
+          "old_text": null,
+          "new_text": "num_possible_cpus()",
+          "old_line_content": "/*",
+          "new_line_content": "\tint clkidx = num_possible_cpus();",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": null,
+          "new_api": "timer_of_cleanup",
+          "old_text": null,
+          "new_text": "timer_of_cleanup(to)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\ttimer_of_cleanup(to);",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": null,
+          "new_api": "per_cpu_ptr",
+          "old_text": null,
+          "new_text": "per_cpu_ptr(&rttm_to, cpu)",
+          "old_line_content": "\t\tto->of_irq.index = to->of_base.index = cpu;",
+          "new_line_content": "\t\tto = per_cpu_ptr(&rttm_to, cpu);",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": null,
+          "new_api": "rttm_enable_irq",
+          "old_text": null,
+          "new_text": "rttm_enable_irq(to->of_base.base)",
+          "old_line_content": "",
+          "new_line_content": "\trttm_enable_irq(to->of_base.base);",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "pr_err",
+          "old_text": null,
+          "new_text": "pr_err(\"%s: setup of timer %d failed\\n\", __func__, cpu)",
+          "old_line_content": "\t\t\tgoto rollback;",
+          "new_line_content": "\t\t\tpr_err(\"%s: setup of timer %d failed\\n\", __func__, cpu);",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": null,
+          "new_api": "TIMER_OF_DECLARE",
+          "old_text": null,
+          "new_text": "TIMER_OF_DECLARE(otto_timer, \"realtek,otto-timer\", rttm_probe)",
+          "old_line_content": "",
+          "new_line_content": "TIMER_OF_DECLARE(otto_timer, \"realtek,otto-timer\", rttm_probe);",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "rttm_setup_timer",
+          "old_text": null,
+          "new_text": "rttm_setup_timer(to->of_base.base)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\trttm_setup_timer(to->of_base.base);",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "rttm_get_counter",
+          "old_text": null,
+          "new_text": "rttm_get_counter(rttm_cs.to.of_base.base)",
+          "old_line_content": "}",
+          "new_line_content": "\treturn (u64)rttm_get_counter(rttm_cs.to.of_base.base);",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": null,
+          "new_api": "per_cpu_ptr",
+          "old_text": null,
+          "new_text": "per_cpu_ptr(&rttm_to, cpu)",
+          "old_line_content": "",
+          "new_line_content": "\tstruct timer_of *to = per_cpu_ptr(&rttm_to, cpu);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "timer_of_init",
+          "old_text": null,
+          "new_text": "timer_of_init(np, to)",
+          "old_line_content": "\tif (rttm_cs.to.of_base.base && rttm_cs.to.of_clk.rate) {",
+          "new_line_content": "\ttimer_of_init(np, to);",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": null,
+          "new_api": "sched_clock_register",
+          "old_text": null,
+          "new_text": "sched_clock_register(rttm_read_clock, RTTM_BIT_COUNT, RTTM_TICKS_PER_SEC)",
+          "old_line_content": "\t} else",
+          "new_line_content": "\t\tsched_clock_register(rttm_read_clock, RTTM_BIT_COUNT, RTTM_TICKS_PER_SEC);",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": null,
+          "new_api": "pr_err",
+          "old_text": null,
+          "new_text": "pr_err(\"%s: setup of timer %d as clocksoure failed\", __func__, clkidx)",
+          "old_line_content": "",
+          "new_line_content": "\t\tpr_err(\"%s: setup of timer %d as clocksoure failed\", __func__, clkidx);",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": null,
+          "new_api": "cpuhp_setup_state",
+          "old_text": null,
+          "new_text": "cpuhp_setup_state(CPUHP_AP_REALTEK_TIMER_STARTING,\n\t\t\t\t\"timer/realtek:online\",\n\t\t\t\trttm_cpu_starting, NULL)",
+          "old_line_content": "\t\t\t\t\"timer/realtek:online\",",
+          "new_line_content": "\treturn cpuhp_setup_state(CPUHP_AP_REALTEK_TIMER_STARTING,",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 258,
+          "old_api": "num_possible_cpus",
+          "new_api": null,
+          "old_text": "num_possible_cpus()",
+          "new_text": null,
+          "old_line_content": "\tint clkidx = num_possible_cpus();",
+          "new_line_content": "\tstruct timer_of *to;",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "per_cpu_ptr",
+          "new_api": null,
+          "old_text": "per_cpu_ptr(&rttm_to, cpu_rollback)",
+          "new_text": null,
+          "old_line_content": "\t\tto = per_cpu_ptr(&rttm_to, cpu_rollback);",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "rttm_enable_irq",
+          "new_api": null,
+          "old_text": "rttm_enable_irq(to->of_base.base)",
+          "new_text": null,
+          "old_line_content": "\trttm_enable_irq(to->of_base.base);",
+          "new_line_content": "\t\t\t\t\tRTTM_MIN_DELTA, RTTM_MAX_DELTA);",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "per_cpu_ptr",
+          "new_api": null,
+          "old_text": "per_cpu_ptr(&rttm_to, cpu)",
+          "new_text": null,
+          "old_line_content": "\t\tto = per_cpu_ptr(&rttm_to, cpu);",
+          "new_line_content": "\tfor_each_possible_cpu(cpu) {",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "timer_of_init",
+          "new_api": null,
+          "old_text": "timer_of_init(np, to)",
+          "new_text": null,
+          "old_line_content": "\t\tif (timer_of_init(np, to)) {",
+          "new_line_content": "\t\tto->of_irq.index = to->of_base.index = cpu;",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": "TIMER_OF_DECLARE",
+          "new_api": null,
+          "old_text": "TIMER_OF_DECLARE(otto_timer, \"realtek,otto-timer\", rttm_probe)",
+          "new_text": null,
+          "old_line_content": "TIMER_OF_DECLARE(otto_timer, \"realtek,otto-timer\", rttm_probe);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "rttm_setup_timer",
+          "new_api": null,
+          "old_text": "rttm_setup_timer(to->of_base.base)",
+          "new_text": null,
+          "old_line_content": "\t\trttm_setup_timer(to->of_base.base);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "rttm_get_counter",
+          "new_api": null,
+          "old_text": "rttm_get_counter(rttm_cs.to.of_base.base)",
+          "new_text": null,
+          "old_line_content": "\treturn (u64)rttm_get_counter(rttm_cs.to.of_base.base);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "per_cpu_ptr",
+          "new_api": null,
+          "old_text": "per_cpu_ptr(&rttm_to, cpu)",
+          "new_text": null,
+          "old_line_content": "\tstruct timer_of *to = per_cpu_ptr(&rttm_to, cpu);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": "timer_of_init",
+          "new_api": null,
+          "old_text": "timer_of_init(np, to)",
+          "new_text": null,
+          "old_line_content": "\ttimer_of_init(np, to);",
+          "new_line_content": "\tto->of_base.index = clkidx;",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "RTTM_DEBUG",
+          "new_api": null,
+          "old_text": "RTTM_DEBUG(to->of_base.base)",
+          "new_text": null,
+          "old_line_content": "\tRTTM_DEBUG(to->of_base.base);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "clocksource_register_hz",
+          "new_api": null,
+          "old_text": "clocksource_register_hz(&rttm_cs.cs, RTTM_TICKS_PER_SEC)",
+          "new_text": null,
+          "old_line_content": "\t\tclocksource_register_hz(&rttm_cs.cs, RTTM_TICKS_PER_SEC);",
+          "new_line_content": "\tif (rttm_cs.to.of_base.base && rttm_cs.to.of_clk.rate) {",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "pr_err",
+          "new_api": null,
+          "old_text": "pr_err(\"%s: setup of timer %d as clocksoure failed\", __func__, clkidx)",
+          "new_text": null,
+          "old_line_content": "\t\tpr_err(\"%s: setup of timer %d as clocksoure failed\", __func__, clkidx);",
+          "new_line_content": "\t} else",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "cpuhp_setup_state",
+          "new_api": null,
+          "old_text": "cpuhp_setup_state(CPUHP_AP_REALTEK_TIMER_STARTING,\n\t\t\t\t\"timer/realtek:online\",\n\t\t\t\trttm_cpu_starting, NULL)",
+          "new_text": null,
+          "old_line_content": "\treturn cpuhp_setup_state(CPUHP_AP_REALTEK_TIMER_STARTING,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "pr_err",
+          "new_api": null,
+          "old_text": "pr_err(\"%s: timer registration failed\\n\", __func__)",
+          "new_text": null,
+          "old_line_content": "\tpr_err(\"%s: timer registration failed\\n\", __func__);",
+          "new_line_content": "rollback:",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 15,
+      "total_deletions": 15,
+      "total_api_changes": 36
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 1,
+        "api_related_lines": 36,
+        "non_api_lines": 1,
+        "non_api_line_numbers": [
+          230
+        ]
+      }
+    },
+    "api_calls_before": 66,
+    "api_calls_after": 66,
+    "diff_info": {
+      "added_lines": 1,
+      "removed_lines": 0,
+      "total_diff_lines": 13
+    }
+  }
+}

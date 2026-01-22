@@ -1,0 +1,520 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f1b8d1d9d722d09a279b36f2b91b7887c025e7e2",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f1b8d1d9d722d09a279b36f2b91b7887c025e7e2/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f1b8d1d9d722d09a279b36f2b91b7887c025e7e2/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f1b8d1d9d722d09a279b36f2b91b7887c025e7e2/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 130,
+          "old_api": "std::numeric_limits<typename ToFieldType::NativeType>::max()",
+          "new_api": "DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to)",
+          "old_text": "std::numeric_limits<typename ToFieldType::NativeType>::max()",
+          "new_text": "DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to)",
+          "old_line_content": "            converted_value > std::numeric_limits<typename ToFieldType::NativeType>::max())",
+          "new_line_content": "        converted_value = value.value / DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to);",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "ReturnType",
+          "new_api": "std::numeric_limits<typename ToFieldType::NativeType>::min()",
+          "old_text": "ReturnType(false)",
+          "new_text": "std::numeric_limits<typename ToFieldType::NativeType>::min()",
+          "old_line_content": "                return ReturnType(false);",
+          "new_line_content": "        if (converted_value < std::numeric_limits<typename ToFieldType::NativeType>::min() ||",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "static_cast<typename ToFieldType::NativeType>(converted_value)",
+          "new_api": "std::string(ToDataType::family_name)",
+          "old_text": "static_cast<typename ToFieldType::NativeType>(converted_value)",
+          "new_text": "std::string(ToDataType::family_name)",
+          "old_line_content": "    result = static_cast<typename ToFieldType::NativeType>(converted_value);",
+          "new_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow\", std::string(ToDataType::family_name));",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "std::numeric_limits<ToNativeType>::max()",
+          "new_api": "ReturnType",
+          "old_text": "std::numeric_limits<ToNativeType>::max()",
+          "new_text": "ReturnType(false)",
+          "old_line_content": "            out >= static_cast<FromFieldType>(std::numeric_limits<ToNativeType>::max()))",
+          "new_line_content": "                return ReturnType(false);",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "Exception",
+          "new_api": "DecimalUtils::scaleMultiplier<ToNativeType>(scale)",
+          "old_text": "Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Float is out of Decimal range\", ToDataType::family_name)",
+          "new_text": "DecimalUtils::scaleMultiplier<ToNativeType>(scale)",
+          "old_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Float is out of Decimal range\", ToDataType::family_name);",
+          "new_line_content": "        auto out = value * static_cast<FromFieldType>(DecimalUtils::scaleMultiplier<ToNativeType>(scale));",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "ReturnType",
+          "new_api": "std::numeric_limits<ToNativeType>::min()",
+          "old_text": "ReturnType(false)",
+          "new_text": "std::numeric_limits<ToNativeType>::min()",
+          "old_line_content": "                return ReturnType(false);",
+          "new_line_content": "        if (out <= static_cast<FromFieldType>(std::numeric_limits<ToNativeType>::min()) ||",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "ReturnType",
+          "new_api": "Exception",
+          "old_text": "ReturnType(true)",
+          "new_text": "Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Float is out of Decimal range\", ToDataType::family_name)",
+          "old_line_content": "        return ReturnType(true);",
+          "new_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Float is out of Decimal range\", ToDataType::family_name);",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "static_cast<Int256>(value)",
+          "new_api": "static_cast<ToNativeType>(out)",
+          "old_text": "static_cast<Int256>(value)",
+          "new_text": "static_cast<ToNativeType>(out)",
+          "old_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal256>, ToDataType, ReturnType>(static_cast<Int256>(value), 0, scale, result));",
+          "new_line_content": "        result = static_cast<ToNativeType>(out);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale)",
+          "new_api": "convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "old_text": "std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale)",
+          "new_text": "convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "old_line_content": "    return std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale);",
+          "new_line_content": "    return convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale)",
+          "old_text": null,
+          "new_text": "std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale)",
+          "old_line_content": "",
+          "new_line_content": "    return std::make_shared<DataTypeDecimal<T>>(DecimalUtils::max_precision<T>, scale);",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "std::numeric_limits<typename ToFieldType::NativeType>::max()",
+          "old_text": null,
+          "new_text": "std::numeric_limits<typename ToFieldType::NativeType>::max()",
+          "old_line_content": "        }",
+          "new_line_content": "            converted_value > std::numeric_limits<typename ToFieldType::NativeType>::max())",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": null,
+          "new_api": "static_cast<typename ToFieldType::NativeType>(converted_value)",
+          "old_text": null,
+          "new_text": "static_cast<typename ToFieldType::NativeType>(converted_value)",
+          "old_line_content": "requires (IsDataTypeDecimal<FromDataType> && IsDataTypeDecimal<ToDataType>)",
+          "new_line_content": "    result = static_cast<typename ToFieldType::NativeType>(converted_value);",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": null,
+          "new_api": "ReturnType",
+          "old_text": null,
+          "new_text": "ReturnType(true)",
+          "old_line_content": "{",
+          "new_line_content": "    return ReturnType(true);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result)",
+          "old_text": null,
+          "new_text": "convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result)",
+          "old_line_content": "requires (IsDataTypeDecimal<FromDataType> && IsDataTypeDecimal<ToDataType>)",
+          "new_line_content": "    convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result);",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": null,
+          "new_api": "convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result)",
+          "old_text": null,
+          "new_text": "convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result)",
+          "old_line_content": "{",
+          "new_line_content": "    return convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result)",
+          "old_text": null,
+          "new_text": "DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result)",
+          "old_line_content": "{",
+          "new_line_content": "    return DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result);",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": null,
+          "new_api": "convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "old_text": null,
+          "new_text": "convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "old_line_content": "requires (IsDataTypeDecimal<FromDataType> && is_arithmetic_v<typename ToDataType::FieldType>)",
+          "new_line_content": "    convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result);",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "old_text": null,
+          "new_text": "convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "old_line_content": "{",
+          "new_line_content": "    return convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result);",
+          "content_same": false
+        },
+        {
+          "line": 205,
+          "old_api": null,
+          "new_api": "constexpr",
+          "old_text": null,
+          "new_text": "constexpr",
+          "old_line_content": "            if constexpr (throw_exception)",
+          "new_line_content": "    static constexpr bool throw_exception = std::is_same_v<ReturnType, void>;",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": null,
+          "new_api": "std::isfinite(value)",
+          "old_text": null,
+          "new_text": "std::isfinite(value)",
+          "old_line_content": "        }",
+          "new_line_content": "        if (!std::isfinite(value))",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Cannot convert infinity or NaN to decimal\", ToDataType::family_name)",
+          "old_line_content": "",
+          "new_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Cannot convert infinity or NaN to decimal\", ToDataType::family_name);",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "std::numeric_limits<ToNativeType>::max()",
+          "old_text": null,
+          "new_text": "std::numeric_limits<ToNativeType>::max()",
+          "old_line_content": "        }",
+          "new_line_content": "            out >= static_cast<FromFieldType>(std::numeric_limits<ToNativeType>::max()))",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "ReturnType",
+          "old_text": null,
+          "new_text": "ReturnType(false)",
+          "old_line_content": "    else",
+          "new_line_content": "                return ReturnType(false);",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "ReturnType",
+          "old_text": null,
+          "new_text": "ReturnType(true)",
+          "old_line_content": "        else if constexpr (std::is_same_v<FromFieldType, UInt64>)",
+          "new_line_content": "        return ReturnType(true);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "static_cast<Int256>(value)",
+          "old_text": null,
+          "new_text": "static_cast<Int256>(value)",
+          "old_line_content": "}",
+          "new_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal256>, ToDataType, ReturnType>(static_cast<Int256>(value), 0, scale, result));",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "static_cast<Int128>(value)",
+          "old_text": null,
+          "new_text": "static_cast<Int128>(value)",
+          "old_line_content": "template <typename FromDataType, typename ToDataType>",
+          "new_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal128>, ToDataType, ReturnType>(static_cast<Int128>(value), 0, scale, result));",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "static_cast<Int64>(value)",
+          "old_text": null,
+          "new_text": "static_cast<Int64>(value)",
+          "old_line_content": "inline typename ToDataType::FieldType convertToDecimal(const typename FromDataType::FieldType & value, UInt32 scale)",
+          "new_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal64>, ToDataType, ReturnType>(static_cast<Int64>(value), 0, scale, result));",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "old_text": null,
+          "new_text": "convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "old_line_content": "inline bool tryConvertToDecimal(const typename FromDataType::FieldType & value, UInt32 scale, typename ToDataType::FieldType& result)",
+          "new_line_content": "    convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 129,
+          "old_api": "std::numeric_limits<typename ToFieldType::NativeType>::min()",
+          "new_api": null,
+          "old_text": "std::numeric_limits<typename ToFieldType::NativeType>::min()",
+          "new_text": null,
+          "old_line_content": "        if (converted_value < std::numeric_limits<typename ToFieldType::NativeType>::min() ||",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "std::string(ToDataType::family_name)",
+          "new_api": null,
+          "old_text": "std::string(ToDataType::family_name)",
+          "new_text": null,
+          "old_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow\", std::string(ToDataType::family_name));",
+          "new_line_content": "    if constexpr (sizeof(FromFieldType) > sizeof(ToFieldType))",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result)",
+          "new_api": null,
+          "old_text": "convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result)",
+          "new_text": null,
+          "old_line_content": "    convertDecimalsImpl<FromDataType, ToDataType, void>(value, scale_from, scale_to, result);",
+          "new_line_content": "requires (IsDataTypeDecimal<FromDataType> && IsDataTypeDecimal<ToDataType>)",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": "convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result)",
+          "new_api": null,
+          "old_text": "convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result)",
+          "new_text": null,
+          "old_line_content": "    return convertDecimalsImpl<FromDataType, ToDataType, bool>(value, scale_from, scale_to, result);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result)",
+          "new_api": null,
+          "old_text": "DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result)",
+          "new_text": null,
+          "old_line_content": "    return DecimalUtils::convertToImpl<ToFieldType, FromFieldType, ReturnType>(value, scale, result);",
+          "new_line_content": "requires (IsDataTypeDecimal<FromDataType> && is_arithmetic_v<typename ToDataType::FieldType>)",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "new_api": null,
+          "old_text": "convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "new_text": null,
+          "old_line_content": "    convertFromDecimalImpl<FromDataType, ToDataType, void>(value, scale, result);",
+          "new_line_content": "template <typename FromDataType, typename ToDataType>",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "new_api": null,
+          "old_text": "convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "new_text": null,
+          "old_line_content": "    return convertFromDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": "constexpr",
+          "new_api": null,
+          "old_text": "constexpr",
+          "new_text": null,
+          "old_line_content": "    static constexpr bool throw_exception = std::is_same_v<ReturnType, void>;",
+          "new_line_content": "inline ReturnType convertToDecimalImpl(const typename FromDataType::FieldType & value, UInt32 scale, typename ToDataType::FieldType& result)",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": "std::isfinite(value)",
+          "new_api": null,
+          "old_text": "std::isfinite(value)",
+          "new_text": null,
+          "old_line_content": "        if (!std::isfinite(value))",
+          "new_line_content": "    using ToNativeType = typename ToFieldType::NativeType;",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Cannot convert infinity or NaN to decimal\", ToDataType::family_name)",
+          "new_text": null,
+          "old_line_content": "                throw Exception(ErrorCodes::DECIMAL_OVERFLOW, \"{} convert overflow. Cannot convert infinity or NaN to decimal\", ToDataType::family_name);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "ReturnType",
+          "new_api": null,
+          "old_text": "ReturnType(false)",
+          "new_text": null,
+          "old_line_content": "                return ReturnType(false);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "DecimalUtils::scaleMultiplier<ToNativeType>(scale)",
+          "new_api": null,
+          "old_text": "DecimalUtils::scaleMultiplier<ToNativeType>(scale)",
+          "new_text": null,
+          "old_line_content": "        auto out = value * static_cast<FromFieldType>(DecimalUtils::scaleMultiplier<ToNativeType>(scale));",
+          "new_line_content": "            if constexpr (throw_exception)",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": "std::numeric_limits<ToNativeType>::min()",
+          "new_api": null,
+          "old_text": "std::numeric_limits<ToNativeType>::min()",
+          "new_text": null,
+          "old_line_content": "        if (out <= static_cast<FromFieldType>(std::numeric_limits<ToNativeType>::min()) ||",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "static_cast<ToNativeType>(out)",
+          "new_api": null,
+          "old_text": "static_cast<ToNativeType>(out)",
+          "new_text": null,
+          "old_line_content": "        result = static_cast<ToNativeType>(out);",
+          "new_line_content": "            if constexpr (throw_exception)",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "static_cast<Int128>(value)",
+          "new_api": null,
+          "old_text": "static_cast<Int128>(value)",
+          "new_text": null,
+          "old_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal128>, ToDataType, ReturnType>(static_cast<Int128>(value), 0, scale, result));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "static_cast<Int64>(value)",
+          "new_api": null,
+          "old_text": "static_cast<Int64>(value)",
+          "new_text": null,
+          "old_line_content": "            return ReturnType(convertDecimalsImpl<DataTypeDecimal<Decimal64>, ToDataType, ReturnType>(static_cast<Int64>(value), 0, scale, result));",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "new_api": null,
+          "old_text": "convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result)",
+          "new_text": null,
+          "old_line_content": "    convertToDecimalImpl<FromDataType, ToDataType, void>(value, scale, result);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "new_api": null,
+          "old_text": "convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result)",
+          "new_text": null,
+          "old_line_content": "    return convertToDecimalImpl<FromDataType, ToDataType, bool>(value, scale, result);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to)",
+          "new_api": null,
+          "old_text": "DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to)",
+          "new_text": null,
+          "old_line_content": "        converted_value = value.value / DecimalUtils::scaleMultiplier<MaxNativeType>(scale_from - scale_to);",
+          "new_line_content": "    {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 9,
+      "total_additions": 19,
+      "total_deletions": 19,
+      "total_api_changes": 47
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 47,
+        "non_api_lines": 7,
+        "non_api_line_numbers": [
+          131,
+          164,
+          103,
+          126,
+          124,
+          158,
+          127
+        ]
+      }
+    },
+    "api_calls_before": 73,
+    "api_calls_after": 73,
+    "diff_info": {
+      "added_lines": 8,
+      "removed_lines": 2,
+      "total_diff_lines": 38
+    }
+  }
+}

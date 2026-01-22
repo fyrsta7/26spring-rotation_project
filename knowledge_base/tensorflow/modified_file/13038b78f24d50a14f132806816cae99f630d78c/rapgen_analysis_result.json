@@ -1,0 +1,1118 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/13038b78f24d50a14f132806816cae99f630d78c",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/13038b78f24d50a14f132806816cae99f630d78c/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/13038b78f24d50a14f132806816cae99f630d78c/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/13038b78f24d50a14f132806816cae99f630d78c/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 566,
+          "old_api": "node",
+          "new_api": "mutable_node",
+          "old_text": "optimized_graph_->node(source)",
+          "new_text": "optimized_graph_->mutable_node(target)",
+          "old_line_content": "      const NodeDef& source_node = optimized_graph_->node(source);",
+          "new_line_content": "    NodeDef* target_node = optimized_graph_->mutable_node(target);",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "name",
+          "new_api": "node",
+          "old_text": "target_node->name()",
+          "new_text": "optimized_graph_->node(source)",
+          "old_line_content": "      node_map_->RemoveOutput(source_node.name(), target_node->name());",
+          "new_line_content": "      const NodeDef& source_node = optimized_graph_->node(source);",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "mutable_input",
+          "new_api": "input_size",
+          "old_text": "target_node->mutable_input()->RemoveLast()",
+          "new_text": "target_node->input_size()",
+          "old_line_content": "      target_node->mutable_input()->RemoveLast();",
+          "new_line_content": "      CHECK_LT(input_slot, target_node->input_size());",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "VLOG",
+          "new_api": "mutable_input",
+          "old_text": "VLOG(1)",
+          "new_text": "target_node->mutable_input()->RemoveLast()",
+          "old_line_content": "  VLOG(1) << \"Removed \" << num_controls_removed << \" out of \" << num_controls",
+          "new_line_content": "      target_node->mutable_input()->RemoveLast();",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": "device",
+          "new_api": "input_size",
+          "old_text": "node->device()",
+          "new_text": "node->input_size()",
+          "old_line_content": "            input->device() != node->device()) {",
+          "new_line_content": "    for (int j = 0; j < node->input_size(); ++j) {",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": "device",
+          "new_api": "input",
+          "old_text": "input->device()",
+          "new_text": "node->input(j)",
+          "old_line_content": "          auto emplace_result = noops.emplace(input->device(), nullptr);",
+          "new_line_content": "      if (IsControlInput(node->input(j))) {",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "add_node",
+          "new_api": "strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops)",
+          "old_text": "optimized_graph_->add_node()",
+          "new_text": "strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops)",
+          "old_line_content": "            noop = optimized_graph_->add_node();",
+          "new_line_content": "                  strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops));",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": "set_name",
+          "new_api": "GetNode",
+          "old_text": "noop->set_name(group_name)",
+          "new_text": "node_map_->GetNode(group_name)",
+          "old_line_content": "            noop->set_name(group_name);",
+          "new_line_content": "              noop = node_map_->GetNode(group_name);",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "name",
+          "new_api": "add_node",
+          "old_text": "noop->name()",
+          "new_text": "optimized_graph_->add_node()",
+          "old_line_content": "            node_map_->AddNode(noop->name(), noop);",
+          "new_line_content": "            noop = optimized_graph_->add_node();",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": "device",
+          "new_api": "GetNode",
+          "old_text": "input->device()",
+          "new_text": "node_map_->GetNode(input_name)",
+          "old_line_content": "          auto it = noops.find(input->device());",
+          "new_line_content": "        NodeDef* input = node_map_->GetNode(input_name);",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": "input_size",
+          "new_api": "device",
+          "old_text": "node->input_size()",
+          "new_text": "input->device()",
+          "old_line_content": "            node->mutable_input()->SwapElements(pos, node->input_size() - 1);",
+          "new_line_content": "          auto it = noops.find(input->device());",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "mutable_input",
+          "new_api": "end",
+          "old_text": "node->mutable_input()->RemoveLast()",
+          "new_text": "noops.end()",
+          "old_line_content": "            node->mutable_input()->RemoveLast();",
+          "new_line_content": "          if (it == noops.end() || it->second == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": "name",
+          "new_api": "input_size",
+          "old_text": "it->second->name()",
+          "new_text": "node->input_size()",
+          "old_line_content": "                                    it->second->name());",
+          "new_line_content": "            node->mutable_input()->SwapElements(pos, node->input_size() - 1);",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": "GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED",
+          "new_api": "CleanControlInputs",
+          "old_text": "GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED()",
+          "new_text": "CleanControlInputs()",
+          "old_line_content": "    GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED();",
+          "new_line_content": "  CleanControlInputs();",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "TransitiveReduction",
+          "new_api": "BuildNodeToIdx",
+          "old_text": "TransitiveReduction()",
+          "new_text": "BuildNodeToIdx()",
+          "old_line_content": "      TF_RETURN_IF_ERROR(TransitiveReduction());",
+          "new_line_content": "    BuildNodeToIdx();",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": "LOG",
+          "new_api": "ok",
+          "old_text": "LOG(ERROR)",
+          "new_text": "topo_sort_status.ok()",
+          "old_line_content": "      LOG(ERROR) << \"Iteration = \" << iteration",
+          "new_line_content": "    if (topo_sort_status.ok()) {",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "error_message",
+          "new_api": "TransitiveReduction",
+          "old_text": "topo_sort_status.error_message()",
+          "new_text": "TransitiveReduction()",
+          "old_line_content": "                 << topo_sort_status.error_message();",
+          "new_line_content": "      TF_RETURN_IF_ERROR(TransitiveReduction());",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "OptimizeDependencies",
+          "new_api": "error_message",
+          "old_text": "OptimizeDependencies()",
+          "new_text": "topo_sort_status.error_message()",
+          "old_line_content": "    TF_RETURN_IF_ERROR(OptimizeDependencies());",
+          "new_line_content": "                 << topo_sort_status.error_message();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "input_size",
+          "old_text": null,
+          "new_text": "node->input_size()",
+          "old_line_content": "        if (input == nullptr) {",
+          "new_line_content": "    while (pos < node->input_size()) {",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": null,
+          "new_api": "input",
+          "old_text": null,
+          "new_text": "node->input(pos)",
+          "old_line_content": "          ++pos;",
+          "new_line_content": "      const string& input_name = node->input(pos);",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": null,
+          "new_api": "IsControlInput",
+          "old_text": null,
+          "new_text": "IsControlInput(input_name)",
+          "old_line_content": "        } else {",
+          "new_line_content": "      if (IsControlInput(input_name)) {",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "longest_distance.begin()",
+          "old_line_content": "    for (int target = source + 1; target <= highest_control_target; ++target) {",
+          "new_line_content": "    std::fill(longest_distance.begin() + source,",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "longest_distance.begin()",
+          "old_line_content": "      for (int input : inputs[target]) {",
+          "new_line_content": "              longest_distance.begin() + highest_control_target + 1, 0);",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": null,
+          "new_api": "mutable_input",
+          "old_text": null,
+          "new_text": "node->mutable_input()->RemoveLast()",
+          "old_line_content": "          }",
+          "new_line_content": "            node->mutable_input()->RemoveLast();",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": null,
+          "new_api": "AsControlDependency",
+          "old_text": null,
+          "new_text": "AsControlDependency(*input)",
+          "old_line_content": "        }",
+          "new_line_content": "            it->second->add_input(AsControlDependency(*input));",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "target_inputs.size()",
+          "old_line_content": "        // Also only extend a path from the source itself or from nodes that",
+          "new_line_content": "      for (int input_idx = 0; input_idx < target_inputs.size(); ++input_idx) {",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "node->name()",
+          "old_line_content": "      } else {",
+          "new_line_content": "            node_map_->UpdateOutput(input_name, node->name(),",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "it->second->name()",
+          "old_line_content": "        ++pos;",
+          "new_line_content": "                                    it->second->name());",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": null,
+          "new_api": "AsControlDependency",
+          "old_text": null,
+          "new_text": "AsControlDependency(*entry.second)",
+          "old_line_content": "  }",
+          "new_line_content": "        node->add_input(AsControlDependency(*entry.second));",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "node->name()",
+          "old_line_content": "}",
+          "new_line_content": "        node_map_->AddOutput(entry.second->name(), node->name());",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": null,
+          "new_api": "NodesToPreserve",
+          "old_text": null,
+          "new_text": "item.NodesToPreserve()",
+          "old_line_content": "  const int num_iterations = 2;",
+          "new_line_content": "  nodes_to_preserve_ = item.NodesToPreserve();",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "item.fetch.empty()",
+          "old_line_content": "  for (int iteration = 0; iteration < num_iterations; ++iteration) {",
+          "new_line_content": "  fetch_nodes_known_ = !item.fetch.empty();",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "emplace",
+          "old_text": null,
+          "new_text": "control_edges_to_remove[target].emplace(input_slot, source)",
+          "old_line_content": "",
+          "new_line_content": "        control_edges_to_remove[target].emplace(input_slot, source);",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED",
+          "old_text": null,
+          "new_text": "GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED()",
+          "old_line_content": "    // Set up index-based graph datastructures to speed up analysis steps below.",
+          "new_line_content": "    GRAPPLER_RETURN_IF_DEADLINE_EXCEEDED();",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": null,
+          "new_api": "TopologicalSort",
+          "old_text": null,
+          "new_text": "TopologicalSort(optimized_graph_)",
+          "old_line_content": "",
+          "new_line_content": "    topo_sort_status = TopologicalSort(optimized_graph_);",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "node_map_.reset(new NodeMap(optimized_graph_))",
+          "old_line_content": "      // Remove redundant control dependencies.",
+          "new_line_content": "    node_map_.reset(new NodeMap(optimized_graph_));",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": null,
+          "new_api": "mutable_input",
+          "old_text": null,
+          "new_text": "target_node->mutable_input()->SwapElements(input_slot,\n                                                 target_node->input_size() - 1)",
+          "old_line_content": "      ++num_controls_removed;",
+          "new_line_content": "      target_node->mutable_input()->SwapElements(input_slot,",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": null,
+          "new_api": "input_size",
+          "old_text": null,
+          "new_text": "target_node->input_size()",
+          "old_line_content": "    }",
+          "new_line_content": "                                                 target_node->input_size() - 1);",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "target_node->name()",
+          "old_line_content": "  }",
+          "new_line_content": "      node_map_->RemoveOutput(source_node.name(), target_node->name());",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": null,
+          "new_api": "LOG",
+          "old_text": null,
+          "new_text": "LOG(ERROR)",
+          "old_line_content": "    // Turn nodes with only control outputs into NoOps, prune NoOp and Identity",
+          "new_line_content": "      LOG(ERROR) << \"Iteration = \" << iteration",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": null,
+          "new_api": "VLOG",
+          "old_text": null,
+          "new_text": "VLOG(1)",
+          "old_line_content": "",
+          "new_line_content": "  VLOG(1) << \"Removed \" << num_controls_removed << \" out of \" << num_controls",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "OptimizeDependencies",
+          "old_text": null,
+          "new_text": "OptimizeDependencies()",
+          "old_line_content": "",
+          "new_line_content": "    TF_RETURN_IF_ERROR(OptimizeDependencies());",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "Status::OK()",
+          "old_text": null,
+          "new_text": "Status::OK()",
+          "old_line_content": "  // Set up &node -> index map.",
+          "new_line_content": "  return Status::OK();",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": null,
+          "new_api": "CleanControlInputs",
+          "old_text": null,
+          "new_text": "CleanControlInputs()",
+          "old_line_content": "",
+          "new_line_content": "    CleanControlInputs();",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "GroupCrossDeviceControlEdges",
+          "old_text": null,
+          "new_text": "GroupCrossDeviceControlEdges()",
+          "old_line_content": "}",
+          "new_line_content": "    GroupCrossDeviceControlEdges();",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "node_to_idx_.clear()",
+          "old_line_content": "  }",
+          "new_line_content": "  node_to_idx_.clear();",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": null,
+          "new_api": "node_size",
+          "old_text": null,
+          "new_text": "optimized_graph_->node_size()",
+          "old_line_content": "}",
+          "new_line_content": "  for (int i = 0; i < optimized_graph_->node_size(); ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": null,
+          "new_api": "node",
+          "old_text": null,
+          "new_text": "optimized_graph_->node(i)",
+          "old_line_content": "",
+          "new_line_content": "    const NodeDef& node = optimized_graph_->node(i);",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "Status::OK()",
+          "old_text": null,
+          "new_text": "Status::OK()",
+          "old_line_content": "                                   const GrapplerItem& /*item*/,",
+          "new_line_content": "  return Status::OK();",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": null,
+          "new_api": "node_size",
+          "old_text": null,
+          "new_text": "optimized_graph_->node_size()",
+          "old_line_content": "",
+          "new_line_content": "  const int num_nodes = optimized_graph_->node_size();",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": null,
+          "new_api": "mutable_node",
+          "old_text": null,
+          "new_text": "optimized_graph_->mutable_node(i)",
+          "old_line_content": "    // located.",
+          "new_line_content": "    NodeDef* node = optimized_graph_->mutable_node(i);",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "node->device().empty()",
+          "old_line_content": "",
+          "new_line_content": "    if (node->device().empty()) continue;",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": null,
+          "new_api": "input",
+          "old_text": null,
+          "new_text": "node->input(j)",
+          "old_line_content": "          if (!emplace_result.second &&",
+          "new_line_content": "        const NodeDef* input = node_map_->GetNode(node->input(j));",
+          "content_same": false
+        },
+        {
+          "line": 617,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "input->device().empty()",
+          "old_line_content": "              emplace_result.first->second == nullptr) {",
+          "new_line_content": "        if (input != nullptr && !input->device().empty() &&",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "device",
+          "old_text": null,
+          "new_text": "node->device()",
+          "old_line_content": "            // This is the second cross-device control input from the same",
+          "new_line_content": "            input->device() != node->device()) {",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": null,
+          "new_api": "device",
+          "old_text": null,
+          "new_text": "input->device()",
+          "old_line_content": "            // device. Creates an intermediate noop node on that device.",
+          "new_line_content": "          auto emplace_result = noops.emplace(input->device(), nullptr);",
+          "content_same": false
+        },
+        {
+          "line": 629,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "AddPrefixToNodeName(\n                  node->name(),\n                  strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops))",
+          "old_line_content": "              ++num_noops;",
+          "new_line_content": "              group_name = AddPrefixToNodeName(",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "node->name()",
+          "old_line_content": "            } while (noop != nullptr);",
+          "new_line_content": "                  node->name(),",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "inputs[node_idx].end()",
+          "old_line_content": "  }",
+          "new_line_content": "    std::sort(inputs[node_idx].begin(), inputs[node_idx].end(),",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "std::greater<int>()",
+          "old_text": null,
+          "new_text": "std::greater<int>()",
+          "old_line_content": "",
+          "new_line_content": "              std::greater<int>());",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": null,
+          "new_api": "set_name",
+          "old_text": null,
+          "new_text": "noop->set_name(group_name)",
+          "old_line_content": "            emplace_result.first->second = noop;",
+          "new_line_content": "            noop->set_name(group_name);",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": null,
+          "new_api": "device",
+          "old_text": null,
+          "new_text": "input->device()",
+          "old_line_content": "          }",
+          "new_line_content": "            noop->set_device(input->device());",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "set_op",
+          "old_text": null,
+          "new_text": "noop->set_op(\"NoOp\")",
+          "old_line_content": "        }",
+          "new_line_content": "            noop->set_op(\"NoOp\");",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": null,
+          "new_api": "name",
+          "old_text": null,
+          "new_text": "noop->name()",
+          "old_line_content": "      }",
+          "new_line_content": "            node_map_->AddNode(noop->name(), noop);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 644,
+          "old_api": "input_size",
+          "new_api": null,
+          "old_text": "node->input_size()",
+          "new_text": null,
+          "old_line_content": "    while (pos < node->input_size()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "input",
+          "new_api": null,
+          "old_text": "node->input(pos)",
+          "new_text": null,
+          "old_line_content": "      const string& input_name = node->input(pos);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "IsControlInput",
+          "new_api": null,
+          "old_text": "IsControlInput(input_name)",
+          "new_text": null,
+          "old_line_content": "      if (IsControlInput(input_name)) {",
+          "new_line_content": "    // Reroute existing control edges to go via the newly introduced NoOp nodes.",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "GetNode",
+          "new_api": null,
+          "old_text": "node_map_->GetNode(input_name)",
+          "new_text": null,
+          "old_line_content": "        NodeDef* input = node_map_->GetNode(input_name);",
+          "new_line_content": "    int pos = 0;",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "noops.end()",
+          "new_text": null,
+          "old_line_content": "          if (it == noops.end() || it->second == nullptr) {",
+          "new_line_content": "        if (input == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "longest_distance.begin()",
+          "new_text": null,
+          "old_line_content": "    std::fill(longest_distance.begin() + source,",
+          "new_line_content": "      continue;",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "longest_distance.begin()",
+          "new_text": null,
+          "old_line_content": "              longest_distance.begin() + highest_control_target + 1, 0);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": "AsControlDependency",
+          "new_api": null,
+          "old_text": "AsControlDependency(*input)",
+          "new_text": null,
+          "old_line_content": "            it->second->add_input(AsControlDependency(*input));",
+          "new_line_content": "            ++pos;",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "name",
+          "new_api": null,
+          "old_text": "node->name()",
+          "new_text": null,
+          "old_line_content": "            node_map_->UpdateOutput(input_name, node->name(),",
+          "new_line_content": "          } else {",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": "AsControlDependency",
+          "new_api": null,
+          "old_text": "AsControlDependency(*entry.second)",
+          "new_text": null,
+          "old_line_content": "        node->add_input(AsControlDependency(*entry.second));",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "name",
+          "new_api": null,
+          "old_text": "node->name()",
+          "new_text": null,
+          "old_line_content": "        node_map_->AddOutput(entry.second->name(), node->name());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": "NodesToPreserve",
+          "new_api": null,
+          "old_text": "item.NodesToPreserve()",
+          "new_text": null,
+          "old_line_content": "  nodes_to_preserve_ = item.NodesToPreserve();",
+          "new_line_content": "Status DependencyOptimizer::Optimize(Cluster* cluster, const GrapplerItem& item,",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "item.fetch.empty()",
+          "new_text": null,
+          "old_line_content": "  fetch_nodes_known_ = !item.fetch.empty();",
+          "new_line_content": "                                     GraphDef* optimized_graph) {",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "CleanControlInputs",
+          "new_api": null,
+          "old_text": "CleanControlInputs()",
+          "new_text": null,
+          "old_line_content": "  CleanControlInputs();",
+          "new_line_content": "  optimized_graph_ = optimized_graph;",
+          "content_same": false
+        },
+        {
+          "line": 555,
+          "old_api": "emplace",
+          "new_api": null,
+          "old_text": "control_edges_to_remove[target].emplace(input_slot, source)",
+          "new_text": null,
+          "old_line_content": "        control_edges_to_remove[target].emplace(input_slot, source);",
+          "new_line_content": "    for (const auto& control_output : control_outputs[source]) {",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "TopologicalSort",
+          "new_api": null,
+          "old_text": "TopologicalSort(optimized_graph_)",
+          "new_text": null,
+          "old_line_content": "    topo_sort_status = TopologicalSort(optimized_graph_);",
+          "new_line_content": "  for (int iteration = 0; iteration < num_iterations; ++iteration) {",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "mutable_node",
+          "new_api": null,
+          "old_text": "optimized_graph_->mutable_node(target)",
+          "new_text": null,
+          "old_line_content": "    NodeDef* target_node = optimized_graph_->mutable_node(target);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "node_map_.reset(new NodeMap(optimized_graph_))",
+          "new_text": null,
+          "old_line_content": "    node_map_.reset(new NodeMap(optimized_graph_));",
+          "new_line_content": "    Status topo_sort_status;",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "BuildNodeToIdx",
+          "new_api": null,
+          "old_text": "BuildNodeToIdx()",
+          "new_text": null,
+          "old_line_content": "    BuildNodeToIdx();",
+          "new_line_content": "    // Perform topological sort to prepare the graph for transitive reduction.",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "topo_sort_status.ok()",
+          "new_text": null,
+          "old_line_content": "    if (topo_sort_status.ok()) {",
+          "new_line_content": "    // Set up index-based graph datastructures to speed up analysis steps below.",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "input_size",
+          "new_api": null,
+          "old_text": "target_node->input_size()",
+          "new_text": null,
+          "old_line_content": "      CHECK_LT(input_slot, target_node->input_size());",
+          "new_line_content": "    for (const InputSlotAndSource& slot_and_source : it.second) {",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "mutable_input",
+          "new_api": null,
+          "old_text": "target_node->mutable_input()->SwapElements(input_slot,\n                                                 target_node->input_size() - 1)",
+          "new_text": null,
+          "old_line_content": "      target_node->mutable_input()->SwapElements(input_slot,",
+          "new_line_content": "      const int input_slot = slot_and_source.first;",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "input_size",
+          "new_api": null,
+          "old_text": "target_node->input_size()",
+          "new_text": null,
+          "old_line_content": "                                                 target_node->input_size() - 1);",
+          "new_line_content": "      const int source = slot_and_source.second;",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": "Status::OK()",
+          "new_api": null,
+          "old_text": "Status::OK()",
+          "new_text": null,
+          "old_line_content": "  return Status::OK();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": "CleanControlInputs",
+          "new_api": null,
+          "old_text": "CleanControlInputs()",
+          "new_text": null,
+          "old_line_content": "    CleanControlInputs();",
+          "new_line_content": "    // nodes.",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": "GroupCrossDeviceControlEdges",
+          "new_api": null,
+          "old_text": "GroupCrossDeviceControlEdges()",
+          "new_text": null,
+          "old_line_content": "    GroupCrossDeviceControlEdges();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "node_to_idx_.clear()",
+          "new_text": null,
+          "old_line_content": "  node_to_idx_.clear();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "node_size",
+          "new_api": null,
+          "old_text": "optimized_graph_->node_size()",
+          "new_text": null,
+          "old_line_content": "  for (int i = 0; i < optimized_graph_->node_size(); ++i) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "node",
+          "new_api": null,
+          "old_text": "optimized_graph_->node(i)",
+          "new_text": null,
+          "old_line_content": "    const NodeDef& node = optimized_graph_->node(i);",
+          "new_line_content": "void DependencyOptimizer::BuildNodeToIdx() {",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "Status::OK()",
+          "new_api": null,
+          "old_text": "Status::OK()",
+          "new_text": null,
+          "old_line_content": "  return Status::OK();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": "node_size",
+          "new_api": null,
+          "old_text": "optimized_graph_->node_size()",
+          "new_text": null,
+          "old_line_content": "  const int num_nodes = optimized_graph_->node_size();",
+          "new_line_content": "// We can reduce cross-device communication by introducing an intermediate",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "mutable_node",
+          "new_api": null,
+          "old_text": "optimized_graph_->mutable_node(i)",
+          "new_text": null,
+          "old_line_content": "    NodeDef* node = optimized_graph_->mutable_node(i);",
+          "new_line_content": "// A->C', B->C', C' -> C",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "node->device().empty()",
+          "new_text": null,
+          "old_line_content": "    if (node->device().empty()) continue;",
+          "new_line_content": "void DependencyOptimizer::GroupCrossDeviceControlEdges() {",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "input_size",
+          "new_api": null,
+          "old_text": "node->input_size()",
+          "new_text": null,
+          "old_line_content": "    for (int j = 0; j < node->input_size(); ++j) {",
+          "new_line_content": "    // device. A nullptr value means that we have only seen a single node on",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": "input",
+          "new_api": null,
+          "old_text": "node->input(j)",
+          "new_text": null,
+          "old_line_content": "      if (IsControlInput(node->input(j))) {",
+          "new_line_content": "    // that device.",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "input",
+          "new_api": null,
+          "old_text": "node->input(j)",
+          "new_text": null,
+          "old_line_content": "        const NodeDef* input = node_map_->GetNode(node->input(j));",
+          "new_line_content": "    std::map<string, NodeDef*> noops;",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "input->device().empty()",
+          "new_text": null,
+          "old_line_content": "        if (input != nullptr && !input->device().empty() &&",
+          "new_line_content": "    int num_noops = 0;",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "name",
+          "new_api": null,
+          "old_text": "AddPrefixToNodeName(\n                  node->name(),\n                  strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops))",
+          "new_text": null,
+          "old_line_content": "              group_name = AddPrefixToNodeName(",
+          "new_line_content": "            NodeDef* noop;",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "name",
+          "new_api": null,
+          "old_text": "node->name()",
+          "new_text": null,
+          "old_line_content": "                  node->name(),",
+          "new_line_content": "            // Creates a fresh node name; there may be conflicting names from",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops)",
+          "new_api": null,
+          "old_text": "strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops)",
+          "new_text": null,
+          "old_line_content": "                  strings::StrCat(\"GroupCrossDeviceControlEdges_\", num_noops));",
+          "new_line_content": "            // a previous iteration of the optimizer.",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": "GetNode",
+          "new_api": null,
+          "old_text": "node_map_->GetNode(group_name)",
+          "new_text": null,
+          "old_line_content": "              noop = node_map_->GetNode(group_name);",
+          "new_line_content": "            do {",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "device",
+          "new_api": null,
+          "old_text": "input->device()",
+          "new_text": null,
+          "old_line_content": "            noop->set_device(input->device());",
+          "new_line_content": "              ++num_noops;",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": "set_op",
+          "new_api": null,
+          "old_text": "noop->set_op(\"NoOp\")",
+          "new_text": null,
+          "old_line_content": "            noop->set_op(\"NoOp\");",
+          "new_line_content": "            } while (noop != nullptr);",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 18,
+      "total_additions": 46,
+      "total_deletions": 43,
+      "total_api_changes": 107
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 107,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          533,
+          535,
+          536,
+          537,
+          541
+        ]
+      }
+    },
+    "api_calls_before": 313,
+    "api_calls_after": 318,
+    "diff_info": {
+      "added_lines": 7,
+      "removed_lines": 3,
+      "total_diff_lines": 33
+    }
+  }
+}

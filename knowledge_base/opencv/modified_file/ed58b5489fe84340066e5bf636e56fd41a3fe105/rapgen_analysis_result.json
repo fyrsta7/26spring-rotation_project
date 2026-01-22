@@ -1,0 +1,3556 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ed58b5489fe84340066e5bf636e56fd41a3fe105",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ed58b5489fe84340066e5bf636e56fd41a3fe105/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ed58b5489fe84340066e5bf636e56fd41a3fe105/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/opencv/modified_file/ed58b5489fe84340066e5bf636e56fd41a3fe105/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 218,
+          "old_api": "Size",
+          "new_api": "std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f)",
+          "old_text": "Size()",
+          "new_text": "std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f)",
+          "old_line_content": "        GaussianBlur(gray_fpt, gray_fpt, Size(), sig_diff, sig_diff);",
+          "new_line_content": "        sig_diff = sqrtf( std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f) );",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": "std::sqrt(sig_total*sig_total - sig_prev*sig_prev)",
+          "new_api": "std::pow(k, (double)(i-1))",
+          "old_text": "std::sqrt(sig_total*sig_total - sig_prev*sig_prev)",
+          "new_text": "std::pow(k, (double)(i-1))",
+          "old_line_content": "        sig[i] = std::sqrt(sig_total*sig_total - sig_prev*sig_prev);",
+          "new_line_content": "        double sig_prev = std::pow(k, (double)(i-1))*sigma;",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "size",
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": "gpyr.size()",
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    int nOctaves = (int)gpyr.size()/(nOctaveLayers + 3);",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": "buildDoGPyramidComputer",
+          "new_api": "resize",
+          "old_text": "buildDoGPyramidComputer(nOctaveLayers, gpyr, dogpyr)",
+          "new_text": "dogpyr.resize( nOctaves*(nOctaveLayers + 2) )",
+          "old_line_content": "    parallel_for_(Range(0, nOctaves * (nOctaveLayers + 2)), buildDoGPyramidComputer(nOctaveLayers, gpyr, dogpyr));",
+          "new_line_content": "    dogpyr.resize( nOctaves*(nOctaveLayers + 2) );",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "new_api": "cv::hal::exp32f(W, W, len)",
+          "old_text": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "new_text": "cv::hal::exp32f(W, W, len)",
+          "old_line_content": "    cv::hal::magnitude32f(X, Y, Mag, len);",
+          "new_line_content": "    cv::hal::exp32f(W, W, len);",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": "_mm256_cmpgt_epi32",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_cmpgt_epi32(__n, __bin)",
+          "new_text": "_mm256_loadu_ps(&Ori[k])",
+          "old_line_content": "            __bin = _mm256_sub_epi32(__bin, _mm256_andnot_si256(_mm256_cmpgt_epi32(__n, __bin), __n));",
+          "new_line_content": "            __m256i __bin = _mm256_cvtps_epi32(_mm256_mul_ps(__nd360, _mm256_loadu_ps(&Ori[k])));",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": "_mm256_setzero_si256",
+          "old_text": "_mm256_loadu_ps(&Mag[k])",
+          "new_text": "_mm256_setzero_si256()",
+          "old_line_content": "            __m256 __w_mul_mag = _mm256_mul_ps(_mm256_loadu_ps(&W[k]), _mm256_loadu_ps(&Mag[k]));",
+          "new_line_content": "            __bin = _mm256_add_epi32(__bin, _mm256_and_si256(__n, _mm256_cmpgt_epi32(_mm256_setzero_si256(), __bin)));",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "_mm256_store_si256",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_store_si256((__m256i *) bin_buf, __bin)",
+          "new_text": "_mm256_loadu_ps(&Mag[k])",
+          "old_line_content": "            _mm256_store_si256((__m256i *) bin_buf, __bin);",
+          "new_line_content": "            __m256 __w_mul_mag = _mm256_mul_ps(_mm256_loadu_ps(&W[k]), _mm256_loadu_ps(&Mag[k]));",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "_mm256_fmadd_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_fmadd_ps(\n                    _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                    __d_4_16,\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16))",
+          "new_text": "_mm256_loadu_ps(&temphist[i+2])",
+          "old_line_content": "                _mm256_fmadd_ps(",
+          "new_line_content": "                _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "_mm256_add_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_add_ps(\n                _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                        __d_1_16),\n                _mm256_add_ps(\n                    _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16),\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)))",
+          "new_text": "_mm256_loadu_ps(&temphist[i])",
+          "old_line_content": "            __m256 __hist = _mm256_add_ps(",
+          "new_line_content": "                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)));",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": "_mm256_add_ps",
+          "old_text": "_mm256_loadu_ps(&temphist[i+2])",
+          "new_text": "_mm256_add_ps(\n                _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                        __d_1_16),\n                _mm256_add_ps(\n                    _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16),\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)))",
+          "old_line_content": "                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),",
+          "new_line_content": "            __m256 __hist = _mm256_add_ps(",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "_mm256_add_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_add_ps(\n                    _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16),\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16))",
+          "new_text": "_mm256_loadu_ps(&temphist[i+2])",
+          "old_line_content": "                _mm256_add_ps(",
+          "new_line_content": "                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": "_mm256_add_ps",
+          "old_text": "_mm256_loadu_ps(&temphist[i+1])",
+          "new_text": "_mm256_add_ps(\n                    _mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16),\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16))",
+          "old_line_content": "                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),",
+          "new_line_content": "                _mm256_add_ps(",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "_mm256_storeu_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_storeu_ps(&hist[i], __hist)",
+          "new_text": "_mm256_loadu_ps(&temphist[i])",
+          "old_line_content": "            _mm256_storeu_ps(&hist[i], __hist);",
+          "new_line_content": "                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)));",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "prev.at<sift_wt>(r, c)",
+          "new_api": "img.at<sift_wt>(r, c-1)",
+          "old_text": "prev.at<sift_wt>(r, c)",
+          "new_text": "img.at<sift_wt>(r, c-1)",
+          "old_line_content": "                 (next.at<sift_wt>(r, c) - prev.at<sift_wt>(r, c))*deriv_scale);",
+          "new_line_content": "        Vec3f dD((img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1))*deriv_scale,",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "img.at<sift_wt>(r, c)",
+          "new_api": "prev.at<sift_wt>(r, c)",
+          "old_text": "img.at<sift_wt>(r, c)",
+          "new_text": "prev.at<sift_wt>(r, c)",
+          "old_line_content": "        float v2 = (float)img.at<sift_wt>(r, c)*2;",
+          "new_line_content": "                 (next.at<sift_wt>(r, c) - prev.at<sift_wt>(r, c))*deriv_scale);",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "img.at<sift_wt>(r-1, c)",
+          "new_api": "img.at<sift_wt>(r, c)",
+          "old_text": "img.at<sift_wt>(r-1, c)",
+          "new_text": "img.at<sift_wt>(r, c)",
+          "old_line_content": "        float dyy = (img.at<sift_wt>(r+1, c) + img.at<sift_wt>(r-1, c) - v2)*second_deriv_scale;",
+          "new_line_content": "        float v2 = (float)img.at<sift_wt>(r, c)*2;",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": "prev.at<sift_wt>(r, c)",
+          "new_api": "img.at<sift_wt>(r, c-1)",
+          "old_text": "prev.at<sift_wt>(r, c)",
+          "new_text": "img.at<sift_wt>(r, c-1)",
+          "old_line_content": "        float dss = (next.at<sift_wt>(r, c) + prev.at<sift_wt>(r, c) - v2)*second_deriv_scale;",
+          "new_line_content": "        float dxx = (img.at<sift_wt>(r, c+1) + img.at<sift_wt>(r, c-1) - v2)*second_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": "img.at<sift_wt>(r+1, c-1)",
+          "new_api": "img.at<sift_wt>(r-1, c)",
+          "old_text": "img.at<sift_wt>(r+1, c-1)",
+          "new_text": "img.at<sift_wt>(r-1, c)",
+          "old_line_content": "        float dxy = (img.at<sift_wt>(r+1, c+1) - img.at<sift_wt>(r+1, c-1) -",
+          "new_line_content": "        float dyy = (img.at<sift_wt>(r+1, c) + img.at<sift_wt>(r-1, c) - v2)*second_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "img.at<sift_wt>(r-1, c-1)",
+          "new_api": "prev.at<sift_wt>(r, c)",
+          "old_text": "img.at<sift_wt>(r-1, c-1)",
+          "new_text": "prev.at<sift_wt>(r, c)",
+          "old_line_content": "                     img.at<sift_wt>(r-1, c+1) + img.at<sift_wt>(r-1, c-1))*cross_deriv_scale;",
+          "new_line_content": "        float dss = (next.at<sift_wt>(r, c) + prev.at<sift_wt>(r, c) - v2)*second_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "next.at<sift_wt>(r, c-1)",
+          "new_api": "img.at<sift_wt>(r+1, c-1)",
+          "old_text": "next.at<sift_wt>(r, c-1)",
+          "new_text": "img.at<sift_wt>(r+1, c-1)",
+          "old_line_content": "        float dxs = (next.at<sift_wt>(r, c+1) - next.at<sift_wt>(r, c-1) -",
+          "new_line_content": "        float dxy = (img.at<sift_wt>(r+1, c+1) - img.at<sift_wt>(r+1, c-1) -",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": "prev.at<sift_wt>(r, c-1)",
+          "new_api": "img.at<sift_wt>(r-1, c-1)",
+          "old_text": "prev.at<sift_wt>(r, c-1)",
+          "new_text": "img.at<sift_wt>(r-1, c-1)",
+          "old_line_content": "                     prev.at<sift_wt>(r, c+1) + prev.at<sift_wt>(r, c-1))*cross_deriv_scale;",
+          "new_line_content": "                     img.at<sift_wt>(r-1, c+1) + img.at<sift_wt>(r-1, c-1))*cross_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": "next.at<sift_wt>(r-1, c)",
+          "new_api": "next.at<sift_wt>(r, c-1)",
+          "old_text": "next.at<sift_wt>(r-1, c)",
+          "new_text": "next.at<sift_wt>(r, c-1)",
+          "old_line_content": "        float dys = (next.at<sift_wt>(r+1, c) - next.at<sift_wt>(r-1, c) -",
+          "new_line_content": "        float dxs = (next.at<sift_wt>(r, c+1) - next.at<sift_wt>(r, c-1) -",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "prev.at<sift_wt>(r-1, c)",
+          "new_api": "prev.at<sift_wt>(r, c-1)",
+          "old_text": "prev.at<sift_wt>(r-1, c)",
+          "new_text": "prev.at<sift_wt>(r, c-1)",
+          "old_line_content": "                     prev.at<sift_wt>(r+1, c) + prev.at<sift_wt>(r-1, c))*cross_deriv_scale;",
+          "new_line_content": "                     prev.at<sift_wt>(r, c+1) + prev.at<sift_wt>(r, c-1))*cross_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "std::abs(xc)",
+          "new_api": "std::abs(xi)",
+          "old_text": "std::abs(xc)",
+          "new_text": "std::abs(xi)",
+          "old_line_content": "            std::abs(xc) > (float)(INT_MAX/3) )",
+          "new_line_content": "        if( std::abs(xi) > (float)(INT_MAX/3) ||",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "prev.at<sift_wt>(r, c)",
+          "new_api": "img.at<sift_wt>(r, c-1)",
+          "old_text": "prev.at<sift_wt>(r, c)",
+          "new_text": "img.at<sift_wt>(r, c-1)",
+          "old_line_content": "                   (next.at<sift_wt>(r, c) - prev.at<sift_wt>(r, c))*deriv_scale);",
+          "new_line_content": "        Matx31f dD((img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1))*deriv_scale,",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "Matx31f",
+          "new_api": "img.at<sift_wt>(r-1, c)",
+          "old_text": "Matx31f(xc, xr, xi)",
+          "new_text": "img.at<sift_wt>(r-1, c)",
+          "old_line_content": "        float t = dD.dot(Matx31f(xc, xr, xi));",
+          "new_line_content": "                   (img.at<sift_wt>(r+1, c) - img.at<sift_wt>(r-1, c))*deriv_scale,",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "img.at<sift_wt>(r, c)",
+          "new_api": "Matx31f",
+          "old_text": "img.at<sift_wt>(r, c)",
+          "new_text": "Matx31f(xc, xr, xi)",
+          "old_line_content": "        contr = img.at<sift_wt>(r, c)*img_scale + t * 0.5f;",
+          "new_line_content": "        float t = dD.dot(Matx31f(xc, xr, xi));",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "img.at<sift_wt>(r-1, c)",
+          "new_api": "img.at<sift_wt>(r, c)",
+          "old_text": "img.at<sift_wt>(r-1, c)",
+          "new_text": "img.at<sift_wt>(r, c)",
+          "old_line_content": "        float dyy = (img.at<sift_wt>(r+1, c) + img.at<sift_wt>(r-1, c) - v2)*second_deriv_scale;",
+          "new_line_content": "        float v2 = img.at<sift_wt>(r, c)*2.f;",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "img.at<sift_wt>(r+1, c-1)",
+          "new_api": "img.at<sift_wt>(r, c-1)",
+          "old_text": "img.at<sift_wt>(r+1, c-1)",
+          "new_text": "img.at<sift_wt>(r, c-1)",
+          "old_line_content": "        float dxy = (img.at<sift_wt>(r+1, c+1) - img.at<sift_wt>(r+1, c-1) -",
+          "new_line_content": "        float dxx = (img.at<sift_wt>(r, c+1) + img.at<sift_wt>(r, c-1) - v2)*second_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "img.at<sift_wt>(r-1, c-1)",
+          "new_api": "img.at<sift_wt>(r-1, c)",
+          "old_text": "img.at<sift_wt>(r-1, c-1)",
+          "new_text": "img.at<sift_wt>(r-1, c)",
+          "old_line_content": "                     img.at<sift_wt>(r-1, c+1) + img.at<sift_wt>(r-1, c-1)) * cross_deriv_scale;",
+          "new_line_content": "        float dyy = (img.at<sift_wt>(r+1, c) + img.at<sift_wt>(r-1, c) - v2)*second_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "std::abs(contr)",
+          "new_api": "cvRound",
+          "old_text": "std::abs(contr)",
+          "new_text": "cvRound((xi + 0.5)*255)",
+          "old_line_content": "    kpt.response = std::abs(contr);",
+          "new_line_content": "    kpt.octave = octv + (layer << 8) + (cvRound((xi + 0.5)*255) << 16);",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "next.ptr<sift_wt>(r)",
+          "new_api": "img.ptr<sift_wt>(r)",
+          "old_text": "next.ptr<sift_wt>(r)",
+          "new_text": "img.ptr<sift_wt>(r)",
+          "old_line_content": "            const sift_wt* nextptr = next.ptr<sift_wt>(r);",
+          "new_line_content": "            const sift_wt* currptr = img.ptr<sift_wt>(r);",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "cvRound",
+          "new_api": "calcOrientationHist",
+          "old_text": "cvRound(SIFT_ORI_RADIUS * scl_octv)",
+          "new_text": "calcOrientationHist(gauss_pyr[o*(nOctaveLayers+3) + layer],\n                                                     Point(c1, r1),\n                                                     cvRound(SIFT_ORI_RADIUS * scl_octv),\n                                                     SIFT_ORI_SIG_FCTR * scl_octv,\n                                                     hist, n)",
+          "old_line_content": "                                                     cvRound(SIFT_ORI_RADIUS * scl_octv),",
+          "new_line_content": "                    float omax = calcOrientationHist(gauss_pyr[o*(nOctaveLayers+3) + layer],",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "size",
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": "gauss_pyr.size()",
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    const int nOctaves = (int)gauss_pyr.size()/(nOctaveLayers + 3);",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "clear",
+          "new_api": "cvFloor",
+          "old_text": "keypoints.clear()",
+          "new_text": "cvFloor(0.5 * contrastThreshold / nOctaveLayers * 255 * SIFT_FIXPT_SCALE)",
+          "old_line_content": "    keypoints.clear();",
+          "new_line_content": "    const int threshold = cvFloor(0.5 * contrastThreshold / nOctaveLayers * 255 * SIFT_FIXPT_SCALE);",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": "end",
+          "new_api": "gather",
+          "old_text": "kpt_vecs[i]->end()",
+          "new_text": "tls_kpts_struct.gather(kpt_vecs)",
+          "old_line_content": "        keypoints.insert(keypoints.end(), kpt_vecs[i]->begin(), kpt_vecs[i]->end());",
+          "new_line_content": "    tls_kpts_struct.gather(kpt_vecs);",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": "cvRound",
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": "cvRound(ptf.y)",
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    Point pt(cvRound(ptf.x), cvRound(ptf.y));",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": "sinf",
+          "new_api": "cvRound",
+          "old_text": "sinf(ori*(float)(CV_PI/180))",
+          "new_text": "cvRound(ptf.y)",
+          "old_line_content": "    float sin_t = sinf(ori*(float)(CV_PI/180));",
+          "new_line_content": "    Point pt(cvRound(ptf.x), cvRound(ptf.y));",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "sqrt",
+          "new_api": "cvRound",
+          "old_text": "sqrt(((double) img.cols)*img.cols + ((double) img.rows)*img.rows)",
+          "new_text": "cvRound(hist_width * 1.4142135623730951f * (d + 1) * 0.5f)",
+          "old_line_content": "    radius = std::min(radius, (int) sqrt(((double) img.cols)*img.cols + ((double) img.rows)*img.rows));",
+          "new_line_content": "    int radius = cvRound(hist_width * 1.4142135623730951f * (d + 1) * 0.5f);",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": "cv::hal::exp32f(W, W, len)",
+          "new_api": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "old_text": "cv::hal::exp32f(W, W, len)",
+          "new_text": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "old_line_content": "    cv::hal::exp32f(W, W, len);",
+          "new_line_content": "    cv::hal::fastAtan2(Y, X, Ori, len, true);",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "_mm256_set1_epi32",
+          "new_api": "_mm256_set1_ps",
+          "old_text": "_mm256_set1_epi32(n)",
+          "new_text": "_mm256_set1_ps(ori)",
+          "old_line_content": "        const __m256i __n = _mm256_set1_epi32(n);",
+          "new_line_content": "        const __m256 __ori = _mm256_set1_ps(ori);",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "_mm256_floor_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_floor_ps(__rbin)",
+          "new_text": "_mm256_loadu_ps(&W[k])",
+          "old_line_content": "            __m256 __r0 = _mm256_floor_ps(__rbin);",
+          "new_line_content": "            __m256 __mag = _mm256_mul_ps(_mm256_loadu_ps(&Mag[k]), _mm256_loadu_ps(&W[k]));",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "_mm256_cvtps_epi32",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_cvtps_epi32(__o0)",
+          "new_text": "_mm256_sub_ps(__obin, __o0)",
+          "old_line_content": "            __m256i __o0i = _mm256_cvtps_epi32(__o0);",
+          "new_line_content": "            __obin = _mm256_sub_ps(__obin, __o0);",
+          "content_same": false
+        },
+        {
+          "line": 808,
+          "old_api": "_mm256_cmpgt_epi32",
+          "new_api": "_mm256_cvtps_epi32",
+          "old_text": "_mm256_cmpgt_epi32(__n, __o0i)",
+          "new_text": "_mm256_cvtps_epi32(__o0)",
+          "old_line_content": "            __o0i = _mm256_sub_epi32(__o0i, _mm256_andnot_si256(_mm256_cmpgt_epi32(__n, __o0i), __n));",
+          "new_line_content": "            __m256i __o0i = _mm256_cvtps_epi32(__o0);",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_cmpgt_epi32",
+          "old_text": "_mm256_mul_ps(__mag, __rbin)",
+          "new_text": "_mm256_cmpgt_epi32(__n, __o0i)",
+          "old_line_content": "            __m256 __v_r1 = _mm256_mul_ps(__mag, __rbin);",
+          "new_line_content": "            __o0i = _mm256_sub_epi32(__o0i, _mm256_andnot_si256(_mm256_cmpgt_epi32(__n, __o0i), __n));",
+          "content_same": false
+        },
+        {
+          "line": 813,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_r1, __cbin)",
+          "new_text": "_mm256_sub_ps(__mag, __v_r1)",
+          "old_line_content": "            __m256 __v_rc11 = _mm256_mul_ps(__v_r1, __cbin);",
+          "new_line_content": "            __m256 __v_r0 = _mm256_sub_ps(__mag, __v_r1);",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_r0, __cbin)",
+          "new_text": "_mm256_sub_ps(__v_r1, __v_rc11)",
+          "old_line_content": "            __m256 __v_rc01 = _mm256_mul_ps(__v_r0, __cbin);",
+          "new_line_content": "            __m256 __v_rc10 = _mm256_sub_ps(__v_r1, __v_rc11);",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_rc11, __obin)",
+          "new_text": "_mm256_sub_ps(__v_r0, __v_rc01)",
+          "old_line_content": "            __m256 __v_rco111 = _mm256_mul_ps(__v_rc11, __obin);",
+          "new_line_content": "            __m256 __v_rc00 = _mm256_sub_ps(__v_r0, __v_rc01);",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_rc10, __obin)",
+          "new_text": "_mm256_sub_ps(__v_rc11, __v_rco111)",
+          "old_line_content": "            __m256 __v_rco101 = _mm256_mul_ps(__v_rc10, __obin);",
+          "new_line_content": "            __m256 __v_rco110 = _mm256_sub_ps(__v_rc11, __v_rco111);",
+          "content_same": false
+        },
+        {
+          "line": 825,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_rc01, __obin)",
+          "new_text": "_mm256_sub_ps(__v_rc10, __v_rco101)",
+          "old_line_content": "            __m256 __v_rco011 = _mm256_mul_ps(__v_rc01, __obin);",
+          "new_line_content": "            __m256 __v_rco100 = _mm256_sub_ps(__v_rc10, __v_rco101);",
+          "content_same": false
+        },
+        {
+          "line": 828,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_mul_ps(__v_rc00, __obin)",
+          "new_text": "_mm256_sub_ps(__v_rc01, __v_rco011)",
+          "old_line_content": "            __m256 __v_rco001 = _mm256_mul_ps(__v_rc00, __obin);",
+          "new_line_content": "            __m256 __v_rco010 = _mm256_sub_ps(__v_rc01, __v_rco011);",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "_mm256_set1_epi32",
+          "new_api": "_mm256_sub_ps",
+          "old_text": "_mm256_set1_epi32(1)",
+          "new_text": "_mm256_sub_ps(__v_rc00, __v_rco001)",
+          "old_line_content": "            __m256i __one = _mm256_set1_epi32(1);",
+          "new_line_content": "            __m256 __v_rco000 = _mm256_sub_ps(__v_rc00, __v_rco001);",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": "_mm256_mullo_epi32",
+          "new_api": "_mm256_set1_epi32",
+          "old_text": "_mm256_mullo_epi32(\n                    _mm256_add_epi32(\n                        _mm256_mullo_epi32(_mm256_add_epi32(_mm256_cvtps_epi32(__r0), __one), _mm256_set1_epi32(d + 2)),\n                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one)),\n                    _mm256_set1_epi32(n + 2))",
+          "new_text": "_mm256_set1_epi32(1)",
+          "old_line_content": "                _mm256_mullo_epi32(",
+          "new_line_content": "            __m256i __one = _mm256_set1_epi32(1);",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": "_mm256_set1_epi32",
+          "new_api": "_mm256_mullo_epi32",
+          "old_text": "_mm256_set1_epi32(d + 2)",
+          "new_text": "_mm256_mullo_epi32(\n                    _mm256_add_epi32(\n                        _mm256_mullo_epi32(_mm256_add_epi32(_mm256_cvtps_epi32(__r0), __one), _mm256_set1_epi32(d + 2)),\n                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one)),\n                    _mm256_set1_epi32(n + 2))",
+          "old_line_content": "                        _mm256_mullo_epi32(_mm256_add_epi32(_mm256_cvtps_epi32(__r0), __one), _mm256_set1_epi32(d + 2)),",
+          "new_line_content": "                _mm256_mullo_epi32(",
+          "content_same": false
+        },
+        {
+          "line": 836,
+          "old_api": "_mm256_cvtps_epi32",
+          "new_api": "_mm256_add_epi32",
+          "old_text": "_mm256_cvtps_epi32(__c0)",
+          "new_text": "_mm256_add_epi32(\n                        _mm256_mullo_epi32(_mm256_add_epi32(_mm256_cvtps_epi32(__r0), __one), _mm256_set1_epi32(d + 2)),\n                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one))",
+          "old_line_content": "                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one)),",
+          "new_line_content": "                    _mm256_add_epi32(",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": "_mm256_store_ps",
+          "new_api": "_mm256_store_si256",
+          "old_text": "_mm256_store_ps(&(rco_buf[0]),  __v_rco000)",
+          "new_text": "_mm256_store_si256((__m256i *)idx_buf, __idx)",
+          "old_line_content": "            _mm256_store_ps(&(rco_buf[0]),  __v_rco000);",
+          "new_line_content": "            _mm256_store_si256((__m256i *)idx_buf, __idx);",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": "_mm256_fmadd_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_fmadd_ps(__dst, __dst, __nrm2)",
+          "new_text": "_mm256_loadu_ps(&dst[k])",
+          "old_line_content": "            __nrm2 = _mm256_fmadd_ps(__dst, __dst, __nrm2);",
+          "new_line_content": "            __dst = _mm256_loadu_ps(&dst[k]);",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_fmadd_ps",
+          "old_text": "_mm256_mul_ps(__dst, __dst)",
+          "new_text": "_mm256_fmadd_ps(__dst, __dst, __nrm2)",
+          "old_line_content": "            __nrm2 = _mm256_add_ps(__nrm2, _mm256_mul_ps(__dst, __dst));",
+          "new_line_content": "            __nrm2 = _mm256_fmadd_ps(__dst, __dst, __nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 967,
+          "old_api": "_mm256_storeu_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_storeu_ps(&dst[i], __dst)",
+          "new_text": "_mm256_loadu_ps(&dst[i])",
+          "old_line_content": "            _mm256_storeu_ps(&dst[i], __dst);",
+          "new_line_content": "            __dst = _mm256_loadu_ps(&dst[i]);",
+          "content_same": false
+        },
+        {
+          "line": 969,
+          "old_api": "_mm256_fmadd_ps",
+          "new_api": "_mm256_storeu_ps",
+          "old_text": "_mm256_fmadd_ps(__dst, __dst, __nrm2)",
+          "new_text": "_mm256_storeu_ps(&dst[i], __dst)",
+          "old_line_content": "            __nrm2 = _mm256_fmadd_ps(__dst, __dst, __nrm2);",
+          "new_line_content": "            _mm256_storeu_ps(&dst[i], __dst);",
+          "content_same": false
+        },
+        {
+          "line": 971,
+          "old_api": "_mm256_mul_ps",
+          "new_api": "_mm256_fmadd_ps",
+          "old_text": "_mm256_mul_ps(__dst, __dst)",
+          "new_text": "_mm256_fmadd_ps(__dst, __dst, __nrm2)",
+          "old_line_content": "            __nrm2 = _mm256_add_ps(__nrm2, _mm256_mul_ps(__dst, __dst));",
+          "new_line_content": "            __nrm2 = _mm256_fmadd_ps(__dst, __dst, __nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 995,
+          "old_api": "_mm256_set1_ps",
+          "new_api": "_mm256_setzero_ps",
+          "old_text": "_mm256_set1_ps(nrm2)",
+          "new_text": "_mm256_setzero_ps()",
+          "old_line_content": "        __m256 __nrm2 = _mm256_set1_ps(nrm2);",
+          "new_line_content": "        __m256 __min = _mm256_setzero_ps();",
+          "content_same": false
+        },
+        {
+          "line": 1000,
+          "old_api": "_mm256_storeu_ps",
+          "new_api": "_mm256_loadu_ps",
+          "old_text": "_mm256_storeu_ps(&dst[k], __dst)",
+          "new_text": "_mm256_loadu_ps(&dst[k])",
+          "old_line_content": "            _mm256_storeu_ps(&dst[k], __dst);",
+          "new_line_content": "            __dst = _mm256_loadu_ps(&dst[k]);",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": "descriptors.ptr<float>((int)i)",
+          "new_api": "std::abs(angle - 360.f)",
+          "old_text": "descriptors.ptr<float>((int)i)",
+          "new_text": "std::abs(angle - 360.f)",
+          "old_line_content": "            calcSIFTDescriptor(img, ptf, angle, size*0.5f, d, n, descriptors.ptr<float>((int)i));",
+          "new_line_content": "            if(std::abs(angle - 360.f) < FLT_EPSILON)",
+          "content_same": false
+        },
+        {
+          "line": 1113,
+          "old_api": "depth",
+          "new_api": "getMat",
+          "old_text": "image.depth()",
+          "new_text": "_mask.getMat()",
+          "old_line_content": "    if( image.empty() || image.depth() != CV_8U )",
+          "new_line_content": "    Mat image = _image.getMat(), mask = _mask.getMat();",
+          "content_same": false
+        },
+        {
+          "line": 1116,
+          "old_api": "type",
+          "new_api": "CV_Error",
+          "old_text": "mask.type()",
+          "new_text": "CV_Error( Error::StsBadArg, \"image is empty or has incorrect depth (!=CV_8U)\" )",
+          "old_line_content": "    if( !mask.empty() && mask.type() != CV_8UC1 )",
+          "new_line_content": "        CV_Error( Error::StsBadArg, \"image is empty or has incorrect depth (!=CV_8U)\" );",
+          "content_same": false
+        },
+        {
+          "line": 1129,
+          "old_api": "std::max(maxOctave, octave)",
+          "new_api": "unpackOctave",
+          "old_text": "std::max(maxOctave, octave)",
+          "new_text": "unpackOctave(keypoints[i], octave, layer, scale)",
+          "old_line_content": "            maxOctave = std::max(maxOctave, octave);",
+          "new_line_content": "            unpackOctave(keypoints[i], octave, layer, scale);",
+          "content_same": false
+        },
+        {
+          "line": 1130,
+          "old_api": "std::max(actualNLayers, layer-2)",
+          "new_api": "std::min(firstOctave, octave)",
+          "old_text": "std::max(actualNLayers, layer-2)",
+          "new_text": "std::min(firstOctave, octave)",
+          "old_line_content": "            actualNLayers = std::max(actualNLayers, layer-2);",
+          "new_line_content": "            firstOctave = std::min(firstOctave, octave);",
+          "content_same": false
+        },
+        {
+          "line": 1140,
+          "old_api": "std::log(2.)",
+          "new_api": "createInitialImage",
+          "old_text": "std::log(2.)",
+          "new_text": "createInitialImage(image, firstOctave < 0, (float)sigma)",
+          "old_line_content": "    int nOctaves = actualNOctaves > 0 ? actualNOctaves : cvRound(std::log( (double)std::min( base.cols, base.rows ) ) / std::log(2.) - 2) - firstOctave;",
+          "new_line_content": "    Mat base = createInitialImage(image, firstOctave < 0, (float)sigma);",
+          "content_same": false
+        },
+        {
+          "line": 1154,
+          "old_api": "findScaleSpaceExtrema",
+          "new_api": "buildDoGPyramid",
+          "old_text": "findScaleSpaceExtrema(gpyr, dogpyr, keypoints)",
+          "new_text": "buildDoGPyramid(gpyr, dogpyr)",
+          "old_line_content": "        findScaleSpaceExtrema(gpyr, dogpyr, keypoints);",
+          "new_line_content": "        buildDoGPyramid(gpyr, dogpyr);",
+          "content_same": false
+        },
+        {
+          "line": 1186,
+          "old_api": "getMat",
+          "new_api": "descriptorSize",
+          "old_text": "_descriptors.getMat()",
+          "new_text": "descriptorSize()",
+          "old_line_content": "        Mat descriptors = _descriptors.getMat();",
+          "new_line_content": "        int dsize = descriptorSize();",
+          "content_same": false
+        },
+        {
+          "line": 1188,
+          "old_api": "calcDescriptors",
+          "new_api": "getMat",
+          "old_text": "calcDescriptors(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave)",
+          "new_text": "_descriptors.getMat()",
+          "old_line_content": "        calcDescriptors(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave);",
+          "new_line_content": "        Mat descriptors = _descriptors.getMat();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 529,
+          "old_api": null,
+          "new_api": "prev.at<sift_wt>(r, c)",
+          "old_text": null,
+          "new_text": "prev.at<sift_wt>(r, c)",
+          "old_line_content": "",
+          "new_line_content": "                   (next.at<sift_wt>(r, c) - prev.at<sift_wt>(r, c))*deriv_scale);",
+          "content_same": false
+        },
+        {
+          "line": 1041,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "        const int begin = range.start;",
+          "new_line_content": "        CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r, c)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r, c)",
+          "old_line_content": "            return false;",
+          "new_line_content": "        contr = img.at<sift_wt>(r, c)*img_scale + t * 0.5f;",
+          "content_same": false
+        },
+        {
+          "line": 533,
+          "old_api": null,
+          "new_api": "std::abs( contr )",
+          "old_text": null,
+          "new_text": "std::abs( contr )",
+          "old_line_content": "",
+          "new_line_content": "        if( std::abs( contr ) * nOctaveLayers < contrastThreshold )",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r+1, c-1)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r+1, c-1)",
+          "old_line_content": "        float tr = dxx + dyy;",
+          "new_line_content": "        float dxy = (img.at<sift_wt>(r+1, c+1) - img.at<sift_wt>(r+1, c-1) -",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r-1, c-1)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r-1, c-1)",
+          "old_line_content": "        float det = dxx * dyy - dxy * dxy;",
+          "new_line_content": "                     img.at<sift_wt>(r-1, c+1) + img.at<sift_wt>(r-1, c-1)) * cross_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 1053,
+          "old_api": null,
+          "new_api": "unpackOctave",
+          "old_text": null,
+          "new_text": "unpackOctave(kpt, octave, layer, scale)",
+          "old_line_content": "            float size=kpt.size*scale;",
+          "new_line_content": "            unpackOctave(kpt, octave, layer, scale);",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": null,
+          "new_api": "CV_Assert",
+          "old_text": null,
+          "new_text": "CV_Assert(octave >= firstOctave && layer <= nOctaveLayers+2)",
+          "old_line_content": "            Point2f ptf(kpt.pt.x*scale, kpt.pt.y*scale);",
+          "new_line_content": "            CV_Assert(octave >= firstOctave && layer <= nOctaveLayers+2);",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "descriptors.ptr<float>((int)i)",
+          "old_text": null,
+          "new_text": "descriptors.ptr<float>((int)i)",
+          "old_line_content": "    }",
+          "new_line_content": "            calcSIFTDescriptor(img, ptf, angle, size*0.5f, d, n, descriptors.ptr<float>((int)i));",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": null,
+          "new_api": "powf",
+          "old_text": null,
+          "new_text": "powf(2.f, (layer + xi) / nOctaveLayers)",
+          "old_line_content": "",
+          "new_line_content": "    kpt.size = sigma*powf(2.f, (layer + xi) / nOctaveLayers)*(1 << octv)*2;",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": null,
+          "new_api": "std::abs(contr)",
+          "old_text": null,
+          "new_text": "std::abs(contr)",
+          "old_line_content": "    return true;",
+          "new_line_content": "    kpt.response = std::abs(contr);",
+          "content_same": false
+        },
+        {
+          "line": 1076,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "}",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "calcDescriptorsComputer",
+          "old_text": null,
+          "new_text": "calcDescriptorsComputer(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave)",
+          "old_line_content": "",
+          "new_line_content": "    parallel_for_(Range(0, static_cast<int>(keypoints.size())), calcDescriptorsComputer(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave));",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "        const int begin = range.start;",
+          "new_line_content": "        CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 1110,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    int firstOctave = -1, actualNOctaves = 0, actualNLayers = 0;",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 1115,
+          "old_api": null,
+          "new_api": "depth",
+          "old_text": null,
+          "new_text": "image.depth()",
+          "old_line_content": "",
+          "new_line_content": "    if( image.empty() || image.depth() != CV_8U )",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "tls_kpts_struct.get()",
+          "old_line_content": "        KeyPoint kpt;",
+          "new_line_content": "        std::vector<KeyPoint> *tls_kpts = tls_kpts_struct.get();",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": null,
+          "new_api": "type",
+          "old_text": null,
+          "new_text": "mask.type()",
+          "old_line_content": "",
+          "new_line_content": "    if( !mask.empty() && mask.type() != CV_8UC1 )",
+          "content_same": false
+        },
+        {
+          "line": 1119,
+          "old_api": null,
+          "new_api": "CV_Error",
+          "old_text": null,
+          "new_text": "CV_Error( Error::StsBadArg, \"mask has incorrect type (!=CV_8UC1)\" )",
+          "old_line_content": "    if( useProvidedKeypoints )",
+          "new_line_content": "        CV_Error( Error::StsBadArg, \"mask has incorrect type (!=CV_8UC1)\" );",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": null,
+          "new_api": "prev.ptr<sift_wt>(r)",
+          "old_text": null,
+          "new_text": "prev.ptr<sift_wt>(r)",
+          "old_line_content": "",
+          "new_line_content": "            const sift_wt* prevptr = prev.ptr<sift_wt>(r);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "next.ptr<sift_wt>(r)",
+          "old_text": null,
+          "new_text": "next.ptr<sift_wt>(r)",
+          "old_line_content": "            for( int c = SIFT_IMG_BORDER; c < cols-SIFT_IMG_BORDER; c++)",
+          "new_line_content": "            const sift_wt* nextptr = next.ptr<sift_wt>(r);",
+          "content_same": false
+        },
+        {
+          "line": 1125,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "keypoints.size()",
+          "old_line_content": "            int octave, layer;",
+          "new_line_content": "        for( size_t i = 0; i < keypoints.size(); i++ )",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": null,
+          "new_api": "std::abs(val)",
+          "old_text": null,
+          "new_text": "std::abs(val)",
+          "old_line_content": "                     val >= currptr[c-step-1] && val >= currptr[c-step] && val >= currptr[c-step+1] &&",
+          "new_line_content": "                if( std::abs(val) > threshold &&",
+          "content_same": false
+        },
+        {
+          "line": 1131,
+          "old_api": null,
+          "new_api": "std::max(maxOctave, octave)",
+          "old_text": null,
+          "new_text": "std::max(maxOctave, octave)",
+          "old_line_content": "        }",
+          "new_line_content": "            maxOctave = std::max(maxOctave, octave);",
+          "content_same": false
+        },
+        {
+          "line": 1132,
+          "old_api": null,
+          "new_api": "std::max(actualNLayers, layer-2)",
+          "old_text": null,
+          "new_text": "std::max(actualNLayers, layer-2)",
+          "old_line_content": "",
+          "new_line_content": "            actualNLayers = std::max(actualNLayers, layer-2);",
+          "content_same": false
+        },
+        {
+          "line": 1135,
+          "old_api": null,
+          "new_api": "std::min(firstOctave, 0)",
+          "old_text": null,
+          "new_text": "std::min(firstOctave, 0)",
+          "old_line_content": "        actualNOctaves = maxOctave - firstOctave + 1;",
+          "new_line_content": "        firstOctave = std::min(firstOctave, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1136,
+          "old_api": null,
+          "new_api": "CV_Assert",
+          "old_text": null,
+          "new_text": "CV_Assert( firstOctave >= -1 && actualNLayers <= nOctaveLayers )",
+          "old_line_content": "    }",
+          "new_line_content": "        CV_Assert( firstOctave >= -1 && actualNLayers <= nOctaveLayers );",
+          "content_same": false
+        },
+        {
+          "line": 1142,
+          "old_api": null,
+          "new_api": "std::log(2.)",
+          "old_text": null,
+          "new_text": "std::log(2.)",
+          "old_line_content": "    //double t, tf = getTickFrequency();",
+          "new_line_content": "    int nOctaves = actualNOctaves > 0 ? actualNOctaves : cvRound(std::log( (double)std::min( base.cols, base.rows ) ) / std::log(2.) - 2) - firstOctave;",
+          "content_same": false
+        },
+        {
+          "line": 1146,
+          "old_api": null,
+          "new_api": "buildGaussianPyramid",
+          "old_text": null,
+          "new_text": "buildGaussianPyramid(base, gpyr, nOctaves)",
+          "old_line_content": "    //t = (double)getTickCount() - t;",
+          "new_line_content": "    buildGaussianPyramid(base, gpyr, nOctaves);",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "CV_TRACE_REGION",
+          "old_text": null,
+          "new_text": "CV_TRACE_REGION(\"pixel_candidate\")",
+          "old_line_content": "                    int r1 = r, c1 = c, layer = i;",
+          "new_line_content": "                    CV_TRACE_REGION(\"pixel_candidate\");",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": null,
+          "new_api": "adjustLocalExtrema",
+          "old_text": null,
+          "new_text": "adjustLocalExtrema(dog_pyr, kpt, o, layer, r1, c1,\n                                            nOctaveLayers, (float)contrastThreshold,\n                                            (float)edgeThreshold, (float)sigma)",
+          "old_line_content": "                                            (float)edgeThreshold, (float)sigma) )",
+          "new_line_content": "                    if( !adjustLocalExtrema(dog_pyr, kpt, o, layer, r1, c1,",
+          "content_same": false
+        },
+        {
+          "line": 1156,
+          "old_api": null,
+          "new_api": "findScaleSpaceExtrema",
+          "old_text": null,
+          "new_text": "findScaleSpaceExtrema(gpyr, dogpyr, keypoints)",
+          "old_line_content": "",
+          "new_line_content": "        findScaleSpaceExtrema(gpyr, dogpyr, keypoints);",
+          "content_same": false
+        },
+        {
+          "line": 1157,
+          "old_api": null,
+          "new_api": "KeyPointsFilter::removeDuplicatedSorted( keypoints )",
+          "old_text": null,
+          "new_text": "KeyPointsFilter::removeDuplicatedSorted( keypoints )",
+          "old_line_content": "        if( nfeatures > 0 )",
+          "new_line_content": "        KeyPointsFilter::removeDuplicatedSorted( keypoints );",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": null,
+          "new_api": "Point",
+          "old_text": null,
+          "new_text": "Point(c1, r1)",
+          "old_line_content": "                                                     SIFT_ORI_SIG_FCTR * scl_octv,",
+          "new_line_content": "                                                     Point(c1, r1),",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "cvRound",
+          "old_text": null,
+          "new_text": "cvRound(SIFT_ORI_RADIUS * scl_octv)",
+          "old_line_content": "                                                     hist, n);",
+          "new_line_content": "                                                     cvRound(SIFT_ORI_RADIUS * scl_octv),",
+          "content_same": false
+        },
+        {
+          "line": 1160,
+          "old_api": null,
+          "new_api": "KeyPointsFilter::retainBest(keypoints, nfeatures)",
+          "old_text": null,
+          "new_text": "KeyPointsFilter::retainBest(keypoints, nfeatures)",
+          "old_line_content": "        //printf(\"keypoint detection time: %g\\n\", t*1000./tf);",
+          "new_line_content": "            KeyPointsFilter::retainBest(keypoints, nfeatures);",
+          "content_same": false
+        },
+        {
+          "line": 1165,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "keypoints.size()",
+          "old_line_content": "                KeyPoint& kpt = keypoints[i];",
+          "new_line_content": "            for( size_t i = 0; i < keypoints.size(); i++ )",
+          "content_same": false
+        },
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "std::abs(kpt.angle - 360.f)",
+          "old_text": null,
+          "new_text": "std::abs(kpt.angle - 360.f)",
+          "old_line_content": "                            {",
+          "new_line_content": "                            if(std::abs(kpt.angle - 360.f) < FLT_EPSILON)",
+          "content_same": false
+        },
+        {
+          "line": 1174,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "mask.empty()",
+          "old_line_content": "    }",
+          "new_line_content": "        if( !mask.empty() )",
+          "content_same": false
+        },
+        {
+          "line": 1175,
+          "old_api": null,
+          "new_api": "KeyPointsFilter::runByPixelsMask( keypoints, mask )",
+          "old_text": null,
+          "new_text": "KeyPointsFilter::runByPixelsMask( keypoints, mask )",
+          "old_line_content": "    else",
+          "new_line_content": "            KeyPointsFilter::runByPixelsMask( keypoints, mask );",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "tls_kpts->push_back(kpt)",
+          "old_line_content": "                        }",
+          "new_line_content": "                                tls_kpts->push_back(kpt);",
+          "content_same": false
+        },
+        {
+          "line": 1183,
+          "old_api": null,
+          "new_api": "needed",
+          "old_text": null,
+          "new_text": "_descriptors.needed()",
+          "old_line_content": "        //t = (double)getTickCount();",
+          "new_line_content": "    if( _descriptors.needed() )",
+          "content_same": false
+        },
+        {
+          "line": 1187,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "keypoints.size()",
+          "old_line_content": "",
+          "new_line_content": "        _descriptors.create((int)keypoints.size(), dsize, CV_32F);",
+          "content_same": false
+        },
+        {
+          "line": 1190,
+          "old_api": null,
+          "new_api": "calcDescriptors",
+          "old_text": null,
+          "new_text": "calcDescriptors(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave)",
+          "old_line_content": "        //printf(\"descriptor extraction time: %g\\n\", t*1000./tf);",
+          "new_line_content": "        calcDescriptors(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave);",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "gauss_pyr.size()",
+          "old_line_content": "",
+          "new_line_content": "    const int nOctaves = (int)gauss_pyr.size()/(nOctaveLayers + 3);",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "keypoints.clear()",
+          "old_line_content": "",
+          "new_line_content": "    keypoints.clear();",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": null,
+          "new_api": "step1",
+          "old_text": null,
+          "new_text": "img.step1()",
+          "old_line_content": "",
+          "new_line_content": "            const int step = (int)img.step1();",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "Range",
+          "old_text": null,
+          "new_text": "Range(SIFT_IMG_BORDER, rows-SIFT_IMG_BORDER)",
+          "old_line_content": "                    o, i, threshold, idx, step, cols,",
+          "new_line_content": "            parallel_for_(Range(SIFT_IMG_BORDER, rows-SIFT_IMG_BORDER),",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "findScaleSpaceExtremaComputer",
+          "old_text": null,
+          "new_text": "findScaleSpaceExtremaComputer(\n                    o, i, threshold, idx, step, cols,\n                    nOctaveLayers,\n                    contrastThreshold,\n                    edgeThreshold,\n                    sigma,\n                    gauss_pyr, dog_pyr, tls_kpts_struct)",
+          "old_line_content": "                    nOctaveLayers,",
+          "new_line_content": "                findScaleSpaceExtremaComputer(",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "kpt_vecs.size()",
+          "old_line_content": "    }",
+          "new_line_content": "    for (size_t i = 0; i < kpt_vecs.size(); ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "kpt_vecs[i]->end()",
+          "old_line_content": "}",
+          "new_line_content": "        keypoints.insert(keypoints.end(), kpt_vecs[i]->begin(), kpt_vecs[i]->end());",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "Size",
+          "old_text": null,
+          "new_text": "Size()",
+          "old_line_content": "        return dbl;",
+          "new_line_content": "        GaussianBlur(dbl, result, Size(), sig_diff, sig_diff);",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "Size",
+          "old_text": null,
+          "new_text": "Size()",
+          "old_line_content": "    }",
+          "new_line_content": "        GaussianBlur(gray_fpt, result, Size(), sig_diff, sig_diff);",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": null,
+          "new_api": "cosf",
+          "old_text": null,
+          "new_text": "cosf(ori*(float)(CV_PI/180))",
+          "old_line_content": "    float bins_per_rad = n / 360.f;",
+          "new_line_content": "    float cos_t = cosf(ori*(float)(CV_PI/180));",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": null,
+          "new_api": "sinf",
+          "old_text": null,
+          "new_text": "sinf(ori*(float)(CV_PI/180))",
+          "old_line_content": "    float exp_scale = -1.f/(d * d * 0.5f);",
+          "new_line_content": "    float sin_t = sinf(ori*(float)(CV_PI/180));",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": null,
+          "new_api": "sqrt",
+          "old_text": null,
+          "new_text": "sqrt(((double) img.cols)*img.cols + ((double) img.rows)*img.rows)",
+          "old_line_content": "    sin_t /= hist_width;",
+          "new_line_content": "    radius = std::min(radius, (int) sqrt(((double) img.cols)*img.cols + ((double) img.rows)*img.rows));",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    std::vector<double> sig(nOctaveLayers + 3);",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": null,
+          "new_api": "resize",
+          "old_text": null,
+          "new_text": "pyr.resize(nOctaves*(nOctaveLayers + 3))",
+          "old_line_content": "    // precompute Gaussian sigmas using the following formula:",
+          "new_line_content": "    pyr.resize(nOctaves*(nOctaveLayers + 3));",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buf.data()",
+          "old_line_content": "",
+          "new_line_content": "    float *X = buf.data(), *Y = X + len, *Mag = Y, *Ori = Mag + len, *W = Ori + len;",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "std::pow( 2., 1. / nOctaveLayers )",
+          "old_text": null,
+          "new_text": "std::pow( 2., 1. / nOctaveLayers )",
+          "old_line_content": "    {",
+          "new_line_content": "    double k = std::pow( 2., 1. / nOctaveLayers );",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": null,
+          "new_api": "std::sqrt(sig_total*sig_total - sig_prev*sig_prev)",
+          "old_text": null,
+          "new_text": "std::sqrt(sig_total*sig_total - sig_prev*sig_prev)",
+          "old_line_content": "",
+          "new_line_content": "        sig[i] = std::sqrt(sig_total*sig_total - sig_prev*sig_prev);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "Size",
+          "old_text": null,
+          "new_text": "Size(src.cols/2, src.rows/2)",
+          "old_line_content": "            }",
+          "new_line_content": "                resize(src, dst, Size(src.cols/2, src.rows/2),",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r, c-1)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r, c-1)",
+          "old_line_content": "                X[k] = dx; Y[k] = dy; RBin[k] = rbin; CBin[k] = cbin;",
+          "new_line_content": "                float dx = (float)(img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1));",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "Size",
+          "old_text": null,
+          "new_text": "Size()",
+          "old_line_content": "        }",
+          "new_line_content": "                GaussianBlur(src, dst, Size(), sig[i], sig[i]);",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r+1, c)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r+1, c)",
+          "old_line_content": "                W[k] = (c_rot * c_rot + r_rot * r_rot)*exp_scale;",
+          "new_line_content": "                float dy = (float)(img.at<sift_wt>(r-1, c) - img.at<sift_wt>(r+1, c));",
+          "content_same": false
+        },
+        {
+          "line": 782,
+          "old_api": null,
+          "new_api": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "old_text": null,
+          "new_text": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "old_line_content": "",
+          "new_line_content": "    cv::hal::magnitude32f(X, Y, Mag, len);",
+          "content_same": false
+        },
+        {
+          "line": 783,
+          "old_api": null,
+          "new_api": "cv::hal::exp32f(W, W, len)",
+          "old_text": null,
+          "new_text": "cv::hal::exp32f(W, W, len)",
+          "old_line_content": "    k = 0;",
+          "new_line_content": "    cv::hal::exp32f(W, W, len);",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(bins_per_rad)",
+          "old_line_content": "        for( ; k <= len - 8; k+=8 )",
+          "new_line_content": "        const __m256 __bins_per_rad = _mm256_set1_ps(bins_per_rad);",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "        const int begin = range.start;",
+          "new_line_content": "        CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": null,
+          "new_api": "_mm256_set1_epi32",
+          "old_text": null,
+          "new_text": "_mm256_set1_epi32(n)",
+          "old_line_content": "        {",
+          "new_line_content": "        const __m256i __n = _mm256_set1_epi32(n);",
+          "content_same": false
+        },
+        {
+          "line": 798,
+          "old_api": null,
+          "new_api": "_mm256_loadu_ps",
+          "old_text": null,
+          "new_text": "_mm256_loadu_ps(&Ori[k])",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __obin = _mm256_mul_ps(_mm256_sub_ps(_mm256_loadu_ps(&Ori[k]), __ori), __bins_per_rad);",
+          "content_same": false
+        },
+        {
+          "line": 805,
+          "old_api": null,
+          "new_api": "_mm256_floor_ps",
+          "old_text": null,
+          "new_text": "_mm256_floor_ps(__obin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __o0 = _mm256_floor_ps(__obin);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": null,
+          "new_api": "noArray",
+          "old_text": null,
+          "new_text": "noArray()",
+          "old_line_content": "    }",
+          "new_line_content": "            subtract(src2, src1, dst, noArray(), DataType<sift_wt>::type);",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": null,
+          "new_api": "_mm256_setzero_si256",
+          "old_text": null,
+          "new_text": "_mm256_setzero_si256()",
+          "old_line_content": "",
+          "new_line_content": "            __o0i = _mm256_add_epi32(__o0i, _mm256_and_si256(__n, _mm256_cmpgt_epi32(_mm256_setzero_si256(), __o0i)));",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__mag, __rbin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_r1 = _mm256_mul_ps(__mag, __rbin);",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_r1, __cbin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rc11 = _mm256_mul_ps(__v_r1, __cbin);",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_r0, __cbin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rc01 = _mm256_mul_ps(__v_r0, __cbin);",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "gpyr.size()",
+          "old_line_content": "",
+          "new_line_content": "    int nOctaves = (int)gpyr.size()/(nOctaveLayers + 3);",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_rc11, __obin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rco111 = _mm256_mul_ps(__v_rc11, __obin);",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "buildDoGPyramidComputer",
+          "old_text": null,
+          "new_text": "buildDoGPyramidComputer(nOctaveLayers, gpyr, dogpyr)",
+          "old_line_content": "",
+          "new_line_content": "    parallel_for_(Range(0, nOctaves * (nOctaveLayers + 2)), buildDoGPyramidComputer(nOctaveLayers, gpyr, dogpyr));",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_rc10, __obin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rco101 = _mm256_mul_ps(__v_rc10, __obin);",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_rc01, __obin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rco011 = _mm256_mul_ps(__v_rc01, __obin);",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    int i, j, k, len = (radius*2+1)*(radius*2+1);",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__v_rc00, __obin)",
+          "old_line_content": "",
+          "new_line_content": "            __m256 __v_rco001 = _mm256_mul_ps(__v_rc00, __obin);",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buf.data()",
+          "old_line_content": "",
+          "new_line_content": "    float *X = buf.data(), *Y = X + len, *Mag = X, *Ori = Y + len, *W = Ori + len;",
+          "content_same": false
+        },
+        {
+          "line": 838,
+          "old_api": null,
+          "new_api": "_mm256_cvtps_epi32",
+          "old_text": null,
+          "new_text": "_mm256_cvtps_epi32(__c0)",
+          "old_line_content": "                __o0i);",
+          "new_line_content": "                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one)),",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": null,
+          "new_api": "_mm256_set1_epi32",
+          "old_text": null,
+          "new_text": "_mm256_set1_epi32(n + 2)",
+          "old_line_content": "",
+          "new_line_content": "                    _mm256_set1_epi32(n + 2)),",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": null,
+          "new_api": "_mm256_store_ps",
+          "old_text": null,
+          "new_text": "_mm256_store_ps(&(rco_buf[48]), __v_rco110)",
+          "old_line_content": "            #define HIST_SUM_HELPER(id)                                  \\",
+          "new_line_content": "            _mm256_store_ps(&(rco_buf[48]), __v_rco110);",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": null,
+          "new_api": "_mm256_store_ps",
+          "old_text": null,
+          "new_text": "_mm256_store_ps(&(rco_buf[56]), __v_rco111)",
+          "old_line_content": "                hist[idx_buf[(id)]] += rco_buf[(id)];                    \\",
+          "new_line_content": "            _mm256_store_ps(&(rco_buf[56]), __v_rco111);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(y, x-1)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(y, x-1)",
+          "old_line_content": "",
+          "new_line_content": "            float dx = (float)(img.at<sift_wt>(y, x+1) - img.at<sift_wt>(y, x-1));",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(y+1, x)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(y+1, x)",
+          "old_line_content": "            X[k] = dx; Y[k] = dy; W[k] = (i*i + j*j)*expf_scale;",
+          "new_line_content": "            float dy = (float)(img.at<sift_wt>(y-1, x) - img.at<sift_wt>(y+1, x));",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": null,
+          "new_api": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "old_text": null,
+          "new_text": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "old_line_content": "",
+          "new_line_content": "    cv::hal::fastAtan2(Y, X, Ori, len, true);",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": null,
+          "new_api": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "old_text": null,
+          "new_text": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "old_line_content": "    k = 0;",
+          "new_line_content": "    cv::hal::magnitude32f(X, Y, Mag, len);",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": null,
+          "new_api": "HIST_SUM_HELPER",
+          "old_text": null,
+          "new_text": "HIST_SUM_HELPER(6)",
+          "old_line_content": "",
+          "new_line_content": "            HIST_SUM_HELPER(6);",
+          "content_same": false
+        },
+        {
+          "line": 869,
+          "old_api": null,
+          "new_api": "HIST_SUM_HELPER",
+          "old_text": null,
+          "new_text": "HIST_SUM_HELPER(7)",
+          "old_line_content": "            #undef HIST_SUM_HELPER",
+          "new_line_content": "            HIST_SUM_HELPER(7);",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(n/360.f)",
+          "old_line_content": "        int CV_DECL_ALIGNED(32) bin_buf[8];",
+          "new_line_content": "        __m256 __nd360 = _mm256_set1_ps(n/360.f);",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": null,
+          "new_api": "_mm256_set1_epi32",
+          "old_text": null,
+          "new_text": "_mm256_set1_epi32(n)",
+          "old_line_content": "        float CV_DECL_ALIGNED(32) w_mul_mag_buf[8];",
+          "new_line_content": "        __m256i __n = _mm256_set1_epi32(n);",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": null,
+          "new_api": "_mm256_cmpgt_epi32",
+          "old_text": null,
+          "new_text": "_mm256_cmpgt_epi32(__n, __bin)",
+          "old_line_content": "",
+          "new_line_content": "            __bin = _mm256_sub_epi32(__bin, _mm256_andnot_si256(_mm256_cmpgt_epi32(__n, __bin), __n));",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": null,
+          "new_api": "cvFloor",
+          "old_text": null,
+          "new_text": "cvFloor( cbin )",
+          "old_line_content": "        rbin -= r0;",
+          "new_line_content": "        int c0 = cvFloor( cbin );",
+          "content_same": false
+        },
+        {
+          "line": 883,
+          "old_api": null,
+          "new_api": "cvFloor",
+          "old_text": null,
+          "new_text": "cvFloor( obin )",
+          "old_line_content": "        cbin -= c0;",
+          "new_line_content": "        int o0 = cvFloor( obin );",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": null,
+          "new_api": "_mm256_store_si256",
+          "old_text": null,
+          "new_text": "_mm256_store_si256((__m256i *) bin_buf, __bin)",
+          "old_line_content": "",
+          "new_line_content": "            _mm256_store_si256((__m256i *) bin_buf, __bin);",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": null,
+          "new_api": "_mm256_store_ps",
+          "old_text": null,
+          "new_text": "_mm256_store_ps(w_mul_mag_buf, __w_mul_mag)",
+          "old_line_content": "            temphist[bin_buf[0]] += w_mul_mag_buf[0];",
+          "new_line_content": "            _mm256_store_ps(w_mul_mag_buf, __w_mul_mag);",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "cvRound",
+          "old_text": null,
+          "new_text": "cvRound((n/360.f)*Ori[k])",
+          "old_line_content": "            bin -= n;",
+          "new_line_content": "        int bin = cvRound((n/360.f)*Ori[k]);",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(4.f/16.f)",
+          "old_line_content": "        for( ; i <= n - 8; i+=8 )",
+          "new_line_content": "        __m256 __d_4_16 = _mm256_set1_ps(4.f/16.f);",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(6.f/16.f)",
+          "old_line_content": "        {",
+          "new_line_content": "        __m256 __d_6_16 = _mm256_set1_ps(6.f/16.f);",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "_mm256_fmadd_ps",
+          "old_text": null,
+          "new_text": "_mm256_fmadd_ps(\n                _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                __d_1_16,\n                _mm256_fmadd_ps(\n                    _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                    __d_4_16,\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)))",
+          "old_line_content": "                __d_1_16,",
+          "new_line_content": "            __m256 __hist = _mm256_fmadd_ps(",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "_mm256_fmadd_ps",
+          "old_text": null,
+          "new_text": "_mm256_fmadd_ps(\n                    _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                    __d_4_16,\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16))",
+          "old_line_content": "                    __d_4_16,",
+          "new_line_content": "                _mm256_fmadd_ps(",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                        __d_1_16)",
+          "old_line_content": "                        __d_1_16),",
+          "new_line_content": "                _mm256_mul_ps(",
+          "content_same": false
+        },
+        {
+          "line": 934,
+          "old_api": null,
+          "new_api": "_mm256_setzero_ps",
+          "old_text": null,
+          "new_text": "_mm256_setzero_ps()",
+          "old_line_content": "        for( ; k <= len - 8; k += 8 )",
+          "new_line_content": "        __m256 __nrm2 = _mm256_setzero_ps();",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16)",
+          "old_line_content": "                        __d_4_16),",
+          "new_line_content": "                    _mm256_mul_ps(",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__dst, __dst)",
+          "old_line_content": "        }",
+          "new_line_content": "            __nrm2 = _mm256_add_ps(__nrm2, _mm256_mul_ps(__dst, __dst));",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": null,
+          "new_api": "_mm256_storeu_ps",
+          "old_text": null,
+          "new_text": "_mm256_storeu_ps(&hist[i], __hist)",
+          "old_line_content": "    }",
+          "new_line_content": "            _mm256_storeu_ps(&hist[i], __hist);",
+          "content_same": false
+        },
+        {
+          "line": 945,
+          "old_api": null,
+          "new_api": "_mm256_store_ps",
+          "old_text": null,
+          "new_text": "_mm256_store_ps(nrm2_buf, __nrm2)",
+          "old_line_content": "               nrm2_buf[4] + nrm2_buf[5] + nrm2_buf[6] + nrm2_buf[7];",
+          "new_line_content": "        _mm256_store_ps(nrm2_buf, __nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 953,
+          "old_api": null,
+          "new_api": "std::sqrt(nrm2)",
+          "old_text": null,
+          "new_text": "std::sqrt(nrm2)",
+          "old_line_content": "    i = 0, nrm2 = 0;",
+          "new_line_content": "    float thr = std::sqrt(nrm2)*SIFT_DESCR_MAG_THR;",
+          "content_same": false
+        },
+        {
+          "line": 444,
+          "old_api": null,
+          "new_api": "std::max(maxval, hist[i])",
+          "old_text": null,
+          "new_text": "std::max(maxval, hist[i])",
+          "old_line_content": "    return maxval;",
+          "new_line_content": "        maxval = std::max(maxval, hist[i]);",
+          "content_same": false
+        },
+        {
+          "line": 963,
+          "old_api": null,
+          "new_api": "_mm256_setzero_ps",
+          "old_text": null,
+          "new_text": "_mm256_setzero_ps()",
+          "old_line_content": "        for( ; i <= len - 8; i += 8 )",
+          "new_line_content": "        __m256 __nrm2 = _mm256_setzero_ps();",
+          "content_same": false
+        },
+        {
+          "line": 964,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(thr)",
+          "old_line_content": "        {",
+          "new_line_content": "        __m256 __thr = _mm256_set1_ps(thr);",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": null,
+          "new_api": "_mm256_min_ps",
+          "old_text": null,
+          "new_text": "_mm256_min_ps(__dst, __thr)",
+          "old_line_content": "#if CV_FMA3",
+          "new_line_content": "            __dst = _mm256_min_ps(__dst, __thr);",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": null,
+          "new_api": "CV_TRACE_FUNCTION",
+          "old_text": null,
+          "new_text": "CV_TRACE_FUNCTION()",
+          "old_line_content": "    const float img_scale = 1.f/(255*SIFT_FIXPT_SCALE);",
+          "new_line_content": "    CV_TRACE_FUNCTION();",
+          "content_same": false
+        },
+        {
+          "line": 973,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__dst, __dst)",
+          "old_line_content": "        }",
+          "new_line_content": "            __nrm2 = _mm256_add_ps(__nrm2, _mm256_mul_ps(__dst, __dst));",
+          "content_same": false
+        },
+        {
+          "line": 976,
+          "old_api": null,
+          "new_api": "_mm256_store_ps",
+          "old_text": null,
+          "new_text": "_mm256_store_ps(nrm2_buf, __nrm2)",
+          "old_line_content": "               nrm2_buf[4] + nrm2_buf[5] + nrm2_buf[6] + nrm2_buf[7];",
+          "new_line_content": "        _mm256_store_ps(nrm2_buf, __nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 983,
+          "old_api": null,
+          "new_api": "std::min(dst[i], thr)",
+          "old_text": null,
+          "new_text": "std::min(dst[i], thr)",
+          "old_line_content": "        nrm2 += val*val;",
+          "new_line_content": "        float val = std::min(dst[i], thr);",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": null,
+          "new_api": "std::sqrt(nrm2)",
+          "old_text": null,
+          "new_text": "std::sqrt(nrm2)",
+          "old_line_content": "#if 1",
+          "new_line_content": "    nrm2 = SIFT_INT_DESCR_FCTR/std::max(std::sqrt(nrm2), FLT_EPSILON);",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "img.at<sift_wt>(r-1, c)",
+          "old_text": null,
+          "new_text": "img.at<sift_wt>(r-1, c)",
+          "old_line_content": "",
+          "new_line_content": "                 (img.at<sift_wt>(r+1, c) - img.at<sift_wt>(r-1, c))*deriv_scale,",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(255.0f)",
+          "old_line_content": "        for( k = 0; k <= len - 8; k+=8 )",
+          "new_line_content": "        __m256 __max = _mm256_set1_ps(255.0f); // max of uchar",
+          "content_same": false
+        },
+        {
+          "line": 997,
+          "old_api": null,
+          "new_api": "_mm256_set1_ps",
+          "old_text": null,
+          "new_text": "_mm256_set1_ps(nrm2)",
+          "old_line_content": "        {",
+          "new_line_content": "        __m256 __nrm2 = _mm256_set1_ps(nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": null,
+          "new_api": "next.at<sift_wt>(r-1, c)",
+          "old_text": null,
+          "new_text": "next.at<sift_wt>(r-1, c)",
+          "old_line_content": "",
+          "new_line_content": "        float dys = (next.at<sift_wt>(r+1, c) - next.at<sift_wt>(r-1, c) -",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": null,
+          "new_api": "prev.at<sift_wt>(r-1, c)",
+          "old_text": null,
+          "new_text": "prev.at<sift_wt>(r-1, c)",
+          "old_line_content": "        Matx33f H(dxx, dxy, dxs,",
+          "new_line_content": "                     prev.at<sift_wt>(r+1, c) + prev.at<sift_wt>(r-1, c))*cross_deriv_scale;",
+          "content_same": false
+        },
+        {
+          "line": 1001,
+          "old_api": null,
+          "new_api": "_mm256_mul_ps",
+          "old_text": null,
+          "new_text": "_mm256_mul_ps(__dst, __nrm2)",
+          "old_line_content": "        }",
+          "new_line_content": "            __dst = _mm256_min_ps(_mm256_max_ps(_mm256_round_ps(_mm256_mul_ps(__dst, __nrm2), _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC), __min), __max);",
+          "content_same": false
+        },
+        {
+          "line": 1002,
+          "old_api": null,
+          "new_api": "_mm256_storeu_ps",
+          "old_text": null,
+          "new_text": "_mm256_storeu_ps(&dst[k], __dst)",
+          "old_line_content": "    }",
+          "new_line_content": "            _mm256_storeu_ps(&dst[k], __dst);",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": null,
+          "new_api": "std::abs(xc)",
+          "old_text": null,
+          "new_text": "std::abs(xc)",
+          "old_line_content": "",
+          "new_line_content": "            std::abs(xc) > (float)(INT_MAX/3) )",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "solve",
+          "old_text": null,
+          "new_text": "H.solve(dD, DECOMP_LU)",
+          "old_line_content": "        xi = -X[2];",
+          "new_line_content": "        Vec3f X = H.solve(dD, DECOMP_LU);",
+          "content_same": false
+        },
+        {
+          "line": 1008,
+          "old_api": null,
+          "new_api": "saturate_cast<uchar>(dst[k]*nrm2)",
+          "old_text": null,
+          "new_text": "saturate_cast<uchar>(dst[k]*nrm2)",
+          "old_line_content": "#else",
+          "new_line_content": "        dst[k] = saturate_cast<uchar>(dst[k]*nrm2);",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "std::abs(xc)",
+          "old_text": null,
+          "new_text": "std::abs(xc)",
+          "old_line_content": "",
+          "new_line_content": "        if( std::abs(xi) < 0.5f && std::abs(xr) < 0.5f && std::abs(xc) < 0.5f )",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "std::abs(xr)",
+          "old_text": null,
+          "new_text": "std::abs(xr)",
+          "old_line_content": "            return false;",
+          "new_line_content": "            std::abs(xr) > (float)(INT_MAX/3) ||",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": null,
+          "new_api": "std::max(nrm1, FLT_EPSILON)",
+          "old_text": null,
+          "new_text": "std::max(nrm1, FLT_EPSILON)",
+          "old_line_content": "    {",
+          "new_line_content": "    nrm1 = 1.f/std::max(nrm1, FLT_EPSILON);",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": null,
+          "new_api": "std::sqrt(dst[k] * nrm1)",
+          "old_text": null,
+          "new_text": "std::sqrt(dst[k] * nrm1)",
+          "old_line_content": "#endif",
+          "new_line_content": "        dst[k] = std::sqrt(dst[k] * nrm1);//saturate_cast<uchar>(std::sqrt(dst[k] * nrm1)*SIFT_INT_DESCR_FCTR);",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": null,
+          "new_api": "cvRound",
+          "old_text": null,
+          "new_text": "cvRound(xr)",
+          "old_line_content": "",
+          "new_line_content": "        r += cvRound(xr);",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "cvRound",
+          "old_text": null,
+          "new_text": "cvRound(xi)",
+          "old_line_content": "        if( layer < 1 || layer > nOctaveLayers ||",
+          "new_line_content": "        layer += cvRound(xi);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 525,
+          "old_api": "img.at<sift_wt>(r, c-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c-1)",
+          "new_text": null,
+          "old_line_content": "        Matx31f dD((img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1))*deriv_scale,",
+          "new_line_content": "        const Mat& prev = dog_pyr[idx-1];",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "img.at<sift_wt>(r-1, c)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r-1, c)",
+          "new_text": null,
+          "old_line_content": "                   (img.at<sift_wt>(r+1, c) - img.at<sift_wt>(r-1, c))*deriv_scale,",
+          "new_line_content": "        const Mat& next = dog_pyr[idx+1];",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "        CV_TRACE_FUNCTION();",
+          "new_line_content": "    void operator()( const cv::Range& range ) const CV_OVERRIDE",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "std::abs( contr )",
+          "new_api": null,
+          "old_text": "std::abs( contr )",
+          "new_text": null,
+          "old_line_content": "        if( std::abs( contr ) * nOctaveLayers < contrastThreshold )",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "img.at<sift_wt>(r, c)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c)",
+          "new_text": null,
+          "old_line_content": "        float v2 = img.at<sift_wt>(r, c)*2.f;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "img.at<sift_wt>(r, c-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c-1)",
+          "new_text": null,
+          "old_line_content": "        float dxx = (img.at<sift_wt>(r, c+1) + img.at<sift_wt>(r, c-1) - v2)*second_deriv_scale;",
+          "new_line_content": "        // principal curvatures are computed using the trace and det of Hessian",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": "unpackOctave",
+          "new_api": null,
+          "old_text": "unpackOctave(kpt, octave, layer, scale)",
+          "new_text": null,
+          "old_line_content": "            unpackOctave(kpt, octave, layer, scale);",
+          "new_line_content": "            int octave, layer;",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": "CV_Assert",
+          "new_api": null,
+          "old_text": "CV_Assert(octave >= firstOctave && layer <= nOctaveLayers+2)",
+          "new_text": null,
+          "old_line_content": "            CV_Assert(octave >= firstOctave && layer <= nOctaveLayers+2);",
+          "new_line_content": "            float scale;",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": "std::abs(angle - 360.f)",
+          "new_api": null,
+          "old_text": "std::abs(angle - 360.f)",
+          "new_text": null,
+          "old_line_content": "            if(std::abs(angle - 360.f) < FLT_EPSILON)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "cvRound",
+          "new_api": null,
+          "old_text": "cvRound((xi + 0.5)*255)",
+          "new_text": null,
+          "old_line_content": "    kpt.octave = octv + (layer << 8) + (cvRound((xi + 0.5)*255) << 16);",
+          "new_line_content": "    kpt.pt.x = (c + xc) * (1 << octv);",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": "powf",
+          "new_api": null,
+          "old_text": "powf(2.f, (layer + xi) / nOctaveLayers)",
+          "new_text": null,
+          "old_line_content": "    kpt.size = sigma*powf(2.f, (layer + xi) / nOctaveLayers)*(1 << octv)*2;",
+          "new_line_content": "    kpt.pt.y = (r + xr) * (1 << octv);",
+          "content_same": false
+        },
+        {
+          "line": 1074,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                            Mat& descriptors, int nOctaveLayers, int firstOctave )",
+          "content_same": false
+        },
+        {
+          "line": 1075,
+          "old_api": "calcDescriptorsComputer",
+          "new_api": null,
+          "old_text": "calcDescriptorsComputer(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave)",
+          "new_text": null,
+          "old_line_content": "    parallel_for_(Range(0, static_cast<int>(keypoints.size())), calcDescriptorsComputer(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "        CV_TRACE_FUNCTION();",
+          "new_line_content": "    void operator()( const cv::Range& range ) const CV_OVERRIDE",
+          "content_same": false
+        },
+        {
+          "line": 1108,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                      bool useProvidedKeypoints)",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": "getMat",
+          "new_api": null,
+          "old_text": "_mask.getMat()",
+          "new_text": null,
+          "old_line_content": "    Mat image = _image.getMat(), mask = _mask.getMat();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1114,
+          "old_api": "CV_Error",
+          "new_api": null,
+          "old_text": "CV_Error( Error::StsBadArg, \"image is empty or has incorrect depth (!=CV_8U)\" )",
+          "new_text": null,
+          "old_line_content": "        CV_Error( Error::StsBadArg, \"image is empty or has incorrect depth (!=CV_8U)\" );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "tls_kpts_struct.get()",
+          "new_text": null,
+          "old_line_content": "        std::vector<KeyPoint> *tls_kpts = tls_kpts_struct.get();",
+          "new_line_content": "        const Mat& next = dog_pyr[idx+1];",
+          "content_same": false
+        },
+        {
+          "line": 1117,
+          "old_api": "CV_Error",
+          "new_api": null,
+          "old_text": "CV_Error( Error::StsBadArg, \"mask has incorrect type (!=CV_8UC1)\" )",
+          "new_text": null,
+          "old_line_content": "        CV_Error( Error::StsBadArg, \"mask has incorrect type (!=CV_8UC1)\" );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 607,
+          "old_api": "img.ptr<sift_wt>(r)",
+          "new_api": null,
+          "old_text": "img.ptr<sift_wt>(r)",
+          "new_text": null,
+          "old_line_content": "            const sift_wt* currptr = img.ptr<sift_wt>(r);",
+          "new_line_content": "        for( int r = begin; r < end; r++)",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "prev.ptr<sift_wt>(r)",
+          "new_api": null,
+          "old_text": "prev.ptr<sift_wt>(r)",
+          "new_text": null,
+          "old_line_content": "            const sift_wt* prevptr = prev.ptr<sift_wt>(r);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 1123,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "keypoints.size()",
+          "new_text": null,
+          "old_line_content": "        for( size_t i = 0; i < keypoints.size(); i++ )",
+          "new_line_content": "        firstOctave = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1127,
+          "old_api": "unpackOctave",
+          "new_api": null,
+          "old_text": "unpackOctave(keypoints[i], octave, layer, scale)",
+          "new_text": null,
+          "old_line_content": "            unpackOctave(keypoints[i], octave, layer, scale);",
+          "new_line_content": "            int octave, layer;",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": "std::abs(val)",
+          "new_api": null,
+          "old_text": "std::abs(val)",
+          "new_text": null,
+          "old_line_content": "                if( std::abs(val) > threshold &&",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1128,
+          "old_api": "std::min(firstOctave, octave)",
+          "new_api": null,
+          "old_text": "std::min(firstOctave, octave)",
+          "new_text": null,
+          "old_line_content": "            firstOctave = std::min(firstOctave, octave);",
+          "new_line_content": "            float scale;",
+          "content_same": false
+        },
+        {
+          "line": 1133,
+          "old_api": "std::min(firstOctave, 0)",
+          "new_api": null,
+          "old_text": "std::min(firstOctave, 0)",
+          "new_text": null,
+          "old_line_content": "        firstOctave = std::min(firstOctave, 0);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1134,
+          "old_api": "CV_Assert",
+          "new_api": null,
+          "old_text": "CV_Assert( firstOctave >= -1 && actualNLayers <= nOctaveLayers )",
+          "new_text": null,
+          "old_line_content": "        CV_Assert( firstOctave >= -1 && actualNLayers <= nOctaveLayers );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1138,
+          "old_api": "createInitialImage",
+          "new_api": null,
+          "old_text": "createInitialImage(image, firstOctave < 0, (float)sigma)",
+          "new_text": null,
+          "old_line_content": "    Mat base = createInitialImage(image, firstOctave < 0, (float)sigma);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1144,
+          "old_api": "buildGaussianPyramid",
+          "new_api": null,
+          "old_text": "buildGaussianPyramid(base, gpyr, nOctaves)",
+          "new_text": null,
+          "old_line_content": "    buildGaussianPyramid(base, gpyr, nOctaves);",
+          "new_line_content": "    //double t, tf = getTickFrequency();",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": "CV_TRACE_REGION",
+          "new_api": null,
+          "old_text": "CV_TRACE_REGION(\"pixel_candidate\")",
+          "new_text": null,
+          "old_line_content": "                    CV_TRACE_REGION(\"pixel_candidate\");",
+          "new_line_content": "                     val <= prevptr[c+step-1] && val <= prevptr[c+step] && val <= prevptr[c+step+1])))",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "adjustLocalExtrema",
+          "new_api": null,
+          "old_text": "adjustLocalExtrema(dog_pyr, kpt, o, layer, r1, c1,\n                                            nOctaveLayers, (float)contrastThreshold,\n                                            (float)edgeThreshold, (float)sigma)",
+          "new_text": null,
+          "old_line_content": "                    if( !adjustLocalExtrema(dog_pyr, kpt, o, layer, r1, c1,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1152,
+          "old_api": "buildDoGPyramid",
+          "new_api": null,
+          "old_text": "buildDoGPyramid(gpyr, dogpyr)",
+          "new_text": null,
+          "old_line_content": "        buildDoGPyramid(gpyr, dogpyr);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1155,
+          "old_api": "KeyPointsFilter::removeDuplicatedSorted( keypoints )",
+          "new_api": null,
+          "old_text": "KeyPointsFilter::removeDuplicatedSorted( keypoints )",
+          "new_text": null,
+          "old_line_content": "        KeyPointsFilter::removeDuplicatedSorted( keypoints );",
+          "new_line_content": "        //t = (double)getTickCount();",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "calcOrientationHist",
+          "new_api": null,
+          "old_text": "calcOrientationHist(gauss_pyr[o*(nOctaveLayers+3) + layer],\n                                                     Point(c1, r1),\n                                                     cvRound(SIFT_ORI_RADIUS * scl_octv),\n                                                     SIFT_ORI_SIG_FCTR * scl_octv,\n                                                     hist, n)",
+          "new_text": null,
+          "old_line_content": "                    float omax = calcOrientationHist(gauss_pyr[o*(nOctaveLayers+3) + layer],",
+          "new_line_content": "                        continue;",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "Point",
+          "new_api": null,
+          "old_text": "Point(c1, r1)",
+          "new_text": null,
+          "old_line_content": "                                                     Point(c1, r1),",
+          "new_line_content": "                    float scl_octv = kpt.size*0.5f/(1 << o);",
+          "content_same": false
+        },
+        {
+          "line": 1158,
+          "old_api": "KeyPointsFilter::retainBest(keypoints, nfeatures)",
+          "new_api": null,
+          "old_text": "KeyPointsFilter::retainBest(keypoints, nfeatures)",
+          "new_text": null,
+          "old_line_content": "            KeyPointsFilter::retainBest(keypoints, nfeatures);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1163,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "keypoints.size()",
+          "new_text": null,
+          "old_line_content": "            for( size_t i = 0; i < keypoints.size(); i++ )",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "std::abs(kpt.angle - 360.f)",
+          "new_api": null,
+          "old_text": "std::abs(kpt.angle - 360.f)",
+          "new_text": null,
+          "old_line_content": "                            if(std::abs(kpt.angle - 360.f) < FLT_EPSILON)",
+          "new_line_content": "                            bin = bin < 0 ? n + bin : bin >= n ? bin - n : bin;",
+          "content_same": false
+        },
+        {
+          "line": 1172,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "mask.empty()",
+          "new_text": null,
+          "old_line_content": "        if( !mask.empty() )",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": "KeyPointsFilter::runByPixelsMask( keypoints, mask )",
+          "new_api": null,
+          "old_text": "KeyPointsFilter::runByPixelsMask( keypoints, mask )",
+          "new_text": null,
+          "old_line_content": "            KeyPointsFilter::runByPixelsMask( keypoints, mask );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "tls_kpts->push_back(kpt)",
+          "new_text": null,
+          "old_line_content": "                                tls_kpts->push_back(kpt);",
+          "new_line_content": "                                kpt.angle = 0.f;",
+          "content_same": false
+        },
+        {
+          "line": 1181,
+          "old_api": "needed",
+          "new_api": null,
+          "old_text": "_descriptors.needed()",
+          "new_text": null,
+          "old_line_content": "    if( _descriptors.needed() )",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1184,
+          "old_api": "descriptorSize",
+          "new_api": null,
+          "old_text": "descriptorSize()",
+          "new_text": null,
+          "old_line_content": "        int dsize = descriptorSize();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1185,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "keypoints.size()",
+          "new_text": null,
+          "old_line_content": "        _descriptors.create((int)keypoints.size(), dsize, CV_32F);",
+          "new_line_content": "        //t = (double)getTickCount();",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                                  std::vector<KeyPoint>& keypoints ) const",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "cvFloor",
+          "new_api": null,
+          "old_text": "cvFloor(0.5 * contrastThreshold / nOctaveLayers * 255 * SIFT_FIXPT_SCALE)",
+          "new_text": null,
+          "old_line_content": "    const int threshold = cvFloor(0.5 * contrastThreshold / nOctaveLayers * 255 * SIFT_FIXPT_SCALE);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "step1",
+          "new_api": null,
+          "old_text": "img.step1()",
+          "new_text": null,
+          "old_line_content": "            const int step = (int)img.step1();",
+          "new_line_content": "            const int idx = o*(nOctaveLayers+2)+i;",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": "Range",
+          "new_api": null,
+          "old_text": "Range(SIFT_IMG_BORDER, rows-SIFT_IMG_BORDER)",
+          "new_text": null,
+          "old_line_content": "            parallel_for_(Range(SIFT_IMG_BORDER, rows-SIFT_IMG_BORDER),",
+          "new_line_content": "            const int rows = img.rows, cols = img.cols;",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": "findScaleSpaceExtremaComputer",
+          "new_api": null,
+          "old_text": "findScaleSpaceExtremaComputer(\n                    o, i, threshold, idx, step, cols,\n                    nOctaveLayers,\n                    contrastThreshold,\n                    edgeThreshold,\n                    sigma,\n                    gauss_pyr, dog_pyr, tls_kpts_struct)",
+          "new_text": null,
+          "old_line_content": "                findScaleSpaceExtremaComputer(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "gather",
+          "new_api": null,
+          "old_text": "tls_kpts_struct.gather(kpt_vecs)",
+          "new_text": null,
+          "old_line_content": "    tls_kpts_struct.gather(kpt_vecs);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "kpt_vecs.size()",
+          "new_text": null,
+          "old_line_content": "    for (size_t i = 0; i < kpt_vecs.size(); ++i) {",
+          "new_line_content": "    std::vector<std::vector<KeyPoint>*> kpt_vecs;",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "Size",
+          "new_api": null,
+          "old_text": "Size()",
+          "new_text": null,
+          "old_line_content": "        GaussianBlur(dbl, dbl, Size(), sig_diff, sig_diff);",
+          "new_line_content": "        Mat result;",
+          "content_same": false
+        },
+        {
+          "line": 727,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                               int d, int n, float* dst )",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f)",
+          "new_api": null,
+          "old_text": "std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f)",
+          "new_text": null,
+          "old_line_content": "        sig_diff = sqrtf( std::max(sigma * sigma - SIFT_INIT_SIGMA * SIFT_INIT_SIGMA, 0.01f) );",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "cosf",
+          "new_api": null,
+          "old_text": "cosf(ori*(float)(CV_PI/180))",
+          "new_text": null,
+          "old_line_content": "    float cos_t = cosf(ori*(float)(CV_PI/180));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "cvRound",
+          "new_api": null,
+          "old_text": "cvRound(hist_width * 1.4142135623730951f * (d + 1) * 0.5f)",
+          "new_text": null,
+          "old_line_content": "    int radius = cvRound(hist_width * 1.4142135623730951f * (d + 1) * 0.5f);",
+          "new_line_content": "    float exp_scale = -1.f/(d * d * 0.5f);",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "void SIFT_Impl::buildGaussianPyramid( const Mat& base, std::vector<Mat>& pyr, int nOctaves ) const",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "resize",
+          "new_api": null,
+          "old_text": "pyr.resize(nOctaves*(nOctaveLayers + 3))",
+          "new_text": null,
+          "old_line_content": "    pyr.resize(nOctaves*(nOctaveLayers + 3));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 745,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "buf.data()",
+          "new_text": null,
+          "old_line_content": "    float *X = buf.data(), *Y = X + len, *Mag = Y, *Ori = Mag + len, *W = Ori + len;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "std::pow( 2., 1. / nOctaveLayers )",
+          "new_api": null,
+          "old_text": "std::pow( 2., 1. / nOctaveLayers )",
+          "new_text": null,
+          "old_line_content": "    double k = std::pow( 2., 1. / nOctaveLayers );",
+          "new_line_content": "    //  \\sigma_{total}^2 = \\sigma_{i}^2 + \\sigma_{i-1}^2",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "std::pow(k, (double)(i-1))",
+          "new_api": null,
+          "old_text": "std::pow(k, (double)(i-1))",
+          "new_text": null,
+          "old_line_content": "        double sig_prev = std::pow(k, (double)(i-1))*sigma;",
+          "new_line_content": "    for( int i = 1; i < nOctaveLayers + 3; i++ )",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "Size",
+          "new_api": null,
+          "old_text": "Size(src.cols/2, src.rows/2)",
+          "new_text": null,
+          "old_line_content": "                resize(src, dst, Size(src.cols/2, src.rows/2),",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 770,
+          "old_api": "img.at<sift_wt>(r, c-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c-1)",
+          "new_text": null,
+          "old_line_content": "                float dx = (float)(img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1));",
+          "new_line_content": "                r > 0 && r < rows - 1 && c > 0 && c < cols - 1 )",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": "Size",
+          "new_api": null,
+          "old_text": "Size()",
+          "new_text": null,
+          "old_line_content": "                GaussianBlur(src, dst, Size(), sig[i], sig[i]);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 771,
+          "old_api": "img.at<sift_wt>(r+1, c)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r+1, c)",
+          "new_text": null,
+          "old_line_content": "                float dy = (float)(img.at<sift_wt>(r-1, c) - img.at<sift_wt>(r+1, c));",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "new_api": null,
+          "old_text": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "new_text": null,
+          "old_line_content": "    cv::hal::fastAtan2(Y, X, Ori, len, true);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "new_api": null,
+          "old_text": "cv::hal::magnitude32f(X, Y, Mag, len)",
+          "new_text": null,
+          "old_line_content": "    cv::hal::magnitude32f(X, Y, Mag, len);",
+          "new_line_content": "    len = k;",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(ori)",
+          "new_text": null,
+          "old_line_content": "        const __m256 __ori = _mm256_set1_ps(ori);",
+          "new_line_content": "        int CV_DECL_ALIGNED(32) idx_buf[8];",
+          "content_same": false
+        },
+        {
+          "line": 790,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(bins_per_rad)",
+          "new_text": null,
+          "old_line_content": "        const __m256 __bins_per_rad = _mm256_set1_ps(bins_per_rad);",
+          "new_line_content": "        float CV_DECL_ALIGNED(32) rco_buf[64];",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "        CV_TRACE_FUNCTION();",
+          "new_line_content": "    void operator()( const cv::Range& range ) const CV_OVERRIDE",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&RBin[k])",
+          "new_text": null,
+          "old_line_content": "            __m256 __rbin = _mm256_loadu_ps(&RBin[k]);",
+          "new_line_content": "        for( ; k <= len - 8; k+=8 )",
+          "content_same": false
+        },
+        {
+          "line": 795,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&CBin[k])",
+          "new_text": null,
+          "old_line_content": "            __m256 __cbin = _mm256_loadu_ps(&CBin[k]);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 800,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__rbin, __r0)",
+          "new_text": null,
+          "old_line_content": "            __rbin = _mm256_sub_ps(__rbin, __r0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "noArray",
+          "new_api": null,
+          "old_text": "noArray()",
+          "new_text": null,
+          "old_line_content": "            subtract(src2, src1, dst, noArray(), DataType<sift_wt>::type);",
+          "new_line_content": "            const Mat& src2 = gpyr[o*(nOctaveLayers + 3) + i + 1];",
+          "content_same": false
+        },
+        {
+          "line": 807,
+          "old_api": "_mm256_setzero_si256",
+          "new_api": null,
+          "old_text": "_mm256_setzero_si256()",
+          "new_text": null,
+          "old_line_content": "            __o0i = _mm256_add_epi32(__o0i, _mm256_and_si256(__n, _mm256_cmpgt_epi32(_mm256_setzero_si256(), __o0i)));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__mag, __v_r1)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_r0 = _mm256_sub_ps(__mag, __v_r1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_r1, __v_rc11)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rc10 = _mm256_sub_ps(__v_r1, __v_rc11);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "void SIFT_Impl::buildDoGPyramid( const std::vector<Mat>& gpyr, std::vector<Mat>& dogpyr ) const",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_r0, __v_rc01)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rc00 = _mm256_sub_ps(__v_r0, __v_rc01);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "resize",
+          "new_api": null,
+          "old_text": "dogpyr.resize( nOctaves*(nOctaveLayers + 2) )",
+          "new_text": null,
+          "old_line_content": "    dogpyr.resize( nOctaves*(nOctaveLayers + 2) );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_rc11, __v_rco111)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rco110 = _mm256_sub_ps(__v_rc11, __v_rco111);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 823,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_rc10, __v_rco101)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rco100 = _mm256_sub_ps(__v_rc10, __v_rco101);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_rc01, __v_rco011)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rco010 = _mm256_sub_ps(__v_rc01, __v_rco011);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                                  float sigma, float* hist, int n )",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": "_mm256_sub_ps",
+          "new_api": null,
+          "old_text": "_mm256_sub_ps(__v_rc00, __v_rco001)",
+          "new_text": null,
+          "old_line_content": "            __m256 __v_rco000 = _mm256_sub_ps(__v_rc00, __v_rco001);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "_mm256_add_epi32",
+          "new_api": null,
+          "old_text": "_mm256_add_epi32(\n                _mm256_mullo_epi32(\n                    _mm256_add_epi32(\n                        _mm256_mullo_epi32(_mm256_add_epi32(_mm256_cvtps_epi32(__r0), __one), _mm256_set1_epi32(d + 2)),\n                        _mm256_add_epi32(_mm256_cvtps_epi32(__c0), __one)),\n                    _mm256_set1_epi32(n + 2)),\n                __o0i)",
+          "new_text": null,
+          "old_line_content": "            __m256i __idx = _mm256_add_epi32(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "buf.data()",
+          "new_text": null,
+          "old_line_content": "    float *X = buf.data(), *Y = X + len, *Mag = X, *Ori = Y + len, *W = Ori + len;",
+          "new_line_content": "    float expf_scale = -1.f/(2.f * sigma * sigma);",
+          "content_same": false
+        },
+        {
+          "line": 840,
+          "old_api": "_mm256_store_si256",
+          "new_api": null,
+          "old_text": "_mm256_store_si256((__m256i *)idx_buf, __idx)",
+          "new_text": null,
+          "old_line_content": "            _mm256_store_si256((__m256i *)idx_buf, __idx);",
+          "new_line_content": "                __o0i);",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": "_mm256_store_ps",
+          "new_api": null,
+          "old_text": "_mm256_store_ps(&(rco_buf[8]),  __v_rco001)",
+          "new_text": null,
+          "old_line_content": "            _mm256_store_ps(&(rco_buf[8]),  __v_rco001);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "img.at<sift_wt>(y, x-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(y, x-1)",
+          "new_text": null,
+          "old_line_content": "            float dx = (float)(img.at<sift_wt>(y, x+1) - img.at<sift_wt>(y, x-1));",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "img.at<sift_wt>(y+1, x)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(y+1, x)",
+          "new_text": null,
+          "old_line_content": "            float dy = (float)(img.at<sift_wt>(y-1, x) - img.at<sift_wt>(y+1, x));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": "HIST_SUM_HELPER",
+          "new_api": null,
+          "old_text": "HIST_SUM_HELPER(0)",
+          "new_text": null,
+          "old_line_content": "            HIST_SUM_HELPER(0);",
+          "new_line_content": "                hist[idx_buf[(id)]+(d+3)*(n+2)+1] += rco_buf[56 + (id)];",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": "HIST_SUM_HELPER",
+          "new_api": null,
+          "old_text": "HIST_SUM_HELPER(1)",
+          "new_text": null,
+          "old_line_content": "            HIST_SUM_HELPER(1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "cv::hal::exp32f(W, W, len)",
+          "new_api": null,
+          "old_text": "cv::hal::exp32f(W, W, len)",
+          "new_text": null,
+          "old_line_content": "    cv::hal::exp32f(W, W, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "new_api": null,
+          "old_text": "cv::hal::fastAtan2(Y, X, Ori, len, true)",
+          "new_text": null,
+          "old_line_content": "    cv::hal::fastAtan2(Y, X, Ori, len, true);",
+          "new_line_content": "    // compute gradient values, orientations and the weights over the pixel neighborhood",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(n/360.f)",
+          "new_text": null,
+          "old_line_content": "        __m256 __nd360 = _mm256_set1_ps(n/360.f);",
+          "new_line_content": "    if( USE_AVX2 )",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "_mm256_set1_epi32",
+          "new_api": null,
+          "old_text": "_mm256_set1_epi32(n)",
+          "new_text": null,
+          "old_line_content": "        __m256i __n = _mm256_set1_epi32(n);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&Ori[k])",
+          "new_text": null,
+          "old_line_content": "            __m256i __bin = _mm256_cvtps_epi32(_mm256_mul_ps(__nd360, _mm256_loadu_ps(&Ori[k])));",
+          "new_line_content": "        for ( ; k <= len - 8; k+=8 )",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "_mm256_setzero_si256",
+          "new_api": null,
+          "old_text": "_mm256_setzero_si256()",
+          "new_text": null,
+          "old_line_content": "            __bin = _mm256_add_epi32(__bin, _mm256_and_si256(__n, _mm256_cmpgt_epi32(_mm256_setzero_si256(), __bin)));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 879,
+          "old_api": "cvFloor",
+          "new_api": null,
+          "old_text": "cvFloor( rbin )",
+          "new_text": null,
+          "old_line_content": "        int r0 = cvFloor( rbin );",
+          "new_line_content": "        float mag = Mag[k]*W[k];",
+          "content_same": false
+        },
+        {
+          "line": 880,
+          "old_api": "cvFloor",
+          "new_api": null,
+          "old_text": "cvFloor( cbin )",
+          "new_text": null,
+          "old_line_content": "        int c0 = cvFloor( cbin );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": "_mm256_store_ps",
+          "new_api": null,
+          "old_text": "_mm256_store_ps(w_mul_mag_buf, __w_mul_mag)",
+          "new_text": null,
+          "old_line_content": "            _mm256_store_ps(w_mul_mag_buf, __w_mul_mag);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": "cvRound",
+          "new_api": null,
+          "old_text": "cvRound((n/360.f)*Ori[k])",
+          "new_text": null,
+          "old_line_content": "        int bin = cvRound((n/360.f)*Ori[k]);",
+          "new_line_content": "    for( ; k < len; k++ )",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(1.f/16.f)",
+          "new_text": null,
+          "old_line_content": "        __m256 __d_1_16 = _mm256_set1_ps(1.f/16.f);",
+          "new_line_content": "    if( USE_AVX2 )",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(4.f/16.f)",
+          "new_text": null,
+          "old_line_content": "        __m256 __d_4_16 = _mm256_set1_ps(4.f/16.f);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": "_mm256_fmadd_ps",
+          "new_api": null,
+          "old_text": "_mm256_fmadd_ps(\n                _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                __d_1_16,\n                _mm256_fmadd_ps(\n                    _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                    __d_4_16,\n                    _mm256_mul_ps(_mm256_loadu_ps(&temphist[i]), __d_6_16)))",
+          "new_text": null,
+          "old_line_content": "            __m256 __hist = _mm256_fmadd_ps(",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&temphist[i+2])",
+          "new_text": null,
+          "old_line_content": "                _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),",
+          "new_line_content": "#if CV_FMA3",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&temphist[i+1])",
+          "new_text": null,
+          "old_line_content": "                    _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),",
+          "new_line_content": "                __d_1_16,",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "_mm256_mul_ps",
+          "new_api": null,
+          "old_text": "_mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-2]), _mm256_loadu_ps(&temphist[i+2])),\n                        __d_1_16)",
+          "new_text": null,
+          "old_line_content": "                _mm256_mul_ps(",
+          "new_line_content": "#else",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": "_mm256_setzero_ps",
+          "new_api": null,
+          "old_text": "_mm256_setzero_ps()",
+          "new_text": null,
+          "old_line_content": "        __m256 __nrm2 = _mm256_setzero_ps();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "_mm256_mul_ps",
+          "new_api": null,
+          "old_text": "_mm256_mul_ps(\n                        _mm256_add_ps(_mm256_loadu_ps(&temphist[i-1]), _mm256_loadu_ps(&temphist[i+1])),\n                        __d_4_16)",
+          "new_text": null,
+          "old_line_content": "                    _mm256_mul_ps(",
+          "new_line_content": "                        __d_1_16),",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&dst[k])",
+          "new_text": null,
+          "old_line_content": "            __dst = _mm256_loadu_ps(&dst[k]);",
+          "new_line_content": "        for( ; k <= len - 8; k += 8 )",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": "_mm256_store_ps",
+          "new_api": null,
+          "old_text": "_mm256_store_ps(nrm2_buf, __nrm2)",
+          "new_text": null,
+          "old_line_content": "        _mm256_store_ps(nrm2_buf, __nrm2);",
+          "new_line_content": "#endif",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": "std::sqrt(nrm2)",
+          "new_api": null,
+          "old_text": "std::sqrt(nrm2)",
+          "new_text": null,
+          "old_line_content": "    float thr = std::sqrt(nrm2)*SIFT_DESCR_MAG_THR;",
+          "new_line_content": "        nrm2 += dst[k]*dst[k];",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": "std::max(maxval, hist[i])",
+          "new_api": null,
+          "old_text": "std::max(maxval, hist[i])",
+          "new_text": null,
+          "old_line_content": "        maxval = std::max(maxval, hist[i]);",
+          "new_line_content": "    float maxval = hist[0];",
+          "content_same": false
+        },
+        {
+          "line": 961,
+          "old_api": "_mm256_setzero_ps",
+          "new_api": null,
+          "old_text": "_mm256_setzero_ps()",
+          "new_text": null,
+          "old_line_content": "        __m256 __nrm2 = _mm256_setzero_ps();",
+          "new_line_content": "        float CV_DECL_ALIGNED(32) nrm2_buf[8];",
+          "content_same": false
+        },
+        {
+          "line": 962,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(thr)",
+          "new_text": null,
+          "old_line_content": "        __m256 __thr = _mm256_set1_ps(thr);",
+          "new_line_content": "        __m256 __dst;",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&dst[i])",
+          "new_text": null,
+          "old_line_content": "            __dst = _mm256_loadu_ps(&dst[i]);",
+          "new_line_content": "        for( ; i <= len - 8; i += 8 )",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": "_mm256_min_ps",
+          "new_api": null,
+          "old_text": "_mm256_min_ps(__dst, __thr)",
+          "new_text": null,
+          "old_line_content": "            __dst = _mm256_min_ps(__dst, __thr);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "CV_TRACE_FUNCTION",
+          "new_api": null,
+          "old_text": "CV_TRACE_FUNCTION()",
+          "new_text": null,
+          "old_line_content": "    CV_TRACE_FUNCTION();",
+          "new_line_content": "                                float contrastThreshold, float edgeThreshold, float sigma )",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": "_mm256_store_ps",
+          "new_api": null,
+          "old_text": "_mm256_store_ps(nrm2_buf, __nrm2)",
+          "new_text": null,
+          "old_line_content": "        _mm256_store_ps(nrm2_buf, __nrm2);",
+          "new_line_content": "#endif",
+          "content_same": false
+        },
+        {
+          "line": 981,
+          "old_api": "std::min(dst[i], thr)",
+          "new_api": null,
+          "old_text": "std::min(dst[i], thr)",
+          "new_text": null,
+          "old_line_content": "        float val = std::min(dst[i], thr);",
+          "new_line_content": "    for( ; i < len; i++ )",
+          "content_same": false
+        },
+        {
+          "line": 473,
+          "old_api": "img.at<sift_wt>(r, c-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c-1)",
+          "new_text": null,
+          "old_line_content": "        Vec3f dD((img.at<sift_wt>(r, c+1) - img.at<sift_wt>(r, c-1))*deriv_scale,",
+          "new_line_content": "        const Mat& next = dog_pyr[idx+1];",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "img.at<sift_wt>(r-1, c)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r-1, c)",
+          "new_text": null,
+          "old_line_content": "                 (img.at<sift_wt>(r+1, c) - img.at<sift_wt>(r-1, c))*deriv_scale,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": "std::sqrt(nrm2)",
+          "new_api": null,
+          "old_text": "std::sqrt(nrm2)",
+          "new_text": null,
+          "old_line_content": "    nrm2 = SIFT_INT_DESCR_FCTR/std::max(std::sqrt(nrm2), FLT_EPSILON);",
+          "new_line_content": "        nrm2 += val*val;",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "img.at<sift_wt>(r, c-1)",
+          "new_api": null,
+          "old_text": "img.at<sift_wt>(r, c-1)",
+          "new_text": null,
+          "old_line_content": "        float dxx = (img.at<sift_wt>(r, c+1) + img.at<sift_wt>(r, c-1) - v2)*second_deriv_scale;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": "_mm256_setzero_ps",
+          "new_api": null,
+          "old_text": "_mm256_setzero_ps()",
+          "new_text": null,
+          "old_line_content": "        __m256 __min = _mm256_setzero_ps();",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": "_mm256_set1_ps",
+          "new_api": null,
+          "old_text": "_mm256_set1_ps(255.0f)",
+          "new_text": null,
+          "old_line_content": "        __m256 __max = _mm256_set1_ps(255.0f); // max of uchar",
+          "new_line_content": "        __m256 __dst;",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": "_mm256_loadu_ps",
+          "new_api": null,
+          "old_text": "_mm256_loadu_ps(&dst[k])",
+          "new_text": null,
+          "old_line_content": "            __dst = _mm256_loadu_ps(&dst[k]);",
+          "new_line_content": "        for( k = 0; k <= len - 8; k+=8 )",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": "_mm256_mul_ps",
+          "new_api": null,
+          "old_text": "_mm256_mul_ps(__dst, __nrm2)",
+          "new_text": null,
+          "old_line_content": "            __dst = _mm256_min_ps(_mm256_max_ps(_mm256_round_ps(_mm256_mul_ps(__dst, __nrm2), _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC), __min), __max);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "solve",
+          "new_api": null,
+          "old_text": "H.solve(dD, DECOMP_LU)",
+          "new_text": null,
+          "old_line_content": "        Vec3f X = H.solve(dD, DECOMP_LU);",
+          "new_line_content": "                  dxs, dys, dss);",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": "saturate_cast<uchar>(dst[k]*nrm2)",
+          "new_api": null,
+          "old_text": "saturate_cast<uchar>(dst[k]*nrm2)",
+          "new_text": null,
+          "old_line_content": "        dst[k] = saturate_cast<uchar>(dst[k]*nrm2);",
+          "new_line_content": "    for( ; k < len; k++ )",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "std::abs(xc)",
+          "new_api": null,
+          "old_text": "std::abs(xc)",
+          "new_text": null,
+          "old_line_content": "        if( std::abs(xi) < 0.5f && std::abs(xr) < 0.5f && std::abs(xc) < 0.5f )",
+          "new_line_content": "        xc = -X[0];",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": "cvRound",
+          "new_api": null,
+          "old_text": "cvRound(xc)",
+          "new_text": null,
+          "old_line_content": "        c += cvRound(xc);",
+          "new_line_content": "            return false;",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": "std::abs(xi)",
+          "new_api": null,
+          "old_text": "std::abs(xi)",
+          "new_text": null,
+          "old_line_content": "        if( std::abs(xi) > (float)(INT_MAX/3) ||",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "std::abs(xr)",
+          "new_api": null,
+          "old_text": "std::abs(xr)",
+          "new_text": null,
+          "old_line_content": "            std::abs(xr) > (float)(INT_MAX/3) ||",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": "std::max(nrm1, FLT_EPSILON)",
+          "new_api": null,
+          "old_text": "std::max(nrm1, FLT_EPSILON)",
+          "new_text": null,
+          "old_line_content": "    nrm1 = 1.f/std::max(nrm1, FLT_EPSILON);",
+          "new_line_content": "        nrm1 += dst[k];",
+          "content_same": false
+        },
+        {
+          "line": 1018,
+          "old_api": "std::sqrt(dst[k] * nrm1)",
+          "new_api": null,
+          "old_text": "std::sqrt(dst[k] * nrm1)",
+          "new_text": null,
+          "old_line_content": "        dst[k] = std::sqrt(dst[k] * nrm1);//saturate_cast<uchar>(std::sqrt(dst[k] * nrm1)*SIFT_INT_DESCR_FCTR);",
+          "new_line_content": "    for( k = 0; k < len; k++ )",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": "cvRound",
+          "new_api": null,
+          "old_text": "cvRound(xr)",
+          "new_text": null,
+          "old_line_content": "        r += cvRound(xr);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 73,
+      "total_additions": 139,
+      "total_deletions": 139,
+      "total_api_changes": 351
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 351,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          219,
+          221,
+          214
+        ]
+      }
+    },
+    "api_calls_before": 342,
+    "api_calls_after": 342,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 4,
+      "total_diff_lines": 26
+    }
+  }
+}

@@ -1,0 +1,23 @@
+diff --git a/core/variant/variant.cpp b/core/variant/variant.cpp
+index 0dbeb6e4cb..86d772fb07 100644
+--- a/core/variant/variant.cpp
++++ b/core/variant/variant.cpp
+@@ -3145,10 +3145,18 @@ bool Variant::hash_compare(const Variant &p_variant) const {
+ 	}
+ 
+ 	switch (type) {
++		case INT: {
++			return _data._int == p_variant._data._int;
++		} break;
++
+ 		case FLOAT: {
+ 			return hash_compare_scalar(_data._float, p_variant._data._float);
+ 		} break;
+ 
++		case STRING: {
++			return *reinterpret_cast<const String *>(_data._mem) == *reinterpret_cast<const String *>(p_variant._data._mem);
++		} break;
++
+ 		case VECTOR2: {
+ 			const Vector2 *l = reinterpret_cast<const Vector2 *>(_data._mem);
+ 			const Vector2 *r = reinterpret_cast<const Vector2 *>(p_variant._data._mem);

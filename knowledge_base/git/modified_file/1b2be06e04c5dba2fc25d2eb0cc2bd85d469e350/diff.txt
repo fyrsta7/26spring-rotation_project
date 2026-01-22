@@ -1,0 +1,38 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -137,8 +137,14 @@
+ 			break;
+
+ 		}
+
+ 	}
+
+-	if (type == OBJ_COMMIT)
+
+-		return (struct commit *) parse_object(the_repository, oid);
+
++
+
++	if (type == OBJ_COMMIT) {
+
++		struct commit *commit = lookup_commit(the_repository, oid);
+
++		if (!commit || repo_parse_commit(the_repository, commit))
+
++			return NULL;
+
++		return commit;
+
++	}
+
++
+
+ 	return NULL;
+
+ }
+
+ 

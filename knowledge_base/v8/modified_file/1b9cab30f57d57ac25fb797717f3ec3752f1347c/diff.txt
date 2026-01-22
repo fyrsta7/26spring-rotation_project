@@ -1,0 +1,20 @@
+diff --git a/src/compiler/backend/x64/code-generator-x64.cc b/src/compiler/backend/x64/code-generator-x64.cc
+index 89610d3bddb..ef42c2574f1 100644
+--- a/src/compiler/backend/x64/code-generator-x64.cc
++++ b/src/compiler/backend/x64/code-generator-x64.cc
+@@ -3787,14 +3787,12 @@ CodeGenerator::CodeGenResult CodeGenerator::AssembleArchInstruction(
+       XMMRegister dst = i.OutputSimd128Register();
+       XMMRegister src = i.InputSimd128Register(0);
+       if (dst == src) {
+-        __ Movdqa(kScratchDoubleReg, dst);
+-        __ Pcmpeqd(dst, dst);
++        __ Pcmpeqd(kScratchDoubleReg, kScratchDoubleReg);
+         __ Pxor(dst, kScratchDoubleReg);
+       } else {
+         __ Pcmpeqd(dst, dst);
+         __ Pxor(dst, src);
+       }
+-
+       break;
+     }
+     case kX64S128Select: {

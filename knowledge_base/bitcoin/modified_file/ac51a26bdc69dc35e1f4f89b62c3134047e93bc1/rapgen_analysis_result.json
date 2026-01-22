@@ -1,0 +1,4531 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/ac51a26bdc69dc35e1f4f89b62c3134047e93bc1",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/ac51a26bdc69dc35e1f4f89b62c3134047e93bc1/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/ac51a26bdc69dc35e1f4f89b62c3134047e93bc1/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/ac51a26bdc69dc35e1f4f89b62c3134047e93bc1/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 3436,
+          "old_api": "GetBlockPosFilename",
+          "new_api": "_",
+          "old_text": "GetBlockPosFilename(pos, prefix)",
+          "new_text": "_(\"Error: Disk space is low!\")",
+          "old_line_content": "    boost::filesystem::path path = GetBlockPosFilename(pos, prefix);",
+          "new_line_content": "        return AbortNode(\"Disk space is low!\", _(\"Error: Disk space is low!\"));",
+          "content_same": false
+        },
+        {
+          "line": 3446,
+          "old_api": "fseek",
+          "new_api": "parent_path",
+          "old_text": "fseek(file, pos.nPos, SEEK_SET)",
+          "new_text": "path.parent_path()",
+          "old_line_content": "        if (fseek(file, pos.nPos, SEEK_SET)) {",
+          "new_line_content": "    boost::filesystem::create_directories(path.parent_path());",
+          "content_same": false
+        },
+        {
+          "line": 3456,
+          "old_api": "OpenDiskFile",
+          "new_api": "string",
+          "old_text": "OpenDiskFile(pos, \"blk\", fReadOnly)",
+          "new_text": "path.string()",
+          "old_line_content": "    return OpenDiskFile(pos, \"blk\", fReadOnly);",
+          "new_line_content": "            LogPrintf(\"Unable to seek to position %u of %s\\n\", pos.nPos, path.string());",
+          "content_same": false
+        },
+        {
+          "line": 3465,
+          "old_api": "strprintf",
+          "new_api": "OpenDiskFile",
+          "old_text": "strprintf(\"%s%05u.dat\", prefix, pos.nFile)",
+          "new_text": "OpenDiskFile(pos, \"blk\", fReadOnly)",
+          "old_line_content": "    return GetDataDir() / \"blocks\" / strprintf(\"%s%05u.dat\", prefix, pos.nFile);",
+          "new_line_content": "    return OpenDiskFile(pos, \"blk\", fReadOnly);",
+          "content_same": false
+        },
+        {
+          "line": 3474,
+          "old_api": "find",
+          "new_api": "strprintf",
+          "old_text": "mapBlockIndex.find(hash)",
+          "new_text": "strprintf(\"%s%05u.dat\", prefix, pos.nFile)",
+          "old_line_content": "    BlockMap::iterator mi = mapBlockIndex.find(hash);",
+          "new_line_content": "    return GetDataDir() / \"blocks\" / strprintf(\"%s%05u.dat\", prefix, pos.nFile);",
+          "content_same": false
+        },
+        {
+          "line": 3490,
+          "old_api": "LoadBlockIndexGuts",
+          "new_api": "std::string(__func__)",
+          "old_text": "pblocktree->LoadBlockIndexGuts(InsertBlockIndex)",
+          "new_text": "std::string(__func__)",
+          "old_line_content": "    if (!pblocktree->LoadBlockIndexGuts(InsertBlockIndex))",
+          "new_line_content": "        throw std::runtime_error(std::string(__func__) + \": new CBlockIndex failed\");",
+          "content_same": false
+        },
+        {
+          "line": 3517,
+          "old_api": "std::make_pair(pindex->pprev, pindex)",
+          "new_api": "std::max(pindex->pprev->nTimeMax, pindex->nTime)",
+          "old_text": "std::make_pair(pindex->pprev, pindex)",
+          "new_text": "std::max(pindex->pprev->nTimeMax, pindex->nTime)",
+          "old_line_content": "                    mapBlocksUnlinked.insert(std::make_pair(pindex->pprev, pindex));",
+          "new_line_content": "        pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);",
+          "content_same": false
+        },
+        {
+          "line": 3538,
+          "old_api": "ReadBlockFileInfo",
+          "new_api": "CBlockIndexWorkComparator",
+          "old_text": "pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile])",
+          "new_text": "CBlockIndexWorkComparator()(pindexBestHeader, pindex)",
+          "old_line_content": "        pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile]);",
+          "new_line_content": "        if (pindex->IsValid(BLOCK_VALID_TREE) && (pindexBestHeader == NULL || CBlockIndexWorkComparator()(pindexBestHeader, pindex)))",
+          "content_same": false
+        },
+        {
+          "line": 3543,
+          "old_api": "ReadBlockFileInfo",
+          "new_api": "ReadLastBlockFile",
+          "old_text": "pblocktree->ReadBlockFileInfo(nFile, info)",
+          "new_text": "pblocktree->ReadLastBlockFile(nLastBlockFile)",
+          "old_line_content": "        if (pblocktree->ReadBlockFileInfo(nFile, info)) {",
+          "new_line_content": "    pblocktree->ReadLastBlockFile(nLastBlockFile);",
+          "content_same": false
+        },
+        {
+          "line": 3544,
+          "old_api": "push_back",
+          "new_api": "resize",
+          "old_text": "vinfoBlockFile.push_back(info)",
+          "new_text": "vinfoBlockFile.resize(nLastBlockFile + 1)",
+          "old_line_content": "            vinfoBlockFile.push_back(info);",
+          "new_line_content": "    vinfoBlockFile.resize(nLastBlockFile + 1);",
+          "content_same": false
+        },
+        {
+          "line": 3560,
+          "old_api": "end",
+          "new_api": "LogPrintf",
+          "old_text": "setBlkDataFiles.end()",
+          "new_text": "LogPrintf(\"Checking all blk files are present...\\n\")",
+          "old_line_content": "    for (std::set<int>::iterator it = setBlkDataFiles.begin(); it != setBlkDataFiles.end(); it++)",
+          "new_line_content": "    LogPrintf(\"Checking all blk files are present...\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 3569,
+          "old_api": "ReadFlag",
+          "new_api": "end",
+          "old_text": "pblocktree->ReadFlag(\"prunedblockfiles\", fHavePruned)",
+          "new_text": "setBlkDataFiles.end()",
+          "old_line_content": "    pblocktree->ReadFlag(\"prunedblockfiles\", fHavePruned);",
+          "new_line_content": "    for (std::set<int>::iterator it = setBlkDataFiles.begin(); it != setBlkDataFiles.end(); it++)",
+          "content_same": false
+        },
+        {
+          "line": 3584,
+          "old_api": "end",
+          "new_api": "ReadReindexing",
+          "old_text": "mapBlockIndex.end()",
+          "new_text": "pblocktree->ReadReindexing(fReindexing)",
+          "old_line_content": "    if (it == mapBlockIndex.end())",
+          "new_line_content": "    pblocktree->ReadReindexing(fReindexing);",
+          "content_same": false
+        },
+        {
+          "line": 3588,
+          "old_api": "PruneBlockIndexCandidates",
+          "new_api": "ReadFlag",
+          "old_text": "PruneBlockIndexCandidates()",
+          "new_text": "pblocktree->ReadFlag(\"txindex\", fTxIndex)",
+          "old_line_content": "    PruneBlockIndexCandidates();",
+          "new_line_content": "    pblocktree->ReadFlag(\"txindex\", fTxIndex);",
+          "content_same": false
+        },
+        {
+          "line": 3592,
+          "old_api": "Tip",
+          "new_api": "GetBestBlock",
+          "old_text": "chainActive.Tip()->GetBlockTime()",
+          "new_text": "pcoinsTip->GetBestBlock()",
+          "old_line_content": "        DateTimeStrFormat(\"%Y-%m-%d %H:%M:%S\", chainActive.Tip()->GetBlockTime()),",
+          "new_line_content": "    BlockMap::iterator it = mapBlockIndex.find(pcoinsTip->GetBestBlock());",
+          "content_same": false
+        },
+        {
+          "line": 3593,
+          "old_api": "Tip",
+          "new_api": "end",
+          "old_text": "chainActive.Tip()",
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "        GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()));",
+          "new_line_content": "    if (it == mapBlockIndex.end())",
+          "content_same": false
+        },
+        {
+          "line": 3600,
+          "old_api": "_",
+          "new_api": "Height",
+          "old_text": "_(\"Verifying blocks...\")",
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    uiInterface.ShowProgress(_(\"Verifying blocks...\"), 0);",
+          "new_line_content": "        chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),",
+          "content_same": false
+        },
+        {
+          "line": 3619,
+          "old_api": "std::min(4, nCheckLevel)",
+          "new_api": "LOCK",
+          "old_text": "std::min(4, nCheckLevel)",
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "    nCheckLevel = std::max(0, std::min(4, nCheckLevel));",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 3620,
+          "old_api": "LogPrintf",
+          "new_api": "Tip",
+          "old_text": "LogPrintf(\"Verifying last %i blocks at level %i\\n\", nCheckDepth, nCheckLevel)",
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "    LogPrintf(\"Verifying last %i blocks at level %i\\n\", nCheckDepth, nCheckLevel);",
+          "new_line_content": "    if (chainActive.Tip() == NULL || chainActive.Tip()->pprev == NULL)",
+          "content_same": false
+        },
+        {
+          "line": 3627,
+          "old_api": "LogPrintf",
+          "new_api": "Height",
+          "old_text": "LogPrintf(\"[0%%]...\")",
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    LogPrintf(\"[0%%]...\");",
+          "new_line_content": "        nCheckDepth = chainActive.Height();",
+          "content_same": false
+        },
+        {
+          "line": 3628,
+          "old_api": "Tip",
+          "new_api": "std::min(4, nCheckLevel)",
+          "old_text": "chainActive.Tip()",
+          "new_text": "std::min(4, nCheckLevel)",
+          "old_line_content": "    for (CBlockIndex* pindex = chainActive.Tip(); pindex && pindex->pprev; pindex = pindex->pprev)",
+          "new_line_content": "    nCheckLevel = std::max(0, std::min(4, nCheckLevel));",
+          "content_same": false
+        },
+        {
+          "line": 3631,
+          "old_api": "Height",
+          "new_api": "Tip",
+          "old_text": "chainActive.Height()",
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "        int percentageDone = std::max(1, std::min(99, (int)(((double)(chainActive.Height() - pindex->nHeight)) / (double)nCheckDepth * (nCheckLevel >= 4 ? 50 : 100))));",
+          "new_line_content": "    CBlockIndex* pindexState = chainActive.Tip();",
+          "content_same": false
+        },
+        {
+          "line": 3637,
+          "old_api": "_",
+          "new_api": "Tip",
+          "old_text": "_(\"Verifying blocks...\")",
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "        uiInterface.ShowProgress(_(\"Verifying blocks...\"), percentageDone);",
+          "new_line_content": "    for (CBlockIndex* pindex = chainActive.Tip(); pindex && pindex->pprev; pindex = pindex->pprev)",
+          "content_same": false
+        },
+        {
+          "line": 3647,
+          "old_api": "GetConsensus",
+          "new_api": "Height",
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": "chainActive.Height()",
+          "old_line_content": "        if (!ReadBlockFromDisk(block, pindex, chainparams.GetConsensus()))",
+          "new_line_content": "        if (pindex->nHeight < chainActive.Height()-nCheckDepth)",
+          "content_same": false
+        },
+        {
+          "line": 3651,
+          "old_api": "ToString",
+          "new_api": "LogPrintf",
+          "old_text": "error(\"%s: *** found bad block at %d, hash=%s (%s)\\n\", __func__,\n                         pindex->nHeight, pindex->GetBlockHash().ToString(), FormatStateMessage(state))",
+          "new_text": "LogPrintf(\"VerifyDB(): block verification stopping at height %d (pruning, no data)\\n\", pindex->nHeight)",
+          "old_line_content": "            return error(\"%s: *** found bad block at %d, hash=%s (%s)\\n\", __func__,",
+          "new_line_content": "            LogPrintf(\"VerifyDB(): block verification stopping at height %d (pruning, no data)\\n\", pindex->nHeight);",
+          "content_same": false
+        },
+        {
+          "line": 3656,
+          "old_api": "GetUndoPos",
+          "new_api": "GetConsensus",
+          "old_text": "pindex->GetUndoPos()",
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "            CDiskBlockPos pos = pindex->GetUndoPos();",
+          "new_line_content": "        if (!ReadBlockFromDisk(block, pindex, chainparams.GetConsensus()))",
+          "content_same": false
+        },
+        {
+          "line": 3657,
+          "old_api": "IsNull",
+          "new_api": "ToString",
+          "old_text": "pos.IsNull()",
+          "new_text": "pindex->GetBlockHash().ToString()",
+          "old_line_content": "            if (!pos.IsNull()) {",
+          "new_line_content": "            return error(\"VerifyDB(): *** ReadBlockFromDisk failed at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 3659,
+          "old_api": "ToString",
+          "new_api": "GetConsensus",
+          "old_text": "pindex->GetBlockHash().ToString()",
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "                    return error(\"VerifyDB(): *** found bad undo data at %d, hash=%s\\n\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "new_line_content": "        if (nCheckLevel >= 1 && !CheckBlock(block, state, chainparams.GetConsensus()))",
+          "content_same": false
+        },
+        {
+          "line": 3665,
+          "old_api": "DisconnectBlock",
+          "new_api": "GetUndoPos",
+          "old_text": "DisconnectBlock(block, state, pindex, coins, &fClean)",
+          "new_text": "pindex->GetUndoPos()",
+          "old_line_content": "            if (!DisconnectBlock(block, state, pindex, coins, &fClean))",
+          "new_line_content": "            CDiskBlockPos pos = pindex->GetUndoPos();",
+          "content_same": false
+        },
+        {
+          "line": 3666,
+          "old_api": "ToString",
+          "new_api": "IsNull",
+          "old_text": "pindex->GetBlockHash().ToString()",
+          "new_text": "pos.IsNull()",
+          "old_line_content": "                return error(\"VerifyDB(): *** irrecoverable inconsistency in block data at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "new_line_content": "            if (!pos.IsNull()) {",
+          "content_same": false
+        },
+        {
+          "line": 3672,
+          "old_api": "size",
+          "new_api": "DynamicMemoryUsage",
+          "old_text": "block.vtx.size()",
+          "new_text": "pcoinsTip->DynamicMemoryUsage()",
+          "old_line_content": "                nGoodTransactions += block.vtx.size();",
+          "new_line_content": "        if (nCheckLevel >= 3 && pindex == pindexState && (coins.DynamicMemoryUsage() + pcoinsTip->DynamicMemoryUsage()) <= nCoinCacheUsage) {",
+          "content_same": false
+        },
+        {
+          "line": 3674,
+          "old_api": "ShutdownRequested",
+          "new_api": "DisconnectBlock",
+          "old_text": "ShutdownRequested()",
+          "new_text": "DisconnectBlock(block, state, pindex, coins, &fClean)",
+          "old_line_content": "        if (ShutdownRequested())",
+          "new_line_content": "            if (!DisconnectBlock(block, state, pindex, coins, &fClean))",
+          "content_same": false
+        },
+        {
+          "line": 3683,
+          "old_api": "Tip",
+          "new_api": "ShutdownRequested",
+          "old_text": "chainActive.Tip()",
+          "new_text": "ShutdownRequested()",
+          "old_line_content": "        while (pindex != chainActive.Tip()) {",
+          "new_line_content": "        if (ShutdownRequested())",
+          "content_same": false
+        },
+        {
+          "line": 3695,
+          "old_api": "LogPrintf",
+          "new_api": "Next",
+          "old_text": "LogPrintf(\"[DONE].\\n\")",
+          "new_text": "chainActive.Next(pindex)",
+          "old_line_content": "    LogPrintf(\"[DONE].\\n\");",
+          "new_line_content": "            pindex = chainActive.Next(pindex);",
+          "content_same": false
+        },
+        {
+          "line": 3715,
+          "old_api": "Tip",
+          "new_api": "Height",
+          "old_text": "chainActive.Tip()",
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    CBlockIndex* pindex = chainActive.Tip();",
+          "new_line_content": "    while (nHeight <= chainActive.Height()) {",
+          "content_same": false
+        },
+        {
+          "line": 3716,
+          "old_api": "Height",
+          "new_api": "GetConsensus",
+          "old_text": "chainActive.Height()",
+          "new_text": "params.GetConsensus()",
+          "old_line_content": "    while (chainActive.Height() >= nHeight) {",
+          "new_line_content": "        if (IsWitnessEnabled(chainActive[nHeight - 1], params.GetConsensus()) && !(chainActive[nHeight]->nStatus & BLOCK_OPT_WITNESS)) {",
+          "content_same": false
+        },
+        {
+          "line": 3725,
+          "old_api": "DisconnectTip",
+          "new_api": "Height",
+          "old_text": "DisconnectTip(state, params, true)",
+          "new_text": "chainActive.Height()",
+          "old_line_content": "        if (!DisconnectTip(state, params, true)) {",
+          "new_line_content": "    while (chainActive.Height() >= nHeight) {",
+          "content_same": false
+        },
+        {
+          "line": 3726,
+          "old_api": "error",
+          "new_api": "Tip",
+          "old_text": "error(\"RewindBlockIndex: unable to disconnect block at height %i\", pindex->nHeight)",
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "            return error(\"RewindBlockIndex: unable to disconnect block at height %i\", pindex->nHeight);",
+          "new_line_content": "        if (fPruneMode && !(chainActive.Tip()->nStatus & BLOCK_HAVE_DATA)) {",
+          "content_same": false
+        },
+        {
+          "line": 3769,
+          "old_api": "IsValid",
+          "new_api": "erase",
+          "old_text": "pindexIter->IsValid(BLOCK_VALID_TRANSACTIONS)",
+          "new_text": "setBlockIndexCandidates.erase(pindexIter)",
+          "old_line_content": "        } else if (pindexIter->IsValid(BLOCK_VALID_TRANSACTIONS) && pindexIter->nChainTx) {",
+          "new_line_content": "            setBlockIndexCandidates.erase(pindexIter);",
+          "content_same": false
+        },
+        {
+          "line": 3770,
+          "old_api": "insert",
+          "new_api": "equal_range",
+          "old_text": "setBlockIndexCandidates.insert(pindexIter)",
+          "new_text": "mapBlocksUnlinked.equal_range(pindexIter->pprev)",
+          "old_line_content": "            setBlockIndexCandidates.insert(pindexIter);",
+          "new_line_content": "            std::pair<std::multimap<CBlockIndex*, CBlockIndex*>::iterator, std::multimap<CBlockIndex*, CBlockIndex*>::iterator> ret = mapBlocksUnlinked.equal_range(pindexIter->pprev);",
+          "content_same": false
+        },
+        {
+          "line": 3778,
+          "old_api": "FlushStateToDisk",
+          "new_api": "IsValid",
+          "old_text": "FlushStateToDisk(state, FLUSH_STATE_ALWAYS)",
+          "new_text": "pindexIter->IsValid(BLOCK_VALID_TRANSACTIONS)",
+          "old_line_content": "    if (!FlushStateToDisk(state, FLUSH_STATE_ALWAYS)) {",
+          "new_line_content": "        } else if (pindexIter->IsValid(BLOCK_VALID_TRANSACTIONS) && pindexIter->nChainTx) {",
+          "content_same": false
+        },
+        {
+          "line": 3801,
+          "old_api": "clear",
+          "new_api": "SetTip",
+          "old_text": "setDirtyFileInfo.clear()",
+          "new_text": "chainActive.SetTip(NULL)",
+          "old_line_content": "    setDirtyFileInfo.clear();",
+          "new_line_content": "    chainActive.SetTip(NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3833,
+          "old_api": "LogPrintf",
+          "new_api": "LOCK",
+          "old_text": "LogPrintf(\"Initializing databases...\\n\")",
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "    LogPrintf(\"Initializing databases...\\n\");",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 3840,
+          "old_api": "::GetSerializeSize(block, SER_DISK, CLIENT_VERSION)",
+          "new_api": "GetBoolArg",
+          "old_text": "::GetSerializeSize(block, SER_DISK, CLIENT_VERSION)",
+          "new_text": "GetBoolArg(\"-txindex\", DEFAULT_TXINDEX)",
+          "old_line_content": "            unsigned int nBlockSize = ::GetSerializeSize(block, SER_DISK, CLIENT_VERSION);",
+          "new_line_content": "    fTxIndex = GetBoolArg(\"-txindex\", DEFAULT_TXINDEX);",
+          "content_same": false
+        },
+        {
+          "line": 3847,
+          "old_api": "AddToBlockIndex",
+          "new_api": "GenesisBlock",
+          "old_text": "AddToBlockIndex(block)",
+          "new_text": "chainparams.GenesisBlock()",
+          "old_line_content": "            CBlockIndex *pindex = AddToBlockIndex(block);",
+          "new_line_content": "            CBlock &block = const_cast<CBlock&>(chainparams.GenesisBlock());",
+          "content_same": false
+        },
+        {
+          "line": 3849,
+          "old_api": "error",
+          "new_api": "::GetSerializeSize(block, SER_DISK, CLIENT_VERSION)",
+          "old_text": "error(\"LoadBlockIndex(): genesis block not accepted\")",
+          "new_text": "::GetSerializeSize(block, SER_DISK, CLIENT_VERSION)",
+          "old_line_content": "                return error(\"LoadBlockIndex(): genesis block not accepted\");",
+          "new_line_content": "            unsigned int nBlockSize = ::GetSerializeSize(block, SER_DISK, CLIENT_VERSION);",
+          "content_same": false
+        },
+        {
+          "line": 3853,
+          "old_api": "what",
+          "new_api": "error",
+          "old_text": "e.what()",
+          "new_text": "error(\"LoadBlockIndex(): FindBlockPos failed\")",
+          "old_line_content": "            return error(\"LoadBlockIndex(): failed to initialize block database: %s\", e.what());",
+          "new_line_content": "                return error(\"LoadBlockIndex(): FindBlockPos failed\");",
+          "content_same": false
+        },
+        {
+          "line": 3881,
+          "old_api": "MessageStart",
+          "new_api": "boost::this_thread::interruption_point()",
+          "old_text": "chainparams.MessageStart()",
+          "new_text": "boost::this_thread::interruption_point()",
+          "old_line_content": "                blkdat.FindByte(chainparams.MessageStart()[0]);",
+          "new_line_content": "            boost::this_thread::interruption_point();",
+          "content_same": false
+        },
+        {
+          "line": 3883,
+          "old_api": "FLATDATA",
+          "new_api": "SetPos",
+          "old_text": "FLATDATA(buf)",
+          "new_text": "blkdat.SetPos(nRewind)",
+          "old_line_content": "                blkdat >> FLATDATA(buf);",
+          "new_line_content": "            blkdat.SetPos(nRewind);",
+          "content_same": false
+        },
+        {
+          "line": 3908,
+          "old_api": "end",
+          "new_api": "SetLimit",
+          "old_text": "mapBlockIndex.end()",
+          "new_text": "blkdat.SetLimit(nBlockPos + nSize)",
+          "old_line_content": "                if (hash != chainparams.GetConsensus().hashGenesisBlock && mapBlockIndex.find(block.hashPrevBlock) == mapBlockIndex.end()) {",
+          "new_line_content": "                blkdat.SetLimit(nBlockPos + nSize);",
+          "content_same": false
+        },
+        {
+          "line": 3909,
+          "old_api": "ToString",
+          "new_api": "SetPos",
+          "old_text": "hash.ToString()",
+          "new_text": "blkdat.SetPos(nBlockPos)",
+          "old_line_content": "                    LogPrint(\"reindex\", \"%s: Out of order block %s, parent %s not known\\n\", __func__, hash.ToString(),",
+          "new_line_content": "                blkdat.SetPos(nBlockPos);",
+          "content_same": false
+        },
+        {
+          "line": 3910,
+          "old_api": "ToString",
+          "new_api": "std::make_shared<CBlock>()",
+          "old_text": "block.hashPrevBlock.ToString()",
+          "new_text": "std::make_shared<CBlock>()",
+          "old_line_content": "                            block.hashPrevBlock.ToString());",
+          "new_line_content": "                std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();",
+          "content_same": false
+        },
+        {
+          "line": 3917,
+          "old_api": "count",
+          "new_api": "end",
+          "old_text": "mapBlockIndex.count(hash)",
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "                if (mapBlockIndex.count(hash) == 0 || (mapBlockIndex[hash]->nStatus & BLOCK_HAVE_DATA) == 0) {",
+          "new_line_content": "                if (hash != chainparams.GetConsensus().hashGenesisBlock && mapBlockIndex.find(block.hashPrevBlock) == mapBlockIndex.end()) {",
+          "content_same": false
+        },
+        {
+          "line": 3918,
+          "old_api": "LOCK",
+          "new_api": "ToString",
+          "old_text": "LOCK(cs_main)",
+          "new_text": "hash.ToString()",
+          "old_line_content": "                    LOCK(cs_main);",
+          "new_line_content": "                    LogPrint(\"reindex\", \"%s: Out of order block %s, parent %s not known\\n\", __func__, hash.ToString(),",
+          "content_same": false
+        },
+        {
+          "line": 3929,
+          "old_api": "GetConsensus",
+          "new_api": "AcceptBlock",
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": "AcceptBlock(pblock, state, chainparams, NULL, true, dbp, NULL)",
+          "old_line_content": "                if (hash == chainparams.GetConsensus().hashGenesisBlock) {",
+          "new_line_content": "                    if (AcceptBlock(pblock, state, chainparams, NULL, true, dbp, NULL))",
+          "content_same": false
+        },
+        {
+          "line": 3931,
+          "old_api": "ActivateBestChain",
+          "new_api": "IsError",
+          "old_text": "ActivateBestChain(state, chainparams)",
+          "new_text": "state.IsError()",
+          "old_line_content": "                    if (!ActivateBestChain(state, chainparams)) {",
+          "new_line_content": "                    if (state.IsError())",
+          "content_same": false
+        },
+        {
+          "line": 3940,
+          "old_api": "push_back",
+          "new_api": "ActivateBestChain",
+          "old_text": "queue.push_back(hash)",
+          "new_text": "ActivateBestChain(state, chainparams)",
+          "old_line_content": "                queue.push_back(hash);",
+          "new_line_content": "                    if (!ActivateBestChain(state, chainparams)) {",
+          "content_same": false
+        },
+        {
+          "line": 3950,
+          "old_api": "ToString",
+          "new_api": "empty",
+          "old_text": "pblockrecursive->GetHash().ToString()",
+          "new_text": "queue.empty()",
+          "old_line_content": "                            LogPrint(\"reindex\", \"%s: Processing out of order child %s of %s\\n\", __func__, pblockrecursive->GetHash().ToString(),",
+          "new_line_content": "                while (!queue.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 3951,
+          "old_api": "ToString",
+          "new_api": "front",
+          "old_text": "head.ToString()",
+          "new_text": "queue.front()",
+          "old_line_content": "                                    head.ToString());",
+          "new_line_content": "                    uint256 head = queue.front();",
+          "content_same": false
+        },
+        {
+          "line": 3952,
+          "old_api": "LOCK",
+          "new_api": "pop_front",
+          "old_text": "LOCK(cs_main)",
+          "new_text": "queue.pop_front()",
+          "old_line_content": "                            LOCK(cs_main);",
+          "new_line_content": "                    queue.pop_front();",
+          "content_same": false
+        },
+        {
+          "line": 3957,
+          "old_api": "GetHash",
+          "new_api": "GetConsensus",
+          "old_text": "pblockrecursive->GetHash()",
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "                                queue.push_back(pblockrecursive->GetHash());",
+          "new_line_content": "                        if (ReadBlockFromDisk(*pblockrecursive, it->second, chainparams.GetConsensus()))",
+          "content_same": false
+        },
+        {
+          "line": 3961,
+          "old_api": "erase",
+          "new_api": "LOCK",
+          "old_text": "mapBlocksUnknownParent.erase(it)",
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "                        mapBlocksUnknownParent.erase(it);",
+          "new_line_content": "                            LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 3966,
+          "old_api": "what",
+          "new_api": "GetHash",
+          "old_text": "e.what()",
+          "new_text": "pblockrecursive->GetHash()",
+          "old_line_content": "                LogPrintf(\"%s: Deserialize or I/O error - %s\\n\", __func__, e.what());",
+          "new_line_content": "                                queue.push_back(pblockrecursive->GetHash());",
+          "content_same": false
+        },
+        {
+          "line": 3970,
+          "old_api": "what",
+          "new_api": "erase",
+          "old_text": "e.what()",
+          "new_text": "mapBlocksUnknownParent.erase(it)",
+          "old_line_content": "        AbortNode(std::string(\"System error: \") + e.what());",
+          "new_line_content": "                        mapBlocksUnknownParent.erase(it);",
+          "content_same": false
+        },
+        {
+          "line": 4004,
+          "old_api": "assert",
+          "new_api": "end",
+          "old_text": "assert(rangeGenesis.first == rangeGenesis.second)",
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "    assert(rangeGenesis.first == rangeGenesis.second); // There is only one index entry with parent NULL.",
+          "new_line_content": "    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); it++) {",
+          "content_same": false
+        },
+        {
+          "line": 4040,
+          "old_api": "assert",
+          "new_api": "GetBlockHash",
+          "old_text": "assert(pindexFirstMissing == pindexFirstNeverProcessed)",
+          "new_text": "pindex->GetBlockHash()",
+          "old_line_content": "            assert(pindexFirstMissing == pindexFirstNeverProcessed);",
+          "new_line_content": "            assert(pindex->GetBlockHash() == consensusParams.hashGenesisBlock); // Genesis block's hash must match.",
+          "content_same": false
+        },
+        {
+          "line": 4061,
+          "old_api": "Tip",
+          "new_api": "assert",
+          "old_text": "chainActive.Tip()",
+          "new_text": "assert(nHeight < 2 || (pindex->pskip && (pindex->pskip->nHeight < nHeight)))",
+          "old_line_content": "        if (!CBlockIndexWorkComparator()(pindex, chainActive.Tip()) && pindexFirstNeverProcessed == NULL) {",
+          "new_line_content": "        assert(nHeight < 2 || (pindex->pskip && (pindex->pskip->nHeight < nHeight))); // The pskip pointer must point back for all but the first 2 blocks.",
+          "content_same": false
+        },
+        {
+          "line": 4068,
+          "old_api": "count",
+          "new_api": "assert",
+          "old_text": "setBlockIndexCandidates.count(pindex)",
+          "new_text": "assert((pindex->nStatus & BLOCK_FAILED_MASK) == 0)",
+          "old_line_content": "                    assert(setBlockIndexCandidates.count(pindex));",
+          "new_line_content": "            assert((pindex->nStatus & BLOCK_FAILED_MASK) == 0); // The failed mask cannot be set for blocks without invalid parents.",
+          "content_same": false
+        },
+        {
+          "line": 4105,
+          "old_api": "count",
+          "new_api": "assert",
+          "old_text": "setBlockIndexCandidates.count(pindex)",
+          "new_text": "assert(fHavePruned)",
+          "old_line_content": "            if (!CBlockIndexWorkComparator()(pindex, chainActive.Tip()) && setBlockIndexCandidates.count(pindex) == 0) {",
+          "new_line_content": "            assert(fHavePruned); // We must have pruned.",
+          "content_same": false
+        },
+        {
+          "line": 4183,
+          "old_api": "string",
+          "new_api": "LOCK",
+          "old_text": "GetDataDir() / \"mempool.dat\").string().c_str()",
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "    FILE* filestr = fopen((GetDataDir() / \"mempool.dat\").string().c_str(), \"r\");",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 4228,
+          "old_api": "ShutdownRequested",
+          "new_api": "AcceptToMemoryPoolWithTime",
+          "old_text": "ShutdownRequested()",
+          "new_text": "AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime)",
+          "old_line_content": "            if (ShutdownRequested())",
+          "new_line_content": "                AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime);",
+          "content_same": false
+        },
+        {
+          "line": 4283,
+          "old_api": "Get",
+          "new_api": "size",
+          "old_text": "file.Get()",
+          "new_text": "vinfo.size()",
+          "old_line_content": "        FileCommit(file.Get());",
+          "new_line_content": "        file << (uint64_t)vinfo.size();",
+          "content_same": false
+        },
+        {
+          "line": 4298,
+          "old_api": "time",
+          "new_api": "what",
+          "old_text": "time(NULL)",
+          "new_text": "e.what()",
+          "old_line_content": "    int64_t nNow = time(NULL);",
+          "new_line_content": "        LogPrintf(\"Failed to dump mempool: %s. Continuing anyway.\\n\", e.what());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 4099,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(foundInUnlinked)",
+          "old_line_content": "            //    tip, and",
+          "new_line_content": "            assert(foundInUnlinked);",
+          "content_same": false
+        },
+        {
+          "line": 4101,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!foundInUnlinked)",
+          "old_line_content": "            //    data for some intermediate block between chainActive and the",
+          "new_line_content": "        if (!(pindex->nStatus & BLOCK_HAVE_DATA)) assert(!foundInUnlinked); // Can't be in mapBlocksUnlinked if we don't HAVE_DATA",
+          "content_same": false
+        },
+        {
+          "line": 4102,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!foundInUnlinked)",
+          "old_line_content": "            //    tip.",
+          "new_line_content": "        if (pindexFirstMissing == NULL) assert(!foundInUnlinked); // We aren't missing data for any parent -- cannot be in mapBlocksUnlinked.",
+          "content_same": false
+        },
+        {
+          "line": 3589,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"%s: transaction index %s\\n\", __func__, fTxIndex ? \"enabled\" : \"disabled\")",
+          "old_line_content": "",
+          "new_line_content": "    LogPrintf(\"%s: transaction index %s\\n\", __func__, fTxIndex ? \"enabled\" : \"disabled\");",
+          "content_same": false
+        },
+        {
+          "line": 3595,
+          "old_api": null,
+          "new_api": "SetTip",
+          "old_text": null,
+          "new_text": "chainActive.SetTip(it->second)",
+          "old_line_content": "    return true;",
+          "new_line_content": "    chainActive.SetTip(it->second);",
+          "content_same": false
+        },
+        {
+          "line": 3597,
+          "old_api": null,
+          "new_api": "PruneBlockIndexCandidates",
+          "old_text": null,
+          "new_text": "PruneBlockIndexCandidates()",
+          "old_line_content": "",
+          "new_line_content": "    PruneBlockIndexCandidates();",
+          "content_same": false
+        },
+        {
+          "line": 3599,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "LogPrintf(\"%s: hashBestChain=%s height=%d date=%s progress=%f\\n\", __func__,\n        chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),\n        DateTimeStrFormat(\"%Y-%m-%d %H:%M:%S\", chainActive.Tip()->GetBlockTime()),\n        GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()))",
+          "old_line_content": "{",
+          "new_line_content": "    LogPrintf(\"%s: hashBestChain=%s height=%d date=%s progress=%f\\n\", __func__,",
+          "content_same": false
+        },
+        {
+          "line": 3601,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()->GetBlockTime()",
+          "old_line_content": "}",
+          "new_line_content": "        DateTimeStrFormat(\"%Y-%m-%d %H:%M:%S\", chainActive.Tip()->GetBlockTime()),",
+          "content_same": false
+        },
+        {
+          "line": 4114,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "setBlockIndexCandidates.count(pindex)",
+          "old_line_content": "        // Try descending into the first subnode.",
+          "new_line_content": "            if (!CBlockIndexWorkComparator()(pindex, chainActive.Tip()) && setBlockIndexCandidates.count(pindex) == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 3602,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "",
+          "new_line_content": "        GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()));",
+          "content_same": false
+        },
+        {
+          "line": 4116,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(foundInUnlinked)",
+          "old_line_content": "        if (range.first != range.second) {",
+          "new_line_content": "                    assert(foundInUnlinked);",
+          "content_same": false
+        },
+        {
+          "line": 3609,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"Verifying blocks...\")",
+          "old_line_content": "{",
+          "new_line_content": "    uiInterface.ShowProgress(_(\"Verifying blocks...\"), 0);",
+          "content_same": false
+        },
+        {
+          "line": 4124,
+          "old_api": null,
+          "new_api": "equal_range",
+          "old_text": null,
+          "new_text": "forward.equal_range(pindex)",
+          "old_line_content": "        while (pindex) {",
+          "new_line_content": "        std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> range = forward.equal_range(pindex);",
+          "content_same": false
+        },
+        {
+          "line": 3614,
+          "old_api": null,
+          "new_api": "ShowProgress",
+          "old_text": null,
+          "new_text": "uiInterface.ShowProgress(\"\", 100)",
+          "old_line_content": "    // Verify blocks in the best chain",
+          "new_line_content": "    uiInterface.ShowProgress(\"\", 100);",
+          "content_same": false
+        },
+        {
+          "line": 3626,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    int reportDone = 0;",
+          "new_line_content": "    if (nCheckDepth > chainActive.Height())",
+          "content_same": false
+        },
+        {
+          "line": 3629,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"Verifying last %i blocks at level %i\\n\", nCheckDepth, nCheckLevel)",
+          "old_line_content": "    {",
+          "new_line_content": "    LogPrintf(\"Verifying last %i blocks at level %i\\n\", nCheckDepth, nCheckLevel);",
+          "content_same": false
+        },
+        {
+          "line": 4146,
+          "old_api": null,
+          "new_api": "equal_range",
+          "old_text": null,
+          "new_text": "forward.equal_range(pindexPar)",
+          "old_line_content": "                pindex = rangePar.first->second;",
+          "new_line_content": "            std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangePar = forward.equal_range(pindexPar);",
+          "content_same": false
+        },
+        {
+          "line": 4148,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(rangePar.first != rangePar.second)",
+          "old_line_content": "            } else {",
+          "new_line_content": "                assert(rangePar.first != rangePar.second); // Our parent must have at least the node we're coming from as child.",
+          "content_same": false
+        },
+        {
+          "line": 3636,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"[0%%]...\")",
+          "old_line_content": "        }",
+          "new_line_content": "    LogPrintf(\"[0%%]...\");",
+          "content_same": false
+        },
+        {
+          "line": 3639,
+          "old_api": null,
+          "new_api": "boost::this_thread::interruption_point()",
+          "old_text": null,
+          "new_text": "boost::this_thread::interruption_point()",
+          "old_line_content": "            break;",
+          "new_line_content": "        boost::this_thread::interruption_point();",
+          "content_same": false
+        },
+        {
+          "line": 3640,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "        if (fPruneMode && !(pindex->nStatus & BLOCK_HAVE_DATA)) {",
+          "new_line_content": "        int percentageDone = std::max(1, std::min(99, (int)(((double)(chainActive.Height() - pindex->nHeight)) / (double)nCheckDepth * (nCheckLevel >= 4 ? 50 : 100))));",
+          "content_same": false
+        },
+        {
+          "line": 3643,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"[%d%%]...\", percentageDone)",
+          "old_line_content": "            break;",
+          "new_line_content": "            LogPrintf(\"[%d%%]...\", percentageDone);",
+          "content_same": false
+        },
+        {
+          "line": 3646,
+          "old_api": null,
+          "new_api": "_",
+          "old_text": null,
+          "new_text": "_(\"Verifying blocks...\")",
+          "old_line_content": "        // check level 0: read from disk",
+          "new_line_content": "        uiInterface.ShowProgress(_(\"Verifying blocks...\"), percentageDone);",
+          "content_same": false
+        },
+        {
+          "line": 4167,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "forward.size()",
+          "old_line_content": "{",
+          "new_line_content": "    assert(nNodes == forward.size());",
+          "content_same": false
+        },
+        {
+          "line": 4172,
+          "old_api": null,
+          "new_api": "DateTimeStrFormat",
+          "old_text": null,
+          "new_text": "DateTimeStrFormat(\"%Y-%m-%d\", nTimeLast)",
+          "old_line_content": "int VersionBitsTipStateSinceHeight(const Consensus::Params& params, Consensus::DeploymentPos pos)",
+          "new_line_content": "    return strprintf(\"CBlockFileInfo(blocks=%u, size=%u, heights=%u...%u, time=%s...%s)\", nBlocks, nSize, nHeightFirst, nHeightLast, DateTimeStrFormat(\"%Y-%m-%d\", nTimeFirst), DateTimeStrFormat(\"%Y-%m-%d\", nTimeLast));",
+          "content_same": false
+        },
+        {
+          "line": 3660,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "error(\"%s: *** found bad block at %d, hash=%s (%s)\\n\", __func__,\n                         pindex->nHeight, pindex->GetBlockHash().ToString(), FormatStateMessage(state))",
+          "old_line_content": "            }",
+          "new_line_content": "            return error(\"%s: *** found bad block at %d, hash=%s (%s)\\n\", __func__,",
+          "content_same": false
+        },
+        {
+          "line": 3661,
+          "old_api": null,
+          "new_api": "FormatStateMessage",
+          "old_text": null,
+          "new_text": "FormatStateMessage(state)",
+          "old_line_content": "        }",
+          "new_line_content": "                         pindex->nHeight, pindex->GetBlockHash().ToString(), FormatStateMessage(state));",
+          "content_same": false
+        },
+        {
+          "line": 4177,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 4178,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "static const uint64_t MEMPOOL_DUMP_VERSION = 1;",
+          "new_line_content": "    return VersionBitsState(chainActive.Tip(), params, pos, versionbitscache);",
+          "content_same": false
+        },
+        {
+          "line": 3667,
+          "old_api": null,
+          "new_api": "GetBlockHash",
+          "old_text": null,
+          "new_text": "pindex->pprev->GetBlockHash()",
+          "old_line_content": "            pindexState = pindex->pprev;",
+          "new_line_content": "                if (!UndoReadFromDisk(undo, pos, pindex->pprev->GetBlockHash()))",
+          "content_same": false
+        },
+        {
+          "line": 3668,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "pindex->GetBlockHash().ToString()",
+          "old_line_content": "            if (!fClean) {",
+          "new_line_content": "                    return error(\"VerifyDB(): *** found bad undo data at %d, hash=%s\\n\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 4184,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "    CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);",
+          "new_line_content": "    return VersionBitsStateSinceHeight(chainActive.Tip(), params, pos, versionbitscache);",
+          "content_same": false
+        },
+        {
+          "line": 3675,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "pindex->GetBlockHash().ToString()",
+          "old_line_content": "            return true;",
+          "new_line_content": "                return error(\"VerifyDB(): *** irrecoverable inconsistency in block data at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 4191,
+          "old_api": null,
+          "new_api": "GetArg",
+          "old_text": null,
+          "new_text": "GetArg(\"-mempoolexpiry\", DEFAULT_MEMPOOL_EXPIRY)",
+          "old_line_content": "    int64_t skipped = 0;",
+          "new_line_content": "    int64_t nExpiryTimeout = GetArg(\"-mempoolexpiry\", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60;",
+          "content_same": false
+        },
+        {
+          "line": 4192,
+          "old_api": null,
+          "new_api": "string",
+          "old_text": null,
+          "new_text": "GetDataDir() / \"mempool.dat\").string().c_str()",
+          "old_line_content": "    int64_t failed = 0;",
+          "new_line_content": "    FILE* filestr = fopen((GetDataDir() / \"mempool.dat\").string().c_str(), \"r\");",
+          "content_same": false
+        },
+        {
+          "line": 3681,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "block.vtx.size()",
+          "old_line_content": "    if (nCheckLevel >= 4) {",
+          "new_line_content": "                nGoodTransactions += block.vtx.size();",
+          "content_same": false
+        },
+        {
+          "line": 4194,
+          "old_api": null,
+          "new_api": "IsNull",
+          "old_text": null,
+          "new_text": "file.IsNull()",
+          "old_line_content": "",
+          "new_line_content": "    if (file.IsNull()) {",
+          "content_same": false
+        },
+        {
+          "line": 4195,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"Failed to open mempool file from disk. Continuing anyway.\\n\")",
+          "old_line_content": "    try {",
+          "new_line_content": "        LogPrintf(\"Failed to open mempool file from disk. Continuing anyway.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 3687,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "            CBlock block;",
+          "new_line_content": "        return error(\"VerifyDB(): *** coin database inconsistencies found (last %i blocks, %i good transactions before that)\\n\", chainActive.Height() - pindexFailure->nHeight + 1, nGoodTransactions);",
+          "content_same": false
+        },
+        {
+          "line": 4202,
+          "old_api": null,
+          "new_api": "GetTime",
+          "old_text": null,
+          "new_text": "GetTime()",
+          "old_line_content": "        file >> num;",
+          "new_line_content": "    int64_t nNow = GetTime();",
+          "content_same": false
+        },
+        {
+          "line": 3692,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "        }",
+          "new_line_content": "        while (pindex != chainActive.Tip()) {",
+          "content_same": false
+        },
+        {
+          "line": 3693,
+          "old_api": null,
+          "new_api": "boost::this_thread::interruption_point()",
+          "old_text": null,
+          "new_text": "boost::this_thread::interruption_point()",
+          "old_line_content": "    }",
+          "new_line_content": "            boost::this_thread::interruption_point();",
+          "content_same": false
+        },
+        {
+          "line": 3694,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "",
+          "new_line_content": "            uiInterface.ShowProgress(_(\"Verifying blocks...\"), std::max(1, std::min(99, 100 - (int)(((double)(chainActive.Height() - pindex->nHeight)) / (double)nCheckDepth * 50))));",
+          "content_same": false
+        },
+        {
+          "line": 3697,
+          "old_api": null,
+          "new_api": "GetConsensus",
+          "old_text": null,
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "",
+          "new_line_content": "            if (!ReadBlockFromDisk(block, pindex, chainparams.GetConsensus()))",
+          "content_same": false
+        },
+        {
+          "line": 3698,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "pindex->GetBlockHash().ToString()",
+          "old_line_content": "    return true;",
+          "new_line_content": "                return error(\"VerifyDB(): *** ReadBlockFromDisk failed at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 3699,
+          "old_api": null,
+          "new_api": "ConnectBlock",
+          "old_text": null,
+          "new_text": "ConnectBlock(block, state, pindex, coins, chainparams)",
+          "old_line_content": "}",
+          "new_line_content": "            if (!ConnectBlock(block, state, pindex, coins, chainparams))",
+          "content_same": false
+        },
+        {
+          "line": 3700,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "pindex->GetBlockHash().ToString()",
+          "old_line_content": "",
+          "new_line_content": "                return error(\"VerifyDB(): *** found unconnectable block at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 3704,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"[DONE].\\n\")",
+          "old_line_content": "",
+          "new_line_content": "    LogPrintf(\"[DONE].\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 3705,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    int nHeight = 1;",
+          "new_line_content": "    LogPrintf(\"No coin database inconsistencies in last %i blocks (%i transactions)\\n\", chainActive.Height() - pindexState->nHeight, nGoodTransactions);",
+          "content_same": false
+        },
+        {
+          "line": 4223,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "tx->GetHash().ToString()",
+          "old_line_content": "                    ++failed;",
+          "new_line_content": "                mempool.PrioritiseTransaction(tx->GetHash(), tx->GetHash().ToString(), prioritydummy, amountdelta);",
+          "content_same": false
+        },
+        {
+          "line": 3712,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 4227,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "            }",
+          "new_line_content": "                LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 4229,
+          "old_api": null,
+          "new_api": "IsValid",
+          "old_text": null,
+          "new_text": "state.IsValid()",
+          "old_line_content": "                return false;",
+          "new_line_content": "                if (state.IsValid()) {",
+          "content_same": false
+        },
+        {
+          "line": 3724,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "        }",
+          "new_line_content": "    CBlockIndex* pindex = chainActive.Tip();",
+          "content_same": false
+        },
+        {
+          "line": 4237,
+          "old_api": null,
+          "new_api": "ShutdownRequested",
+          "old_text": null,
+          "new_text": "ShutdownRequested()",
+          "old_line_content": "    } catch (const std::exception& e) {",
+          "new_line_content": "            if (ShutdownRequested())",
+          "content_same": false
+        },
+        {
+          "line": 4244,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "i.first.ToString()",
+          "old_line_content": "}",
+          "new_line_content": "            mempool.PrioritiseTransaction(i.first, i.first.ToString(), prioritydummy, i.second);",
+          "content_same": false
+        },
+        {
+          "line": 3734,
+          "old_api": null,
+          "new_api": "DisconnectTip",
+          "old_text": null,
+          "new_text": "DisconnectTip(state, params, true)",
+          "old_line_content": "    // We do this after actual disconnecting, otherwise we'll end up writing the lack of data",
+          "new_line_content": "        if (!DisconnectTip(state, params, true)) {",
+          "content_same": false
+        },
+        {
+          "line": 4247,
+          "old_api": null,
+          "new_api": "what",
+          "old_text": null,
+          "new_text": "e.what()",
+          "old_line_content": "{",
+          "new_line_content": "        LogPrintf(\"Failed to deserialize mempool data on disk: %s. Continuing anyway.\\n\", e.what());",
+          "content_same": false
+        },
+        {
+          "line": 3735,
+          "old_api": null,
+          "new_api": "error",
+          "old_text": null,
+          "new_text": "error(\"RewindBlockIndex: unable to disconnect block at height %i\", pindex->nHeight)",
+          "old_line_content": "    // to disk before writing the chainstate, resulting in a failure to continue if interrupted.",
+          "new_line_content": "            return error(\"RewindBlockIndex: unable to disconnect block at height %i\", pindex->nHeight);",
+          "content_same": false
+        },
+        {
+          "line": 3738,
+          "old_api": null,
+          "new_api": "FlushStateToDisk",
+          "old_text": null,
+          "new_text": "FlushStateToDisk(state, FLUSH_STATE_PERIODIC)",
+          "old_line_content": "",
+          "new_line_content": "        if (!FlushStateToDisk(state, FLUSH_STATE_PERIODIC))",
+          "content_same": false
+        },
+        {
+          "line": 4251,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"Imported mempool transactions from disk: %i successes, %i failed, %i expired\\n\", count, failed, skipped)",
+          "old_line_content": "    std::vector<TxMempoolInfo> vinfo;",
+          "new_line_content": "    LogPrintf(\"Imported mempool transactions from disk: %i successes, %i failed, %i expired\\n\", count, failed, skipped);",
+          "content_same": false
+        },
+        {
+          "line": 4257,
+          "old_api": null,
+          "new_api": "GetTimeMicros",
+          "old_text": null,
+          "new_text": "GetTimeMicros()",
+          "old_line_content": "        }",
+          "new_line_content": "    int64_t start = GetTimeMicros();",
+          "content_same": false
+        },
+        {
+          "line": 3745,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "            // Reduce validity",
+          "new_line_content": "    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); it++) {",
+          "content_same": false
+        },
+        {
+          "line": 4263,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(mempool.cs)",
+          "old_line_content": "    try {",
+          "new_line_content": "        LOCK(mempool.cs);",
+          "content_same": false
+        },
+        {
+          "line": 3753,
+          "old_api": null,
+          "new_api": "Contains",
+          "old_text": null,
+          "new_text": "chainActive.Contains(pindexIter)",
+          "old_line_content": "            // Remove various other things",
+          "new_line_content": "        if (IsWitnessEnabled(pindexIter->pprev, params.GetConsensus()) && !(pindexIter->nStatus & BLOCK_OPT_WITNESS) && !chainActive.Contains(pindexIter)) {",
+          "content_same": false
+        },
+        {
+          "line": 4267,
+          "old_api": null,
+          "new_api": "infoAll",
+          "old_text": null,
+          "new_text": "mempool.infoAll()",
+          "old_line_content": "        }",
+          "new_line_content": "        vinfo = mempool.infoAll();",
+          "content_same": false
+        },
+        {
+          "line": 3755,
+          "old_api": null,
+          "new_api": "std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE)",
+          "old_text": null,
+          "new_text": "std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE)",
+          "old_line_content": "            pindexIter->nChainTx = 0;",
+          "new_line_content": "            pindexIter->nStatus = std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE) | (pindexIter->nStatus & ~BLOCK_VALID_MASK);",
+          "content_same": false
+        },
+        {
+          "line": 4270,
+          "old_api": null,
+          "new_api": "GetTimeMicros",
+          "old_text": null,
+          "new_text": "GetTimeMicros()",
+          "old_line_content": "",
+          "new_line_content": "    int64_t mid = GetTimeMicros();",
+          "content_same": false
+        },
+        {
+          "line": 4273,
+          "old_api": null,
+          "new_api": "string",
+          "old_text": null,
+          "new_text": "GetDataDir() / \"mempool.dat.new\").string().c_str()",
+          "old_line_content": "",
+          "new_line_content": "        FILE* filestr = fopen((GetDataDir() / \"mempool.dat.new\").string().c_str(), \"w\");",
+          "content_same": false
+        },
+        {
+          "line": 3767,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "setDirtyBlockIndex.insert(pindexIter)",
+          "old_line_content": "                }",
+          "new_line_content": "            setDirtyBlockIndex.insert(pindexIter);",
+          "content_same": false
+        },
+        {
+          "line": 3773,
+          "old_api": null,
+          "new_api": "erase",
+          "old_text": null,
+          "new_text": "mapBlocksUnlinked.erase(ret.first++)",
+          "old_line_content": "",
+          "new_line_content": "                    mapBlocksUnlinked.erase(ret.first++);",
+          "content_same": false
+        },
+        {
+          "line": 4288,
+          "old_api": null,
+          "new_api": "GetHash",
+          "old_text": null,
+          "new_text": "i.tx->GetHash()",
+          "old_line_content": "    } catch (const std::exception& e) {",
+          "new_line_content": "            mapDeltas.erase(i.tx->GetHash());",
+          "content_same": false
+        },
+        {
+          "line": 3779,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "setBlockIndexCandidates.insert(pindexIter)",
+          "old_line_content": "        return false;",
+          "new_line_content": "            setBlockIndexCandidates.insert(pindexIter);",
+          "content_same": false
+        },
+        {
+          "line": 4292,
+          "old_api": null,
+          "new_api": "Get",
+          "old_text": null,
+          "new_text": "file.Get()",
+          "old_line_content": "",
+          "new_line_content": "        FileCommit(file.Get());",
+          "content_same": false
+        },
+        {
+          "line": 4293,
+          "old_api": null,
+          "new_api": "fclose",
+          "old_text": null,
+          "new_text": "file.fclose()",
+          "old_line_content": "//! Guess how far we are in the verification process at the given block index",
+          "new_line_content": "        file.fclose();",
+          "content_same": false
+        },
+        {
+          "line": 4294,
+          "old_api": null,
+          "new_api": "GetDataDir",
+          "old_text": null,
+          "new_text": "GetDataDir()",
+          "old_line_content": "double GuessVerificationProgress(const ChainTxData& data, CBlockIndex *pindex) {",
+          "new_line_content": "        RenameOver(GetDataDir() / \"mempool.dat.new\", GetDataDir() / \"mempool.dat\");",
+          "content_same": false
+        },
+        {
+          "line": 4295,
+          "old_api": null,
+          "new_api": "GetTimeMicros",
+          "old_text": null,
+          "new_text": "GetTimeMicros()",
+          "old_line_content": "    if (pindex == NULL)",
+          "new_line_content": "        int64_t last = GetTimeMicros();",
+          "content_same": false
+        },
+        {
+          "line": 4296,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"Dumped mempool: %gs to copy, %gs to dump\\n\", (mid-start)*0.000001, (last-mid)*0.000001)",
+          "old_line_content": "        return 0.0;",
+          "new_line_content": "        LogPrintf(\"Dumped mempool: %gs to copy, %gs to dump\\n\", (mid-start)*0.000001, (last-mid)*0.000001);",
+          "content_same": false
+        },
+        {
+          "line": 3783,
+          "old_api": null,
+          "new_api": "PruneBlockIndexCandidates",
+          "old_text": null,
+          "new_text": "PruneBlockIndexCandidates()",
+          "old_line_content": "}",
+          "new_line_content": "    PruneBlockIndexCandidates();",
+          "content_same": false
+        },
+        {
+          "line": 3785,
+          "old_api": null,
+          "new_api": "GetConsensus",
+          "old_text": null,
+          "new_text": "params.GetConsensus()",
+          "old_line_content": "// May NOT be used after any connections are up as much",
+          "new_line_content": "    CheckBlockIndex(params.GetConsensus());",
+          "content_same": false
+        },
+        {
+          "line": 3787,
+          "old_api": null,
+          "new_api": "FlushStateToDisk",
+          "old_text": null,
+          "new_text": "FlushStateToDisk(state, FLUSH_STATE_ALWAYS)",
+          "old_line_content": "// block index state",
+          "new_line_content": "    if (!FlushStateToDisk(state, FLUSH_STATE_ALWAYS)) {",
+          "content_same": false
+        },
+        {
+          "line": 4307,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(NULL)",
+          "old_line_content": "",
+          "new_line_content": "    int64_t nNow = time(NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3799,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "    nBlockSequenceId = 1;",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 4314,
+          "old_api": null,
+          "new_api": "GetBlockTime",
+          "old_text": null,
+          "new_text": "pindex->GetBlockTime()",
+          "old_line_content": "    CMainCleanup() {}",
+          "new_line_content": "        fTxTotal = pindex->nChainTx + (nNow - pindex->GetBlockTime()) * data.dTxRate;",
+          "content_same": false
+        },
+        {
+          "line": 3805,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "mapBlocksUnlinked.clear()",
+          "old_line_content": "    }",
+          "new_line_content": "    mapBlocksUnlinked.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3806,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "vinfoBlockFile.clear()",
+          "old_line_content": "",
+          "new_line_content": "    vinfoBlockFile.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3809,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "setDirtyBlockIndex.clear()",
+          "old_line_content": "    }",
+          "new_line_content": "    setDirtyBlockIndex.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3811,
+          "old_api": null,
+          "new_api": "Clear",
+          "old_text": null,
+          "new_text": "versionbitscache.Clear()",
+          "old_line_content": "    fHavePruned = false;",
+          "new_line_content": "    versionbitscache.Clear();",
+          "content_same": false
+        },
+        {
+          "line": 3813,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "warningcache[b].clear()",
+          "old_line_content": "",
+          "new_line_content": "        warningcache[b].clear();",
+          "content_same": false
+        },
+        {
+          "line": 4326,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "mapBlockIndex.begin()",
+          "old_line_content": "",
+          "new_line_content": "        BlockMap::iterator it1 = mapBlockIndex.begin();",
+          "content_same": false
+        },
+        {
+          "line": 4327,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "",
+          "new_line_content": "        for (; it1 != mapBlockIndex.end(); it1++)",
+          "content_same": false
+        },
+        {
+          "line": 4329,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "mapBlockIndex.clear()",
+          "old_line_content": "",
+          "new_line_content": "        mapBlockIndex.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3819,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "mapBlockIndex.clear()",
+          "old_line_content": "    return true;",
+          "new_line_content": "    mapBlockIndex.clear();",
+          "content_same": false
+        },
+        {
+          "line": 3826,
+          "old_api": null,
+          "new_api": "LoadBlockIndexDB",
+          "old_text": null,
+          "new_text": "LoadBlockIndexDB(chainparams)",
+          "old_line_content": "    // Check whether we're already initialized",
+          "new_line_content": "    if (!fReindex && !LoadBlockIndexDB(chainparams))",
+          "content_same": false
+        },
+        {
+          "line": 3836,
+          "old_api": null,
+          "new_api": "Genesis",
+          "old_text": null,
+          "new_text": "chainActive.Genesis()",
+          "old_line_content": "    if (!fReindex) {",
+          "new_line_content": "    if (chainActive.Genesis() != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 3841,
+          "old_api": null,
+          "new_api": "WriteFlag",
+          "old_text": null,
+          "new_text": "pblocktree->WriteFlag(\"txindex\", fTxIndex)",
+          "old_line_content": "            CDiskBlockPos blockPos;",
+          "new_line_content": "    pblocktree->WriteFlag(\"txindex\", fTxIndex);",
+          "content_same": false
+        },
+        {
+          "line": 3842,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"Initializing databases...\\n\")",
+          "old_line_content": "            CValidationState state;",
+          "new_line_content": "    LogPrintf(\"Initializing databases...\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 3852,
+          "old_api": null,
+          "new_api": "GetBlockTime",
+          "old_text": null,
+          "new_text": "block.GetBlockTime()",
+          "old_line_content": "        } catch (const std::runtime_error& e) {",
+          "new_line_content": "            if (!FindBlockPos(state, blockPos, nBlockSize+8, 0, block.GetBlockTime()))",
+          "content_same": false
+        },
+        {
+          "line": 3854,
+          "old_api": null,
+          "new_api": "MessageStart",
+          "old_text": null,
+          "new_text": "chainparams.MessageStart()",
+          "old_line_content": "        }",
+          "new_line_content": "            if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))",
+          "content_same": false
+        },
+        {
+          "line": 3855,
+          "old_api": null,
+          "new_api": "error",
+          "old_text": null,
+          "new_text": "error(\"LoadBlockIndex(): writing genesis block to disk failed\")",
+          "old_line_content": "    }",
+          "new_line_content": "                return error(\"LoadBlockIndex(): writing genesis block to disk failed\");",
+          "content_same": false
+        },
+        {
+          "line": 3856,
+          "old_api": null,
+          "new_api": "AddToBlockIndex",
+          "old_text": null,
+          "new_text": "AddToBlockIndex(block)",
+          "old_line_content": "",
+          "new_line_content": "            CBlockIndex *pindex = AddToBlockIndex(block);",
+          "content_same": false
+        },
+        {
+          "line": 3857,
+          "old_api": null,
+          "new_api": "ReceivedBlockTransactions",
+          "old_text": null,
+          "new_text": "ReceivedBlockTransactions(block, state, pindex, blockPos)",
+          "old_line_content": "    return true;",
+          "new_line_content": "            if (!ReceivedBlockTransactions(block, state, pindex, blockPos))",
+          "content_same": false
+        },
+        {
+          "line": 3858,
+          "old_api": null,
+          "new_api": "error",
+          "old_text": null,
+          "new_text": "error(\"LoadBlockIndex(): genesis block not accepted\")",
+          "old_line_content": "}",
+          "new_line_content": "                return error(\"LoadBlockIndex(): genesis block not accepted\");",
+          "content_same": false
+        },
+        {
+          "line": 3860,
+          "old_api": null,
+          "new_api": "FlushStateToDisk",
+          "old_text": null,
+          "new_text": "FlushStateToDisk(state, FLUSH_STATE_ALWAYS)",
+          "old_line_content": "bool LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, CDiskBlockPos *dbp)",
+          "new_line_content": "            return FlushStateToDisk(state, FLUSH_STATE_ALWAYS);",
+          "content_same": false
+        },
+        {
+          "line": 3862,
+          "old_api": null,
+          "new_api": "what",
+          "old_text": null,
+          "new_text": "e.what()",
+          "old_line_content": "    // Map of disk positions for blocks with unknown parent (only used for reindex)",
+          "new_line_content": "            return error(\"LoadBlockIndex(): failed to initialize block database: %s\", e.what());",
+          "content_same": false
+        },
+        {
+          "line": 3873,
+          "old_api": null,
+          "new_api": "GetTimeMillis",
+          "old_text": null,
+          "new_text": "GetTimeMillis()",
+          "old_line_content": "",
+          "new_line_content": "    int64_t nStart = GetTimeMillis();",
+          "content_same": false
+        },
+        {
+          "line": 3879,
+          "old_api": null,
+          "new_api": "GetPos",
+          "old_text": null,
+          "new_text": "blkdat.GetPos()",
+          "old_line_content": "                // locate a header",
+          "new_line_content": "        uint64_t nRewind = blkdat.GetPos();",
+          "content_same": false
+        },
+        {
+          "line": 3880,
+          "old_api": null,
+          "new_api": "eof",
+          "old_text": null,
+          "new_text": "blkdat.eof()",
+          "old_line_content": "                unsigned char buf[CMessageHeader::MESSAGE_START_SIZE];",
+          "new_line_content": "        while (!blkdat.eof()) {",
+          "content_same": false
+        },
+        {
+          "line": 3885,
+          "old_api": null,
+          "new_api": "SetLimit",
+          "old_text": null,
+          "new_text": "blkdat.SetLimit()",
+          "old_line_content": "                    continue;",
+          "new_line_content": "            blkdat.SetLimit(); // remove former limit",
+          "content_same": false
+        },
+        {
+          "line": 3890,
+          "old_api": null,
+          "new_api": "MessageStart",
+          "old_text": null,
+          "new_text": "chainparams.MessageStart()",
+          "old_line_content": "            } catch (const std::exception&) {",
+          "new_line_content": "                blkdat.FindByte(chainparams.MessageStart()[0]);",
+          "content_same": false
+        },
+        {
+          "line": 3891,
+          "old_api": null,
+          "new_api": "GetPos",
+          "old_text": null,
+          "new_text": "blkdat.GetPos()",
+          "old_line_content": "                // no valid block header found; don't complain",
+          "new_line_content": "                nRewind = blkdat.GetPos()+1;",
+          "content_same": false
+        },
+        {
+          "line": 3892,
+          "old_api": null,
+          "new_api": "FLATDATA",
+          "old_text": null,
+          "new_text": "FLATDATA(buf)",
+          "old_line_content": "                break;",
+          "new_line_content": "                blkdat >> FLATDATA(buf);",
+          "content_same": false
+        },
+        {
+          "line": 3893,
+          "old_api": null,
+          "new_api": "MessageStart",
+          "old_text": null,
+          "new_text": "chainparams.MessageStart()",
+          "old_line_content": "            }",
+          "new_line_content": "                if (memcmp(buf, chainparams.MessageStart(), CMessageHeader::MESSAGE_START_SIZE))",
+          "content_same": false
+        },
+        {
+          "line": 3905,
+          "old_api": null,
+          "new_api": "GetPos",
+          "old_text": null,
+          "new_text": "blkdat.GetPos()",
+          "old_line_content": "",
+          "new_line_content": "                uint64_t nBlockPos = blkdat.GetPos();",
+          "content_same": false
+        },
+        {
+          "line": 3398,
+          "old_api": null,
+          "new_api": "IsInitialBlockDownload",
+          "old_text": null,
+          "new_text": "IsInitialBlockDownload()",
+          "old_line_content": "                continue;",
+          "new_line_content": "        if (IsInitialBlockDownload()) {",
+          "content_same": false
+        },
+        {
+          "line": 3913,
+          "old_api": null,
+          "new_api": "GetPos",
+          "old_text": null,
+          "new_text": "blkdat.GetPos()",
+          "old_line_content": "                    continue;",
+          "new_line_content": "                nRewind = blkdat.GetPos();",
+          "content_same": false
+        },
+        {
+          "line": 3916,
+          "old_api": null,
+          "new_api": "GetHash",
+          "old_text": null,
+          "new_text": "block.GetHash()",
+          "old_line_content": "                // process in case the block isn't known yet",
+          "new_line_content": "                uint256 hash = block.GetHash();",
+          "content_same": false
+        },
+        {
+          "line": 3919,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "block.hashPrevBlock.ToString()",
+          "old_line_content": "                    CValidationState state;",
+          "new_line_content": "                            block.hashPrevBlock.ToString());",
+          "content_same": false
+        },
+        {
+          "line": 3921,
+          "old_api": null,
+          "new_api": "std::make_pair(block.hashPrevBlock, *dbp)",
+          "old_text": null,
+          "new_text": "std::make_pair(block.hashPrevBlock, *dbp)",
+          "old_line_content": "                        nLoaded++;",
+          "new_line_content": "                        mapBlocksUnknownParent.insert(std::make_pair(block.hashPrevBlock, *dbp));",
+          "content_same": false
+        },
+        {
+          "line": 3926,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "mapBlockIndex.count(hash)",
+          "old_line_content": "                }",
+          "new_line_content": "                if (mapBlockIndex.count(hash) == 0 || (mapBlockIndex[hash]->nStatus & BLOCK_HAVE_DATA) == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 3927,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "",
+          "new_line_content": "                    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 3416,
+          "old_api": null,
+          "new_api": "PruneOneBlockFile",
+          "old_text": null,
+          "new_text": "PruneOneBlockFile(fileNumber)",
+          "old_line_content": "           nPruneTarget/1024/1024, nCurrentUsage/1024/1024,",
+          "new_line_content": "            PruneOneBlockFile(fileNumber);",
+          "content_same": false
+        },
+        {
+          "line": 3418,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "setFilesToPrune.insert(fileNumber)",
+          "old_line_content": "           nLastBlockWeCanPrune, count);",
+          "new_line_content": "            setFilesToPrune.insert(fileNumber);",
+          "content_same": false
+        },
+        {
+          "line": 3933,
+          "old_api": null,
+          "new_api": "GetConsensus",
+          "old_text": null,
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "                    }",
+          "new_line_content": "                } else if (hash != chainparams.GetConsensus().hashGenesisBlock && mapBlockIndex[hash]->nHeight % 1000 == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 3934,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "hash.ToString()",
+          "old_line_content": "                }",
+          "new_line_content": "                    LogPrint(\"reindex\", \"Block Import: already had block %s at height %d\\n\", hash.ToString(), mapBlockIndex[hash]->nHeight);",
+          "content_same": false
+        },
+        {
+          "line": 3424,
+          "old_api": null,
+          "new_api": "LogPrint",
+          "old_text": null,
+          "new_text": "LogPrint(\"prune\", \"Prune: target=%dMiB actual=%dMiB diff=%dMiB max_prune_height=%d removed %d blk/rev pairs\\n\",\n           nPruneTarget/1024/1024, nCurrentUsage/1024/1024,\n           ((int64_t)nPruneTarget - (int64_t)nCurrentUsage)/1024/1024,\n           nLastBlockWeCanPrune, count)",
+          "old_line_content": "",
+          "new_line_content": "    LogPrint(\"prune\", \"Prune: target=%dMiB actual=%dMiB diff=%dMiB max_prune_height=%d removed %d blk/rev pairs\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 3938,
+          "old_api": null,
+          "new_api": "GetConsensus",
+          "old_text": null,
+          "new_text": "chainparams.GetConsensus()",
+          "old_line_content": "                // Recursively process earlier encountered successors of this block",
+          "new_line_content": "                if (hash == chainparams.GetConsensus().hashGenesisBlock) {",
+          "content_same": false
+        },
+        {
+          "line": 3432,
+          "old_api": null,
+          "new_api": "GetDataDir",
+          "old_text": null,
+          "new_text": "GetDataDir()",
+          "old_line_content": "FILE* OpenDiskFile(const CDiskBlockPos &pos, const char *prefix, bool fReadOnly)",
+          "new_line_content": "    uint64_t nFreeBytesAvailable = boost::filesystem::space(GetDataDir()).available;",
+          "content_same": false
+        },
+        {
+          "line": 3945,
+          "old_api": null,
+          "new_api": "NotifyHeaderTip",
+          "old_text": null,
+          "new_text": "NotifyHeaderTip()",
+          "old_line_content": "                    while (range.first != range.second) {",
+          "new_line_content": "                NotifyHeaderTip();",
+          "content_same": false
+        },
+        {
+          "line": 3949,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "queue.push_back(hash)",
+          "old_line_content": "                        {",
+          "new_line_content": "                queue.push_back(hash);",
+          "content_same": false
+        },
+        {
+          "line": 3953,
+          "old_api": null,
+          "new_api": "equal_range",
+          "old_text": null,
+          "new_text": "mapBlocksUnknownParent.equal_range(head)",
+          "old_line_content": "                            CValidationState dummy;",
+          "new_line_content": "                    std::pair<std::multimap<uint256, CDiskBlockPos>::iterator, std::multimap<uint256, CDiskBlockPos>::iterator> range = mapBlocksUnknownParent.equal_range(head);",
+          "content_same": false
+        },
+        {
+          "line": 3443,
+          "old_api": null,
+          "new_api": "IsNull",
+          "old_text": null,
+          "new_text": "pos.IsNull()",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    if (pos.IsNull())",
+          "content_same": false
+        },
+        {
+          "line": 3956,
+          "old_api": null,
+          "new_api": "std::make_shared<CBlock>()",
+          "old_text": null,
+          "new_text": "std::make_shared<CBlock>()",
+          "old_line_content": "                                nLoaded++;",
+          "new_line_content": "                        std::shared_ptr<CBlock> pblockrecursive = std::make_shared<CBlock>();",
+          "content_same": false
+        },
+        {
+          "line": 3445,
+          "old_api": null,
+          "new_api": "GetBlockPosFilename",
+          "old_text": null,
+          "new_text": "GetBlockPosFilename(pos, prefix)",
+          "old_line_content": "    if (pos.nPos) {",
+          "new_line_content": "    boost::filesystem::path path = GetBlockPosFilename(pos, prefix);",
+          "content_same": false
+        },
+        {
+          "line": 3959,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "pblockrecursive->GetHash().ToString()",
+          "old_line_content": "                        }",
+          "new_line_content": "                            LogPrint(\"reindex\", \"%s: Processing out of order child %s of %s\\n\", __func__, pblockrecursive->GetHash().ToString(),",
+          "content_same": false
+        },
+        {
+          "line": 3960,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "head.ToString()",
+          "old_line_content": "                        range.first++;",
+          "new_line_content": "                                    head.ToString());",
+          "content_same": false
+        },
+        {
+          "line": 3449,
+          "old_api": null,
+          "new_api": "string",
+          "old_text": null,
+          "new_text": "path.string().c_str()",
+          "old_line_content": "            return NULL;",
+          "new_line_content": "        file = fopen(path.string().c_str(), \"wb+\");",
+          "content_same": false
+        },
+        {
+          "line": 3451,
+          "old_api": null,
+          "new_api": "string",
+          "old_text": null,
+          "new_text": "path.string()",
+          "old_line_content": "    }",
+          "new_line_content": "        LogPrintf(\"Unable to open file %s\\n\", path.string());",
+          "content_same": false
+        },
+        {
+          "line": 3963,
+          "old_api": null,
+          "new_api": "AcceptBlock",
+          "old_text": null,
+          "new_text": "AcceptBlock(pblockrecursive, dummy, chainparams, NULL, true, &it->second, NULL)",
+          "old_line_content": "                    }",
+          "new_line_content": "                            if (AcceptBlock(pblockrecursive, dummy, chainparams, NULL, true, &it->second, NULL))",
+          "content_same": false
+        },
+        {
+          "line": 3455,
+          "old_api": null,
+          "new_api": "fseek",
+          "old_text": null,
+          "new_text": "fseek(file, pos.nPos, SEEK_SET)",
+          "old_line_content": "FILE* OpenBlockFile(const CDiskBlockPos &pos, bool fReadOnly) {",
+          "new_line_content": "        if (fseek(file, pos.nPos, SEEK_SET)) {",
+          "content_same": false
+        },
+        {
+          "line": 3457,
+          "old_api": null,
+          "new_api": "fclose",
+          "old_text": null,
+          "new_text": "fclose(file)",
+          "old_line_content": "}",
+          "new_line_content": "            fclose(file);",
+          "content_same": false
+        },
+        {
+          "line": 3971,
+          "old_api": null,
+          "new_api": "NotifyHeaderTip",
+          "old_text": null,
+          "new_text": "NotifyHeaderTip()",
+          "old_line_content": "    }",
+          "new_line_content": "                        NotifyHeaderTip();",
+          "content_same": false
+        },
+        {
+          "line": 3975,
+          "old_api": null,
+          "new_api": "what",
+          "old_text": null,
+          "new_text": "e.what()",
+          "old_line_content": "}",
+          "new_line_content": "                LogPrintf(\"%s: Deserialize or I/O error - %s\\n\", __func__, e.what());",
+          "content_same": false
+        },
+        {
+          "line": 3979,
+          "old_api": null,
+          "new_api": "what",
+          "old_text": null,
+          "new_text": "e.what()",
+          "old_line_content": "    if (!fCheckBlockIndex) {",
+          "new_line_content": "        AbortNode(std::string(\"System error: \") + e.what());",
+          "content_same": false
+        },
+        {
+          "line": 3469,
+          "old_api": null,
+          "new_api": "OpenDiskFile",
+          "old_text": null,
+          "new_text": "OpenDiskFile(pos, \"rev\", fReadOnly)",
+          "old_line_content": "{",
+          "new_line_content": "    return OpenDiskFile(pos, \"rev\", fReadOnly);",
+          "content_same": false
+        },
+        {
+          "line": 3982,
+          "old_api": null,
+          "new_api": "GetTimeMillis",
+          "old_text": null,
+          "new_text": "GetTimeMillis()",
+          "old_line_content": "",
+          "new_line_content": "        LogPrintf(\"Loaded %i blocks from external file in %dms\\n\", nLoaded, GetTimeMillis() - nStart);",
+          "content_same": false
+        },
+        {
+          "line": 3479,
+          "old_api": null,
+          "new_api": "IsNull",
+          "old_text": null,
+          "new_text": "hash.IsNull()",
+          "old_line_content": "    CBlockIndex* pindexNew = new CBlockIndex();",
+          "new_line_content": "    if (hash.IsNull())",
+          "content_same": false
+        },
+        {
+          "line": 3992,
+          "old_api": null,
+          "new_api": "LOCK",
+          "old_text": null,
+          "new_text": "LOCK(cs_main)",
+          "old_line_content": "",
+          "new_line_content": "    LOCK(cs_main);",
+          "content_same": false
+        },
+        {
+          "line": 3483,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "mapBlockIndex.find(hash)",
+          "old_line_content": "    pindexNew->phashBlock = &((*mi).first);",
+          "new_line_content": "    BlockMap::iterator mi = mapBlockIndex.find(hash);",
+          "content_same": false
+        },
+        {
+          "line": 3484,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "mapBlockIndex.end()",
+          "old_line_content": "",
+          "new_line_content": "    if (mi != mapBlockIndex.end())",
+          "content_same": false
+        },
+        {
+          "line": 3997,
+          "old_api": null,
+          "new_api": "Height",
+          "old_text": null,
+          "new_text": "chainActive.Height()",
+          "old_line_content": "    }",
+          "new_line_content": "    if (chainActive.Height() < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 3998,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "mapBlockIndex.size()",
+          "old_line_content": "",
+          "new_line_content": "        assert(mapBlockIndex.size() <= 1);",
+          "content_same": false
+        },
+        {
+          "line": 3491,
+          "old_api": null,
+          "new_api": "std::make_pair(hash, pindexNew)",
+          "old_text": null,
+          "new_text": "std::make_pair(hash, pindexNew)",
+          "old_line_content": "        return false;",
+          "new_line_content": "    mi = mapBlockIndex.insert(std::make_pair(hash, pindexNew)).first;",
+          "content_same": false
+        },
+        {
+          "line": 4005,
+          "old_api": null,
+          "new_api": "std::make_pair(it->second->pprev, it->second)",
+          "old_text": null,
+          "new_text": "std::make_pair(it->second->pprev, it->second)",
+          "old_line_content": "",
+          "new_line_content": "        forward.insert(std::make_pair(it->second->pprev, it->second));",
+          "content_same": false
+        },
+        {
+          "line": 4008,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "mapBlockIndex.size()",
+          "old_line_content": "    // block being explored which are the first to have certain properties.",
+          "new_line_content": "    assert(forward.size() == mapBlockIndex.size());",
+          "content_same": false
+        },
+        {
+          "line": 4010,
+          "old_api": null,
+          "new_api": "equal_range",
+          "old_text": null,
+          "new_text": "forward.equal_range(NULL)",
+          "old_line_content": "    int nHeight = 0;",
+          "new_line_content": "    std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangeGenesis = forward.equal_range(NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3499,
+          "old_api": null,
+          "new_api": "LoadBlockIndexGuts",
+          "old_text": null,
+          "new_text": "pblocktree->LoadBlockIndexGuts(InsertBlockIndex)",
+          "old_line_content": "    {",
+          "new_line_content": "    if (!pblocktree->LoadBlockIndexGuts(InsertBlockIndex))",
+          "content_same": false
+        },
+        {
+          "line": 4013,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(rangeGenesis.first == rangeGenesis.second)",
+          "old_line_content": "    CBlockIndex* pindexFirstNeverProcessed = NULL; // Oldest ancestor of pindex for which nTx == 0.",
+          "new_line_content": "    assert(rangeGenesis.first == rangeGenesis.second); // There is only one index entry with parent NULL.",
+          "content_same": false
+        },
+        {
+          "line": 3502,
+          "old_api": null,
+          "new_api": "boost::this_thread::interruption_point()",
+          "old_text": null,
+          "new_text": "boost::this_thread::interruption_point()",
+          "old_line_content": "    }",
+          "new_line_content": "    boost::this_thread::interruption_point();",
+          "content_same": false
+        },
+        {
+          "line": 3506,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "mapBlockIndex.size()",
+          "old_line_content": "        CBlockIndex* pindex = item.second;",
+          "new_line_content": "    vSortedByHeight.reserve(mapBlockIndex.size());",
+          "content_same": false
+        },
+        {
+          "line": 3510,
+          "old_api": null,
+          "new_api": "std::make_pair(pindex->nHeight, pindex)",
+          "old_text": null,
+          "new_text": "std::make_pair(pindex->nHeight, pindex)",
+          "old_line_content": "        // Pruned nodes may have deleted the block.",
+          "new_line_content": "        vSortedByHeight.push_back(std::make_pair(pindex->nHeight, pindex));",
+          "content_same": false
+        },
+        {
+          "line": 3512,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "vSortedByHeight.end()",
+          "old_line_content": "            if (pindex->pprev) {",
+          "new_line_content": "    sort(vSortedByHeight.begin(), vSortedByHeight.end());",
+          "content_same": false
+        },
+        {
+          "line": 3516,
+          "old_api": null,
+          "new_api": "GetBlockProof",
+          "old_text": null,
+          "new_text": "GetBlockProof(*pindex)",
+          "old_line_content": "                    pindex->nChainTx = 0;",
+          "new_line_content": "        pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + GetBlockProof(*pindex);",
+          "content_same": false
+        },
+        {
+          "line": 3526,
+          "old_api": null,
+          "new_api": "std::make_pair(pindex->pprev, pindex)",
+          "old_text": null,
+          "new_text": "std::make_pair(pindex->pprev, pindex)",
+          "old_line_content": "            pindexBestInvalid = pindex;",
+          "new_line_content": "                    mapBlocksUnlinked.insert(std::make_pair(pindex->pprev, pindex));",
+          "content_same": false
+        },
+        {
+          "line": 4041,
+          "old_api": null,
+          "new_api": "Genesis",
+          "old_text": null,
+          "new_text": "chainActive.Genesis()",
+          "old_line_content": "        } else {",
+          "new_line_content": "            assert(pindex == chainActive.Genesis()); // The current active chain's genesis block must be this block.",
+          "content_same": false
+        },
+        {
+          "line": 3532,
+          "old_api": null,
+          "new_api": "IsValid",
+          "old_text": null,
+          "new_text": "pindex->IsValid(BLOCK_VALID_TRANSACTIONS)",
+          "old_line_content": "",
+          "new_line_content": "        if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && (pindex->nChainTx || pindex->pprev == NULL))",
+          "content_same": false
+        },
+        {
+          "line": 3533,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "setBlockIndexCandidates.insert(pindex)",
+          "old_line_content": "    // Load block file info",
+          "new_line_content": "            setBlockIndexCandidates.insert(pindex);",
+          "content_same": false
+        },
+        {
+          "line": 3537,
+          "old_api": null,
+          "new_api": "BuildSkip",
+          "old_text": null,
+          "new_text": "pindex->BuildSkip()",
+          "old_line_content": "    for (int nFile = 0; nFile <= nLastBlockFile; nFile++) {",
+          "new_line_content": "            pindex->BuildSkip();",
+          "content_same": false
+        },
+        {
+          "line": 3545,
+          "old_api": null,
+          "new_api": "LogPrintf",
+          "old_text": null,
+          "new_text": "LogPrintf(\"%s: last block file = %i\\n\", __func__, nLastBlockFile)",
+          "old_line_content": "        } else {",
+          "new_line_content": "    LogPrintf(\"%s: last block file = %i\\n\", __func__, nLastBlockFile);",
+          "content_same": false
+        },
+        {
+          "line": 4057,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert((pindexFirstNeverProcessed != NULL) == (pindex->nChainTx == 0))",
+          "old_line_content": "        if (pindexFirstInvalid == NULL) {",
+          "new_line_content": "        assert((pindexFirstNeverProcessed != NULL) == (pindex->nChainTx == 0)); // nChainTx != 0 is used to signal that all parent blocks have been processed (but may have been pruned).",
+          "content_same": false
+        },
+        {
+          "line": 3547,
+          "old_api": null,
+          "new_api": "ReadBlockFileInfo",
+          "old_text": null,
+          "new_text": "pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile])",
+          "old_line_content": "        }",
+          "new_line_content": "        pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile]);",
+          "content_same": false
+        },
+        {
+          "line": 4058,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert((pindexFirstNotTransactionsValid != NULL) == (pindex->nChainTx == 0))",
+          "old_line_content": "            // Checks for not-invalid blocks.",
+          "new_line_content": "        assert((pindexFirstNotTransactionsValid != NULL) == (pindex->nChainTx == 0));",
+          "content_same": false
+        },
+        {
+          "line": 3549,
+          "old_api": null,
+          "new_api": "ToString",
+          "old_text": null,
+          "new_text": "vinfoBlockFile[nLastBlockFile].ToString()",
+          "old_line_content": "",
+          "new_line_content": "    LogPrintf(\"%s: last block file info: %s\\n\", __func__, vinfoBlockFile[nLastBlockFile].ToString());",
+          "content_same": false
+        },
+        {
+          "line": 4060,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(pindex->pprev == NULL || pindex->nChainWork >= pindex->pprev->nChainWork)",
+          "old_line_content": "        }",
+          "new_line_content": "        assert(pindex->pprev == NULL || pindex->nChainWork >= pindex->pprev->nChainWork); // For every block except the genesis block, the chainwork must be larger than the parent's.",
+          "content_same": false
+        },
+        {
+          "line": 4062,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(pindexFirstNotTreeValid == NULL)",
+          "old_line_content": "            if (pindexFirstInvalid == NULL) {",
+          "new_line_content": "        assert(pindexFirstNotTreeValid == NULL); // All mapBlockIndex entries must at least be TREE valid",
+          "content_same": false
+        },
+        {
+          "line": 3552,
+          "old_api": null,
+          "new_api": "ReadBlockFileInfo",
+          "old_text": null,
+          "new_text": "pblocktree->ReadBlockFileInfo(nFile, info)",
+          "old_line_content": "    std::set<int> setBlkDataFiles;",
+          "new_line_content": "        if (pblocktree->ReadBlockFileInfo(nFile, info)) {",
+          "content_same": false
+        },
+        {
+          "line": 3553,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "vinfoBlockFile.push_back(info)",
+          "old_line_content": "    BOOST_FOREACH(const PAIRTYPE(uint256, CBlockIndex*)& item, mapBlockIndex)",
+          "new_line_content": "            vinfoBlockFile.push_back(info);",
+          "content_same": false
+        },
+        {
+          "line": 4063,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(pindexFirstNotTreeValid == NULL)",
+          "old_line_content": "                // If this block sorts at least as good as the current tip and",
+          "new_line_content": "        if ((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_TREE) assert(pindexFirstNotTreeValid == NULL); // TREE valid implies all parents are TREE valid",
+          "content_same": false
+        },
+        {
+          "line": 4064,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(pindexFirstNotChainValid == NULL)",
+          "old_line_content": "                // is valid and we have all data for its parents, it must be in",
+          "new_line_content": "        if ((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_CHAIN) assert(pindexFirstNotChainValid == NULL); // CHAIN valid implies all parents are CHAIN valid",
+          "content_same": false
+        },
+        {
+          "line": 4065,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(pindexFirstNotScriptsValid == NULL)",
+          "old_line_content": "                // setBlockIndexCandidates.  chainActive.Tip() must also be there",
+          "new_line_content": "        if ((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_SCRIPTS) assert(pindexFirstNotScriptsValid == NULL); // SCRIPTS valid implies all parents are SCRIPTS valid",
+          "content_same": false
+        },
+        {
+          "line": 4070,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "                // If some parent is missing, then it could be that this block was in",
+          "new_line_content": "        if (!CBlockIndexWorkComparator()(pindex, chainActive.Tip()) && pindexFirstNeverProcessed == NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 4076,
+          "old_api": null,
+          "new_api": "Tip",
+          "old_text": null,
+          "new_text": "chainActive.Tip()",
+          "old_line_content": "        }",
+          "new_line_content": "                if (pindexFirstMissing == NULL || pindex == chainActive.Tip()) {",
+          "content_same": false
+        },
+        {
+          "line": 4077,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "setBlockIndexCandidates.count(pindex)",
+          "old_line_content": "        // Check whether this block is in mapBlocksUnlinked.",
+          "new_line_content": "                    assert(setBlockIndexCandidates.count(pindex));",
+          "content_same": false
+        },
+        {
+          "line": 3566,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "setBlkDataFiles.insert(pindex->nFile)",
+          "old_line_content": "    }",
+          "new_line_content": "            setBlkDataFiles.insert(pindex->nFile);",
+          "content_same": false
+        },
+        {
+          "line": 3572,
+          "old_api": null,
+          "new_api": "OpenBlockFile",
+          "old_text": null,
+          "new_text": "OpenBlockFile(pos, true)",
+          "old_line_content": "",
+          "new_line_content": "        if (CAutoFile(OpenBlockFile(pos, true), SER_DISK, CLIENT_VERSION).IsNull()) {",
+          "content_same": false
+        },
+        {
+          "line": 4084,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "setBlockIndexCandidates.count(pindex)",
+          "old_line_content": "                break;",
+          "new_line_content": "            assert(setBlockIndexCandidates.count(pindex) == 0);",
+          "content_same": false
+        },
+        {
+          "line": 4087,
+          "old_api": null,
+          "new_api": "equal_range",
+          "old_text": null,
+          "new_text": "mapBlocksUnlinked.equal_range(pindex->pprev)",
+          "old_line_content": "        }",
+          "new_line_content": "        std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangeUnlinked = mapBlocksUnlinked.equal_range(pindex->pprev);",
+          "content_same": false
+        },
+        {
+          "line": 3578,
+          "old_api": null,
+          "new_api": "ReadFlag",
+          "old_text": null,
+          "new_text": "pblocktree->ReadFlag(\"prunedblockfiles\", fHavePruned)",
+          "old_line_content": "    // Check whether we have a transaction index",
+          "new_line_content": "    pblocktree->ReadFlag(\"prunedblockfiles\", fHavePruned);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 4096,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(fHavePruned)",
+          "new_text": null,
+          "old_line_content": "            assert(fHavePruned); // We must have pruned.",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 3586,
+          "old_api": "SetTip",
+          "new_api": null,
+          "old_text": "chainActive.SetTip(it->second)",
+          "new_text": null,
+          "old_line_content": "    chainActive.SetTip(it->second);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3590,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "LogPrintf(\"%s: hashBestChain=%s height=%d date=%s progress=%f\\n\", __func__,\n        chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),\n        DateTimeStrFormat(\"%Y-%m-%d %H:%M:%S\", chainActive.Tip()->GetBlockTime()),\n        GuessVerificationProgress(chainparams.TxData(), chainActive.Tip()))",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"%s: hashBestChain=%s height=%d date=%s progress=%f\\n\", __func__,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3591,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "        chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(),",
+          "new_line_content": "    // Load pointer to end of best chain",
+          "content_same": false
+        },
+        {
+          "line": 4107,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(foundInUnlinked)",
+          "new_text": null,
+          "old_line_content": "                    assert(foundInUnlinked);",
+          "new_line_content": "            //  - it has a descendant that at some point had more work than the",
+          "content_same": false
+        },
+        {
+          "line": 4115,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "forward.equal_range(pindex)",
+          "new_text": null,
+          "old_line_content": "        std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> range = forward.equal_range(pindex);",
+          "new_line_content": "                if (pindexFirstInvalid == NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 3605,
+          "old_api": "ShowProgress",
+          "new_api": null,
+          "old_text": "uiInterface.ShowProgress(\"\", 100)",
+          "new_text": null,
+          "old_line_content": "    uiInterface.ShowProgress(\"\", 100);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3610,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3611,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "    if (chainActive.Tip() == NULL || chainActive.Tip()->pprev == NULL)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3617,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "    if (nCheckDepth > chainActive.Height())",
+          "new_line_content": "bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview, int nCheckLevel, int nCheckDepth)",
+          "content_same": false
+        },
+        {
+          "line": 3618,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "        nCheckDepth = chainActive.Height();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3622,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "    CBlockIndex* pindexState = chainActive.Tip();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4137,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "forward.equal_range(pindexPar)",
+          "new_text": null,
+          "old_line_content": "            std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangePar = forward.equal_range(pindexPar);",
+          "new_line_content": "            if (pindex == pindexFirstMissing) pindexFirstMissing = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 4139,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(rangePar.first != rangePar.second)",
+          "new_text": null,
+          "old_line_content": "                assert(rangePar.first != rangePar.second); // Our parent must have at least the node we're coming from as child.",
+          "new_line_content": "            if (pindex == pindexFirstNotTreeValid) pindexFirstNotTreeValid = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 3630,
+          "old_api": "boost::this_thread::interruption_point()",
+          "new_api": null,
+          "old_text": "boost::this_thread::interruption_point()",
+          "new_text": null,
+          "old_line_content": "        boost::this_thread::interruption_point();",
+          "new_line_content": "    CCoinsViewCache coins(coinsview);",
+          "content_same": false
+        },
+        {
+          "line": 3634,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"[%d%%]...\", percentageDone)",
+          "new_text": null,
+          "old_line_content": "            LogPrintf(\"[%d%%]...\", percentageDone);",
+          "new_line_content": "    CValidationState state;",
+          "content_same": false
+        },
+        {
+          "line": 3638,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "        if (pindex->nHeight < chainActive.Height()-nCheckDepth)",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 3642,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"VerifyDB(): block verification stopping at height %d (pruning, no data)\\n\", pindex->nHeight)",
+          "new_text": null,
+          "old_line_content": "            LogPrintf(\"VerifyDB(): block verification stopping at height %d (pruning, no data)\\n\", pindex->nHeight);",
+          "new_line_content": "            // report every 10% step",
+          "content_same": false
+        },
+        {
+          "line": 4158,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "forward.size()",
+          "new_text": null,
+          "old_line_content": "    assert(nNodes == forward.size());",
+          "new_line_content": "                // Move up further.",
+          "content_same": false
+        },
+        {
+          "line": 3648,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "pindex->GetBlockHash().ToString()",
+          "new_text": null,
+          "old_line_content": "            return error(\"VerifyDB(): *** ReadBlockFromDisk failed at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 3650,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "        if (nCheckLevel >= 1 && !CheckBlock(block, state, chainparams.GetConsensus()))",
+          "new_line_content": "            // If pruning, only go back as far as we have data.",
+          "content_same": false
+        },
+        {
+          "line": 4163,
+          "old_api": "DateTimeStrFormat",
+          "new_api": null,
+          "old_text": "DateTimeStrFormat(\"%Y-%m-%d\", nTimeLast)",
+          "new_text": null,
+          "old_line_content": "    return strprintf(\"CBlockFileInfo(blocks=%u, size=%u, heights=%u...%u, time=%s...%s)\", nBlocks, nSize, nHeightFirst, nHeightLast, DateTimeStrFormat(\"%Y-%m-%d\", nTimeFirst), DateTimeStrFormat(\"%Y-%m-%d\", nTimeLast));",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 3652,
+          "old_api": "FormatStateMessage",
+          "new_api": null,
+          "old_text": "FormatStateMessage(state)",
+          "new_text": null,
+          "old_line_content": "                         pindex->nHeight, pindex->GetBlockHash().ToString(), FormatStateMessage(state));",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 4168,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4169,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "    return VersionBitsState(chainActive.Tip(), params, pos, versionbitscache);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3658,
+          "old_api": "GetBlockHash",
+          "new_api": null,
+          "old_text": "pindex->pprev->GetBlockHash()",
+          "new_text": null,
+          "old_line_content": "                if (!UndoReadFromDisk(undo, pos, pindex->pprev->GetBlockHash()))",
+          "new_line_content": "        // check level 1: verify block validity",
+          "content_same": false
+        },
+        {
+          "line": 4174,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4175,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "    return VersionBitsStateSinceHeight(chainActive.Tip(), params, pos, versionbitscache);",
+          "new_line_content": "ThresholdState VersionBitsTipState(const Consensus::Params& params, Consensus::DeploymentPos pos)",
+          "content_same": false
+        },
+        {
+          "line": 3663,
+          "old_api": "DynamicMemoryUsage",
+          "new_api": null,
+          "old_text": "pcoinsTip->DynamicMemoryUsage()",
+          "new_text": null,
+          "old_line_content": "        if (nCheckLevel >= 3 && pindex == pindexState && (coins.DynamicMemoryUsage() + pcoinsTip->DynamicMemoryUsage()) <= nCoinCacheUsage) {",
+          "new_line_content": "        if (nCheckLevel >= 2 && pindex) {",
+          "content_same": false
+        },
+        {
+          "line": 4182,
+          "old_api": "GetArg",
+          "new_api": null,
+          "old_text": "GetArg(\"-mempoolexpiry\", DEFAULT_MEMPOOL_EXPIRY)",
+          "new_text": null,
+          "old_line_content": "    int64_t nExpiryTimeout = GetArg(\"-mempoolexpiry\", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60;",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4185,
+          "old_api": "IsNull",
+          "new_api": null,
+          "old_text": "file.IsNull()",
+          "new_text": null,
+          "old_line_content": "    if (file.IsNull()) {",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4186,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"Failed to open mempool file from disk. Continuing anyway.\\n\")",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Failed to open mempool file from disk. Continuing anyway.\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3678,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "        return error(\"VerifyDB(): *** coin database inconsistencies found (last %i blocks, %i good transactions before that)\\n\", chainActive.Height() - pindexFailure->nHeight + 1, nGoodTransactions);",
+          "new_line_content": "                nGoodTransactions = 0;",
+          "content_same": false
+        },
+        {
+          "line": 4193,
+          "old_api": "GetTime",
+          "new_api": null,
+          "old_text": "GetTime()",
+          "new_text": null,
+          "old_line_content": "    int64_t nNow = GetTime();",
+          "new_line_content": "    CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);",
+          "content_same": false
+        },
+        {
+          "line": 3684,
+          "old_api": "boost::this_thread::interruption_point()",
+          "new_api": null,
+          "old_text": "boost::this_thread::interruption_point()",
+          "new_text": null,
+          "old_line_content": "            boost::this_thread::interruption_point();",
+          "new_line_content": "            return true;",
+          "content_same": false
+        },
+        {
+          "line": 3685,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "            uiInterface.ShowProgress(_(\"Verifying blocks...\"), std::max(1, std::min(99, 100 - (int)(((double)(chainActive.Height() - pindex->nHeight)) / (double)nCheckDepth * 50))));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 3686,
+          "old_api": "Next",
+          "new_api": null,
+          "old_text": "chainActive.Next(pindex)",
+          "new_text": null,
+          "old_line_content": "            pindex = chainActive.Next(pindex);",
+          "new_line_content": "    if (pindexFailure)",
+          "content_same": false
+        },
+        {
+          "line": 3688,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "            if (!ReadBlockFromDisk(block, pindex, chainparams.GetConsensus()))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3689,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "pindex->GetBlockHash().ToString()",
+          "new_text": null,
+          "old_line_content": "                return error(\"VerifyDB(): *** ReadBlockFromDisk failed at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "new_line_content": "    // check level 4: try reconnecting blocks",
+          "content_same": false
+        },
+        {
+          "line": 3690,
+          "old_api": "ConnectBlock",
+          "new_api": null,
+          "old_text": "ConnectBlock(block, state, pindex, coins, chainparams)",
+          "new_text": null,
+          "old_line_content": "            if (!ConnectBlock(block, state, pindex, coins, chainparams))",
+          "new_line_content": "    if (nCheckLevel >= 4) {",
+          "content_same": false
+        },
+        {
+          "line": 3691,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "pindex->GetBlockHash().ToString()",
+          "new_text": null,
+          "old_line_content": "                return error(\"VerifyDB(): *** found unconnectable block at %d, hash=%s\", pindex->nHeight, pindex->GetBlockHash().ToString());",
+          "new_line_content": "        CBlockIndex *pindex = pindexState;",
+          "content_same": false
+        },
+        {
+          "line": 3696,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"No coin database inconsistencies in last %i blocks (%i transactions)\\n\", chainActive.Height() - pindexState->nHeight, nGoodTransactions);",
+          "new_line_content": "            CBlock block;",
+          "content_same": false
+        },
+        {
+          "line": 4214,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "tx->GetHash().ToString()",
+          "new_text": null,
+          "old_line_content": "                mempool.PrioritiseTransaction(tx->GetHash(), tx->GetHash().ToString(), prioritydummy, amountdelta);",
+          "new_line_content": "            CTransactionRef tx;",
+          "content_same": false
+        },
+        {
+          "line": 3703,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4218,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "                LOCK(cs_main);",
+          "new_line_content": "            file >> nTime;",
+          "content_same": false
+        },
+        {
+          "line": 4219,
+          "old_api": "AcceptToMemoryPoolWithTime",
+          "new_api": null,
+          "old_text": "AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime)",
+          "new_text": null,
+          "old_line_content": "                AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime);",
+          "new_line_content": "            file >> nFeeDelta;",
+          "content_same": false
+        },
+        {
+          "line": 4220,
+          "old_api": "IsValid",
+          "new_api": null,
+          "old_text": "state.IsValid()",
+          "new_text": null,
+          "old_line_content": "                if (state.IsValid()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3706,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "    while (nHeight <= chainActive.Height()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3707,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "params.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "        if (IsWitnessEnabled(chainActive[nHeight - 1], params.GetConsensus()) && !(chainActive[nHeight]->nStatus & BLOCK_OPT_WITNESS)) {",
+          "new_line_content": "    return true;",
+          "content_same": false
+        },
+        {
+          "line": 3717,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "        if (fPruneMode && !(chainActive.Tip()->nStatus & BLOCK_HAVE_DATA)) {",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 4235,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "i.first.ToString()",
+          "new_text": null,
+          "old_line_content": "            mempool.PrioritiseTransaction(i.first, i.first.ToString(), prioritydummy, i.second);",
+          "new_line_content": "                ++skipped;",
+          "content_same": false
+        },
+        {
+          "line": 4238,
+          "old_api": "what",
+          "new_api": null,
+          "old_text": "e.what()",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Failed to deserialize mempool data on disk: %s. Continuing anyway.\\n\", e.what());",
+          "new_line_content": "                return false;",
+          "content_same": false
+        },
+        {
+          "line": 3729,
+          "old_api": "FlushStateToDisk",
+          "new_api": null,
+          "old_text": "FlushStateToDisk(state, FLUSH_STATE_PERIODIC)",
+          "new_text": null,
+          "old_line_content": "        if (!FlushStateToDisk(state, FLUSH_STATE_PERIODIC))",
+          "new_line_content": "            // no need to walk further, and trying to DisconnectTip()",
+          "content_same": false
+        },
+        {
+          "line": 4242,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"Imported mempool transactions from disk: %i successes, %i failed, %i expired\\n\", count, failed, skipped)",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"Imported mempool transactions from disk: %i successes, %i failed, %i expired\\n\", count, failed, skipped);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4248,
+          "old_api": "GetTimeMicros",
+          "new_api": null,
+          "old_text": "GetTimeMicros()",
+          "new_text": null,
+          "old_line_content": "    int64_t start = GetTimeMicros();",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 3736,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "mapBlockIndex.end()",
+          "new_text": null,
+          "old_line_content": "    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); it++) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 4254,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(mempool.cs)",
+          "new_text": null,
+          "old_line_content": "        LOCK(mempool.cs);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3744,
+          "old_api": "Contains",
+          "new_api": null,
+          "old_text": "chainActive.Contains(pindexIter)",
+          "new_text": null,
+          "old_line_content": "        if (IsWitnessEnabled(pindexIter->pprev, params.GetConsensus()) && !(pindexIter->nStatus & BLOCK_OPT_WITNESS) && !chainActive.Contains(pindexIter)) {",
+          "new_line_content": "    // to disk before writing the chainstate, resulting in a failure to continue if interrupted.",
+          "content_same": false
+        },
+        {
+          "line": 4258,
+          "old_api": "infoAll",
+          "new_api": null,
+          "old_text": "mempool.infoAll()",
+          "new_text": null,
+          "old_line_content": "        vinfo = mempool.infoAll();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3746,
+          "old_api": "std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE)",
+          "new_api": null,
+          "old_text": "std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE)",
+          "new_text": null,
+          "old_line_content": "            pindexIter->nStatus = std::min<unsigned int>(pindexIter->nStatus & BLOCK_VALID_MASK, BLOCK_VALID_TREE) | (pindexIter->nStatus & ~BLOCK_VALID_MASK);",
+          "new_line_content": "        CBlockIndex* pindexIter = it->second;",
+          "content_same": false
+        },
+        {
+          "line": 4261,
+          "old_api": "GetTimeMicros",
+          "new_api": null,
+          "old_text": "GetTimeMicros()",
+          "new_text": null,
+          "old_line_content": "    int64_t mid = GetTimeMicros();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4264,
+          "old_api": "string",
+          "new_api": null,
+          "old_text": "GetDataDir() / \"mempool.dat.new\").string().c_str()",
+          "new_text": null,
+          "old_line_content": "        FILE* filestr = fopen((GetDataDir() / \"mempool.dat.new\").string().c_str(), \"w\");",
+          "new_line_content": "        for (const auto &i : mempool.mapDeltas) {",
+          "content_same": false
+        },
+        {
+          "line": 3758,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "setDirtyBlockIndex.insert(pindexIter)",
+          "new_text": null,
+          "old_line_content": "            setDirtyBlockIndex.insert(pindexIter);",
+          "new_line_content": "            // Remove storage location.",
+          "content_same": false
+        },
+        {
+          "line": 3760,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "setBlockIndexCandidates.erase(pindexIter)",
+          "new_text": null,
+          "old_line_content": "            setBlockIndexCandidates.erase(pindexIter);",
+          "new_line_content": "            pindexIter->nDataPos = 0;",
+          "content_same": false
+        },
+        {
+          "line": 3761,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "mapBlocksUnlinked.equal_range(pindexIter->pprev)",
+          "new_text": null,
+          "old_line_content": "            std::pair<std::multimap<CBlockIndex*, CBlockIndex*>::iterator, std::multimap<CBlockIndex*, CBlockIndex*>::iterator> ret = mapBlocksUnlinked.equal_range(pindexIter->pprev);",
+          "new_line_content": "            pindexIter->nUndoPos = 0;",
+          "content_same": false
+        },
+        {
+          "line": 4274,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "vinfo.size()",
+          "new_text": null,
+          "old_line_content": "        file << (uint64_t)vinfo.size();",
+          "new_line_content": "        if (!filestr) {",
+          "content_same": false
+        },
+        {
+          "line": 3764,
+          "old_api": "erase",
+          "new_api": null,
+          "old_text": "mapBlocksUnlinked.erase(ret.first++)",
+          "new_text": null,
+          "old_line_content": "                    mapBlocksUnlinked.erase(ret.first++);",
+          "new_line_content": "            pindexIter->nChainTx = 0;",
+          "content_same": false
+        },
+        {
+          "line": 4279,
+          "old_api": "GetHash",
+          "new_api": null,
+          "old_text": "i.tx->GetHash()",
+          "new_text": null,
+          "old_line_content": "            mapDeltas.erase(i.tx->GetHash());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4284,
+          "old_api": "fclose",
+          "new_api": null,
+          "old_text": "file.fclose()",
+          "new_text": null,
+          "old_line_content": "        file.fclose();",
+          "new_line_content": "        for (const auto& i : vinfo) {",
+          "content_same": false
+        },
+        {
+          "line": 4285,
+          "old_api": "GetDataDir",
+          "new_api": null,
+          "old_text": "GetDataDir()",
+          "new_text": null,
+          "old_line_content": "        RenameOver(GetDataDir() / \"mempool.dat.new\", GetDataDir() / \"mempool.dat\");",
+          "new_line_content": "            file << *(i.tx);",
+          "content_same": false
+        },
+        {
+          "line": 4286,
+          "old_api": "GetTimeMicros",
+          "new_api": null,
+          "old_text": "GetTimeMicros()",
+          "new_text": null,
+          "old_line_content": "        int64_t last = GetTimeMicros();",
+          "new_line_content": "            file << (int64_t)i.nTime;",
+          "content_same": false
+        },
+        {
+          "line": 4287,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"Dumped mempool: %gs to copy, %gs to dump\\n\", (mid-start)*0.000001, (last-mid)*0.000001)",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Dumped mempool: %gs to copy, %gs to dump\\n\", (mid-start)*0.000001, (last-mid)*0.000001);",
+          "new_line_content": "            file << (int64_t)i.nFeeDelta;",
+          "content_same": false
+        },
+        {
+          "line": 3774,
+          "old_api": "PruneBlockIndexCandidates",
+          "new_api": null,
+          "old_text": "PruneBlockIndexCandidates()",
+          "new_text": null,
+          "old_line_content": "    PruneBlockIndexCandidates();",
+          "new_line_content": "                } else {",
+          "content_same": false
+        },
+        {
+          "line": 4289,
+          "old_api": "what",
+          "new_api": null,
+          "old_text": "e.what()",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Failed to dump mempool: %s. Continuing anyway.\\n\", e.what());",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 3776,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "params.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "    CheckBlockIndex(params.GetConsensus());",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 3790,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3791,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "setBlockIndexCandidates.clear()",
+          "new_text": null,
+          "old_line_content": "    setBlockIndexCandidates.clear();",
+          "new_line_content": "    return true;",
+          "content_same": false
+        },
+        {
+          "line": 3792,
+          "old_api": "SetTip",
+          "new_api": null,
+          "old_text": "chainActive.SetTip(NULL)",
+          "new_text": null,
+          "old_line_content": "    chainActive.SetTip(NULL);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4305,
+          "old_api": "GetBlockTime",
+          "new_api": null,
+          "old_text": "pindex->GetBlockTime()",
+          "new_text": null,
+          "old_line_content": "        fTxTotal = pindex->nChainTx + (nNow - pindex->GetBlockTime()) * data.dTxRate;",
+          "new_line_content": "        return 0.0;",
+          "content_same": false
+        },
+        {
+          "line": 3795,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "mempool.clear()",
+          "new_text": null,
+          "old_line_content": "    mempool.clear();",
+          "new_line_content": "// of the peer-processing logic assumes a consistent",
+          "content_same": false
+        },
+        {
+          "line": 3796,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "mapBlocksUnlinked.clear()",
+          "new_text": null,
+          "old_line_content": "    mapBlocksUnlinked.clear();",
+          "new_line_content": "// block index state",
+          "content_same": false
+        },
+        {
+          "line": 3797,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "vinfoBlockFile.clear()",
+          "new_text": null,
+          "old_line_content": "    vinfoBlockFile.clear();",
+          "new_line_content": "void UnloadBlockIndex()",
+          "content_same": false
+        },
+        {
+          "line": 3802,
+          "old_api": "Clear",
+          "new_api": null,
+          "old_text": "versionbitscache.Clear()",
+          "new_text": null,
+          "old_line_content": "    versionbitscache.Clear();",
+          "new_line_content": "    pindexBestInvalid = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 4317,
+          "old_api": "begin",
+          "new_api": null,
+          "old_text": "mapBlockIndex.begin()",
+          "new_text": null,
+          "old_line_content": "        BlockMap::iterator it1 = mapBlockIndex.begin();",
+          "new_line_content": "    return pindex->nChainTx / fTxTotal;",
+          "content_same": false
+        },
+        {
+          "line": 4318,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "mapBlockIndex.end()",
+          "new_text": null,
+          "old_line_content": "        for (; it1 != mapBlockIndex.end(); it1++)",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4320,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "mapBlockIndex.clear()",
+          "new_text": null,
+          "old_line_content": "        mapBlockIndex.clear();",
+          "new_line_content": "class CMainCleanup",
+          "content_same": false
+        },
+        {
+          "line": 3817,
+          "old_api": "LoadBlockIndexDB",
+          "new_api": null,
+          "old_text": "LoadBlockIndexDB(chainparams)",
+          "new_text": null,
+          "old_line_content": "    if (!fReindex && !LoadBlockIndexDB(chainparams))",
+          "new_line_content": "        delete entry.second;",
+          "content_same": false
+        },
+        {
+          "line": 3824,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3827,
+          "old_api": "Genesis",
+          "new_api": null,
+          "old_text": "chainActive.Genesis()",
+          "new_text": null,
+          "old_line_content": "    if (chainActive.Genesis() != NULL)",
+          "new_line_content": "        return false;",
+          "content_same": false
+        },
+        {
+          "line": 3831,
+          "old_api": "GetBoolArg",
+          "new_api": null,
+          "old_text": "GetBoolArg(\"-txindex\", DEFAULT_TXINDEX)",
+          "new_text": null,
+          "old_line_content": "    fTxIndex = GetBoolArg(\"-txindex\", DEFAULT_TXINDEX);",
+          "new_line_content": "bool InitBlockIndex(const CChainParams& chainparams)",
+          "content_same": false
+        },
+        {
+          "line": 3832,
+          "old_api": "WriteFlag",
+          "new_api": null,
+          "old_text": "pblocktree->WriteFlag(\"txindex\", fTxIndex)",
+          "new_text": null,
+          "old_line_content": "    pblocktree->WriteFlag(\"txindex\", fTxIndex);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3838,
+          "old_api": "GenesisBlock",
+          "new_api": null,
+          "old_text": "chainparams.GenesisBlock()",
+          "new_text": null,
+          "old_line_content": "            CBlock &block = const_cast<CBlock&>(chainparams.GenesisBlock());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3843,
+          "old_api": "GetBlockTime",
+          "new_api": null,
+          "old_text": "block.GetBlockTime()",
+          "new_text": null,
+          "old_line_content": "            if (!FindBlockPos(state, blockPos, nBlockSize+8, 0, block.GetBlockTime()))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3844,
+          "old_api": "error",
+          "new_api": null,
+          "old_text": "error(\"LoadBlockIndex(): FindBlockPos failed\")",
+          "new_text": null,
+          "old_line_content": "                return error(\"LoadBlockIndex(): FindBlockPos failed\");",
+          "new_line_content": "    // Only add the genesis block if not reindexing (in which case we reuse the one already on disk)",
+          "content_same": false
+        },
+        {
+          "line": 3845,
+          "old_api": "MessageStart",
+          "new_api": null,
+          "old_text": "chainparams.MessageStart()",
+          "new_text": null,
+          "old_line_content": "            if (!WriteBlockToDisk(block, blockPos, chainparams.MessageStart()))",
+          "new_line_content": "    if (!fReindex) {",
+          "content_same": false
+        },
+        {
+          "line": 3846,
+          "old_api": "error",
+          "new_api": null,
+          "old_text": "error(\"LoadBlockIndex(): writing genesis block to disk failed\")",
+          "new_text": null,
+          "old_line_content": "                return error(\"LoadBlockIndex(): writing genesis block to disk failed\");",
+          "new_line_content": "        try {",
+          "content_same": false
+        },
+        {
+          "line": 3848,
+          "old_api": "ReceivedBlockTransactions",
+          "new_api": null,
+          "old_text": "ReceivedBlockTransactions(block, state, pindex, blockPos)",
+          "new_text": null,
+          "old_line_content": "            if (!ReceivedBlockTransactions(block, state, pindex, blockPos))",
+          "new_line_content": "            // Start new block file",
+          "content_same": false
+        },
+        {
+          "line": 3851,
+          "old_api": "FlushStateToDisk",
+          "new_api": null,
+          "old_text": "FlushStateToDisk(state, FLUSH_STATE_ALWAYS)",
+          "new_text": null,
+          "old_line_content": "            return FlushStateToDisk(state, FLUSH_STATE_ALWAYS);",
+          "new_line_content": "            CValidationState state;",
+          "content_same": false
+        },
+        {
+          "line": 3864,
+          "old_api": "GetTimeMillis",
+          "new_api": null,
+          "old_text": "GetTimeMillis()",
+          "new_text": null,
+          "old_line_content": "    int64_t nStart = GetTimeMillis();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 3870,
+          "old_api": "GetPos",
+          "new_api": null,
+          "old_text": "blkdat.GetPos()",
+          "new_text": null,
+          "old_line_content": "        uint64_t nRewind = blkdat.GetPos();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3871,
+          "old_api": "eof",
+          "new_api": null,
+          "old_text": "blkdat.eof()",
+          "new_text": null,
+          "old_line_content": "        while (!blkdat.eof()) {",
+          "new_line_content": "    // Map of disk positions for blocks with unknown parent (only used for reindex)",
+          "content_same": false
+        },
+        {
+          "line": 3872,
+          "old_api": "boost::this_thread::interruption_point()",
+          "new_api": null,
+          "old_text": "boost::this_thread::interruption_point()",
+          "new_text": null,
+          "old_line_content": "            boost::this_thread::interruption_point();",
+          "new_line_content": "    static std::multimap<uint256, CDiskBlockPos> mapBlocksUnknownParent;",
+          "content_same": false
+        },
+        {
+          "line": 3874,
+          "old_api": "SetPos",
+          "new_api": null,
+          "old_text": "blkdat.SetPos(nRewind)",
+          "new_text": null,
+          "old_line_content": "            blkdat.SetPos(nRewind);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3876,
+          "old_api": "SetLimit",
+          "new_api": null,
+          "old_text": "blkdat.SetLimit()",
+          "new_text": null,
+          "old_line_content": "            blkdat.SetLimit(); // remove former limit",
+          "new_line_content": "    try {",
+          "content_same": false
+        },
+        {
+          "line": 3882,
+          "old_api": "GetPos",
+          "new_api": null,
+          "old_text": "blkdat.GetPos()",
+          "new_text": null,
+          "old_line_content": "                nRewind = blkdat.GetPos()+1;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3884,
+          "old_api": "MessageStart",
+          "new_api": null,
+          "old_text": "chainparams.MessageStart()",
+          "new_text": null,
+          "old_line_content": "                if (memcmp(buf, chainparams.MessageStart(), CMessageHeader::MESSAGE_START_SIZE))",
+          "new_line_content": "            nRewind++; // start one byte further next time, in case of failure",
+          "content_same": false
+        },
+        {
+          "line": 3896,
+          "old_api": "GetPos",
+          "new_api": null,
+          "old_text": "blkdat.GetPos()",
+          "new_text": null,
+          "old_line_content": "                uint64_t nBlockPos = blkdat.GetPos();",
+          "new_line_content": "                blkdat >> nSize;",
+          "content_same": false
+        },
+        {
+          "line": 3899,
+          "old_api": "SetLimit",
+          "new_api": null,
+          "old_text": "blkdat.SetLimit(nBlockPos + nSize)",
+          "new_text": null,
+          "old_line_content": "                blkdat.SetLimit(nBlockPos + nSize);",
+          "new_line_content": "            } catch (const std::exception&) {",
+          "content_same": false
+        },
+        {
+          "line": 3900,
+          "old_api": "SetPos",
+          "new_api": null,
+          "old_text": "blkdat.SetPos(nBlockPos)",
+          "new_text": null,
+          "old_line_content": "                blkdat.SetPos(nBlockPos);",
+          "new_line_content": "                // no valid block header found; don't complain",
+          "content_same": false
+        },
+        {
+          "line": 3901,
+          "old_api": "std::make_shared<CBlock>()",
+          "new_api": null,
+          "old_text": "std::make_shared<CBlock>()",
+          "new_text": null,
+          "old_line_content": "                std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 3904,
+          "old_api": "GetPos",
+          "new_api": null,
+          "old_text": "blkdat.GetPos()",
+          "new_text": null,
+          "old_line_content": "                nRewind = blkdat.GetPos();",
+          "new_line_content": "                // read block",
+          "content_same": false
+        },
+        {
+          "line": 3907,
+          "old_api": "GetHash",
+          "new_api": null,
+          "old_text": "block.GetHash()",
+          "new_text": null,
+          "old_line_content": "                uint256 hash = block.GetHash();",
+          "new_line_content": "                    dbp->nPos = nBlockPos;",
+          "content_same": false
+        },
+        {
+          "line": 3912,
+          "old_api": "std::make_pair(block.hashPrevBlock, *dbp)",
+          "new_api": null,
+          "old_text": "std::make_pair(block.hashPrevBlock, *dbp)",
+          "new_text": null,
+          "old_line_content": "                        mapBlocksUnknownParent.insert(std::make_pair(block.hashPrevBlock, *dbp));",
+          "new_line_content": "                blkdat >> block;",
+          "content_same": false
+        },
+        {
+          "line": 3407,
+          "old_api": "PruneOneBlockFile",
+          "new_api": null,
+          "old_text": "PruneOneBlockFile(fileNumber)",
+          "new_text": null,
+          "old_line_content": "            PruneOneBlockFile(fileNumber);",
+          "new_line_content": "                continue;",
+          "content_same": false
+        },
+        {
+          "line": 3920,
+          "old_api": "AcceptBlock",
+          "new_api": null,
+          "old_text": "AcceptBlock(pblock, state, chainparams, NULL, true, dbp, NULL)",
+          "new_text": null,
+          "old_line_content": "                    if (AcceptBlock(pblock, state, chainparams, NULL, true, dbp, NULL))",
+          "new_line_content": "                    if (dbp)",
+          "content_same": false
+        },
+        {
+          "line": 3409,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "setFilesToPrune.insert(fileNumber)",
+          "new_text": null,
+          "old_line_content": "            setFilesToPrune.insert(fileNumber);",
+          "new_line_content": "            if (nCurrentUsage + nBuffer < nPruneTarget)  // are we below our target?",
+          "content_same": false
+        },
+        {
+          "line": 3922,
+          "old_api": "IsError",
+          "new_api": null,
+          "old_text": "state.IsError()",
+          "new_text": null,
+          "old_line_content": "                    if (state.IsError())",
+          "new_line_content": "                    continue;",
+          "content_same": false
+        },
+        {
+          "line": 3924,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "                } else if (hash != chainparams.GetConsensus().hashGenesisBlock && mapBlockIndex[hash]->nHeight % 1000 == 0) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3925,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "hash.ToString()",
+          "new_text": null,
+          "old_line_content": "                    LogPrint(\"reindex\", \"Block Import: already had block %s at height %d\\n\", hash.ToString(), mapBlockIndex[hash]->nHeight);",
+          "new_line_content": "                // process in case the block isn't known yet",
+          "content_same": false
+        },
+        {
+          "line": 3415,
+          "old_api": "LogPrint",
+          "new_api": null,
+          "old_text": "LogPrint(\"prune\", \"Prune: target=%dMiB actual=%dMiB diff=%dMiB max_prune_height=%d removed %d blk/rev pairs\\n\",\n           nPruneTarget/1024/1024, nCurrentUsage/1024/1024,\n           ((int64_t)nPruneTarget - (int64_t)nCurrentUsage)/1024/1024,\n           nLastBlockWeCanPrune, count)",
+          "new_text": null,
+          "old_line_content": "    LogPrint(\"prune\", \"Prune: target=%dMiB actual=%dMiB diff=%dMiB max_prune_height=%d removed %d blk/rev pairs\\n\",",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3423,
+          "old_api": "GetDataDir",
+          "new_api": null,
+          "old_text": "GetDataDir()",
+          "new_text": null,
+          "old_line_content": "    uint64_t nFreeBytesAvailable = boost::filesystem::space(GetDataDir()).available;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3936,
+          "old_api": "NotifyHeaderTip",
+          "new_api": null,
+          "old_text": "NotifyHeaderTip()",
+          "new_text": null,
+          "old_line_content": "                NotifyHeaderTip();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3427,
+          "old_api": "_",
+          "new_api": null,
+          "old_text": "_(\"Error: Disk space is low!\")",
+          "new_text": null,
+          "old_line_content": "        return AbortNode(\"Disk space is low!\", _(\"Error: Disk space is low!\"));",
+          "new_line_content": "           nLastBlockWeCanPrune, count);",
+          "content_same": false
+        },
+        {
+          "line": 3941,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "queue.empty()",
+          "new_text": null,
+          "old_line_content": "                while (!queue.empty()) {",
+          "new_line_content": "                        break;",
+          "content_same": false
+        },
+        {
+          "line": 3942,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "queue.front()",
+          "new_text": null,
+          "old_line_content": "                    uint256 head = queue.front();",
+          "new_line_content": "                    }",
+          "content_same": false
+        },
+        {
+          "line": 3943,
+          "old_api": "pop_front",
+          "new_api": null,
+          "old_text": "queue.pop_front()",
+          "new_text": null,
+          "old_line_content": "                    queue.pop_front();",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 3944,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "mapBlocksUnknownParent.equal_range(head)",
+          "new_text": null,
+          "old_line_content": "                    std::pair<std::multimap<uint256, CDiskBlockPos>::iterator, std::multimap<uint256, CDiskBlockPos>::iterator> range = mapBlocksUnknownParent.equal_range(head);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3434,
+          "old_api": "IsNull",
+          "new_api": null,
+          "old_text": "pos.IsNull()",
+          "new_text": null,
+          "old_line_content": "    if (pos.IsNull())",
+          "new_line_content": "    // Check for nMinDiskSpace bytes (currently 50MB)",
+          "content_same": false
+        },
+        {
+          "line": 3947,
+          "old_api": "std::make_shared<CBlock>()",
+          "new_api": null,
+          "old_text": "std::make_shared<CBlock>()",
+          "new_text": null,
+          "old_line_content": "                        std::shared_ptr<CBlock> pblockrecursive = std::make_shared<CBlock>();",
+          "new_line_content": "                // Recursively process earlier encountered successors of this block",
+          "content_same": false
+        },
+        {
+          "line": 3948,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "chainparams.GetConsensus()",
+          "new_text": null,
+          "old_line_content": "                        if (ReadBlockFromDisk(*pblockrecursive, it->second, chainparams.GetConsensus()))",
+          "new_line_content": "                std::deque<uint256> queue;",
+          "content_same": false
+        },
+        {
+          "line": 3437,
+          "old_api": "parent_path",
+          "new_api": null,
+          "old_text": "path.parent_path()",
+          "new_text": null,
+          "old_line_content": "    boost::filesystem::create_directories(path.parent_path());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3438,
+          "old_api": "string",
+          "new_api": null,
+          "old_text": "path.string().c_str()",
+          "new_text": null,
+          "old_line_content": "    FILE* file = fopen(path.string().c_str(), \"rb+\");",
+          "new_line_content": "    return true;",
+          "content_same": false
+        },
+        {
+          "line": 3440,
+          "old_api": "string",
+          "new_api": null,
+          "old_text": "path.string().c_str()",
+          "new_text": null,
+          "old_line_content": "        file = fopen(path.string().c_str(), \"wb+\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3442,
+          "old_api": "string",
+          "new_api": null,
+          "old_text": "path.string()",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Unable to open file %s\\n\", path.string());",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3954,
+          "old_api": "AcceptBlock",
+          "new_api": null,
+          "old_text": "AcceptBlock(pblockrecursive, dummy, chainparams, NULL, true, &it->second, NULL)",
+          "new_text": null,
+          "old_line_content": "                            if (AcceptBlock(pblockrecursive, dummy, chainparams, NULL, true, &it->second, NULL))",
+          "new_line_content": "                    while (range.first != range.second) {",
+          "content_same": false
+        },
+        {
+          "line": 3448,
+          "old_api": "fclose",
+          "new_api": null,
+          "old_text": "fclose(file)",
+          "new_text": null,
+          "old_line_content": "            fclose(file);",
+          "new_line_content": "    if (!file && !fReadOnly)",
+          "content_same": false
+        },
+        {
+          "line": 3962,
+          "old_api": "NotifyHeaderTip",
+          "new_api": null,
+          "old_text": "NotifyHeaderTip()",
+          "new_text": null,
+          "old_line_content": "                        NotifyHeaderTip();",
+          "new_line_content": "                            CValidationState dummy;",
+          "content_same": false
+        },
+        {
+          "line": 3460,
+          "old_api": "OpenDiskFile",
+          "new_api": null,
+          "old_text": "OpenDiskFile(pos, \"rev\", fReadOnly)",
+          "new_text": null,
+          "old_line_content": "    return OpenDiskFile(pos, \"rev\", fReadOnly);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 3973,
+          "old_api": "GetTimeMillis",
+          "new_api": null,
+          "old_text": "GetTimeMillis()",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"Loaded %i blocks from external file in %dms\\n\", nLoaded, GetTimeMillis() - nStart);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 3470,
+          "old_api": "IsNull",
+          "new_api": null,
+          "old_text": "hash.IsNull()",
+          "new_text": null,
+          "old_line_content": "    if (hash.IsNull())",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3983,
+          "old_api": "LOCK",
+          "new_api": null,
+          "old_text": "LOCK(cs_main)",
+          "new_text": null,
+          "old_line_content": "    LOCK(cs_main);",
+          "new_line_content": "    return nLoaded > 0;",
+          "content_same": false
+        },
+        {
+          "line": 3475,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "mapBlockIndex.end()",
+          "new_text": null,
+          "old_line_content": "    if (mi != mapBlockIndex.end())",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3988,
+          "old_api": "Height",
+          "new_api": null,
+          "old_text": "chainActive.Height()",
+          "new_text": null,
+          "old_line_content": "    if (chainActive.Height() < 0) {",
+          "new_line_content": "    if (!fCheckBlockIndex) {",
+          "content_same": false
+        },
+        {
+          "line": 3989,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "mapBlockIndex.size()",
+          "new_text": null,
+          "old_line_content": "        assert(mapBlockIndex.size() <= 1);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 3481,
+          "old_api": "std::string(__func__)",
+          "new_api": null,
+          "old_text": "std::string(__func__)",
+          "new_text": null,
+          "old_line_content": "        throw std::runtime_error(std::string(__func__) + \": new CBlockIndex failed\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3482,
+          "old_api": "std::make_pair(hash, pindexNew)",
+          "new_api": null,
+          "old_text": "std::make_pair(hash, pindexNew)",
+          "new_text": null,
+          "old_line_content": "    mi = mapBlockIndex.insert(std::make_pair(hash, pindexNew)).first;",
+          "new_line_content": "    // Return existing",
+          "content_same": false
+        },
+        {
+          "line": 3995,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "mapBlockIndex.end()",
+          "new_text": null,
+          "old_line_content": "    for (BlockMap::iterator it = mapBlockIndex.begin(); it != mapBlockIndex.end(); it++) {",
+          "new_line_content": "    // so we have the genesis block in mapBlockIndex but no active chain.  (A few of the tests when",
+          "content_same": false
+        },
+        {
+          "line": 3996,
+          "old_api": "std::make_pair(it->second->pprev, it->second)",
+          "new_api": null,
+          "old_text": "std::make_pair(it->second->pprev, it->second)",
+          "new_text": null,
+          "old_line_content": "        forward.insert(std::make_pair(it->second->pprev, it->second));",
+          "new_line_content": "    // iterating the block tree require that chainActive has been initialized.)",
+          "content_same": false
+        },
+        {
+          "line": 3999,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "mapBlockIndex.size()",
+          "new_text": null,
+          "old_line_content": "    assert(forward.size() == mapBlockIndex.size());",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 4001,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "forward.equal_range(NULL)",
+          "new_text": null,
+          "old_line_content": "    std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangeGenesis = forward.equal_range(NULL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3493,
+          "old_api": "boost::this_thread::interruption_point()",
+          "new_api": null,
+          "old_text": "boost::this_thread::interruption_point()",
+          "new_text": null,
+          "old_line_content": "    boost::this_thread::interruption_point();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3497,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "mapBlockIndex.size()",
+          "new_text": null,
+          "old_line_content": "    vSortedByHeight.reserve(mapBlockIndex.size());",
+          "new_line_content": "bool static LoadBlockIndexDB(const CChainParams& chainparams)",
+          "content_same": false
+        },
+        {
+          "line": 3501,
+          "old_api": "std::make_pair(pindex->nHeight, pindex)",
+          "new_api": null,
+          "old_text": "std::make_pair(pindex->nHeight, pindex)",
+          "new_text": null,
+          "old_line_content": "        vSortedByHeight.push_back(std::make_pair(pindex->nHeight, pindex));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3503,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "vSortedByHeight.end()",
+          "new_text": null,
+          "old_line_content": "    sort(vSortedByHeight.begin(), vSortedByHeight.end());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3507,
+          "old_api": "GetBlockProof",
+          "new_api": null,
+          "old_text": "GetBlockProof(*pindex)",
+          "new_text": null,
+          "old_line_content": "        pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + GetBlockProof(*pindex);",
+          "new_line_content": "    BOOST_FOREACH(const PAIRTYPE(uint256, CBlockIndex*)& item, mapBlockIndex)",
+          "content_same": false
+        },
+        {
+          "line": 3508,
+          "old_api": "std::max(pindex->pprev->nTimeMax, pindex->nTime)",
+          "new_api": null,
+          "old_text": "std::max(pindex->pprev->nTimeMax, pindex->nTime)",
+          "new_text": null,
+          "old_line_content": "        pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 4031,
+          "old_api": "GetBlockHash",
+          "new_api": null,
+          "old_text": "pindex->GetBlockHash()",
+          "new_text": null,
+          "old_line_content": "            assert(pindex->GetBlockHash() == consensusParams.hashGenesisBlock); // Genesis block's hash must match.",
+          "new_line_content": "        if (pindexFirstNeverProcessed == NULL && pindex->nTx == 0) pindexFirstNeverProcessed = pindex;",
+          "content_same": false
+        },
+        {
+          "line": 4032,
+          "old_api": "Genesis",
+          "new_api": null,
+          "old_text": "chainActive.Genesis()",
+          "new_text": null,
+          "old_line_content": "            assert(pindex == chainActive.Genesis()); // The current active chain's genesis block must be this block.",
+          "new_line_content": "        if (pindex->pprev != NULL && pindexFirstNotTreeValid == NULL && (pindex->nStatus & BLOCK_VALID_MASK) < BLOCK_VALID_TREE) pindexFirstNotTreeValid = pindex;",
+          "content_same": false
+        },
+        {
+          "line": 4034,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindex->nSequenceId <= 0)",
+          "new_text": null,
+          "old_line_content": "        if (pindex->nChainTx == 0) assert(pindex->nSequenceId <= 0);  // nSequenceId can't be set positive for blocks that aren't linked (negative is used for preciousblock)",
+          "new_line_content": "        if (pindex->pprev != NULL && pindexFirstNotChainValid == NULL && (pindex->nStatus & BLOCK_VALID_MASK) < BLOCK_VALID_CHAIN) pindexFirstNotChainValid = pindex;",
+          "content_same": false
+        },
+        {
+          "line": 3523,
+          "old_api": "IsValid",
+          "new_api": null,
+          "old_text": "pindex->IsValid(BLOCK_VALID_TRANSACTIONS)",
+          "new_text": null,
+          "old_line_content": "        if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS) && (pindex->nChainTx || pindex->pprev == NULL))",
+          "new_line_content": "                    pindex->nChainTx = pindex->pprev->nChainTx + pindex->nTx;",
+          "content_same": false
+        },
+        {
+          "line": 3524,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "setBlockIndexCandidates.insert(pindex)",
+          "new_text": null,
+          "old_line_content": "            setBlockIndexCandidates.insert(pindex);",
+          "new_line_content": "                } else {",
+          "content_same": false
+        },
+        {
+          "line": 4039,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!(pindex->nStatus & BLOCK_HAVE_DATA) == (pindex->nTx == 0))",
+          "new_text": null,
+          "old_line_content": "            assert(!(pindex->nStatus & BLOCK_HAVE_DATA) == (pindex->nTx == 0));",
+          "new_line_content": "            // Genesis block checks.",
+          "content_same": false
+        },
+        {
+          "line": 3528,
+          "old_api": "BuildSkip",
+          "new_api": null,
+          "old_text": "pindex->BuildSkip()",
+          "new_text": null,
+          "old_line_content": "            pindex->BuildSkip();",
+          "new_line_content": "            } else {",
+          "content_same": false
+        },
+        {
+          "line": 3529,
+          "old_api": "CBlockIndexWorkComparator",
+          "new_api": null,
+          "old_text": "CBlockIndexWorkComparator()(pindexBestHeader, pindex)",
+          "new_text": null,
+          "old_line_content": "        if (pindex->IsValid(BLOCK_VALID_TREE) && (pindexBestHeader == NULL || CBlockIndexWorkComparator()(pindexBestHeader, pindex)))",
+          "new_line_content": "                pindex->nChainTx = pindex->nTx;",
+          "content_same": false
+        },
+        {
+          "line": 4045,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindex->nStatus & BLOCK_HAVE_DATA)",
+          "new_text": null,
+          "old_line_content": "        if (pindex->nStatus & BLOCK_HAVE_UNDO) assert(pindex->nStatus & BLOCK_HAVE_DATA);",
+          "new_line_content": "        // HAVE_DATA is only equivalent to nTx > 0 (or VALID_TRANSACTIONS) if no pruning has occurred.",
+          "content_same": false
+        },
+        {
+          "line": 3534,
+          "old_api": "ReadLastBlockFile",
+          "new_api": null,
+          "old_text": "pblocktree->ReadLastBlockFile(nLastBlockFile)",
+          "new_text": null,
+          "old_line_content": "    pblocktree->ReadLastBlockFile(nLastBlockFile);",
+          "new_line_content": "        if (pindex->nStatus & BLOCK_FAILED_MASK && (!pindexBestInvalid || pindex->nChainWork > pindexBestInvalid->nChainWork))",
+          "content_same": false
+        },
+        {
+          "line": 3535,
+          "old_api": "resize",
+          "new_api": null,
+          "old_text": "vinfoBlockFile.resize(nLastBlockFile + 1)",
+          "new_text": null,
+          "old_line_content": "    vinfoBlockFile.resize(nLastBlockFile + 1);",
+          "new_line_content": "            pindexBestInvalid = pindex;",
+          "content_same": false
+        },
+        {
+          "line": 3536,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"%s: last block file = %i\\n\", __func__, nLastBlockFile)",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"%s: last block file = %i\\n\", __func__, nLastBlockFile);",
+          "new_line_content": "        if (pindex->pprev)",
+          "content_same": false
+        },
+        {
+          "line": 4046,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_TRANSACTIONS) == (pindex->nTx > 0))",
+          "new_text": null,
+          "old_line_content": "        assert(((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_TRANSACTIONS) == (pindex->nTx > 0)); // This is pruning-independent.",
+          "new_line_content": "        if (!fHavePruned) {",
+          "content_same": false
+        },
+        {
+          "line": 4050,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindex->nHeight == nHeight)",
+          "new_text": null,
+          "old_line_content": "        assert(pindex->nHeight == nHeight); // nHeight must be consistent.",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 4051,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindex->pprev == NULL || pindex->nChainWork >= pindex->pprev->nChainWork)",
+          "new_text": null,
+          "old_line_content": "        assert(pindex->pprev == NULL || pindex->nChainWork >= pindex->pprev->nChainWork); // For every block except the genesis block, the chainwork must be larger than the parent's.",
+          "new_line_content": "            // If we have pruned, then we can only say that HAVE_DATA implies nTx > 0",
+          "content_same": false
+        },
+        {
+          "line": 3540,
+          "old_api": "ToString",
+          "new_api": null,
+          "old_text": "vinfoBlockFile[nLastBlockFile].ToString()",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"%s: last block file info: %s\\n\", __func__, vinfoBlockFile[nLastBlockFile].ToString());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 4053,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindexFirstNotTreeValid == NULL)",
+          "new_text": null,
+          "old_line_content": "        assert(pindexFirstNotTreeValid == NULL); // All mapBlockIndex entries must at least be TREE valid",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 4056,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(pindexFirstNotScriptsValid == NULL)",
+          "new_text": null,
+          "old_line_content": "        if ((pindex->nStatus & BLOCK_VALID_MASK) >= BLOCK_VALID_SCRIPTS) assert(pindexFirstNotScriptsValid == NULL); // SCRIPTS valid implies all parents are SCRIPTS valid",
+          "new_line_content": "        // All parents having had data (at some point) is equivalent to all parents being VALID_TRANSACTIONS, which is equivalent to nChainTx being set.",
+          "content_same": false
+        },
+        {
+          "line": 3551,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"Checking all blk files are present...\\n\")",
+          "new_text": null,
+          "old_line_content": "    LogPrintf(\"Checking all blk files are present...\\n\");",
+          "new_line_content": "        CBlockFileInfo info;",
+          "content_same": false
+        },
+        {
+          "line": 4067,
+          "old_api": "Tip",
+          "new_api": null,
+          "old_text": "chainActive.Tip()",
+          "new_text": null,
+          "old_line_content": "                if (pindexFirstMissing == NULL || pindex == chainActive.Tip()) {",
+          "new_line_content": "            // Checks for not-invalid blocks.",
+          "content_same": false
+        },
+        {
+          "line": 3557,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "setBlkDataFiles.insert(pindex->nFile)",
+          "new_text": null,
+          "old_line_content": "            setBlkDataFiles.insert(pindex->nFile);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 3563,
+          "old_api": "OpenBlockFile",
+          "new_api": null,
+          "old_text": "OpenBlockFile(pos, true)",
+          "new_text": null,
+          "old_line_content": "        if (CAutoFile(OpenBlockFile(pos, true), SER_DISK, CLIENT_VERSION).IsNull()) {",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 4075,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "setBlockIndexCandidates.count(pindex)",
+          "new_text": null,
+          "old_line_content": "            assert(setBlockIndexCandidates.count(pindex) == 0);",
+          "new_line_content": "                // even if some data has been pruned.",
+          "content_same": false
+        },
+        {
+          "line": 4078,
+          "old_api": "equal_range",
+          "new_api": null,
+          "old_text": "mapBlocksUnlinked.equal_range(pindex->pprev)",
+          "new_text": null,
+          "old_line_content": "        std::pair<std::multimap<CBlockIndex*,CBlockIndex*>::iterator,std::multimap<CBlockIndex*,CBlockIndex*>::iterator> rangeUnlinked = mapBlocksUnlinked.equal_range(pindex->pprev);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 4081,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(rangeUnlinked.first->first == pindex->pprev)",
+          "new_text": null,
+          "old_line_content": "            assert(rangeUnlinked.first->first == pindex->pprev);",
+          "new_line_content": "                // In this case it must be in mapBlocksUnlinked -- see test below.",
+          "content_same": false
+        },
+        {
+          "line": 3571,
+          "old_api": "LogPrintf",
+          "new_api": null,
+          "old_text": "LogPrintf(\"LoadBlockIndexDB(): Block files have previously been pruned\\n\")",
+          "new_text": null,
+          "old_line_content": "        LogPrintf(\"LoadBlockIndexDB(): Block files have previously been pruned\\n\");",
+          "new_line_content": "        CDiskBlockPos pos(*it, 0);",
+          "content_same": false
+        },
+        {
+          "line": 3575,
+          "old_api": "ReadReindexing",
+          "new_api": null,
+          "old_text": "pblocktree->ReadReindexing(fReindexing)",
+          "new_text": null,
+          "old_line_content": "    pblocktree->ReadReindexing(fReindexing);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 3579,
+          "old_api": "ReadFlag",
+          "new_api": null,
+          "old_text": "pblocktree->ReadFlag(\"txindex\", fTxIndex)",
+          "new_text": null,
+          "old_line_content": "    pblocktree->ReadFlag(\"txindex\", fTxIndex);",
+          "new_line_content": "    if (fHavePruned)",
+          "content_same": false
+        },
+        {
+          "line": 4092,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!foundInUnlinked)",
+          "new_text": null,
+          "old_line_content": "        if (!(pindex->nStatus & BLOCK_HAVE_DATA)) assert(!foundInUnlinked); // Can't be in mapBlocksUnlinked if we don't HAVE_DATA",
+          "new_line_content": "                foundInUnlinked = true;",
+          "content_same": false
+        },
+        {
+          "line": 4093,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!foundInUnlinked)",
+          "new_text": null,
+          "old_line_content": "        if (pindexFirstMissing == NULL) assert(!foundInUnlinked); // We aren't missing data for any parent -- cannot be in mapBlocksUnlinked.",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 3583,
+          "old_api": "GetBestBlock",
+          "new_api": null,
+          "old_text": "pcoinsTip->GetBestBlock()",
+          "new_text": null,
+          "old_line_content": "    BlockMap::iterator it = mapBlockIndex.find(pcoinsTip->GetBestBlock());",
+          "new_line_content": "    bool fReindexing = false;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 73,
+      "total_additions": 188,
+      "total_deletions": 187,
+      "total_api_changes": 448
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 448,
+        "non_api_lines": 8,
+        "non_api_line_numbers": [
+          3394,
+          3395,
+          3396,
+          3397,
+          3399,
+          3400,
+          3401,
+          3402
+        ]
+      }
+    },
+    "api_calls_before": 1601,
+    "api_calls_after": 1602,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 0,
+      "total_diff_lines": 21
+    }
+  }
+}

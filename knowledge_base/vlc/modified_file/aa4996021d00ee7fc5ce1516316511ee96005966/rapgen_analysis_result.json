@@ -1,0 +1,1335 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/aa4996021d00ee7fc5ce1516316511ee96005966",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/aa4996021d00ee7fc5ce1516316511ee96005966/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/aa4996021d00ee7fc5ce1516316511ee96005966/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/aa4996021d00ee7fc5ce1516316511ee96005966/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 249,
+          "old_api": "lc_stream_Peek",
+          "new_api": "_MIN",
+          "old_text": "lc_stream_Peek( s, &p_data,\n                                          i_line + STREAM_PROBE_LINE );",
+          "new_text": "_MIN( i_line * 2, STREAM_LINE_MAX );",
+          "old_line_content": "        ssize_t i_data = vlc_stream_Peek( s, &p_data,",
+          "new_line_content": "                                    : __MIN( i_line * 2, STREAM_LINE_MAX );",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": "lc_stream_Read",
+          "new_api": "ssert",
+          "old_text": "lc_stream_Read( s, &inc, priv->text.char_width );",
+          "new_text": "ssert( priv->text.char_width == 2 );",
+          "old_line_content": "            ssize_t i_inc = vlc_stream_Read( s, &inc, priv->text.char_width );",
+          "new_line_content": "            assert( priv->text.char_width == 2 );",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "sg_Err",
+          "new_api": "ssert",
+          "old_text": "sg_Err( s, \"discarding incomplete UTF-16 sequence at EOF: 0x%02x\", inc );",
+          "new_text": "ssert( i_inc == i_data );",
+          "old_line_content": "                msg_Err( s, \"discarding incomplete UTF-16 sequence at EOF: 0x%02x\", inc );",
+          "new_line_content": "            assert( i_inc == i_data );",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "lc_strerror_c",
+          "new_api": "lc_iconv",
+          "old_text": "lc_strerror_c( errno ) ",
+          "new_text": "lc_iconv( priv->text.conv, &p_in, &i_in, &p_out, &i_out ) ",
+          "old_line_content": "            msg_Err( s, \"conversion error: %s\", vlc_strerror_c( errno ) );",
+          "new_line_content": "        if( vlc_iconv( priv->text.conv, &p_in, &i_in, &p_out, &i_out ) == VLC_ICONV_ERR )",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "lc_iconv",
+          "new_api": "sg_Dbg",
+          "old_text": "lc_iconv( priv->text.conv, NULL, NULL, NULL, NULL );",
+          "new_text": "sg_Dbg( s, \"original: %zu, in %zu, out %zu\", i_line, i_in, i_out );",
+          "old_line_content": "            size_t r = vlc_iconv( priv->text.conv, NULL, NULL, NULL, NULL );",
+          "new_line_content": "            msg_Dbg( s, \"original: %zu, in %zu, out %zu\", i_line, i_in, i_out );",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "lc_killed",
+          "new_api": "ssert",
+          "old_text": "lc_killed())",
+          "new_text": "ssert(len <= SSIZE_MAX);",
+          "old_line_content": "    if (vlc_killed())",
+          "new_line_content": "    assert(len <= SSIZE_MAX);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 646,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(peek);",
+          "old_line_content": "",
+          "new_line_content": "                block_Release(peek);",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "lc_stream_Read",
+          "old_text": null,
+          "new_text": "lc_stream_Read( s, &inc, priv->text.char_width );",
+          "old_line_content": "            if( i_inc > 0 )",
+          "new_line_content": "            ssize_t i_inc = vlc_stream_Read( s, &inc, priv->text.char_width );",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "sg_Err",
+          "old_text": null,
+          "new_text": "sg_Err( s, \"discarding incomplete UTF-16 sequence at EOF: 0x%02x\", inc );",
+          "old_line_content": "        }",
+          "new_line_content": "                msg_Err( s, \"discarding incomplete UTF-16 sequence at EOF: 0x%02x\", inc );",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": null,
+          "new_api": "lock_Alloc",
+          "old_text": null,
+          "new_text": "lock_Alloc(len);",
+          "old_line_content": "            return VLC_ENOMEM;",
+          "new_line_content": "        peek = block_Alloc(len);",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(peek == NULL))",
+          "old_line_content": "",
+          "new_line_content": "        if (unlikely(peek == NULL))",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "estrict",
+          "old_text": null,
+          "new_text": "estrict ",
+          "old_line_content": "{",
+          "new_line_content": "static ssize_t vlc_stream_CopyBlock(block_t **restrict pp,",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert( (size_t) i_data > i_line );",
+          "old_line_content": "        /* Resume search for an EOL where we left off */",
+          "new_line_content": "        assert( (size_t) i_data > i_line );",
+          "content_same": false
+        },
+        {
+          "line": 533,
+          "old_api": null,
+          "new_api": "lock_TryRealloc",
+          "old_text": null,
+          "new_text": "lock_TryRealloc(peek, 0, len);",
+          "old_line_content": "            return VLC_ENOMEM;",
+          "new_line_content": "        peek = block_TryRealloc(peek, 0, len);",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(peek == NULL))",
+          "old_line_content": "",
+          "new_line_content": "        if (unlikely(peek == NULL))",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": null,
+          "new_api": "pf_seek",
+          "old_text": null,
+          "new_text": "->pf_seek(s, offset);",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    int ret = s->pf_seek(s, offset);",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": null,
+          "new_api": "emcpy",
+          "old_text": null,
+          "new_text": "emcpy(buf, block->p_buffer, len);",
+          "old_line_content": "    block->p_buffer += len;",
+          "new_line_content": "        memcpy(buf, block->p_buffer, len);",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(block);",
+          "old_line_content": "    }",
+          "new_line_content": "        block_Release(block);",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(peek);",
+          "old_line_content": "",
+          "new_line_content": "        block_Release(peek);",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": null,
+          "new_api": "emchr",
+          "old_text": null,
+          "new_text": "emchr( p_cur, '\\n', i_data - i_line );",
+          "old_line_content": "                /* UTF-8: 0D <CR> */",
+          "new_line_content": "            psz_eol = memchr( p_cur, '\\n', i_data - i_line );",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "ikely",
+          "old_text": null,
+          "new_text": "ikely(len > 0) ",
+          "old_line_content": "",
+          "new_line_content": "    return likely(len > 0) ? (ssize_t)len : -1;",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "emchr",
+          "old_text": null,
+          "new_text": "emchr( p_cur, '\\r', i_data - i_line );",
+          "old_line_content": "        else",
+          "new_line_content": "                psz_eol = memchr( p_cur, '\\r', i_data - i_line );",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(priv->block);",
+          "old_line_content": "    }",
+          "new_line_content": "        block_Release(priv->block);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "lc_stream_ReadRaw",
+          "old_text": null,
+          "new_text": "lc_stream_ReadRaw(s, peek->p_buffer + avail, len - avail);",
+          "old_line_content": "            continue;",
+          "new_line_content": "        ret = vlc_stream_ReadRaw(s, peek->p_buffer + avail, len - avail);",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert( priv->text.char_width == 2 );",
+          "old_line_content": "            /* UTF-16: 000A <LF> */",
+          "new_line_content": "            assert( priv->text.char_width == 2 );",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "lc_killed",
+          "old_text": null,
+          "new_text": "lc_killed())",
+          "old_line_content": "",
+          "new_line_content": "    if (vlc_killed())",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "16_AT",
+          "old_text": null,
+          "new_text": "16_AT( p ) ",
+          "old_line_content": "                     psz_eol = p;",
+          "new_line_content": "                if( U16_AT( p ) == eol )",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert(priv->block == NULL);",
+          "old_line_content": "        {",
+          "new_line_content": "        assert(priv->block == NULL);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(len == 0))",
+          "old_line_content": "",
+          "new_line_content": "            if (unlikely(len == 0))",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "lc_killed",
+          "old_text": null,
+          "new_text": "lc_killed())",
+          "old_line_content": "        priv->eof = true;",
+          "new_line_content": "    if (vlc_killed())",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "pf_read",
+          "old_text": null,
+          "new_text": "->pf_read(s, dummy, sizeof (dummy));",
+          "old_line_content": "        else",
+          "new_line_content": "            ret = s->pf_read(s, dummy, sizeof (dummy));",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": null,
+          "new_api": "pf_control",
+          "old_text": null,
+          "new_text": "->pf_control(s, cmd, args);",
+          "old_line_content": "                return ret;",
+          "new_line_content": "            int ret = s->pf_control(s, cmd, args);",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": null,
+          "new_api": "pf_read",
+          "old_text": null,
+          "new_text": "->pf_read(s, buf, len);",
+          "old_line_content": "    }",
+          "new_line_content": "            ret = s->pf_read(s, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "16_AT",
+          "old_text": null,
+          "new_text": "16_AT( p ) ",
+          "old_line_content": "                        psz_eol = p;",
+          "new_line_content": "                    if( U16_AT( p ) == eol )",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": null,
+          "new_api": "lc_stream_CopyBlock",
+          "old_text": null,
+          "new_text": "lc_stream_CopyBlock(&priv->block, buf, len);",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    ret = vlc_stream_CopyBlock(&priv->block, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(priv->peek);",
+          "old_line_content": "            }",
+          "new_line_content": "                block_Release(priv->peek);",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "pf_block",
+          "old_text": null,
+          "new_text": "->pf_block(s, &eof);",
+          "old_line_content": "        if (ret >= 0)",
+          "new_line_content": "        priv->block = s->pf_block(s, &eof);",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(priv->block);",
+          "old_line_content": "            }",
+          "new_line_content": "                block_Release(priv->block);",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": null,
+          "new_api": "lc_stream_CopyBlock",
+          "old_text": null,
+          "new_text": "lc_stream_CopyBlock(&priv->block, buf, len);",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        ret = vlc_stream_CopyBlock(&priv->block, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "pf_block",
+          "old_text": null,
+          "new_text": "->pf_block(s, &priv->eof);",
+          "old_line_content": "    else",
+          "new_line_content": "        block = s->pf_block(s, &priv->eof);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "lock_Alloc",
+          "old_text": null,
+          "new_text": "lock_Alloc(4096);",
+          "old_line_content": "            return NULL;",
+          "new_line_content": "        block = block_Alloc(4096);",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(block == NULL))",
+          "old_line_content": "",
+          "new_line_content": "        if (unlikely(block == NULL))",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": null,
+          "new_api": "pf_control",
+          "old_text": null,
+          "new_text": "->pf_control(s, cmd, args);",
+          "old_line_content": "",
+          "new_line_content": "    return s->pf_control(s, cmd, args);",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": null,
+          "new_api": "sg_Err",
+          "old_text": null,
+          "new_text": "sg_Err( s, \"line too long, exceeding %zu bytes\",\n                     (size_t) STREAM_LINE_MAX );",
+          "old_line_content": "            return NULL;",
+          "new_line_content": "            msg_Err( s, \"line too long, exceeding %zu bytes\",",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": null,
+          "new_api": "pf_read",
+          "old_text": null,
+          "new_text": "->pf_read(s, block->p_buffer, block->i_buffer);",
+          "old_line_content": "            block->i_buffer = ret;",
+          "new_line_content": "        ssize_t ret = s->pf_read(s, block->p_buffer, block->i_buffer);",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": null,
+          "new_api": "lc_stream_CopyBlock",
+          "old_text": null,
+          "new_text": "lc_stream_CopyBlock(&priv->peek, buf, len);",
+          "old_line_content": "    {",
+          "new_line_content": "    ret = vlc_stream_CopyBlock(&priv->peek, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release(block);",
+          "old_line_content": "        }",
+          "new_line_content": "            block_Release(block);",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert(ret <= (ssize_t)len);",
+          "old_line_content": "    }",
+          "new_line_content": "        assert(ret <= (ssize_t)len);",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "alloc",
+          "old_text": null,
+          "new_text": "alloc( i_line_conv + 1 );",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    char *p_line = malloc( i_line_conv + 1 ); /* +1 for easy \\0 append */",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(size > SSIZE_MAX) ",
+          "old_line_content": "",
+          "new_line_content": "    if( unlikely(size > SSIZE_MAX) )",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "lc_stream_ReadRaw",
+          "old_text": null,
+          "new_text": "lc_stream_ReadRaw(s, buf, len);",
+          "old_line_content": "        priv->offset += ret;",
+          "new_line_content": "    ret = vlc_stream_ReadRaw(s, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": null,
+          "new_api": "lock_Alloc",
+          "old_text": null,
+          "new_text": "lock_Alloc( size );",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    block_t *block = block_Alloc( size );",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": null,
+          "new_api": "nlikely",
+          "old_text": null,
+          "new_text": "nlikely(block == NULL) ",
+          "old_line_content": "",
+          "new_line_content": "    if( unlikely(block == NULL) )",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert(ret <= (ssize_t)len);",
+          "old_line_content": "}",
+          "new_line_content": "    assert(ret <= (ssize_t)len);",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "lc_stream_Read",
+          "old_text": null,
+          "new_text": "lc_stream_Read( s, block->p_buffer, size );",
+          "old_line_content": "    {",
+          "new_line_content": "    ssize_t val = vlc_stream_Read( s, block->p_buffer, size );",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": null,
+          "new_api": "lock_Release",
+          "old_text": null,
+          "new_text": "lock_Release( block );",
+          "old_line_content": "    }",
+          "new_line_content": "        block_Release( block );",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "lc_strerror_c",
+          "old_text": null,
+          "new_text": "lc_strerror_c( errno ) ",
+          "old_line_content": "            /* Reset state */",
+          "new_line_content": "            msg_Err( s, \"conversion error: %s\", vlc_strerror_c( errno ) );",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "lc_iconv",
+          "old_text": null,
+          "new_text": "lc_iconv( priv->text.conv, NULL, NULL, NULL, NULL );",
+          "old_line_content": "            /* FIXME: the rest of the line is discarded and lost */",
+          "new_line_content": "            size_t r = vlc_iconv( priv->text.conv, NULL, NULL, NULL, NULL );",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "LC_UNUSED",
+          "old_text": null,
+          "new_text": "LC_UNUSED( r );",
+          "old_line_content": "        }",
+          "new_line_content": "            VLC_UNUSED( r );",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": null,
+          "new_api": "lc_stream_ReadPartial",
+          "old_text": null,
+          "new_text": "lc_stream_ReadPartial(s, buf, len);",
+          "old_line_content": "            continue;",
+          "new_line_content": "        ssize_t ret = vlc_stream_ReadPartial(s, buf, len);",
+          "content_same": false
+        },
+        {
+          "line": 751,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert(s->pf_readdir != NULL);",
+          "old_line_content": "}",
+          "new_line_content": "    assert(s->pf_readdir != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 752,
+          "old_api": null,
+          "new_api": "pf_readdir",
+          "old_text": null,
+          "new_text": "->pf_readdir( s, p_node );",
+          "old_line_content": "",
+          "new_line_content": "    return s->pf_readdir( s, p_node );",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": null,
+          "new_api": "lc_stream_Read",
+          "old_text": null,
+          "new_text": "lc_stream_Read( s, p_read, i_line );",
+          "old_line_content": "    if( i_data <= 0 )",
+          "new_line_content": "    ssize_t i_data = vlc_stream_Read( s, p_read, i_line );",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert( i_data > 0 && (size_t) i_data == i_line );",
+          "old_line_content": "    {",
+          "new_line_content": "    assert( i_data > 0 && (size_t) i_data == i_line );",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "ssert",
+          "old_text": null,
+          "new_text": "ssert(len >= (size_t)ret);",
+          "old_line_content": "        copied += ret;",
+          "new_line_content": "        assert(len >= (size_t)ret);",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "ree",
+          "old_text": null,
+          "new_text": "ree( p_line );",
+          "old_line_content": "    }",
+          "new_line_content": "        free( p_line );",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": null,
+          "new_api": "estrict",
+          "old_text": null,
+          "new_text": "estrict ",
+          "old_line_content": "    stream_priv_t *priv = (stream_priv_t *)s;",
+          "new_line_content": "ssize_t vlc_stream_Peek(stream_t *s, const uint8_t **restrict bufp, size_t len)",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": null,
+          "new_api": "lc_stream_Peek",
+          "old_text": null,
+          "new_text": "lc_stream_Peek( s, &p_data, i_peek );",
+          "old_line_content": "            return NULL;",
+          "new_line_content": "        ssize_t i_data = vlc_stream_Peek( s, &p_data, i_peek );",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 258,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert( priv->text.char_width == 2 );",
+          "new_text": null,
+          "old_line_content": "            assert( priv->text.char_width == 2 );",
+          "new_line_content": "        if( i_data < priv->text.char_width )",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(peek);",
+          "new_text": null,
+          "old_line_content": "                block_Release(peek);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert( i_inc == i_data );",
+          "new_text": null,
+          "old_line_content": "            assert( i_inc == i_data );",
+          "new_line_content": "            uint8_t inc;",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": "estrict",
+          "new_api": null,
+          "old_text": "estrict ",
+          "new_text": null,
+          "old_line_content": "static ssize_t vlc_stream_CopyBlock(block_t **restrict pp,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": "lock_Alloc",
+          "new_api": null,
+          "old_text": "lock_Alloc(len);",
+          "new_text": null,
+          "old_line_content": "        peek = block_Alloc(len);",
+          "new_line_content": "    if (peek == NULL)",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(peek == NULL))",
+          "new_text": null,
+          "old_line_content": "        if (unlikely(peek == NULL))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert( (size_t) i_data > i_line );",
+          "new_text": null,
+          "old_line_content": "        assert( (size_t) i_data > i_line );",
+          "new_line_content": "            break; /* No more data */",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "lock_TryRealloc",
+          "new_api": null,
+          "old_text": "lock_TryRealloc(peek, 0, len);",
+          "new_text": null,
+          "old_line_content": "        peek = block_TryRealloc(peek, 0, len);",
+          "new_line_content": "        size_t avail = peek->i_buffer;",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(peek == NULL))",
+          "new_text": null,
+          "old_line_content": "        if (unlikely(peek == NULL))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": "pf_seek",
+          "new_api": null,
+          "old_text": "->pf_seek(s, offset);",
+          "new_text": null,
+          "old_line_content": "    int ret = s->pf_seek(s, offset);",
+          "new_line_content": "        return VLC_EGENERIC;",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": "emcpy",
+          "new_api": null,
+          "old_text": "emcpy(buf, block->p_buffer, len);",
+          "new_text": null,
+          "old_line_content": "        memcpy(buf, block->p_buffer, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(block);",
+          "new_text": null,
+          "old_line_content": "        block_Release(block);",
+          "new_line_content": "    if (block->i_buffer == 0)",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(peek);",
+          "new_text": null,
+          "old_line_content": "        block_Release(peek);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": "emchr",
+          "new_api": null,
+          "old_text": "emchr( p_cur, '\\n', i_data - i_line );",
+          "new_text": null,
+          "old_line_content": "            psz_eol = memchr( p_cur, '\\n', i_data - i_line );",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "ikely",
+          "new_api": null,
+          "old_text": "ikely(len > 0) ",
+          "new_text": null,
+          "old_line_content": "    return likely(len > 0) ? (ssize_t)len : -1;",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "emchr",
+          "new_api": null,
+          "old_text": "emchr( p_cur, '\\r', i_data - i_line );",
+          "new_text": null,
+          "old_line_content": "                psz_eol = memchr( p_cur, '\\r', i_data - i_line );",
+          "new_line_content": "            if( psz_eol == NULL )",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(priv->block);",
+          "new_text": null,
+          "old_line_content": "        block_Release(priv->block);",
+          "new_line_content": "    if (priv->block != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "lc_stream_ReadRaw",
+          "new_api": null,
+          "old_text": "lc_stream_ReadRaw(s, peek->p_buffer + avail, len - avail);",
+          "new_text": null,
+          "old_line_content": "        ret = vlc_stream_ReadRaw(s, peek->p_buffer + avail, len - avail);",
+          "new_line_content": "        ssize_t ret;",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(len <= SSIZE_MAX);",
+          "new_text": null,
+          "old_line_content": "    assert(len <= SSIZE_MAX);",
+          "new_line_content": "    ssize_t ret;",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert( priv->text.char_width == 2 );",
+          "new_text": null,
+          "old_line_content": "            assert( priv->text.char_width == 2 );",
+          "new_line_content": "            uint16_t eol = priv->text.little_endian ? 0x0A00 : 0x000A;",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "16_AT",
+          "new_api": null,
+          "old_text": "16_AT( p ) ",
+          "new_text": null,
+          "old_line_content": "                if( U16_AT( p ) == eol )",
+          "new_line_content": "            for( const uint8_t *p = p_cur; p <= p_last; p += 2 )",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(priv->block == NULL);",
+          "new_text": null,
+          "old_line_content": "        assert(priv->block == NULL);",
+          "new_line_content": "    if (s->pf_read != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(len == 0))",
+          "new_text": null,
+          "old_line_content": "            if (unlikely(len == 0))",
+          "new_line_content": "        if (buf == NULL)",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": "lc_killed",
+          "new_api": null,
+          "old_text": "lc_killed())",
+          "new_text": null,
+          "old_line_content": "    if (vlc_killed())",
+          "new_line_content": "    block_t *block;",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "pf_read",
+          "new_api": null,
+          "old_text": "->pf_read(s, dummy, sizeof (dummy));",
+          "new_text": null,
+          "old_line_content": "            ret = s->pf_read(s, dummy, sizeof (dummy));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": "pf_control",
+          "new_api": null,
+          "old_text": "->pf_control(s, cmd, args);",
+          "new_text": null,
+          "old_line_content": "            int ret = s->pf_control(s, cmd, args);",
+          "new_line_content": "        case STREAM_SET_SEEKPOINT:",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": "pf_read",
+          "new_api": null,
+          "old_text": "->pf_read(s, buf, len);",
+          "new_text": null,
+          "old_line_content": "            ret = s->pf_read(s, buf, len);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "16_AT",
+          "new_api": null,
+          "old_text": "16_AT( p ) ",
+          "new_text": null,
+          "old_line_content": "                    if( U16_AT( p ) == eol )",
+          "new_line_content": "                for( const uint8_t *p = p_cur; p <= p_last; p += 2 )",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "lc_stream_CopyBlock",
+          "new_api": null,
+          "old_text": "lc_stream_CopyBlock(&priv->block, buf, len);",
+          "new_text": null,
+          "old_line_content": "    ret = vlc_stream_CopyBlock(&priv->block, buf, len);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(priv->peek);",
+          "new_text": null,
+          "old_line_content": "                block_Release(priv->peek);",
+          "new_line_content": "            if (priv->peek != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": "pf_block",
+          "new_api": null,
+          "old_text": "->pf_block(s, &eof);",
+          "new_text": null,
+          "old_line_content": "        priv->block = s->pf_block(s, &eof);",
+          "new_line_content": "        bool eof = false;",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(priv->block);",
+          "new_text": null,
+          "old_line_content": "                block_Release(priv->block);",
+          "new_line_content": "            if (priv->block != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 452,
+          "old_api": "lc_stream_CopyBlock",
+          "new_api": null,
+          "old_text": "lc_stream_CopyBlock(&priv->block, buf, len);",
+          "new_text": null,
+          "old_line_content": "        ret = vlc_stream_CopyBlock(&priv->block, buf, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "pf_block",
+          "new_api": null,
+          "old_text": "->pf_block(s, &priv->eof);",
+          "new_text": null,
+          "old_line_content": "        block = s->pf_block(s, &priv->eof);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": "lock_Alloc",
+          "new_api": null,
+          "old_text": "lock_Alloc(4096);",
+          "new_text": null,
+          "old_line_content": "        block = block_Alloc(4096);",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(block == NULL))",
+          "new_text": null,
+          "old_line_content": "        if (unlikely(block == NULL))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "pf_control",
+          "new_api": null,
+          "old_text": "->pf_control(s, cmd, args);",
+          "new_text": null,
+          "old_line_content": "    return s->pf_control(s, cmd, args);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "sg_Err",
+          "new_api": null,
+          "old_text": "sg_Err( s, \"line too long, exceeding %zu bytes\",\n                     (size_t) STREAM_LINE_MAX );",
+          "new_text": null,
+          "old_line_content": "            msg_Err( s, \"line too long, exceeding %zu bytes\",",
+          "new_line_content": "        if( i_line >= STREAM_LINE_MAX )",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "pf_read",
+          "new_api": null,
+          "old_text": "->pf_read(s, block->p_buffer, block->i_buffer);",
+          "new_text": null,
+          "old_line_content": "        ssize_t ret = s->pf_read(s, block->p_buffer, block->i_buffer);",
+          "new_line_content": "            return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 466,
+          "old_api": "lc_stream_CopyBlock",
+          "new_api": null,
+          "old_text": "lc_stream_CopyBlock(&priv->peek, buf, len);",
+          "new_text": null,
+          "old_line_content": "    ret = vlc_stream_CopyBlock(&priv->peek, buf, len);",
+          "new_line_content": "    ssize_t ret;",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release(block);",
+          "new_text": null,
+          "old_line_content": "            block_Release(block);",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(ret <= (ssize_t)len);",
+          "new_text": null,
+          "old_line_content": "        assert(ret <= (ssize_t)len);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "alloc",
+          "new_api": null,
+          "old_text": "alloc( i_line_conv + 1 );",
+          "new_text": null,
+          "old_line_content": "    char *p_line = malloc( i_line_conv + 1 ); /* +1 for easy \\0 append */",
+          "new_line_content": "       as long a buffer as UTF-16 */",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(size > SSIZE_MAX) ",
+          "new_text": null,
+          "old_line_content": "    if( unlikely(size > SSIZE_MAX) )",
+          "new_line_content": "block_t *vlc_stream_Block( stream_t *s, size_t size )",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "lc_stream_ReadRaw",
+          "new_api": null,
+          "old_text": "lc_stream_ReadRaw(s, buf, len);",
+          "new_text": null,
+          "old_line_content": "    ret = vlc_stream_ReadRaw(s, buf, len);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": "lock_Alloc",
+          "new_api": null,
+          "old_text": "lock_Alloc( size );",
+          "new_text": null,
+          "old_line_content": "    block_t *block = block_Alloc( size );",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": "nlikely",
+          "new_api": null,
+          "old_text": "nlikely(block == NULL) ",
+          "new_text": null,
+          "old_line_content": "    if( unlikely(block == NULL) )",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(ret <= (ssize_t)len);",
+          "new_text": null,
+          "old_line_content": "    assert(ret <= (ssize_t)len);",
+          "new_line_content": "    if (ret == 0)",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": "lc_stream_Read",
+          "new_api": null,
+          "old_text": "lc_stream_Read( s, block->p_buffer, size );",
+          "new_text": null,
+          "old_line_content": "    ssize_t val = vlc_stream_Read( s, block->p_buffer, size );",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "lock_Release",
+          "new_api": null,
+          "old_text": "lock_Release( block );",
+          "new_text": null,
+          "old_line_content": "        block_Release( block );",
+          "new_line_content": "    if( val <= 0 )",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "lc_iconv",
+          "new_api": null,
+          "old_text": "lc_iconv( priv->text.conv, &p_in, &i_in, &p_out, &i_out ) ",
+          "new_text": null,
+          "old_line_content": "        if( vlc_iconv( priv->text.conv, &p_in, &i_in, &p_out, &i_out ) == VLC_ICONV_ERR )",
+          "new_line_content": "        char * p_out = p_line;",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "sg_Dbg",
+          "new_api": null,
+          "old_text": "sg_Dbg( s, \"original: %zu, in %zu, out %zu\", i_line, i_in, i_out );",
+          "new_text": null,
+          "old_line_content": "            msg_Dbg( s, \"original: %zu, in %zu, out %zu\", i_line, i_in, i_out );",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "LC_UNUSED",
+          "new_api": null,
+          "old_text": "LC_UNUSED( r );",
+          "new_text": null,
+          "old_line_content": "            VLC_UNUSED( r );",
+          "new_line_content": "            /* Reset state */",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "lc_stream_ReadPartial",
+          "new_api": null,
+          "old_text": "lc_stream_ReadPartial(s, buf, len);",
+          "new_text": null,
+          "old_line_content": "        ssize_t ret = vlc_stream_ReadPartial(s, buf, len);",
+          "new_line_content": "    while (len > 0)",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(s->pf_readdir != NULL);",
+          "new_text": null,
+          "old_line_content": "    assert(s->pf_readdir != NULL);",
+          "new_line_content": "int vlc_stream_ReadDir( stream_t *s, input_item_node_t *p_node )",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "pf_readdir",
+          "new_api": null,
+          "old_text": "->pf_readdir( s, p_node );",
+          "new_text": null,
+          "old_line_content": "    return s->pf_readdir( s, p_node );",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "lc_stream_Read",
+          "new_api": null,
+          "old_text": "lc_stream_Read( s, p_read, i_line );",
+          "new_text": null,
+          "old_line_content": "    ssize_t i_data = vlc_stream_Read( s, p_read, i_line );",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert( i_data > 0 && (size_t) i_data == i_line );",
+          "new_text": null,
+          "old_line_content": "    assert( i_data > 0 && (size_t) i_data == i_line );",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": "ssert",
+          "new_api": null,
+          "old_text": "ssert(len >= (size_t)ret);",
+          "new_text": null,
+          "old_line_content": "        assert(len >= (size_t)ret);",
+          "new_line_content": "        if (buf != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": "ree",
+          "new_api": null,
+          "old_text": "ree( p_line );",
+          "new_text": null,
+          "old_line_content": "        free( p_line );",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": "estrict",
+          "new_api": null,
+          "old_text": "estrict ",
+          "new_text": null,
+          "old_line_content": "ssize_t vlc_stream_Peek(stream_t *s, const uint8_t **restrict bufp, size_t len)",
+          "new_line_content": "}",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 62,
+      "total_deletions": 61,
+      "total_api_changes": 129
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 129,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          248,
+          250
+        ]
+      }
+    },
+    "api_calls_before": 100,
+    "api_calls_after": 101,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 2,
+      "total_diff_lines": 19
+    }
+  }
+}

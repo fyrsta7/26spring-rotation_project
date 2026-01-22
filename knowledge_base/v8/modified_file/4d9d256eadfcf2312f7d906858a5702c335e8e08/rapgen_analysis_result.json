@@ -1,0 +1,665 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/4d9d256eadfcf2312f7d906858a5702c335e8e08",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/4d9d256eadfcf2312f7d906858a5702c335e8e08/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/4d9d256eadfcf2312f7d906858a5702c335e8e08/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/4d9d256eadfcf2312f7d906858a5702c335e8e08/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 108,
+          "old_api": "AllocateRawUnaligned",
+          "new_api": "AllocateRaw",
+          "old_text": "code_space()->AllocateRawUnaligned(size_in_bytes)",
+          "new_text": "code_space()->AllocateRaw(\n              size_in_bytes, AllocationAlignment::kTaggedAligned)",
+          "old_line_content": "          allocation = code_space()->AllocateRawUnaligned(size_in_bytes);",
+          "new_line_content": "          allocation = code_space()->AllocateRaw(",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": "AllocateRawUnaligned",
+          "new_api": "DCHECK_EQ",
+          "old_text": "space_for_maps()->AllocateRawUnaligned(size_in_bytes)",
+          "new_text": "DCHECK_EQ(alignment, AllocationAlignment::kTaggedAligned)",
+          "old_line_content": "          allocation = space_for_maps()->AllocateRawUnaligned(size_in_bytes);",
+          "new_line_content": "          DCHECK_EQ(alignment, AllocationAlignment::kTaggedAligned);",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": "AllocateRaw",
+          "new_api": "writable",
+          "old_text": "read_only_space()->AllocateRaw(size_in_bytes, alignment)",
+          "new_text": "read_only_space()->writable()",
+          "old_line_content": "          allocation = read_only_space()->AllocateRaw(size_in_bytes, alignment);",
+          "new_line_content": "          DCHECK(read_only_space()->writable());",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": "address",
+          "new_api": "UnprotectAndRegisterMemoryChunk",
+          "old_text": "object.address()",
+          "new_text": "heap_->UnprotectAndRegisterMemoryChunk(\n          object, UnprotectMemoryOrigin::kMainThread)",
+          "old_line_content": "      heap_->ZapCodeObject(object.address(), size_in_bytes);",
+          "new_line_content": "      heap_->UnprotectAndRegisterMemoryChunk(",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 133,
+          "old_api": null,
+          "new_api": "To",
+          "old_text": null,
+          "new_text": "allocation.To(&object)",
+          "old_line_content": "      // Unprotect the memory chunk of the object if it was not unprotected",
+          "new_line_content": "  if (allocation.To(&object)) {",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": null,
+          "new_api": "address",
+          "old_text": null,
+          "new_text": "object.address()",
+          "old_line_content": "    }",
+          "new_line_content": "            ->RegisterNewlyAllocatedCodeObject(object.address());",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": null,
+          "new_api": "address",
+          "old_text": null,
+          "new_text": "Page::FromHeapObject(object)->object_start_bitmap()->SetBit(\n          object.address())",
+          "old_line_content": "    }",
+          "new_line_content": "      Page::FromHeapObject(object)->object_start_bitmap()->SetBit(",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "address",
+          "old_text": null,
+          "new_text": "object.address()",
+          "old_line_content": "#endif  // V8_ENABLE_CONSERVATIVE_STACK_SCANNING",
+          "new_line_content": "          object.address());",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "address",
+          "old_text": null,
+          "new_text": "object.address()",
+          "old_line_content": "  }",
+          "new_line_content": "      tracker->AllocationEvent(object.address(), size_in_bytes);",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "old_line_content": "    case AllocationType::kOld:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "old_line_content": "    case AllocationType::kCode:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,\n                                                alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,\n                                                alignment)",
+          "old_line_content": "    case AllocationType::kMap:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,\n                                               alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,\n                                               alignment)",
+          "old_line_content": "    case AllocationType::kReadOnly:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,\n                                                    alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,\n                                                    alignment)",
+          "old_line_content": "    case AllocationType::kSharedMap:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,\n                                                     alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,\n                                                     alignment)",
+          "old_line_content": "    case AllocationType::kSharedOld:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,\n                                                     alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,\n                                                     alignment)",
+          "old_line_content": "  }",
+          "new_line_content": "      return AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": null,
+          "new_api": "UNREACHABLE",
+          "old_text": null,
+          "new_text": "UNREACHABLE()",
+          "old_line_content": "",
+          "new_line_content": "  UNREACHABLE();",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "old_line_content": "    case AllocationType::kOld:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "old_line_content": "    case AllocationType::kCode:",
+          "new_line_content": "      return AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": null,
+          "new_api": "UNREACHABLE",
+          "old_text": null,
+          "new_text": "UNREACHABLE()",
+          "old_line_content": "",
+          "new_line_content": "  UNREACHABLE();",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kYoung>(size, origin, alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kYoung>(size, origin, alignment)",
+          "old_line_content": "      return object;",
+          "new_line_content": "    result = AllocateRaw<AllocationType::kYoung>(size, origin, alignment);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "To",
+          "old_text": null,
+          "new_text": "result.To(&object)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (result.To(&object)) {",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "AllocateRaw<AllocationType::kOld>(size, origin, alignment)",
+          "old_text": null,
+          "new_text": "AllocateRaw<AllocationType::kOld>(size, origin, alignment)",
+          "old_line_content": "      return object;",
+          "new_line_content": "    result = AllocateRaw<AllocationType::kOld>(size, origin, alignment);",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "To",
+          "old_text": null,
+          "new_text": "result.To(&object)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (result.To(&object)) {",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "AllocateRawWithLightRetrySlowPath",
+          "old_text": null,
+          "new_text": "AllocateRawWithLightRetrySlowPath(size, allocation, origin,\n                                                 alignment)",
+          "old_line_content": "      break;",
+          "new_line_content": "      result = AllocateRawWithLightRetrySlowPath(size, allocation, origin,",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": null,
+          "new_api": "AllocateRawWithRetryOrFailSlowPath",
+          "old_text": null,
+          "new_text": "AllocateRawWithRetryOrFailSlowPath(size, allocation, origin,\n                                                  alignment)",
+          "old_line_content": "      break;",
+          "new_line_content": "      result = AllocateRawWithRetryOrFailSlowPath(size, allocation, origin,",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": null,
+          "new_api": "AllocateRaw",
+          "old_text": null,
+          "new_text": "space_for_maps()->AllocateRaw(\n              size_in_bytes, AllocationAlignment::kTaggedAligned)",
+          "old_line_content": "          break;",
+          "new_line_content": "          allocation = space_for_maps()->AllocateRaw(",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": null,
+          "new_api": "To",
+          "old_text": null,
+          "new_text": "result.To(&object)",
+          "old_line_content": "  }",
+          "new_line_content": "  if (result.To(&object)) {",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": null,
+          "new_api": "HeapObject",
+          "old_text": null,
+          "new_text": "HeapObject()",
+          "old_line_content": "",
+          "new_line_content": "  return HeapObject();",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "DCHECK_EQ",
+          "old_text": null,
+          "new_text": "DCHECK_EQ(AllocationOrigin::kRuntime, origin)",
+          "old_line_content": "          break;",
+          "new_line_content": "          DCHECK_EQ(AllocationOrigin::kRuntime, origin);",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": null,
+          "new_api": "AllocateRaw",
+          "old_text": null,
+          "new_text": "read_only_space()->AllocateRaw(size_in_bytes, alignment)",
+          "old_line_content": "        case AllocationType::kSharedMap:",
+          "new_line_content": "          allocation = read_only_space()->AllocateRaw(size_in_bytes, alignment);",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": null,
+          "new_api": "AllocateRaw",
+          "old_text": null,
+          "new_text": "shared_map_allocator_->AllocateRaw(size_in_bytes,\n                                                          alignment, origin)",
+          "old_line_content": "          break;",
+          "new_line_content": "          allocation = shared_map_allocator_->AllocateRaw(size_in_bytes,",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "AllocateRaw",
+          "old_text": null,
+          "new_text": "shared_old_allocator_->AllocateRaw(size_in_bytes,\n                                                          alignment, origin)",
+          "old_line_content": "          break;",
+          "new_line_content": "          allocation = shared_old_allocator_->AllocateRaw(size_in_bytes,",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 131,
+          "old_api": "To",
+          "new_api": null,
+          "old_text": "allocation.To(&object)",
+          "new_text": null,
+          "old_line_content": "  if (allocation.To(&object)) {",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "UnprotectAndRegisterMemoryChunk",
+          "new_api": null,
+          "old_text": "heap_->UnprotectAndRegisterMemoryChunk(\n          object, UnprotectMemoryOrigin::kMainThread)",
+          "new_text": null,
+          "old_line_content": "      heap_->UnprotectAndRegisterMemoryChunk(",
+          "new_line_content": "      // Unprotect the memory chunk of the object if it was not unprotected",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "address",
+          "new_api": null,
+          "old_text": "object.address()",
+          "new_text": null,
+          "old_line_content": "      DCHECK_TAG_ALIGNED(object.address());",
+          "new_line_content": "#ifdef V8_ENABLE_CONSERVATIVE_STACK_SCANNING",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": "address",
+          "new_api": null,
+          "old_text": "Page::FromHeapObject(object)->object_start_bitmap()->SetBit(\n          object.address())",
+          "new_text": null,
+          "old_line_content": "      Page::FromHeapObject(object)->object_start_bitmap()->SetBit(",
+          "new_line_content": "    if (AllocationType::kReadOnly != type) {",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "address",
+          "new_api": null,
+          "old_text": "object.address()",
+          "new_text": null,
+          "old_line_content": "      tracker->AllocationEvent(object.address(), size_in_bytes);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,",
+          "new_line_content": "  switch (type) {",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,",
+          "new_line_content": "                                                 alignment);",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": "AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,\n                                                alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,\n                                                alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kCode>(size_in_bytes, origin,",
+          "new_line_content": "                                               alignment);",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": "AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,\n                                               alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,\n                                               alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kMap>(size_in_bytes, origin,",
+          "new_line_content": "                                                alignment);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,\n                                                    alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,\n                                                    alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kReadOnly>(size_in_bytes, origin,",
+          "new_line_content": "                                               alignment);",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,\n                                                     alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,\n                                                     alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kSharedMap>(size_in_bytes, origin,",
+          "new_line_content": "                                                    alignment);",
+          "content_same": false
+        },
+        {
+          "line": 185,
+          "old_api": "AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,\n                                                     alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,\n                                                     alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kSharedOld>(size_in_bytes, origin,",
+          "new_line_content": "                                                     alignment);",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": "UNREACHABLE",
+          "new_api": null,
+          "old_text": "UNREACHABLE()",
+          "new_text": null,
+          "old_line_content": "  UNREACHABLE();",
+          "new_line_content": "                                                     alignment);",
+          "content_same": false
+        },
+        {
+          "line": 197,
+          "old_api": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,\n                                                 alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kYoung>(size_in_bytes, origin,",
+          "new_line_content": "  switch (type) {",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,\n                                               alignment)",
+          "new_text": null,
+          "old_line_content": "      return AllocateRaw<AllocationType::kOld>(size_in_bytes, origin,",
+          "new_line_content": "                                                 alignment);",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": "UNREACHABLE",
+          "new_api": null,
+          "old_text": "UNREACHABLE()",
+          "new_text": null,
+          "old_line_content": "      UNREACHABLE();",
+          "new_line_content": "    case AllocationType::kSharedMap:",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "AllocateRaw<AllocationType::kYoung>(size, origin, alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kYoung>(size, origin, alignment)",
+          "new_text": null,
+          "old_line_content": "    result = AllocateRaw<AllocationType::kYoung>(size, origin, alignment);",
+          "new_line_content": "  HeapObject object;",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "To",
+          "new_api": null,
+          "old_text": "result.To(&object)",
+          "new_text": null,
+          "old_line_content": "    if (result.To(&object)) {",
+          "new_line_content": "  if (allocation == AllocationType::kYoung) {",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "AllocateRaw<AllocationType::kOld>(size, origin, alignment)",
+          "new_api": null,
+          "old_text": "AllocateRaw<AllocationType::kOld>(size, origin, alignment)",
+          "new_text": null,
+          "old_line_content": "    result = AllocateRaw<AllocationType::kOld>(size, origin, alignment);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": "To",
+          "new_api": null,
+          "old_text": "result.To(&object)",
+          "new_text": null,
+          "old_line_content": "    if (result.To(&object)) {",
+          "new_line_content": "  } else if (allocation == AllocationType::kOld) {",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "AllocateRawWithLightRetrySlowPath",
+          "new_api": null,
+          "old_text": "AllocateRawWithLightRetrySlowPath(size, allocation, origin,\n                                                 alignment)",
+          "new_text": null,
+          "old_line_content": "      result = AllocateRawWithLightRetrySlowPath(size, allocation, origin,",
+          "new_line_content": "  switch (mode) {",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "AllocateRawWithRetryOrFailSlowPath",
+          "new_api": null,
+          "old_text": "AllocateRawWithRetryOrFailSlowPath(size, allocation, origin,\n                                                  alignment)",
+          "new_text": null,
+          "old_line_content": "      result = AllocateRawWithRetryOrFailSlowPath(size, allocation, origin,",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": "DCHECK_EQ",
+          "new_api": null,
+          "old_text": "DCHECK_EQ(alignment, AllocationAlignment::kTaggedAligned)",
+          "new_text": null,
+          "old_line_content": "          DCHECK_EQ(alignment, AllocationAlignment::kTaggedAligned);",
+          "new_line_content": "        case AllocationType::kMap:",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": "To",
+          "new_api": null,
+          "old_text": "result.To(&object)",
+          "new_text": null,
+          "old_line_content": "  if (result.To(&object)) {",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "HeapObject",
+          "new_api": null,
+          "old_text": "HeapObject()",
+          "new_text": null,
+          "old_line_content": "  return HeapObject();",
+          "new_line_content": "    return object;",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": "writable",
+          "new_api": null,
+          "old_text": "read_only_space()->writable()",
+          "new_text": null,
+          "old_line_content": "          DCHECK(read_only_space()->writable());",
+          "new_line_content": "          break;",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": "DCHECK_EQ",
+          "new_api": null,
+          "old_text": "DCHECK_EQ(AllocationOrigin::kRuntime, origin)",
+          "new_text": null,
+          "old_line_content": "          DCHECK_EQ(AllocationOrigin::kRuntime, origin);",
+          "new_line_content": "        case AllocationType::kReadOnly:",
+          "content_same": false
+        },
+        {
+          "line": 120,
+          "old_api": "AllocateRaw",
+          "new_api": null,
+          "old_text": "shared_map_allocator_->AllocateRaw(size_in_bytes,\n                                                          alignment, origin)",
+          "new_text": null,
+          "old_line_content": "          allocation = shared_map_allocator_->AllocateRaw(size_in_bytes,",
+          "new_line_content": "          break;",
+          "content_same": false
+        },
+        {
+          "line": 124,
+          "old_api": "AllocateRaw",
+          "new_api": null,
+          "old_text": "shared_old_allocator_->AllocateRaw(size_in_bytes,\n                                                          alignment, origin)",
+          "new_text": null,
+          "old_line_content": "          allocation = shared_old_allocator_->AllocateRaw(size_in_bytes,",
+          "new_line_content": "          break;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 4,
+      "total_additions": 29,
+      "total_deletions": 29,
+      "total_api_changes": 62
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 62,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          114,
+          109
+        ]
+      }
+    },
+    "api_calls_before": 82,
+    "api_calls_after": 82,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 2,
+      "total_diff_lines": 21
+    }
+  }
+}

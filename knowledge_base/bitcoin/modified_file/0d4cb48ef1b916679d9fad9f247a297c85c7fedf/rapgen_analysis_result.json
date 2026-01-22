@@ -1,0 +1,362 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/0d4cb48ef1b916679d9fad9f247a297c85c7fedf",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/0d4cb48ef1b916679d9fad9f247a297c85c7fedf/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/0d4cb48ef1b916679d9fad9f247a297c85c7fedf/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/bitcoin/modified_file/0d4cb48ef1b916679d9fad9f247a297c85c7fedf/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 103,
+          "old_api": "GetHash",
+          "new_api": "size",
+          "old_text": "it->GetTx().GetHash()",
+          "new_text": "vTxHashes.size()",
+          "old_line_content": "        std::unordered_map<uint64_t, uint16_t>::iterator idit = shorttxids.find(cmpctblock.GetShortID(it->GetTx().GetHash()));",
+          "new_line_content": "    for (size_t i = 0; i < vTxHashes.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 104,
+          "old_api": "end",
+          "new_api": "GetShortID",
+          "old_text": "shorttxids.end()",
+          "new_text": "cmpctblock.GetShortID(vTxHashes[i].first)",
+          "old_line_content": "        if (idit != shorttxids.end()) {",
+          "new_line_content": "        uint64_t shortid = cmpctblock.GetShortID(vTxHashes[i].first);",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "GetSharedTx",
+          "new_api": "end",
+          "old_text": "it->GetSharedTx()",
+          "new_text": "shorttxids.end()",
+          "old_line_content": "                txn_available[idit->second] = it->GetSharedTx();",
+          "new_line_content": "        if (idit != shorttxids.end()) {",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "size",
+          "new_api": "IsNull",
+          "old_text": "txn_available.size()",
+          "new_text": "header.IsNull()",
+          "old_line_content": "    block.vtx.resize(txn_available.size());",
+          "new_line_content": "    assert(!header.IsNull());",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "GetHash",
+          "new_api": "size",
+          "old_text": "tx.GetHash().ToString()",
+          "new_text": "vtx_missing.size()",
+          "old_line_content": "            LogPrint(\"cmpctblock\", \"Reconstructed block %s required tx %s\\n\", header.GetHash().ToString(), tx.GetHash().ToString());",
+          "new_line_content": "    if (vtx_missing.size() < 5) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 128,
+          "old_api": null,
+          "new_api": "GetSerializeSize",
+          "old_text": null,
+          "new_text": "cmpctblock.GetSerializeSize(SER_NETWORK, PROTOCOL_VERSION)",
+          "old_line_content": "    return READ_STATUS_OK;",
+          "new_line_content": "    LogPrint(\"cmpctblock\", \"Initialized PartiallyDownloadedBlock for block %s using a cmpctblock of size %lu\\n\", cmpctblock.header.GetHash().ToString(), cmpctblock.GetSerializeSize(SER_NETWORK, PROTOCOL_VERSION));",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": null,
+          "new_api": "CorruptionPossible",
+          "old_text": null,
+          "new_text": "state.CorruptionPossible()",
+          "old_line_content": "        return READ_STATUS_INVALID;",
+          "new_line_content": "        if (state.CorruptionPossible())",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": null,
+          "new_api": "IsNull",
+          "old_text": null,
+          "new_text": "header.IsNull()",
+          "old_line_content": "    return txn_available[index] ? true : false;",
+          "new_line_content": "    assert(!header.IsNull());",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "txn_available.size()",
+          "old_line_content": "}",
+          "new_line_content": "    assert(index < txn_available.size());",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "vtx_missing.size()",
+          "old_line_content": "        for(const CTransaction& tx : vtx_missing)",
+          "new_line_content": "    LogPrint(\"cmpctblock\", \"Successfully reconstructed block %s with %lu txn prefilled, %lu txn from mempool and %lu txn requested\\n\", header.GetHash().ToString(), prefilled_count, mempool_count, vtx_missing.size());",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "shorttxids.find(shortid)",
+          "old_line_content": "            if (!have_txn[idit->second]) {",
+          "new_line_content": "        std::unordered_map<uint64_t, uint16_t>::iterator idit = shorttxids.find(shortid);",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": null,
+          "new_api": "GetHash",
+          "old_text": null,
+          "new_text": "tx.GetHash().ToString()",
+          "old_line_content": "",
+          "new_line_content": "            LogPrint(\"cmpctblock\", \"Reconstructed block %s required tx %s\\n\", header.GetHash().ToString(), tx.GetHash().ToString());",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": null,
+          "new_api": "GetSharedTx",
+          "old_text": null,
+          "new_text": "vTxHashes[i].second->GetSharedTx()",
+          "old_line_content": "                mempool_count++;",
+          "new_line_content": "                txn_available[idit->second] = vTxHashes[i].second->GetSharedTx();",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "txn_available.size()",
+          "old_line_content": "    size_t tx_missing_offset = 0;",
+          "new_line_content": "    block.vtx.resize(txn_available.size());",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "vtx_missing.size()",
+          "old_line_content": "            block.vtx[i] = vtx_missing[tx_missing_offset++];",
+          "new_line_content": "            if (vtx_missing.size() <= tx_missing_offset)",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "txn_available[idit->second].reset()",
+          "old_line_content": "                }",
+          "new_line_content": "                    txn_available[idit->second].reset();",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "vtx_missing.size()",
+          "old_line_content": "",
+          "new_line_content": "    if (vtx_missing.size() != tx_missing_offset)",
+          "content_same": false
+        },
+        {
+          "line": 124,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "shorttxids.size()",
+          "old_line_content": "    }",
+          "new_line_content": "        if (mempool_count == shorttxids.size())",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": null,
+          "new_api": "GetConsensus",
+          "old_text": null,
+          "new_text": "Params().GetConsensus()",
+          "old_line_content": "        // but that is expensive, and CheckBlock caches a block's",
+          "new_line_content": "    if (!CheckBlock(block, state, Params().GetConsensus())) {",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 160,
+          "old_api": "CorruptionPossible",
+          "new_api": null,
+          "old_text": "state.CorruptionPossible()",
+          "new_text": null,
+          "old_line_content": "        if (state.CorruptionPossible())",
+          "new_line_content": "        // \"checked-status\" (in the CBlock?). CBlock should be able to",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "IsNull",
+          "new_api": null,
+          "old_text": "header.IsNull()",
+          "new_text": null,
+          "old_line_content": "    assert(!header.IsNull());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "txn_available.size()",
+          "new_text": null,
+          "old_line_content": "    assert(index < txn_available.size());",
+          "new_line_content": "bool PartiallyDownloadedBlock::IsTxAvailable(size_t index) const {",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "vtx_missing.size()",
+          "new_text": null,
+          "old_line_content": "    LogPrint(\"cmpctblock\", \"Successfully reconstructed block %s with %lu txn prefilled, %lu txn from mempool and %lu txn requested\\n\", header.GetHash().ToString(), prefilled_count, mempool_count, vtx_missing.size());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "vtx_missing.size()",
+          "new_text": null,
+          "old_line_content": "    if (vtx_missing.size() < 5) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "pool->mapTx.end()",
+          "new_text": null,
+          "old_line_content": "    for (CTxMemPool::txiter it = pool->mapTx.begin(); it != pool->mapTx.end(); it++) {",
+          "new_line_content": "    const std::vector<std::pair<uint256, CTxMemPool::txiter> >& vTxHashes = pool->vTxHashes;",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": "IsNull",
+          "new_api": null,
+          "old_text": "header.IsNull()",
+          "new_text": null,
+          "old_line_content": "    assert(!header.IsNull());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "txn_available.size()",
+          "new_text": null,
+          "old_line_content": "    for (size_t i = 0; i < txn_available.size(); i++) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "reset",
+          "new_api": null,
+          "old_text": "txn_available[idit->second].reset()",
+          "new_text": null,
+          "old_line_content": "                    txn_available[idit->second].reset();",
+          "new_line_content": "                // but eating a round-trip due to FillBlock failure would be annoying",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "vtx_missing.size()",
+          "new_text": null,
+          "old_line_content": "    if (vtx_missing.size() != tx_missing_offset)",
+          "new_line_content": "            block.vtx[i] = *txn_available[i];",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "shorttxids.size()",
+          "new_text": null,
+          "old_line_content": "        if (mempool_count == shorttxids.size())",
+          "new_line_content": "        // the performance win of an early exit here is too good to pass up and worth",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": "GetConsensus",
+          "new_api": null,
+          "old_text": "Params().GetConsensus()",
+          "new_text": null,
+          "old_line_content": "    if (!CheckBlock(block, state, Params().GetConsensus())) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": "GetSerializeSize",
+          "new_api": null,
+          "old_text": "cmpctblock.GetSerializeSize(SER_NETWORK, PROTOCOL_VERSION)",
+          "new_text": null,
+          "old_line_content": "    LogPrint(\"cmpctblock\", \"Initialized PartiallyDownloadedBlock for block %s using a cmpctblock of size %lu\\n\", cmpctblock.header.GetHash().ToString(), cmpctblock.GetSerializeSize(SER_NETWORK, PROTOCOL_VERSION));",
+          "new_line_content": "    }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 5,
+      "total_additions": 14,
+      "total_deletions": 13,
+      "total_api_changes": 32
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 32,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 79,
+    "api_calls_after": 76,
+    "diff_info": {
+      "added_lines": 5,
+      "removed_lines": 3,
+      "total_diff_lines": 22
+    }
+  }
+}

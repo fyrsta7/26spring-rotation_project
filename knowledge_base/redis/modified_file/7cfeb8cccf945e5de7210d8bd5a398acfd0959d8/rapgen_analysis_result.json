@@ -1,0 +1,1966 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/7cfeb8cccf945e5de7210d8bd5a398acfd0959d8",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/7cfeb8cccf945e5de7210d8bd5a398acfd0959d8/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/7cfeb8cccf945e5de7210d8bd5a398acfd0959d8/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/7cfeb8cccf945e5de7210d8bd5a398acfd0959d8/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 570,
+          "old_api": "listFirst",
+          "new_api": "ziplistDeleteRange",
+          "old_text": "listFirst(list)",
+          "new_text": "ziplistDeleteRange(o->ptr,0,ltrim)",
+          "old_line_content": "            ln = listFirst(list);",
+          "new_line_content": "        o->ptr = ziplistDeleteRange(o->ptr,0,ltrim);",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "listDelNode",
+          "new_api": "ziplistDeleteRange",
+          "old_text": "listDelNode(list,ln)",
+          "new_text": "ziplistDeleteRange(o->ptr,-rtrim,rtrim)",
+          "old_line_content": "            listDelNode(list,ln);",
+          "new_line_content": "        o->ptr = ziplistDeleteRange(o->ptr,-rtrim,rtrim);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "listDelNode",
+          "new_api": "listFirst",
+          "old_text": "listDelNode(list,ln)",
+          "new_text": "listFirst(list)",
+          "old_line_content": "            listDelNode(list,ln);",
+          "new_line_content": "            ln = listFirst(list);",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "dbDelete",
+          "new_api": "listDelNode",
+          "old_text": "dbDelete(c->db,c->argv[1])",
+          "new_text": "listDelNode(list,ln)",
+          "old_line_content": "    if (listTypeLength(o) == 0) dbDelete(c->db,c->argv[1]);",
+          "new_line_content": "            listDelNode(list,ln);",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "addReply",
+          "new_api": "redisPanic",
+          "old_text": "addReply(c,shared.ok)",
+          "new_text": "redisPanic(\"Unknown list encoding\")",
+          "old_line_content": "    addReply(c,shared.ok);",
+          "new_line_content": "        redisPanic(\"Unknown list encoding\");",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "tryObjectEncoding",
+          "new_api": "addReply",
+          "old_text": "tryObjectEncoding(c->argv[3])",
+          "new_text": "addReply(c,shared.ok)",
+          "old_line_content": "    obj = c->argv[3] = tryObjectEncoding(c->argv[3]);",
+          "new_line_content": "    addReply(c,shared.ok);",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": "lookupKeyWriteOrReply",
+          "new_api": "tryObjectEncoding",
+          "old_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.czero)",
+          "new_text": "tryObjectEncoding(c->argv[3])",
+          "old_line_content": "    subject = lookupKeyWriteOrReply(c,c->argv[1],shared.czero);",
+          "new_line_content": "    obj = c->argv[3] = tryObjectEncoding(c->argv[3]);",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": "checkType",
+          "new_api": "atoi",
+          "old_text": "checkType(c,subject,REDIS_LIST)",
+          "new_text": "atoi(c->argv[2]->ptr)",
+          "old_line_content": "    if (subject == NULL || checkType(c,subject,REDIS_LIST)) return;",
+          "new_line_content": "    int toremove = atoi(c->argv[2]->ptr);",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "getDecodedObject",
+          "new_api": "lookupKeyWriteOrReply",
+          "old_text": "getDecodedObject(obj)",
+          "new_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.czero)",
+          "old_line_content": "        obj = getDecodedObject(obj);",
+          "new_line_content": "    subject = lookupKeyWriteOrReply(c,c->argv[1],shared.czero);",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": "listTypeInitIterator",
+          "new_api": "getDecodedObject",
+          "old_text": "listTypeInitIterator(subject,-1,REDIS_HEAD)",
+          "new_text": "getDecodedObject(obj)",
+          "old_line_content": "        li = listTypeInitIterator(subject,-1,REDIS_HEAD);",
+          "new_line_content": "        obj = getDecodedObject(obj);",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "listTypeNext",
+          "new_api": "listTypeInitIterator",
+          "old_text": "listTypeNext(li,&entry)",
+          "new_text": "listTypeInitIterator(subject,-1,REDIS_HEAD)",
+          "old_line_content": "    while (listTypeNext(li,&entry)) {",
+          "new_line_content": "        li = listTypeInitIterator(subject,-1,REDIS_HEAD);",
+          "content_same": false
+        },
+        {
+          "line": 610,
+          "old_api": "listTypeDelete",
+          "new_api": "listTypeInitIterator",
+          "old_text": "listTypeDelete(&entry)",
+          "new_text": "listTypeInitIterator(subject,0,REDIS_TAIL)",
+          "old_line_content": "            listTypeDelete(&entry);",
+          "new_line_content": "        li = listTypeInitIterator(subject,0,REDIS_TAIL);",
+          "content_same": false
+        },
+        {
+          "line": 654,
+          "old_api": "listTypePush",
+          "new_api": "createZiplistObject",
+          "old_text": "listTypePush(dstobj,value,REDIS_HEAD)",
+          "new_text": "createZiplistObject()",
+          "old_line_content": "        listTypePush(dstobj,value,REDIS_HEAD);",
+          "new_line_content": "            dstobj = createZiplistObject();",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "createStringObject",
+          "new_api": "rewriteClientCommandVector",
+          "old_text": "createStringObject(\"RPOPLPUSH\",9)",
+          "new_text": "rewriteClientCommandVector(origclient,3,aux,dstkey,value)",
+          "old_line_content": "            aux = createStringObject(\"RPOPLPUSH\",9);",
+          "new_line_content": "            rewriteClientCommandVector(origclient,3,aux,dstkey,value);",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "rewriteClientCommandVector",
+          "new_api": "decrRefCount",
+          "old_text": "rewriteClientCommandVector(origclient,3,aux,c->argv[1],c->argv[2])",
+          "new_text": "decrRefCount(aux)",
+          "old_line_content": "            rewriteClientCommandVector(origclient,3,aux,c->argv[1],c->argv[2]);",
+          "new_line_content": "            decrRefCount(aux);",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "lookupKeyWriteOrReply",
+          "new_api": "addReplyBulk",
+          "old_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.nullbulk)",
+          "new_text": "addReplyBulk(c,value)",
+          "old_line_content": "    if ((sobj = lookupKeyWriteOrReply(c,c->argv[1],shared.nullbulk)) == NULL ||",
+          "new_line_content": "    addReplyBulk(c,value);",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "lookupKeyWrite",
+          "new_api": "checkType",
+          "old_text": "lookupKeyWrite(c->db,c->argv[2])",
+          "new_text": "checkType(c,sobj,REDIS_LIST)",
+          "old_line_content": "        robj *dobj = lookupKeyWrite(c->db,c->argv[2]);",
+          "new_line_content": "        checkType(c,sobj,REDIS_LIST)) return;",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "checkType",
+          "new_api": "addReply",
+          "old_text": "checkType(c,dobj,REDIS_LIST)",
+          "new_text": "addReply(c,shared.nullbulk)",
+          "old_line_content": "        if (dobj && checkType(c,dobj,REDIS_LIST)) return;",
+          "new_line_content": "        addReply(c,shared.nullbulk);",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": "rpoplpushHandlePush",
+          "new_api": "checkType",
+          "old_text": "rpoplpushHandlePush(c,c,c->argv[2],dobj,value)",
+          "new_text": "checkType(c,dobj,REDIS_LIST)",
+          "old_line_content": "        rpoplpushHandlePush(c,c,c->argv[2],dobj,value);",
+          "new_line_content": "        if (dobj && checkType(c,dobj,REDIS_LIST)) return;",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": "listCreate",
+          "new_api": "dictFind",
+          "old_text": "listCreate()",
+          "new_text": "dictFind(c->db->blocking_keys,keys[j])",
+          "old_line_content": "            l = listCreate();",
+          "new_line_content": "        de = dictFind(c->db->blocking_keys,keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": "dictGetEntryVal",
+          "new_api": "listCreate",
+          "old_text": "dictGetEntryVal(de)",
+          "new_text": "listCreate()",
+          "old_line_content": "            l = dictGetEntryVal(de);",
+          "new_line_content": "            l = listCreate();",
+          "content_same": false
+        },
+        {
+          "line": 776,
+          "old_api": "listAddNodeTail",
+          "new_api": "incrRefCount",
+          "old_text": "listAddNodeTail(l,c)",
+          "new_text": "incrRefCount(keys[j])",
+          "old_line_content": "        listAddNodeTail(l,c);",
+          "new_line_content": "            incrRefCount(keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 798,
+          "old_api": "listLength",
+          "new_api": "dictFind",
+          "old_text": "listLength(l)",
+          "new_text": "dictFind(c->db->blocking_keys,c->bpop.keys[j])",
+          "old_line_content": "        if (listLength(l) == 0)",
+          "new_line_content": "        de = dictFind(c->db->blocking_keys,c->bpop.keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "dictDelete",
+          "new_api": "redisAssert",
+          "old_text": "dictDelete(c->db->blocking_keys,c->bpop.keys[j])",
+          "new_text": "redisAssert(de != NULL)",
+          "old_line_content": "            dictDelete(c->db->blocking_keys,c->bpop.keys[j]);",
+          "new_line_content": "        redisAssert(de != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 800,
+          "old_api": "decrRefCount",
+          "new_api": "dictGetEntryVal",
+          "old_text": "decrRefCount(c->bpop.keys[j])",
+          "new_text": "dictGetEntryVal(de)",
+          "old_line_content": "        decrRefCount(c->bpop.keys[j]);",
+          "new_line_content": "        l = dictGetEntryVal(de);",
+          "content_same": false
+        },
+        {
+          "line": 804,
+          "old_api": "zfree",
+          "new_api": "dictDelete",
+          "old_text": "zfree(c->bpop.keys)",
+          "new_text": "dictDelete(c->db->blocking_keys,c->bpop.keys[j])",
+          "old_line_content": "    zfree(c->bpop.keys);",
+          "new_line_content": "            dictDelete(c->db->blocking_keys,c->bpop.keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": "listAddNodeTail",
+          "new_api": "decrRefCount",
+          "old_text": "listAddNodeTail(server.unblocked_clients,c)",
+          "new_text": "decrRefCount(c->bpop.target)",
+          "old_line_content": "    listAddNodeTail(server.unblocked_clients,c);",
+          "new_line_content": "    if (c->bpop.target) decrRefCount(c->bpop.target);",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": "addReplyBulk",
+          "new_api": "unblockClientWaitingData",
+          "old_text": "addReplyBulk(receiver,key)",
+          "new_text": "unblockClientWaitingData(receiver)",
+          "old_line_content": "            addReplyBulk(receiver,key);",
+          "new_line_content": "        unblockClientWaitingData(receiver);",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "lookupKeyWrite",
+          "new_api": "addReplyBulk",
+          "old_text": "lookupKeyWrite(receiver->db,dstkey)",
+          "new_text": "addReplyBulk(receiver,key)",
+          "old_line_content": "            dstobj = lookupKeyWrite(receiver->db,dstkey);",
+          "new_line_content": "            addReplyBulk(receiver,key);",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": "checkType",
+          "new_api": "addReplyBulk",
+          "old_text": "checkType(receiver,dstobj,REDIS_LIST)",
+          "new_text": "addReplyBulk(receiver,ele)",
+          "old_line_content": "            if (!(dstobj && checkType(receiver,dstobj,REDIS_LIST))) {",
+          "new_line_content": "            addReplyBulk(receiver,ele);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": "decrRefCount",
+          "new_api": "checkType",
+          "old_text": "decrRefCount(dstkey)",
+          "new_text": "checkType(receiver,dstobj,REDIS_LIST)",
+          "old_line_content": "            decrRefCount(dstkey);",
+          "new_line_content": "            if (!(dstobj && checkType(receiver,dstobj,REDIS_LIST))) {",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": "addReplyError",
+          "new_api": "getLongFromObjectOrReply",
+          "old_text": "addReplyError(c,\"timeout is negative\")",
+          "new_text": "getLongFromObjectOrReply(c,object,&tval,\n        \"timeout is not an integer or out of range\")",
+          "old_line_content": "        addReplyError(c,\"timeout is negative\");",
+          "new_line_content": "    if (getLongFromObjectOrReply(c,object,&tval,",
+          "content_same": false
+        },
+        {
+          "line": 957,
+          "old_api": "blockForKeys",
+          "new_api": "addReply",
+          "old_text": "blockForKeys(c, c->argv + 1, c->argc - 2, timeout, NULL)",
+          "new_text": "addReply(c,shared.nullmultibulk)",
+          "old_line_content": "    blockForKeys(c, c->argv + 1, c->argc - 2, timeout, NULL);",
+          "new_line_content": "        addReply(c,shared.nullmultibulk);",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": "listTypeLength",
+          "new_api": "addReply",
+          "old_text": "listTypeLength(key)",
+          "new_text": "addReply(c, shared.wrongtypeerr)",
+          "old_line_content": "            redisAssert(listTypeLength(key) > 0);",
+          "new_line_content": "            addReply(c, shared.wrongtypeerr);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "listIndex",
+          "old_text": null,
+          "new_text": "listIndex(o->ptr,start)",
+          "old_line_content": "        }",
+          "new_line_content": "        ln = listIndex(o->ptr,start);",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": null,
+          "new_api": "addReplyBulk",
+          "old_text": null,
+          "new_text": "addReplyBulk(c,ln->value)",
+          "old_line_content": "    }",
+          "new_line_content": "            addReplyBulk(c,ln->value);",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": null,
+          "new_api": "redisPanic",
+          "old_text": null,
+          "new_text": "redisPanic(\"List encoding is not LINKEDLIST nor ZIPLIST!\")",
+          "old_line_content": "    robj *o;",
+          "new_line_content": "        redisPanic(\"List encoding is not LINKEDLIST nor ZIPLIST!\");",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(c->argv[2]->ptr)",
+          "old_line_content": "    listNode *ln;",
+          "new_line_content": "    int start = atoi(c->argv[2]->ptr);",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "atoi",
+          "old_text": null,
+          "new_text": "atoi(c->argv[3]->ptr)",
+          "old_line_content": "",
+          "new_line_content": "    int end = atoi(c->argv[3]->ptr);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "lookupKeyWriteOrReply",
+          "old_text": null,
+          "new_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.ok)",
+          "old_line_content": "    if (start < 0) start = llen+start;",
+          "new_line_content": "    if ((o = lookupKeyWriteOrReply(c,c->argv[1],shared.ok)) == NULL ||",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "checkType",
+          "old_text": null,
+          "new_text": "checkType(c,o,REDIS_LIST)",
+          "old_line_content": "    if (end < 0) end = llen+end;",
+          "new_line_content": "        checkType(c,o,REDIS_LIST)) return;",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": null,
+          "new_api": "listTypeLength",
+          "old_text": null,
+          "new_text": "listTypeLength(o)",
+          "old_line_content": "    if (start < 0) start = 0;",
+          "new_line_content": "    llen = listTypeLength(o);",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": null,
+          "new_api": "listDelNode",
+          "old_text": null,
+          "new_text": "listDelNode(list,ln)",
+          "old_line_content": "        }",
+          "new_line_content": "            listDelNode(list,ln);",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": null,
+          "new_api": "listLast",
+          "old_text": null,
+          "new_text": "listLast(list)",
+          "old_line_content": "    }",
+          "new_line_content": "            ln = listLast(list);",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "dbDelete",
+          "old_text": null,
+          "new_text": "dbDelete(c->db,c->argv[1])",
+          "old_line_content": "",
+          "new_line_content": "    if (listTypeLength(o) == 0) dbDelete(c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "signalModifiedKey",
+          "old_text": null,
+          "new_text": "signalModifiedKey(c->db,c->argv[1])",
+          "old_line_content": "void lremCommand(redisClient *c) {",
+          "new_line_content": "    signalModifiedKey(c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": null,
+          "new_api": "checkType",
+          "old_text": null,
+          "new_text": "checkType(c,subject,REDIS_LIST)",
+          "old_line_content": "",
+          "new_line_content": "    if (subject == NULL || checkType(c,subject,REDIS_LIST)) return;",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "listTypeNext",
+          "old_text": null,
+          "new_text": "listTypeNext(li,&entry)",
+          "old_line_content": "            if (toremove && removed == toremove) break;",
+          "new_line_content": "    while (listTypeNext(li,&entry)) {",
+          "content_same": false
+        },
+        {
+          "line": 614,
+          "old_api": null,
+          "new_api": "listTypeEqual",
+          "old_text": null,
+          "new_text": "listTypeEqual(&entry,obj)",
+          "old_line_content": "        }",
+          "new_line_content": "        if (listTypeEqual(&entry,obj)) {",
+          "content_same": false
+        },
+        {
+          "line": 615,
+          "old_api": null,
+          "new_api": "listTypeDelete",
+          "old_text": null,
+          "new_text": "listTypeDelete(&entry)",
+          "old_line_content": "    }",
+          "new_line_content": "            listTypeDelete(&entry);",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "listTypeReleaseIterator",
+          "old_text": null,
+          "new_text": "listTypeReleaseIterator(li)",
+          "old_line_content": "",
+          "new_line_content": "    listTypeReleaseIterator(li);",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(obj)",
+          "old_line_content": "}",
+          "new_line_content": "        decrRefCount(obj);",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": null,
+          "new_api": "dbDelete",
+          "old_text": null,
+          "new_text": "dbDelete(c->db,c->argv[1])",
+          "old_line_content": "/* This is the semantic of this command:",
+          "new_line_content": "    if (listTypeLength(subject) == 0) dbDelete(c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": null,
+          "new_api": "addReplyLongLong",
+          "old_text": null,
+          "new_text": "addReplyLongLong(c,removed)",
+          "old_line_content": " *  RPOPLPUSH srclist dstlist:",
+          "new_line_content": "    addReplyLongLong(c,removed);",
+          "content_same": false
+        },
+        {
+          "line": 629,
+          "old_api": null,
+          "new_api": "signalModifiedKey",
+          "old_text": null,
+          "new_text": "signalModifiedKey(c->db,c->argv[1])",
+          "old_line_content": " *    IF LLEN(srclist) > 0",
+          "new_line_content": "    if (removed) signalModifiedKey(c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": null,
+          "new_api": "handleClientsWaitingListPush",
+          "old_text": null,
+          "new_text": "handleClientsWaitingListPush(origclient,dstkey,value)",
+          "old_line_content": "        } else {",
+          "new_line_content": "    if (!handleClientsWaitingListPush(origclient,dstkey,value)) {",
+          "content_same": false
+        },
+        {
+          "line": 655,
+          "old_api": null,
+          "new_api": "dbAdd",
+          "old_text": null,
+          "new_text": "dbAdd(c->db,dstkey,dstobj)",
+          "old_line_content": "        /* If we are pushing as a result of LPUSH against a key",
+          "new_line_content": "            dbAdd(c->db,dstkey,dstobj);",
+          "content_same": false
+        },
+        {
+          "line": 657,
+          "old_api": null,
+          "new_api": "signalModifiedKey",
+          "old_text": null,
+          "new_text": "signalModifiedKey(c->db,dstkey)",
+          "old_line_content": "         * as an LPUSH.",
+          "new_line_content": "            signalModifiedKey(c->db,dstkey);",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": null,
+          "new_api": "listTypePush",
+          "old_text": null,
+          "new_text": "listTypePush(dstobj,value,REDIS_HEAD)",
+          "old_line_content": "         * If this is called directly by RPOPLPUSH (either directly",
+          "new_line_content": "        listTypePush(dstobj,value,REDIS_HEAD);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": null,
+          "new_api": "createStringObject",
+          "old_text": null,
+          "new_text": "createStringObject(\"LPUSH\",5)",
+          "old_line_content": "             * even if the original command was BRPOPLPUSH. */",
+          "new_line_content": "            aux = createStringObject(\"LPUSH\",5);",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": null,
+          "new_api": "createStringObject",
+          "old_text": null,
+          "new_text": "createStringObject(\"RPOPLPUSH\",9)",
+          "old_line_content": "    }",
+          "new_line_content": "            aux = createStringObject(\"RPOPLPUSH\",9);",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "rewriteClientCommandVector",
+          "old_text": null,
+          "new_text": "rewriteClientCommandVector(origclient,3,aux,c->argv[1],c->argv[2])",
+          "old_line_content": "",
+          "new_line_content": "            rewriteClientCommandVector(origclient,3,aux,c->argv[1],c->argv[2]);",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(aux)",
+          "old_line_content": "    /* Always send the pushed value to the client. */",
+          "new_line_content": "            decrRefCount(aux);",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": null,
+          "new_api": "lookupKeyWriteOrReply",
+          "old_text": null,
+          "new_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.nullbulk)",
+          "old_line_content": "    } else {",
+          "new_line_content": "    if ((sobj = lookupKeyWriteOrReply(c,c->argv[1],shared.nullbulk)) == NULL ||",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": null,
+          "new_api": "listTypeLength",
+          "old_text": null,
+          "new_text": "listTypeLength(sobj)",
+          "old_line_content": "",
+          "new_line_content": "    if (listTypeLength(sobj) == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": null,
+          "new_api": "lookupKeyWrite",
+          "old_text": null,
+          "new_text": "lookupKeyWrite(c->db,c->argv[2])",
+          "old_line_content": "        /* We saved touched key, and protect it, since rpoplpushHandlePush",
+          "new_line_content": "        robj *dobj = lookupKeyWrite(c->db,c->argv[2]);",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": null,
+          "new_api": "listTypePop",
+          "old_text": null,
+          "new_text": "listTypePop(sobj,REDIS_TAIL)",
+          "old_line_content": "",
+          "new_line_content": "        value = listTypePop(sobj,REDIS_TAIL);",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": null,
+          "new_api": "incrRefCount",
+          "old_text": null,
+          "new_text": "incrRefCount(touchedkey)",
+          "old_line_content": "",
+          "new_line_content": "        incrRefCount(touchedkey);",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": null,
+          "new_api": "rpoplpushHandlePush",
+          "old_text": null,
+          "new_text": "rpoplpushHandlePush(c,c,c->argv[2],dobj,value)",
+          "old_line_content": "        /* Delete the source list when it is empty */",
+          "new_line_content": "        rpoplpushHandlePush(c,c,c->argv[2],dobj,value);",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "dbDelete",
+          "old_text": null,
+          "new_text": "dbDelete(c->db,touchedkey)",
+          "old_line_content": "}",
+          "new_line_content": "        if (listTypeLength(sobj) == 0) dbDelete(c->db,touchedkey);",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "signalModifiedKey",
+          "old_text": null,
+          "new_text": "signalModifiedKey(c->db,touchedkey)",
+          "old_line_content": "",
+          "new_line_content": "        signalModifiedKey(c->db,touchedkey);",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(touchedkey)",
+          "old_line_content": "/*-----------------------------------------------------------------------------",
+          "new_line_content": "        decrRefCount(touchedkey);",
+          "content_same": false
+        },
+        {
+          "line": 754,
+          "old_api": null,
+          "new_api": "zmalloc",
+          "old_text": null,
+          "new_text": "zmalloc(sizeof(robj*)*numkeys)",
+          "old_line_content": "    if (target != NULL) {",
+          "new_line_content": "    c->bpop.keys = zmalloc(sizeof(robj*)*numkeys);",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": null,
+          "new_api": "incrRefCount",
+          "old_text": null,
+          "new_text": "incrRefCount(target)",
+          "old_line_content": "        c->bpop.keys[j] = keys[j];",
+          "new_line_content": "        incrRefCount(target);",
+          "content_same": false
+        },
+        {
+          "line": 766,
+          "old_api": null,
+          "new_api": "incrRefCount",
+          "old_text": null,
+          "new_text": "incrRefCount(keys[j])",
+          "old_line_content": "            int retval;",
+          "new_line_content": "        incrRefCount(keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "dictAdd",
+          "old_text": null,
+          "new_text": "dictAdd(c->db->blocking_keys,keys[j],l)",
+          "old_line_content": "        }",
+          "new_line_content": "            retval = dictAdd(c->db->blocking_keys,keys[j],l);",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": null,
+          "new_api": "redisAssert",
+          "old_text": null,
+          "new_text": "redisAssert(retval == DICT_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "            redisAssert(retval == DICT_OK);",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": null,
+          "new_api": "dictGetEntryVal",
+          "old_text": null,
+          "new_text": "dictGetEntryVal(de)",
+          "old_line_content": "    c->flags |= REDIS_BLOCKED;",
+          "new_line_content": "            l = dictGetEntryVal(de);",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "listAddNodeTail",
+          "old_text": null,
+          "new_text": "listAddNodeTail(l,c)",
+          "old_line_content": "}",
+          "new_line_content": "        listAddNodeTail(l,c);",
+          "content_same": false
+        },
+        {
+          "line": 801,
+          "old_api": null,
+          "new_api": "listSearchKey",
+          "old_text": null,
+          "new_text": "listSearchKey(l,c)",
+          "old_line_content": "    }",
+          "new_line_content": "        listDelNode(l,listSearchKey(l,c));",
+          "content_same": false
+        },
+        {
+          "line": 803,
+          "old_api": null,
+          "new_api": "listLength",
+          "old_text": null,
+          "new_text": "listLength(l)",
+          "old_line_content": "    /* Cleanup the client structure */",
+          "new_line_content": "        if (listLength(l) == 0)",
+          "content_same": false
+        },
+        {
+          "line": 805,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(c->bpop.keys[j])",
+          "old_line_content": "    c->bpop.keys = NULL;",
+          "new_line_content": "        decrRefCount(c->bpop.keys[j]);",
+          "content_same": false
+        },
+        {
+          "line": 809,
+          "old_api": null,
+          "new_api": "zfree",
+          "old_text": null,
+          "new_text": "zfree(c->bpop.keys)",
+          "old_line_content": "    c->flags |= REDIS_UNBLOCKED;",
+          "new_line_content": "    zfree(c->bpop.keys);",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": null,
+          "new_api": "listAddNodeTail",
+          "old_text": null,
+          "new_text": "listAddNodeTail(server.unblocked_clients,c)",
+          "old_line_content": " * 'ele' is the element pushed.",
+          "new_line_content": "    listAddNodeTail(server.unblocked_clients,c);",
+          "content_same": false
+        },
+        {
+          "line": 837,
+          "old_api": null,
+          "new_api": "dictFind",
+          "old_text": null,
+          "new_text": "dictFind(c->db->blocking_keys,key)",
+          "old_line_content": "    /* Try to handle the push as long as there are clients waiting for a push.",
+          "new_line_content": "    de = dictFind(c->db->blocking_keys,key);",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": null,
+          "new_api": "dictGetEntryVal",
+          "old_text": null,
+          "new_text": "dictGetEntryVal(de)",
+          "old_line_content": "     * push on \"key\" is deleted by unblockClient() when empty.",
+          "new_line_content": "    clients = dictGetEntryVal(de);",
+          "content_same": false
+        },
+        {
+          "line": 840,
+          "old_api": null,
+          "new_api": "listLength",
+          "old_text": null,
+          "new_text": "listLength(clients)",
+          "old_line_content": "     *",
+          "new_line_content": "    numclients = listLength(clients);",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": null,
+          "new_api": "listFirst",
+          "old_text": null,
+          "new_text": "listFirst(clients)",
+          "old_line_content": "        /* Protect receiver->bpop.target, that will be freed by",
+          "new_line_content": "        ln = listFirst(clients);",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": null,
+          "new_api": "redisAssert",
+          "old_text": null,
+          "new_text": "redisAssert(ln != NULL)",
+          "old_line_content": "         * the next unblockClientWaitingData() call. */",
+          "new_line_content": "        redisAssert(ln != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "incrRefCount",
+          "old_text": null,
+          "new_text": "incrRefCount(dstkey)",
+          "old_line_content": "        if (dstkey == NULL) {",
+          "new_line_content": "        if (dstkey) incrRefCount(dstkey);",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": null,
+          "new_api": "addReplyMultiBulkLen",
+          "old_text": null,
+          "new_text": "addReplyMultiBulkLen(receiver,2)",
+          "old_line_content": "            /* BRPOPLPUSH, note that receiver->db is always equal to c->db. */",
+          "new_line_content": "            addReplyMultiBulkLen(receiver,2);",
+          "content_same": false
+        },
+        {
+          "line": 870,
+          "old_api": null,
+          "new_api": "lookupKeyWrite",
+          "old_text": null,
+          "new_text": "lookupKeyWrite(receiver->db,dstkey)",
+          "old_line_content": "            }",
+          "new_line_content": "            dstobj = lookupKeyWrite(receiver->db,dstkey);",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": null,
+          "new_api": "rpoplpushHandlePush",
+          "old_text": null,
+          "new_text": "rpoplpushHandlePush(c,receiver,dstkey,dstobj,ele)",
+          "old_line_content": "        }",
+          "new_line_content": "                rpoplpushHandlePush(c,receiver,dstkey,dstobj,ele);",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(dstkey)",
+          "old_line_content": "    }",
+          "new_line_content": "                decrRefCount(dstkey);",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(dstkey)",
+          "old_line_content": "}",
+          "new_line_content": "            decrRefCount(dstkey);",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": null,
+          "new_api": "addReplyError",
+          "old_text": null,
+          "new_text": "addReplyError(c,\"timeout is negative\")",
+          "old_line_content": "    *timeout = tval;",
+          "new_line_content": "        addReplyError(c,\"timeout is negative\");",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": null,
+          "new_api": "time",
+          "old_text": null,
+          "new_text": "time(NULL)",
+          "old_line_content": "",
+          "new_line_content": "    if (tval > 0) tval += time(NULL);",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": null,
+          "new_api": "getTimeoutFromObjectOrReply",
+          "old_text": null,
+          "new_text": "getTimeoutFromObjectOrReply(c,c->argv[c->argc-1],&timeout)",
+          "old_line_content": "        if (o != NULL) {",
+          "new_line_content": "    if (getTimeoutFromObjectOrReply(c,c->argv[c->argc-1],&timeout) != REDIS_OK)",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": null,
+          "new_api": "lookupKeyWrite",
+          "old_text": null,
+          "new_text": "lookupKeyWrite(c->db,c->argv[j])",
+          "old_line_content": "            } else {",
+          "new_line_content": "        o = lookupKeyWrite(c->db,c->argv[j]);",
+          "content_same": false
+        },
+        {
+          "line": 914,
+          "old_api": null,
+          "new_api": "addReply",
+          "old_text": null,
+          "new_text": "addReply(c,shared.wrongtypeerr)",
+          "old_line_content": "                     * non-blocking POP operation */",
+          "new_line_content": "                addReply(c,shared.wrongtypeerr);",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": null,
+          "new_api": "listTypeLength",
+          "old_text": null,
+          "new_text": "listTypeLength(o)",
+          "old_line_content": "                    int orig_argc;",
+          "new_line_content": "                if (listTypeLength(o) != 0) {",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": null,
+          "new_api": "addReplyMultiBulkLen",
+          "old_text": null,
+          "new_text": "addReplyMultiBulkLen(c,2)",
+          "old_line_content": "                    /* Fix the client structure with the original stuff */",
+          "new_line_content": "                    addReplyMultiBulkLen(c,2);",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": null,
+          "new_api": "addReplyBulk",
+          "old_text": null,
+          "new_text": "addReplyBulk(c,argv[1])",
+          "old_line_content": "                    c->argv = orig_argv;",
+          "new_line_content": "                    addReplyBulk(c,argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": null,
+          "new_api": "popGenericCommand",
+          "old_text": null,
+          "new_text": "popGenericCommand(c,where)",
+          "old_line_content": "                    c->cmd = orig_cmd;",
+          "new_line_content": "                    popGenericCommand(c,where);",
+          "content_same": false
+        },
+        {
+          "line": 962,
+          "old_api": null,
+          "new_api": "blockForKeys",
+          "old_text": null,
+          "new_text": "blockForKeys(c, c->argv + 1, c->argc - 2, timeout, NULL)",
+          "old_line_content": "}",
+          "new_line_content": "    blockForKeys(c, c->argv + 1, c->argc - 2, timeout, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": null,
+          "new_api": "blockingPopGenericCommand",
+          "old_text": null,
+          "new_text": "blockingPopGenericCommand(c,REDIS_HEAD)",
+          "old_line_content": "}",
+          "new_line_content": "    blockingPopGenericCommand(c,REDIS_HEAD);",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": null,
+          "new_api": "blockingPopGenericCommand",
+          "old_text": null,
+          "new_text": "blockingPopGenericCommand(c,REDIS_TAIL)",
+          "old_line_content": "",
+          "new_line_content": "    blockingPopGenericCommand(c,REDIS_TAIL);",
+          "content_same": false
+        },
+        {
+          "line": 976,
+          "old_api": null,
+          "new_api": "getTimeoutFromObjectOrReply",
+          "old_text": null,
+          "new_text": "getTimeoutFromObjectOrReply(c,c->argv[3],&timeout)",
+          "old_line_content": "    if (key == NULL) {",
+          "new_line_content": "    if (getTimeoutFromObjectOrReply(c,c->argv[3],&timeout) != REDIS_OK)",
+          "content_same": false
+        },
+        {
+          "line": 979,
+          "old_api": null,
+          "new_api": "lookupKeyWrite",
+          "old_text": null,
+          "new_text": "lookupKeyWrite(c->db, c->argv[1])",
+          "old_line_content": "            /* Blocking against an empty list in a multi state",
+          "new_line_content": "    robj *key = lookupKeyWrite(c->db, c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": null,
+          "new_api": "addReply",
+          "old_text": null,
+          "new_text": "addReply(c, shared.nullbulk)",
+          "old_line_content": "    } else {",
+          "new_line_content": "            addReply(c, shared.nullbulk);",
+          "content_same": false
+        },
+        {
+          "line": 989,
+          "old_api": null,
+          "new_api": "blockForKeys",
+          "old_text": null,
+          "new_text": "blockForKeys(c, c->argv + 1, 1, timeout, c->argv[2])",
+          "old_line_content": "        } else {",
+          "new_line_content": "            blockForKeys(c, c->argv + 1, 1, timeout, c->argv[2]);",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": null,
+          "new_api": "listTypeLength",
+          "old_text": null,
+          "new_text": "listTypeLength(key)",
+          "old_line_content": "",
+          "new_line_content": "            redisAssert(listTypeLength(key) > 0);",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": null,
+          "new_api": "rpoplpushCommand",
+          "old_text": null,
+          "new_text": "rpoplpushCommand(c)",
+          "old_line_content": "",
+          "new_line_content": "            rpoplpushCommand(c);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 522,
+          "old_api": "listIndex",
+          "new_api": null,
+          "old_text": "listIndex(o->ptr,start)",
+          "new_text": null,
+          "old_line_content": "        listNode *ln = listIndex(o->ptr,start);",
+          "new_line_content": "        listNode *ln;",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "addReplyBulk",
+          "new_api": null,
+          "old_text": "addReplyBulk(c,ln->value)",
+          "new_text": null,
+          "old_line_content": "            addReplyBulk(c,ln->value);",
+          "new_line_content": "         * starting from tail and going backward, as it is faster. */",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "redisPanic",
+          "new_api": null,
+          "old_text": "redisPanic(\"List encoding is not LINKEDLIST nor ZIPLIST!\")",
+          "new_text": null,
+          "old_line_content": "        redisPanic(\"List encoding is not LINKEDLIST nor ZIPLIST!\");",
+          "new_line_content": "        while(rangelen--) {",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": "atoi",
+          "new_api": null,
+          "old_text": "atoi(c->argv[2]->ptr)",
+          "new_text": null,
+          "old_line_content": "    int start = atoi(c->argv[2]->ptr);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "atoi",
+          "new_api": null,
+          "old_text": "atoi(c->argv[3]->ptr)",
+          "new_text": null,
+          "old_line_content": "    int end = atoi(c->argv[3]->ptr);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "lookupKeyWriteOrReply",
+          "new_api": null,
+          "old_text": "lookupKeyWriteOrReply(c,c->argv[1],shared.ok)",
+          "new_text": null,
+          "old_line_content": "    if ((o = lookupKeyWriteOrReply(c,c->argv[1],shared.ok)) == NULL ||",
+          "new_line_content": "    int llen;",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "checkType",
+          "new_api": null,
+          "old_text": "checkType(c,o,REDIS_LIST)",
+          "new_text": null,
+          "old_line_content": "        checkType(c,o,REDIS_LIST)) return;",
+          "new_line_content": "    int j, ltrim, rtrim;",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "listTypeLength",
+          "new_api": null,
+          "old_text": "listTypeLength(o)",
+          "new_text": null,
+          "old_line_content": "    llen = listTypeLength(o);",
+          "new_line_content": "    list *list;",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": "ziplistDeleteRange",
+          "new_api": null,
+          "old_text": "ziplistDeleteRange(o->ptr,0,ltrim)",
+          "new_text": null,
+          "old_line_content": "        o->ptr = ziplistDeleteRange(o->ptr,0,ltrim);",
+          "new_line_content": "        rtrim = llen-end-1;",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": "ziplistDeleteRange",
+          "new_api": null,
+          "old_text": "ziplistDeleteRange(o->ptr,-rtrim,rtrim)",
+          "new_text": null,
+          "old_line_content": "        o->ptr = ziplistDeleteRange(o->ptr,-rtrim,rtrim);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "listLast",
+          "new_api": null,
+          "old_text": "listLast(list)",
+          "new_text": null,
+          "old_line_content": "            ln = listLast(list);",
+          "new_line_content": "        for (j = 0; j < ltrim; j++) {",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": "redisPanic",
+          "new_api": null,
+          "old_text": "redisPanic(\"Unknown list encoding\")",
+          "new_text": null,
+          "old_line_content": "        redisPanic(\"Unknown list encoding\");",
+          "new_line_content": "        for (j = 0; j < rtrim; j++) {",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    signalModifiedKey(c->db,c->argv[1]);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "atoi",
+          "new_api": null,
+          "old_text": "atoi(c->argv[2]->ptr)",
+          "new_text": null,
+          "old_line_content": "    int toremove = atoi(c->argv[2]->ptr);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": "listTypeInitIterator",
+          "new_api": null,
+          "old_text": "listTypeInitIterator(subject,0,REDIS_TAIL)",
+          "new_text": null,
+          "old_line_content": "        li = listTypeInitIterator(subject,0,REDIS_TAIL);",
+          "new_line_content": "    listTypeIterator *li;",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "listTypeEqual",
+          "new_api": null,
+          "old_text": "listTypeEqual(&entry,obj)",
+          "new_text": null,
+          "old_line_content": "        if (listTypeEqual(&entry,obj)) {",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": "listTypeReleaseIterator",
+          "new_api": null,
+          "old_text": "listTypeReleaseIterator(li)",
+          "new_text": null,
+          "old_line_content": "    listTypeReleaseIterator(li);",
+          "new_line_content": "            server.dirty++;",
+          "content_same": false
+        },
+        {
+          "line": 620,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(obj)",
+          "new_text": null,
+          "old_line_content": "        decrRefCount(obj);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": "dbDelete",
+          "new_api": null,
+          "old_text": "dbDelete(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    if (listTypeLength(subject) == 0) dbDelete(c->db,c->argv[1]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "addReplyLongLong",
+          "new_api": null,
+          "old_text": "addReplyLongLong(c,removed)",
+          "new_text": null,
+          "old_line_content": "    addReplyLongLong(c,removed);",
+          "new_line_content": "    /* Clean up raw encoded object */",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    if (removed) signalModifiedKey(c->db,c->argv[1]);",
+          "new_line_content": "    if (subject->encoding == REDIS_ENCODING_ZIPLIST)",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": "handleClientsWaitingListPush",
+          "new_api": null,
+          "old_text": "handleClientsWaitingListPush(origclient,dstkey,value)",
+          "new_text": null,
+          "old_line_content": "    if (!handleClientsWaitingListPush(origclient,dstkey,value)) {",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 649,
+          "old_api": "createZiplistObject",
+          "new_api": null,
+          "old_text": "createZiplistObject()",
+          "new_text": null,
+          "old_line_content": "            dstobj = createZiplistObject();",
+          "new_line_content": "    robj *aux;",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": "dbAdd",
+          "new_api": null,
+          "old_text": "dbAdd(c->db,dstkey,dstobj)",
+          "new_text": null,
+          "old_line_content": "            dbAdd(c->db,dstkey,dstobj);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 652,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c->db,dstkey)",
+          "new_text": null,
+          "old_line_content": "            signalModifiedKey(c->db,dstkey);",
+          "new_line_content": "        /* Create the list if the key does not exist */",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": "createStringObject",
+          "new_api": null,
+          "old_text": "createStringObject(\"LPUSH\",5)",
+          "new_text": null,
+          "old_line_content": "            aux = createStringObject(\"LPUSH\",5);",
+          "new_line_content": "         *",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": "rewriteClientCommandVector",
+          "new_api": null,
+          "old_text": "rewriteClientCommandVector(origclient,3,aux,dstkey,value)",
+          "new_text": null,
+          "old_line_content": "            rewriteClientCommandVector(origclient,3,aux,dstkey,value);",
+          "new_line_content": "         * If this is called directly by RPOPLPUSH (either directly",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(aux)",
+          "new_text": null,
+          "old_line_content": "            decrRefCount(aux);",
+          "new_line_content": "         * or via a BRPOPLPUSH where the popped list exists)",
+          "content_same": false
+        },
+        {
+          "line": 671,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(aux)",
+          "new_text": null,
+          "old_line_content": "            decrRefCount(aux);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": "addReplyBulk",
+          "new_api": null,
+          "old_text": "addReplyBulk(c,value)",
+          "new_text": null,
+          "old_line_content": "    addReplyBulk(c,value);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": "checkType",
+          "new_api": null,
+          "old_text": "checkType(c,sobj,REDIS_LIST)",
+          "new_text": null,
+          "old_line_content": "        checkType(c,sobj,REDIS_LIST)) return;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": "listTypeLength",
+          "new_api": null,
+          "old_text": "listTypeLength(sobj)",
+          "new_text": null,
+          "old_line_content": "    if (listTypeLength(sobj) == 0) {",
+          "new_line_content": "void rpoplpushCommand(redisClient *c) {",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c,shared.nullbulk)",
+          "new_text": null,
+          "old_line_content": "        addReply(c,shared.nullbulk);",
+          "new_line_content": "    robj *sobj, *value;",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "listTypePop",
+          "new_api": null,
+          "old_text": "listTypePop(sobj,REDIS_TAIL)",
+          "new_text": null,
+          "old_line_content": "        value = listTypePop(sobj,REDIS_TAIL);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "incrRefCount",
+          "new_api": null,
+          "old_text": "incrRefCount(touchedkey)",
+          "new_text": null,
+          "old_line_content": "        incrRefCount(touchedkey);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(value)",
+          "new_text": null,
+          "old_line_content": "        decrRefCount(value);",
+          "new_line_content": "         * may change the client command argument vector. */",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": "dbDelete",
+          "new_api": null,
+          "old_text": "dbDelete(c->db,touchedkey)",
+          "new_text": null,
+          "old_line_content": "        if (listTypeLength(sobj) == 0) dbDelete(c->db,touchedkey);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c->db,touchedkey)",
+          "new_text": null,
+          "old_line_content": "        signalModifiedKey(c->db,touchedkey);",
+          "new_line_content": "        /* listTypePop returns an object with its refcount incremented */",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": "zmalloc",
+          "new_api": null,
+          "old_text": "zmalloc(sizeof(robj*)*numkeys)",
+          "new_text": null,
+          "old_line_content": "    c->bpop.keys = zmalloc(sizeof(robj*)*numkeys);",
+          "new_line_content": "void blockForKeys(redisClient *c, robj **keys, int numkeys, time_t timeout, robj *target) {",
+          "content_same": false
+        },
+        {
+          "line": 755,
+          "old_api": "incrRefCount",
+          "new_api": null,
+          "old_text": "incrRefCount(target)",
+          "new_text": null,
+          "old_line_content": "        incrRefCount(target);",
+          "new_line_content": "    c->bpop.count = numkeys;",
+          "content_same": false
+        },
+        {
+          "line": 761,
+          "old_api": "incrRefCount",
+          "new_api": null,
+          "old_text": "incrRefCount(keys[j])",
+          "new_text": null,
+          "old_line_content": "        incrRefCount(keys[j]);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": "dictFind",
+          "new_api": null,
+          "old_text": "dictFind(c->db->blocking_keys,keys[j])",
+          "new_text": null,
+          "old_line_content": "        de = dictFind(c->db->blocking_keys,keys[j]);",
+          "new_line_content": "        /* Add the key in the client structure, to map clients -> keys */",
+          "content_same": false
+        },
+        {
+          "line": 770,
+          "old_api": "dictAdd",
+          "new_api": null,
+          "old_text": "dictAdd(c->db->blocking_keys,keys[j],l)",
+          "new_text": null,
+          "old_line_content": "            retval = dictAdd(c->db->blocking_keys,keys[j],l);",
+          "new_line_content": "        if (de == NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 771,
+          "old_api": "incrRefCount",
+          "new_api": null,
+          "old_text": "incrRefCount(keys[j])",
+          "new_text": null,
+          "old_line_content": "            incrRefCount(keys[j]);",
+          "new_line_content": "            int retval;",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "redisAssert",
+          "new_api": null,
+          "old_text": "redisAssert(retval == DICT_OK)",
+          "new_text": null,
+          "old_line_content": "            redisAssert(retval == DICT_OK);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "redisAssert",
+          "new_api": null,
+          "old_text": "redisAssert(c->bpop.keys != NULL)",
+          "new_text": null,
+          "old_line_content": "    redisAssert(c->bpop.keys != NULL);",
+          "new_line_content": "void unblockClientWaitingData(redisClient *c) {",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": "dictFind",
+          "new_api": null,
+          "old_text": "dictFind(c->db->blocking_keys,c->bpop.keys[j])",
+          "new_text": null,
+          "old_line_content": "        de = dictFind(c->db->blocking_keys,c->bpop.keys[j]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 795,
+          "old_api": "dictGetEntryVal",
+          "new_api": null,
+          "old_text": "dictGetEntryVal(de)",
+          "new_text": null,
+          "old_line_content": "        l = dictGetEntryVal(de);",
+          "new_line_content": "    /* The client may wait for multiple keys, so unblock it for every key. */",
+          "content_same": false
+        },
+        {
+          "line": 796,
+          "old_api": "listSearchKey",
+          "new_api": null,
+          "old_text": "listSearchKey(l,c)",
+          "new_text": null,
+          "old_line_content": "        listDelNode(l,listSearchKey(l,c));",
+          "new_line_content": "    for (j = 0; j < c->bpop.count; j++) {",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(c->bpop.target)",
+          "new_text": null,
+          "old_line_content": "    if (c->bpop.target) decrRefCount(c->bpop.target);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "dictFind",
+          "new_api": null,
+          "old_text": "dictFind(c->db->blocking_keys,key)",
+          "new_text": null,
+          "old_line_content": "    de = dictFind(c->db->blocking_keys,key);",
+          "new_line_content": "    int numclients;",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": "dictGetEntryVal",
+          "new_api": null,
+          "old_text": "dictGetEntryVal(de)",
+          "new_text": null,
+          "old_line_content": "    clients = dictGetEntryVal(de);",
+          "new_line_content": "    listNode *ln;",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": "listLength",
+          "new_api": null,
+          "old_text": "listLength(clients)",
+          "new_text": null,
+          "old_line_content": "    numclients = listLength(clients);",
+          "new_line_content": "    robj *dstkey, *dstobj;",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": "listFirst",
+          "new_api": null,
+          "old_text": "listFirst(clients)",
+          "new_text": null,
+          "old_line_content": "        ln = listFirst(clients);",
+          "new_line_content": "     *",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": "redisAssert",
+          "new_api": null,
+          "old_text": "redisAssert(ln != NULL)",
+          "new_text": null,
+          "old_line_content": "        redisAssert(ln != NULL);",
+          "new_line_content": "     * This loop will have more than 1 iteration when there is a BRPOPLPUSH",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": "incrRefCount",
+          "new_api": null,
+          "old_text": "incrRefCount(dstkey)",
+          "new_text": null,
+          "old_line_content": "        if (dstkey) incrRefCount(dstkey);",
+          "new_line_content": "        receiver = ln->value;",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "unblockClientWaitingData",
+          "new_api": null,
+          "old_text": "unblockClientWaitingData(receiver)",
+          "new_text": null,
+          "old_line_content": "        unblockClientWaitingData(receiver);",
+          "new_line_content": "        /* Protect receiver->bpop.target, that will be freed by",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": "addReplyMultiBulkLen",
+          "new_api": null,
+          "old_text": "addReplyMultiBulkLen(receiver,2)",
+          "new_text": null,
+          "old_line_content": "            addReplyMultiBulkLen(receiver,2);",
+          "new_line_content": "        /* This should remove the first element of the \"clients\" list. */",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": "addReplyBulk",
+          "new_api": null,
+          "old_text": "addReplyBulk(receiver,ele)",
+          "new_text": null,
+          "old_line_content": "            addReplyBulk(receiver,ele);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": "rpoplpushHandlePush",
+          "new_api": null,
+          "old_text": "rpoplpushHandlePush(c,receiver,dstkey,dstobj,ele)",
+          "new_text": null,
+          "old_line_content": "                rpoplpushHandlePush(c,receiver,dstkey,dstobj,ele);",
+          "new_line_content": "            return 1; /* Serve just the first client as in B[RL]POP semantics */",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "decrRefCount",
+          "new_api": null,
+          "old_text": "decrRefCount(dstkey)",
+          "new_text": null,
+          "old_line_content": "                decrRefCount(dstkey);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 881,
+          "old_api": "getLongFromObjectOrReply",
+          "new_api": null,
+          "old_text": "getLongFromObjectOrReply(c,object,&tval,\n        \"timeout is not an integer or out of range\")",
+          "new_text": null,
+          "old_line_content": "    if (getLongFromObjectOrReply(c,object,&tval,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": "time",
+          "new_api": null,
+          "old_text": "time(NULL)",
+          "new_text": null,
+          "old_line_content": "    if (tval > 0) tval += time(NULL);",
+          "new_line_content": "    if (tval < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 902,
+          "old_api": "getTimeoutFromObjectOrReply",
+          "new_api": null,
+          "old_text": "getTimeoutFromObjectOrReply(c,c->argv[c->argc-1],&timeout)",
+          "new_text": null,
+          "old_line_content": "    if (getTimeoutFromObjectOrReply(c,c->argv[c->argc-1],&timeout) != REDIS_OK)",
+          "new_line_content": "void blockingPopGenericCommand(redisClient *c, int where) {",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": "lookupKeyWrite",
+          "new_api": null,
+          "old_text": "lookupKeyWrite(c->db,c->argv[j])",
+          "new_text": null,
+          "old_line_content": "        o = lookupKeyWrite(c->db,c->argv[j]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c,shared.wrongtypeerr)",
+          "new_text": null,
+          "old_line_content": "                addReply(c,shared.wrongtypeerr);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": "listTypeLength",
+          "new_api": null,
+          "old_text": "listTypeLength(o)",
+          "new_text": null,
+          "old_line_content": "                if (listTypeLength(o) != 0) {",
+          "new_line_content": "        if (o != NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": "addReplyMultiBulkLen",
+          "new_api": null,
+          "old_text": "addReplyMultiBulkLen(c,2)",
+          "new_text": null,
+          "old_line_content": "                    addReplyMultiBulkLen(c,2);",
+          "new_line_content": "                    /* Also the return value is different, we need to output",
+          "content_same": false
+        },
+        {
+          "line": 934,
+          "old_api": "addReplyBulk",
+          "new_api": null,
+          "old_text": "addReplyBulk(c,argv[1])",
+          "new_text": null,
+          "old_line_content": "                    addReplyBulk(c,argv[1]);",
+          "new_line_content": "                     * the multi bulk reply header and the key name. The",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": "popGenericCommand",
+          "new_api": null,
+          "old_text": "popGenericCommand(c,where)",
+          "new_text": null,
+          "old_line_content": "                    popGenericCommand(c,where);",
+          "new_line_content": "                     * for us. If this souds like an hack to you it's just",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c,shared.nullmultibulk)",
+          "new_text": null,
+          "old_line_content": "        addReply(c,shared.nullmultibulk);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 961,
+          "old_api": "blockingPopGenericCommand",
+          "new_api": null,
+          "old_text": "blockingPopGenericCommand(c,REDIS_HEAD)",
+          "new_text": null,
+          "old_line_content": "    blockingPopGenericCommand(c,REDIS_HEAD);",
+          "new_line_content": "    /* If the list is empty or the key does not exists we must block */",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "blockingPopGenericCommand",
+          "new_api": null,
+          "old_text": "blockingPopGenericCommand(c,REDIS_TAIL)",
+          "new_text": null,
+          "old_line_content": "    blockingPopGenericCommand(c,REDIS_TAIL);",
+          "new_line_content": "void blpopCommand(redisClient *c) {",
+          "content_same": false
+        },
+        {
+          "line": 971,
+          "old_api": "getTimeoutFromObjectOrReply",
+          "new_api": null,
+          "old_text": "getTimeoutFromObjectOrReply(c,c->argv[3],&timeout)",
+          "new_text": null,
+          "old_line_content": "    if (getTimeoutFromObjectOrReply(c,c->argv[3],&timeout) != REDIS_OK)",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": "lookupKeyWrite",
+          "new_api": null,
+          "old_text": "lookupKeyWrite(c->db, c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    robj *key = lookupKeyWrite(c->db, c->argv[1]);",
+          "new_line_content": "    time_t timeout;",
+          "content_same": false
+        },
+        {
+          "line": 981,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c, shared.nullbulk)",
+          "new_text": null,
+          "old_line_content": "            addReply(c, shared.nullbulk);",
+          "new_line_content": "    if (key == NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": "blockForKeys",
+          "new_api": null,
+          "old_text": "blockForKeys(c, c->argv + 1, 1, timeout, c->argv[2])",
+          "new_text": null,
+          "old_line_content": "            blockForKeys(c, c->argv + 1, 1, timeout, c->argv[2]);",
+          "new_line_content": "            /* Blocking against an empty list in a multi state",
+          "content_same": false
+        },
+        {
+          "line": 988,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c, shared.wrongtypeerr)",
+          "new_text": null,
+          "old_line_content": "            addReply(c, shared.wrongtypeerr);",
+          "new_line_content": "            /* The list is empty and the client blocks. */",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": "rpoplpushCommand",
+          "new_api": null,
+          "old_text": "rpoplpushCommand(c)",
+          "new_text": null,
+          "old_line_content": "            rpoplpushCommand(c);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 34,
+      "total_additions": 79,
+      "total_deletions": 79,
+      "total_api_changes": 192
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 192,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          523,
+          524,
+          526
+        ]
+      }
+    },
+    "api_calls_before": 301,
+    "api_calls_after": 301,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 1,
+      "total_diff_lines": 19
+    }
+  }
+}

@@ -1,0 +1,2852 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/netdata/modified_file/2a7c09257be1ea5aafede93c32b162d146cfc631",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/netdata/modified_file/2a7c09257be1ea5aafede93c32b162d146cfc631/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/netdata/modified_file/2a7c09257be1ea5aafede93c32b162d146cfc631/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/netdata/modified_file/2a7c09257be1ea5aafede93c32b162d146cfc631/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 474,
+          "old_api": "sqlite3_close_v2",
+          "new_api": "db_execute",
+          "old_text": "sqlite3_close_v2(db_meta)",
+          "new_text": "db_execute(db_meta, \"PRAGMA analysis_limit=1000\")",
+          "old_line_content": "    rc = sqlite3_close_v2(db_meta);",
+          "new_line_content": "    (void) db_execute(db_meta, \"PRAGMA analysis_limit=1000\");",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "unlikely",
+          "new_api": "db_execute",
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": "db_execute(db_meta, \"PRAGMA optimize\")",
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK))",
+          "new_line_content": "    (void) db_execute(db_meta, \"PRAGMA optimize\");",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": "error_report",
+          "new_api": "likely",
+          "old_text": "error_report(\"Failed to execute %s, rc = %d\", sql, rc)",
+          "new_text": "likely(rc == SQLITE_DONE)",
+          "old_line_content": "        error_report(\"Failed to execute %s, rc = %d\", sql, rc);",
+          "new_line_content": "    if (likely(rc == SQLITE_DONE))",
+          "content_same": false
+        },
+        {
+          "line": 503,
+          "old_api": "sqlite3_finalize",
+          "new_api": "error_report",
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": "error_report(\"Failed to execute %s, rc = %d\", sql, rc)",
+          "old_line_content": "    rc = sqlite3_finalize(res);",
+          "new_line_content": "        error_report(\"Failed to execute %s, rc = %d\", sql, rc);",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": "sqlite3_free",
+          "new_api": "sqlite3_exec_monitored",
+          "old_text": "sqlite3_free(err_msg)",
+          "new_text": "sqlite3_exec_monitored(db, cmd, 0, 0, &err_msg)",
+          "old_line_content": "            sqlite3_free(err_msg);",
+          "new_line_content": "        rc = sqlite3_exec_monitored(db, cmd, 0, 0, &err_msg);",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "usleep",
+          "new_api": "error_report",
+          "old_text": "usleep(SQLITE_INSERT_DELAY * USEC_PER_MS)",
+          "new_text": "error_report(\"Failed to execute '%s', rc = %d (%s) -- attempt %d\", cmd, rc, err_msg, cnt)",
+          "old_line_content": "                usleep(SQLITE_INSERT_DELAY * USEC_PER_MS);",
+          "new_line_content": "            error_report(\"Failed to execute '%s', rc = %d (%s) -- attempt %d\", cmd, rc, err_msg, cnt);",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": "__atomic_store_n",
+          "new_api": "unlikely",
+          "old_text": "__atomic_store_n(&host->node_id, t, __ATOMIC_RELAXED)",
+          "new_text": "unlikely(!host->node_id)",
+          "old_line_content": "        __atomic_store_n(&host->node_id, t, __ATOMIC_RELAXED);",
+          "new_line_content": "    if (unlikely(!host->node_id)) {",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": "uuid_copy",
+          "new_api": "__atomic_store_n",
+          "old_text": "uuid_copy(*(host->node_id), *node_id)",
+          "new_text": "__atomic_store_n(&host->node_id, t, __ATOMIC_RELAXED)",
+          "old_line_content": "        uuid_copy(*(host->node_id), *node_id);",
+          "new_line_content": "        __atomic_store_n(&host->node_id, t, __ATOMIC_RELAXED);",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "unlikely",
+          "new_api": "uuid_copy",
+          "old_text": "unlikely(!wc)",
+          "new_text": "uuid_copy(*(host->node_id), *node_id)",
+          "old_line_content": "    if (unlikely(!wc))",
+          "new_line_content": "        uuid_copy(*(host->node_id), *node_id);",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": "uuid_unparse_lower",
+          "new_api": "unlikely",
+          "old_text": "uuid_unparse_lower(*node_id, wc->node_id)",
+          "new_text": "unlikely(!wc)",
+          "old_line_content": "        uuid_unparse_lower(*node_id, wc->node_id);",
+          "new_line_content": "    if (unlikely(!wc))",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "likely",
+          "new_api": "uuid_unparse_lower",
+          "old_text": "likely(host)",
+          "new_text": "uuid_unparse_lower(*host_id, host_guid)",
+          "old_line_content": "    if (likely(host))",
+          "new_line_content": "    uuid_unparse_lower(*host_id, host_guid);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "set_host_node_id",
+          "new_api": "rrd_wrlock",
+          "old_text": "set_host_node_id(host, node_id)",
+          "new_text": "rrd_wrlock()",
+          "old_line_content": "        set_host_node_id(host, node_id);",
+          "new_line_content": "    rrd_wrlock();",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "rrd_unlock",
+          "new_api": "rrdhost_find_by_guid",
+          "old_text": "rrd_unlock()",
+          "new_text": "rrdhost_find_by_guid(host_guid)",
+          "old_line_content": "    rrd_unlock();",
+          "new_line_content": "    host = rrdhost_find_by_guid(host_guid);",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": "unlikely",
+          "new_api": "set_host_node_id",
+          "old_text": "unlikely(!db_meta)",
+          "new_text": "set_host_node_id(host, node_id)",
+          "old_line_content": "    if (unlikely(!db_meta)) {",
+          "new_line_content": "        set_host_node_id(host, node_id);",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": "sqlite3_changes",
+          "new_api": "execute_insert",
+          "old_text": "sqlite3_changes(db_meta)",
+          "new_text": "execute_insert(res)",
+          "old_line_content": "    rc = sqlite3_changes(db_meta);",
+          "new_line_content": "    rc = execute_insert(res);",
+          "content_same": false
+        },
+        {
+          "line": 608,
+          "old_api": "sqlite3_finalize",
+          "new_api": "sqlite3_changes",
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": "sqlite3_changes(db_meta)",
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "    rc = sqlite3_changes(db_meta);",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "sqlite3_finalize",
+          "new_api": "sqlite3_column_blob",
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": "sqlite3_column_blob(res, 0)",
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "        uuid_copy(*node_id, *((uuid_t *) sqlite3_column_blob(res, 0)));",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "error_report",
+          "new_api": "sqlite3_bind_null",
+          "old_text": "error_report(\"Failed to bind claim_id parameter to invalidate node instance information\")",
+          "new_text": "sqlite3_bind_null(res, 2)",
+          "old_line_content": "        error_report(\"Failed to bind claim_id parameter to invalidate node instance information\");",
+          "new_line_content": "        rc = sqlite3_bind_null(res, 2);",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "sqlite3_finalize",
+          "new_api": "error_report",
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": "error_report(\"Failed to invalidate node instance information, rc = %d\", rc)",
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "        error_report(\"Failed to invalidate node instance information, rc = %d\", rc);",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "sqlite3_reset",
+          "new_api": "sqlite3_step_monitored",
+          "old_text": "sqlite3_reset(res)",
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "    if (sqlite3_reset(res) != SQLITE_OK) {",
+          "new_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW)",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": "callocz",
+          "new_api": "error_report",
+          "old_text": "callocz(row + 1, sizeof(*node_list))",
+          "new_text": "error_report(\"Failed to reset the prepared statement while fetching node instance information\")",
+          "old_line_content": "    node_list = callocz(row + 1, sizeof(*node_list));",
+          "new_line_content": "        error_report(\"Failed to reset the prepared statement while fetching node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": "sqlite3_column_blob",
+          "new_api": "rrd_rdlock",
+          "old_text": "sqlite3_column_blob(res, 0)",
+          "new_text": "rrd_rdlock()",
+          "old_line_content": "            uuid_copy(node_list[row].node_id, *((uuid_t *)sqlite3_column_blob(res, 0)));",
+          "new_line_content": "    rrd_rdlock();",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": "sqlite3_column_bytes",
+          "new_api": "sqlite3_step_monitored",
+          "old_text": "sqlite3_column_bytes(res, 1)",
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "        if (sqlite3_column_bytes(res, 1) == sizeof(uuid_t)) {",
+          "new_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "sqlite3_column_blob",
+          "new_api": "sqlite3_column_bytes",
+          "old_text": "sqlite3_column_blob(res, 1)",
+          "new_text": "sqlite3_column_bytes(res, 0)",
+          "old_line_content": "            uuid_t *host_id = (uuid_t *)sqlite3_column_blob(res, 1);",
+          "new_line_content": "        if (sqlite3_column_bytes(res, 0) == sizeof(uuid_t))",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "uuid_unparse_lower",
+          "new_api": "sqlite3_column_blob",
+          "old_text": "uuid_unparse_lower(*host_id, host_guid)",
+          "new_text": "sqlite3_column_blob(res, 0)",
+          "old_line_content": "            uuid_unparse_lower(*host_id, host_guid);",
+          "new_line_content": "            uuid_copy(node_list[row].node_id, *((uuid_t *)sqlite3_column_blob(res, 0)));",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": "rrdhost_find_by_guid",
+          "new_api": "sqlite3_column_bytes",
+          "old_text": "rrdhost_find_by_guid(host_guid)",
+          "new_text": "sqlite3_column_bytes(res, 1)",
+          "old_line_content": "            RRDHOST *host = rrdhost_find_by_guid(host_guid);",
+          "new_line_content": "        if (sqlite3_column_bytes(res, 1) == sizeof(uuid_t)) {",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "rrdhost_flag_check",
+          "new_api": "rrdhost_find_by_guid",
+          "old_text": "rrdhost_flag_check(host, RRDHOST_FLAG_PENDING_CONTEXT_LOAD)",
+          "new_text": "rrdhost_find_by_guid(host_guid)",
+          "old_line_content": "            if (rrdhost_flag_check(host, RRDHOST_FLAG_PENDING_CONTEXT_LOAD)) {",
+          "new_line_content": "            RRDHOST *host = rrdhost_find_by_guid(host_guid);",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": "uuid_copy",
+          "new_api": "rrdhost_hostname",
+          "old_text": "uuid_copy(node_list[row].host_id, *host_id)",
+          "new_text": "rrdhost_hostname(host)",
+          "old_line_content": "            uuid_copy(node_list[row].host_id, *host_id);",
+          "new_line_content": "                netdata_log_info(\"ACLK: 'host:%s' skipping get node list because context is initializing\", rrdhost_hostname(host));",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "rrdhost_flag_check",
+          "new_api": "uuid_copy",
+          "old_text": "rrdhost_flag_check(host, RRDHOST_FLAG_ORPHAN)",
+          "new_text": "uuid_copy(node_list[row].host_id, *host_id)",
+          "old_line_content": "                                            || !(rrdhost_flag_check(host, RRDHOST_FLAG_ORPHAN)))) ? 1 : 0;",
+          "new_line_content": "            uuid_copy(node_list[row].host_id, *host_id);",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": "sqlite3_finalize",
+          "new_api": "rrd_unlock",
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": "rrd_unlock()",
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "    rrd_unlock();",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": "sqlite3_column_blob",
+          "new_api": "sqlite3_step_monitored",
+          "old_text": "sqlite3_column_blob(res, 0)",
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "            set_host_node_id(host, (uuid_t *)sqlite3_column_blob(res, 0));",
+          "new_line_content": "    rc = sqlite3_step_monitored(res);",
+          "content_same": false
+        },
+        {
+          "line": 795,
+          "old_api": "set_host_node_id",
+          "new_api": "sqlite3_column_bytes",
+          "old_text": "set_host_node_id(host, NULL)",
+          "new_text": "sqlite3_column_bytes(res, 0)",
+          "old_line_content": "            set_host_node_id(host, NULL);",
+          "new_line_content": "        if (likely(sqlite3_column_bytes(res, 0) == sizeof(uuid_t)))",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": "sqlite3_column_int",
+          "new_api": "rrdlabels_create",
+          "old_text": "sqlite3_column_int(res, 2)",
+          "new_text": "rrdlabels_create()",
+          "old_line_content": "        rrdlabels_add(labels, (const char *)sqlite3_column_text(res, 0), (const char *)sqlite3_column_text(res, 1), sqlite3_column_int(res, 2));",
+          "new_line_content": "    labels = rrdlabels_create();",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": "sqlite3_bind_null",
+          "new_api": "sqlite3_bind_text",
+          "old_text": "sqlite3_bind_null(res, position)",
+          "new_text": "sqlite3_bind_text(res, position, text, -1, SQLITE_STATIC)",
+          "old_line_content": "    return sqlite3_bind_null(res, position);",
+          "new_line_content": "        return sqlite3_bind_text(res, position, text, -1, SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 885,
+          "old_api": "netdata_thread_disable_cancelability",
+          "new_api": "unlikely",
+          "old_text": "netdata_thread_disable_cancelability()",
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "    netdata_thread_disable_cancelability();",
+          "new_line_content": "    if (unlikely(!db_meta))",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 522,
+          "old_api": null,
+          "new_api": "sqlite3_free",
+          "old_text": null,
+          "new_text": "sqlite3_free(err_msg)",
+          "old_line_content": "            }",
+          "new_line_content": "            sqlite3_free(err_msg);",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": null,
+          "new_api": "likely",
+          "old_text": null,
+          "new_text": "likely(rc == SQLITE_BUSY || rc == SQLITE_LOCKED)",
+          "old_line_content": "            else",
+          "new_line_content": "            if (likely(rc == SQLITE_BUSY || rc == SQLITE_LOCKED)) {",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": null,
+          "new_api": "usleep",
+          "old_text": null,
+          "new_text": "usleep(SQLITE_INSERT_DELAY * USEC_PER_MS)",
+          "old_line_content": "                break;",
+          "new_line_content": "                usleep(SQLITE_INSERT_DELAY * USEC_PER_MS);",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!node_id)",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (unlikely(!node_id)) {",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": null,
+          "new_api": "freez",
+          "old_text": null,
+          "new_text": "freez(host->node_id)",
+          "old_line_content": "    }",
+          "new_line_content": "        freez(host->node_id);",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "__atomic_store_n",
+          "old_text": null,
+          "new_text": "__atomic_store_n(&host->node_id, NULL, __ATOMIC_RELAXED)",
+          "old_line_content": "",
+          "new_line_content": "        __atomic_store_n(&host->node_id, NULL, __ATOMIC_RELAXED);",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": null,
+          "new_api": "mallocz",
+          "old_text": null,
+          "new_text": "mallocz(sizeof(*host->node_id))",
+          "old_line_content": "    }",
+          "new_line_content": "        uuid_t *t = mallocz(sizeof(*host->node_id));",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": null,
+          "new_api": "uuid_copy",
+          "old_text": null,
+          "new_text": "uuid_copy(*t, *node_id)",
+          "old_line_content": "    else {",
+          "new_line_content": "        uuid_copy(*t, *node_id);",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": null,
+          "new_api": "sql_create_aclk_table",
+          "old_text": null,
+          "new_text": "sql_create_aclk_table(host, &host->host_uuid, node_id)",
+          "old_line_content": "}",
+          "new_line_content": "        sql_create_aclk_table(host, &host->host_uuid, node_id);",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": null,
+          "new_api": "uuid_unparse_lower",
+          "old_text": null,
+          "new_text": "uuid_unparse_lower(*node_id, wc->node_id)",
+          "old_line_content": "#define SQL_UPDATE_NODE_ID  \"update node_instance set node_id = @node_id where host_id = @host_id;\"",
+          "new_line_content": "        uuid_unparse_lower(*node_id, wc->node_id);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "likely",
+          "old_text": null,
+          "new_text": "likely(host)",
+          "old_line_content": "",
+          "new_line_content": "    if (likely(host))",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": null,
+          "new_api": "rrd_unlock",
+          "old_text": null,
+          "new_text": "rrd_unlock()",
+          "old_line_content": "        if (default_rrd_memory_mode == RRD_MEMORY_MODE_DBENGINE)",
+          "new_line_content": "    rrd_unlock();",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    if (unlikely(!db_meta)) {",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Database has not been initialized\")",
+          "old_line_content": "",
+          "new_line_content": "            error_report(\"Database has not been initialized\");",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SQL_UPDATE_NODE_ID, -1, &res, 0)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_UPDATE_NODE_ID, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to store node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to store node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, node_id, sizeof(*node_id), SQLITE_STATIC)",
+          "old_line_content": "        goto failed;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, node_id, sizeof(*node_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host_id parameter to store node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host_id parameter to store node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 2, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "old_line_content": "        goto failed;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 2, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 600,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host_id parameter to store node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host_id parameter to store node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 606,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_DONE)",
+          "old_line_content": "",
+          "new_line_content": "    if (unlikely(rc != SQLITE_DONE))",
+          "content_same": false
+        },
+        {
+          "line": 607,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to store node instance information, rc = %d\", rc)",
+          "old_line_content": "failed:",
+          "new_line_content": "        error_report(\"Failed to store node instance information, rc = %d\", rc);",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "    return rc - 1;",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when storing node instance information\")",
+          "old_line_content": "}",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when storing node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    if (unlikely(!db_meta)) {",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Database has not been initialized\")",
+          "old_line_content": "",
+          "new_line_content": "            error_report(\"Database has not been initialized\");",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SQL_SELECT_NODE_ID, -1, &res, 0)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_SELECT_NODE_ID, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 632,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to select node instance information for a host\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to select node instance information for a host\");",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "old_line_content": "        goto failed;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host_id parameter to select node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host_id parameter to select node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 642,
+          "old_api": null,
+          "new_api": "sqlite3_step_monitored",
+          "old_text": null,
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "",
+          "new_line_content": "    rc = sqlite3_step_monitored(res);",
+          "content_same": false
+        },
+        {
+          "line": 643,
+          "old_api": null,
+          "new_api": "likely",
+          "old_text": null,
+          "new_text": "likely(rc == SQLITE_ROW && node_id)",
+          "old_line_content": "failed:",
+          "new_line_content": "    if (likely(rc == SQLITE_ROW && node_id))",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "    return (rc == SQLITE_ROW) ? 0 : -1;",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when selecting node instance information\")",
+          "old_line_content": "}",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when selecting node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 661,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (unlikely(!db_meta)) {",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Database has not been initialized\")",
+          "old_line_content": "",
+          "new_line_content": "            error_report(\"Database has not been initialized\");",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SQL_INVALIDATE_NODE_INSTANCES, -1, &res, 0)",
+          "old_line_content": "        return;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_INVALIDATE_NODE_INSTANCES, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to invalidate node instance ids\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to invalidate node instance ids\");",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "old_line_content": "        goto failed;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 674,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host_id parameter to invalidate node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host_id parameter to invalidate node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 2, claim_id, sizeof(*claim_id), SQLITE_STATIC)",
+          "old_line_content": "",
+          "new_line_content": "        rc = sqlite3_bind_blob(res, 2, claim_id, sizeof(*claim_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind claim_id parameter to invalidate node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind claim_id parameter to invalidate node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "execute_insert",
+          "old_text": null,
+          "new_text": "execute_insert(res)",
+          "old_line_content": "",
+          "new_line_content": "    rc = execute_insert(res);",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_DONE)",
+          "old_line_content": "failed:",
+          "new_line_content": "    if (unlikely(rc != SQLITE_DONE))",
+          "content_same": false
+        },
+        {
+          "line": 694,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when invalidating node instance information\")",
+          "old_line_content": "#define SQL_GET_NODE_INSTANCE_LIST \"SELECT ni.node_id, ni.host_id, h.hostname \" \\",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when invalidating node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    if (unlikely(!db_meta)) {",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Database has not been initialized\")",
+          "old_line_content": "",
+          "new_line_content": "            error_report(\"Database has not been initialized\");",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SQL_GET_NODE_INSTANCE_LIST, -1, &res, 0)",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_GET_NODE_INSTANCE_LIST, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    };",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to get node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to get node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 724,
+          "old_api": null,
+          "new_api": "sqlite3_reset",
+          "old_text": null,
+          "new_text": "sqlite3_reset(res)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (sqlite3_reset(res) != SQLITE_OK) {",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": null,
+          "new_api": "callocz",
+          "old_text": null,
+          "new_text": "callocz(row + 1, sizeof(*node_list))",
+          "old_line_content": "    // TODO: Check to remove lock",
+          "new_line_content": "    node_list = callocz(row + 1, sizeof(*node_list));",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": null,
+          "new_api": "sqlite3_column_blob",
+          "old_text": null,
+          "new_text": "sqlite3_column_blob(res, 1)",
+          "old_line_content": "            if (!host)",
+          "new_line_content": "            uuid_t *host_id = (uuid_t *)sqlite3_column_blob(res, 1);",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "uuid_unparse_lower",
+          "old_text": null,
+          "new_text": "uuid_unparse_lower(*host_id, host_guid)",
+          "old_line_content": "                continue;",
+          "new_line_content": "            uuid_unparse_lower(*host_id, host_guid);",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": null,
+          "new_api": "rrdhost_flag_check",
+          "old_text": null,
+          "new_text": "rrdhost_flag_check(host, RRDHOST_FLAG_PENDING_CONTEXT_LOAD)",
+          "old_line_content": "            }",
+          "new_line_content": "            if (rrdhost_flag_check(host, RRDHOST_FLAG_PENDING_CONTEXT_LOAD)) {",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": null,
+          "new_api": "rrdhost_flag_check",
+          "old_text": null,
+          "new_text": "rrdhost_flag_check(host, RRDHOST_FLAG_ORPHAN)",
+          "old_line_content": "            node_list[row].hostname =",
+          "new_line_content": "                                            || !(rrdhost_flag_check(host, RRDHOST_FLAG_ORPHAN)))) ? 1 : 0;",
+          "content_same": false
+        },
+        {
+          "line": 751,
+          "old_api": null,
+          "new_api": "uuid_memcmp",
+          "old_text": null,
+          "new_text": "uuid_memcmp(host_id, &localhost->host_uuid)",
+          "old_line_content": "        }",
+          "new_line_content": "                                  uuid_memcmp(host_id, &localhost->host_uuid) ? 1 : 0;",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": null,
+          "new_api": "sqlite3_column_text",
+          "old_text": null,
+          "new_text": "sqlite3_column_text(res, 2)",
+          "old_line_content": "        if (row == max_rows)",
+          "new_line_content": "                sqlite3_column_bytes(res, 2) ? strdupz((char *)sqlite3_column_text(res, 2)) : NULL;",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "    return node_list;",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when fetching node instance information\")",
+          "old_line_content": "};",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when fetching node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(!db_meta)",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (unlikely(!db_meta)) {",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Database has not been initialized\")",
+          "old_line_content": "",
+          "new_line_content": "            error_report(\"Database has not been initialized\");",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SQL_GET_HOST_NODE_ID, -1, &res, 0)",
+          "old_line_content": "        return;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_GET_HOST_NODE_ID, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 782,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    };",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 783,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to fetch node id\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to fetch node id\");",
+          "content_same": false
+        },
+        {
+          "line": 787,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, &host->host_uuid, sizeof(host->host_uuid), SQLITE_STATIC)",
+          "old_line_content": "        goto failed;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, &host->host_uuid, sizeof(host->host_uuid), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host_id parameter to load node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host_id parameter to load node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 794,
+          "old_api": null,
+          "new_api": "likely",
+          "old_text": null,
+          "new_text": "likely(rc == SQLITE_ROW)",
+          "old_line_content": "        else",
+          "new_line_content": "    if (likely(rc == SQLITE_ROW)) {",
+          "content_same": false
+        },
+        {
+          "line": 796,
+          "old_api": null,
+          "new_api": "sqlite3_column_blob",
+          "old_text": null,
+          "new_text": "sqlite3_column_blob(res, 0)",
+          "old_line_content": "    }",
+          "new_line_content": "            set_host_node_id(host, (uuid_t *)sqlite3_column_blob(res, 0));",
+          "content_same": false
+        },
+        {
+          "line": 798,
+          "old_api": null,
+          "new_api": "set_host_node_id",
+          "old_text": null,
+          "new_text": "set_host_node_id(host, NULL)",
+          "old_line_content": "failed:",
+          "new_line_content": "            set_host_node_id(host, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 802,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 803,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when loading node instance information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when loading node instance information\");",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SELECT_HOST_INFO, -1, &res, 0)",
+          "old_line_content": "        return;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SELECT_HOST_INFO, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to read host information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to read host information\");",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "old_line_content": "        goto skip;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 823,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host parameter host information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host parameter host information\");",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": null,
+          "new_api": "sqlite3_step_monitored",
+          "old_text": null,
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "    }",
+          "new_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "content_same": false
+        },
+        {
+          "line": 828,
+          "old_api": null,
+          "new_api": "sqlite3_column_text",
+          "old_text": null,
+          "new_text": "sqlite3_column_text(res, 0)",
+          "old_line_content": "",
+          "new_line_content": "        rrdhost_set_system_info_variable(system_info, (char *) sqlite3_column_text(res, 0),",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": null,
+          "new_api": "sqlite3_column_text",
+          "old_text": null,
+          "new_text": "sqlite3_column_text(res, 1)",
+          "old_line_content": "skip:",
+          "new_line_content": "                                         (char *) sqlite3_column_text(res, 1));",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when reading host information\")",
+          "old_line_content": "#define SELECT_HOST_LABELS \"SELECT label_key, label_value, source_type FROM host_label WHERE host_id = @host_id \" \\",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when reading host information\");",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, SELECT_HOST_LABELS, -1, &res, 0)",
+          "old_line_content": "        return NULL;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, SELECT_HOST_LABELS, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement to read host information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement to read host information\");",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "old_line_content": "        goto skip;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind host parameter host information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind host parameter host information\");",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": null,
+          "new_api": "sqlite3_step_monitored",
+          "old_text": null,
+          "new_text": "sqlite3_step_monitored(res)",
+          "old_line_content": "",
+          "new_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": null,
+          "new_api": "sqlite3_column_int",
+          "old_text": null,
+          "new_text": "sqlite3_column_int(res, 2)",
+          "old_line_content": "skip:",
+          "new_line_content": "        rrdlabels_add(labels, (const char *)sqlite3_column_text(res, 0), (const char *)sqlite3_column_text(res, 1), sqlite3_column_int(res, 2));",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "}",
+          "new_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize the prepared statement when reading host information\")",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to finalize the prepared statement when reading host information\");",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": null,
+          "new_api": "likely",
+          "old_text": null,
+          "new_text": "likely(text)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    if (likely(text))",
+          "content_same": false
+        },
+        {
+          "line": 878,
+          "old_api": null,
+          "new_api": "sqlite3_bind_null",
+          "old_text": null,
+          "new_text": "sqlite3_bind_null(res, position)",
+          "old_line_content": "int sql_metadata_cache_stats(int op)",
+          "new_line_content": "    return sqlite3_bind_null(res, position);",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "netdata_thread_disable_cancelability",
+          "old_text": null,
+          "new_text": "netdata_thread_disable_cancelability()",
+          "old_line_content": "    return count;",
+          "new_line_content": "    netdata_thread_disable_cancelability();",
+          "content_same": false
+        },
+        {
+          "line": 889,
+          "old_api": null,
+          "new_api": "sqlite3_db_status",
+          "old_text": null,
+          "new_text": "sqlite3_db_status(db_meta, op, &count, &dummy, 0)",
+          "old_line_content": "}",
+          "new_line_content": "    sqlite3_db_status(db_meta, op, &count, &dummy, 0);",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": null,
+          "new_api": "netdata_thread_enable_cancelability",
+          "old_text": null,
+          "new_text": "netdata_thread_enable_cancelability()",
+          "old_line_content": "",
+          "new_line_content": "    netdata_thread_enable_cancelability();",
+          "content_same": false
+        },
+        {
+          "line": 902,
+          "old_api": null,
+          "new_api": "snprintfz",
+          "old_text": null,
+          "new_text": "snprintfz(wstr, 254, SQL_DROP_TABLE, table)",
+          "old_line_content": "    if (rc != SQLITE_OK) {",
+          "new_line_content": "    snprintfz(wstr, 254, SQL_DROP_TABLE, table);",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": null,
+          "new_api": "sqlite3_exec_monitored",
+          "old_text": null,
+          "new_text": "sqlite3_exec_monitored(db_meta, wstr, 0, 0, NULL)",
+          "old_line_content": "    }",
+          "new_line_content": "    int rc = sqlite3_exec_monitored(db_meta, wstr, 0, 0, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"DES SQLite error during drop table operation for %s, rc = %d\", table, rc)",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"DES SQLite error during drop table operation for %s, rc = %d\", table, rc);",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "sqlite3_close_v2",
+          "old_text": null,
+          "new_text": "sqlite3_close_v2(db_meta)",
+          "old_line_content": "}",
+          "new_line_content": "    rc = sqlite3_close_v2(db_meta);",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "sqlite3_errstr",
+          "old_text": null,
+          "new_text": "sqlite3_errstr(rc)",
+          "old_line_content": "int exec_statement_with_uuid(const char *sql, uuid_t *uuid)",
+          "new_line_content": "        error_report(\"Error %d while closing the SQLite database, %s\", rc, sqlite3_errstr(rc));",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": null,
+          "new_api": "sqlite3_prepare_v2",
+          "old_text": null,
+          "new_text": "sqlite3_prepare_v2(db_meta, sql, -1, &res, 0)",
+          "old_line_content": "        return 1;",
+          "new_line_content": "    rc = sqlite3_prepare_v2(db_meta, sql, -1, &res, 0);",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to prepare statement %s, rc = %d\", sql, rc)",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to prepare statement %s, rc = %d\", sql, rc);",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": null,
+          "new_api": "sqlite3_bind_blob",
+          "old_text": null,
+          "new_text": "sqlite3_bind_blob(res, 1, uuid, sizeof(*uuid), SQLITE_STATIC)",
+          "old_line_content": "        goto skip;",
+          "new_line_content": "    rc = sqlite3_bind_blob(res, 1, uuid, sizeof(*uuid), SQLITE_STATIC);",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "    }",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to bind UUID parameter to %s, rc = %d\", sql, rc)",
+          "old_line_content": "",
+          "new_line_content": "        error_report(\"Failed to bind UUID parameter to %s, rc = %d\", sql, rc);",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": null,
+          "new_api": "execute_insert",
+          "old_text": null,
+          "new_text": "execute_insert(res)",
+          "old_line_content": "    else",
+          "new_line_content": "    rc = execute_insert(res);",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "sqlite3_finalize",
+          "old_text": null,
+          "new_text": "sqlite3_finalize(res)",
+          "old_line_content": "    return result;",
+          "new_line_content": "    rc = sqlite3_finalize(res);",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": null,
+          "new_api": "unlikely",
+          "old_text": null,
+          "new_text": "unlikely(rc != SQLITE_OK)",
+          "old_line_content": "}",
+          "new_line_content": "    if (unlikely(rc != SQLITE_OK))",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": null,
+          "new_api": "error_report",
+          "old_text": null,
+          "new_text": "error_report(\"Failed to finalize statement %s, rc = %d\", sql, rc)",
+          "old_line_content": "// Return 0 OK",
+          "new_line_content": "        error_report(\"Failed to finalize statement %s, rc = %d\", sql, rc);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 516,
+          "old_api": "sqlite3_exec_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_exec_monitored(db, cmd, 0, 0, &err_msg)",
+          "new_text": null,
+          "old_line_content": "        rc = sqlite3_exec_monitored(db, cmd, 0, 0, &err_msg);",
+          "new_line_content": "    int cnt = 0;",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to execute '%s', rc = %d (%s) -- attempt %d\", cmd, rc, err_msg, cnt)",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Failed to execute '%s', rc = %d (%s) -- attempt %d\", cmd, rc, err_msg, cnt);",
+          "new_line_content": "        char *err_msg;",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(rc == SQLITE_BUSY || rc == SQLITE_LOCKED)",
+          "new_text": null,
+          "old_line_content": "            if (likely(rc == SQLITE_BUSY || rc == SQLITE_LOCKED)) {",
+          "new_line_content": "        if (rc != SQLITE_OK) {",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!host)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!host))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "freez",
+          "new_api": null,
+          "old_text": "freez(host->node_id)",
+          "new_text": null,
+          "old_line_content": "        freez(host->node_id);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": "__atomic_store_n",
+          "new_api": null,
+          "old_text": "__atomic_store_n(&host->node_id, NULL, __ATOMIC_RELAXED)",
+          "new_text": null,
+          "old_line_content": "        __atomic_store_n(&host->node_id, NULL, __ATOMIC_RELAXED);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!host->node_id)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!host->node_id)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": "mallocz",
+          "new_api": null,
+          "old_text": "mallocz(sizeof(*host->node_id))",
+          "new_text": null,
+          "old_line_content": "        uuid_t *t = mallocz(sizeof(*host->node_id));",
+          "new_line_content": "    struct aclk_sync_host_config *wc = host->aclk_sync_host_config;",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "uuid_copy",
+          "new_api": null,
+          "old_text": "uuid_copy(*t, *node_id)",
+          "new_text": null,
+          "old_line_content": "        uuid_copy(*t, *node_id);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "sql_create_aclk_table",
+          "new_api": null,
+          "old_text": "sql_create_aclk_table(host, &host->host_uuid, node_id)",
+          "new_text": null,
+          "old_line_content": "        sql_create_aclk_table(host, &host->host_uuid, node_id);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "uuid_unparse_lower",
+          "new_api": null,
+          "old_text": "uuid_unparse_lower(*host_id, host_guid)",
+          "new_text": null,
+          "old_line_content": "    uuid_unparse_lower(*host_id, host_guid);",
+          "new_line_content": "    int rc = 2;",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": "rrd_wrlock",
+          "new_api": null,
+          "old_text": "rrd_wrlock()",
+          "new_text": null,
+          "old_line_content": "    rrd_wrlock();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": "rrdhost_find_by_guid",
+          "new_api": null,
+          "old_text": "rrdhost_find_by_guid(host_guid)",
+          "new_text": null,
+          "old_line_content": "    host = rrdhost_find_by_guid(host_guid);",
+          "new_line_content": "    char host_guid[GUID_LEN + 1];",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Database has not been initialized\")",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Database has not been initialized\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SQL_UPDATE_NODE_ID, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_UPDATE_NODE_ID, -1, &res, 0);",
+          "new_line_content": "        return 1;",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to store node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to store node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, node_id, sizeof(*node_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, node_id, sizeof(*node_id), SQLITE_STATIC);",
+          "new_line_content": "        return 1;",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host_id parameter to store node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host_id parameter to store node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 2, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 2, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "new_line_content": "        goto failed;",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 598,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host_id parameter to store node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host_id parameter to store node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "execute_insert",
+          "new_api": null,
+          "old_text": "execute_insert(res)",
+          "new_text": null,
+          "old_line_content": "    rc = execute_insert(res);",
+          "new_line_content": "        goto failed;",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_DONE)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_DONE))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to store node instance information, rc = %d\", rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to store node instance information, rc = %d\", rc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 609,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when storing node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when storing node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!db_meta)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!db_meta)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Database has not been initialized\")",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Database has not been initialized\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SQL_SELECT_NODE_ID, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_SELECT_NODE_ID, -1, &res, 0);",
+          "new_line_content": "        return 1;",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 629,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to select node instance information for a host\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to select node instance information for a host\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "new_line_content": "        return 1;",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host_id parameter to select node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host_id parameter to select node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_step_monitored(res);",
+          "new_line_content": "        goto failed;",
+          "content_same": false
+        },
+        {
+          "line": 640,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(rc == SQLITE_ROW && node_id)",
+          "new_text": null,
+          "old_line_content": "    if (likely(rc == SQLITE_ROW && node_id))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 641,
+          "old_api": "sqlite3_column_blob",
+          "new_api": null,
+          "old_text": "sqlite3_column_blob(res, 0)",
+          "new_text": null,
+          "old_line_content": "        uuid_copy(*node_id, *((uuid_t *) sqlite3_column_blob(res, 0)));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when selecting node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when selecting node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!db_meta)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!db_meta)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Database has not been initialized\")",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Database has not been initialized\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SQL_INVALIDATE_NODE_INSTANCES, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_INVALIDATE_NODE_INSTANCES, -1, &res, 0);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 666,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to invalidate node instance ids\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to invalidate node instance ids\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 671,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host_id parameter to invalidate node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host_id parameter to invalidate node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 2, claim_id, sizeof(*claim_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "        rc = sqlite3_bind_blob(res, 2, claim_id, sizeof(*claim_id), SQLITE_STATIC);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": "sqlite3_bind_null",
+          "new_api": null,
+          "old_text": "sqlite3_bind_null(res, 2)",
+          "new_text": null,
+          "old_line_content": "        rc = sqlite3_bind_null(res, 2);",
+          "new_line_content": "    if (claim_id)",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": "execute_insert",
+          "new_api": null,
+          "old_text": "execute_insert(res)",
+          "new_text": null,
+          "old_line_content": "    rc = execute_insert(res);",
+          "new_line_content": "        goto failed;",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_DONE)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_DONE))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to invalidate node instance information, rc = %d\", rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to invalidate node instance information, rc = %d\", rc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when invalidating node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when invalidating node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!db_meta)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!db_meta)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Database has not been initialized\")",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Database has not been initialized\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SQL_GET_NODE_INSTANCE_LIST, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_GET_NODE_INSTANCE_LIST, -1, &res, 0);",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to get node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to get node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to reset the prepared statement while fetching node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to reset the prepared statement while fetching node instance information\");",
+          "new_line_content": "        row++;",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": "rrd_rdlock",
+          "new_api": null,
+          "old_text": "rrd_rdlock()",
+          "new_text": null,
+          "old_line_content": "    rrd_rdlock();",
+          "new_line_content": "    int max_rows = row;",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "new_line_content": "    row = 0;",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": "sqlite3_column_bytes",
+          "new_api": null,
+          "old_text": "sqlite3_column_bytes(res, 0)",
+          "new_text": null,
+          "old_line_content": "        if (sqlite3_column_bytes(res, 0) == sizeof(uuid_t))",
+          "new_line_content": "    // TODO: Check to remove lock",
+          "content_same": false
+        },
+        {
+          "line": 740,
+          "old_api": "rrdhost_hostname",
+          "new_api": null,
+          "old_text": "rrdhost_hostname(host)",
+          "new_text": null,
+          "old_line_content": "                netdata_log_info(\"ACLK: 'host:%s' skipping get node list because context is initializing\", rrdhost_hostname(host));",
+          "new_line_content": "            if (!host)",
+          "content_same": false
+        },
+        {
+          "line": 748,
+          "old_api": "uuid_memcmp",
+          "new_api": null,
+          "old_text": "uuid_memcmp(host_id, &localhost->host_uuid)",
+          "new_text": null,
+          "old_line_content": "                                  uuid_memcmp(host_id, &localhost->host_uuid) ? 1 : 0;",
+          "new_line_content": "            node_list[row].live = (host && (host == localhost || host->receiver",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "sqlite3_column_text",
+          "new_api": null,
+          "old_text": "sqlite3_column_text(res, 2)",
+          "new_text": null,
+          "old_line_content": "                sqlite3_column_bytes(res, 2) ? strdupz((char *)sqlite3_column_text(res, 2)) : NULL;",
+          "new_line_content": "            node_list[row].hops = (host && host->system_info) ? host->system_info->hops :",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": "rrd_unlock",
+          "new_api": null,
+          "old_text": "rrd_unlock()",
+          "new_text": null,
+          "old_line_content": "    rrd_unlock();",
+          "new_line_content": "        if (row == max_rows)",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when fetching node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when fetching node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!db_meta)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!db_meta)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Database has not been initialized\")",
+          "new_text": null,
+          "old_line_content": "            error_report(\"Database has not been initialized\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SQL_GET_HOST_NODE_ID, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SQL_GET_HOST_NODE_ID, -1, &res, 0);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to fetch node id\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to fetch node id\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 784,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, &host->host_uuid, sizeof(host->host_uuid), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, &host->host_uuid, sizeof(host->host_uuid), SQLITE_STATIC);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    };",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host_id parameter to load node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host_id parameter to load node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 790,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_step_monitored(res);",
+          "new_line_content": "        goto failed;",
+          "content_same": false
+        },
+        {
+          "line": 791,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(rc == SQLITE_ROW)",
+          "new_text": null,
+          "old_line_content": "    if (likely(rc == SQLITE_ROW)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": "sqlite3_column_bytes",
+          "new_api": null,
+          "old_text": "sqlite3_column_bytes(res, 0)",
+          "new_text": null,
+          "old_line_content": "        if (likely(sqlite3_column_bytes(res, 0) == sizeof(uuid_t)))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "sqlite3_finalize",
+          "new_api": null,
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 800,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when loading node instance information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when loading node instance information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SELECT_HOST_INFO, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SELECT_HOST_INFO, -1, &res, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 813,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to read host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to read host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 819,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host parameter host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host parameter host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "new_line_content": "        goto skip;",
+          "content_same": false
+        },
+        {
+          "line": 825,
+          "old_api": "sqlite3_column_text",
+          "new_api": null,
+          "old_text": "sqlite3_column_text(res, 0)",
+          "new_text": null,
+          "old_line_content": "        rrdhost_set_system_info_variable(system_info, (char *) sqlite3_column_text(res, 0),",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "sqlite3_column_text",
+          "new_api": null,
+          "old_text": "sqlite3_column_text(res, 1)",
+          "new_text": null,
+          "old_line_content": "                                         (char *) sqlite3_column_text(res, 1));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": "sqlite3_finalize",
+          "new_api": null,
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when reading host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when reading host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, SELECT_HOST_LABELS, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, SELECT_HOST_LABELS, -1, &res, 0);",
+          "new_line_content": "    RRDLABELS *labels = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement to read host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement to read host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, host_id, sizeof(*host_id), SQLITE_STATIC);",
+          "new_line_content": "        return NULL;",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind host parameter host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind host parameter host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 856,
+          "old_api": "rrdlabels_create",
+          "new_api": null,
+          "old_text": "rrdlabels_create()",
+          "new_text": null,
+          "old_line_content": "    labels = rrdlabels_create();",
+          "new_line_content": "        goto skip;",
+          "content_same": false
+        },
+        {
+          "line": 858,
+          "old_api": "sqlite3_step_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_step_monitored(res)",
+          "new_text": null,
+          "old_line_content": "    while (sqlite3_step_monitored(res) == SQLITE_ROW) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": "sqlite3_finalize",
+          "new_api": null,
+          "old_text": "sqlite3_finalize(res)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(sqlite3_finalize(res) != SQLITE_OK))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize the prepared statement when reading host information\")",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize the prepared statement when reading host information\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(text)",
+          "new_text": null,
+          "old_line_content": "    if (likely(text))",
+          "new_line_content": "// Utils",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "sqlite3_bind_text",
+          "new_api": null,
+          "old_text": "sqlite3_bind_text(res, position, text, -1, SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "        return sqlite3_bind_text(res, position, text, -1, SQLITE_STATIC);",
+          "new_line_content": "int bind_text_null(sqlite3_stmt *res, int position, const char *text, bool can_be_null)",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(!db_meta)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(!db_meta))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": "sqlite3_db_status",
+          "new_api": null,
+          "old_text": "sqlite3_db_status(db_meta, op, &count, &dummy, 0)",
+          "new_text": null,
+          "old_line_content": "    sqlite3_db_status(db_meta, op, &count, &dummy, 0);",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "netdata_thread_enable_cancelability",
+          "new_api": null,
+          "old_text": "netdata_thread_enable_cancelability()",
+          "new_text": null,
+          "old_line_content": "    netdata_thread_enable_cancelability();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": "snprintfz",
+          "new_api": null,
+          "old_text": "snprintfz(wstr, 254, SQL_DROP_TABLE, table)",
+          "new_text": null,
+          "old_line_content": "    snprintfz(wstr, 254, SQL_DROP_TABLE, table);",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "sqlite3_exec_monitored",
+          "new_api": null,
+          "old_text": "sqlite3_exec_monitored(db_meta, wstr, 0, 0, NULL)",
+          "new_text": null,
+          "old_line_content": "    int rc = sqlite3_exec_monitored(db_meta, wstr, 0, 0, NULL);",
+          "new_line_content": "    char wstr[255];",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"DES SQLite error during drop table operation for %s, rc = %d\", table, rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"DES SQLite error during drop table operation for %s, rc = %d\", table, rc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "sqlite3_errstr",
+          "new_api": null,
+          "old_text": "sqlite3_errstr(rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Error %d while closing the SQLite database, %s\", rc, sqlite3_errstr(rc));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 484,
+          "old_api": "sqlite3_prepare_v2",
+          "new_api": null,
+          "old_text": "sqlite3_prepare_v2(db_meta, sql, -1, &res, 0)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_prepare_v2(db_meta, sql, -1, &res, 0);",
+          "new_line_content": "    int rc, result = 1;",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    sqlite3_stmt *res = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to prepare statement %s, rc = %d\", sql, rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to prepare statement %s, rc = %d\", sql, rc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": "sqlite3_bind_blob",
+          "new_api": null,
+          "old_text": "sqlite3_bind_blob(res, 1, uuid, sizeof(*uuid), SQLITE_STATIC)",
+          "new_text": null,
+          "old_line_content": "    rc = sqlite3_bind_blob(res, 1, uuid, sizeof(*uuid), SQLITE_STATIC);",
+          "new_line_content": "        return 1;",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK)) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to bind UUID parameter to %s, rc = %d\", sql, rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to bind UUID parameter to %s, rc = %d\", sql, rc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": "execute_insert",
+          "new_api": null,
+          "old_text": "execute_insert(res)",
+          "new_text": null,
+          "old_line_content": "    rc = execute_insert(res);",
+          "new_line_content": "        goto skip;",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": "likely",
+          "new_api": null,
+          "old_text": "likely(rc == SQLITE_DONE)",
+          "new_text": null,
+          "old_line_content": "    if (likely(rc == SQLITE_DONE))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(rc != SQLITE_OK)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(rc != SQLITE_OK))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": "error_report",
+          "new_api": null,
+          "old_text": "error_report(\"Failed to finalize statement %s, rc = %d\", sql, rc)",
+          "new_text": null,
+          "old_line_content": "        error_report(\"Failed to finalize statement %s, rc = %d\", sql, rc);",
+          "new_line_content": "skip:",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 35,
+      "total_additions": 124,
+      "total_deletions": 122,
+      "total_api_changes": 281
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 281,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 308,
+    "api_calls_after": 310,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 0,
+      "total_diff_lines": 15
+    }
+  }
+}

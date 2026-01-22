@@ -1,0 +1,14 @@
+diff --git a/src/backend/access/transam/xact.c b/src/backend/access/transam/xact.c
+index fc55fa6d53..e5e2902465 100644
+--- a/src/backend/access/transam/xact.c
++++ b/src/backend/access/transam/xact.c
+@@ -871,6 +871,9 @@ TransactionIdIsCurrentTransactionId(TransactionId xid)
+ 	if (!TransactionIdIsNormal(xid))
+ 		return false;
+ 
++	if (TransactionIdEquals(xid, GetTopTransactionIdIfAny()))
++		return true;
++
+ 	/*
+ 	 * In parallel workers, the XIDs we must consider as current are stored in
+ 	 * ParallelCurrentXids rather than the transaction-state stack.  Note that

@@ -1,0 +1,13 @@
+diff --git a/src/networking.c b/src/networking.c
+index 00558974e..02e77307e 100644
+--- a/src/networking.c
++++ b/src/networking.c
+@@ -247,7 +247,7 @@ void _addReplyStringToList(client *c, const char *s, size_t len) {
+ 
+         /* Append to this object when possible. If tail == NULL it was
+          * set via addDeferredMultiBulkLength(). */
+-        if (tail && sdslen(tail)+len <= PROTO_REPLY_CHUNK_BYTES) {
++        if (tail && (sdsavail(tail) >= len || sdslen(tail)+len <= PROTO_REPLY_CHUNK_BYTES)) {
+             tail = sdscatlen(tail,s,len);
+             listNodeValue(ln) = tail;
+             c->reply_bytes += len;

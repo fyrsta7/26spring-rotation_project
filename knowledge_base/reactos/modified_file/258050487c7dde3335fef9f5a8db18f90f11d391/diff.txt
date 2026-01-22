@@ -1,0 +1,23 @@
+diff --git a/reactos/dll/win32/user32/windows/message.c b/reactos/dll/win32/user32/windows/message.c
+index 1c5b4188694..08b8b4fa655 100644
+--- a/reactos/dll/win32/user32/windows/message.c
++++ b/reactos/dll/win32/user32/windows/message.c
+@@ -2067,7 +2067,17 @@ SendNotifyMessageW(
+ BOOL STDCALL
+ TranslateMessageEx(CONST MSG *lpMsg, DWORD unk)
+ {
+-  return(NtUserTranslateMessage((LPMSG)lpMsg, (HKL)unk));
++    switch (lpMsg->message)
++    {
++        case WM_KEYDOWN:
++        case WM_KEYUP:
++        case WM_SYSKEYDOWN:
++        case WM_SYSKEYUP:
++            return(NtUserTranslateMessage((LPMSG)lpMsg, (HKL)unk));
++
++        default:
++            return FALSE;
++    }
+ }
+ 
+ 

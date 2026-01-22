@@ -1,0 +1,16 @@
+diff --git a/lib/compress/zstd_lazy.c b/lib/compress/zstd_lazy.c
+index 096980db..fd76a55b 100644
+--- a/lib/compress/zstd_lazy.c
++++ b/lib/compress/zstd_lazy.c
+@@ -525,6 +525,11 @@ size_t ZSTD_HcFindBestMatch_generic (
+     /* HC4 match finder */
+     U32 matchIndex = ZSTD_insertAndFindFirstIndex_internal(ms, cParams, ip, mls);
+ 
++    if (dictMode == ZSTD_dictMatchState && ms->dictMatchState->enableDedicatedDictSearch)
++        PREFETCH_L1(ms->dictMatchState->hashTable +
++            (ZSTD_hashPtr(ip, ms->dictMatchState->cParams.hashLog - DD_BLOG,
++            ms->dictMatchState->cParams.minMatch) << DD_BLOG));
++
+     for ( ; (matchIndex>lowLimit) & (nbAttempts>0) ; nbAttempts--) {
+         size_t currentMl=0;
+         if ((dictMode != ZSTD_extDict) || matchIndex >= dictLimit) {

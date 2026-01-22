@@ -1,0 +1,19 @@
+diff --git a/src/mds/CDir.cc b/src/mds/CDir.cc
+index f000da7928a..0095b5276e9 100644
+--- a/src/mds/CDir.cc
++++ b/src/mds/CDir.cc
+@@ -3811,10 +3811,13 @@ bool CDir::should_split_fast() const
+     const CDentry *dn = p.second;
+     if (!dn->get_projected_linkage()->is_null()) {
+       effective_size++;
++
++      if (effective_size > fast_limit) [[unlikely]]
++	return true;
+     }
+   }
+ 
+-  return effective_size > fast_limit;
++  return false;
+ }
+ 
+ bool CDir::should_merge() const

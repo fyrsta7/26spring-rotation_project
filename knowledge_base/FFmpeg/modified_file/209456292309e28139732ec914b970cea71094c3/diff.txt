@@ -1,0 +1,19 @@
+diff --git a/libavcodec/diracdec.c b/libavcodec/diracdec.c
+index ef0274ab5c..c6a207b1c8 100644
+--- a/libavcodec/diracdec.c
++++ b/libavcodec/diracdec.c
+@@ -1816,9 +1816,11 @@ static int dirac_decode_frame_internal(DiracContext *s)
+ 
+     if (s->low_delay) {
+         /* [DIRAC_STD] 13.5.1 low_delay_transform_data() */
+-        for (comp = 0; comp < 3; comp++) {
+-            Plane *p = &s->plane[comp];
+-            memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);
++        if (!s->hq_picture) {
++            for (comp = 0; comp < 3; comp++) {
++                Plane *p = &s->plane[comp];
++                memset(p->idwt.buf, 0, p->idwt.stride * p->idwt.height);
++            }
+         }
+         if (!s->zero_res) {
+             if ((ret = decode_lowdelay(s)) < 0)

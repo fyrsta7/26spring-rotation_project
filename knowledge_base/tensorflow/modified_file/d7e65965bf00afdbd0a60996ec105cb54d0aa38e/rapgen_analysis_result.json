@@ -1,0 +1,325 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/d7e65965bf00afdbd0a60996ec105cb54d0aa38e",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/d7e65965bf00afdbd0a60996ec105cb54d0aa38e/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/d7e65965bf00afdbd0a60996ec105cb54d0aa38e/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/d7e65965bf00afdbd0a60996ec105cb54d0aa38e/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 139,
+          "old_api": "end",
+          "new_api": "runtime_tensor.dyn_cast<const Tensor*>()",
+          "old_text": "ctx.runtime_tensors.end()",
+          "new_text": "runtime_tensor.dyn_cast<const Tensor*>()",
+          "old_line_content": "        it != ctx.runtime_tensors.end() ? it->second : nullptr;",
+          "new_line_content": "    if (auto* operand = runtime_tensor.dyn_cast<const Tensor*>()) {",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "runtime_tensor.dyn_cast<const Tensor*>()",
+          "new_api": "ok",
+          "old_text": "runtime_tensor.dyn_cast<const Tensor*>()",
+          "new_text": "st.ok()",
+          "old_line_content": "    if (auto* operand = runtime_tensor.dyn_cast<const Tensor*>()) {",
+          "new_line_content": "      assert(st.ok() && \"failed to bitcast from forwarded tensor\");",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": "runtime_tensor.dyn_cast<TensorBuffer*>()",
+          "new_api": "std::move(ptr)",
+          "old_text": "runtime_tensor.dyn_cast<TensorBuffer*>()",
+          "new_text": "std::move(ptr)",
+          "old_line_content": "    if (auto* buffer = runtime_tensor.dyn_cast<TensorBuffer*>()) {",
+          "new_line_content": "      return Tensor(dtype, std::move(shape), std::move(ptr));",
+          "content_same": false
+        },
+        {
+          "line": 163,
+          "old_api": "TF_ANNOTATE_MEMORY_IS_INITIALIZED",
+          "new_api": "internal::IsStaticStorageDuration(memref)",
+          "old_text": "TF_ANNOTATE_MEMORY_IS_INITIALIZED(memref->data, size)",
+          "new_text": "internal::IsStaticStorageDuration(memref)",
+          "old_line_content": "    TF_ANNOTATE_MEMORY_IS_INITIALIZED(memref->data, size);",
+          "new_line_content": "        /*owner=*/!internal::IsStaticStorageDuration(memref));",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": "internal::IsStaticStorageDuration(memref)",
+          "new_api": "core::RefCountPtr<MemrefTensorBuffer>(buffer)",
+          "old_text": "internal::IsStaticStorageDuration(memref)",
+          "new_text": "core::RefCountPtr<MemrefTensorBuffer>(buffer)",
+          "old_line_content": "        /*owner=*/!internal::IsStaticStorageDuration(memref));",
+          "new_line_content": "    auto ptr = core::RefCountPtr<MemrefTensorBuffer>(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": "internal::IsStaticStorageDuration(memref)",
+          "new_api": "IsAligned",
+          "old_text": "internal::IsStaticStorageDuration(memref)",
+          "new_text": "tensor.IsAligned()",
+          "old_line_content": "    if (internal::IsStaticStorageDuration(memref)) {",
+          "new_line_content": "      CHECK(tensor.IsAligned()) << \"allocated memref is not aligned\";",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 160,
+          "old_api": null,
+          "new_api": "TF_ANNOTATE_MEMORY_IS_INITIALIZED",
+          "old_text": null,
+          "new_text": "TF_ANNOTATE_MEMORY_IS_INITIALIZED(memref->data, size)",
+          "old_line_content": "    for (int i = 0; i < rank; ++i) size *= memref_sizes[i];",
+          "new_line_content": "    TF_ANNOTATE_MEMORY_IS_INITIALIZED(memref->data, size);",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "ctx.runtime_tensors.find(memref->data)",
+          "old_line_content": "    (void)st;",
+          "new_line_content": "    auto it = ctx.runtime_tensors.find(memref->data);",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "ctx.runtime_tensors.end()",
+          "old_line_content": "    // Check if returned memref already has corresponding runtime tensor.",
+          "new_line_content": "        it != ctx.runtime_tensors.end() ? it->second : nullptr;",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "ctx.runtime_tensors.insert({memref->data, buffer})",
+          "old_line_content": "",
+          "new_line_content": "      ctx.runtime_tensors.insert({memref->data, buffer});",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": null,
+          "new_api": "BitcastFrom",
+          "old_text": null,
+          "new_text": "result.BitcastFrom(*operand, dtype, shape)",
+          "old_line_content": "    // Forward operand tensor to the result.",
+          "new_line_content": "      auto st = result.BitcastFrom(*operand, dtype, shape);",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": null,
+          "new_api": "internal::IsStaticStorageDuration(memref)",
+          "old_text": null,
+          "new_text": "internal::IsStaticStorageDuration(memref)",
+          "old_line_content": "",
+          "new_line_content": "    if (internal::IsStaticStorageDuration(memref)) {",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "IsAligned",
+          "old_text": null,
+          "new_text": "tensor.IsAligned()",
+          "old_line_content": "    // Incorrect alignment will lead to a segfault in the downstream Tensorflow",
+          "new_line_content": "      CHECK(tensor.IsAligned()) << \"global memref is not aligned\";",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": null,
+          "new_api": "runtime_tensor.dyn_cast<TensorBuffer*>()",
+          "old_text": null,
+          "new_text": "runtime_tensor.dyn_cast<TensorBuffer*>()",
+          "old_line_content": "    }",
+          "new_line_content": "    if (auto* buffer = runtime_tensor.dyn_cast<TensorBuffer*>()) {",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": null,
+          "new_api": "Ref",
+          "old_text": null,
+          "new_text": "buffer->Ref()",
+          "old_line_content": "",
+          "new_line_content": "      buffer->Ref();",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": null,
+          "new_api": "core::RefCountPtr<TensorBuffer>(buffer)",
+          "old_text": null,
+          "new_text": "core::RefCountPtr<TensorBuffer>(buffer)",
+          "old_line_content": "    // The same memref returned multiple times.",
+          "new_line_content": "      auto ptr = core::RefCountPtr<TensorBuffer>(buffer);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 132,
+          "old_api": "TensorShapeUtils::MakeShape(memref_sizes, &shape)",
+          "new_api": null,
+          "old_text": "TensorShapeUtils::MakeShape(memref_sizes, &shape)",
+          "new_text": null,
+          "old_line_content": "    auto st = TensorShapeUtils::MakeShape(memref_sizes, &shape);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "st.ok()",
+          "new_text": null,
+          "old_line_content": "    assert(st.ok() && \"failed to build a TensorShape from memref sizes\");",
+          "new_line_content": "    // Check if returned memref already has corresponding runtime tensor.",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": "find",
+          "new_api": null,
+          "old_text": "ctx.runtime_tensors.find(memref->data)",
+          "new_text": null,
+          "old_line_content": "    auto it = ctx.runtime_tensors.find(memref->data);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "core::RefCountPtr<MemrefTensorBuffer>(buffer)",
+          "new_api": null,
+          "old_text": "core::RefCountPtr<MemrefTensorBuffer>(buffer)",
+          "new_text": null,
+          "old_line_content": "    auto ptr = core::RefCountPtr<MemrefTensorBuffer>(buffer);",
+          "new_line_content": "    // Keep track of memrefs already used to construct runtime tensors.",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "ctx.runtime_tensors.insert({memref->data, buffer})",
+          "new_text": null,
+          "old_line_content": "      ctx.runtime_tensors.insert({memref->data, buffer});",
+          "new_line_content": "    // kernels, check it before returning to the runtime.",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": "BitcastFrom",
+          "new_api": null,
+          "old_text": "result.BitcastFrom(*operand, dtype, shape)",
+          "new_text": null,
+          "old_line_content": "      auto st = result.BitcastFrom(*operand, dtype, shape);",
+          "new_line_content": "      return result;",
+          "content_same": false
+        },
+        {
+          "line": 145,
+          "old_api": "ok",
+          "new_api": null,
+          "old_text": "st.ok()",
+          "new_text": null,
+          "old_line_content": "      assert(st.ok() && \"failed to bitcast from forwarded tensor\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": "IsAligned",
+          "new_api": null,
+          "old_text": "tensor.IsAligned()",
+          "new_text": null,
+          "old_line_content": "      CHECK(tensor.IsAligned()) << \"global memref is not aligned\";",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": "IsAligned",
+          "new_api": null,
+          "old_text": "tensor.IsAligned()",
+          "new_text": null,
+          "old_line_content": "      CHECK(tensor.IsAligned()) << \"allocated memref is not aligned\";",
+          "new_line_content": "    return tensor;",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "Ref",
+          "new_api": null,
+          "old_text": "buffer->Ref()",
+          "new_text": null,
+          "old_line_content": "      buffer->Ref();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": "core::RefCountPtr<TensorBuffer>(buffer)",
+          "new_api": null,
+          "old_text": "core::RefCountPtr<TensorBuffer>(buffer)",
+          "new_text": null,
+          "old_line_content": "      auto ptr = core::RefCountPtr<TensorBuffer>(buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "std::move(ptr)",
+          "new_api": null,
+          "old_text": "std::move(ptr)",
+          "new_text": null,
+          "old_line_content": "      return Tensor(dtype, std::move(shape), std::move(ptr));",
+          "new_line_content": "    // This is a newly allocated memref, and we need to wrap it into the runtime",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 10,
+      "total_deletions": 12,
+      "total_api_changes": 28
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 28,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          130,
+          131
+        ]
+      }
+    },
+    "api_calls_before": 34,
+    "api_calls_after": 31,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 5,
+      "total_diff_lines": 19
+    }
+  }
+}

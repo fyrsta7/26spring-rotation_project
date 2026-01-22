@@ -1,0 +1,20 @@
+diff --git a/src/Processors/Formats/IRowInputFormat.cpp b/src/Processors/Formats/IRowInputFormat.cpp
+index 3dcd431d77d..3d8813cae4c 100644
+--- a/src/Processors/Formats/IRowInputFormat.cpp
++++ b/src/Processors/Formats/IRowInputFormat.cpp
+@@ -49,13 +49,14 @@ Chunk IRowInputFormat::generate()
+ 
+     try
+     {
++        RowReadExtension info;
+         for (size_t rows = 0; rows < params.max_block_size; ++rows)
+         {
+             try
+             {
+                 ++total_rows;
+ 
+-                RowReadExtension info;
++                info.read_columns.clear();
+                 if (!readRow(columns, info))
+                     break;
+                 if (params.callback)

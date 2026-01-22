@@ -1,0 +1,54 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -569,22 +569,17 @@
+ {
+
+ 	unsigned int h = sha1[0] << 8 | sha1[1];
+
+ 	struct object_entry *e = object_table[h];
+
+-	struct object_entry *p = NULL;
+
+ 
+
+ 	while (e) {
+
+ 		if (!hashcmp(sha1, e->idx.sha1))
+
+ 			return e;
+
+-		p = e;
+
+ 		e = e->next;
+
+ 	}
+
+ 
+
+ 	e = new_object(sha1);
+
+-	e->next = NULL;
+
++	e->next = object_table[h];
+
+ 	e->idx.offset = 0;
+
+-	if (p)
+
+-		p->next = e;
+
+-	else
+
+-		object_table[h] = e;
+
++	object_table[h] = e;
+
+ 	return e;
+
+ }
+
+ 

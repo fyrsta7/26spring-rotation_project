@@ -1,0 +1,38 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -1043,13 +1043,13 @@
+         vSemaphoreDelete(sel_sem.sem);
+
+         sel_sem.sem = NULL;
+
+     }
+
++    _lock_acquire(&s_fd_table_lock);
+
+     for (int fd = 0; fd < nfds; ++fd) {
+
+-        _lock_acquire(&s_fd_table_lock);
+
+         if (s_fd_table[fd].has_pending_close) {
+
+             s_fd_table[fd] = FD_TABLE_ENTRY_UNUSED;
+
+         }
+
+-        _lock_release(&s_fd_table_lock);
+
+-    }
+
++    }
+
++    _lock_release(&s_fd_table_lock);
+
+     free(vfs_fds_triple);
+
+     free(driver_args);
+
+ 

@@ -1,0 +1,30 @@
+diff --git a/ReactAndroid/src/main/java/com/facebook/react/fabric/jni/Binding.cpp b/ReactAndroid/src/main/java/com/facebook/react/fabric/jni/Binding.cpp
+index 286392d5590..4effb64e1a0 100644
+--- a/ReactAndroid/src/main/java/com/facebook/react/fabric/jni/Binding.cpp
++++ b/ReactAndroid/src/main/java/com/facebook/react/fabric/jni/Binding.cpp
+@@ -458,6 +458,12 @@ void Binding::schedulerDidFinishTransaction(
+                   deletedViewTags.end()) {
+             mountItems[position++] =
+                 createUpdatePropsMountItem(javaUIManager_, mutation);
++
++            // State
++            if (mutation.newChildShadowView.state) {
++              mountItems[position++] =
++                  createUpdateStateMountItem(javaUIManager_, mutation);
++            }
+           }
+ 
+           // LocalData
+@@ -472,12 +478,6 @@ void Binding::schedulerDidFinishTransaction(
+           if (updateLayoutMountItem) {
+             mountItems[position++] = updateLayoutMountItem;
+           }
+-
+-          // State
+-          if (mutation.newChildShadowView.state) {
+-            mountItems[position++] =
+-                createUpdateStateMountItem(javaUIManager_, mutation);
+-          }
+         }
+ 
+         // EventEmitter

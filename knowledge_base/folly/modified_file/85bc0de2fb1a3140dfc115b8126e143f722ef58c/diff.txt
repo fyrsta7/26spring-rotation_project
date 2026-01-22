@@ -1,0 +1,29 @@
+diff --git a/folly/experimental/SingletonRelaxedCounter.h b/folly/experimental/SingletonRelaxedCounter.h
+index d88bf1552..fff190b01 100644
+--- a/folly/experimental/SingletonRelaxedCounter.h
++++ b/folly/experimental/SingletonRelaxedCounter.h
+@@ -141,8 +141,7 @@ class SingletonRelaxedCounter {
+     }
+   };
+ 
+-  FOLLY_ALWAYS_INLINE static void mutate(Signed v) {
+-    auto cl = counter();
++  FOLLY_ERASE static void mutate(Signed v, CounterRefAndLocal cl) {
+     auto& c = *cl.counter;
+     if (cl.local) {
+       // splitting load/store on the local counter is faster than fetch-and-add
+@@ -153,6 +152,14 @@ class SingletonRelaxedCounter {
+     }
+   }
+ 
++  FOLLY_NOINLINE static void mutate_slow(Signed v) { mutate(v, counter()); }
++
++  FOLLY_ERASE static void mutate(Signed v, void (&slow)(Signed) = mutate_slow) {
++    auto const cache = local().cache; // a copy! null before/after LocalLifetime
++    // fun-ref to trick compiler into emitting a tail call
++    FOLLY_LIKELY(!!cache) ? mutate(v, {cache, true}) : slow(v);
++  }
++
+   FOLLY_EXPORT FOLLY_ALWAYS_INLINE static CounterAndCache& local() {
+     // this is a member function local instead of a class member because of
+     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66944

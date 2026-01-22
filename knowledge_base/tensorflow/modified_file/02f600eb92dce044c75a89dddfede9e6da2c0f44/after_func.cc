@@ -1,0 +1,14 @@
+  return ExpandTo4DForConvImpl(a, false);
+}
+
+ElementsAttr ExpandTo4DForDepthwiseConv(Attribute a) {
+  return ExpandTo4DForConvImpl(a, true);
+}
+
+TypeAttr RescaleQtype(Type input, Attribute factor) {
+  return quant::RescaleQuantizedType(input, factor);
+}
+
+// Returns shape of a ranked tensor.
+// Precondition: output_val's is ranked tensor.
+DenseElementsAttr GetShape(Value output_val) {

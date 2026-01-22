@@ -1,0 +1,23 @@
+diff --git a/src/Storages/getStructureOfRemoteTable.cpp b/src/Storages/getStructureOfRemoteTable.cpp
+index 8fa4d02e8e1..4d30b04cd5e 100644
+--- a/src/Storages/getStructureOfRemoteTable.cpp
++++ b/src/Storages/getStructureOfRemoteTable.cpp
+@@ -122,6 +122,18 @@ ColumnsDescription getStructureOfRemoteTable(
+     const auto & shards_info = cluster.getShardsInfo();
+ 
+     std::string fail_messages;
++    
++    // use local shard as first priority, as it needs no network communication
++    for (const auto & shard_info : shards_info)
++    {
++        if(shard_info.isLocal()){
++            const auto & res = getStructureOfRemoteTableInShard(cluster, shard_info, table_id, context, table_func_ptr);
++            if (res.empty())
++                continue;
++
++            return res;
++        }
++    }
+ 
+     for (const auto & shard_info : shards_info)
+     {

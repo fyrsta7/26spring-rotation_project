@@ -1,0 +1,21 @@
+diff --git a/src/contexts.cc b/src/contexts.cc
+index 76784bd7046..7e671252c8f 100644
+--- a/src/contexts.cc
++++ b/src/contexts.cc
+@@ -243,10 +243,12 @@ Handle<Object> Context::Lookup(Handle<String> name,
+ void Context::AddOptimizedFunction(JSFunction* function) {
+   ASSERT(IsGlobalContext());
+ #ifdef DEBUG
+-  Object* element = get(OPTIMIZED_FUNCTIONS_LIST);
+-  while (!element->IsUndefined()) {
+-    CHECK(element != function);
+-    element = JSFunction::cast(element)->next_function_link();
++  if (FLAG_enable_slow_asserts) {
++    Object* element = get(OPTIMIZED_FUNCTIONS_LIST);
++    while (!element->IsUndefined()) {
++      CHECK(element != function);
++      element = JSFunction::cast(element)->next_function_link();
++    }
+   }
+ 
+   CHECK(function->next_function_link()->IsUndefined());

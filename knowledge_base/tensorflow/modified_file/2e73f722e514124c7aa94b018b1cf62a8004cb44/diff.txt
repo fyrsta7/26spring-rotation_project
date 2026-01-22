@@ -1,0 +1,12 @@
+diff --git a/tensorflow/core/data/service/data_service.cc b/tensorflow/core/data/service/data_service.cc
+index ed6d68af9b4..cef88dc76f2 100644
+--- a/tensorflow/core/data/service/data_service.cc
++++ b/tensorflow/core/data/service/data_service.cc
+@@ -233,6 +233,7 @@ Status DataServiceDispatcherClient::EnsureInitialized() {
+       CredentialsFactory::CreateClientCredentials(protocol_, &credentials));
+   grpc::ChannelArguments args;
+   args.SetMaxReceiveMessageSize(std::numeric_limits<int32>::max());
++  args.SetInt(GRPC_ARG_USE_LOCAL_SUBCHANNEL_POOL, true);
+   auto channel = grpc::CreateCustomChannel(address_, credentials, args);
+   stub_ = DispatcherService::NewStub(channel);
+   return Status::OK();

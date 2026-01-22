@@ -1,0 +1,28 @@
+diff --git a/target/linux/bmips/files/drivers/net/ethernet/broadcom/bcm6368-enetsw.c b/target/linux/bmips/files/drivers/net/ethernet/broadcom/bcm6368-enetsw.c
+index 04884a122d..b7485ca51a 100644
+--- a/target/linux/bmips/files/drivers/net/ethernet/broadcom/bcm6368-enetsw.c
++++ b/target/linux/bmips/files/drivers/net/ethernet/broadcom/bcm6368-enetsw.c
+@@ -334,8 +334,11 @@ static int bcm6368_enetsw_receive_queue(struct net_device *dev, int budget)
+ {
+ 	struct bcm6368_enetsw *priv = netdev_priv(dev);
+ 	struct device *kdev = &priv->pdev->dev;
++	struct list_head rx_list;
+ 	int processed = 0;
+ 
++	INIT_LIST_HEAD(&rx_list);
++
+ 	/* don't scan ring further than number of refilled
+ 	 * descriptor */
+ 	if (budget > priv->rx_desc_count)
+@@ -418,9 +421,10 @@ static int bcm6368_enetsw_receive_queue(struct net_device *dev, int budget)
+ 		skb->protocol = eth_type_trans(skb, dev);
+ 		dev->stats.rx_packets++;
+ 		dev->stats.rx_bytes += len;
+-		netif_receive_skb(skb);
++		list_add_tail(&skb->list, &rx_list);
+ 	} while (processed < budget);
+ 
++	netif_receive_skb_list(&rx_list);
+ 	priv->rx_desc_count -= processed;
+ 
+ 	if (processed || !priv->rx_desc_count) {

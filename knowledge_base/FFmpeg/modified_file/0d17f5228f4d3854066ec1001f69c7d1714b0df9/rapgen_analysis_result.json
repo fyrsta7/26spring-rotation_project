@@ -1,0 +1,749 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/0d17f5228f4d3854066ec1001f69c7d1714b0df9",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/0d17f5228f4d3854066ec1001f69c7d1714b0df9/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/0d17f5228f4d3854066ec1001f69c7d1714b0df9/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/0d17f5228f4d3854066ec1001f69c7d1714b0df9/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 411,
+          "old_api": "avio_seek",
+          "new_api": "ffio_ensure_seekback",
+          "old_text": "avio_seek(s->pb, off, SEEK_SET)",
+          "new_text": "ffio_ensure_seekback(s->pb, i + 1024 + frame_size + 4)",
+          "old_line_content": "            ret = avio_seek(s->pb, off, SEEK_SET);",
+          "new_line_content": "            ffio_ensure_seekback(s->pb, i + 1024 + frame_size + 4);",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "av_log",
+          "new_api": "AVERROR",
+          "old_text": "av_log(s, i > 0 ? AV_LOG_INFO : AV_LOG_VERBOSE, \"Skipping %d bytes of junk at %\"PRId64\".\\n\", i, off)",
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "                av_log(s, i > 0 ? AV_LOG_INFO : AV_LOG_VERBOSE, \"Skipping %d bytes of junk at %\"PRId64\".\\n\", i, off);",
+          "new_line_content": "                return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "AVERROR",
+          "new_api": "avio_seek",
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": "avio_seek(s->pb, off + i, SEEK_SET)",
+          "old_line_content": "            return AVERROR(EINVAL);",
+          "new_line_content": "        ret = avio_seek(s->pb, off + i, SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "avio_tell",
+          "new_api": "FFMIN",
+          "old_text": "avio_tell(s->pb)",
+          "new_text": "FFMIN(size, mp3->filesize - pos)",
+          "old_line_content": "    pos = avio_tell(s->pb);",
+          "new_line_content": "        size= FFMIN(size, mp3->filesize - pos);",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "FFMIN",
+          "new_api": "av_get_packet",
+          "old_text": "FFMIN(size, mp3->filesize - pos)",
+          "new_text": "av_get_packet(s->pb, pkt, size)",
+          "old_line_content": "        size= FFMIN(size, mp3->filesize - pos);",
+          "new_line_content": "    ret = av_get_packet(s->pb, pkt, size);",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": "ff_mpa_check_header",
+          "new_api": "avpriv_mpegaudio_decode_header",
+          "old_text": "ff_mpa_check_header(header)",
+          "new_text": "avpriv_mpegaudio_decode_header(&sd, header)",
+          "old_line_content": "    if (ff_mpa_check_header(header) < 0)",
+          "new_line_content": "    if (avpriv_mpegaudio_decode_header(&sd, header) == 1)",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "av_clip64",
+          "new_api": "av_rescale",
+          "old_text": "av_clip64(timestamp, 0, st->duration)",
+          "new_text": "av_rescale(timestamp, filesize, st->duration)",
+          "old_line_content": "        timestamp = av_clip64(timestamp, 0, st->duration);",
+          "new_line_content": "        ie->pos       = av_rescale(timestamp, filesize, st->duration) + si->data_offset;",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 521,
+          "old_api": null,
+          "new_api": "check",
+          "old_text": null,
+          "new_text": "check(s->pb, pos, NULL)",
+          "old_line_content": "",
+          "new_line_content": "            ret = check(s->pb, pos, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s, AV_LOG_ERROR, \"Could not seek to %\"PRId64\".\\n\", pos)",
+          "old_line_content": "                    break;",
+          "new_line_content": "                    av_log(s, AV_LOG_ERROR, \"Could not seek to %\"PRId64\".\\n\", pos);",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "                } else if (ret == CHECK_SEEK_FAILED) {",
+          "new_line_content": "                    return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": null,
+          "new_api": "FFABS",
+          "old_text": null,
+          "new_text": "FFABS(MIN_VALID/2-j)",
+          "old_line_content": "                }",
+          "new_line_content": "            if ((target_pos - pos)*dir <= 0 && FFABS(MIN_VALID/2-j) < score) {",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "check",
+          "old_text": null,
+          "new_text": "check(s->pb, off + i + frame_size, &header2)",
+          "old_line_content": "            if (ret < 0)",
+          "new_line_content": "            ret = check(s->pb, off + i + frame_size, &header2);",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(s->pb, best_pos, SEEK_SET)",
+          "old_line_content": "    }",
+          "new_line_content": "    return avio_seek(s->pb, best_pos, SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s, AV_LOG_ERROR, \"Invalid frame size (%d): Could not seek to %\"PRId64\".\\n\", frame_size, off + i + frame_size)",
+          "old_line_content": "            {",
+          "new_line_content": "                av_log(s, AV_LOG_ERROR, \"Invalid frame size (%d): Could not seek to %\"PRId64\".\\n\", frame_size, off + i + frame_size);",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": null,
+          "new_api": "ffformatcontext",
+          "old_text": null,
+          "new_text": "ffformatcontext(s)",
+          "old_line_content": "                    int flags)",
+          "new_line_content": "    FFFormatContext *const si = ffformatcontext(s);",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s, AV_LOG_ERROR, \"Failed to read frame size: Could not seek to %\"PRId64\".\\n\", (int64_t) (i + 1024 + frame_size + 4))",
+          "old_line_content": "                    return ret;",
+          "new_line_content": "            av_log(s, AV_LOG_ERROR, \"Failed to read frame size: Could not seek to %\"PRId64\".\\n\", (int64_t) (i + 1024 + frame_size + 4));",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(EINVAL)",
+          "old_line_content": "                break;",
+          "new_line_content": "            return AVERROR(EINVAL);",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "ffstream",
+          "old_text": null,
+          "new_text": "ffstream(st)",
+          "old_line_content": "    AVIndexEntry *ie, ie1;",
+          "new_line_content": "    FFStream *const sti = ffstream(st);",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(s->pb, off, SEEK_SET)",
+          "old_line_content": "            }",
+          "new_line_content": "        ret = avio_seek(s->pb, off, SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": null,
+          "new_api": "avio_size",
+          "old_text": null,
+          "new_text": "avio_size(s->pb)",
+          "old_line_content": "",
+          "new_line_content": "        int64_t size = avio_size(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "avio_tell",
+          "old_text": null,
+          "new_text": "avio_tell(s->pb)",
+          "old_line_content": "    }",
+          "new_line_content": "    off = avio_tell(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": null,
+          "new_api": "av_index_search_timestamp",
+          "old_text": null,
+          "new_text": "av_index_search_timestamp(st, timestamp, flags)",
+          "old_line_content": "",
+          "new_line_content": "        int64_t ret = av_index_search_timestamp(st, timestamp, flags);",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s, AV_LOG_WARNING, \"Using MP3 TOC to seek; may be imprecise.\\n\")",
+          "old_line_content": "        // NOTE: The MP3 TOC is not a precise lookup table. Accuracy is worse",
+          "new_line_content": "        av_log(s, AV_LOG_WARNING, \"Using MP3 TOC to seek; may be imprecise.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s, AV_LOG_WARNING, \"Using scaling to seek VBR MP3; may be imprecise.\\n\")",
+          "old_line_content": "    } else if (fast_seek && st->duration > 0 && filesize > 0) {",
+          "new_line_content": "            av_log(s, AV_LOG_WARNING, \"Using scaling to seek VBR MP3; may be imprecise.\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "av_clip64",
+          "old_text": null,
+          "new_text": "av_clip64(timestamp, 0, st->duration)",
+          "old_line_content": "",
+          "new_line_content": "        timestamp = av_clip64(timestamp, 0, st->duration);",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "avio_tell",
+          "old_text": null,
+          "new_text": "avio_tell(s->pb)",
+          "old_line_content": "",
+          "new_line_content": "    pos = avio_tell(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": null,
+          "new_api": "mp3_sync",
+          "old_text": null,
+          "new_text": "mp3_sync(s, ie->pos, flags)",
+          "old_line_content": "    }",
+          "new_line_content": "    best_pos = mp3_sync(s, ie->pos, flags);",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": null,
+          "new_api": "av_rescale",
+          "old_text": null,
+          "new_text": "av_rescale(st->duration, 1, mp3->frames)",
+          "old_line_content": "",
+          "new_line_content": "        int frame_duration = av_rescale(st->duration, 1, mp3->frames);",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "av_rescale",
+          "old_text": null,
+          "new_text": "av_rescale(best_pos - si->data_offset, mp3->frames, mp3->header_filesize)",
+          "old_line_content": "    if (mp3->is_cbr && ie == &ie1 && mp3->frames) {",
+          "new_line_content": "        ie1.timestamp = frame_duration * av_rescale(best_pos - si->data_offset, mp3->frames, mp3->header_filesize);",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": null,
+          "new_api": "avpriv_update_cur_dts",
+          "old_text": null,
+          "new_text": "avpriv_update_cur_dts(s, st, ie->timestamp)",
+          "old_line_content": "    }",
+          "new_line_content": "    avpriv_update_cur_dts(s, st, ie->timestamp);",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": null,
+          "new_api": "offsetof",
+          "old_text": null,
+          "new_text": "offsetof(MP3DecContext, usetoc)",
+          "old_line_content": "",
+          "new_line_content": "    { \"usetoc\", \"use table of contents\", offsetof(MP3DecContext, usetoc), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, AV_OPT_FLAG_DECODING_PARAM},",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(pb, pos, SEEK_SET)",
+          "old_line_content": "static int check(AVIOContext *pb, int64_t pos, uint32_t *ret_header)",
+          "new_line_content": "    int64_t ret = avio_seek(pb, pos, SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "avio_read",
+          "old_text": null,
+          "new_text": "avio_read(pb, &header_buf[0], 4)",
+          "old_line_content": "        return CHECK_SEEK_FAILED;",
+          "new_line_content": "    ret = avio_read(pb, &header_buf[0], 4);",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": null,
+          "new_api": "AV_RB32",
+          "old_text": null,
+          "new_text": "AV_RB32(&header_buf[0])",
+          "old_line_content": "        return CHECK_SEEK_FAILED;",
+          "new_line_content": "    header = AV_RB32(&header_buf[0]);",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": null,
+          "new_api": "ff_mpa_check_header",
+          "old_text": null,
+          "new_text": "ff_mpa_check_header(header)",
+          "old_line_content": "",
+          "new_line_content": "    if (ff_mpa_check_header(header) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 616,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"MP2/3 (MPEG audio layer 2/3)\")",
+          "old_line_content": "const AVInputFormat ff_mp3_demuxer = {",
+          "new_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"MP2/3 (MPEG audio layer 2/3)\"),",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(target_pos - SEEK_WINDOW, 0)",
+          "old_line_content": "    int64_t ret;",
+          "new_line_content": "    avio_seek(s->pb, FFMAX(target_pos - SEEK_WINDOW, 0), SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(s->pb, target_pos, SEEK_SET)",
+          "old_line_content": "",
+          "new_line_content": "    ret = avio_seek(s->pb, target_pos, SEEK_SET);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 523,
+          "old_api": "check",
+          "new_api": null,
+          "old_text": "check(s->pb, pos, NULL)",
+          "new_text": null,
+          "old_line_content": "            ret = check(s->pb, pos, NULL);",
+          "new_line_content": "                if (ret == CHECK_WRONG_HEADER) {",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s, AV_LOG_ERROR, \"Could not seek to %\"PRId64\".\\n\", pos)",
+          "new_text": null,
+          "old_line_content": "                    av_log(s, AV_LOG_ERROR, \"Could not seek to %\"PRId64\".\\n\", pos);",
+          "new_line_content": "                }",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "                    return AVERROR(EINVAL);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": "FFABS",
+          "new_api": null,
+          "old_text": "FFABS(MIN_VALID/2-j)",
+          "new_text": null,
+          "old_line_content": "                score = FFABS(MIN_VALID/2-j);",
+          "new_line_content": "            pos += ret;",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "ffio_ensure_seekback",
+          "new_api": null,
+          "old_text": "ffio_ensure_seekback(s->pb, i + 1024 + frame_size + 4)",
+          "new_text": null,
+          "old_line_content": "            ffio_ensure_seekback(s->pb, i + 1024 + frame_size + 4);",
+          "new_line_content": "                (header & MP3_MASK) == (header2 & MP3_MASK))",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": "check",
+          "new_api": null,
+          "old_text": "check(s->pb, off + i + frame_size, &header2)",
+          "new_text": null,
+          "old_line_content": "            ret = check(s->pb, off + i + frame_size, &header2);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, best_pos, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "    return avio_seek(s->pb, best_pos, SEEK_SET);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, off + i, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "                ret = avio_seek(s->pb, off + i, SEEK_SET);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": "ffformatcontext",
+          "new_api": null,
+          "old_text": "ffformatcontext(s)",
+          "new_text": null,
+          "old_line_content": "    FFFormatContext *const si = ffformatcontext(s);",
+          "new_line_content": "    AVIndexEntry *ie, ie1;",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s, AV_LOG_ERROR, \"Invalid frame size (%d): Could not seek to %\"PRId64\".\\n\", frame_size, off + i + frame_size)",
+          "new_text": null,
+          "old_line_content": "                av_log(s, AV_LOG_ERROR, \"Invalid frame size (%d): Could not seek to %\"PRId64\".\\n\", frame_size, off + i + frame_size);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(EINVAL)",
+          "new_text": null,
+          "old_line_content": "                return AVERROR(EINVAL);",
+          "new_line_content": "    if (i == 64 * 1024) {",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "ffstream",
+          "new_api": null,
+          "old_text": "ffstream(st)",
+          "new_text": null,
+          "old_line_content": "    FFStream *const sti = ffstream(st);",
+          "new_line_content": "    int fast_seek = s->flags & AVFMT_FLAG_FAST_SEEK;",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, off, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "        ret = avio_seek(s->pb, off, SEEK_SET);",
+          "new_line_content": "    if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 562,
+          "old_api": "avio_size",
+          "new_api": null,
+          "old_text": "avio_size(s->pb)",
+          "new_text": null,
+          "old_line_content": "        int64_t size = avio_size(s->pb);",
+          "new_line_content": "            filesize = size - si->data_offset;",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "avio_tell",
+          "new_api": null,
+          "old_text": "avio_tell(s->pb)",
+          "new_text": null,
+          "old_line_content": "    off = avio_tell(s->pb);",
+          "new_line_content": "    for (int i = 0; i < sti->nb_index_entries; i++)",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "av_index_search_timestamp",
+          "new_api": null,
+          "old_text": "av_index_search_timestamp(st, timestamp, flags)",
+          "new_text": null,
+          "old_line_content": "        int64_t ret = av_index_search_timestamp(st, timestamp, flags);",
+          "new_line_content": "        // NOTE: The MP3 TOC is not a precise lookup table. Accuracy is worse",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s, AV_LOG_WARNING, \"Using MP3 TOC to seek; may be imprecise.\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s, AV_LOG_WARNING, \"Using MP3 TOC to seek; may be imprecise.\\n\");",
+          "new_line_content": "        if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s, AV_LOG_WARNING, \"Using scaling to seek VBR MP3; may be imprecise.\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(s, AV_LOG_WARNING, \"Using scaling to seek VBR MP3; may be imprecise.\\n\");",
+          "new_line_content": "        ie = &ie1;",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "av_rescale",
+          "new_api": null,
+          "old_text": "av_rescale(timestamp, filesize, st->duration)",
+          "new_text": null,
+          "old_line_content": "        ie->pos       = av_rescale(timestamp, filesize, st->duration) + si->data_offset;",
+          "new_line_content": "        return -1; // generic index code",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": "av_get_packet",
+          "new_api": null,
+          "old_text": "av_get_packet(s->pb, pkt, size)",
+          "new_text": null,
+          "old_line_content": "    ret = av_get_packet(s->pb, pkt, size);",
+          "new_line_content": "        if(ret<0)",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "mp3_sync",
+          "new_api": null,
+          "old_text": "mp3_sync(s, ie->pos, flags)",
+          "new_text": null,
+          "old_line_content": "    best_pos = mp3_sync(s, ie->pos, flags);",
+          "new_line_content": "        return best_pos;",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": "av_rescale",
+          "new_api": null,
+          "old_text": "av_rescale(st->duration, 1, mp3->frames)",
+          "new_text": null,
+          "old_line_content": "        int frame_duration = av_rescale(st->duration, 1, mp3->frames);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 596,
+          "old_api": "av_rescale",
+          "new_api": null,
+          "old_text": "av_rescale(best_pos - si->data_offset, mp3->frames, mp3->header_filesize)",
+          "new_text": null,
+          "old_line_content": "        ie1.timestamp = frame_duration * av_rescale(best_pos - si->data_offset, mp3->frames, mp3->header_filesize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "avpriv_update_cur_dts",
+          "new_api": null,
+          "old_text": "avpriv_update_cur_dts(s, st, ie->timestamp)",
+          "new_text": null,
+          "old_line_content": "    avpriv_update_cur_dts(s, st, ie->timestamp);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": "offsetof",
+          "new_api": null,
+          "old_text": "offsetof(MP3DecContext, usetoc)",
+          "new_text": null,
+          "old_line_content": "    { \"usetoc\", \"use table of contents\", offsetof(MP3DecContext, usetoc), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, AV_OPT_FLAG_DECODING_PARAM},",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(pb, pos, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "    int64_t ret = avio_seek(pb, pos, SEEK_SET);",
+          "new_line_content": "    unsigned header;",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "avio_read",
+          "new_api": null,
+          "old_text": "avio_read(pb, &header_buf[0], 4)",
+          "new_text": null,
+          "old_line_content": "    ret = avio_read(pb, &header_buf[0], 4);",
+          "new_line_content": "    if (ret < 4)",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": "AV_RB32",
+          "new_api": null,
+          "old_text": "AV_RB32(&header_buf[0])",
+          "new_text": null,
+          "old_line_content": "    header = AV_RB32(&header_buf[0]);",
+          "new_line_content": "        return CHECK_WRONG_HEADER;",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"MP2/3 (MPEG audio layer 2/3)\")",
+          "new_text": null,
+          "old_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"MP2/3 (MPEG audio layer 2/3)\"),",
+          "new_line_content": "    .read_header    = mp3_read_header,",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": "avpriv_mpegaudio_decode_header",
+          "new_api": null,
+          "old_text": "avpriv_mpegaudio_decode_header(&sd, header)",
+          "new_text": null,
+          "old_line_content": "    if (avpriv_mpegaudio_decode_header(&sd, header) == 1)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(target_pos - SEEK_WINDOW, 0)",
+          "new_text": null,
+          "old_line_content": "    avio_seek(s->pb, FFMAX(target_pos - SEEK_WINDOW, 0), SEEK_SET);",
+          "new_line_content": "    if (ret < 0)",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, target_pos, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "    ret = avio_seek(s->pb, target_pos, SEEK_SET);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 31,
+      "total_deletions": 32,
+      "total_api_changes": 70
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 15,
+        "api_related_lines": 70,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          421,
+          428,
+          429,
+          433,
+          434,
+          413
+        ]
+      }
+    },
+    "api_calls_before": 136,
+    "api_calls_after": 135,
+    "diff_info": {
+      "added_lines": 7,
+      "removed_lines": 9,
+      "total_diff_lines": 42
+    }
+  }
+}

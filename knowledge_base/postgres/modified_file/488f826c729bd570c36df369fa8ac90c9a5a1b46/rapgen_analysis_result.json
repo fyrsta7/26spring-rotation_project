@@ -1,0 +1,729 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/488f826c729bd570c36df369fa8ac90c9a5a1b46",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/488f826c729bd570c36df369fa8ac90c9a5a1b46/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/488f826c729bd570c36df369fa8ac90c9a5a1b46/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/488f826c729bd570c36df369fa8ac90c9a5a1b46/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 6052,
+          "old_api": "GetBufferDescriptor",
+          "new_api": "elog",
+          "old_text": "GetBufferDescriptor(buffer - 1)",
+          "new_text": "elog(ERROR, \"bad buffer ID: %d\", buffer)",
+          "old_line_content": "\t\tUnpinBufferNoOwner(GetBufferDescriptor(buffer - 1));",
+          "new_line_content": "\t\telog(ERROR, \"bad buffer ID: %d\", buffer);",
+          "content_same": false
+        },
+        {
+          "line": 6100,
+          "old_api": "BUF_STATE_GET_REFCOUNT",
+          "new_api": "UnlockBufHdr",
+          "old_text": "BUF_STATE_GET_REFCOUNT(buf_state)",
+          "new_text": "UnlockBufHdr(desc, buf_state)",
+          "old_line_content": "\tif (BUF_STATE_GET_REFCOUNT(buf_state) > 0)",
+          "new_line_content": "\t\tUnlockBufHdr(desc, buf_state);",
+          "content_same": false
+        },
+        {
+          "line": 6111,
+          "old_api": "BufferDescriptorGetContentLock",
+          "new_api": "PinBuffer_Locked",
+          "old_text": "BufferDescriptorGetContentLock(desc)",
+          "new_text": "PinBuffer_Locked(desc)",
+          "old_line_content": "\t\tLWLockAcquire(BufferDescriptorGetContentLock(desc), LW_SHARED);",
+          "new_line_content": "\tPinBuffer_Locked(desc);\t\t/* releases spinlock */",
+          "content_same": false
+        },
+        {
+          "line": 6117,
+          "old_api": "InvalidateVictimBuffer",
+          "new_api": "FlushBuffer",
+          "old_text": "InvalidateVictimBuffer(desc)",
+          "new_text": "FlushBuffer(desc, NULL, IOOBJECT_RELATION, IOCONTEXT_NORMAL)",
+          "old_line_content": "\tresult = InvalidateVictimBuffer(desc);",
+          "new_line_content": "\t\tFlushBuffer(desc, NULL, IOOBJECT_RELATION, IOCONTEXT_NORMAL);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 6021,
+          "old_api": null,
+          "new_api": "pgstat_count_io_op_time",
+          "old_text": null,
+          "new_text": "pgstat_count_io_op_time(IOOBJECT_RELATION, io_context,\n\t\t\t\t\t\t\tIOOP_WRITEBACK, io_start, wb_context->nr_pending)",
+          "old_line_content": "",
+          "new_line_content": "\tpgstat_count_io_op_time(IOOBJECT_RELATION, io_context,",
+          "content_same": false
+        },
+        {
+          "line": 6032,
+          "old_api": null,
+          "new_api": "DatumGetInt32",
+          "old_text": null,
+          "new_text": "DatumGetInt32(res)",
+          "old_line_content": "static char *",
+          "new_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "content_same": false
+        },
+        {
+          "line": 6034,
+          "old_api": null,
+          "new_api": "AbortBufferIO",
+          "old_text": null,
+          "new_text": "AbortBufferIO(buffer)",
+          "old_line_content": "{",
+          "new_line_content": "\tAbortBufferIO(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 6040,
+          "old_api": null,
+          "new_api": "DatumGetInt32",
+          "old_text": null,
+          "new_text": "DatumGetInt32(res)",
+          "old_line_content": "static void",
+          "new_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "content_same": false
+        },
+        {
+          "line": 6042,
+          "old_api": null,
+          "new_api": "psprintf",
+          "old_text": null,
+          "new_text": "psprintf(\"lost track of buffer IO on buffer %d\", buffer)",
+          "old_line_content": "{",
+          "new_line_content": "\treturn psprintf(\"lost track of buffer IO on buffer %d\", buffer);",
+          "content_same": false
+        },
+        {
+          "line": 5916,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(*wb_context->max_pending <= WRITEBACK_MAX_PENDING_FLUSHES)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tAssert(*wb_context->max_pending <= WRITEBACK_MAX_PENDING_FLUSHES);",
+          "content_same": false
+        },
+        {
+          "line": 6048,
+          "old_api": null,
+          "new_api": "DatumGetInt32",
+          "old_text": null,
+          "new_text": "DatumGetInt32(res)",
+          "old_line_content": "",
+          "new_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "content_same": false
+        },
+        {
+          "line": 6051,
+          "old_api": null,
+          "new_api": "BufferIsValid",
+          "old_text": null,
+          "new_text": "BufferIsValid(buffer)",
+          "old_line_content": "\telse",
+          "new_line_content": "\tif (!BufferIsValid(buffer))",
+          "content_same": false
+        },
+        {
+          "line": 6054,
+          "old_api": null,
+          "new_api": "BufferIsLocal",
+          "old_text": null,
+          "new_text": "BufferIsLocal(buffer)",
+          "old_line_content": "",
+          "new_line_content": "\tif (BufferIsLocal(buffer))",
+          "content_same": false
+        },
+        {
+          "line": 6055,
+          "old_api": null,
+          "new_api": "UnpinLocalBufferNoOwner",
+          "old_text": null,
+          "new_text": "UnpinLocalBufferNoOwner(buffer)",
+          "old_line_content": "static char *",
+          "new_line_content": "\t\tUnpinLocalBufferNoOwner(buffer);",
+          "content_same": false
+        },
+        {
+          "line": 5929,
+          "old_api": null,
+          "new_api": "IssuePendingWritebacks",
+          "old_text": null,
+          "new_text": "IssuePendingWritebacks(wb_context, io_context)",
+          "old_line_content": "#define ST_COMPARE(a, b) buffertag_comparator(&a->tag, &b->tag)",
+          "new_line_content": "\t\tIssuePendingWritebacks(wb_context, io_context);",
+          "content_same": false
+        },
+        {
+          "line": 6057,
+          "old_api": null,
+          "new_api": "GetBufferDescriptor",
+          "old_text": null,
+          "new_text": "GetBufferDescriptor(buffer - 1)",
+          "old_line_content": "{",
+          "new_line_content": "\t\tUnpinBufferNoOwner(GetBufferDescriptor(buffer - 1));",
+          "content_same": false
+        },
+        {
+          "line": 6063,
+          "old_api": null,
+          "new_api": "DatumGetInt32",
+          "old_text": null,
+          "new_text": "DatumGetInt32(res)",
+          "old_line_content": " *",
+          "new_line_content": "\treturn DebugPrintBufferRefcount(DatumGetInt32(res));",
+          "content_same": false
+        },
+        {
+          "line": 5959,
+          "old_api": null,
+          "new_api": "sort_pending_writebacks",
+          "old_text": null,
+          "new_text": "sort_pending_writebacks(wb_context->pending_writebacks,\n\t\t\t\t\t\t\twb_context->nr_pending)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\tsort_pending_writebacks(wb_context->pending_writebacks,",
+          "content_same": false
+        },
+        {
+          "line": 5962,
+          "old_api": null,
+          "new_api": "pgstat_prepare_io_time",
+          "old_text": null,
+          "new_text": "pgstat_prepare_io_time(track_io_timing)",
+          "old_line_content": "\t * find all neighbouring (or identical) writes.",
+          "new_line_content": "\tio_start = pgstat_prepare_io_time(track_io_timing);",
+          "content_same": false
+        },
+        {
+          "line": 6090,
+          "old_api": null,
+          "new_api": "ResourceOwnerEnlarge",
+          "old_text": null,
+          "new_text": "ResourceOwnerEnlarge(CurrentResourceOwner)",
+          "old_line_content": "",
+          "new_line_content": "\tResourceOwnerEnlarge(CurrentResourceOwner);",
+          "content_same": false
+        },
+        {
+          "line": 6091,
+          "old_api": null,
+          "new_api": "ReservePrivateRefCountEntry",
+          "old_text": null,
+          "new_text": "ReservePrivateRefCountEntry()",
+          "old_line_content": "\t/* Lock the header and check if it's valid. */",
+          "new_line_content": "\tReservePrivateRefCountEntry();",
+          "content_same": false
+        },
+        {
+          "line": 6093,
+          "old_api": null,
+          "new_api": "BufferIsLocal",
+          "old_text": null,
+          "new_text": "BufferIsLocal(buf)",
+          "old_line_content": "\tif ((buf_state & BM_VALID) == 0)",
+          "new_line_content": "\tAssert(!BufferIsLocal(buf));",
+          "content_same": false
+        },
+        {
+          "line": 6094,
+          "old_api": null,
+          "new_api": "GetBufferDescriptor",
+          "old_text": null,
+          "new_text": "GetBufferDescriptor(buf - 1)",
+          "old_line_content": "\t{",
+          "new_line_content": "\tdesc = GetBufferDescriptor(buf - 1);",
+          "content_same": false
+        },
+        {
+          "line": 6097,
+          "old_api": null,
+          "new_api": "LockBufHdr",
+          "old_text": null,
+          "new_text": "LockBufHdr(desc)",
+          "old_line_content": "\t}",
+          "new_line_content": "\tbuf_state = LockBufHdr(desc);",
+          "content_same": false
+        },
+        {
+          "line": 6105,
+          "old_api": null,
+          "new_api": "BUF_STATE_GET_REFCOUNT",
+          "old_text": null,
+          "new_text": "BUF_STATE_GET_REFCOUNT(buf_state)",
+          "old_line_content": "",
+          "new_line_content": "\tif (BUF_STATE_GET_REFCOUNT(buf_state) > 0)",
+          "content_same": false
+        },
+        {
+          "line": 6107,
+          "old_api": null,
+          "new_api": "UnlockBufHdr",
+          "old_text": null,
+          "new_text": "UnlockBufHdr(desc, buf_state)",
+          "old_line_content": "",
+          "new_line_content": "\t\tUnlockBufHdr(desc, buf_state);",
+          "content_same": false
+        },
+        {
+          "line": 5981,
+          "old_api": null,
+          "new_api": "BufTagGetRelFileLocator",
+          "old_text": null,
+          "new_text": "BufTagGetRelFileLocator(&tag)",
+          "old_line_content": "\t\t */",
+          "new_line_content": "\t\tcurrlocator = BufTagGetRelFileLocator(&tag);",
+          "content_same": false
+        },
+        {
+          "line": 6116,
+          "old_api": null,
+          "new_api": "BufferDescriptorGetContentLock",
+          "old_text": null,
+          "new_text": "BufferDescriptorGetContentLock(desc)",
+          "old_line_content": "\t/* This will return false if it becomes dirty or someone else pins it. */",
+          "new_line_content": "\t\tLWLockAcquire(BufferDescriptorGetContentLock(desc), LW_SHARED);",
+          "content_same": false
+        },
+        {
+          "line": 6118,
+          "old_api": null,
+          "new_api": "BufferDescriptorGetContentLock",
+          "old_text": null,
+          "new_text": "BufferDescriptorGetContentLock(desc)",
+          "old_line_content": "",
+          "new_line_content": "\t\tLWLockRelease(BufferDescriptorGetContentLock(desc));",
+          "content_same": false
+        },
+        {
+          "line": 5993,
+          "old_api": null,
+          "new_api": "RelFileLocatorEquals",
+          "old_text": null,
+          "new_text": "RelFileLocatorEquals(currlocator,\n\t\t\t\t\t\t\t\t\t  BufTagGetRelFileLocator(&next->tag))",
+          "old_line_content": "\t\t\t/* ok, block queued twice, skip */",
+          "new_line_content": "\t\t\tif (!RelFileLocatorEquals(currlocator,",
+          "content_same": false
+        },
+        {
+          "line": 5994,
+          "old_api": null,
+          "new_api": "BufTagGetRelFileLocator",
+          "old_text": null,
+          "new_text": "BufTagGetRelFileLocator(&next->tag)",
+          "old_line_content": "\t\t\tif (cur->tag.blockNum == next->tag.blockNum)",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t  BufTagGetRelFileLocator(&next->tag)) ||",
+          "content_same": false
+        },
+        {
+          "line": 5995,
+          "old_api": null,
+          "new_api": "BufTagGetForkNum",
+          "old_text": null,
+          "new_text": "BufTagGetForkNum(&next->tag)",
+          "old_line_content": "\t\t\t\tcontinue;",
+          "new_line_content": "\t\t\t\tBufTagGetForkNum(&cur->tag) != BufTagGetForkNum(&next->tag))",
+          "content_same": false
+        },
+        {
+          "line": 6122,
+          "old_api": null,
+          "new_api": "InvalidateVictimBuffer",
+          "old_text": null,
+          "new_text": "InvalidateVictimBuffer(desc)",
+          "old_line_content": "}",
+          "new_line_content": "\tresult = InvalidateVictimBuffer(desc);",
+          "content_same": false
+        },
+        {
+          "line": 6124,
+          "old_api": null,
+          "new_api": "UnpinBuffer",
+          "old_text": null,
+          "new_text": "UnpinBuffer(desc)",
+          "old_line_content": "",
+          "new_line_content": "\tUnpinBuffer(desc);",
+          "content_same": false
+        },
+        {
+          "line": 6013,
+          "old_api": null,
+          "new_api": "smgropen",
+          "old_text": null,
+          "new_text": "smgropen(currlocator, INVALID_PROC_NUMBER)",
+          "old_line_content": "\t * Assume that writeback requests are only issued for buffers containing",
+          "new_line_content": "\t\treln = smgropen(currlocator, INVALID_PROC_NUMBER);",
+          "content_same": false
+        },
+        {
+          "line": 6014,
+          "old_api": null,
+          "new_api": "BufTagGetForkNum",
+          "old_text": null,
+          "new_text": "BufTagGetForkNum(&tag)",
+          "old_line_content": "\t * blocks of permanent relations.",
+          "new_line_content": "\t\tsmgrwriteback(reln, BufTagGetForkNum(&tag), tag.blockNum, nblocks);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 6016,
+          "old_api": "pgstat_count_io_op_time",
+          "new_api": null,
+          "old_text": "pgstat_count_io_op_time(IOOBJECT_RELATION, io_context,\n\t\t\t\t\t\t\tIOOP_WRITEBACK, io_start, wb_context->nr_pending)",
+          "new_text": null,
+          "old_line_content": "\tpgstat_count_io_op_time(IOOBJECT_RELATION, io_context,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6027,
+          "old_api": "DatumGetInt32",
+          "new_api": null,
+          "old_text": "DatumGetInt32(res)",
+          "new_text": null,
+          "old_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "new_line_content": "/* ResourceOwner callbacks */",
+          "content_same": false
+        },
+        {
+          "line": 6029,
+          "old_api": "AbortBufferIO",
+          "new_api": null,
+          "old_text": "AbortBufferIO(buffer)",
+          "new_text": null,
+          "old_line_content": "\tAbortBufferIO(buffer);",
+          "new_line_content": "static void",
+          "content_same": false
+        },
+        {
+          "line": 6035,
+          "old_api": "DatumGetInt32",
+          "new_api": null,
+          "old_text": "DatumGetInt32(res)",
+          "new_text": null,
+          "old_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 6037,
+          "old_api": "psprintf",
+          "new_api": null,
+          "old_text": "psprintf(\"lost track of buffer IO on buffer %d\", buffer)",
+          "new_text": null,
+          "old_line_content": "\treturn psprintf(\"lost track of buffer IO on buffer %d\", buffer);",
+          "new_line_content": "static char *",
+          "content_same": false
+        },
+        {
+          "line": 5911,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(*wb_context->max_pending <= WRITEBACK_MAX_PENDING_FLUSHES)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(*wb_context->max_pending <= WRITEBACK_MAX_PENDING_FLUSHES);",
+          "new_line_content": "\t * Add buffer to the pending writeback array, unless writeback control is",
+          "content_same": false
+        },
+        {
+          "line": 6043,
+          "old_api": "DatumGetInt32",
+          "new_api": null,
+          "old_text": "DatumGetInt32(res)",
+          "new_text": null,
+          "old_line_content": "\tBuffer\t\tbuffer = DatumGetInt32(res);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 6046,
+          "old_api": "BufferIsValid",
+          "new_api": null,
+          "old_text": "BufferIsValid(buffer)",
+          "new_text": null,
+          "old_line_content": "\tif (!BufferIsValid(buffer))",
+          "new_line_content": "ResOwnerReleaseBufferPin(Datum res)",
+          "content_same": false
+        },
+        {
+          "line": 6047,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"bad buffer ID: %d\", buffer)",
+          "new_text": null,
+          "old_line_content": "\t\telog(ERROR, \"bad buffer ID: %d\", buffer);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 6049,
+          "old_api": "BufferIsLocal",
+          "new_api": null,
+          "old_text": "BufferIsLocal(buffer)",
+          "new_text": null,
+          "old_line_content": "\tif (BufferIsLocal(buffer))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6050,
+          "old_api": "UnpinLocalBufferNoOwner",
+          "new_api": null,
+          "old_text": "UnpinLocalBufferNoOwner(buffer)",
+          "new_text": null,
+          "old_line_content": "\t\tUnpinLocalBufferNoOwner(buffer);",
+          "new_line_content": "\t/* Like ReleaseBuffer, but don't call ResourceOwnerForgetBuffer */",
+          "content_same": false
+        },
+        {
+          "line": 5924,
+          "old_api": "IssuePendingWritebacks",
+          "new_api": null,
+          "old_text": "IssuePendingWritebacks(wb_context, io_context)",
+          "new_text": null,
+          "old_line_content": "\t\tIssuePendingWritebacks(wb_context, io_context);",
+          "new_line_content": "\t * Perform pending flushes if the writeback limit is exceeded. This",
+          "content_same": false
+        },
+        {
+          "line": 6058,
+          "old_api": "DatumGetInt32",
+          "new_api": null,
+          "old_text": "DatumGetInt32(res)",
+          "new_text": null,
+          "old_line_content": "\treturn DebugPrintBufferRefcount(DatumGetInt32(res));",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 5954,
+          "old_api": "sort_pending_writebacks",
+          "new_api": null,
+          "old_text": "sort_pending_writebacks(wb_context->pending_writebacks,\n\t\t\t\t\t\t\twb_context->nr_pending)",
+          "new_text": null,
+          "old_line_content": "\tsort_pending_writebacks(wb_context->pending_writebacks,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 5957,
+          "old_api": "pgstat_prepare_io_time",
+          "new_api": null,
+          "old_text": "pgstat_prepare_io_time(track_io_timing)",
+          "new_text": null,
+          "old_line_content": "\tio_start = pgstat_prepare_io_time(track_io_timing);",
+          "new_line_content": "\t * merge writeback requests to consecutive blocks into larger writebacks.",
+          "content_same": false
+        },
+        {
+          "line": 6085,
+          "old_api": "ResourceOwnerEnlarge",
+          "new_api": null,
+          "old_text": "ResourceOwnerEnlarge(CurrentResourceOwner)",
+          "new_text": null,
+          "old_line_content": "\tResourceOwnerEnlarge(CurrentResourceOwner);",
+          "new_line_content": "\tBufferDesc *desc;",
+          "content_same": false
+        },
+        {
+          "line": 6086,
+          "old_api": "ReservePrivateRefCountEntry",
+          "new_api": null,
+          "old_text": "ReservePrivateRefCountEntry()",
+          "new_text": null,
+          "old_line_content": "\tReservePrivateRefCountEntry();",
+          "new_line_content": "\tuint32\t\tbuf_state;",
+          "content_same": false
+        },
+        {
+          "line": 6088,
+          "old_api": "BufferIsLocal",
+          "new_api": null,
+          "old_text": "BufferIsLocal(buf)",
+          "new_text": null,
+          "old_line_content": "\tAssert(!BufferIsLocal(buf));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6089,
+          "old_api": "GetBufferDescriptor",
+          "new_api": null,
+          "old_text": "GetBufferDescriptor(buf - 1)",
+          "new_text": null,
+          "old_line_content": "\tdesc = GetBufferDescriptor(buf - 1);",
+          "new_line_content": "\t/* Make sure we can pin the buffer. */",
+          "content_same": false
+        },
+        {
+          "line": 6092,
+          "old_api": "LockBufHdr",
+          "new_api": null,
+          "old_text": "LockBufHdr(desc)",
+          "new_text": null,
+          "old_line_content": "\tbuf_state = LockBufHdr(desc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6095,
+          "old_api": "UnlockBufHdr",
+          "new_api": null,
+          "old_text": "UnlockBufHdr(desc, buf_state)",
+          "new_text": null,
+          "old_line_content": "\t\tUnlockBufHdr(desc, buf_state);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6102,
+          "old_api": "UnlockBufHdr",
+          "new_api": null,
+          "old_text": "UnlockBufHdr(desc, buf_state)",
+          "new_text": null,
+          "old_line_content": "\t\tUnlockBufHdr(desc, buf_state);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 5976,
+          "old_api": "BufTagGetRelFileLocator",
+          "new_api": null,
+          "old_text": "BufTagGetRelFileLocator(&tag)",
+          "new_text": null,
+          "old_line_content": "\t\tcurrlocator = BufTagGetRelFileLocator(&tag);",
+          "new_line_content": "\t\tRelFileLocator currlocator;",
+          "content_same": false
+        },
+        {
+          "line": 6106,
+          "old_api": "PinBuffer_Locked",
+          "new_api": null,
+          "old_text": "PinBuffer_Locked(desc)",
+          "new_text": null,
+          "old_line_content": "\tPinBuffer_Locked(desc);\t\t/* releases spinlock */",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 6112,
+          "old_api": "FlushBuffer",
+          "new_api": null,
+          "old_text": "FlushBuffer(desc, NULL, IOOBJECT_RELATION, IOCONTEXT_NORMAL)",
+          "new_text": null,
+          "old_line_content": "\t\tFlushBuffer(desc, NULL, IOOBJECT_RELATION, IOCONTEXT_NORMAL);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 6113,
+          "old_api": "BufferDescriptorGetContentLock",
+          "new_api": null,
+          "old_text": "BufferDescriptorGetContentLock(desc)",
+          "new_text": null,
+          "old_line_content": "\t\tLWLockRelease(BufferDescriptorGetContentLock(desc));",
+          "new_line_content": "\t/* If it was dirty, try to clean it once. */",
+          "content_same": false
+        },
+        {
+          "line": 5988,
+          "old_api": "RelFileLocatorEquals",
+          "new_api": null,
+          "old_text": "RelFileLocatorEquals(currlocator,\n\t\t\t\t\t\t\t\t\t  BufTagGetRelFileLocator(&next->tag))",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!RelFileLocatorEquals(currlocator,",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 5989,
+          "old_api": "BufTagGetRelFileLocator",
+          "new_api": null,
+          "old_text": "BufTagGetRelFileLocator(&next->tag)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t  BufTagGetRelFileLocator(&next->tag)) ||",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 5990,
+          "old_api": "BufTagGetForkNum",
+          "new_api": null,
+          "old_text": "BufTagGetForkNum(&next->tag)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tBufTagGetForkNum(&cur->tag) != BufTagGetForkNum(&next->tag))",
+          "new_line_content": "\t\t\tnext = &wb_context->pending_writebacks[i + ahead + 1];",
+          "content_same": false
+        },
+        {
+          "line": 6119,
+          "old_api": "UnpinBuffer",
+          "new_api": null,
+          "old_text": "UnpinBuffer(desc)",
+          "new_text": null,
+          "old_line_content": "\tUnpinBuffer(desc);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 6008,
+          "old_api": "smgropen",
+          "new_api": null,
+          "old_text": "smgropen(currlocator, INVALID_PROC_NUMBER)",
+          "new_text": null,
+          "old_line_content": "\t\treln = smgropen(currlocator, INVALID_PROC_NUMBER);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 6009,
+          "old_api": "BufTagGetForkNum",
+          "new_api": null,
+          "old_text": "BufTagGetForkNum(&tag)",
+          "new_text": null,
+          "old_line_content": "\t\tsmgrwriteback(reln, BufTagGetForkNum(&tag), tag.blockNum, nblocks);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 4,
+      "total_additions": 32,
+      "total_deletions": 32,
+      "total_api_changes": 68
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 68,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          5902,
+          5903,
+          5904,
+          5905,
+          5906,
+          5907
+        ]
+      }
+    },
+    "api_calls_before": 991,
+    "api_calls_after": 991,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 1,
+      "total_diff_lines": 19
+    }
+  }
+}

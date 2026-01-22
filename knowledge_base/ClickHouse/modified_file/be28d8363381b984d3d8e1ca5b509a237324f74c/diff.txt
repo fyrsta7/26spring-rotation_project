@@ -1,0 +1,40 @@
+diff --git a/modified_file.h b/modified_file.h
+index 0000000..1111111 100644
+--- a/modified_file.h
++++ b/modified_file.h
+--- a/modified_file.h
++++ b/modified_file.h
+@@ -152,6 +152,17 @@
+     void insertFrom(const IColumn & src, size_t n) override
+
+     {
+
+         data.push_back(assert_cast<const Self &>(src).getData()[n]);
+
++    }
+
++
+
++    void insertManyFrom(const IColumn & src, size_t position, size_t length) override
+
++    {
+
++        ValueType v = assert_cast<const Self &>(src).getData()[position];
+
++        data.resize_fill(data.size() + length, v);
+
++    }
+
++
+
++    void insertMany(const Field & field, size_t length) override
+
++    {
+
++        data.resize_fill(data.size() + length, static_cast<T>(field.get<T>()));
+
+     }
+
+ 
+
+     void insertData(const char * pos, size_t) override

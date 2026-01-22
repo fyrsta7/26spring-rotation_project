@@ -1,0 +1,13 @@
+diff --git a/folly/experimental/coro/AsyncPipe.h b/folly/experimental/coro/AsyncPipe.h
+index 22e469287..b2b3515a8 100644
+--- a/folly/experimental/coro/AsyncPipe.h
++++ b/folly/experimental/coro/AsyncPipe.h
+@@ -109,7 +109,7 @@ class AsyncPipe {
+             [queue,
+              guard = std::move(guard)]() -> folly::coro::AsyncGenerator<T&&> {
+               while (true) {
+-                auto val = co_await queue->dequeue();
++                auto val = co_await co_nothrow(queue->dequeue());
+                 if (val.hasValue() || val.hasException()) {
+                   co_yield std::move(*val);
+                 } else {

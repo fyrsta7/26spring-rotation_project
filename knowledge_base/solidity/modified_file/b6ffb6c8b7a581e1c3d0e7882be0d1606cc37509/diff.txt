@@ -1,0 +1,25 @@
+diff --git a/libevmasm/PeepholeOptimiser.cpp b/libevmasm/PeepholeOptimiser.cpp
+index 104d97699..901e310ee 100644
+--- a/libevmasm/PeepholeOptimiser.cpp
++++ b/libevmasm/PeepholeOptimiser.cpp
+@@ -68,14 +68,15 @@ struct AddPop
+ 		{
+ 			Instruction i0 = _in[0].instruction();
+ 			if (instructionInfo(i0).ret == 1 &&
+-				instructionInfo(i0).args == 2 &&
+ 				!SemanticInformation::invalidatesMemory(i0) &&
+-				!SemanticInformation::invalidatesStorage(i0)
++				!SemanticInformation::invalidatesStorage(i0) &&
++				!SemanticInformation::altersControlFlow(i0) &&
++				!instructionInfo(i0).sideEffects
+ 			)
+ 			{
+-				*_out = Instruction::POP;
+-				*_out = Instruction::POP;
+-			return true;
++				for (int j = 0; j < instructionInfo(i0).args; j++)
++					*_out = Instruction::POP;
++				return true;
+ 			}
+ 		}
+ 		return false;

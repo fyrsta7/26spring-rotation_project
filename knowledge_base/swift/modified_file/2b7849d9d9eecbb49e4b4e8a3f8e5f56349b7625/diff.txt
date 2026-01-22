@@ -1,0 +1,43 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -59,6 +59,10 @@
+ } // end anonymous namespace
+
+ 
+
+ void IRGenModule::emitClangDecl(const clang::Decl *decl) {
+
++  // Ignore this decl if we've seen it before.
+
++  if (!GlobalClangDecls.insert(decl->getCanonicalDecl()).second)
+
++    return;
+
++
+
+   // Fast path for the case where `decl` doesn't contain executable code, so it
+
+   // can't reference any other declarations that we would need to emit.
+
+   if (getDeclWithExecutableCode(const_cast<clang::Decl *>(decl)) == nullptr) {
+
+@@ -67,8 +71,6 @@
+     return;
+
+   }
+
+ 
+
+-  if (!GlobalClangDecls.insert(decl->getCanonicalDecl()).second)
+
+-    return;
+
+   SmallVector<const clang::Decl *, 8> stack;
+
+   stack.push_back(decl);
+
+ 

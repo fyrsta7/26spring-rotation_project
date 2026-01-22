@@ -1,0 +1,23 @@
+diff --git a/plugins/win-capture/game-capture.c b/plugins/win-capture/game-capture.c
+index 76772b816..1b5888b78 100644
+--- a/plugins/win-capture/game-capture.c
++++ b/plugins/win-capture/game-capture.c
+@@ -494,9 +494,17 @@ static inline void reset_frame_interval(struct game_capture *gc)
+ 	struct obs_video_info ovi;
+ 	uint64_t interval = 0;
+ 
+-	if (gc->config.limit_framerate && obs_get_video_info(&ovi))
++	if (obs_get_video_info(&ovi)) {
+ 		interval = ovi.fps_den * 1000000000ULL / ovi.fps_num;
+ 
++		/* Always limit capture framerate to some extent.  If a game
++		 * running at 900 FPS is being captured without some sort of
++		 * limited capture interval, it will dramatically reduce
++		 * performance. */
++		if (!gc->config.limit_framerate)
++			interval /= 2;
++	}
++
+ 	gc->global_hook_info->frame_interval = interval;
+ }
+ 

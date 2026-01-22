@@ -1,0 +1,935 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/47cfa9a98539ff0acf31ac2428b90a56e18a1071",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/47cfa9a98539ff0acf31ac2428b90a56e18a1071/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/47cfa9a98539ff0acf31ac2428b90a56e18a1071/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/zstd/modified_file/47cfa9a98539ff0acf31ac2428b90a56e18a1071/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 788,
+          "old_api": "ZSTD_count",
+          "new_api": "MEM_read32",
+          "old_text": "ZSTD_count(ip+1+MINMATCH, ip+1+MINMATCH-offset_1, iend)",
+          "new_text": "MEM_read32(ip+1 - offset_1)",
+          "old_line_content": "            size_t matchLength = ZSTD_count(ip+1+MINMATCH, ip+1+MINMATCH-offset_1, iend);",
+          "new_line_content": "        if (MEM_read32(ip+1) == MEM_read32(ip+1 - offset_1))",
+          "content_same": false
+        },
+        {
+          "line": 790,
+          "old_api": "ZSTD_storeSeq",
+          "new_api": "ZSTD_count",
+          "old_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength)",
+          "new_text": "ZSTD_count(ip+1+MINMATCH, ip+1+MINMATCH-offset_1, iend)",
+          "old_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength);",
+          "new_line_content": "            size_t matchLength = ZSTD_count(ip+1+MINMATCH, ip+1+MINMATCH-offset_1, iend);",
+          "content_same": false
+        },
+        {
+          "line": 889,
+          "old_api": "BYTE)(bt_compressed << 6)",
+          "new_api": "BYTE)(cSize>>8)",
+          "old_text": "BYTE)(bt_compressed << 6)",
+          "new_text": "BYTE)(cSize>>8)",
+          "old_line_content": "            op[0] += (BYTE)(bt_compressed << 6); /* is a compressed block */",
+          "new_line_content": "            op[1] = (BYTE)(cSize>>8);",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": "ZSTD_isError",
+          "new_api": "ERROR",
+          "old_text": "ZSTD_isError(errorCode)",
+          "new_text": "ERROR(dstSize_tooSmall)",
+          "old_line_content": "    if (ZSTD_isError(errorCode)) return errorCode;",
+          "new_line_content": "    if (maxDstSize < 4) return ERROR(dstSize_tooSmall);",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": "MEM_writeLE32",
+          "new_api": "ZSTD_HC_resetCCtx_advanced",
+          "old_text": "MEM_writeLE32(dst, ZSTD_magicNumber)",
+          "new_text": "ZSTD_HC_resetCCtx_advanced(ctx, params)",
+          "old_line_content": "    MEM_writeLE32(dst, ZSTD_magicNumber); /* Write Header */",
+          "new_line_content": "    errorCode = ZSTD_HC_resetCCtx_advanced(ctx, params);",
+          "content_same": false
+        },
+        {
+          "line": 1001,
+          "old_api": "ZSTD_HC_compress_advanced",
+          "new_api": "ZSTD_compress",
+          "old_text": "ZSTD_HC_compress_advanced(ctx, dst, maxDstSize, src, srcSize, ZSTD_HC_defaultParameters[compressionLevel])",
+          "new_text": "ZSTD_compress(dst, maxDstSize, src, srcSize)",
+          "old_line_content": "    return ZSTD_HC_compress_advanced(ctx, dst, maxDstSize, src, srcSize, ZSTD_HC_defaultParameters[compressionLevel]);",
+          "new_line_content": "    if (compressionLevel<=1) return ZSTD_compress(dst, maxDstSize, src, srcSize);   /* fast mode */",
+          "content_same": false
+        },
+        {
+          "line": 1010,
+          "old_api": "free",
+          "new_api": "memset",
+          "old_text": "free(ctxBody.workSpace)",
+          "new_text": "memset(&ctxBody, 0, sizeof(ctxBody))",
+          "old_line_content": "    free(ctxBody.workSpace);",
+          "new_line_content": "    memset(&ctxBody, 0, sizeof(ctxBody));",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 771,
+          "old_api": null,
+          "new_api": "MEM_read32",
+          "old_text": null,
+          "new_text": "MEM_read32(ip - offset_2)",
+          "old_line_content": "            /* store sequence */",
+          "new_line_content": "        if (MEM_read32(ip) == MEM_read32(ip - offset_2))",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": null,
+          "new_api": "ZSTD_count",
+          "old_text": null,
+          "new_text": "ZSTD_count(ip+MINMATCH, ip+MINMATCH-offset_2, iend)",
+          "old_line_content": "            size_t offset = offset_2;",
+          "new_line_content": "            size_t matchLength = ZSTD_count(ip+MINMATCH, ip+MINMATCH-offset_2, iend);",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": null,
+          "new_api": "ZSTD_storeSeq",
+          "old_text": null,
+          "new_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength)",
+          "old_line_content": "            anchor = ip;",
+          "new_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength);",
+          "content_same": false
+        },
+        {
+          "line": 915,
+          "old_api": null,
+          "new_api": "ZSTD_HC_resetCCtx_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_HC_resetCCtx_advanced(ctxPtr, ctxPtr->params)",
+          "old_line_content": "    }",
+          "new_line_content": "            ZSTD_HC_resetCCtx_advanced(ctxPtr, ctxPtr->params);",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": null,
+          "new_api": "ZSTD_storeSeq",
+          "old_text": null,
+          "new_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength)",
+          "old_line_content": "            anchor = ip;",
+          "new_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength);",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize)",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 801,
+          "old_api": null,
+          "new_api": "ZSTD_HC_HcFindBestMatch_selectMLS",
+          "old_text": null,
+          "new_text": "ZSTD_HC_HcFindBestMatch_selectMLS(ctx, ip, iend, &offset, maxSearches, mls)",
+          "old_line_content": "            {",
+          "new_line_content": "            size_t matchLength = ZSTD_HC_HcFindBestMatch_selectMLS(ctx, ip, iend, &offset, maxSearches, mls);",
+          "content_same": false
+        },
+        {
+          "line": 931,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(errorCode)",
+          "old_line_content": "    return 4;",
+          "new_line_content": "    if (ZSTD_isError(errorCode)) return errorCode;",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": null,
+          "new_api": "MEM_writeLE32",
+          "old_text": null,
+          "new_text": "MEM_writeLE32(dst, ZSTD_magicNumber)",
+          "old_line_content": "}",
+          "new_line_content": "    MEM_writeLE32(dst, ZSTD_magicNumber); /* Write Header */",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": null,
+          "new_api": "ZSTD_storeSeq",
+          "old_text": null,
+          "new_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset_1, matchLength-MINMATCH)",
+          "old_line_content": "                anchor = ip;",
+          "new_line_content": "                ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset_1, matchLength-MINMATCH);",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressBegin_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, ZSTD_HC_defaultParameters[compressionLevel])",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, ZSTD_HC_defaultParameters[compressionLevel]);",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(seqStorePtr->lit, anchor, lastLLSize)",
+          "old_line_content": "    }",
+          "new_line_content": "        memcpy(seqStorePtr->lit, anchor, lastLLSize);",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dstSize_tooSmall)",
+          "old_line_content": "    /* End of frame */",
+          "new_line_content": "    if (maxDstSize < 3) return ERROR(dstSize_tooSmall);",
+          "content_same": false
+        },
+        {
+          "line": 954,
+          "old_api": null,
+          "new_api": "BYTE)(bt_end << 6)",
+          "old_text": null,
+          "new_text": "BYTE)(bt_end << 6)",
+          "old_line_content": "    op[2] = 0;",
+          "new_line_content": "    op[0] = (BYTE)(bt_end << 6);",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": null,
+          "new_api": "ZSTD_compressSequences",
+          "old_text": null,
+          "new_text": "ZSTD_compressSequences((BYTE*)dst, maxDstSize,\n\n                                  seqStorePtr, srcSize)",
+          "old_line_content": "                                  seqStorePtr, srcSize);",
+          "new_line_content": "    return ZSTD_compressSequences((BYTE*)dst, maxDstSize,",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": null,
+          "new_api": "ZSTD_storeSeq",
+          "old_text": null,
+          "new_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, matchLength-MINMATCH)",
+          "old_line_content": "            anchor = ip;",
+          "new_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, matchLength-MINMATCH);",
+          "content_same": false
+        },
+        {
+          "line": 972,
+          "old_api": null,
+          "new_api": "ZSTD_highbit",
+          "old_text": null,
+          "new_text": "ZSTD_highbit((U32)srcSize-1)",
+          "old_line_content": "        if (params.windowLog > srcLog) params.windowLog = srcLog;",
+          "new_line_content": "        U32 srcLog = ZSTD_highbit((U32)srcSize-1) + 1;",
+          "content_same": false
+        },
+        {
+          "line": 979,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressBegin_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, params)",
+          "old_line_content": "    op += oSize;",
+          "new_line_content": "    oSize = ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, params);",
+          "content_same": false
+        },
+        {
+          "line": 980,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(oSize)",
+          "old_line_content": "    maxDstSize -= oSize;",
+          "new_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(seqStorePtr->lit, anchor, lastLLSize)",
+          "old_line_content": "    }",
+          "new_line_content": "        memcpy(seqStorePtr->lit, anchor, lastLLSize);",
+          "content_same": false
+        },
+        {
+          "line": 856,
+          "old_api": null,
+          "new_api": "ZSTD_HC_selectBlockCompressor",
+          "old_text": null,
+          "new_text": "ZSTD_HC_selectBlockCompressor(ctx->params.strategy)",
+          "old_line_content": "}",
+          "new_line_content": "    ZSTD_HC_blockCompressor blockCompressor = ZSTD_HC_selectBlockCompressor(ctx->params.strategy);",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "blockCompressor",
+          "old_text": null,
+          "new_text": "blockCompressor(ctx, dst, maxDstSize, src, srcSize)",
+          "old_line_content": "",
+          "new_line_content": "    return blockCompressor(ctx, dst, maxDstSize, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "ZSTD_compressSequences",
+          "old_text": null,
+          "new_text": "ZSTD_compressSequences((BYTE*)dst, maxDstSize,\n                                  seqStorePtr, srcSize)",
+          "old_line_content": "}",
+          "new_line_content": "    return ZSTD_compressSequences((BYTE*)dst, maxDstSize,",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize)",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize)",
+          "old_line_content": "    op += oSize;",
+          "new_line_content": "    oSize = ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize);",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(oSize)",
+          "old_line_content": "    maxDstSize -= oSize;",
+          "new_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 1, 1)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 1, 1);",
+          "content_same": false
+        },
+        {
+          "line": 992,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressEnd",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressEnd(ctx, op, maxDstSize)",
+          "old_line_content": "    op += oSize;",
+          "new_line_content": "    oSize = ZSTD_HC_compressEnd(ctx, op, maxDstSize);",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(oSize)",
+          "old_line_content": "",
+          "new_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 1)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 1);",
+          "content_same": false
+        },
+        {
+          "line": 870,
+          "old_api": null,
+          "new_api": "ZSTD_HC_selectBlockCompressor",
+          "old_text": null,
+          "new_text": "ZSTD_HC_selectBlockCompressor(ctxPtr->params.strategy)",
+          "old_line_content": "    while (remaining)",
+          "new_line_content": "    const ZSTD_HC_blockCompressor blockCompressor = ZSTD_HC_selectBlockCompressor(ctxPtr->params.strategy);",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 0)",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compress_advanced",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compress_advanced(ctx, dst, maxDstSize, src, srcSize, ZSTD_HC_defaultParameters[compressionLevel])",
+          "old_line_content": "",
+          "new_line_content": "    return ZSTD_HC_compress_advanced(ctx, dst, maxDstSize, src, srcSize, ZSTD_HC_defaultParameters[compressionLevel]);",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": null,
+          "new_api": "ERROR",
+          "old_text": null,
+          "new_text": "ERROR(dstSize_tooSmall)",
+          "old_line_content": "        if (remaining < blockSize) blockSize = remaining;",
+          "new_line_content": "        if (maxDstSize < 3 + MIN_CBLOCK_SIZE) return ERROR(dstSize_tooSmall);   /* not enough space to store compressed block */",
+          "content_same": false
+        },
+        {
+          "line": 879,
+          "old_api": null,
+          "new_api": "blockCompressor",
+          "old_text": null,
+          "new_text": "blockCompressor(ctxPtr, op+3, maxDstSize-3, ip, blockSize)",
+          "old_line_content": "",
+          "new_line_content": "        cSize = blockCompressor(ctxPtr, op+3, maxDstSize-3, ip, blockSize);",
+          "content_same": false
+        },
+        {
+          "line": 880,
+          "old_api": null,
+          "new_api": "ZSTD_isError",
+          "old_text": null,
+          "new_text": "ZSTD_isError(cSize)",
+          "old_line_content": "        if (cSize == 0)",
+          "new_line_content": "        if (ZSTD_isError(cSize)) return cSize;",
+          "content_same": false
+        },
+        {
+          "line": 1011,
+          "old_api": null,
+          "new_api": "ZSTD_HC_compressCCtx",
+          "old_text": null,
+          "new_text": "ZSTD_HC_compressCCtx(&ctxBody, dst, maxDstSize, src, srcSize, compressionLevel)",
+          "old_line_content": "    return result;",
+          "new_line_content": "    result = ZSTD_HC_compressCCtx(&ctxBody, dst, maxDstSize, src, srcSize, compressionLevel);",
+          "content_same": false
+        },
+        {
+          "line": 884,
+          "old_api": null,
+          "new_api": "ZSTD_noCompressBlock",
+          "old_text": null,
+          "new_text": "ZSTD_noCompressBlock(op, maxDstSize, ip, blockSize)",
+          "old_line_content": "        else",
+          "new_line_content": "            cSize = ZSTD_noCompressBlock(op, maxDstSize, ip, blockSize);   /* block is not compressible */",
+          "content_same": false
+        },
+        {
+          "line": 1012,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(ctxBody.workSpace)",
+          "old_line_content": "}",
+          "new_line_content": "    free(ctxBody.workSpace);",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "BYTE)(cSize>>16)",
+          "old_text": null,
+          "new_text": "BYTE)(cSize>>16)",
+          "old_line_content": "            op[2] = (BYTE)cSize;",
+          "new_line_content": "            op[0] = (BYTE)(cSize>>16);",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": null,
+          "new_api": "BYTE)(bt_compressed << 6)",
+          "old_text": null,
+          "new_text": "BYTE)(bt_compressed << 6)",
+          "old_line_content": "        }",
+          "new_line_content": "            op[0] += (BYTE)(bt_compressed << 6); /* is a compressed block */",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": null,
+          "new_api": "ZSTD_resetSeqStore",
+          "old_text": null,
+          "new_text": "ZSTD_resetSeqStore(seqStorePtr)",
+          "old_line_content": "",
+          "new_line_content": "    ZSTD_resetSeqStore(seqStorePtr);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 769,
+          "old_api": "MEM_read32",
+          "new_api": null,
+          "old_text": "MEM_read32(ip - offset_2)",
+          "new_text": null,
+          "old_line_content": "        if (MEM_read32(ip) == MEM_read32(ip - offset_2))",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "ZSTD_count",
+          "new_api": null,
+          "old_text": "ZSTD_count(ip+MINMATCH, ip+MINMATCH-offset_2, iend)",
+          "new_text": null,
+          "old_line_content": "            size_t matchLength = ZSTD_count(ip+MINMATCH, ip+MINMATCH-offset_2, iend);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 777,
+          "old_api": "ZSTD_storeSeq",
+          "new_api": null,
+          "old_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength)",
+          "new_text": null,
+          "old_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, 0, matchLength);",
+          "new_line_content": "            offset_2 = offset_1;",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": "ZSTD_HC_resetCCtx_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_HC_resetCCtx_advanced(ctxPtr, ctxPtr->params)",
+          "new_text": null,
+          "old_line_content": "            ZSTD_HC_resetCCtx_advanced(ctxPtr, ctxPtr->params);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "MEM_read32",
+          "new_api": null,
+          "old_text": "MEM_read32(ip+1 - offset_1)",
+          "new_text": null,
+          "old_line_content": "        if (MEM_read32(ip+1) == MEM_read32(ip+1 - offset_1))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize)",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_HC_compress_generic (ctxPtr, dst, dstSize, src, srcSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 799,
+          "old_api": "ZSTD_HC_HcFindBestMatch_selectMLS",
+          "new_api": null,
+          "old_text": "ZSTD_HC_HcFindBestMatch_selectMLS(ctx, ip, iend, &offset, maxSearches, mls)",
+          "new_text": null,
+          "old_line_content": "            size_t matchLength = ZSTD_HC_HcFindBestMatch_selectMLS(ctx, ip, iend, &offset, maxSearches, mls);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 927,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dstSize_tooSmall)",
+          "new_text": null,
+          "old_line_content": "    if (maxDstSize < 4) return ERROR(dstSize_tooSmall);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 928,
+          "old_api": "ZSTD_HC_resetCCtx_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_HC_resetCCtx_advanced(ctx, params)",
+          "new_text": null,
+          "old_line_content": "    errorCode = ZSTD_HC_resetCCtx_advanced(ctx, params);",
+          "new_line_content": "    size_t errorCode;",
+          "content_same": false
+        },
+        {
+          "line": 810,
+          "old_api": "ZSTD_storeSeq",
+          "new_api": null,
+          "old_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset_1, matchLength-MINMATCH)",
+          "new_text": null,
+          "old_line_content": "                ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset_1, matchLength-MINMATCH);",
+          "new_line_content": "                size_t litLength = ip-anchor;",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": "ZSTD_HC_compressBegin_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, ZSTD_HC_defaultParameters[compressionLevel])",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, ZSTD_HC_defaultParameters[compressionLevel]);",
+          "new_line_content": "    if (compressionLevel<=0) compressionLevel = 1;",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(seqStorePtr->lit, anchor, lastLLSize)",
+          "new_text": null,
+          "old_line_content": "        memcpy(seqStorePtr->lit, anchor, lastLLSize);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 949,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dstSize_tooSmall)",
+          "new_text": null,
+          "old_line_content": "    if (maxDstSize < 3) return ERROR(dstSize_tooSmall);",
+          "new_line_content": "    /* Sanity check */",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": "BYTE)(bt_end << 6)",
+          "new_api": null,
+          "old_text": "BYTE)(bt_end << 6)",
+          "new_text": null,
+          "old_line_content": "    op[0] = (BYTE)(bt_end << 6);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 825,
+          "old_api": "ZSTD_compressSequences",
+          "new_api": null,
+          "old_text": "ZSTD_compressSequences((BYTE*)dst, maxDstSize,\n\n                                  seqStorePtr, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_compressSequences((BYTE*)dst, maxDstSize,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": "ZSTD_storeSeq",
+          "new_api": null,
+          "old_text": "ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, matchLength-MINMATCH)",
+          "new_text": null,
+          "old_line_content": "            ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, matchLength-MINMATCH);",
+          "new_line_content": "            size_t litLength = start - anchor;",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": "ZSTD_highbit",
+          "new_api": null,
+          "old_text": "ZSTD_highbit((U32)srcSize-1)",
+          "new_text": null,
+          "old_line_content": "        U32 srcLog = ZSTD_highbit((U32)srcSize-1) + 1;",
+          "new_line_content": "    /* correct params, to use less memory */",
+          "content_same": false
+        },
+        {
+          "line": 977,
+          "old_api": "ZSTD_HC_compressBegin_advanced",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, params)",
+          "new_text": null,
+          "old_line_content": "    oSize = ZSTD_HC_compressBegin_advanced(ctx, dst, maxDstSize, params);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 978,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(oSize)",
+          "new_text": null,
+          "old_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "new_line_content": "    /* Header */",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(seqStorePtr->lit, anchor, lastLLSize)",
+          "new_text": null,
+          "old_line_content": "        memcpy(seqStorePtr->lit, anchor, lastLLSize);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": "ZSTD_HC_selectBlockCompressor",
+          "new_api": null,
+          "old_text": "ZSTD_HC_selectBlockCompressor(ctx->params.strategy)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_HC_blockCompressor blockCompressor = ZSTD_HC_selectBlockCompressor(ctx->params.strategy);",
+          "new_line_content": "size_t ZSTD_HC_compressBlock(ZSTD_HC_CCtx* ctx, void* dst, size_t maxDstSize, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "blockCompressor",
+          "new_api": null,
+          "old_text": "blockCompressor(ctx, dst, maxDstSize, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return blockCompressor(ctx, dst, maxDstSize, src, srcSize);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": "ZSTD_compressSequences",
+          "new_api": null,
+          "old_text": "ZSTD_compressSequences((BYTE*)dst, maxDstSize,\n                                  seqStorePtr, srcSize)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_compressSequences((BYTE*)dst, maxDstSize,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": "ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize)",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    oSize = ZSTD_HC_compress_generic (ctx, op,  maxDstSize, src, srcSize);",
+          "new_line_content": "    /* body (compression) */",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(oSize)",
+          "new_text": null,
+          "old_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "new_line_content": "    ctx->base = (const BYTE*)src;",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 1, 1)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 1, 1);",
+          "new_line_content": "size_t ZSTD_HC_compressBlock_btlazy2(ZSTD_HC_CCtx* ctx, void* dst, size_t maxDstSize, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 990,
+          "old_api": "ZSTD_HC_compressEnd",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressEnd(ctx, op, maxDstSize)",
+          "new_text": null,
+          "old_line_content": "    oSize = ZSTD_HC_compressEnd(ctx, op, maxDstSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 991,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(oSize)",
+          "new_text": null,
+          "old_line_content": "    if(ZSTD_isError(oSize)) return oSize;",
+          "new_line_content": "    /* Close frame */",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 1)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 1);",
+          "new_line_content": "size_t ZSTD_HC_compressBlock_lazy2(ZSTD_HC_CCtx* ctx, void* dst, size_t maxDstSize, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "ZSTD_HC_selectBlockCompressor",
+          "new_api": null,
+          "old_text": "ZSTD_HC_selectBlockCompressor(ctxPtr->params.strategy)",
+          "new_text": null,
+          "old_line_content": "    const ZSTD_HC_blockCompressor blockCompressor = ZSTD_HC_selectBlockCompressor(ctxPtr->params.strategy);",
+          "new_line_content": "    BYTE* const ostart = (BYTE*)dst;",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": "ZSTD_compress",
+          "new_api": null,
+          "old_text": "ZSTD_compress(dst, maxDstSize, src, srcSize)",
+          "new_text": null,
+          "old_line_content": "    if (compressionLevel<=1) return ZSTD_compress(dst, maxDstSize, src, srcSize);   /* fast mode */",
+          "new_line_content": "size_t ZSTD_HC_compressCCtx (ZSTD_HC_CCtx* ctx, void* dst, size_t maxDstSize, const void* src, size_t srcSize, int compressionLevel)",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": "ZSTD_HC_compressBlock_lazy_generic",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 0)",
+          "new_text": null,
+          "old_line_content": "    return ZSTD_HC_compressBlock_lazy_generic(ctx, dst, maxDstSize, src, srcSize, 0, 0);",
+          "new_line_content": "size_t ZSTD_HC_compressBlock_lazy(ZSTD_HC_CCtx* ctx, void* dst, size_t maxDstSize, const void* src, size_t srcSize)",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "ERROR",
+          "new_api": null,
+          "old_text": "ERROR(dstSize_tooSmall)",
+          "new_text": null,
+          "old_line_content": "        if (maxDstSize < 3 + MIN_CBLOCK_SIZE) return ERROR(dstSize_tooSmall);   /* not enough space to store compressed block */",
+          "new_line_content": "        size_t cSize;",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": "blockCompressor",
+          "new_api": null,
+          "old_text": "blockCompressor(ctxPtr, op+3, maxDstSize-3, ip, blockSize)",
+          "new_text": null,
+          "old_line_content": "        cSize = blockCompressor(ctxPtr, op+3, maxDstSize-3, ip, blockSize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 878,
+          "old_api": "ZSTD_isError",
+          "new_api": null,
+          "old_text": "ZSTD_isError(cSize)",
+          "new_text": null,
+          "old_line_content": "        if (ZSTD_isError(cSize)) return cSize;",
+          "new_line_content": "        if (remaining < blockSize) blockSize = remaining;",
+          "content_same": false
+        },
+        {
+          "line": 1008,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(&ctxBody, 0, sizeof(ctxBody))",
+          "new_text": null,
+          "old_line_content": "    memset(&ctxBody, 0, sizeof(ctxBody));",
+          "new_line_content": "    size_t result;",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": "ZSTD_HC_compressCCtx",
+          "new_api": null,
+          "old_text": "ZSTD_HC_compressCCtx(&ctxBody, dst, maxDstSize, src, srcSize, compressionLevel)",
+          "new_text": null,
+          "old_line_content": "    result = ZSTD_HC_compressCCtx(&ctxBody, dst, maxDstSize, src, srcSize, compressionLevel);",
+          "new_line_content": "    ZSTD_HC_CCtx ctxBody;",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "ZSTD_noCompressBlock",
+          "new_api": null,
+          "old_text": "ZSTD_noCompressBlock(op, maxDstSize, ip, blockSize)",
+          "new_text": null,
+          "old_line_content": "            cSize = ZSTD_noCompressBlock(op, maxDstSize, ip, blockSize);   /* block is not compressible */",
+          "new_line_content": "        if (cSize == 0)",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": "BYTE)(cSize>>16)",
+          "new_api": null,
+          "old_text": "BYTE)(cSize>>16)",
+          "new_text": null,
+          "old_line_content": "            op[0] = (BYTE)(cSize>>16);",
+          "new_line_content": "        else",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "BYTE)(cSize>>8)",
+          "new_api": null,
+          "old_text": "BYTE)(cSize>>8)",
+          "new_text": null,
+          "old_line_content": "            op[1] = (BYTE)(cSize>>8);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": "ZSTD_resetSeqStore",
+          "new_api": null,
+          "old_text": "ZSTD_resetSeqStore(seqStorePtr)",
+          "new_text": null,
+          "old_line_content": "    ZSTD_resetSeqStore(seqStorePtr);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 41,
+      "total_deletions": 41,
+      "total_api_changes": 89
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 2,
+        "api_related_lines": 89,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          710,
+          711
+        ]
+      }
+    },
+    "api_calls_before": 150,
+    "api_calls_after": 150,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 0,
+      "total_diff_lines": 14
+    }
+  }
+}

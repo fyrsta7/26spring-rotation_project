@@ -1,0 +1,16 @@
+diff --git a/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc b/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
+index 3f99d40c717..196ea218ef3 100644
+--- a/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
++++ b/tensorflow/compiler/xla/service/mlir_gpu/kernel_lowering.cc
+@@ -505,6 +505,11 @@ Status LowerLHLOToGPU(mlir::ModuleOp module, LowerLHLOToGPUOptions options) {
+   // Some basic cleanup.
+   pm.addNestedPass<::mlir::FuncOp>(::mlir::createCanonicalizerPass());
+   pm.addNestedPass<::mlir::FuncOp>(::mlir::createCSEPass());
++  // Make loops with min bounds into a conditional plus static bounds.
++  // Only do this if we unrolled in the first place.
++  if (!options.unroll_factors.empty()) {
++    pm.addNestedPass<::mlir::FuncOp>(mlir::createForLoopSpecializationPass());
++  }
+   // Approximate of requested.
+   if (options.use_approximations) {
+     pm.addNestedPass<::mlir::FuncOp>(

@@ -1,0 +1,208 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/435394242ca5b08d179be16a6bfe966a8d243764",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/435394242ca5b08d179be16a6bfe966a8d243764/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/435394242ca5b08d179be16a6bfe966a8d243764/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/435394242ca5b08d179be16a6bfe966a8d243764/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 78,
+          "old_api": "// Фильтруем остальные столбцы.\n\t\tfor (size_",
+          "new_api": "// Если через фильтр проходят все строчки.",
+          "old_text": "// Фильтруем остальные столбцы.\n\t\tfor (size_",
+          "new_text": "// Если через фильтр проходят все строчки.\n\t",
+          "old_line_content": null,
+          "new_line_content": "\t\t\tColumnWithNameAndType & current_column = res.getByPosition(first_non_constant_column);",
+          "content_same": true
+        },
+        {
+          "line": 79,
+          "old_api": "{\n\t\t\tColumnWithNameAndType & current_",
+          "new_api": "size",
+          "old_text": "{\n\t\t\tColumnWithNameAndType & current_",
+          "new_text": "size())\n\t\t{\n\t\t\t/// Заменим столбец с ",
+          "old_line_content": null,
+          "new_line_content": "\t\t\tcurrent_column.column = current_column.column->filter(filter);",
+          "content_same": true
+        },
+        {
+          "line": 80,
+          "old_api": "ition",
+          "new_api": "getByPosition",
+          "old_text": "ition(i);\n\n\t\t\tif (i == static",
+          "new_text": ".\n\t\t\tres.getByPosition(filter",
+          "old_line_content": null,
+          "new_line_content": "\t\t\tfiltered_rows = current_column.column->size();",
+          "content_same": true
+        },
+        {
+          "line": 84,
+          "old_api": "/// Сам столбец с фильт",
+          "new_api": "t8",
+          "old_text": "\t\t\t/// Сам столбец с фильт",
+          "new_text": "t8(filtered_rows, 1);\n\t\t\t/",
+          "old_line_content": null,
+          "new_line_content": "\t\t\tfiltered_rows = countBytesInFilter(filter);",
+          "content_same": true
+        }
+      ],
+      "additions": [
+        {
+          "line": 103,
+          "old_api": null,
+          "new_api": "(filter);\n\t\t}\n\n\t\tret",
+          "old_text": null,
+          "new_text": "(filter);\n\t\t}\n\n\t\tret",
+          "old_line_content": "\t\t\tif (i == first_non_constant_column)",
+          "new_line_content": "\t\t\tColumnWithNameAndType & current_column = res.getByPosition(i);",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": null,
+          "new_api": "}",
+          "old_text": null,
+          "new_text": "\n}\n",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tif (i == static_cast<size_t>(filter_column))",
+          "content_same": false
+        },
+        {
+          "line": 115,
+          "old_api": null,
+          "new_api": "",
+          "old_text": null,
+          "new_text": "",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tif (current_column.column->isConst())",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": null,
+          "new_api": "",
+          "old_text": null,
+          "new_text": "",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tcurrent_column.column = current_column.column->cut(0, filtered_rows);",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "",
+          "old_text": null,
+          "new_text": "",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tcurrent_column.column = current_column.column->filter(filter);",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": null,
+          "new_api": "ильтром замен",
+          "old_text": null,
+          "new_text": "ильтром замен",
+          "old_line_content": "\t\tfor (size_t i = 0; i < columns; ++i)",
+          "new_line_content": "\t\tif (filtered_rows == filter.size())",
+          "content_same": false
+        },
+        {
+          "line": 95,
+          "old_api": null,
+          "new_api": "current_column.column = new",
+          "old_text": null,
+          "new_text": "\t\t\t\tcurrent_column.column = new ",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tres.getByPosition(filter_column).column = new ColumnConstUInt8(filtered_rows, 1);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 96,
+          "old_api": "else\n\t\t\t\tcurrent_column.column = c",
+          "new_api": null,
+          "old_text": "else\n\t\t\t\tcurrent_column.column = c",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (i == static_cast<size_t>(filter_column))",
+          "new_line_content": "\t\t\t/// Остальные столбцы трогать не нужно.",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "",
+          "new_api": null,
+          "old_text": "",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (current_column.column->isConst())",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 107,
+          "old_api": "",
+          "new_api": null,
+          "old_text": "",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tcurrent_column.column = current_column.column->cut(0, filtered_rows);",
+          "new_line_content": "\t\t\t\t/// Сам столбец с фильтром заменяем на столбец с константой 1, так как после фильтрации в нём ничего другого не останется.",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": "",
+          "new_api": null,
+          "old_text": "",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tcurrent_column.column = current_column.column->filter(filter);",
+          "new_line_content": "\t\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 94,
+          "old_api": "cut",
+          "new_api": null,
+          "old_text": ".column->cut(0, filt",
+          "new_text": null,
+          "old_line_content": "\t\t\tColumnWithNameAndType & current_column = res.getByPosition(i);",
+          "new_line_content": "\t\t\t/// Заменим столбец с фильтром на константу.",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 4,
+      "total_additions": 7,
+      "total_deletions": 5,
+      "total_api_changes": 16
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 16,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          97,
+          98,
+          99,
+          91,
+          93
+        ]
+      }
+    },
+    "api_calls_before": 27,
+    "api_calls_after": 29,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 0,
+      "total_diff_lines": 21
+    }
+  }
+}

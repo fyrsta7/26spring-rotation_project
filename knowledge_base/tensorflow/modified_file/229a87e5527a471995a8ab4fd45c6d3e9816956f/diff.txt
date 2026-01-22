@@ -1,0 +1,15 @@
+diff --git a/tensorflow/compiler/xla/service/hlo_cse.cc b/tensorflow/compiler/xla/service/hlo_cse.cc
+index ce9da43ad7b..d22f63b598a 100644
+--- a/tensorflow/compiler/xla/service/hlo_cse.cc
++++ b/tensorflow/compiler/xla/service/hlo_cse.cc
+@@ -209,6 +209,10 @@ struct CseKey {
+         return H::combine(std::move(h), instruction->dimensions());
+       case HloOpcode::kGetTupleElement:
+         return H::combine(std::move(h), instruction->tuple_index());
++      case HloOpcode::kCompare:
++        return H::combine(
++            std::move(h),
++            Cast<HloCompareInstruction>(instruction)->direction());
+       default:
+         return std::move(h);
+     }

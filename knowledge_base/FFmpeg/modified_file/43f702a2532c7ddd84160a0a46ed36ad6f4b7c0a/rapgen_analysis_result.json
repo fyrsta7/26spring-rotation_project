@@ -1,0 +1,476 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/43f702a2532c7ddd84160a0a46ed36ad6f4b7c0a",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/43f702a2532c7ddd84160a0a46ed36ad6f4b7c0a/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/43f702a2532c7ddd84160a0a46ed36ad6f4b7c0a/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/43f702a2532c7ddd84160a0a46ed36ad6f4b7c0a/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 292,
+          "old_api": "av_frame_clone",
+          "new_api": "AVERROR",
+          "old_text": "av_frame_clone(frame)",
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "            if (!(frame = av_frame_clone(frame)))",
+          "new_line_content": "                return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "ff_inlink_consume_frame",
+          "new_api": "framesync_inject_frame",
+          "old_text": "ff_inlink_consume_frame(ctx->inputs[i], &frame)",
+          "new_text": "framesync_inject_frame(fs, i, frame)",
+          "old_line_content": "        ret = ff_inlink_consume_frame(ctx->inputs[i], &frame);",
+          "new_line_content": "            framesync_inject_frame(fs, i, frame);",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "av_assert0",
+          "new_api": "framesync_inject_status",
+          "old_text": "av_assert0(frame)",
+          "new_text": "framesync_inject_status(fs, i, status, pts)",
+          "old_line_content": "            av_assert0(frame);",
+          "new_line_content": "                framesync_inject_status(fs, i, status, pts);",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": "framesync_advance",
+          "new_api": "on_event",
+          "old_text": "framesync_advance(fs)",
+          "new_text": "fs->on_event(fs)",
+          "old_line_content": "    ret = framesync_advance(fs);",
+          "new_line_content": "    ret = fs->on_event(fs);",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "ff_framesync_get_frame",
+          "new_api": "av_assert0",
+          "old_text": "ff_framesync_get_frame(fs, 0, &mainpic,   1)",
+          "new_text": "av_assert0(mainpic)",
+          "old_line_content": "    if ((ret = ff_framesync_get_frame(fs, 0, &mainpic,   1)) < 0 ||",
+          "new_line_content": "    av_assert0(mainpic);",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": "ff_framesync_get_frame",
+          "new_api": "av_rescale_q",
+          "old_text": "ff_framesync_get_frame(fs, 1, &secondpic, 0)",
+          "new_text": "av_rescale_q(fs->pts, fs->time_base, ctx->outputs[0]->time_base)",
+          "old_line_content": "        (ret = ff_framesync_get_frame(fs, 1, &secondpic, 0)) < 0) {",
+          "new_line_content": "    mainpic->pts = av_rescale_q(fs->pts, fs->time_base, ctx->outputs[0]->time_base);",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "ff_framesync_dualinput_get",
+          "new_api": "av_frame_free",
+          "old_text": "ff_framesync_dualinput_get(fs, f0, f1)",
+          "new_text": "av_frame_free(f0)",
+          "old_line_content": "    ret = ff_framesync_dualinput_get(fs, f0, f1);",
+          "new_line_content": "        av_frame_free(f0);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "ff_inlink_make_frame_writable",
+          "old_text": null,
+          "new_text": "ff_inlink_make_frame_writable(fs->parent->inputs[0], f0)",
+          "old_line_content": "    int ret;",
+          "new_line_content": "    ret = ff_inlink_make_frame_writable(fs->parent->inputs[0], f0);",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": null,
+          "new_api": "av_frame_clone",
+          "old_text": null,
+          "new_text": "av_frame_clone(frame)",
+          "old_line_content": "        if (need_copy) {",
+          "new_line_content": "            if (!(frame = av_frame_clone(frame)))",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": null,
+          "new_api": "FF_FILTER_FORWARD_STATUS_BACK_ALL",
+          "old_text": null,
+          "new_text": "FF_FILTER_FORWARD_STATUS_BACK_ALL(ctx->outputs[0], ctx)",
+          "old_line_content": "int ff_framesync_activate(FFFrameSync *fs)",
+          "new_line_content": "    FF_FILTER_FORWARD_STATUS_BACK_ALL(ctx->outputs[0], ctx);",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "ff_inlink_consume_frame",
+          "old_text": null,
+          "new_text": "ff_inlink_consume_frame(ctx->inputs[i], &frame)",
+          "old_line_content": "    nb_active = nb_miss = 0;",
+          "new_line_content": "        ret = ff_inlink_consume_frame(ctx->inputs[i], &frame);",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "framesync_advance",
+          "old_text": null,
+          "new_text": "framesync_advance(fs)",
+          "old_line_content": "    AVFilterContext *ctx = fs->parent;",
+          "new_line_content": "    ret = framesync_advance(fs);",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "av_assert0",
+          "old_text": null,
+          "new_text": "av_assert0(frame)",
+          "old_line_content": "        nb_active++;",
+          "new_line_content": "            av_assert0(frame);",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": null,
+          "new_api": "ff_framesync_get_frame",
+          "old_text": null,
+          "new_text": "ff_framesync_get_frame(fs, 0, &mainpic,   1)",
+          "old_line_content": "{",
+          "new_line_content": "    if ((ret = ff_framesync_get_frame(fs, 0, &mainpic,   1)) < 0 ||",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "ff_framesync_get_frame",
+          "old_text": null,
+          "new_text": "ff_framesync_get_frame(fs, 1, &secondpic, 0)",
+          "old_line_content": "    AVFilterContext *ctx = fs->parent;",
+          "new_line_content": "        (ret = ff_framesync_get_frame(fs, 1, &secondpic, 0)) < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&mainpic)",
+          "old_line_content": "    AVFrame *mainpic = NULL, *secondpic = NULL;",
+          "new_line_content": "        av_frame_free(&mainpic);",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": null,
+          "new_api": "ff_inlink_acknowledge_status",
+          "old_text": null,
+          "new_text": "ff_inlink_acknowledge_status(ctx->inputs[i], &status, &pts)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "            ret = ff_inlink_acknowledge_status(ctx->inputs[i], &status, &pts);",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&fs->in[i].frame)",
+          "old_line_content": "void ff_framesync_uninit(FFFrameSync *fs)",
+          "new_line_content": "        av_frame_free(&fs->in[i].frame);",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "av_frame_free",
+          "old_text": null,
+          "new_text": "av_frame_free(&fs->in[i].frame_next)",
+          "old_line_content": "{",
+          "new_line_content": "        av_frame_free(&fs->in[i].frame_next);",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&fs->in)",
+          "old_line_content": "    for (i = 0; i < fs->nb_in; i++) {",
+          "new_line_content": "    av_freep(&fs->in);",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": null,
+          "new_api": "ff_framesync_init",
+          "old_text": null,
+          "new_text": "ff_framesync_init(fs, parent, 2)",
+          "old_line_content": "",
+          "new_line_content": "    ret = ff_framesync_init(fs, parent, 2);",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": null,
+          "new_api": "ff_inlink_request_frame",
+          "old_text": null,
+          "new_text": "ff_inlink_request_frame(ctx->inputs[i])",
+          "old_line_content": "    if (nb_miss) {",
+          "new_line_content": "                ff_inlink_request_frame(ctx->inputs[i]);",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": null,
+          "new_api": "ff_outlink_frame_wanted",
+          "old_text": null,
+          "new_text": "ff_outlink_frame_wanted(ctx->outputs[0])",
+          "old_line_content": "                nb_miss++;",
+          "new_line_content": "        if (nb_miss == nb_active && !ff_outlink_frame_wanted(ctx->outputs[0]))",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": null,
+          "new_api": "ff_framesync_dualinput_get",
+          "old_text": null,
+          "new_text": "ff_framesync_dualinput_get(fs, f0, f1)",
+          "old_line_content": "",
+          "new_line_content": "    ret = ff_framesync_dualinput_get(fs, f0, f1);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 404,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(&mainpic)",
+          "new_text": null,
+          "old_line_content": "        av_frame_free(&mainpic);",
+          "new_line_content": "    if (ctx->is_disabled)",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "av_assert0",
+          "new_api": null,
+          "old_text": "av_assert0(mainpic)",
+          "new_text": null,
+          "old_line_content": "    av_assert0(mainpic);",
+          "new_line_content": "    *f1 = secondpic;",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "av_rescale_q",
+          "new_api": null,
+          "old_text": "av_rescale_q(fs->pts, fs->time_base, ctx->outputs[0]->time_base)",
+          "new_text": null,
+          "old_line_content": "    mainpic->pts = av_rescale_q(fs->pts, fs->time_base, ctx->outputs[0]->time_base);",
+          "new_line_content": "    return 0;",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "                return AVERROR(ENOMEM);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": "ff_inlink_make_frame_writable",
+          "new_api": null,
+          "old_text": "ff_inlink_make_frame_writable(fs->parent->inputs[in], &frame)",
+          "new_text": null,
+          "old_line_content": "            if ((ret = ff_inlink_make_frame_writable(fs->parent->inputs[in], &frame)) < 0) {",
+          "new_line_content": "            fs->in[in].frame = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(&frame)",
+          "new_text": null,
+          "old_line_content": "                av_frame_free(&frame);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "ff_inlink_make_frame_writable",
+          "new_api": null,
+          "old_text": "ff_inlink_make_frame_writable(fs->parent->inputs[0], f0)",
+          "new_text": null,
+          "old_line_content": "    ret = ff_inlink_make_frame_writable(fs->parent->inputs[0], f0);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(f0)",
+          "new_text": null,
+          "old_line_content": "        av_frame_free(f0);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(&fs->in[i].frame)",
+          "new_text": null,
+          "old_line_content": "        av_frame_free(&fs->in[i].frame);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "av_frame_free",
+          "new_api": null,
+          "old_text": "av_frame_free(&fs->in[i].frame_next)",
+          "new_text": null,
+          "old_line_content": "        av_frame_free(&fs->in[i].frame_next);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&fs->in)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&fs->in);",
+          "new_line_content": "    AVFilterContext *ctx = fs->parent;",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "framesync_inject_frame",
+          "new_api": null,
+          "old_text": "framesync_inject_frame(fs, i, frame)",
+          "new_text": null,
+          "old_line_content": "            framesync_inject_frame(fs, i, frame);",
+          "new_line_content": "            } else if (!ret) {",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "ff_inlink_acknowledge_status",
+          "new_api": null,
+          "old_text": "ff_inlink_acknowledge_status(ctx->inputs[i], &status, &pts)",
+          "new_text": null,
+          "old_line_content": "            ret = ff_inlink_acknowledge_status(ctx->inputs[i], &status, &pts);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "framesync_inject_status",
+          "new_api": null,
+          "old_text": "framesync_inject_status(fs, i, status, pts)",
+          "new_text": null,
+          "old_line_content": "                framesync_inject_status(fs, i, status, pts);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "ff_outlink_frame_wanted",
+          "new_api": null,
+          "old_text": "ff_outlink_frame_wanted(ctx->outputs[0])",
+          "new_text": null,
+          "old_line_content": "        if (nb_miss == nb_active && !ff_outlink_frame_wanted(ctx->outputs[0]))",
+          "new_line_content": "        return 0;",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "ff_inlink_request_frame",
+          "new_api": null,
+          "old_text": "ff_inlink_request_frame(ctx->inputs[i])",
+          "new_text": null,
+          "old_line_content": "                ff_inlink_request_frame(ctx->inputs[i]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "FF_FILTER_FORWARD_STATUS_BACK_ALL",
+          "new_api": null,
+          "old_text": "FF_FILTER_FORWARD_STATUS_BACK_ALL(ctx->outputs[0], ctx)",
+          "new_text": null,
+          "old_line_content": "    FF_FILTER_FORWARD_STATUS_BACK_ALL(ctx->outputs[0], ctx);",
+          "new_line_content": "    if (fs->eof || !fs->frame_ready)",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "on_event",
+          "new_api": null,
+          "old_text": "fs->on_event(fs)",
+          "new_text": null,
+          "old_line_content": "    ret = fs->on_event(fs);",
+          "new_line_content": "    return 0;",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": "ff_framesync_init",
+          "new_api": null,
+          "old_text": "ff_framesync_init(fs, parent, 2)",
+          "new_text": null,
+          "old_line_content": "    ret = ff_framesync_init(fs, parent, 2);",
+          "new_line_content": "    fs->in[0].sync   = 2;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 17,
+      "total_deletions": 19,
+      "total_api_changes": 43
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 43,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          296,
+          297,
+          276
+        ]
+      }
+    },
+    "api_calls_before": 56,
+    "api_calls_after": 54,
+    "diff_info": {
+      "added_lines": 0,
+      "removed_lines": 5,
+      "total_diff_lines": 24
+    }
+  }
+}

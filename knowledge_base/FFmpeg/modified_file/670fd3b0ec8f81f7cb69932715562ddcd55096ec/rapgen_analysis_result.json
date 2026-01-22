@@ -1,0 +1,996 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/670fd3b0ec8f81f7cb69932715562ddcd55096ec",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/670fd3b0ec8f81f7cb69932715562ddcd55096ec/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/670fd3b0ec8f81f7cb69932715562ddcd55096ec/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/670fd3b0ec8f81f7cb69932715562ddcd55096ec/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 123,
+          "old_api": "avio_alloc_context",
+          "new_api": "ffio_init_context",
+          "old_text": "avio_alloc_context(p->buf, p->buf_size, 0, NULL, NULL, NULL, NULL)",
+          "new_text": "ffio_init_context(&pb, p->buf, p->buf_size, 0, NULL, NULL, NULL, NULL)",
+          "old_line_content": "    pb = avio_alloc_context(p->buf, p->buf_size, 0, NULL, NULL, NULL, NULL);",
+          "new_line_content": "    ffio_init_context(&pb, p->buf, p->buf_size, 0, NULL, NULL, NULL, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": "avio_tell",
+          "new_api": "get_line",
+          "old_text": "avio_tell(s->pb)",
+          "new_text": "get_line(s->pb, boundary, sizeof(boundary))",
+          "old_line_content": "    int64_t pos = avio_tell(s->pb);",
+          "new_line_content": "        ret = get_line(s->pb, boundary, sizeof(boundary));",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "av_log",
+          "new_api": "strlen",
+          "old_text": "av_log(log_ctx,\n            AV_LOG_ERROR,\n            \"Expected boundary '%s' not found, instead found a line of %\"SIZE_SPECIFIER\" bytes\\n\",\n            expected_boundary,\n            strlen(line))",
+          "new_text": "strlen(line)",
+          "old_line_content": "        av_log(log_ctx,",
+          "new_line_content": "            strlen(line));",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": "av_strcasecmp",
+          "new_api": "av_log",
+          "old_text": "av_strcasecmp(tag, \"Content-Length\")",
+          "new_text": "av_log(log_ctx, AV_LOG_WARNING,\n                           \"Invalid Content-Length value : %s\\n\",\n                           value)",
+          "old_line_content": "        } else if (!av_strcasecmp(tag, \"Content-Length\")) {",
+          "new_line_content": "                av_log(log_ctx, AV_LOG_WARNING,",
+          "content_same": false
+        },
+        {
+          "line": 271,
+          "old_api": "av_isspace",
+          "new_api": "strchr",
+          "old_text": "av_isspace(*start)",
+          "new_text": "strchr(start, ';')",
+          "old_line_content": "        while (av_isspace(*start))",
+          "new_line_content": "            end = strchr(start, ';');",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": "strchr",
+          "new_api": "strlen",
+          "old_text": "strchr(start, ';')",
+          "new_text": "strlen(start)",
+          "old_line_content": "            end = strchr(start, ';');",
+          "new_line_content": "                len = strlen(start);",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "mpjpeg_get_boundary",
+          "new_api": "av_asprintf",
+          "old_text": "mpjpeg_get_boundary(s->pb)",
+          "new_text": "av_asprintf( \"\\r\\n%s\\r\\n\", boundary )",
+          "old_line_content": "            boundary = mpjpeg_get_boundary(s->pb);",
+          "new_line_content": "            mpjpeg->searchstr = av_asprintf( \"\\r\\n%s\\r\\n\", boundary );",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "av_strdup",
+          "new_api": "av_freep",
+          "old_text": "av_strdup(\"--\")",
+          "new_text": "av_freep(&mpjpeg->boundary)",
+          "old_line_content": "            mpjpeg->boundary = av_strdup(\"--\");",
+          "new_line_content": "            av_freep(&mpjpeg->boundary);",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "av_strdup",
+          "new_api": "av_freep",
+          "old_text": "av_strdup(\"\\r\\n--\")",
+          "new_text": "av_freep(&mpjpeg->searchstr)",
+          "old_line_content": "            mpjpeg->searchstr = av_strdup(\"\\r\\n--\");",
+          "new_line_content": "            av_freep(&mpjpeg->searchstr);",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "av_freep",
+          "new_api": "strlen",
+          "old_text": "av_freep(&mpjpeg->boundary)",
+          "new_text": "strlen(mpjpeg->searchstr)",
+          "old_line_content": "            av_freep(&mpjpeg->boundary);",
+          "new_line_content": "        mpjpeg->searchstr_len = strlen(mpjpeg->searchstr);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 258,
+          "old_api": null,
+          "new_api": "av_opt_get",
+          "old_text": null,
+          "new_text": "av_opt_get(pb, \"mime_type\", AV_OPT_SEARCH_CHILDREN, &mime_type)",
+          "old_line_content": "    uint8_t *res = NULL;",
+          "new_line_content": "    av_opt_get(pb, \"mime_type\", AV_OPT_SEARCH_CHILDREN, &mime_type);",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "strchr",
+          "old_text": null,
+          "new_text": "strchr(start, ';')",
+          "old_line_content": "    /* get MIME type, and skip to the first parameter */",
+          "new_line_content": "        start = strchr(start, ';');",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": null,
+          "new_api": "avio_tell",
+          "old_text": null,
+          "new_text": "avio_tell(s->pb)",
+          "old_line_content": "static int mpjpeg_read_header(AVFormatContext *s)",
+          "new_line_content": "    int64_t pos = avio_tell(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"MIME multipart JPEG\")",
+          "old_line_content": "};",
+          "new_line_content": "    .long_name         = NULL_IF_CONFIG_SMALL(\"MIME multipart JPEG\"),",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "av_isspace",
+          "old_text": null,
+          "new_text": "av_isspace(*start)",
+          "old_line_content": "            break;",
+          "new_line_content": "        while (av_isspace(*start))",
+          "content_same": false
+        },
+        {
+          "line": 270,
+          "old_api": null,
+          "new_api": "av_stristart",
+          "old_text": null,
+          "new_text": "av_stristart(start, \"boundary=\", &start)",
+          "old_line_content": "",
+          "new_line_content": "        if (!av_stristart(start, \"boundary=\", &start)) {",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": null,
+          "new_api": "strncmp",
+          "old_text": null,
+          "new_text": "strncmp(boundary, \"--\", 2)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "    if (strncmp(boundary, \"--\", 2))",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": null,
+          "new_api": "avformat_new_stream",
+          "old_text": null,
+          "new_text": "avformat_new_stream(s, NULL)",
+          "old_line_content": "",
+          "new_line_content": "    st = avformat_new_stream(s, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": null,
+          "new_api": "avpriv_set_pts_info",
+          "old_text": null,
+          "new_text": "avpriv_set_pts_info(st, 60, 1, 25)",
+          "old_line_content": "",
+          "new_line_content": "    avpriv_set_pts_info(st, 60, 1, 25);",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": null,
+          "new_api": "av_strndup",
+          "old_text": null,
+          "new_text": "av_strndup(start, len)",
+          "old_line_content": "            if ( len>2 && *start == '\"' && start[len-1] == '\"' ) {",
+          "new_line_content": "            res = av_strndup(start, len);",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(s->pb, pos, SEEK_SET)",
+          "old_line_content": "    st->codecpar->codec_id   = AV_CODEC_ID_MJPEG;",
+          "new_line_content": "    avio_seek(s->pb, pos, SEEK_SET);",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&mime_type)",
+          "old_line_content": "            break;",
+          "new_line_content": "    av_freep(&mime_type);",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": null,
+          "new_api": "strtol",
+          "old_text": null,
+          "new_text": "strtol(value, NULL, 10)",
+          "old_line_content": "}",
+          "new_line_content": "    long int val = strtol(value, NULL, 10);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(errno)",
+          "old_line_content": "{",
+          "new_line_content": "        return AVERROR(errno);",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ERANGE)",
+          "old_line_content": "",
+          "new_line_content": "        return AVERROR(ERANGE);",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "mpjpeg_get_boundary",
+          "old_text": null,
+          "new_text": "mpjpeg_get_boundary(s->pb)",
+          "old_line_content": "    MPJPEGDemuxContext *mpjpeg = s->priv_data;",
+          "new_line_content": "            boundary = mpjpeg_get_boundary(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "av_strdup",
+          "old_text": null,
+          "new_text": "av_strdup(\"--\")",
+          "old_line_content": "        if (boundary != NULL) {",
+          "new_line_content": "            mpjpeg->boundary = av_strdup(\"--\");",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "av_strdup",
+          "old_text": null,
+          "new_text": "av_strdup(\"\\r\\n--\")",
+          "old_line_content": "            mpjpeg->boundary = boundary;",
+          "new_line_content": "            mpjpeg->searchstr = av_strdup(\"\\r\\n--\");",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": null,
+          "new_api": "get_line",
+          "old_text": null,
+          "new_text": "get_line(pb, line, sizeof(line))",
+          "old_line_content": "",
+          "new_line_content": "    ret = get_line(pb, line, sizeof(line));",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "AVERROR",
+          "old_text": null,
+          "new_text": "AVERROR(ENOMEM)",
+          "old_line_content": "        }",
+          "new_line_content": "            return AVERROR(ENOMEM);",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": null,
+          "new_api": "get_line",
+          "old_text": null,
+          "new_text": "get_line(pb, line, sizeof(line))",
+          "old_line_content": "    /* some implementation do not provide the required",
+          "new_line_content": "        ret = get_line(pb, line, sizeof(line));",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "parse_multipart_header",
+          "old_text": null,
+          "new_text": "parse_multipart_header(s->pb, &size, mpjpeg->boundary, s)",
+          "old_line_content": "        }",
+          "new_line_content": "    ret = parse_multipart_header(s->pb, &size, mpjpeg->boundary, s);",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "av_strstart",
+          "old_text": null,
+          "new_text": "av_strstart(line, expected_boundary, NULL)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "    if (!av_strstart(line, expected_boundary, NULL)) {",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(log_ctx,\n            AV_LOG_ERROR,\n            \"Expected boundary '%s' not found, instead found a line of %\"SIZE_SPECIFIER\" bytes\\n\",\n            expected_boundary,\n            strlen(line))",
+          "old_line_content": "    }",
+          "new_line_content": "        av_log(log_ctx,",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": null,
+          "new_api": "av_get_packet",
+          "old_text": null,
+          "new_text": "av_get_packet(s->pb, pkt, size)",
+          "old_line_content": "        return ret;",
+          "new_line_content": "        ret = av_get_packet(s->pb, pkt, size);",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": null,
+          "new_api": "av_init_packet",
+          "old_text": null,
+          "new_text": "av_init_packet(pkt)",
+          "old_line_content": "        /* no size was given -- we read until the next boundary or end-of-file */",
+          "new_line_content": "        av_init_packet(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": null,
+          "new_api": "avio_tell",
+          "old_text": null,
+          "new_text": "avio_tell(s->pb)",
+          "old_line_content": "        const int read_chunk = 2048;",
+          "new_line_content": "        pkt->pos  = avio_tell(s->pb);",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "get_line",
+          "old_text": null,
+          "new_text": "get_line(pb, line, sizeof(line))",
+          "old_line_content": "",
+          "new_line_content": "        ret = get_line(pb, line, sizeof(line));",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": null,
+          "new_api": "ffio_ensure_seekback",
+          "old_text": null,
+          "new_text": "ffio_ensure_seekback(s->pb, read_chunk)",
+          "old_line_content": "        pkt->size = 0;",
+          "new_line_content": "        ffio_ensure_seekback(s->pb, read_chunk);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "av_append_packet",
+          "old_text": null,
+          "new_text": "av_append_packet(s->pb, pkt, read_chunk - remaining)",
+          "old_line_content": "",
+          "new_line_content": "        while ((ret = av_append_packet(s->pb, pkt, read_chunk - remaining)) >= 0) {",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": null,
+          "new_api": "split_tag_value",
+          "old_text": null,
+          "new_text": "split_tag_value(&tag, &value, line)",
+          "old_line_content": "",
+          "new_line_content": "        ret = split_tag_value(&tag, &value, line);",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": null,
+          "new_api": "memcmp",
+          "old_text": null,
+          "new_text": "memcmp(start, mpjpeg->searchstr, mpjpeg->searchstr_len)",
+          "old_line_content": "",
+          "new_line_content": "                if (!memcmp(start, mpjpeg->searchstr, mpjpeg->searchstr_len)) {",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "avio_seek",
+          "old_text": null,
+          "new_text": "avio_seek(s->pb, -len, SEEK_CUR)",
+          "old_line_content": "            start = pkt->data + pkt->size - len;",
+          "new_line_content": "                    avio_seek(s->pb, -len, SEEK_CUR);",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "av_strcasecmp",
+          "old_text": null,
+          "new_text": "av_strcasecmp(tag, \"Content-type\")",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        if (!av_strcasecmp(tag, \"Content-type\")) {",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "av_strcasecmp",
+          "old_text": null,
+          "new_text": "av_strcasecmp(value, \"image/jpeg\")",
+          "old_line_content": "        if (value==NULL || tag==NULL)",
+          "new_line_content": "            if (av_strcasecmp(value, \"image/jpeg\")) {",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(log_ctx, AV_LOG_ERROR,\n                           \"Unexpected %s : %s\\n\",\n                           tag, value)",
+          "old_line_content": "",
+          "new_line_content": "                av_log(log_ctx, AV_LOG_ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": null,
+          "new_api": "av_strcasecmp",
+          "old_text": null,
+          "new_text": "av_strcasecmp(tag, \"Content-Length\")",
+          "old_line_content": "                           tag, value);",
+          "new_line_content": "        } else if (!av_strcasecmp(tag, \"Content-Length\")) {",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "parse_content_length",
+          "old_text": null,
+          "new_text": "parse_content_length(value)",
+          "old_line_content": "                return AVERROR_INVALIDDATA;",
+          "new_line_content": "            *size = parse_content_length(value);",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "av_packet_unref",
+          "old_text": null,
+          "new_text": "av_packet_unref(pkt)",
+          "old_line_content": "        /* error or EOF occurred */",
+          "new_line_content": "            av_packet_unref(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 375,
+          "old_api": null,
+          "new_api": "OFFSET",
+          "old_text": null,
+          "new_text": "OFFSET(strict_mime_boundary)",
+          "old_line_content": "#define OFFSET(x) offsetof(MPJPEGDemuxContext, x)",
+          "new_line_content": "    { \"strict_mime_boundary\",  \"require MIME boundaries match\", OFFSET(strict_mime_boundary), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, DEC },",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": null,
+          "new_api": "parse_multipart_header",
+          "old_text": null,
+          "new_text": "parse_multipart_header(&pb, &size, \"--\", NULL)",
+          "old_line_content": "        return 0;",
+          "new_line_content": "    ret = (parse_multipart_header(&pb, &size, \"--\", NULL) >= 0) ? AVPROBE_SCORE_MAX : 0;",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 129,
+          "old_api": "avio_context_free",
+          "new_api": null,
+          "old_text": "avio_context_free(&pb)",
+          "new_text": null,
+          "old_line_content": "    avio_context_free(&pb);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "av_opt_get",
+          "new_api": null,
+          "old_text": "av_opt_get(pb, \"mime_type\", AV_OPT_SEARCH_CHILDREN, &mime_type)",
+          "new_text": null,
+          "old_line_content": "    av_opt_get(pb, \"mime_type\", AV_OPT_SEARCH_CHILDREN, &mime_type);",
+          "new_line_content": "        if (!start)",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"MIME multipart JPEG\")",
+          "new_text": null,
+          "old_line_content": "    .long_name         = NULL_IF_CONFIG_SMALL(\"MIME multipart JPEG\"),",
+          "new_line_content": "    .read_probe        = mpjpeg_read_probe,",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": "strchr",
+          "new_api": null,
+          "old_text": "strchr(start, ';')",
+          "new_text": null,
+          "old_line_content": "        start = strchr(start, ';');",
+          "new_line_content": "        start = start+1;",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "get_line",
+          "new_api": null,
+          "old_text": "get_line(s->pb, boundary, sizeof(boundary))",
+          "new_text": null,
+          "old_line_content": "        ret = get_line(s->pb, boundary, sizeof(boundary));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "av_stristart",
+          "new_api": null,
+          "old_text": "av_stristart(start, \"boundary=\", &start)",
+          "new_text": null,
+          "old_line_content": "        if (!av_stristart(start, \"boundary=\", &start)) {",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "strncmp",
+          "new_api": null,
+          "old_text": "strncmp(boundary, \"--\", 2)",
+          "new_text": null,
+          "old_line_content": "    if (strncmp(boundary, \"--\", 2))",
+          "new_line_content": "    if (!st)",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": "avformat_new_stream",
+          "new_api": null,
+          "old_text": "avformat_new_stream(s, NULL)",
+          "new_text": null,
+          "old_line_content": "    st = avformat_new_stream(s, NULL);",
+          "new_line_content": "    st->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(start)",
+          "new_text": null,
+          "old_line_content": "                len = strlen(start);",
+          "new_line_content": "            if ( len>2 && *start == '\"' && start[len-1] == '\"' ) {",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(ENOMEM);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": "avpriv_set_pts_info",
+          "new_api": null,
+          "old_text": "avpriv_set_pts_info(st, 60, 1, 25)",
+          "new_text": null,
+          "old_line_content": "    avpriv_set_pts_info(st, 60, 1, 25);",
+          "new_line_content": "    return 0;",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "av_strndup",
+          "new_api": null,
+          "old_text": "av_strndup(start, len)",
+          "new_text": null,
+          "old_line_content": "            res = av_strndup(start, len);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, pos, SEEK_SET)",
+          "new_text": null,
+          "old_line_content": "    avio_seek(s->pb, pos, SEEK_SET);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&mime_type)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&mime_type);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": "strtol",
+          "new_api": null,
+          "old_text": "strtol(value, NULL, 10)",
+          "new_text": null,
+          "old_line_content": "    long int val = strtol(value, NULL, 10);",
+          "new_line_content": "    if (val > INT_MAX)",
+          "content_same": false
+        },
+        {
+          "line": 169,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(errno)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(errno);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ERANGE)",
+          "new_text": null,
+          "old_line_content": "        return AVERROR(ERANGE);",
+          "new_line_content": "static int parse_multipart_header(AVIOContext *pb,",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "av_asprintf",
+          "new_api": null,
+          "old_text": "av_asprintf( \"\\r\\n%s\\r\\n\", boundary )",
+          "new_text": null,
+          "old_line_content": "            mpjpeg->searchstr = av_asprintf( \"\\r\\n%s\\r\\n\", boundary );",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "get_line",
+          "new_api": null,
+          "old_text": "get_line(pb, line, sizeof(line))",
+          "new_text": null,
+          "old_line_content": "    ret = get_line(pb, line, sizeof(line));",
+          "new_line_content": "    /* some implementation do not provide the required",
+          "content_same": false
+        },
+        {
+          "line": 317,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&mpjpeg->searchstr)",
+          "new_text": null,
+          "old_line_content": "            av_freep(&mpjpeg->searchstr);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": "AVERROR",
+          "new_api": null,
+          "old_text": "AVERROR(ENOMEM)",
+          "new_text": null,
+          "old_line_content": "            return AVERROR(ENOMEM);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(mpjpeg->searchstr)",
+          "new_text": null,
+          "old_line_content": "        mpjpeg->searchstr_len = strlen(mpjpeg->searchstr);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "get_line",
+          "new_api": null,
+          "old_text": "get_line(pb, line, sizeof(line))",
+          "new_text": null,
+          "old_line_content": "        ret = get_line(pb, line, sizeof(line));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": "parse_multipart_header",
+          "new_api": null,
+          "old_text": "parse_multipart_header(s->pb, &size, mpjpeg->boundary, s)",
+          "new_text": null,
+          "old_line_content": "    ret = parse_multipart_header(s->pb, &size, mpjpeg->boundary, s);",
+          "new_line_content": "        return ret;",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "av_strstart",
+          "new_api": null,
+          "old_text": "av_strstart(line, expected_boundary, NULL)",
+          "new_text": null,
+          "old_line_content": "    if (!av_strstart(line, expected_boundary, NULL)) {",
+          "new_line_content": "            \"Expected boundary '%s' not found, instead found a line of %\"SIZE_SPECIFIER\" bytes\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": "av_get_packet",
+          "new_api": null,
+          "old_text": "av_get_packet(s->pb, pkt, size)",
+          "new_text": null,
+          "old_line_content": "        ret = av_get_packet(s->pb, pkt, size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "strlen",
+          "new_api": null,
+          "old_text": "strlen(line)",
+          "new_text": null,
+          "old_line_content": "            strlen(line));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "av_init_packet",
+          "new_api": null,
+          "old_text": "av_init_packet(pkt)",
+          "new_text": null,
+          "old_line_content": "        av_init_packet(pkt);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "avio_tell",
+          "new_api": null,
+          "old_text": "avio_tell(s->pb)",
+          "new_text": null,
+          "old_line_content": "        pkt->pos  = avio_tell(s->pb);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "get_line",
+          "new_api": null,
+          "old_text": "get_line(pb, line, sizeof(line))",
+          "new_text": null,
+          "old_line_content": "        ret = get_line(pb, line, sizeof(line));",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "ffio_ensure_seekback",
+          "new_api": null,
+          "old_text": "ffio_ensure_seekback(s->pb, read_chunk)",
+          "new_text": null,
+          "old_line_content": "        ffio_ensure_seekback(s->pb, read_chunk);",
+          "new_line_content": "            char *start;",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "av_append_packet",
+          "new_api": null,
+          "old_text": "av_append_packet(s->pb, pkt, read_chunk - remaining)",
+          "new_text": null,
+          "old_line_content": "        while ((ret = av_append_packet(s->pb, pkt, read_chunk - remaining)) >= 0) {",
+          "new_line_content": "            len = ret + remaining;",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "split_tag_value",
+          "new_api": null,
+          "old_text": "split_tag_value(&tag, &value, line)",
+          "new_text": null,
+          "old_line_content": "        ret = split_tag_value(&tag, &value, line);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "memcmp",
+          "new_api": null,
+          "old_text": "memcmp(start, mpjpeg->searchstr, mpjpeg->searchstr_len)",
+          "new_text": null,
+          "old_line_content": "                if (!memcmp(start, mpjpeg->searchstr, mpjpeg->searchstr_len)) {",
+          "new_line_content": "                    return pkt->size;",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": "avio_seek",
+          "new_api": null,
+          "old_text": "avio_seek(s->pb, -len, SEEK_CUR)",
+          "new_text": null,
+          "old_line_content": "                    avio_seek(s->pb, -len, SEEK_CUR);",
+          "new_line_content": "                len--;",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "av_strcasecmp",
+          "new_api": null,
+          "old_text": "av_strcasecmp(tag, \"Content-type\")",
+          "new_text": null,
+          "old_line_content": "        if (!av_strcasecmp(tag, \"Content-type\")) {",
+          "new_line_content": "                           \"Unexpected %s : %s\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": "av_strcasecmp",
+          "new_api": null,
+          "old_text": "av_strcasecmp(value, \"image/jpeg\")",
+          "new_text": null,
+          "old_line_content": "            if (av_strcasecmp(value, \"image/jpeg\")) {",
+          "new_line_content": "                           tag, value);",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(log_ctx, AV_LOG_ERROR,\n                           \"Unexpected %s : %s\\n\",\n                           tag, value)",
+          "new_text": null,
+          "old_line_content": "                av_log(log_ctx, AV_LOG_ERROR,",
+          "new_line_content": "            } else",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": "parse_content_length",
+          "new_api": null,
+          "old_text": "parse_content_length(value)",
+          "new_text": null,
+          "old_line_content": "            *size = parse_content_length(value);",
+          "new_line_content": "                           \"Invalid Content-Length value : %s\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "av_packet_unref",
+          "new_api": null,
+          "old_text": "av_packet_unref(pkt)",
+          "new_text": null,
+          "old_line_content": "            av_packet_unref(pkt);",
+          "new_line_content": "    return ret;",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(log_ctx, AV_LOG_WARNING,\n                           \"Invalid Content-Length value : %s\\n\",\n                           value)",
+          "new_text": null,
+          "old_line_content": "                av_log(log_ctx, AV_LOG_WARNING,",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": "OFFSET",
+          "new_api": null,
+          "old_text": "OFFSET(strict_mime_boundary)",
+          "new_text": null,
+          "old_line_content": "    { \"strict_mime_boundary\",  \"require MIME boundaries match\", OFFSET(strict_mime_boundary), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, DEC },",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "parse_multipart_header",
+          "new_api": null,
+          "old_text": "parse_multipart_header(pb, &size, \"--\", NULL)",
+          "new_text": null,
+          "old_line_content": "    ret = (parse_multipart_header(pb, &size, \"--\", NULL) >= 0) ? AVPROBE_SCORE_MAX : 0;",
+          "new_line_content": "    return ret;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 10,
+      "total_additions": 42,
+      "total_deletions": 43,
+      "total_api_changes": 95
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 7,
+        "api_related_lines": 95,
+        "non_api_lines": 3,
+        "non_api_line_numbers": [
+          124,
+          116,
+          126
+        ]
+      }
+    },
+    "api_calls_before": 63,
+    "api_calls_after": 62,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 7,
+      "total_diff_lines": 29
+    }
+  }
+}

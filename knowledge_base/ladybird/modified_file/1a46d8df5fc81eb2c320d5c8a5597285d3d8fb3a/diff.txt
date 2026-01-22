@@ -1,0 +1,14 @@
+diff --git a/Userland/Libraries/LibTextCodec/Decoder.cpp b/Userland/Libraries/LibTextCodec/Decoder.cpp
+index 0fcb526e14..43d47478d5 100644
+--- a/Userland/Libraries/LibTextCodec/Decoder.cpp
++++ b/Userland/Libraries/LibTextCodec/Decoder.cpp
+@@ -372,6 +372,9 @@ ErrorOr<String> UTF8Decoder::to_utf8(StringView input)
+         bomless_input = input.substring_view(3);
+     }
+ 
++    if (Utf8View(bomless_input).validate())
++        return String::from_utf8_without_validation(bomless_input.bytes());
++
+     return Decoder::to_utf8(bomless_input);
+ }
+ 

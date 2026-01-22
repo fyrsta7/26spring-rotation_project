@@ -1,0 +1,15 @@
+diff --git a/src/redis.c b/src/redis.c
+index 4e2f73a71..0bedc25b3 100644
+--- a/src/redis.c
++++ b/src/redis.c
+@@ -1190,6 +1190,10 @@ int prepareForShutdown() {
+         redisLog(REDIS_NOTICE,"Removing the pid file.");
+         unlink(server.pidfile);
+     }
++    /* Close the listening sockets. Apparently this allows faster restarts. */
++    if (server.ipfd != -1) close(server.ipfd);
++    if (server.sofd != -1) close(server.sofd);
++
+     redisLog(REDIS_WARNING,"Redis is now ready to exit, bye bye...");
+     return REDIS_OK;
+ }

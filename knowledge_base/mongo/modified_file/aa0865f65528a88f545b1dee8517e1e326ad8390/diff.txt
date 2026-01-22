@@ -1,0 +1,32 @@
+diff --git a/db/commands/distinct.cpp b/db/commands/distinct.cpp
+index 7f70c3d9a8d..ad3e991c9a0 100644
+--- a/db/commands/distinct.cpp
++++ b/db/commands/distinct.cpp
+@@ -63,7 +63,7 @@ namespace mongo {
+ 
+             shared_ptr<Cursor> cursor;
+             if ( ! query.isEmpty() ) {
+-                cursor = bestGuessCursor(ns.c_str() , query , BSONObj() );
++                cursor = NamespaceDetailsTransient::getCursor(ns.c_str() , query , BSONObj() );
+             }
+             else {
+ 
+@@ -84,7 +84,7 @@ namespace mongo {
+                 }
+ 
+                 if ( ! cursor.get() )
+-                    cursor = bestGuessCursor(ns.c_str() , query , BSONObj() );
++                    cursor = NamespaceDetailsTransient::getCursor(ns.c_str() , query , BSONObj() );
+ 
+             }
+ 
+@@ -98,7 +98,8 @@ namespace mongo {
+                 nscanned++;
+                 bool loadedObject = false;
+ 
+-                if ( !cursor->matcher() || cursor->matcher()->matchesCurrent( cursor.get() , &md ) ) {
++                if ( ( !cursor->matcher() || cursor->matcher()->matchesCurrent( cursor.get() , &md ) ) &&
++                    !cursor->getsetdup( cursor->currLoc() ) ) {
+                     n++;
+ 
+                     BSONElementSet temp;

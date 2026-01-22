@@ -1,0 +1,30 @@
+diff --git a/refs/packed-backend.c b/refs/packed-backend.c
+index fffface428..c2efe912cc 100644
+--- a/refs/packed-backend.c
++++ b/refs/packed-backend.c
+@@ -927,7 +927,12 @@ static struct ref_iterator *packed_ref_iterator_begin(
+ 	 */
+ 	snapshot = get_snapshot(refs);
+ 
+-	if (!snapshot->buf)
++	if (prefix && *prefix)
++		start = find_reference_location(snapshot, prefix, 0);
++	else
++		start = snapshot->start;
++
++	if (start == snapshot->eof)
+ 		return empty_ref_iterator_begin();
+ 
+ 	iter = xcalloc(1, sizeof(*iter));
+@@ -937,11 +942,6 @@ static struct ref_iterator *packed_ref_iterator_begin(
+ 	iter->snapshot = snapshot;
+ 	acquire_snapshot(snapshot);
+ 
+-	if (prefix && *prefix)
+-		start = find_reference_location(snapshot, prefix, 0);
+-	else
+-		start = snapshot->start;
+-
+ 	iter->pos = start;
+ 	iter->eof = snapshot->eof;
+ 	strbuf_init(&iter->refname_buf, 0);

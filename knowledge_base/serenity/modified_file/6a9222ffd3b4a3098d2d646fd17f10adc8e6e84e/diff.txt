@@ -1,0 +1,14 @@
+diff --git a/AK/String.cpp b/AK/String.cpp
+index 83fa7c4484..83cda1bbc7 100644
+--- a/AK/String.cpp
++++ b/AK/String.cpp
+@@ -18,6 +18,9 @@ namespace AK {
+ 
+ String String::from_utf8_with_replacement_character(StringView view)
+ {
++    if (Utf8View(view).validate())
++        return String::from_utf8_without_validation(view.bytes());
++
+     StringBuilder builder;
+ 
+     for (auto c : Utf8View { view })

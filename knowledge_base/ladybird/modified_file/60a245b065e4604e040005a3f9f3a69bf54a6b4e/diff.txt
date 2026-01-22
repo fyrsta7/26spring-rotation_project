@@ -1,0 +1,17 @@
+diff --git a/Userland/Libraries/LibGUI/Window.cpp b/Userland/Libraries/LibGUI/Window.cpp
+index 6f7265f3ac..67a5d0dd7b 100644
+--- a/Userland/Libraries/LibGUI/Window.cpp
++++ b/Userland/Libraries/LibGUI/Window.cpp
+@@ -198,6 +198,12 @@ void Window::hide()
+ {
+     if (!is_visible())
+         return;
++
++    // NOTE: Don't bother asking WindowServer to destroy windows during application teardown.
++    //       All our windows will be automatically garbage-collected by WindowServer anyway.
++    if (GUI::Application::in_teardown())
++        return;
++
+     auto destroyed_window_ids = WindowServerConnection::the().destroy_window(m_window_id);
+     server_did_destroy();
+ 

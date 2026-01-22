@@ -1,0 +1,15 @@
+diff --git a/src/ic/ic.cc b/src/ic/ic.cc
+index 02cd939fae2..078e6e4bab0 100644
+--- a/src/ic/ic.cc
++++ b/src/ic/ic.cc
+@@ -2265,6 +2265,10 @@ MaybeHandle<Object> KeyedStoreIC::Store(Handle<Object> object,
+     return store_handle;
+   }
+ 
++  if (state() != UNINITIALIZED) {
++    JSObject::MakePrototypesFast(object, kStartAtPrototype, isolate());
++  }
++
+   bool use_ic = FLAG_use_ic && !object->IsStringWrapper() &&
+                 !object->IsAccessCheckNeeded() && !object->IsJSGlobalProxy();
+   if (use_ic && !object->IsSmi()) {

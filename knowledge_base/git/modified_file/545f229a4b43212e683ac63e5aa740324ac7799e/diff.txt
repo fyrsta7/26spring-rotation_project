@@ -1,0 +1,22 @@
+diff --git a/fsck-objects.c b/fsck-objects.c
+index 17d05363e0..c1b279efcb 100644
+--- a/fsck-objects.c
++++ b/fsck-objects.c
+@@ -184,10 +184,17 @@ static int fsck_tree(struct tree *item)
+ 			default:
+ 				break;
+ 			}
++			free(last->name);
++			free(last);
+ 		}
+ 
+ 		last = entry;
+ 	}
++	if (last) {
++		free(last->name);
++		free(last);
++	}
++	item->entries = NULL;
+ 
+ 	retval = 0;
+ 	if (has_full_path) {

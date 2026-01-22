@@ -1,0 +1,397 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/5ce1cc89a0da5596b4bb2f39568a1511fda36cda",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/5ce1cc89a0da5596b4bb2f39568a1511fda36cda/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/5ce1cc89a0da5596b4bb2f39568a1511fda36cda/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/5ce1cc89a0da5596b4bb2f39568a1511fda36cda/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 131,
+          "old_api": "process",
+          "new_api": "clac",
+          "old_text": "current->process()",
+          "new_text": "clac()",
+          "old_line_content": "    auto& process = current->process();",
+          "new_line_content": "    clac();",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "handle_crash",
+          "new_api": "get_fast_random<u8>()",
+          "old_text": "handle_crash(regs, \"Bad stack on syscall entry\", SIGSTKFLT)",
+          "new_text": "get_fast_random<u8>()",
+          "old_line_content": "        handle_crash(regs, \"Bad stack on syscall entry\", SIGSTKFLT);",
+          "new_line_content": "    auto* ptr = (char*)__builtin_alloca(get_fast_random<u8>());",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "VirtualAddress",
+          "new_api": "process",
+          "old_text": "VirtualAddress(regs.eip)",
+          "new_text": "current->process()",
+          "old_line_content": "    auto* calling_region = MM.region_from_vaddr(process, VirtualAddress(regs.eip));",
+          "new_line_content": "    auto& process = current->process();",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": "dbgprintf",
+          "new_api": "VirtualAddress",
+          "old_text": "dbgprintf(\"Syscall from %p which has no region\\n\", regs.eip)",
+          "new_text": "VirtualAddress(regs.userspace_esp)",
+          "old_line_content": "        dbgprintf(\"Syscall from %p which has no region\\n\", regs.eip);",
+          "new_line_content": "    if (!MM.validate_user_stack(process, VirtualAddress(regs.userspace_esp))) {",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "handle_crash",
+          "new_api": "dbgprintf",
+          "old_text": "handle_crash(regs, \"Syscall from unknown region\", SIGSEGV)",
+          "new_text": "dbgprintf(\"Invalid stack pointer: %p\\n\", regs.userspace_esp)",
+          "old_line_content": "        handle_crash(regs, \"Syscall from unknown region\", SIGSEGV);",
+          "new_line_content": "        dbgprintf(\"Invalid stack pointer: %p\\n\", regs.userspace_esp);",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": "ASSERT_NOT_REACHED",
+          "new_api": "handle_crash",
+          "old_text": "ASSERT_NOT_REACHED()",
+          "new_text": "handle_crash(regs, \"Bad stack on syscall entry\", SIGSTKFLT)",
+          "old_line_content": "        ASSERT_NOT_REACHED();",
+          "new_line_content": "        handle_crash(regs, \"Bad stack on syscall entry\", SIGSTKFLT);",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "dbgprintf",
+          "new_api": "VirtualAddress",
+          "old_text": "dbgprintf(\"Syscall from writable memory at %p\\n\", regs.eip)",
+          "new_text": "VirtualAddress(regs.eip)",
+          "old_line_content": "        dbgprintf(\"Syscall from writable memory at %p\\n\", regs.eip);",
+          "new_line_content": "    auto* calling_region = MM.region_from_vaddr(process, VirtualAddress(regs.eip));",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": "ASSERT_NOT_REACHED",
+          "new_api": "dbgprintf",
+          "old_text": "ASSERT_NOT_REACHED()",
+          "new_text": "dbgprintf(\"Syscall from %p which has no region\\n\", regs.eip)",
+          "old_line_content": "        ASSERT_NOT_REACHED();",
+          "new_line_content": "        dbgprintf(\"Syscall from %p which has no region\\n\", regs.eip);",
+          "content_same": false
+        },
+        {
+          "line": 157,
+          "old_api": "Syscall::handle(regs, function, arg1, arg2, arg3)",
+          "new_api": "ASSERT_NOT_REACHED",
+          "old_text": "Syscall::handle(regs, function, arg1, arg2, arg3)",
+          "new_text": "ASSERT_NOT_REACHED()",
+          "old_line_content": "    regs.eax = (u32)Syscall::handle(regs, function, arg1, arg2, arg3);",
+          "new_line_content": "        ASSERT_NOT_REACHED();",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": "has_unmasked_pending_signals",
+          "new_api": "Syscall::handle(regs, function, arg1, arg2, arg3)",
+          "old_text": "current->has_unmasked_pending_signals()",
+          "new_text": "Syscall::handle(regs, function, arg1, arg2, arg3)",
+          "old_line_content": "    if (current->has_unmasked_pending_signals())",
+          "new_line_content": "    regs.eax = (u32)Syscall::handle(regs, function, arg1, arg2, arg3);",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": "current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal)",
+          "new_api": "tracer",
+          "old_text": "current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal)",
+          "new_text": "process.tracer()",
+          "old_line_content": "        (void)current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal);",
+          "new_line_content": "    if (auto* tracer = process.tracer())",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 167,
+          "old_api": null,
+          "new_api": "did_syscall",
+          "old_text": null,
+          "new_text": "tracer->did_syscall(function, arg1, arg2, arg3, regs.eax)",
+          "old_line_content": "}",
+          "new_line_content": "        tracer->did_syscall(function, arg1, arg2, arg3, regs.eax);",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": null,
+          "new_api": "big_lock",
+          "old_text": null,
+          "new_text": "process.big_lock().unlock()",
+          "old_line_content": "",
+          "new_line_content": "    process.big_lock().unlock();",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "die_if_needed",
+          "old_text": null,
+          "new_text": "current->die_if_needed()",
+          "old_line_content": "",
+          "new_line_content": "    current->die_if_needed();",
+          "content_same": false
+        },
+        {
+          "line": 173,
+          "old_api": null,
+          "new_api": "has_unmasked_pending_signals",
+          "old_text": null,
+          "new_text": "current->has_unmasked_pending_signals()",
+          "old_line_content": "",
+          "new_line_content": "    if (current->has_unmasked_pending_signals())",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": null,
+          "new_api": "current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal)",
+          "old_text": null,
+          "new_text": "current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal)",
+          "old_line_content": "",
+          "new_line_content": "        (void)current->block<Thread::SemiPermanentBlocker>(Thread::SemiPermanentBlocker::Reason::Signal);",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": null,
+          "new_api": "ASSERT_NOT_REACHED",
+          "old_text": null,
+          "new_text": "ASSERT_NOT_REACHED()",
+          "old_line_content": "    }",
+          "new_line_content": "        ASSERT_NOT_REACHED();",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": null,
+          "new_api": "handle_crash",
+          "old_text": null,
+          "new_text": "handle_crash(regs, \"Syscall from unknown region\", SIGSEGV)",
+          "old_line_content": "    }",
+          "new_line_content": "        handle_crash(regs, \"Syscall from unknown region\", SIGSEGV);",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "ASSERT_NOT_REACHED",
+          "old_text": null,
+          "new_text": "ASSERT_NOT_REACHED()",
+          "old_line_content": "",
+          "new_line_content": "        ASSERT_NOT_REACHED();",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": null,
+          "new_api": "is_writable",
+          "old_text": null,
+          "new_text": "calling_region->is_writable()",
+          "old_line_content": "    u32 arg1 = regs.edx;",
+          "new_line_content": "    if (calling_region->is_writable()) {",
+          "content_same": false
+        },
+        {
+          "line": 155,
+          "old_api": null,
+          "new_api": "dbgprintf",
+          "old_text": null,
+          "new_text": "dbgprintf(\"Syscall from writable memory at %p\\n\", regs.eip)",
+          "old_line_content": "    u32 arg2 = regs.ecx;",
+          "new_line_content": "        dbgprintf(\"Syscall from writable memory at %p\\n\", regs.eip);",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "handle_crash",
+          "old_text": null,
+          "new_text": "handle_crash(regs, \"Syscall from writable memory\", SIGSEGV)",
+          "old_line_content": "    u32 arg3 = regs.ebx;",
+          "new_line_content": "        handle_crash(regs, \"Syscall from writable memory\", SIGSEGV);",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": null,
+          "new_api": "process",
+          "old_text": null,
+          "new_text": "current->process().sys$gettid()",
+          "old_line_content": "    // Apply a random offset in the range 0-255 to the stack pointer,",
+          "new_line_content": "        regs.eax = current->process().sys$gettid();",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "did_syscall",
+          "old_text": null,
+          "new_text": "current->did_syscall()",
+          "old_line_content": "    // to make kernel stacks a bit less deterministic.",
+          "new_line_content": "        current->did_syscall();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 163,
+          "old_api": "die_if_needed",
+          "new_api": null,
+          "old_text": "current->die_if_needed()",
+          "new_text": null,
+          "old_line_content": "    current->die_if_needed();",
+          "new_line_content": "    u32 arg2 = regs.ecx;",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "VirtualAddress",
+          "new_api": null,
+          "old_text": "VirtualAddress(regs.userspace_esp)",
+          "new_text": null,
+          "old_line_content": "    if (!MM.validate_user_stack(process, VirtualAddress(regs.userspace_esp))) {",
+          "new_line_content": "    // Apply a random offset in the range 0-255 to the stack pointer,",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "dbgprintf",
+          "new_api": null,
+          "old_text": "dbgprintf(\"Invalid stack pointer: %p\\n\", regs.userspace_esp)",
+          "new_text": null,
+          "old_line_content": "        dbgprintf(\"Invalid stack pointer: %p\\n\", regs.userspace_esp);",
+          "new_line_content": "    // to make kernel stacks a bit less deterministic.",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": "ASSERT_NOT_REACHED",
+          "new_api": null,
+          "old_text": "ASSERT_NOT_REACHED()",
+          "new_text": null,
+          "old_line_content": "        ASSERT_NOT_REACHED();",
+          "new_line_content": "    asm volatile(\"\"",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": "is_writable",
+          "new_api": null,
+          "old_text": "calling_region->is_writable()",
+          "new_text": null,
+          "old_line_content": "    if (calling_region->is_writable()) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": "handle_crash",
+          "new_api": null,
+          "old_text": "handle_crash(regs, \"Syscall from writable memory\", SIGSEGV)",
+          "new_text": null,
+          "old_line_content": "        handle_crash(regs, \"Syscall from writable memory\", SIGSEGV);",
+          "new_line_content": "    if (!calling_region) {",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "big_lock",
+          "new_api": null,
+          "old_text": "process.big_lock().lock()",
+          "new_text": null,
+          "old_line_content": "    process.big_lock().lock();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "clac",
+          "new_api": null,
+          "old_text": "clac()",
+          "new_text": null,
+          "old_line_content": "    clac();",
+          "new_line_content": "    // FIXME: Remove this hack once userspace locks stop calling it so damn much.",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "get_fast_random<u8>()",
+          "new_api": null,
+          "old_text": "get_fast_random<u8>()",
+          "new_text": null,
+          "old_line_content": "    auto* ptr = (char*)__builtin_alloca(get_fast_random<u8>());",
+          "new_line_content": "        return;",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "tracer",
+          "new_api": null,
+          "old_text": "process.tracer()",
+          "new_text": null,
+          "old_line_content": "    if (auto* tracer = process.tracer())",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 159,
+          "old_api": "did_syscall",
+          "new_api": null,
+          "old_text": "tracer->did_syscall(function, arg1, arg2, arg3, regs.eax)",
+          "new_text": null,
+          "old_line_content": "        tracer->did_syscall(function, arg1, arg2, arg3, regs.eax);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 11,
+      "total_additions": 13,
+      "total_deletions": 11,
+      "total_api_changes": 35
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 35,
+        "non_api_lines": 4,
+        "non_api_line_numbers": [
+          128,
+          129,
+          122,
+          124
+        ]
+      }
+    },
+    "api_calls_before": 46,
+    "api_calls_after": 49,
+    "diff_info": {
+      "added_lines": 8,
+      "removed_lines": 0,
+      "total_diff_lines": 20
+    }
+  }
+}

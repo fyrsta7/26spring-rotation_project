@@ -1,0 +1,15 @@
+diff --git a/lib/SILOptimizer/PassManager/PassPipeline.cpp b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+index bd46d849f72..eda3e45302d 100644
+--- a/lib/SILOptimizer/PassManager/PassPipeline.cpp
++++ b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+@@ -222,6 +222,10 @@ void addSSAPasses(SILPassPipelinePlan &P, OptimizationLevelKind OpLevel) {
+   // Split up operations on stack-allocated aggregates (struct, tuple).
+   P.addSROA();
+ 
++  // Re-run predictable memory optimizations, since previous optimization
++  // passes sometimes expose oppotunities here.
++  P.addPredictableMemoryOptimizations();
++
+   // Promote stack allocations to values.
+   P.addMem2Reg();
+ 

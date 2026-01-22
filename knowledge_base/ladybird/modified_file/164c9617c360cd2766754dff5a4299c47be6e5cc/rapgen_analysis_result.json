@@ -1,0 +1,235 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/164c9617c360cd2766754dff5a4299c47be6e5cc",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/164c9617c360cd2766754dff5a4299c47be6e5cc/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/164c9617c360cd2766754dff5a4299c47be6e5cc/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/164c9617c360cd2766754dff5a4299c47be6e5cc/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 27,
+          "old_api": "with_exclusive",
+          "new_api": "set_readable",
+          "old_text": "m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {\n        reader_fd_allocation = TRY(fds.allocate());\n        writer_fd_allocation = TRY(fds.allocate());\n        return {};\n    })",
+          "new_text": "reader_description->set_readable(true)",
+          "old_line_content": "    TRY(m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {",
+          "new_line_content": "    reader_description->set_readable(true);",
+          "content_same": false
+        },
+        {
+          "line": 28,
+          "old_api": "allocate",
+          "new_api": "set_writable",
+          "old_text": "fds.allocate()",
+          "new_text": "writer_description->set_writable(true)",
+          "old_line_content": "        reader_fd_allocation = TRY(fds.allocate());",
+          "new_line_content": "    writer_description->set_writable(true);",
+          "content_same": false
+        },
+        {
+          "line": 34,
+          "old_api": "open_direction",
+          "new_api": "with_exclusive",
+          "old_text": "fifo->open_direction(FIFO::Direction::Writer)",
+          "new_text": "m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {\n        auto reader_fd_allocation = TRY(fds.allocate());\n        auto writer_fd_allocation = TRY(fds.allocate());\n\n        fds[reader_fd_allocation.fd].set(move(reader_description), fd_flags);\n        fds[writer_fd_allocation.fd].set(move(writer_description), fd_flags);\n\n        int fds_for_userspace[2] = {\n            reader_fd_allocation.fd,\n            writer_fd_allocation.fd,\n        };\n        if (copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()) {\n            fds[reader_fd_allocation.fd] = {};\n            fds[writer_fd_allocation.fd] = {};\n            return EFAULT;\n        }\n        return {};\n    })",
+          "old_line_content": "    auto writer_description = TRY(fifo->open_direction(FIFO::Direction::Writer));",
+          "new_line_content": "    TRY(m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {",
+          "content_same": false
+        },
+        {
+          "line": 36,
+          "old_api": "set_readable",
+          "new_api": "allocate",
+          "old_text": "reader_description->set_readable(true)",
+          "new_text": "fds.allocate()",
+          "old_line_content": "    reader_description->set_readable(true);",
+          "new_line_content": "        auto writer_fd_allocation = TRY(fds.allocate());",
+          "content_same": false
+        },
+        {
+          "line": 39,
+          "old_api": "set_blocking",
+          "new_api": "move",
+          "old_text": "reader_description->set_blocking(false)",
+          "new_text": "move(writer_description)",
+          "old_line_content": "        reader_description->set_blocking(false);",
+          "new_line_content": "        fds[writer_fd_allocation.fd].set(move(writer_description), fd_flags);",
+          "content_same": false
+        },
+        {
+          "line": 45,
+          "old_api": "move",
+          "new_api": "is_error",
+          "old_text": "move(writer_description)",
+          "new_text": "copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()",
+          "old_line_content": "        fds[writer_fd_allocation.fd].set(move(writer_description), fd_flags);",
+          "new_line_content": "        if (copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 35,
+          "old_api": null,
+          "new_api": "allocate",
+          "old_text": null,
+          "new_text": "fds.allocate()",
+          "old_line_content": "",
+          "new_line_content": "        auto reader_fd_allocation = TRY(fds.allocate());",
+          "content_same": false
+        },
+        {
+          "line": 38,
+          "old_api": null,
+          "new_api": "move",
+          "old_text": null,
+          "new_text": "move(reader_description)",
+          "old_line_content": "    if (flags & O_NONBLOCK) {",
+          "new_line_content": "        fds[reader_fd_allocation.fd].set(move(reader_description), fd_flags);",
+          "content_same": false
+        },
+        {
+          "line": 24,
+          "old_api": null,
+          "new_api": "open_direction",
+          "old_text": null,
+          "new_text": "fifo->open_direction(FIFO::Direction::Reader)",
+          "old_line_content": "    ScopedDescriptionAllocation reader_fd_allocation;",
+          "new_line_content": "    auto reader_description = TRY(fifo->open_direction(FIFO::Direction::Reader));",
+          "content_same": false
+        },
+        {
+          "line": 25,
+          "old_api": null,
+          "new_api": "open_direction",
+          "old_text": null,
+          "new_text": "fifo->open_direction(FIFO::Direction::Writer)",
+          "old_line_content": "    ScopedDescriptionAllocation writer_fd_allocation;",
+          "new_line_content": "    auto writer_description = TRY(fifo->open_direction(FIFO::Direction::Writer));",
+          "content_same": false
+        },
+        {
+          "line": 30,
+          "old_api": null,
+          "new_api": "set_blocking",
+          "old_text": null,
+          "new_text": "reader_description->set_blocking(false)",
+          "old_line_content": "        return {};",
+          "new_line_content": "        reader_description->set_blocking(false);",
+          "content_same": false
+        },
+        {
+          "line": 31,
+          "old_api": null,
+          "new_api": "set_blocking",
+          "old_text": null,
+          "new_text": "writer_description->set_blocking(false)",
+          "old_line_content": "    }));",
+          "new_line_content": "        writer_description->set_blocking(false);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 33,
+          "old_api": "open_direction",
+          "new_api": null,
+          "old_text": "fifo->open_direction(FIFO::Direction::Reader)",
+          "new_text": null,
+          "old_line_content": "    auto reader_description = TRY(fifo->open_direction(FIFO::Direction::Reader));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 37,
+          "old_api": "set_writable",
+          "new_api": null,
+          "old_text": "writer_description->set_writable(true)",
+          "new_text": null,
+          "old_line_content": "    writer_description->set_writable(true);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 40,
+          "old_api": "set_blocking",
+          "new_api": null,
+          "old_text": "writer_description->set_blocking(false)",
+          "new_text": null,
+          "old_line_content": "        writer_description->set_blocking(false);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 43,
+          "old_api": "with_exclusive",
+          "new_api": null,
+          "old_text": "m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {\n        fds[reader_fd_allocation.fd].set(move(reader_description), fd_flags);\n        fds[writer_fd_allocation.fd].set(move(writer_description), fd_flags);\n\n        int fds_for_userspace[2] = {\n            reader_fd_allocation.fd,\n            writer_fd_allocation.fd,\n        };\n        if (copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()) {\n            fds[reader_fd_allocation.fd] = {};\n            fds[writer_fd_allocation.fd] = {};\n            return EFAULT;\n        }\n        return {};\n    })",
+          "new_text": null,
+          "old_line_content": "    TRY(m_fds.with_exclusive([&](auto& fds) -> ErrorOr<void> {",
+          "new_line_content": "            writer_fd_allocation.fd,",
+          "content_same": false
+        },
+        {
+          "line": 44,
+          "old_api": "move",
+          "new_api": null,
+          "old_text": "move(reader_description)",
+          "new_text": null,
+          "old_line_content": "        fds[reader_fd_allocation.fd].set(move(reader_description), fd_flags);",
+          "new_line_content": "        };",
+          "content_same": false
+        },
+        {
+          "line": 51,
+          "old_api": "is_error",
+          "new_api": null,
+          "old_text": "copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()",
+          "new_text": null,
+          "old_line_content": "        if (copy_to_user(pipefd, fds_for_userspace, sizeof(fds_for_userspace)).is_error()) {",
+          "new_line_content": "    }));",
+          "content_same": false
+        },
+        {
+          "line": 29,
+          "old_api": "allocate",
+          "new_api": null,
+          "old_text": "fds.allocate()",
+          "new_text": null,
+          "old_line_content": "        writer_fd_allocation = TRY(fds.allocate());",
+          "new_line_content": "    if (flags & O_NONBLOCK) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 6,
+      "total_deletions": 7,
+      "total_api_changes": 19
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 12,
+        "api_related_lines": 19,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          32,
+          26
+        ]
+      }
+    },
+    "api_calls_before": 28,
+    "api_calls_after": 26,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 9,
+      "total_diff_lines": 31
+    }
+  }
+}

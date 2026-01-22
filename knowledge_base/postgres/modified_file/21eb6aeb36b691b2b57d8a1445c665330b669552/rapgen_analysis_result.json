@@ -1,0 +1,2486 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/21eb6aeb36b691b2b57d8a1445c665330b669552",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/21eb6aeb36b691b2b57d8a1445c665330b669552/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/21eb6aeb36b691b2b57d8a1445c665330b669552/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/21eb6aeb36b691b2b57d8a1445c665330b669552/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 345,
+          "old_api": "list_member_ptr",
+          "new_api": "lfirst",
+          "old_text": "list_member_ptr(root->canon_pathkeys, pathkey1)",
+          "new_text": "lfirst(key1)",
+          "old_line_content": "\t\tAssert(list_member_ptr(root->canon_pathkeys, pathkey1));",
+          "new_line_content": "\t\tPathKey    *pathkey1 = (PathKey *) lfirst(key1);",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "list_member_ptr",
+          "new_api": "lfirst",
+          "old_text": "list_member_ptr(root->canon_pathkeys, pathkey2)",
+          "new_text": "lfirst(key2)",
+          "old_line_content": "\t\tAssert(list_member_ptr(root->canon_pathkeys, pathkey2));",
+          "new_line_content": "\t\tPathKey    *pathkey2 = (PathKey *) lfirst(key2);",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": "lnext",
+          "new_api": "find_indexkey_var",
+          "old_text": "lnext(indexprs_item)",
+          "new_text": "find_indexkey_var(root, index->rel, ikey)",
+          "old_line_content": "\t\t\tindexprs_item = lnext(indexprs_item);",
+          "new_line_content": "\t\t\tindexkey = (Expr *) find_indexkey_var(root, index->rel, ikey);",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "pathkey_is_redundant",
+          "new_api": "make_pathkey_from_sortinfo",
+          "old_text": "pathkey_is_redundant(cpathkey, retval)",
+          "new_text": "make_pathkey_from_sortinfo(root,\n\t\t\t\t\t\t\t\t\t\t\t  indexkey,\n\t\t\t\t\t\t\t\t\t\t\t  sortop,\n\t\t\t\t\t\t\t\t\t\t\t  nulls_first,\n\t\t\t\t\t\t\t\t\t\t\t  0,\n\t\t\t\t\t\t\t\t\t\t\t  true)",
+          "old_line_content": "\t\tif (!pathkey_is_redundant(cpathkey, retval))",
+          "new_line_content": "\t\tcpathkey = make_pathkey_from_sortinfo(root,",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": "getrelid",
+          "new_api": "lfirst",
+          "old_text": "getrelid(relid, root->parse->rtable)",
+          "new_text": "lfirst(temp)",
+          "old_line_content": "\treloid = getrelid(relid, root->parse->rtable);",
+          "new_line_content": "\t\tVar\t\t   *var = (Var *) lfirst(temp);",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "get_eclass_for_sort_expr",
+          "new_api": "linitial",
+          "old_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t\t\t outer_expr,\n\t\t\t\t\t\t\t\t\t\t\t sub_member->em_datatype,\n\t\t\t\t\t\t\t\t\t\t\t sub_eclass->ec_opfamilies,\n\t\t\t\t\t\t\t\t\t\t\t 0)",
+          "new_text": "linitial(sub_eclass->ec_members)",
+          "old_line_content": "\t\t\t\t\tget_eclass_for_sort_expr(root,",
+          "new_line_content": "\t\t\t\tsub_member = (EquivalenceMember *) linitial(sub_eclass->ec_members);",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "IsA",
+          "new_api": "exprTypmod",
+          "old_text": "IsA(tle_stripped, RelabelType)",
+          "new_text": "exprTypmod((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\t\t\twhile (tle_stripped && IsA(tle_stripped, RelabelType))",
+          "new_line_content": "\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": "makeRelabelType",
+          "new_api": "makeVar",
+          "old_text": "makeRelabelType(outer_expr,\n\t\t\t\t\t\t\t\t\t\t\t\t exprType((Node *) sub_expr),\n\t\t\t\t\t\t\t\t\t\t\t\t\t-1,\n\t\t\t\t\t\t\t\t\t\t\t\t\tCOERCE_DONTCARE)",
+          "new_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t\t0)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\tmakeRelabelType(outer_expr,",
+          "new_line_content": "\t\t\t\t\t\t\t\tmakeVar(rel->relid,",
+          "content_same": false
+        },
+        {
+          "line": 1193,
+          "old_api": "pfree",
+          "new_api": "linitial_oid",
+          "old_text": "pfree(ecs)",
+          "new_text": "linitial_oid(ec->ec_opfamilies)",
+          "old_line_content": "\tpfree(ecs);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t linitial_oid(ec->ec_opfamilies),",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 512,
+          "old_api": null,
+          "new_api": "OidIsValid",
+          "old_text": null,
+          "new_text": "OidIsValid(sortop)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\tif (!OidIsValid(sortop))",
+          "content_same": false
+        },
+        {
+          "line": 1026,
+          "old_api": null,
+          "new_api": "list_concat",
+          "old_text": null,
+          "new_text": "list_concat(mergeclauses, matched_restrictinfos)",
+          "old_line_content": " *\t  Builds a pathkey list representing a possible sort ordering",
+          "new_line_content": "\t\tmergeclauses = list_concat(mergeclauses, matched_restrictinfos);",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"wrong number of index expressions\")",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t  sortop,",
+          "new_line_content": "\t\t\t\telog(ERROR, \"wrong number of index expressions\");",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(indexprs_item)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t  nulls_first,",
+          "new_line_content": "\t\t\tindexkey = (Expr *) lfirst(indexprs_item);",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "lnext",
+          "old_text": null,
+          "new_text": "lnext(indexprs_item)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t  0,",
+          "new_line_content": "\t\t\tindexprs_item = lnext(indexprs_item);",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "pathkey_is_redundant",
+          "old_text": null,
+          "new_text": "pathkey_is_redundant(cpathkey, retval)",
+          "old_line_content": " * Find or make a Var node for the specified attribute of the rel.",
+          "new_line_content": "\t\tif (!pathkey_is_redundant(cpathkey, retval))",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(retval, cpathkey)",
+          "old_line_content": " *",
+          "new_line_content": "\t\t\tretval = lappend(retval, cpathkey);",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(mergeclauses)",
+          "old_line_content": "\tif (nClauses == 0)",
+          "new_line_content": "\tint\t\t\tnClauses = list_length(mergeclauses);",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(temp, rel->reltargetlist)",
+          "old_line_content": "",
+          "new_line_content": "\tforeach(temp, rel->reltargetlist)",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(nClauses * sizeof(EquivalenceClass *))",
+          "old_line_content": "\t\tint\t\t\tscore;",
+          "new_line_content": "\tecs = (EquivalenceClass **) palloc(nClauses * sizeof(EquivalenceClass *));",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(nClauses * sizeof(int))",
+          "old_line_content": "\t\tListCell   *lc2;",
+          "new_line_content": "\tscores = (int *) palloc(nClauses * sizeof(int));",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": null,
+          "new_api": "IsA",
+          "old_text": null,
+          "new_text": "IsA(var, Var)",
+          "old_line_content": "",
+          "new_line_content": "\t\tif (IsA(var, Var) &&",
+          "content_same": false
+        },
+        {
+          "line": 1083,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\tif (rinfo->outer_is_left)",
+          "new_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": null,
+          "new_api": "getrelid",
+          "old_text": null,
+          "new_text": "getrelid(relid, root->parse->rtable)",
+          "old_line_content": " *\t  Build a pathkeys list that describes the ordering of a subquery's",
+          "new_line_content": "\treloid = getrelid(relid, root->parse->rtable);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": null,
+          "new_api": "get_atttypetypmod",
+          "old_text": null,
+          "new_text": "get_atttypetypmod(reloid, varattno, &vartypeid, &type_mod)",
+          "old_line_content": " *\t  result, in the terms of the outer query.\tThis is essentially a",
+          "new_line_content": "\tget_atttypetypmod(reloid, varattno, &vartypeid, &type_mod);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "makeVar",
+          "old_text": null,
+          "new_text": "makeVar(relid, varattno, vartypeid, type_mod, 0)",
+          "old_line_content": " *",
+          "new_line_content": "\treturn makeVar(relid, varattno, vartypeid, type_mod, 0);",
+          "content_same": false
+        },
+        {
+          "line": 1089,
+          "old_api": null,
+          "new_api": "cache_mergeclause_eclasses",
+          "old_text": null,
+          "new_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "old_line_content": "\t\tfor (j = 0; j < necs; j++)",
+          "new_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "content_same": false
+        },
+        {
+          "line": 1107,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc2, oeclass->ec_members)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\tforeach(lc2, oeclass->ec_members)",
+          "content_same": false
+        },
+        {
+          "line": 1109,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc2)",
+          "old_line_content": "\t\tecs[necs] = oeclass;",
+          "new_line_content": "\t\t\tEquivalenceMember *em = (EquivalenceMember *) lfirst(lc2);",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(root->query_pathkeys)",
+          "old_line_content": "\t\tPathKey    *best_pathkey = NULL;",
+          "new_line_content": "\tint\t\t\touter_query_keys = list_length(root->query_pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 1113,
+          "old_api": null,
+          "new_api": "bms_overlap",
+          "old_text": null,
+          "new_text": "bms_overlap(em->em_relids, joinrel->relids)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t!bms_overlap(em->em_relids, joinrel->relids))",
+          "content_same": false
+        },
+        {
+          "line": 605,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(i)",
+          "old_line_content": "\t\t\t * have come from an ORDER BY clause, and we have to match it to",
+          "new_line_content": "\t\tPathKey    *sub_pathkey = (PathKey *) lfirst(i);",
+          "content_same": false
+        },
+        {
+          "line": 1129,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, root->query_pathkeys)",
+          "old_line_content": "\t\t\t\t\tbreak;\t\t/* found match */",
+          "new_line_content": "\t\tforeach(lc, root->query_pathkeys)",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"volatile EquivalenceClass has no sortref\")",
+          "old_line_content": "\t\t\t\tExpr\t   *outer_expr;",
+          "new_line_content": "\t\t\t\telog(ERROR, \"volatile EquivalenceClass has no sortref\");",
+          "content_same": false
+        },
+        {
+          "line": 620,
+          "old_api": null,
+          "new_api": "get_sortgroupref_tle",
+          "old_text": null,
+          "new_text": "get_sortgroupref_tle(sub_eclass->ec_sortref, sub_tlist)",
+          "old_line_content": "\t\t\t\tEquivalenceClass *outer_ec;",
+          "new_line_content": "\t\t\ttle = get_sortgroupref_tle(sub_eclass->ec_sortref, sub_tlist);",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(tle)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tAssert(tle);",
+          "content_same": false
+        },
+        {
+          "line": 1131,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t\tif (j >= necs)",
+          "new_line_content": "\t\t\tPathKey    *query_pathkey = (PathKey *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 630,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(sub_eclass->ec_members)",
+          "old_line_content": "\t\t\t\touter_ec =",
+          "new_line_content": "\t\t\t\tAssert(list_length(sub_eclass->ec_members) == 1);",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": null,
+          "new_api": "makeVar",
+          "old_text": null,
+          "new_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t0)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t sub_member->em_datatype,",
+          "new_line_content": "\t\t\t\t\tmakeVar(rel->relid,",
+          "content_same": false
+        },
+        {
+          "line": 1146,
+          "old_api": null,
+          "new_api": "list_copy",
+          "old_text": null,
+          "new_text": "list_copy(root->query_pathkeys)",
+          "old_line_content": "\t\t\t\t{",
+          "new_line_content": "\t\t\tpathkeys = list_copy(root->query_pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t 0);",
+          "new_line_content": "\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 1148,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, root->query_pathkeys)",
+          "old_line_content": "\t\t\t\t\t{",
+          "new_line_content": "\t\t\tforeach(lc, root->query_pathkeys)",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": null,
+          "new_api": "exprTypmod",
+          "old_text": null,
+          "new_text": "exprTypmod((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\tbest_pathkey =",
+          "new_line_content": "\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t\t\t\t\tbreak;",
+          "new_line_content": "\t\t\t\tPathKey    *query_pathkey = (PathKey *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": null,
+          "new_api": "get_eclass_for_sort_expr",
+          "old_text": null,
+          "new_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t\t\t outer_expr,\n\t\t\t\t\t\t\t\t\t\t\t sub_member->em_datatype,\n\t\t\t\t\t\t\t\t\t\t\t sub_eclass->ec_opfamilies,\n\t\t\t\t\t\t\t\t\t\t\t 0)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_opfamily,",
+          "new_line_content": "\t\t\t\t\tget_eclass_for_sort_expr(root,",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": null,
+          "new_api": "make_canonical_pathkey",
+          "old_text": null,
+          "new_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t   outer_ec,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_nulls_first)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\t\t\t\tmake_canonical_pathkey(root,",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(j, sub_eclass->ec_members)",
+          "old_line_content": "\t\t\t\t * We handle two cases: the sub_pathkey key can be either an",
+          "new_line_content": "\t\t\tforeach(j, sub_eclass->ec_members)",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(j)",
+          "old_line_content": "\t\t\t\t * stripping RelabelType nodes.  (We need that case since",
+          "new_line_content": "\t\t\t\tEquivalenceMember *sub_member = (EquivalenceMember *) lfirst(j);",
+          "content_same": false
+        },
+        {
+          "line": 1191,
+          "old_api": null,
+          "new_api": "make_canonical_pathkey",
+          "old_text": null,
+          "new_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t ec,\n\t\t\t\t\t\t\t\t\t\t linitial_oid(ec->ec_opfamilies),\n\t\t\t\t\t\t\t\t\t\t BTLessStrategyNumber,\n\t\t\t\t\t\t\t\t\t\t false)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tpathkey = make_canonical_pathkey(root,",
+          "content_same": false
+        },
+        {
+          "line": 1197,
+          "old_api": null,
+          "new_api": "pathkey_is_redundant",
+          "old_text": null,
+          "new_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tAssert(!pathkey_is_redundant(pathkey, pathkeys));",
+          "content_same": false
+        },
+        {
+          "line": 1198,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(pathkeys, pathkey)",
+          "old_line_content": "",
+          "new_line_content": "\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": null,
+          "new_api": "IsA",
+          "old_text": null,
+          "new_text": "IsA(sub_stripped, RelabelType)",
+          "old_line_content": "\t\t\t\t\tPathKey    *outer_pk;",
+          "new_line_content": "\t\t\t\twhile (sub_stripped && IsA(sub_stripped, RelabelType))",
+          "content_same": false
+        },
+        {
+          "line": 1201,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(ecs)",
+          "old_line_content": " *\t  Builds a pathkey list representing the explicit sort order that",
+          "new_line_content": "\tpfree(ecs);",
+          "content_same": false
+        },
+        {
+          "line": 1202,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(scores)",
+          "old_line_content": " *\t  must be applied to an inner path to make it usable with the",
+          "new_line_content": "\tpfree(scores);",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(k)",
+          "old_line_content": "\t\t\t\t\t\tcontinue;",
+          "new_line_content": "\t\t\t\t\tTargetEntry *tle = (TargetEntry *) lfirst(k);",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": null,
+          "new_api": "equal",
+          "old_text": null,
+          "new_text": "equal(tle->expr, sub_expr)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t0);",
+          "new_line_content": "\t\t\t\t\tif (equal(tle->expr, sub_expr))",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "makeVar",
+          "old_text": null,
+          "new_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t0)",
+          "old_line_content": "\t\t\t\t\t\tExpr\t   *tle_stripped;",
+          "new_line_content": "\t\t\t\t\t\t\tmakeVar(rel->relid,",
+          "content_same": false
+        },
+        {
+          "line": 709,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\t\t\ttle_stripped = tle->expr;",
+          "new_line_content": "\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": null,
+          "new_api": "IsA",
+          "old_text": null,
+          "new_text": "IsA(tle_stripped, RelabelType)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\ttle->resno,",
+          "new_line_content": "\t\t\t\t\t\twhile (tle_stripped && IsA(tle_stripped, RelabelType))",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": null,
+          "new_api": "equal",
+          "old_text": null,
+          "new_text": "equal(tle_stripped, sub_stripped)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t0);",
+          "new_line_content": "\t\t\t\t\t\tif (equal(tle_stripped, sub_stripped))",
+          "content_same": false
+        },
+        {
+          "line": 727,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\t-1,",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": null,
+          "new_api": "exprTypmod",
+          "old_text": null,
+          "new_text": "exprTypmod((Node *) tle->expr)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\tCOERCE_DONTCARE);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "content_same": false
+        },
+        {
+          "line": 1241,
+          "old_api": null,
+          "new_api": "list_head",
+          "old_text": null,
+          "new_text": "list_head(outer_pathkeys)",
+          "old_line_content": "",
+          "new_line_content": "\tlop = list_head(outer_pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) outer_expr)",
+          "old_line_content": "\t\t\t\t\t\telse",
+          "new_line_content": "\t\t\t\t\t\t\tif (exprType((Node *) outer_expr) !=",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) sub_expr)",
+          "old_line_content": "\t\t\t\t\t\t\tcontinue;",
+          "new_line_content": "\t\t\t\t\t\t\t\texprType((Node *) sub_expr))",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": null,
+          "new_api": "makeRelabelType",
+          "old_text": null,
+          "new_text": "makeRelabelType(outer_expr,\n\t\t\t\t\t\t\t\t\t\t\t\t exprType((Node *) sub_expr),\n\t\t\t\t\t\t\t\t\t\t\t\t\t-1,\n\t\t\t\t\t\t\t\t\t\t\t\t\tCOERCE_DONTCARE)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\t\t\t\tmakeRelabelType(outer_expr,",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": null,
+          "new_api": "exprType",
+          "old_text": null,
+          "new_text": "exprType((Node *) sub_expr)",
+          "old_line_content": "\t\t\t\t\t/* Found a representation for this sub_pathkey */",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t exprType((Node *) sub_expr),",
+          "content_same": false
+        },
+        {
+          "line": 1245,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 1250,
+          "old_api": null,
+          "new_api": "cache_mergeclause_eclasses",
+          "old_text": null,
+          "new_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": null,
+          "new_api": "get_eclass_for_sort_expr",
+          "old_text": null,
+          "new_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\touter_expr,\n\t\t\t\t\t\t\t\t\t\t\t\t\t sub_member->em_datatype,\n\t\t\t\t\t\t\t\t\t\t\t\t   sub_eclass->ec_opfamilies,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t0)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_strategy,",
+          "new_line_content": "\t\t\t\t\touter_ec = get_eclass_for_sort_expr(root,",
+          "content_same": false
+        },
+        {
+          "line": 748,
+          "old_api": null,
+          "new_api": "make_canonical_pathkey",
+          "old_text": null,
+          "new_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t  outer_ec,\n\t\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_nulls_first)",
+          "old_line_content": "\t\t\t\t\tif (retvallen < outer_query_keys &&",
+          "new_line_content": "\t\t\t\t\touter_pk = make_canonical_pathkey(root,",
+          "content_same": false
+        },
+        {
+          "line": 754,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(outer_ec->ec_members)",
+          "old_line_content": "\t\t\t\t\t\tbest_score = score;",
+          "new_line_content": "\t\t\t\t\tscore = list_length(outer_ec->ec_members) - 1;",
+          "content_same": false
+        },
+        {
+          "line": 1268,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"too few pathkeys for mergeclauses\")",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\t\t\telog(ERROR, \"too few pathkeys for mergeclauses\");",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": null,
+          "new_api": "list_nth",
+          "old_text": null,
+          "new_text": "list_nth(root->query_pathkeys, retvallen)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\t\t\tlist_nth(root->query_pathkeys, retvallen) == outer_pk)",
+          "content_same": false
+        },
+        {
+          "line": 1269,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lop)",
+          "old_line_content": "\t\t * Often, we'll have same EC on both sides, in which case the outer",
+          "new_line_content": "\t\t\topathkey = (PathKey *) lfirst(lop);",
+          "content_same": false
+        },
+        {
+          "line": 1270,
+          "old_api": null,
+          "new_api": "lnext",
+          "old_text": null,
+          "new_text": "lnext(lop)",
+          "old_line_content": "\t\t * pathkey is also canonical for the inner side, and we can skip a",
+          "new_line_content": "\t\t\tlop = lnext(lop);",
+          "content_same": false
+        },
+        {
+          "line": 1273,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"outer pathkeys do not match mergeclause\")",
+          "old_line_content": "\t\tif (ieclass == oeclass)",
+          "new_line_content": "\t\t\t\telog(ERROR, \"outer pathkeys do not match mergeclause\");",
+          "content_same": false
+        },
+        {
+          "line": 1284,
+          "old_api": null,
+          "new_api": "make_canonical_pathkey",
+          "old_text": null,
+          "new_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t\t ieclass,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_nulls_first)",
+          "old_line_content": "\t\t * mergeclauses refer to same EC).",
+          "new_line_content": "\t\t\tpathkey = make_canonical_pathkey(root,",
+          "content_same": false
+        },
+        {
+          "line": 779,
+          "old_api": null,
+          "new_api": "pathkey_is_redundant",
+          "old_text": null,
+          "new_text": "pathkey_is_redundant(best_pathkey, retval)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tif (!pathkey_is_redundant(best_pathkey, retval))",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(retval, best_pathkey)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\t\tretval = lappend(retval, best_pathkey);",
+          "content_same": false
+        },
+        {
+          "line": 1294,
+          "old_api": null,
+          "new_api": "pathkey_is_redundant",
+          "old_text": null,
+          "new_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "old_line_content": " *\t\tPATHKEY USEFULNESS CHECKS",
+          "new_line_content": "\t\tif (!pathkey_is_redundant(pathkey, pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 1295,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(pathkeys, pathkey)",
+          "old_line_content": " *",
+          "new_line_content": "\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": null,
+          "new_api": "truncate_useless_pathkeys",
+          "old_text": null,
+          "new_text": "truncate_useless_pathkeys(root, joinrel, outer_pathkeys)",
+          "old_line_content": " * make_pathkeys_for_sortclauses",
+          "new_line_content": "\treturn truncate_useless_pathkeys(root, joinrel, outer_pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 1337,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(i)",
+          "old_line_content": "\t\t/*",
+          "new_line_content": "\t\tPathKey    *pathkey = (PathKey *) lfirst(i);",
+          "content_same": false
+        },
+        {
+          "line": 1342,
+          "old_api": null,
+          "new_api": "right_merge_direction",
+          "old_text": null,
+          "new_text": "right_merge_direction(root, pathkey)",
+          "old_line_content": "\t\tif (rel->has_eclass_joins &&",
+          "new_line_content": "\t\tif (!right_merge_direction(root, pathkey))",
+          "content_same": false
+        },
+        {
+          "line": 1351,
+          "old_api": null,
+          "new_api": "eclass_useful_for_merging",
+          "old_text": null,
+          "new_text": "eclass_useful_for_merging(pathkey->pk_eclass, rel)",
+          "old_line_content": "\t\t\t */",
+          "new_line_content": "\t\t\teclass_useful_for_merging(pathkey->pk_eclass, rel))",
+          "content_same": false
+        },
+        {
+          "line": 1360,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(j, rel->joininfo)",
+          "old_line_content": "\t\t\t\tif (pathkey->pk_eclass == restrictinfo->left_ec ||",
+          "new_line_content": "\t\t\tforeach(j, rel->joininfo)",
+          "content_same": false
+        },
+        {
+          "line": 1362,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(j)",
+          "old_line_content": "\t\t\t\t{",
+          "new_line_content": "\t\t\t\tRestrictInfo *restrictinfo = (RestrictInfo *) lfirst(j);",
+          "content_same": false
+        },
+        {
+          "line": 1366,
+          "old_api": null,
+          "new_api": "cache_mergeclause_eclasses",
+          "old_text": null,
+          "new_text": "cache_mergeclause_eclasses(root, restrictinfo)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tcache_mergeclause_eclasses(root, restrictinfo);",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(l)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t sortcl->sortop,",
+          "new_line_content": "\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(l);",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": null,
+          "new_api": "get_sortgroupclause_expr",
+          "old_text": null,
+          "new_text": "get_sortgroupclause_expr(sortcl, tlist)",
+          "old_line_content": "",
+          "new_line_content": "\t\tsortkey = (Expr *) get_sortgroupclause_expr(sortcl, tlist);",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": null,
+          "new_api": "OidIsValid",
+          "old_text": null,
+          "new_text": "OidIsValid(sortcl->sortop)",
+          "old_line_content": "\t\t/* Canonical form eliminates redundant ordering keys */",
+          "new_line_content": "\t\tAssert(OidIsValid(sortcl->sortop));",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": null,
+          "new_api": "make_pathkey_from_sortinfo",
+          "old_text": null,
+          "new_text": "make_pathkey_from_sortinfo(root,\n\t\t\t\t\t\t\t\t\t\t\t sortkey,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->sortop,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->nulls_first,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->tleSortGroupRef,\n\t\t\t\t\t\t\t\t\t\t\t canonicalize)",
+          "old_line_content": "\t\tif (canonicalize)",
+          "new_line_content": "\t\tpathkey = make_pathkey_from_sortinfo(root,",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": null,
+          "new_api": "list_member_ptr",
+          "old_text": null,
+          "new_text": "list_member_ptr(root->canon_pathkeys, pathkey1)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\t\tAssert(list_member_ptr(root->canon_pathkeys, pathkey1));",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": null,
+          "new_api": "list_member_ptr",
+          "old_text": null,
+          "new_text": "list_member_ptr(root->canon_pathkeys, pathkey2)",
+          "old_line_content": "\t * If we reached the end of only one list, the other is longer and",
+          "new_line_content": "\t\tAssert(list_member_ptr(root->canon_pathkeys, pathkey2));",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": null,
+          "new_api": "pathkey_is_redundant",
+          "old_text": null,
+          "new_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tif (!pathkey_is_redundant(pathkey, pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(pathkeys, pathkey)",
+          "old_line_content": "/****************************************************************************",
+          "new_line_content": "\t\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(pathkeys, pathkey)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "content_same": false
+        },
+        {
+          "line": 1401,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(l, root->query_pathkeys)",
+          "old_line_content": "\t\t\t * Found a matching query sort column.\tPrefer this pathkey's",
+          "new_line_content": "\tforeach(l, root->query_pathkeys)",
+          "content_same": false
+        },
+        {
+          "line": 1403,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(l)",
+          "old_line_content": "\t\t\t * which means that a sort might be needed anyway ... but we still",
+          "new_line_content": "\t\tPathKey    *query_pathkey = (PathKey *) lfirst(l);",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": null,
+          "new_api": "compare_pathkeys",
+          "old_text": null,
+          "new_text": "compare_pathkeys(keys1, keys2)",
+          "old_line_content": "\treturn false;",
+          "new_line_content": "\tswitch (compare_pathkeys(keys1, keys2))",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(restrictinfo->mergeopfamilies != NIL)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(restrictinfo->mergeopfamilies != NIL);",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": null,
+          "new_api": "op_input_types",
+          "old_text": null,
+          "new_text": "op_input_types(((OpExpr *) clause)->opno, &lefttype, &righttype)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t 0);",
+          "new_line_content": "\t\top_input_types(((OpExpr *) clause)->opno, &lefttype, &righttype);",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": null,
+          "new_api": "get_eclass_for_sort_expr",
+          "old_text": null,
+          "new_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t (Expr *) get_leftop(clause),\n\t\t\t\t\t\t\t\t\t lefttype,\n\t\t\t\t\t\t\t\t\t restrictinfo->mergeopfamilies,\n\t\t\t\t\t\t\t\t\t 0)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t righttype,",
+          "new_line_content": "\t\t\tget_eclass_for_sort_expr(root,",
+          "content_same": false
+        },
+        {
+          "line": 914,
+          "old_api": null,
+          "new_api": "get_leftop",
+          "old_text": null,
+          "new_text": "get_leftop(clause)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t restrictinfo->mergeopfamilies,",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t (Expr *) get_leftop(clause),",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": null,
+          "new_api": "get_eclass_for_sort_expr",
+          "old_text": null,
+          "new_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t (Expr *) get_rightop(clause),\n\t\t\t\t\t\t\t\t\t righttype,\n\t\t\t\t\t\t\t\t\t restrictinfo->mergeopfamilies,\n\t\t\t\t\t\t\t\t\t 0)",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\tget_eclass_for_sort_expr(root,",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": null,
+          "new_api": "get_rightop",
+          "old_text": null,
+          "new_text": "get_rightop(clause)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t (Expr *) get_rightop(clause),",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(l)",
+          "old_line_content": "\t\t\tcontinue;",
+          "new_line_content": "\t\tPath\t   *path = (Path *) lfirst(l);",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(restrictinfo->right_ec != NULL)",
+          "old_line_content": " *",
+          "new_line_content": "\t\tAssert(restrictinfo->right_ec != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "compare_path_costs",
+          "old_text": null,
+          "new_text": "compare_path_costs(matched_path, path, cost_criterion)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tcompare_path_costs(matched_path, path, cost_criterion) <= 0)",
+          "content_same": false
+        },
+        {
+          "line": 1441,
+          "old_api": null,
+          "new_api": "pathkeys_contained_in",
+          "old_text": null,
+          "new_text": "pathkeys_contained_in(root->query_pathkeys, pathkeys)",
+          "old_line_content": "",
+          "new_line_content": "\tif (pathkeys_contained_in(root->query_pathkeys, pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": null,
+          "new_api": "pathkeys_contained_in",
+          "old_text": null,
+          "new_text": "pathkeys_contained_in(pathkeys, path->pathkeys)",
+          "old_line_content": " *\t  Find the cheapest path (for retrieving a specified fraction of all",
+          "new_line_content": "\t\tif (pathkeys_contained_in(pathkeys, path->pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 1444,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(root->query_pathkeys)",
+          "old_line_content": " *\t\tShorten the given pathkey list to just the useful pathkeys.",
+          "new_line_content": "\t\treturn list_length(root->query_pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 1462,
+          "old_api": null,
+          "new_api": "pathkeys_useful_for_merging",
+          "old_text": null,
+          "new_text": "pathkeys_useful_for_merging(root, rel, pathkeys)",
+          "old_line_content": "\t */",
+          "new_line_content": "\tnuseful = pathkeys_useful_for_merging(root, rel, pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 1463,
+          "old_api": null,
+          "new_api": "pathkeys_useful_for_ordering",
+          "old_text": null,
+          "new_text": "pathkeys_useful_for_ordering(root, pathkeys)",
+          "old_line_content": "\tif (nuseful == 0)",
+          "new_line_content": "\tnuseful2 = pathkeys_useful_for_ordering(root, pathkeys);",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(l)",
+          "old_line_content": "\t\t\tcontinue;",
+          "new_line_content": "\t\tPath\t   *path = (Path *) lfirst(l);",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(i)",
+          "old_line_content": "\t\tEquivalenceClass *pathkey_ec = pathkey->pk_eclass;",
+          "new_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(i);",
+          "content_same": false
+        },
+        {
+          "line": 962,
+          "old_api": null,
+          "new_api": "cache_mergeclause_eclasses",
+          "old_text": null,
+          "new_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "old_line_content": "\t\tListCell   *j;",
+          "new_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "content_same": false
+        },
+        {
+          "line": 1473,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(pathkeys)",
+          "old_line_content": " *\t\tDetect whether the specified rel could have any pathkeys that are",
+          "new_line_content": "\telse if (nuseful == list_length(pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 1476,
+          "old_api": null,
+          "new_api": "list_copy",
+          "old_text": null,
+          "new_text": "list_copy(pathkeys)",
+          "old_line_content": " * This is a cheap test that lets us skip building pathkeys at all in very",
+          "new_line_content": "\t\treturn list_truncate(list_copy(pathkeys), nuseful);",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": null,
+          "new_api": "compare_fractional_path_costs",
+          "old_text": null,
+          "new_text": "compare_fractional_path_costs(matched_path, path, fraction)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tcompare_fractional_path_costs(matched_path, path, fraction) <= 0)",
+          "content_same": false
+        },
+        {
+          "line": 967,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(i)",
+          "old_line_content": "\t\t * inner-join scenarios we expect only one match, because",
+          "new_line_content": "\t\tPathKey    *pathkey = (PathKey *) lfirst(i);",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": null,
+          "new_api": "pathkeys_contained_in",
+          "old_text": null,
+          "new_text": "pathkeys_contained_in(pathkeys, path->pathkeys)",
+          "old_line_content": " ****************************************************************************/",
+          "new_line_content": "\t\tif (pathkeys_contained_in(pathkeys, path->pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 1001,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(j)",
+          "old_line_content": "\t\t\t\t\trinfo->right_ec : rinfo->left_ec;",
+          "new_line_content": "\t\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(j);",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "list_head",
+          "old_text": null,
+          "new_text": "list_head(index->indexprs)",
+          "old_line_content": "\t\tExpr\t   *indexkey;",
+          "new_line_content": "\tListCell   *indexprs_item = list_head(index->indexprs);",
+          "content_same": false
+        },
+        {
+          "line": 1011,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(matched_restrictinfos, rinfo)",
+          "old_line_content": "\t\tif (matched_restrictinfos == NIL)",
+          "new_line_content": "\t\t\t\tmatched_restrictinfos = lappend(matched_restrictinfos, rinfo);",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": null,
+          "new_api": "ScanDirectionIsBackward",
+          "old_text": null,
+          "new_text": "ScanDirectionIsBackward(scandir)",
+          "old_line_content": "\t\t\tnulls_first = index->nulls_first[i];",
+          "new_line_content": "\t\tif (ScanDirectionIsBackward(scandir))",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 517,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"wrong number of index expressions\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\telog(ERROR, \"wrong number of index expressions\");",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(indexprs_item)",
+          "new_text": null,
+          "old_line_content": "\t\t\tindexkey = (Expr *) lfirst(indexprs_item);",
+          "new_line_content": "\t\t\t/* simple index column */",
+          "content_same": false
+        },
+        {
+          "line": 523,
+          "old_api": "make_pathkey_from_sortinfo",
+          "new_api": null,
+          "old_text": "make_pathkey_from_sortinfo(root,\n\t\t\t\t\t\t\t\t\t\t\t  indexkey,\n\t\t\t\t\t\t\t\t\t\t\t  sortop,\n\t\t\t\t\t\t\t\t\t\t\t  nulls_first,\n\t\t\t\t\t\t\t\t\t\t\t  0,\n\t\t\t\t\t\t\t\t\t\t\t  true)",
+          "new_text": null,
+          "old_line_content": "\t\tcpathkey = make_pathkey_from_sortinfo(root,",
+          "new_line_content": "\t\t\t/* expression --- assume we need not copy it */",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(retval, cpathkey)",
+          "new_text": null,
+          "old_line_content": "\t\t\tretval = lappend(retval, cpathkey);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t  indexkey,",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(mergeclauses)",
+          "new_text": null,
+          "old_line_content": "\tint\t\t\tnClauses = list_length(mergeclauses);",
+          "new_line_content": " * higher-level mergejoins as possible.",
+          "content_same": false
+        },
+        {
+          "line": 556,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(temp, rel->reltargetlist)",
+          "new_text": null,
+          "old_line_content": "\tforeach(temp, rel->reltargetlist)",
+          "new_line_content": "find_indexkey_var(PlannerInfo *root, RelOptInfo *rel, AttrNumber varattno)",
+          "content_same": false
+        },
+        {
+          "line": 1069,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(nClauses * sizeof(EquivalenceClass *))",
+          "new_text": null,
+          "old_line_content": "\tecs = (EquivalenceClass **) palloc(nClauses * sizeof(EquivalenceClass *));",
+          "new_line_content": "\t/* Might have no mergeclauses */",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(temp)",
+          "new_text": null,
+          "old_line_content": "\t\tVar\t\t   *var = (Var *) lfirst(temp);",
+          "new_line_content": "\tListCell   *temp;",
+          "content_same": false
+        },
+        {
+          "line": 1070,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(nClauses * sizeof(int))",
+          "new_text": null,
+          "old_line_content": "\tscores = (int *) palloc(nClauses * sizeof(int));",
+          "new_line_content": "\tif (nClauses == 0)",
+          "content_same": false
+        },
+        {
+          "line": 560,
+          "old_api": "IsA",
+          "new_api": null,
+          "old_text": "IsA(var, Var)",
+          "new_text": null,
+          "old_line_content": "\t\tif (IsA(var, Var) &&",
+          "new_line_content": "\tOid\t\t\treloid,",
+          "content_same": false
+        },
+        {
+          "line": 1075,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(lc);",
+          "new_line_content": "\t * duplicates) and their \"popularity\" scores.",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "get_atttypetypmod",
+          "new_api": null,
+          "old_text": "get_atttypetypmod(reloid, varattno, &vartypeid, &type_mod)",
+          "new_text": null,
+          "old_line_content": "\tget_atttypetypmod(reloid, varattno, &vartypeid, &type_mod);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "makeVar",
+          "new_api": null,
+          "old_text": "makeVar(relid, varattno, vartypeid, type_mod, 0)",
+          "new_text": null,
+          "old_line_content": "\treturn makeVar(relid, varattno, vartypeid, type_mod, 0);",
+          "new_line_content": "\t\t\tvar->varattno == varattno)",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "cache_mergeclause_eclasses",
+          "new_api": null,
+          "old_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "new_text": null,
+          "old_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "new_line_content": "\tforeach(lc, mergeclauses)",
+          "content_same": false
+        },
+        {
+          "line": 1099,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc2, oeclass->ec_members)",
+          "new_text": null,
+          "old_line_content": "\t\tforeach(lc2, oeclass->ec_members)",
+          "new_line_content": "\t\t\tif (ecs[j] == oeclass)",
+          "content_same": false
+        },
+        {
+          "line": 1101,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc2)",
+          "new_text": null,
+          "old_line_content": "\t\t\tEquivalenceMember *em = (EquivalenceMember *) lfirst(lc2);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tint\t\t\touter_query_keys = list_length(root->query_pathkeys);",
+          "new_line_content": " * account.",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": "bms_overlap",
+          "new_api": null,
+          "old_text": "bms_overlap(em->em_relids, joinrel->relids)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t!bms_overlap(em->em_relids, joinrel->relids))",
+          "new_line_content": "\t\t/* compute score */",
+          "content_same": false
+        },
+        {
+          "line": 597,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(i)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *sub_pathkey = (PathKey *) lfirst(i);",
+          "new_line_content": "\tList\t   *retval = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 1121,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc, root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tforeach(lc, root->query_pathkeys)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 611,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"volatile EquivalenceClass has no sortref\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\telog(ERROR, \"volatile EquivalenceClass has no sortref\");",
+          "new_line_content": "\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "get_sortgroupref_tle",
+          "new_api": null,
+          "old_text": "get_sortgroupref_tle(sub_eclass->ec_sortref, sub_tlist)",
+          "new_text": null,
+          "old_line_content": "\t\t\ttle = get_sortgroupref_tle(sub_eclass->ec_sortref, sub_tlist);",
+          "new_line_content": "\t\t\t * If the sub_pathkey's EquivalenceClass is volatile, then it must",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(tle)",
+          "new_text": null,
+          "old_line_content": "\t\t\tAssert(tle);",
+          "new_line_content": "\t\t\t * have come from an ORDER BY clause, and we have to match it to",
+          "content_same": false
+        },
+        {
+          "line": 1123,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tPathKey    *query_pathkey = (PathKey *) lfirst(lc);",
+          "new_line_content": "\t * Find out if we have all the ECs mentioned in query_pathkeys; if so we",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(sub_eclass->ec_members)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tAssert(list_length(sub_eclass->ec_members) == 1);",
+          "new_line_content": "\t\t\t/* resjunk items aren't visible to outer query */",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": "linitial",
+          "new_api": null,
+          "old_text": "linitial(sub_eclass->ec_members)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tsub_member = (EquivalenceMember *) linitial(sub_eclass->ec_members);",
+          "new_line_content": "\t\t\tif (!tle->resjunk)",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "makeVar",
+          "new_api": null,
+          "old_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t0)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tmakeVar(rel->relid,",
+          "new_line_content": "\t\t\t\t/* We can represent this sub_pathkey */",
+          "content_same": false
+        },
+        {
+          "line": 1138,
+          "old_api": "list_copy",
+          "new_api": null,
+          "old_text": "list_copy(root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\t\tpathkeys = list_copy(root->query_pathkeys);",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "new_line_content": "\t\t\t\tExpr\t   *outer_expr;",
+          "content_same": false
+        },
+        {
+          "line": 628,
+          "old_api": "exprTypmod",
+          "new_api": null,
+          "old_text": "exprTypmod((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "new_line_content": "\t\t\t\tEquivalenceClass *outer_ec;",
+          "content_same": false
+        },
+        {
+          "line": 1140,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc, root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\t\tforeach(lc, root->query_pathkeys)",
+          "new_line_content": "\t\t\t\tbreak;\t\t\t/* didn't find match */",
+          "content_same": false
+        },
+        {
+          "line": 1142,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tPathKey    *query_pathkey = (PathKey *) lfirst(lc);",
+          "new_line_content": "\t\t/* if we got to the end of the list, we have them all */",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": "make_canonical_pathkey",
+          "new_api": null,
+          "old_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t   outer_ec,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t   sub_pathkey->pk_nulls_first)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tmake_canonical_pathkey(root,",
+          "new_line_content": "\t\t\t\t\t\t\t0);",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(j, sub_eclass->ec_members)",
+          "new_text": null,
+          "old_line_content": "\t\t\tforeach(j, sub_eclass->ec_members)",
+          "new_line_content": "\t\t\t * called. Instead we prefer the one that has the highest \"score\"",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(j)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tEquivalenceMember *sub_member = (EquivalenceMember *) lfirst(j);",
+          "new_line_content": "\t\t\t * query_pathkeys). This is the most likely to be useful in the",
+          "content_same": false
+        },
+        {
+          "line": 1183,
+          "old_api": "make_canonical_pathkey",
+          "new_api": null,
+          "old_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t ec,\n\t\t\t\t\t\t\t\t\t\t linitial_oid(ec->ec_opfamilies),\n\t\t\t\t\t\t\t\t\t\t BTLessStrategyNumber,\n\t\t\t\t\t\t\t\t\t\t false)",
+          "new_text": null,
+          "old_line_content": "\t\tpathkey = make_canonical_pathkey(root,",
+          "new_line_content": "\t\t\t\tbest_j = j;",
+          "content_same": false
+        },
+        {
+          "line": 1185,
+          "old_api": "linitial_oid",
+          "new_api": null,
+          "old_text": "linitial_oid(ec->ec_opfamilies)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t linitial_oid(ec->ec_opfamilies),",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 1189,
+          "old_api": "pathkey_is_redundant",
+          "new_api": null,
+          "old_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(!pathkey_is_redundant(pathkey, pathkeys));",
+          "new_line_content": "\t\tec = ecs[best_j];",
+          "content_same": false
+        },
+        {
+          "line": 1190,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(pathkeys, pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "new_line_content": "\t\tscores[best_j] = -1;",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "IsA",
+          "new_api": null,
+          "old_text": "IsA(sub_stripped, RelabelType)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\twhile (sub_stripped && IsA(sub_stripped, RelabelType))",
+          "new_line_content": "\t\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 1194,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(scores)",
+          "new_text": null,
+          "old_line_content": "\tpfree(scores);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t BTLessStrategyNumber,",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(k)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tTargetEntry *tle = (TargetEntry *) lfirst(k);",
+          "new_line_content": "\t\t\t\t * RelabelType.)",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "equal",
+          "new_api": null,
+          "old_text": "equal(tle->expr, sub_expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tif (equal(tle->expr, sub_expr))",
+          "new_line_content": "\t\t\t\t\tEquivalenceClass *outer_ec;",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "makeVar",
+          "new_api": null,
+          "old_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t0)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\tmakeVar(rel->relid,",
+          "new_line_content": "\t\t\t\t\t/* resjunk items aren't visible to outer query */",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "new_line_content": "\t\t\t\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": "exprTypmod",
+          "new_api": null,
+          "old_text": "exprTypmod((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": "equal",
+          "new_api": null,
+          "old_text": "equal(tle_stripped, sub_stripped)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\tif (equal(tle_stripped, sub_stripped))",
+          "new_line_content": "\t\t\t\t\telse",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "makeVar",
+          "new_api": null,
+          "old_text": "makeVar(rel->relid,\n\t\t\t\t\t\t\t\t\t\ttle->resno,\n\t\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),\n\t\t\t\t\t\t\t\t\t\t0)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\tmakeVar(rel->relid,",
+          "new_line_content": "\t\t\t\t\t\ttle_stripped = tle->expr;",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\texprType((Node *) tle->expr),",
+          "new_line_content": "\t\t\t\t\t\t\ttle_stripped = ((RelabelType *) tle_stripped)->arg;",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": "exprTypmod",
+          "new_api": null,
+          "old_text": "exprTypmod((Node *) tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\texprTypmod((Node *) tle->expr),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1233,
+          "old_api": "list_head",
+          "new_api": null,
+          "old_text": "list_head(outer_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tlop = list_head(outer_pathkeys);",
+          "new_line_content": "\tList\t   *pathkeys = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) outer_expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\tif (exprType((Node *) outer_expr) !=",
+          "new_line_content": "\t\t\t\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) sub_expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\texprType((Node *) sub_expr))",
+          "new_line_content": "\t\t\t\t\t\t\t/* Match after discarding RelabelType */",
+          "content_same": false
+        },
+        {
+          "line": 1237,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(lc);",
+          "new_line_content": "\tListCell   *lop;",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "exprType",
+          "new_api": null,
+          "old_text": "exprType((Node *) sub_expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t exprType((Node *) sub_expr),",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\ttle->resno,",
+          "content_same": false
+        },
+        {
+          "line": 1242,
+          "old_api": "cache_mergeclause_eclasses",
+          "new_api": null,
+          "old_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "new_text": null,
+          "old_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "get_eclass_for_sort_expr",
+          "new_api": null,
+          "old_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\touter_expr,\n\t\t\t\t\t\t\t\t\t\t\t\t\t sub_member->em_datatype,\n\t\t\t\t\t\t\t\t\t\t\t\t   sub_eclass->ec_opfamilies,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t0)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\touter_ec = get_eclass_for_sort_expr(root,",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\t-1,",
+          "content_same": false
+        },
+        {
+          "line": 740,
+          "old_api": "make_canonical_pathkey",
+          "new_api": null,
+          "old_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t  outer_ec,\n\t\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t\t\tsub_pathkey->pk_nulls_first)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\touter_pk = make_canonical_pathkey(root,",
+          "new_line_content": "\t\t\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 746,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(outer_ec->ec_members)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tscore = list_length(outer_ec->ec_members) - 1;",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t   sub_eclass->ec_opfamilies,",
+          "content_same": false
+        },
+        {
+          "line": 1260,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"too few pathkeys for mergeclauses\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\telog(ERROR, \"too few pathkeys for mergeclauses\");",
+          "new_line_content": "\t\t\tieclass = rinfo->left_ec;",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": "list_nth",
+          "new_api": null,
+          "old_text": "list_nth(root->query_pathkeys, retvallen)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\tlist_nth(root->query_pathkeys, retvallen) == outer_pk)",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\t  outer_ec,",
+          "content_same": false
+        },
+        {
+          "line": 1261,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lop)",
+          "new_text": null,
+          "old_line_content": "\t\t\topathkey = (PathKey *) lfirst(lop);",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 1262,
+          "old_api": "lnext",
+          "new_api": null,
+          "old_text": "lnext(lop)",
+          "new_text": null,
+          "old_line_content": "\t\t\tlop = lnext(lop);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1265,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"outer pathkeys do not match mergeclause\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\telog(ERROR, \"outer pathkeys do not match mergeclause\");",
+          "new_line_content": "\t\tif (oeclass != lastoeclass)",
+          "content_same": false
+        },
+        {
+          "line": 1276,
+          "old_api": "make_canonical_pathkey",
+          "new_api": null,
+          "old_text": "make_canonical_pathkey(root,\n\t\t\t\t\t\t\t\t\t\t\t ieclass,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_opfamily,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_strategy,\n\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_nulls_first)",
+          "new_text": null,
+          "old_line_content": "\t\t\tpathkey = make_canonical_pathkey(root,",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 771,
+          "old_api": "pathkey_is_redundant",
+          "new_api": null,
+          "old_text": "pathkey_is_redundant(best_pathkey, retval)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!pathkey_is_redundant(best_pathkey, retval))",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(retval, best_pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\t\tretval = lappend(retval, best_pathkey);",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1286,
+          "old_api": "pathkey_is_redundant",
+          "new_api": null,
+          "old_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!pathkey_is_redundant(pathkey, pathkeys))",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_opfamily,",
+          "content_same": false
+        },
+        {
+          "line": 1287,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(pathkeys, pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t opathkey->pk_strategy,",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": "truncate_useless_pathkeys",
+          "new_api": null,
+          "old_text": "truncate_useless_pathkeys(root, joinrel, outer_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\treturn truncate_useless_pathkeys(root, joinrel, outer_pathkeys);",
+          "new_line_content": "\t * This used to be quite a complex bit of code, but now that all pathkey",
+          "content_same": false
+        },
+        {
+          "line": 1329,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(i)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *pathkey = (PathKey *) lfirst(i);",
+          "new_line_content": "int",
+          "content_same": false
+        },
+        {
+          "line": 1334,
+          "old_api": "right_merge_direction",
+          "new_api": null,
+          "old_text": "right_merge_direction(root, pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!right_merge_direction(root, pathkey))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1343,
+          "old_api": "eclass_useful_for_merging",
+          "new_api": null,
+          "old_text": "eclass_useful_for_merging(pathkey->pk_eclass, rel)",
+          "new_text": null,
+          "old_line_content": "\t\t\teclass_useful_for_merging(pathkey->pk_eclass, rel))",
+          "new_line_content": "\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 1352,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(j, rel->joininfo)",
+          "new_text": null,
+          "old_line_content": "\t\t\tforeach(j, rel->joininfo)",
+          "new_line_content": "\t\t\tmatched = true;",
+          "content_same": false
+        },
+        {
+          "line": 1354,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(j)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tRestrictInfo *restrictinfo = (RestrictInfo *) lfirst(j);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 1358,
+          "old_api": "cache_mergeclause_eclasses",
+          "new_api": null,
+          "old_text": "cache_mergeclause_eclasses(root, restrictinfo)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tcache_mergeclause_eclasses(root, restrictinfo);",
+          "new_line_content": "\t\t\t * nonetheless be mergejoinable.",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(key1)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *pathkey1 = (PathKey *) lfirst(key1);",
+          "new_line_content": "\t * catches the case where both are NIL, but that's common enough to",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(key2)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *pathkey2 = (PathKey *) lfirst(key2);",
+          "new_line_content": "\t * warrant the test.",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(l)",
+          "new_text": null,
+          "old_line_content": "\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(l);",
+          "new_line_content": "\t\t\t\t\t\t\t  List *tlist,",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": "get_sortgroupclause_expr",
+          "new_api": null,
+          "old_text": "get_sortgroupclause_expr(sortcl, tlist)",
+          "new_text": null,
+          "old_line_content": "\t\tsortkey = (Expr *) get_sortgroupclause_expr(sortcl, tlist);",
+          "new_line_content": "\tListCell   *l;",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": "OidIsValid",
+          "new_api": null,
+          "old_text": "OidIsValid(sortcl->sortop)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(OidIsValid(sortcl->sortop));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "make_pathkey_from_sortinfo",
+          "new_api": null,
+          "old_text": "make_pathkey_from_sortinfo(root,\n\t\t\t\t\t\t\t\t\t\t\t sortkey,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->sortop,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->nulls_first,\n\t\t\t\t\t\t\t\t\t\t\t sortcl->tleSortGroupRef,\n\t\t\t\t\t\t\t\t\t\t\t canonicalize)",
+          "new_text": null,
+          "old_line_content": "\t\tpathkey = make_pathkey_from_sortinfo(root,",
+          "new_line_content": "\tforeach(l, sortclauses)",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "pathkey_is_redundant",
+          "new_api": null,
+          "old_text": "pathkey_is_redundant(pathkey, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (!pathkey_is_redundant(pathkey, pathkeys))",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t sortcl->sortop,",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(pathkeys, pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t\t sortcl->nulls_first,",
+          "content_same": false
+        },
+        {
+          "line": 869,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(pathkeys, pathkey)",
+          "new_text": null,
+          "old_line_content": "\t\t\tpathkeys = lappend(pathkeys, pathkey);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1393,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(l, root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tforeach(l, root->query_pathkeys)",
+          "new_line_content": " *\t\tCheck whether the pathkey embodies the preferred sort direction",
+          "content_same": false
+        },
+        {
+          "line": 1395,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(l)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *query_pathkey = (PathKey *) lfirst(l);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": "compare_pathkeys",
+          "new_api": null,
+          "old_text": "compare_pathkeys(keys1, keys2)",
+          "new_text": null,
+          "old_line_content": "\tswitch (compare_pathkeys(keys1, keys2))",
+          "new_line_content": "/*",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(restrictinfo->mergeopfamilies != NIL)",
+          "new_text": null,
+          "old_line_content": "\tAssert(restrictinfo->mergeopfamilies != NIL);",
+          "new_line_content": " * RestrictInfo contains fields in which we may cache pointers to",
+          "content_same": false
+        },
+        {
+          "line": 901,
+          "old_api": "op_input_types",
+          "new_api": null,
+          "old_text": "op_input_types(((OpExpr *) clause)->opno, &lefttype, &righttype)",
+          "new_text": null,
+          "old_line_content": "\t\top_input_types(((OpExpr *) clause)->opno, &lefttype, &righttype);",
+          "new_line_content": "\t/* the cached values should be either both set or both not */",
+          "content_same": false
+        },
+        {
+          "line": 905,
+          "old_api": "get_eclass_for_sort_expr",
+          "new_api": null,
+          "old_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t (Expr *) get_leftop(clause),\n\t\t\t\t\t\t\t\t\t lefttype,\n\t\t\t\t\t\t\t\t\t restrictinfo->mergeopfamilies,\n\t\t\t\t\t\t\t\t\t 0)",
+          "new_text": null,
+          "old_line_content": "\t\t\tget_eclass_for_sort_expr(root,",
+          "new_line_content": "\t\tOid\t\t\tlefttype,",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": "get_leftop",
+          "new_api": null,
+          "old_text": "get_leftop(clause)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t (Expr *) get_leftop(clause),",
+          "new_line_content": "\t\t\t\t\trighttype;",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": "get_eclass_for_sort_expr",
+          "new_api": null,
+          "old_text": "get_eclass_for_sort_expr(root,\n\t\t\t\t\t\t\t\t\t (Expr *) get_rightop(clause),\n\t\t\t\t\t\t\t\t\t righttype,\n\t\t\t\t\t\t\t\t\t restrictinfo->mergeopfamilies,\n\t\t\t\t\t\t\t\t\t 0)",
+          "new_text": null,
+          "old_line_content": "\t\t\tget_eclass_for_sort_expr(root,",
+          "new_line_content": "\t\t/* Find or create a matching EquivalenceClass for each side */",
+          "content_same": false
+        },
+        {
+          "line": 912,
+          "old_api": "get_rightop",
+          "new_api": null,
+          "old_text": "get_rightop(clause)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t (Expr *) get_rightop(clause),",
+          "new_line_content": "\t\trestrictinfo->left_ec =",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(l)",
+          "new_text": null,
+          "old_line_content": "\t\tPath\t   *path = (Path *) lfirst(l);",
+          "new_line_content": "get_cheapest_path_for_pathkeys(List *paths, List *pathkeys,",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(restrictinfo->right_ec != NULL)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(restrictinfo->right_ec != NULL);",
+          "new_line_content": "\t\trestrictinfo->right_ec =",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "compare_path_costs",
+          "new_api": null,
+          "old_text": "compare_path_costs(matched_path, path, cost_criterion)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcompare_path_costs(matched_path, path, cost_criterion) <= 0)",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 1433,
+          "old_api": "pathkeys_contained_in",
+          "new_api": null,
+          "old_text": "pathkeys_contained_in(root->query_pathkeys, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tif (pathkeys_contained_in(root->query_pathkeys, pathkeys))",
+          "new_line_content": "pathkeys_useful_for_ordering(PlannerInfo *root, List *pathkeys)",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": "pathkeys_contained_in",
+          "new_api": null,
+          "old_text": "pathkeys_contained_in(pathkeys, path->pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tif (pathkeys_contained_in(pathkeys, path->pathkeys))",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 1436,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->query_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\treturn list_length(root->query_pathkeys);",
+          "new_line_content": "\t\treturn 0;\t\t\t\t/* no special ordering requested */",
+          "content_same": false
+        },
+        {
+          "line": 1454,
+          "old_api": "pathkeys_useful_for_merging",
+          "new_api": null,
+          "old_text": "pathkeys_useful_for_merging(root, rel, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tnuseful = pathkeys_useful_for_merging(root, rel, pathkeys);",
+          "new_line_content": "List *",
+          "content_same": false
+        },
+        {
+          "line": 1455,
+          "old_api": "pathkeys_useful_for_ordering",
+          "new_api": null,
+          "old_text": "pathkeys_useful_for_ordering(root, pathkeys)",
+          "new_text": null,
+          "old_line_content": "\tnuseful2 = pathkeys_useful_for_ordering(root, pathkeys);",
+          "new_line_content": "truncate_useless_pathkeys(PlannerInfo *root,",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(l)",
+          "new_text": null,
+          "old_line_content": "\t\tPath\t   *path = (Path *) lfirst(l);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t  List *pathkeys,",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(i)",
+          "new_text": null,
+          "old_line_content": "\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(i);",
+          "new_line_content": "\t\t\t\t\t\t\t   List *restrictinfos)",
+          "content_same": false
+        },
+        {
+          "line": 954,
+          "old_api": "cache_mergeclause_eclasses",
+          "new_api": null,
+          "old_text": "cache_mergeclause_eclasses(root, rinfo)",
+          "new_text": null,
+          "old_line_content": "\t\tcache_mergeclause_eclasses(root, rinfo);",
+          "new_line_content": "\tList\t   *mergeclauses = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 1465,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(pathkeys)",
+          "new_text": null,
+          "old_line_content": "\telse if (nuseful == list_length(pathkeys))",
+          "new_line_content": "\t\tnuseful = nuseful2;",
+          "content_same": false
+        },
+        {
+          "line": 1468,
+          "old_api": "list_copy",
+          "new_api": null,
+          "old_text": "list_copy(pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\treturn list_truncate(list_copy(pathkeys), nuseful);",
+          "new_line_content": "\t * Note: not safe to modify input list destructively, but we can avoid",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": "compare_fractional_path_costs",
+          "new_api": null,
+          "old_text": "compare_fractional_path_costs(matched_path, path, fraction)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcompare_fractional_path_costs(matched_path, path, fraction) <= 0)",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 959,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(i)",
+          "new_text": null,
+          "old_line_content": "\t\tPathKey    *pathkey = (PathKey *) lfirst(i);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "pathkeys_contained_in",
+          "new_api": null,
+          "old_text": "pathkeys_contained_in(pathkeys, path->pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tif (pathkeys_contained_in(pathkeys, path->pathkeys))",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(j)",
+          "new_text": null,
+          "old_line_content": "\t\t\tRestrictInfo *rinfo = (RestrictInfo *) lfirst(j);",
+          "new_line_content": "\t\t * them into our result makes a difference in the pathkeys required",
+          "content_same": false
+        },
+        {
+          "line": 482,
+          "old_api": "list_head",
+          "new_api": null,
+          "old_text": "list_head(index->indexprs)",
+          "new_text": null,
+          "old_line_content": "\tListCell   *indexprs_item = list_head(index->indexprs);",
+          "new_line_content": " * current query.  Caller should do truncate_useless_pathkeys().",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(matched_restrictinfos, rinfo)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tmatched_restrictinfos = lappend(matched_restrictinfos, rinfo);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 493,
+          "old_api": "ScanDirectionIsBackward",
+          "new_api": null,
+          "old_text": "ScanDirectionIsBackward(scandir)",
+          "new_text": null,
+          "old_line_content": "\t\tif (ScanDirectionIsBackward(scandir))",
+          "new_line_content": "\tfor (i = 0; i < index->ncolumns; i++)",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "OidIsValid",
+          "new_api": null,
+          "old_text": "OidIsValid(sortop)",
+          "new_text": null,
+          "old_line_content": "\t\tif (!OidIsValid(sortop))",
+          "new_line_content": "\t\t\tnulls_first = !index->nulls_first[i];",
+          "content_same": false
+        },
+        {
+          "line": 1018,
+          "old_api": "list_concat",
+          "new_api": null,
+          "old_text": "list_concat(mergeclauses, matched_restrictinfos)",
+          "new_text": null,
+          "old_line_content": "\t\tmergeclauses = list_concat(mergeclauses, matched_restrictinfos);",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": "find_indexkey_var",
+          "new_api": null,
+          "old_text": "find_indexkey_var(root, index->rel, ikey)",
+          "new_text": null,
+          "old_line_content": "\t\t\tindexkey = (Expr *) find_indexkey_var(root, index->rel, ikey);",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 9,
+      "total_additions": 117,
+      "total_deletions": 117,
+      "total_api_changes": 243
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 15,
+        "api_related_lines": 243,
+        "non_api_lines": 13,
+        "non_api_line_numbers": [
+          357,
+          358,
+          361,
+          14,
+          335,
+          336,
+          367,
+          368,
+          339,
+          340,
+          341,
+          342,
+          369
+        ]
+      }
+    },
+    "api_calls_before": 163,
+    "api_calls_after": 163,
+    "diff_info": {
+      "added_lines": 12,
+      "removed_lines": 4,
+      "total_diff_lines": 44
+    }
+  }
+}

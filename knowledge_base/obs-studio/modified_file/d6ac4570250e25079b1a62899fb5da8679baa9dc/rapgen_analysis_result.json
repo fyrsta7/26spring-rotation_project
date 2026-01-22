@@ -1,0 +1,788 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/d6ac4570250e25079b1a62899fb5da8679baa9dc",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/d6ac4570250e25079b1a62899fb5da8679baa9dc/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/d6ac4570250e25079b1a62899fb5da8679baa9dc/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/d6ac4570250e25079b1a62899fb5da8679baa9dc/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 3930,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": "pthread_mutex_lock",
+          "old_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "new_text": "pthread_mutex_lock(&source->audio_buf_mutex)",
+          "old_line_content": "\t\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "new_line_content": "\tpthread_mutex_lock(&source->audio_buf_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 3939,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": "circlebuf_peek_front",
+          "old_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "new_text": "circlebuf_peek_front(&source->audio_input_buf[ch],\n\t\t\t\tsource->audio_output_buf[0][ch],\n\t\t\t\tsize)",
+          "old_line_content": "\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "new_line_content": "\t\tcirclebuf_peek_front(&source->audio_input_buf[ch],",
+          "content_same": false
+        },
+        {
+          "line": 4025,
+          "old_api": "da_push_back",
+          "new_api": "obs_source_valid",
+          "old_text": "da_push_back(source->audio_cb_list, &info)",
+          "new_text": "obs_source_valid(source, \"obs_source_add_audio_capture_callback\")",
+          "old_line_content": "\tda_push_back(source->audio_cb_list, &info);",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_add_audio_capture_callback\"))",
+          "content_same": false
+        },
+        {
+          "line": 4038,
+          "old_api": "da_erase_item",
+          "new_api": "obs_source_valid",
+          "old_text": "da_erase_item(source->audio_cb_list, &info)",
+          "new_text": "obs_source_valid(source, \"obs_source_remove_audio_capture_callback\")",
+          "old_line_content": "\tda_erase_item(source->audio_cb_list, &info);",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_remove_audio_capture_callback\"))",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 4098,
+          "old_api": null,
+          "new_api": "obs_data_addref",
+          "old_text": null,
+          "new_text": "obs_data_addref(source->private_settings)",
+          "old_line_content": "void obs_source_set_async_decoupled(obs_source_t *source, bool decouple)",
+          "new_line_content": "\tobs_data_addref(source->private_settings);",
+          "content_same": false
+        },
+        {
+          "line": 4104,
+          "old_api": null,
+          "new_api": "obs_ptr_valid",
+          "old_text": null,
+          "new_text": "obs_ptr_valid(source, \"obs_source_set_async_decoupled\")",
+          "old_line_content": "\tif (decouple) {",
+          "new_line_content": "\tif (!obs_ptr_valid(source, \"obs_source_set_async_decoupled\"))",
+          "content_same": false
+        },
+        {
+          "line": 3977,
+          "old_api": null,
+          "new_api": "custom_audio_render",
+          "old_text": null,
+          "new_text": "custom_audio_render(source, mixers, channels, sample_rate)",
+          "old_line_content": "\tif (!source->audio_ts) {",
+          "new_line_content": "\t\tcustom_audio_render(source, mixers, channels, sample_rate);",
+          "content_same": false
+        },
+        {
+          "line": 4109,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&source->audio_buf_mutex)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tpthread_mutex_lock(&source->audio_buf_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4111,
+          "old_api": null,
+          "new_api": "reset_audio_data",
+          "old_text": null,
+          "new_text": "reset_audio_data(source, 0)",
+          "old_line_content": "",
+          "new_line_content": "\t\treset_audio_data(source, 0);",
+          "content_same": false
+        },
+        {
+          "line": 4112,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "old_line_content": "bool obs_source_async_decoupled(const obs_source_t *source)",
+          "new_line_content": "\t\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 3986,
+          "old_api": null,
+          "new_api": "process_audio_source_tick",
+          "old_text": null,
+          "new_text": "process_audio_source_tick(source, mixers, channels, sample_rate, size)",
+          "old_line_content": "{",
+          "new_line_content": "\tprocess_audio_source_tick(source, mixers, channels, sample_rate, size);",
+          "content_same": false
+        },
+        {
+          "line": 4118,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_async_decoupled\")",
+          "old_line_content": "/* hidden/undocumented export to allow source type redefinition for scripts */",
+          "new_line_content": "\treturn obs_source_valid(source, \"obs_source_async_decoupled\") ?",
+          "content_same": false
+        },
+        {
+          "line": 3991,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_audio_pending\")",
+          "old_line_content": "\t\tsource->audio_pending : true;",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_audio_pending\"))",
+          "content_same": false
+        },
+        {
+          "line": 3994,
+          "old_api": null,
+          "new_api": "is_audio_source",
+          "old_text": null,
+          "new_text": "is_audio_source(source)",
+          "old_line_content": "uint64_t obs_source_get_audio_timestamp(const obs_source_t *source)",
+          "new_line_content": "\treturn (is_composite_source(source) || is_audio_source(source)) ?",
+          "content_same": false
+        },
+        {
+          "line": 4125,
+          "old_api": null,
+          "new_api": "get_source_info",
+          "old_text": null,
+          "new_text": "get_source_info(name)",
+          "old_line_content": "\tif (enable)",
+          "new_line_content": "\tstruct obs_source_info *info = get_source_info(name);",
+          "content_same": false
+        },
+        {
+          "line": 4000,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_get_audio_timestamp\")",
+          "old_line_content": "void obs_source_get_audio_mix(const obs_source_t *source,",
+          "new_line_content": "\treturn obs_source_valid(source, \"obs_source_get_audio_timestamp\") ?",
+          "content_same": false
+        },
+        {
+          "line": 4007,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_get_audio_mix\")",
+          "old_line_content": "",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_get_audio_mix\"))",
+          "content_same": false
+        },
+        {
+          "line": 4009,
+          "old_api": null,
+          "new_api": "obs_ptr_valid",
+          "old_text": null,
+          "new_text": "obs_ptr_valid(audio, \"audio\")",
+          "old_line_content": "\t\tfor (size_t ch = 0; ch < MAX_AUDIO_CHANNELS; ch++) {",
+          "new_line_content": "\tif (!obs_ptr_valid(audio, \"audio\"))",
+          "content_same": false
+        },
+        {
+          "line": 4028,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&source->audio_cb_mutex)",
+          "old_line_content": "",
+          "new_line_content": "\tpthread_mutex_lock(&source->audio_cb_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4029,
+          "old_api": null,
+          "new_api": "da_push_back",
+          "old_text": null,
+          "new_text": "da_push_back(source->audio_cb_list, &info)",
+          "old_line_content": "void obs_source_remove_audio_capture_callback(obs_source_t *source,",
+          "new_line_content": "\tda_push_back(source->audio_cb_list, &info);",
+          "content_same": false
+        },
+        {
+          "line": 4030,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&source->audio_cb_mutex)",
+          "old_line_content": "\t\tobs_source_audio_capture_t callback, void *param)",
+          "new_line_content": "\tpthread_mutex_unlock(&source->audio_cb_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4041,
+          "old_api": null,
+          "new_api": "pthread_mutex_lock",
+          "old_text": null,
+          "new_text": "pthread_mutex_lock(&source->audio_cb_mutex)",
+          "old_line_content": "",
+          "new_line_content": "\tpthread_mutex_lock(&source->audio_cb_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4042,
+          "old_api": null,
+          "new_api": "da_erase_item",
+          "old_text": null,
+          "new_text": "da_erase_item(source->audio_cb_list, &info)",
+          "old_line_content": "void obs_source_set_monitoring_type(obs_source_t *source,",
+          "new_line_content": "\tda_erase_item(source->audio_cb_list, &info);",
+          "content_same": false
+        },
+        {
+          "line": 4043,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&source->audio_cb_mutex)",
+          "old_line_content": "\t\tenum obs_monitoring_type type)",
+          "new_line_content": "\tpthread_mutex_unlock(&source->audio_cb_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 3917,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(source->audio_output_buf[mix][0], 0,\n\t\t\t\t\tsizeof(float) * AUDIO_OUTPUT_FRAMES *\n\t\t\t\t\tchannels)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\tmemset(source->audio_output_buf[mix][0], 0,",
+          "content_same": false
+        },
+        {
+          "line": 3923,
+          "old_api": null,
+          "new_api": "apply_audio_volume",
+          "old_text": null,
+          "new_text": "apply_audio_volume(source, mixers, channels, sample_rate)",
+          "old_line_content": "\t\tuint32_t mixers, size_t channels, size_t sample_rate,",
+          "new_line_content": "\tapply_audio_volume(source, mixers, channels, sample_rate);",
+          "content_same": false
+        },
+        {
+          "line": 4052,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_set_monitoring_type\")",
+          "old_line_content": "",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_set_monitoring_type\"))",
+          "content_same": false
+        },
+        {
+          "line": 4089,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_async_unbuffered\")",
+          "old_line_content": "obs_data_t *obs_source_get_private_settings(obs_source_t *source)",
+          "new_line_content": "\treturn obs_source_valid(source, \"obs_source_async_unbuffered\") ?",
+          "content_same": false
+        },
+        {
+          "line": 3934,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "old_line_content": "\tfor (size_t ch = 0; ch < channels; ch++)",
+          "new_line_content": "\t\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4062,
+          "old_api": null,
+          "new_api": "audio_monitor_create",
+          "old_text": null,
+          "new_text": "audio_monitor_create(source)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\tsource->monitor = audio_monitor_create(source);",
+          "content_same": false
+        },
+        {
+          "line": 4064,
+          "old_api": null,
+          "new_api": "audio_monitor_destroy",
+          "old_text": null,
+          "new_text": "audio_monitor_destroy(source->monitor)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\taudio_monitor_destroy(source->monitor);",
+          "content_same": false
+        },
+        {
+          "line": 3943,
+          "old_api": null,
+          "new_api": "pthread_mutex_unlock",
+          "old_text": null,
+          "new_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "old_line_content": "",
+          "new_line_content": "\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "content_same": false
+        },
+        {
+          "line": 4075,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_get_monitoring_type\")",
+          "old_line_content": "void obs_source_set_async_unbuffered(obs_source_t *source, bool unbuffered)",
+          "new_line_content": "\treturn obs_source_valid(source, \"obs_source_get_monitoring_type\") ?",
+          "content_same": false
+        },
+        {
+          "line": 3950,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(source->audio_output_buf[mix][0],\n\t\t\t\t\t0, size * channels)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tmemset(source->audio_output_buf[mix][0],",
+          "content_same": false
+        },
+        {
+          "line": 4081,
+          "old_api": null,
+          "new_api": "obs_source_valid",
+          "old_text": null,
+          "new_text": "obs_source_valid(source, \"obs_source_set_async_unbuffered\")",
+          "old_line_content": "}",
+          "new_line_content": "\tif (!obs_source_valid(source, \"obs_source_set_async_unbuffered\"))",
+          "content_same": false
+        },
+        {
+          "line": 3956,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(source->audio_output_buf[mix][ch],\n\t\t\t\t\tsource->audio_output_buf[0][ch], size)",
+          "old_line_content": "\tif ((source->audio_mixers & 1) == 0 || (mixers & 1) == 0)",
+          "new_line_content": "\t\t\tmemcpy(source->audio_output_buf[mix][ch],",
+          "content_same": false
+        },
+        {
+          "line": 3961,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(source->audio_output_buf[0][0], 0,\n\t\t\t\tsize * channels)",
+          "old_line_content": "\tsource->audio_pending = false;",
+          "new_line_content": "\t\tmemset(source->audio_output_buf[0][0], 0,",
+          "content_same": false
+        },
+        {
+          "line": 3964,
+          "old_api": null,
+          "new_api": "apply_audio_volume",
+          "old_text": null,
+          "new_text": "apply_audio_volume(source, mixers, channels, sample_rate)",
+          "old_line_content": "void obs_source_audio_render(obs_source_t *source, uint32_t mixers,",
+          "new_line_content": "\tapply_audio_volume(source, mixers, channels, sample_rate);",
+          "content_same": false
+        },
+        {
+          "line": 4095,
+          "old_api": null,
+          "new_api": "obs_ptr_valid",
+          "old_text": null,
+          "new_text": "obs_ptr_valid(source, \"obs_source_get_private_settings\")",
+          "old_line_content": "\treturn source->private_settings;",
+          "new_line_content": "\tif (!obs_ptr_valid(source, \"obs_source_get_private_settings\"))",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 4100,
+          "old_api": "obs_ptr_valid",
+          "new_api": null,
+          "old_text": "obs_ptr_valid(source, \"obs_source_set_async_decoupled\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_ptr_valid(source, \"obs_source_set_async_decoupled\"))",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3973,
+          "old_api": "custom_audio_render",
+          "new_api": null,
+          "old_text": "custom_audio_render(source, mixers, channels, sample_rate)",
+          "new_text": null,
+          "old_line_content": "\t\tcustom_audio_render(source, mixers, channels, sample_rate);",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 4105,
+          "old_api": "pthread_mutex_lock",
+          "new_api": null,
+          "old_text": "pthread_mutex_lock(&source->audio_buf_mutex)",
+          "new_text": null,
+          "old_line_content": "\t\tpthread_mutex_lock(&source->audio_buf_mutex);",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 4107,
+          "old_api": "reset_audio_data",
+          "new_api": null,
+          "old_text": "reset_audio_data(source, 0)",
+          "new_text": null,
+          "old_line_content": "\t\treset_audio_data(source, 0);",
+          "new_line_content": "\tsource->async_decoupled = decouple;",
+          "content_same": false
+        },
+        {
+          "line": 4108,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&source->audio_buf_mutex)",
+          "new_text": null,
+          "old_line_content": "\t\tpthread_mutex_unlock(&source->audio_buf_mutex);",
+          "new_line_content": "\tif (decouple) {",
+          "content_same": false
+        },
+        {
+          "line": 3982,
+          "old_api": "process_audio_source_tick",
+          "new_api": null,
+          "old_text": "process_audio_source_tick(source, mixers, channels, sample_rate, size)",
+          "new_text": null,
+          "old_line_content": "\tprocess_audio_source_tick(source, mixers, channels, sample_rate, size);",
+          "new_line_content": "\t\tsource->audio_pending = true;",
+          "content_same": false
+        },
+        {
+          "line": 4114,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_async_decoupled\")",
+          "new_text": null,
+          "old_line_content": "\treturn obs_source_valid(source, \"obs_source_async_decoupled\") ?",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3987,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_audio_pending\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_audio_pending\"))",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3990,
+          "old_api": "is_audio_source",
+          "new_api": null,
+          "old_text": "is_audio_source(source)",
+          "new_text": null,
+          "old_line_content": "\treturn (is_composite_source(source) || is_audio_source(source)) ?",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 4121,
+          "old_api": "get_source_info",
+          "new_api": null,
+          "old_text": "get_source_info(name)",
+          "new_text": null,
+          "old_line_content": "\tstruct obs_source_info *info = get_source_info(name);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3996,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_get_audio_timestamp\")",
+          "new_text": null,
+          "old_line_content": "\treturn obs_source_valid(source, \"obs_source_get_audio_timestamp\") ?",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4003,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_get_audio_mix\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_get_audio_mix\"))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4005,
+          "old_api": "obs_ptr_valid",
+          "new_api": null,
+          "old_text": "obs_ptr_valid(audio, \"audio\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_ptr_valid(audio, \"audio\"))",
+          "new_line_content": "\t\tstruct obs_source_audio_mix *audio)",
+          "content_same": false
+        },
+        {
+          "line": 4021,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_add_audio_capture_callback\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_add_audio_capture_callback\"))",
+          "new_line_content": "\t\tobs_source_audio_capture_t callback, void *param)",
+          "content_same": false
+        },
+        {
+          "line": 4024,
+          "old_api": "pthread_mutex_lock",
+          "new_api": null,
+          "old_text": "pthread_mutex_lock(&source->audio_cb_mutex)",
+          "new_text": null,
+          "old_line_content": "\tpthread_mutex_lock(&source->audio_cb_mutex);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4026,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&source->audio_cb_mutex)",
+          "new_text": null,
+          "old_line_content": "\tpthread_mutex_unlock(&source->audio_cb_mutex);",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 4034,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_remove_audio_capture_callback\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_remove_audio_capture_callback\"))",
+          "new_line_content": "\t\tobs_source_audio_capture_t callback, void *param)",
+          "content_same": false
+        },
+        {
+          "line": 4037,
+          "old_api": "pthread_mutex_lock",
+          "new_api": null,
+          "old_text": "pthread_mutex_lock(&source->audio_cb_mutex)",
+          "new_text": null,
+          "old_line_content": "\tpthread_mutex_lock(&source->audio_cb_mutex);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 4039,
+          "old_api": "pthread_mutex_unlock",
+          "new_api": null,
+          "old_text": "pthread_mutex_unlock(&source->audio_cb_mutex)",
+          "new_text": null,
+          "old_line_content": "\tpthread_mutex_unlock(&source->audio_cb_mutex);",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 3912,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(source->audio_output_buf[mix][0], 0,\n\t\t\t\t\tsizeof(float) * AUDIO_OUTPUT_FRAMES *\n\t\t\t\t\tchannels)",
+          "new_text": null,
+          "old_line_content": "\t\t\tmemset(source->audio_output_buf[mix][0], 0,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3919,
+          "old_api": "apply_audio_volume",
+          "new_api": null,
+          "old_text": "apply_audio_volume(source, mixers, channels, sample_rate)",
+          "new_text": null,
+          "old_line_content": "\tapply_audio_volume(source, mixers, channels, sample_rate);",
+          "new_line_content": "\t\t\t\t\tchannels);",
+          "content_same": false
+        },
+        {
+          "line": 4048,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_set_monitoring_type\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_set_monitoring_type\"))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 3926,
+          "old_api": "pthread_mutex_lock",
+          "new_api": null,
+          "old_text": "pthread_mutex_lock(&source->audio_buf_mutex)",
+          "new_text": null,
+          "old_line_content": "\tpthread_mutex_lock(&source->audio_buf_mutex);",
+          "new_line_content": "static inline void process_audio_source_tick(obs_source_t *source,",
+          "content_same": false
+        },
+        {
+          "line": 4058,
+          "old_api": "audio_monitor_create",
+          "new_api": null,
+          "old_text": "audio_monitor_create(source)",
+          "new_text": null,
+          "old_line_content": "\t\t\tsource->monitor = audio_monitor_create(source);",
+          "new_line_content": "\tnow_on = type != OBS_MONITORING_TYPE_NONE;",
+          "content_same": false
+        },
+        {
+          "line": 4060,
+          "old_api": "audio_monitor_destroy",
+          "new_api": null,
+          "old_text": "audio_monitor_destroy(source->monitor)",
+          "new_text": null,
+          "old_line_content": "\t\t\taudio_monitor_destroy(source->monitor);",
+          "new_line_content": "\tif (was_on != now_on) {",
+          "content_same": false
+        },
+        {
+          "line": 3935,
+          "old_api": "circlebuf_peek_front",
+          "new_api": null,
+          "old_text": "circlebuf_peek_front(&source->audio_input_buf[ch],\n\t\t\t\tsource->audio_output_buf[0][ch],\n\t\t\t\tsize)",
+          "new_text": null,
+          "old_line_content": "\t\tcirclebuf_peek_front(&source->audio_input_buf[ch],",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 4071,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_get_monitoring_type\")",
+          "new_text": null,
+          "old_line_content": "\treturn obs_source_valid(source, \"obs_source_get_monitoring_type\") ?",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3946,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(source->audio_output_buf[mix][0],\n\t\t\t\t\t0, size * channels)",
+          "new_text": null,
+          "old_line_content": "\t\t\tmemset(source->audio_output_buf[mix][0],",
+          "new_line_content": "\t\tuint32_t mix_and_val = (1 << mix);",
+          "content_same": false
+        },
+        {
+          "line": 4077,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_set_async_unbuffered\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_source_valid(source, \"obs_source_set_async_unbuffered\"))",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3952,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(source->audio_output_buf[mix][ch],\n\t\t\t\t\tsource->audio_output_buf[0][ch], size)",
+          "new_text": null,
+          "old_line_content": "\t\t\tmemcpy(source->audio_output_buf[mix][ch],",
+          "new_line_content": "\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 3957,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(source->audio_output_buf[0][0], 0,\n\t\t\t\tsize * channels)",
+          "new_text": null,
+          "old_line_content": "\t\tmemset(source->audio_output_buf[0][0], 0,",
+          "new_line_content": "\t\t\t\t\tsource->audio_output_buf[0][ch], size);",
+          "content_same": false
+        },
+        {
+          "line": 4085,
+          "old_api": "obs_source_valid",
+          "new_api": null,
+          "old_text": "obs_source_valid(source, \"obs_source_async_unbuffered\")",
+          "new_text": null,
+          "old_line_content": "\treturn obs_source_valid(source, \"obs_source_async_unbuffered\") ?",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 3960,
+          "old_api": "apply_audio_volume",
+          "new_api": null,
+          "old_text": "apply_audio_volume(source, mixers, channels, sample_rate)",
+          "new_text": null,
+          "old_line_content": "\tapply_audio_volume(source, mixers, channels, sample_rate);",
+          "new_line_content": "\tif ((source->audio_mixers & 1) == 0 || (mixers & 1) == 0)",
+          "content_same": false
+        },
+        {
+          "line": 4091,
+          "old_api": "obs_ptr_valid",
+          "new_api": null,
+          "old_text": "obs_ptr_valid(source, \"obs_source_get_private_settings\")",
+          "new_text": null,
+          "old_line_content": "\tif (!obs_ptr_valid(source, \"obs_source_get_private_settings\"))",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 4094,
+          "old_api": "obs_data_addref",
+          "new_api": null,
+          "old_text": "obs_data_addref(source->private_settings)",
+          "new_text": null,
+          "old_line_content": "\tobs_data_addref(source->private_settings);",
+          "new_line_content": "{",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 4,
+      "total_additions": 35,
+      "total_deletions": 35,
+      "total_api_changes": 74
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 6,
+        "api_related_lines": 74,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          3911,
+          3913,
+          3914,
+          3915,
+          3916
+        ]
+      }
+    },
+    "api_calls_before": 882,
+    "api_calls_after": 882,
+    "diff_info": {
+      "added_lines": 6,
+      "removed_lines": 2,
+      "total_diff_lines": 23
+    }
+  }
+}

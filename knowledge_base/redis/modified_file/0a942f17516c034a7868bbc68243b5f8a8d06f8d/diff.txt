@@ -1,0 +1,70 @@
+diff --git a/modified_file.c b/modified_file.c
+index 0000000..1111111 100644
+--- a/modified_file.c
++++ b/modified_file.c
+--- a/modified_file.c
++++ b/modified_file.c
+@@ -704,23 +704,24 @@
+             nwritten += n;
+
+         } else if (o->encoding == OBJ_ENCODING_SKIPLIST) {
+
+             zset *zs = o->ptr;
+
+-            dictIterator *di = dictGetIterator(zs->dict);
+
+-            dictEntry *de;
+
+-
+
+-            if ((n = rdbSaveLen(rdb,dictSize(zs->dict))) == -1) return -1;
+
++            zskiplist *zsl = zs->zsl;
+
++
+
++            if ((n = rdbSaveLen(rdb,zsl->length)) == -1) return -1;
+
+             nwritten += n;
+
+ 
+
+-            while((de = dictNext(di)) != NULL) {
+
+-                sds ele = dictGetKey(de);
+
+-                double *score = dictGetVal(de);
+
++            zskiplistNode *zn = zsl->tail;
+
++            while (zn != NULL) {
+
++                sds ele = zn->ele;
+
++                double *score = &zn->score;
+
+ 
+
+                 if ((n = rdbSaveRawString(rdb,(unsigned char*)ele,sdslen(ele)))
+
+                     == -1) return -1;
+
+                 nwritten += n;
+
+                 if ((n = rdbSaveBinaryDoubleValue(rdb,*score)) == -1) return -1;
+
+                 nwritten += n;
+
++
+
++                zn = zn->backward;
+
+             }
+
+-            dictReleaseIterator(di);
+
+         } else {
+
+             serverPanic("Unknown sorted set encoding");
+
+         }

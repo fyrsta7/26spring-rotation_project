@@ -1,0 +1,32 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -4458,6 +4458,13 @@
+   if (LookupResult.ViableCandidates.empty())
+
+     return Result;
+
+ 
+
++  // If there's only one viable member, that is the best one.
+
++  if (LookupResult.ViableCandidates.size() == 1) {
+
++    Result.Impl->BestIdx = Result.Impl->AllDecls.size();
+
++    Result.Impl->AllDecls.push_back(LookupResult.ViableCandidates[0].getDecl());
+
++    return Result;
+
++  }
+
++
+
+   // Try to figure out the best overload.
+
+   ConstraintLocator *Locator = CS.getConstraintLocator({});
+
+   TypeVariableType *TV = CS.createTypeVariable(Locator,

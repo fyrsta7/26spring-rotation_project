@@ -1,0 +1,16 @@
+diff --git a/modules/codec/libmpeg2.c b/modules/codec/libmpeg2.c
+index 39bde8dd09..e0dcd8428d 100644
+--- a/modules/codec/libmpeg2.c
++++ b/modules/codec/libmpeg2.c
+@@ -216,6 +216,11 @@ static int OpenDecoder( vlc_object_t *p_this )
+ #elif defined(__arm__)
+     i_accel |= MPEG2_ACCEL_ARM;
+ 
++# ifdef MPEG2_ACCEL_ARM_NEON
++    if( vlc_CPU() & CPU_CAPABILITY_NEON )
++	i_accel |= MPEG2_ACCEL_ARM_NEON;
++# endif
++
+ #else
+     /* If we do not know this CPU, trust libmpeg2's feature detection */
+     i_accel = MPEG2_ACCEL_DETECT;

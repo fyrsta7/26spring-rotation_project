@@ -1,0 +1,3185 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/srs/modified_file/211b05fc64267a37b504791a1fa8b7fb429c9adc",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/srs/modified_file/211b05fc64267a37b504791a1fa8b7fb429c9adc/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/srs/modified_file/211b05fc64267a37b504791a1fa8b7fb429c9adc/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/srs/modified_file/211b05fc64267a37b504791a1fa8b7fb429c9adc/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 854,
+          "old_api": "get_id",
+          "new_api": "acquire_publish",
+          "old_text": "_srs_context->get_id()",
+          "new_text": "acquire_publish(source)",
+          "old_line_content": "        SrsPublishRecvThread rtrd(rtmp, req, srs_netfd_fileno(stfd), 0, this, source, _srs_context->get_id());",
+          "new_line_content": "    if ((err = acquire_publish(source)) == srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "http_hooks_on_unpublish",
+          "new_api": "release_publish",
+          "old_text": "http_hooks_on_unpublish()",
+          "new_text": "release_publish(source)",
+          "old_line_content": "    http_hooks_on_unpublish();",
+          "new_line_content": "        release_publish(source);",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "start",
+          "new_api": "SrsAutoFree",
+          "old_text": "rtrd->start()",
+          "new_text": "SrsAutoFree(SrsPithyPrint, pprint)",
+          "old_line_content": "    if ((err = rtrd->start()) != srs_success) {",
+          "new_line_content": "    SrsAutoFree(SrsPithyPrint, pprint);",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": "set_sock_options",
+          "new_api": "get_publish_normal_timeout",
+          "old_text": "set_sock_options()",
+          "new_text": "_srs_config->get_publish_normal_timeout(req->vhost)",
+          "old_line_content": "    set_sock_options();",
+          "new_line_content": "    publish_normal_timeout = _srs_config->get_publish_normal_timeout(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 894,
+          "old_api": "get_mr_enabled",
+          "new_api": "set_sock_options",
+          "old_text": "_srs_config->get_mr_enabled(req->vhost)",
+          "new_text": "set_sock_options()",
+          "old_line_content": "        bool mr = _srs_config->get_mr_enabled(req->vhost);",
+          "new_line_content": "    set_sock_options();",
+          "content_same": false
+        },
+        {
+          "line": 897,
+          "old_api": "srsu2msi",
+          "new_api": "get_mr_enabled",
+          "old_text": "srsu2msi(publish_normal_timeout)",
+          "new_text": "_srs_config->get_mr_enabled(req->vhost)",
+          "old_line_content": "            mr, srsu2msi(mr_sleep), srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout), tcp_nodelay);",
+          "new_line_content": "        bool mr = _srs_config->get_mr_enabled(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": "elapse",
+          "new_api": "srs_error_wrap",
+          "old_text": "pprint->elapse()",
+          "new_text": "srs_error_wrap(err, \"rtmp: thread quit\")",
+          "old_line_content": "        pprint->elapse();",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: thread quit\");",
+          "content_same": false
+        },
+        {
+          "line": 928,
+          "old_api": "nb_msgs",
+          "new_api": "srs_error_new",
+          "old_text": "rtrd->nb_msgs()",
+          "new_text": "srs_error_new(ERROR_SOCKET_TIMEOUT, \"rtmp: publish timeout %dms, nb_msgs=%d\",\n                nb_msgs? srsu2msi(publish_normal_timeout) : srsu2msi(publish_1stpkt_timeout), (int)nb_msgs)",
+          "old_line_content": "        nb_msgs = rtrd->nb_msgs();",
+          "new_line_content": "            return srs_error_new(ERROR_SOCKET_TIMEOUT, \"rtmp: publish timeout %dms, nb_msgs=%d\",",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": "can_print",
+          "new_api": "nb_video_frames",
+          "old_text": "pprint->can_print()",
+          "new_text": "rtrd->nb_video_frames()",
+          "old_line_content": "        if (pprint->can_print()) {",
+          "new_line_content": "        nb_frames = rtrd->nb_video_frames();",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": "get_mr_sleep",
+          "new_api": "can_print",
+          "old_text": "_srs_config->get_mr_sleep(req->vhost)",
+          "new_text": "pprint->can_print()",
+          "old_line_content": "            srs_utime_t mr_sleep = _srs_config->get_mr_sleep(req->vhost);",
+          "new_line_content": "        if (pprint->can_print()) {",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": "age",
+          "new_api": "sample",
+          "old_text": "srs_trace(\"<- \" SRS_CONSTS_LOG_CLIENT_PUBLISH \" time=%d, okbps=%d,%d,%d, ikbps=%d,%d,%d, mr=%d/%d, p1stpt=%d, pnt=%d\",\n                (int)pprint->age(), kbps->get_send_kbps(), kbps->get_send_kbps_30s(), kbps->get_send_kbps_5m(),\n                kbps->get_recv_kbps(), kbps->get_recv_kbps_30s(), kbps->get_recv_kbps_5m(), mr, srsu2msi(mr_sleep),\n                srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout))",
+          "new_text": "kbps->sample()",
+          "old_line_content": "            srs_trace(\"<- \" SRS_CONSTS_LOG_CLIENT_PUBLISH \" time=%d, okbps=%d,%d,%d, ikbps=%d,%d,%d, mr=%d/%d, p1stpt=%d, pnt=%d\",",
+          "new_line_content": "            kbps->sample();",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "get_send_kbps_5m",
+          "new_api": "get_mr_enabled",
+          "old_text": "kbps->get_send_kbps_5m()",
+          "new_text": "_srs_config->get_mr_enabled(req->vhost)",
+          "old_line_content": "                (int)pprint->age(), kbps->get_send_kbps(), kbps->get_send_kbps_30s(), kbps->get_send_kbps_5m(),",
+          "new_line_content": "            bool mr = _srs_config->get_mr_enabled(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 945,
+          "old_api": "srsu2msi",
+          "new_api": "get_mr_sleep",
+          "old_text": "srsu2msi(mr_sleep)",
+          "new_text": "_srs_config->get_mr_sleep(req->vhost)",
+          "old_line_content": "                kbps->get_recv_kbps(), kbps->get_recv_kbps_30s(), kbps->get_recv_kbps_5m(), mr, srsu2msi(mr_sleep),",
+          "new_line_content": "            srs_utime_t mr_sleep = _srs_config->get_mr_sleep(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 946,
+          "old_api": "srsu2msi",
+          "new_api": "age",
+          "old_text": "srsu2msi(publish_normal_timeout)",
+          "new_text": "srs_trace(\"<- \" SRS_CONSTS_LOG_CLIENT_PUBLISH \" time=%d, okbps=%d,%d,%d, ikbps=%d,%d,%d, mr=%d/%d, p1stpt=%d, pnt=%d\",\n                (int)pprint->age(), kbps->get_send_kbps(), kbps->get_send_kbps_30s(), kbps->get_send_kbps_5m(),\n                kbps->get_recv_kbps(), kbps->get_recv_kbps_30s(), kbps->get_recv_kbps_5m(), mr, srsu2msi(mr_sleep),\n                srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout))",
+          "old_line_content": "                srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout));",
+          "new_line_content": "            srs_trace(\"<- \" SRS_CONSTS_LOG_CLIENT_PUBLISH \" time=%d, okbps=%d,%d,%d, ikbps=%d,%d,%d, mr=%d/%d, p1stpt=%d, pnt=%d\",",
+          "content_same": false
+        },
+        {
+          "line": 969,
+          "old_api": "on_publish",
+          "new_api": "srs_error_wrap",
+          "old_text": "source->on_publish()",
+          "new_text": "srs_error_wrap(err, \"rtmp: edge start publish\")",
+          "old_line_content": "        if ((err = source->on_publish()) != srs_success) {",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: edge start publish\");",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": "srs_error_wrap",
+          "new_api": "is_amf3_command",
+          "old_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "new_text": "msg->header.is_amf3_command()",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: decode message\");",
+          "new_line_content": "    if (msg->header.is_amf0_command() || msg->header.is_amf3_command()) {",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": "SrsAutoFree",
+          "new_api": "decode_message",
+          "old_text": "SrsAutoFree(SrsPacket, pkt)",
+          "new_text": "rtmp->decode_message(msg, &pkt)",
+          "old_line_content": "        SrsAutoFree(SrsPacket, pkt);",
+          "new_line_content": "        if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1012,
+          "old_api": "srs_error_wrap",
+          "new_api": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "old_text": "srs_error_wrap(err, \"rtmp: republish\")",
+          "new_text": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "old_line_content": "                return srs_error_wrap(err, \"rtmp: republish\");",
+          "new_line_content": "        if (dynamic_cast<SrsFMLEStartPacket*>(pkt)) {",
+          "content_same": false
+        },
+        {
+          "line": 1014,
+          "old_api": "srs_error_new",
+          "new_api": "fmle_unpublish",
+          "old_text": "srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\")",
+          "new_text": "rtmp->fmle_unpublish(info->res->stream_id, unpublish->transaction_id)",
+          "old_line_content": "            return srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\");",
+          "new_line_content": "            if ((err = rtmp->fmle_unpublish(info->res->stream_id, unpublish->transaction_id)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": "srs_trace",
+          "new_api": "srs_error_new",
+          "old_text": "srs_trace(\"fmle ignore AMF0/AMF3 command message.\")",
+          "new_text": "srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\")",
+          "old_line_content": "        srs_trace(\"fmle ignore AMF0/AMF3 command message.\");",
+          "new_line_content": "            return srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\");",
+          "content_same": false
+        },
+        {
+          "line": 1068,
+          "old_api": "srs_error_wrap",
+          "new_api": "is_amf3_data",
+          "old_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "new_text": "msg->header.is_amf3_data()",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: decode message\");",
+          "new_line_content": "    if (msg->header.is_amf0_data() || msg->header.is_amf3_data()) {",
+          "content_same": false
+        },
+        {
+          "line": 1070,
+          "old_api": "SrsAutoFree",
+          "new_api": "decode_message",
+          "old_text": "SrsAutoFree(SrsPacket, pkt)",
+          "new_text": "rtmp->decode_message(msg, &pkt)",
+          "old_line_content": "        SrsAutoFree(SrsPacket, pkt);",
+          "new_line_content": "        if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1073,
+          "old_api": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "new_api": "SrsAutoFree",
+          "old_text": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "new_text": "SrsAutoFree(SrsPacket, pkt)",
+          "old_line_content": "            SrsOnMetaDataPacket* metadata = dynamic_cast<SrsOnMetaDataPacket*>(pkt);",
+          "new_line_content": "        SrsAutoFree(SrsPacket, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1075,
+          "old_api": "srs_error_wrap",
+          "new_api": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "old_text": "srs_error_wrap(err, \"rtmp: consume metadata\")",
+          "new_text": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "old_line_content": "                return srs_error_wrap(err, \"rtmp: consume metadata\");",
+          "new_line_content": "        if (dynamic_cast<SrsOnMetaDataPacket*>(pkt)) {",
+          "content_same": false
+        },
+        {
+          "line": 1102,
+          "old_api": "SrsAutoFree",
+          "new_api": "decode_message",
+          "old_text": "SrsAutoFree(SrsPacket, pkt)",
+          "new_text": "rtmp->decode_message(msg, &pkt)",
+          "old_line_content": "    SrsAutoFree(SrsPacket, pkt);",
+          "new_line_content": "    if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1124,
+          "old_api": "srs_error_wrap",
+          "new_api": "SrsAmf0Any::null()",
+          "old_text": "srs_error_wrap(err, \"rtmp: send packets\")",
+          "new_text": "SrsAmf0Any::null()",
+          "old_line_content": "                return srs_error_wrap(err, \"rtmp: send packets\");",
+          "new_line_content": "            res->command_object = SrsAmf0Any::null();",
+          "content_same": false
+        },
+        {
+          "line": 1134,
+          "old_api": "srs_error_wrap",
+          "new_api": "dynamic_cast<SrsPausePacket*>(pkt)",
+          "old_text": "srs_error_wrap(err, \"rtmp: pause\")",
+          "new_text": "dynamic_cast<SrsPausePacket*>(pkt)",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: pause\");",
+          "new_line_content": "    SrsPausePacket* pause = dynamic_cast<SrsPausePacket*>(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1157,
+          "old_api": "srs_freep",
+          "new_api": "set_tcp_nodelay",
+          "old_text": "srs_freep(err)",
+          "new_text": "skt->set_tcp_nodelay(tcp_nodelay)",
+          "old_line_content": "            srs_freep(err);",
+          "new_line_content": "        srs_error_t err = skt->set_tcp_nodelay(tcp_nodelay);",
+          "content_same": false
+        },
+        {
+          "line": 1170,
+          "old_api": "empty",
+          "new_api": "srs_assert",
+          "old_text": "args.empty()",
+          "new_text": "srs_assert(req)",
+          "old_line_content": "    if (args.empty()) {",
+          "new_line_content": "    srs_assert(req);",
+          "content_same": false
+        },
+        {
+          "line": 1183,
+          "old_api": "SrsAutoFree",
+          "new_api": "srs_parse_hostport",
+          "old_text": "SrsAutoFree(SrsTcpClient, transport)",
+          "new_text": "srs_parse_hostport(hostport, server, port)",
+          "old_line_content": "        SrsAutoFree(SrsTcpClient, transport);",
+          "new_line_content": "        srs_parse_hostport(hostport, server, port);",
+          "content_same": false
+        },
+        {
+          "line": 1186,
+          "old_api": "c_str",
+          "new_api": "SrsAutoFree",
+          "old_text": "srs_error_desc(err).c_str()",
+          "new_text": "SrsAutoFree(SrsTcpClient, transport)",
+          "old_line_content": "            srs_warn(\"Illegal edge token, tcUrl=%s, %s\", req->tcUrl.c_str(), srs_error_desc(err).c_str());",
+          "new_line_content": "        SrsAutoFree(SrsTcpClient, transport);",
+          "content_same": false
+        },
+        {
+          "line": 1196,
+          "old_api": "size",
+          "new_api": "do_token_traverse_auth",
+          "old_text": "args.size()",
+          "new_text": "do_token_traverse_auth(client)",
+          "old_line_content": "    return srs_error_new(ERROR_EDGE_PORT_INVALID, \"rtmp: Illegal edge token, server=%d\", (int)args.size());",
+          "new_line_content": "        return do_token_traverse_auth(client);",
+          "content_same": false
+        },
+        {
+          "line": 1207,
+          "old_api": "set_send_timeout",
+          "new_api": "srs_assert",
+          "old_text": "client->set_send_timeout(SRS_CONSTS_RTMP_TIMEOUT)",
+          "new_text": "srs_assert(client)",
+          "old_line_content": "    client->set_send_timeout(SRS_CONSTS_RTMP_TIMEOUT);",
+          "new_line_content": "    srs_assert(client);",
+          "content_same": false
+        },
+        {
+          "line": 1209,
+          "old_api": "handshake",
+          "new_api": "set_recv_timeout",
+          "old_text": "client->handshake()",
+          "new_text": "client->set_recv_timeout(SRS_CONSTS_RTMP_TIMEOUT)",
+          "old_line_content": "    if ((err = client->handshake()) != srs_success) {",
+          "new_line_content": "    client->set_recv_timeout(SRS_CONSTS_RTMP_TIMEOUT);",
+          "content_same": false
+        },
+        {
+          "line": 1210,
+          "old_api": "srs_error_wrap",
+          "new_api": "set_send_timeout",
+          "old_text": "srs_error_wrap(err, \"rtmp: handshake\")",
+          "new_text": "client->set_send_timeout(SRS_CONSTS_RTMP_TIMEOUT)",
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: handshake\");",
+          "new_line_content": "    client->set_send_timeout(SRS_CONSTS_RTMP_TIMEOUT);",
+          "content_same": false
+        },
+        {
+          "line": 1219,
+          "old_api": "c_str",
+          "new_api": "srs_error_wrap",
+          "old_text": "req->tcUrl.c_str()",
+          "new_text": "srs_error_wrap(err, \"rtmp: connect tcUrl\")",
+          "old_line_content": "    srs_trace(\"edge token auth ok, tcUrl=%s\", req->tcUrl.c_str());",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: connect tcUrl\");",
+          "content_same": false
+        },
+        {
+          "line": 1262,
+          "old_api": "c_str",
+          "new_api": "size",
+          "old_text": "url.c_str()",
+          "new_text": "hooks.size()",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp on_connect %s\", url.c_str());",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1326,
+          "old_api": "c_str",
+          "new_api": "size",
+          "old_text": "url.c_str()",
+          "new_text": "hooks.size()",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp on_publish %s\", url.c_str());",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1390,
+          "old_api": "c_str",
+          "new_api": "size",
+          "old_text": "url.c_str()",
+          "new_text": "hooks.size()",
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp on_play %s\", url.c_str());",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1436,
+          "old_api": "start",
+          "new_api": "srs_error_wrap",
+          "old_text": "trd->start()",
+          "new_text": "srs_error_wrap(err, \"init socket\")",
+          "old_line_content": "    if ((err = trd->start()) != srs_success) {",
+          "new_line_content": "        return srs_error_wrap(err, \"init socket\");",
+          "content_same": false
+        },
+        {
+          "line": 1469,
+          "old_api": "srs_error_code",
+          "new_api": "srs_is_client_gracefully_close",
+          "old_text": "srs_error_code(err)",
+          "new_text": "srs_is_client_gracefully_close(err)",
+          "old_line_content": "        srs_warn(\"server disconnect. ret=%d\", srs_error_code(err));",
+          "new_line_content": "    if (srs_is_client_gracefully_close(err)) {",
+          "content_same": false
+        },
+        {
+          "line": 1471,
+          "old_api": "c_str",
+          "new_api": "srs_is_server_gracefully_close",
+          "old_text": "srs_error_desc(err).c_str()",
+          "new_text": "srs_is_server_gracefully_close(err)",
+          "old_line_content": "        srs_error(\"serve error %s\", srs_error_desc(err).c_str());",
+          "new_line_content": "    } else if (srs_is_server_gracefully_close(err)) {",
+          "content_same": false
+        },
+        {
+          "line": 1474,
+          "old_api": "srs_freep",
+          "new_api": "c_str",
+          "old_text": "srs_freep(err)",
+          "new_text": "srs_error_desc(err).c_str()",
+          "old_line_content": "    srs_freep(err);",
+          "new_line_content": "        srs_error(\"serve error %s\", srs_error_desc(err).c_str());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1025,
+          "old_api": null,
+          "new_api": "process_publish_message",
+          "old_text": null,
+          "new_text": "process_publish_message(source, msg)",
+          "old_line_content": "    ",
+          "new_line_content": "    if ((err = process_publish_message(source, msg)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1026,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: consume message\")",
+          "old_line_content": "    return err;",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: consume message\");",
+          "content_same": false
+        },
+        {
+          "line": 1038,
+          "old_api": null,
+          "new_api": "on_edge_proxy_publish",
+          "old_text": null,
+          "new_text": "source->on_edge_proxy_publish(msg)",
+          "old_line_content": "        return err;",
+          "new_line_content": "        if ((err = source->on_edge_proxy_publish(msg)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: proxy publish\")",
+          "old_line_content": "    }",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: proxy publish\");",
+          "content_same": false
+        },
+        {
+          "line": 1045,
+          "old_api": null,
+          "new_api": "is_audio",
+          "old_text": null,
+          "new_text": "msg->header.is_audio()",
+          "old_line_content": "        }",
+          "new_line_content": "    if (msg->header.is_audio()) {",
+          "content_same": false
+        },
+        {
+          "line": 1046,
+          "old_api": null,
+          "new_api": "on_audio",
+          "old_text": null,
+          "new_text": "source->on_audio(msg)",
+          "old_line_content": "        return err;",
+          "new_line_content": "        if ((err = source->on_audio(msg)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1047,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: consume audio\")",
+          "old_line_content": "    }",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: consume audio\");",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "is_video",
+          "old_text": null,
+          "new_text": "msg->header.is_video()",
+          "old_line_content": "        }",
+          "new_line_content": "    if (msg->header.is_video()) {",
+          "content_same": false
+        },
+        {
+          "line": 1053,
+          "old_api": null,
+          "new_api": "on_video",
+          "old_text": null,
+          "new_text": "source->on_video(msg)",
+          "old_line_content": "        return err;",
+          "new_line_content": "        if ((err = source->on_video(msg)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: consume video\")",
+          "old_line_content": "    }",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: consume video\");",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": null,
+          "new_api": "is_aggregate",
+          "old_text": null,
+          "new_text": "msg->header.is_aggregate()",
+          "old_line_content": "        }",
+          "new_line_content": "    if (msg->header.is_aggregate()) {",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": null,
+          "new_api": "on_aggregate",
+          "old_text": null,
+          "new_text": "source->on_aggregate(msg)",
+          "old_line_content": "        return err;",
+          "new_line_content": "        if ((err = source->on_aggregate(msg)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: consume aggregate\")",
+          "old_line_content": "    }",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: consume aggregate\");",
+          "content_same": false
+        },
+        {
+          "line": 1071,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "old_line_content": "        ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: decode message\");",
+          "content_same": false
+        },
+        {
+          "line": 1076,
+          "old_api": null,
+          "new_api": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "old_text": null,
+          "new_text": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "old_line_content": "            }",
+          "new_line_content": "            SrsOnMetaDataPacket* metadata = dynamic_cast<SrsOnMetaDataPacket*>(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1077,
+          "old_api": null,
+          "new_api": "on_meta_data",
+          "old_text": null,
+          "new_text": "source->on_meta_data(msg, metadata)",
+          "old_line_content": "            return err;",
+          "new_line_content": "            if ((err = source->on_meta_data(msg, metadata)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: consume metadata\")",
+          "old_line_content": "        }",
+          "new_line_content": "                return srs_error_wrap(err, \"rtmp: consume metadata\");",
+          "content_same": false
+        },
+        {
+          "line": 1095,
+          "old_api": null,
+          "new_api": "SrsAutoFree",
+          "old_text": null,
+          "new_text": "SrsAutoFree(SrsCommonMessage, msg)",
+          "old_line_content": "        return err;",
+          "new_line_content": "    SrsAutoFree(SrsCommonMessage, msg);",
+          "content_same": false
+        },
+        {
+          "line": 1097,
+          "old_api": null,
+          "new_api": "is_amf3_command",
+          "old_text": null,
+          "new_text": "msg->header.is_amf3_command()",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!msg->header.is_amf0_command() && !msg->header.is_amf3_command()) {",
+          "content_same": false
+        },
+        {
+          "line": 1103,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "old_line_content": "    ",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: decode message\");",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": null,
+          "new_api": "SrsAutoFree",
+          "old_text": null,
+          "new_text": "SrsAutoFree(SrsPacket, pkt)",
+          "old_line_content": "    // @see https://github.com/ossrs/srs/issues/6",
+          "new_line_content": "    SrsAutoFree(SrsPacket, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1109,
+          "old_api": null,
+          "new_api": "dynamic_cast<SrsCloseStreamPacket*>(pkt)",
+          "old_text": null,
+          "new_text": "dynamic_cast<SrsCloseStreamPacket*>(pkt)",
+          "old_line_content": "    }",
+          "new_line_content": "    SrsCloseStreamPacket* close = dynamic_cast<SrsCloseStreamPacket*>(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": null,
+          "new_api": "srs_error_new",
+          "old_text": null,
+          "new_text": "srs_error_new(ERROR_CONTROL_RTMP_CLOSE, \"rtmp: close stream\")",
+          "old_line_content": "    // call msg,",
+          "new_line_content": "        return srs_error_new(ERROR_CONTROL_RTMP_CLOSE, \"rtmp: close stream\");",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": null,
+          "new_api": "dynamic_cast<SrsCallPacket*>(pkt)",
+          "old_text": null,
+          "new_text": "dynamic_cast<SrsCallPacket*>(pkt)",
+          "old_line_content": "        // for the zero means donot need response.",
+          "new_line_content": "    SrsCallPacket* call = dynamic_cast<SrsCallPacket*>(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1125,
+          "old_api": null,
+          "new_api": "SrsAmf0Any::null()",
+          "old_text": null,
+          "new_text": "SrsAmf0Any::null()",
+          "old_line_content": "            }",
+          "new_line_content": "            res->response = SrsAmf0Any::null();",
+          "content_same": false
+        },
+        {
+          "line": 1126,
+          "old_api": null,
+          "new_api": "send_and_free_packet",
+          "old_text": null,
+          "new_text": "rtmp->send_and_free_packet(res, 0)",
+          "old_line_content": "        }",
+          "new_line_content": "            if ((err = rtmp->send_and_free_packet(res, 0)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1127,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: send packets\")",
+          "old_line_content": "        return err;",
+          "new_line_content": "                return srs_error_wrap(err, \"rtmp: send packets\");",
+          "content_same": false
+        },
+        {
+          "line": 1139,
+          "old_api": null,
+          "new_api": "on_play_client_pause",
+          "old_text": null,
+          "new_text": "consumer->on_play_client_pause(pause->is_pause)",
+          "old_line_content": "        return err;",
+          "new_line_content": "        if ((err = consumer->on_play_client_pause(pause->is_pause)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1140,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: pause\")",
+          "old_line_content": "    }",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: pause\");",
+          "content_same": false
+        },
+        {
+          "line": 1153,
+          "old_api": null,
+          "new_api": "get_tcp_nodelay",
+          "old_text": null,
+          "new_text": "_srs_config->get_tcp_nodelay(req->vhost)",
+          "old_line_content": "        ",
+          "new_line_content": "    bool nvalue = _srs_config->get_tcp_nodelay(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 1159,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "srs_error_desc(err).c_str()",
+          "old_line_content": "    }",
+          "new_line_content": "            srs_warn(\"ignore err %s\", srs_error_desc(err).c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1160,
+          "old_api": null,
+          "new_api": "srs_freep",
+          "old_text": null,
+          "new_text": "srs_freep(err)",
+          "old_line_content": "}",
+          "new_line_content": "            srs_freep(err);",
+          "content_same": false
+        },
+        {
+          "line": 1172,
+          "old_api": null,
+          "new_api": "get_vhost_edge_origin",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_edge_origin(req->vhost)",
+          "old_line_content": "    }",
+          "new_line_content": "    vector<string> args = _srs_config->get_vhost_edge_origin(req->vhost)->args;",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "args.empty()",
+          "old_line_content": "    ",
+          "new_line_content": "    if (args.empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 1177,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "args.size()",
+          "old_line_content": "        // select the origin.",
+          "new_line_content": "    for (int i = 0; i < (int)args.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1178,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "args.at(i)",
+          "old_line_content": "        string server;",
+          "new_line_content": "        string hostport = args.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1188,
+          "old_api": null,
+          "new_api": "connect",
+          "old_text": null,
+          "new_text": "transport->connect()",
+          "old_line_content": "            continue;",
+          "new_line_content": "        if ((err = transport->connect()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1189,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "srs_error_desc(err).c_str()",
+          "old_line_content": "        }",
+          "new_line_content": "            srs_warn(\"Illegal edge token, tcUrl=%s, %s\", req->tcUrl.c_str(), srs_error_desc(err).c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1190,
+          "old_api": null,
+          "new_api": "srs_freep",
+          "old_text": null,
+          "new_text": "srs_freep(err)",
+          "old_line_content": "        ",
+          "new_line_content": "            srs_freep(err);",
+          "content_same": false
+        },
+        {
+          "line": 1195,
+          "old_api": null,
+          "new_api": "SrsAutoFree",
+          "old_text": null,
+          "new_text": "SrsAutoFree(SrsRtmpClient, client)",
+          "old_line_content": "    ",
+          "new_line_content": "        SrsAutoFree(SrsRtmpClient, client);",
+          "content_same": false
+        },
+        {
+          "line": 1199,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "args.size()",
+          "old_line_content": "srs_error_t SrsRtmpConn::do_token_traverse_auth(SrsRtmpClient* client)",
+          "new_line_content": "    return srs_error_new(ERROR_EDGE_PORT_INVALID, \"rtmp: Illegal edge token, server=%d\", (int)args.size());",
+          "content_same": false
+        },
+        {
+          "line": 1212,
+          "old_api": null,
+          "new_api": "handshake",
+          "old_text": null,
+          "new_text": "client->handshake()",
+          "old_line_content": "    ",
+          "new_line_content": "    if ((err = client->handshake()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1213,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: handshake\")",
+          "old_line_content": "    // for token tranverse, always take the debug info(which carries token).",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: handshake\");",
+          "content_same": false
+        },
+        {
+          "line": 1218,
+          "old_api": null,
+          "new_api": "connect_app",
+          "old_text": null,
+          "new_text": "client->connect_app(req->app, req->tcUrl, req, true, &si)",
+          "old_line_content": "    ",
+          "new_line_content": "    if ((err = client->connect_app(req->app, req->tcUrl, req, true, &si)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1222,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "req->tcUrl.c_str()",
+          "old_line_content": "",
+          "new_line_content": "    srs_trace(\"edge token auth ok, tcUrl=%s\", req->tcUrl.c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1230,
+          "old_api": null,
+          "new_api": "http_hooks_on_close",
+          "old_text": null,
+          "new_text": "http_hooks_on_close()",
+          "old_line_content": "    ",
+          "new_line_content": "    http_hooks_on_close();",
+          "content_same": false
+        },
+        {
+          "line": 1243,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 1253,
+          "old_api": null,
+          "new_api": "get_vhost_on_connect",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_connect(req->vhost)",
+          "old_line_content": "            return err;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_connect(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 1263,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "        }",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1264,
+          "old_api": null,
+          "new_api": "SrsHttpHooks::on_connect(url, req)",
+          "old_text": null,
+          "new_text": "SrsHttpHooks::on_connect(url, req)",
+          "old_line_content": "    }",
+          "new_line_content": "        if ((err = SrsHttpHooks::on_connect(url, req)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1265,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "url.c_str()",
+          "old_line_content": "    ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp on_connect %s\", url.c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1276,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 1286,
+          "old_api": null,
+          "new_api": "get_vhost_on_close",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_close(req->vhost)",
+          "old_line_content": "            return;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_close(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 1295,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "hooks.size()",
+          "old_line_content": "    }",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1296,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "}",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1297,
+          "old_api": null,
+          "new_api": "get_recv_bytes",
+          "old_text": null,
+          "new_text": "kbps->get_recv_bytes()",
+          "old_line_content": "",
+          "new_line_content": "        SrsHttpHooks::on_close(url, req, kbps->get_send_bytes(), kbps->get_recv_bytes());",
+          "content_same": false
+        },
+        {
+          "line": 1307,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 1317,
+          "old_api": null,
+          "new_api": "get_vhost_on_publish",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_publish(req->vhost)",
+          "old_line_content": "            return err;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_publish(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 1327,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "        }",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1328,
+          "old_api": null,
+          "new_api": "SrsHttpHooks::on_publish(url, req)",
+          "old_text": null,
+          "new_text": "SrsHttpHooks::on_publish(url, req)",
+          "old_line_content": "    }",
+          "new_line_content": "        if ((err = SrsHttpHooks::on_publish(url, req)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 1329,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "url.c_str()",
+          "old_line_content": "    ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp on_publish %s\", url.c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1340,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": null,
+          "new_api": "srs_thread_yield",
+          "old_text": null,
+          "new_text": "srs_thread_yield()",
+          "old_line_content": "    return err;",
+          "new_line_content": "        srs_thread_yield();",
+          "content_same": false
+        },
+        {
+          "line": 1350,
+          "old_api": null,
+          "new_api": "get_vhost_on_unpublish",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_unpublish(req->vhost)",
+          "old_line_content": "            return;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_unpublish(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": null,
+          "new_api": "get_refer_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_refer_enabled(req->vhost)",
+          "old_line_content": "        }",
+          "new_line_content": "    if (_srs_config->get_refer_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": null,
+          "new_api": "get_refer_publish",
+          "old_text": null,
+          "new_text": "_srs_config->get_refer_publish(req->vhost)",
+          "old_line_content": "    }",
+          "new_line_content": "        if ((err = refer->check(req->pageUrl, _srs_config->get_refer_publish(req->vhost))) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 845,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: referer check\")",
+          "old_line_content": "    ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: referer check\");",
+          "content_same": false
+        },
+        {
+          "line": 1359,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "hooks.size()",
+          "old_line_content": "    }",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1360,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "}",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 849,
+          "old_api": null,
+          "new_api": "http_hooks_on_publish",
+          "old_text": null,
+          "new_text": "http_hooks_on_publish()",
+          "old_line_content": "    ",
+          "new_line_content": "    if ((err = http_hooks_on_publish()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: callback on publish\")",
+          "old_line_content": "    // TODO: FIXME: Should refine the state of publishing.",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: callback on publish\");",
+          "content_same": false
+        },
+        {
+          "line": 1361,
+          "old_api": null,
+          "new_api": "SrsHttpHooks::on_unpublish(url, req)",
+          "old_text": null,
+          "new_text": "SrsHttpHooks::on_unpublish(url, req)",
+          "old_line_content": "",
+          "new_line_content": "        SrsHttpHooks::on_unpublish(url, req);",
+          "content_same": false
+        },
+        {
+          "line": 857,
+          "old_api": null,
+          "new_api": "get_id",
+          "old_text": null,
+          "new_text": "_srs_context->get_id()",
+          "old_line_content": "    }",
+          "new_line_content": "        SrsPublishRecvThread rtrd(rtmp, req, srs_netfd_fileno(stfd), 0, this, source, _srs_context->get_id());",
+          "content_same": false
+        },
+        {
+          "line": 858,
+          "old_api": null,
+          "new_api": "do_publishing",
+          "old_text": null,
+          "new_text": "do_publishing(source, &rtrd)",
+          "old_line_content": "    ",
+          "new_line_content": "        err = do_publishing(source, &rtrd);",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": null,
+          "new_api": "stop",
+          "old_text": null,
+          "new_text": "rtrd.stop()",
+          "old_line_content": "    // whatever the acquire publish, always release publish.",
+          "new_line_content": "        rtrd.stop();",
+          "content_same": false
+        },
+        {
+          "line": 1371,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": null,
+          "new_api": "srs_error_code",
+          "old_text": null,
+          "new_text": "srs_error_code(err)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (srs_error_code(err) != ERROR_SYSTEM_STREAM_BUSY) {",
+          "content_same": false
+        },
+        {
+          "line": 1381,
+          "old_api": null,
+          "new_api": "get_vhost_on_play",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_play(req->vhost)",
+          "old_line_content": "            return err;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_play(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "http_hooks_on_unpublish",
+          "old_text": null,
+          "new_text": "http_hooks_on_unpublish()",
+          "old_line_content": "}",
+          "new_line_content": "    http_hooks_on_unpublish();",
+          "content_same": false
+        },
+        {
+          "line": 1391,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "        }",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1392,
+          "old_api": null,
+          "new_api": "SrsHttpHooks::on_play(url, req)",
+          "old_text": null,
+          "new_text": "SrsHttpHooks::on_play(url, req)",
+          "old_line_content": "    }",
+          "new_line_content": "        if ((err = SrsHttpHooks::on_play(url, req)) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 881,
+          "old_api": null,
+          "new_api": "SrsPithyPrint::create_rtmp_publish()",
+          "old_text": null,
+          "new_text": "SrsPithyPrint::create_rtmp_publish()",
+          "old_line_content": "    // start isolate recv thread.",
+          "new_line_content": "    SrsPithyPrint* pprint = SrsPithyPrint::create_rtmp_publish();",
+          "content_same": false
+        },
+        {
+          "line": 1393,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "url.c_str()",
+          "old_line_content": "    ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp on_play %s\", url.c_str());",
+          "content_same": false
+        },
+        {
+          "line": 885,
+          "old_api": null,
+          "new_api": "start",
+          "old_text": null,
+          "new_text": "rtrd->start()",
+          "old_line_content": "    ",
+          "new_line_content": "    if ((err = rtrd->start()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: receive thread\")",
+          "old_line_content": "    // initialize the publish timeout.",
+          "new_line_content": "        return srs_error_wrap(err, \"rtmp: receive thread\");",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": null,
+          "new_api": "get_publish_1stpkt_timeout",
+          "old_text": null,
+          "new_text": "_srs_config->get_publish_1stpkt_timeout(req->vhost)",
+          "old_line_content": "    // set the sock options.",
+          "new_line_content": "    publish_1stpkt_timeout = _srs_config->get_publish_1stpkt_timeout(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 1404,
+          "old_api": null,
+          "new_api": "get_vhost_http_hooks_enabled",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "get_mr_sleep",
+          "old_text": null,
+          "new_text": "_srs_config->get_mr_sleep(req->vhost)",
+          "old_line_content": "    }",
+          "new_line_content": "        srs_utime_t mr_sleep = _srs_config->get_mr_sleep(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": null,
+          "new_api": "srs_trace",
+          "old_text": null,
+          "new_text": "srs_trace(\"start publish mr=%d/%d, p1stpt=%d, pnt=%d, tcp_nodelay=%d\",\n            mr, srsu2msi(mr_sleep), srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout), tcp_nodelay)",
+          "old_line_content": "    ",
+          "new_line_content": "        srs_trace(\"start publish mr=%d/%d, p1stpt=%d, pnt=%d, tcp_nodelay=%d\",",
+          "content_same": false
+        },
+        {
+          "line": 900,
+          "old_api": null,
+          "new_api": "srsu2msi",
+          "old_text": null,
+          "new_text": "srsu2msi(publish_normal_timeout)",
+          "old_line_content": "    int64_t nb_msgs = 0;",
+          "new_line_content": "            mr, srsu2msi(mr_sleep), srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout), tcp_nodelay);",
+          "content_same": false
+        },
+        {
+          "line": 1414,
+          "old_api": null,
+          "new_api": "get_vhost_on_stop",
+          "old_text": null,
+          "new_text": "_srs_config->get_vhost_on_stop(req->vhost)",
+          "old_line_content": "            return;",
+          "new_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_stop(req->vhost);",
+          "content_same": false
+        },
+        {
+          "line": 906,
+          "old_api": null,
+          "new_api": "pull",
+          "old_text": null,
+          "new_text": "trd->pull()",
+          "old_line_content": "",
+          "new_line_content": "        if ((err = trd->pull()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": null,
+          "new_api": "elapse",
+          "old_text": null,
+          "new_text": "pprint->elapse()",
+          "old_line_content": "        if (nb_msgs == 0) {",
+          "new_line_content": "        pprint->elapse();",
+          "content_same": false
+        },
+        {
+          "line": 1423,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "hooks.size()",
+          "old_line_content": "    }",
+          "new_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 1424,
+          "old_api": null,
+          "new_api": "at",
+          "old_text": null,
+          "new_text": "hooks.at(i)",
+          "old_line_content": "    ",
+          "new_line_content": "        std::string url = hooks.at(i);",
+          "content_same": false
+        },
+        {
+          "line": 1425,
+          "old_api": null,
+          "new_api": "SrsHttpHooks::on_stop(url, req)",
+          "old_text": null,
+          "new_text": "SrsHttpHooks::on_stop(url, req)",
+          "old_line_content": "    return;",
+          "new_line_content": "        SrsHttpHooks::on_stop(url, req);",
+          "content_same": false
+        },
+        {
+          "line": 916,
+          "old_api": null,
+          "new_api": "wait",
+          "old_text": null,
+          "new_text": "rtrd->wait(publish_1stpkt_timeout)",
+          "old_line_content": "        }",
+          "new_line_content": "            rtrd->wait(publish_1stpkt_timeout);",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": null,
+          "new_api": "wait",
+          "old_text": null,
+          "new_text": "rtrd->wait(publish_normal_timeout)",
+          "old_line_content": "        // check the thread error code.",
+          "new_line_content": "            rtrd->wait(publish_normal_timeout);",
+          "content_same": false
+        },
+        {
+          "line": 922,
+          "old_api": null,
+          "new_api": "error_code",
+          "old_text": null,
+          "new_text": "rtrd->error_code()",
+          "old_line_content": "        ",
+          "new_line_content": "        if ((err = rtrd->error_code()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 923,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: receive thread\")",
+          "old_line_content": "        // when not got any messages, timeout.",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: receive thread\");",
+          "content_same": false
+        },
+        {
+          "line": 1435,
+          "old_api": null,
+          "new_api": "initialize",
+          "old_text": null,
+          "new_text": "skt->initialize()",
+          "old_line_content": "",
+          "new_line_content": "    if ((err = skt->initialize()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 927,
+          "old_api": null,
+          "new_api": "nb_msgs",
+          "old_text": null,
+          "new_text": "rtrd->nb_msgs()",
+          "old_line_content": "        }",
+          "new_line_content": "        if (rtrd->nb_msgs() <= nb_msgs) {",
+          "content_same": false
+        },
+        {
+          "line": 1439,
+          "old_api": null,
+          "new_api": "start",
+          "old_text": null,
+          "new_text": "trd->start()",
+          "old_line_content": "",
+          "new_line_content": "    if ((err = trd->start()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": null,
+          "new_api": "srsu2msi",
+          "old_text": null,
+          "new_text": "srsu2msi(publish_1stpkt_timeout)",
+          "old_line_content": "        ",
+          "new_line_content": "                nb_msgs? srsu2msi(publish_normal_timeout) : srsu2msi(publish_1stpkt_timeout), (int)nb_msgs);",
+          "content_same": false
+        },
+        {
+          "line": 1440,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"coroutine\")",
+          "old_line_content": "    return err;",
+          "new_line_content": "        return srs_error_wrap(err, \"coroutine\");",
+          "content_same": false
+        },
+        {
+          "line": 931,
+          "old_api": null,
+          "new_api": "nb_msgs",
+          "old_text": null,
+          "new_text": "rtrd->nb_msgs()",
+          "old_line_content": "        // @remark https://github.com/ossrs/srs/issues/851",
+          "new_line_content": "        nb_msgs = rtrd->nb_msgs();",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": null,
+          "new_api": "SrsStatistic::instance()",
+          "old_text": null,
+          "new_text": "SrsStatistic::instance()",
+          "old_line_content": "        }",
+          "new_line_content": "        SrsStatistic* stat = SrsStatistic::instance();",
+          "content_same": false
+        },
+        {
+          "line": 1448,
+          "old_api": null,
+          "new_api": "do_cycle",
+          "old_text": null,
+          "new_text": "do_cycle()",
+          "old_line_content": "    // Note that we create this object, so we use manager to remove it.",
+          "new_line_content": "    srs_error_t err = do_cycle();",
+          "content_same": false
+        },
+        {
+          "line": 937,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: stat video frames\")",
+          "old_line_content": "",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: stat video frames\");",
+          "content_same": false
+        },
+        {
+          "line": 1452,
+          "old_api": null,
+          "new_api": "remove",
+          "old_text": null,
+          "new_text": "manager->remove(this)",
+          "old_line_content": "    if (err == srs_success) {",
+          "new_line_content": "    manager->remove(this);",
+          "content_same": false
+        },
+        {
+          "line": 1456,
+          "old_api": null,
+          "new_api": "srs_trace",
+          "old_text": null,
+          "new_text": "srs_trace(\"client finished.\")",
+          "old_line_content": "",
+          "new_line_content": "        srs_trace(\"client finished.\");",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": null,
+          "new_api": "get_send_kbps_5m",
+          "old_text": null,
+          "new_text": "kbps->get_send_kbps_5m()",
+          "old_line_content": "        }",
+          "new_line_content": "                (int)pprint->age(), kbps->get_send_kbps(), kbps->get_send_kbps_30s(), kbps->get_send_kbps_5m(),",
+          "content_same": false
+        },
+        {
+          "line": 948,
+          "old_api": null,
+          "new_api": "srsu2msi",
+          "old_text": null,
+          "new_text": "srsu2msi(mr_sleep)",
+          "old_line_content": "    }",
+          "new_line_content": "                kbps->get_recv_kbps(), kbps->get_recv_kbps_30s(), kbps->get_recv_kbps_5m(), mr, srsu2msi(mr_sleep),",
+          "content_same": false
+        },
+        {
+          "line": 949,
+          "old_api": null,
+          "new_api": "srsu2msi",
+          "old_text": null,
+          "new_text": "srsu2msi(publish_normal_timeout)",
+          "old_line_content": "    ",
+          "new_line_content": "                srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout));",
+          "content_same": false
+        },
+        {
+          "line": 1461,
+          "old_api": null,
+          "new_api": "srs_error_code",
+          "old_text": null,
+          "new_text": "srs_error_code(err)",
+          "old_line_content": "        return err;",
+          "new_line_content": "    if (srs_error_code(err) == ERROR_SUCCESS) {",
+          "content_same": false
+        },
+        {
+          "line": 1462,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "srs_error_summary(err).c_str()",
+          "old_line_content": "    }",
+          "new_line_content": "        srs_trace(\"client finished%s.\", srs_error_summary(err).c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1463,
+          "old_api": null,
+          "new_api": "srs_freep",
+          "old_text": null,
+          "new_text": "srs_freep(err)",
+          "old_line_content": "",
+          "new_line_content": "        srs_freep(err);",
+          "content_same": false
+        },
+        {
+          "line": 1470,
+          "old_api": null,
+          "new_api": "srs_error_code",
+          "old_text": null,
+          "new_text": "srs_error_code(err)",
+          "old_line_content": "    } else {",
+          "new_line_content": "        srs_warn(\"client disconnect peer. ret=%d\", srs_error_code(err));",
+          "content_same": false
+        },
+        {
+          "line": 1472,
+          "old_api": null,
+          "new_api": "srs_error_code",
+          "old_text": null,
+          "new_text": "srs_error_code(err)",
+          "old_line_content": "    }",
+          "new_line_content": "        srs_warn(\"server disconnect. ret=%d\", srs_error_code(err));",
+          "content_same": false
+        },
+        {
+          "line": 962,
+          "old_api": null,
+          "new_api": "can_publish",
+          "old_text": null,
+          "new_text": "source->can_publish(info->edge)",
+          "old_line_content": "    ",
+          "new_line_content": "    if (!source->can_publish(info->edge)) {",
+          "content_same": false
+        },
+        {
+          "line": 963,
+          "old_api": null,
+          "new_api": "c_str",
+          "old_text": null,
+          "new_text": "req->get_stream_url().c_str()",
+          "old_line_content": "    // when edge, ignore the publish event, directly proxy it.",
+          "new_line_content": "        return srs_error_new(ERROR_SYSTEM_STREAM_BUSY, \"rtmp: stream %s is busy\", req->get_stream_url().c_str());",
+          "content_same": false
+        },
+        {
+          "line": 1477,
+          "old_api": null,
+          "new_api": "srs_freep",
+          "old_text": null,
+          "new_text": "srs_freep(err)",
+          "old_line_content": "",
+          "new_line_content": "    srs_freep(err);",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": null,
+          "new_api": "on_edge_start_publish",
+          "old_text": null,
+          "new_text": "source->on_edge_start_publish()",
+          "old_line_content": "    } else {",
+          "new_line_content": "        if ((err = source->on_edge_start_publish()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 972,
+          "old_api": null,
+          "new_api": "on_publish",
+          "old_text": null,
+          "new_text": "source->on_publish()",
+          "old_line_content": "    }",
+          "new_line_content": "        if ((err = source->on_publish()) != srs_success) {",
+          "content_same": false
+        },
+        {
+          "line": 973,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: source publish\")",
+          "old_line_content": "    ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: source publish\");",
+          "content_same": false
+        },
+        {
+          "line": 1488,
+          "old_api": null,
+          "new_api": "cid",
+          "old_text": null,
+          "new_text": "trd->cid()",
+          "old_line_content": "void SrsRtmpConn::expire()",
+          "new_line_content": "    return trd->cid();",
+          "content_same": false
+        },
+        {
+          "line": 1493,
+          "old_api": null,
+          "new_api": "interrupt",
+          "old_text": null,
+          "new_text": "trd->interrupt()",
+          "old_line_content": "",
+          "new_line_content": "    trd->interrupt();",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": null,
+          "new_api": "on_edge_proxy_unpublish",
+          "old_text": null,
+          "new_text": "source->on_edge_proxy_unpublish()",
+          "old_line_content": "    }",
+          "new_line_content": "        source->on_edge_proxy_unpublish();",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": null,
+          "new_api": "on_unpublish",
+          "old_text": null,
+          "new_text": "source->on_unpublish()",
+          "old_line_content": "",
+          "new_line_content": "        source->on_unpublish();",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "old_line_content": "        ",
+          "new_line_content": "            return srs_error_wrap(err, \"rtmp: decode message\");",
+          "content_same": false
+        },
+        {
+          "line": 1001,
+          "old_api": null,
+          "new_api": "SrsAutoFree",
+          "old_text": null,
+          "new_text": "SrsAutoFree(SrsPacket, pkt)",
+          "old_line_content": "        if (info->type == SrsRtmpConnFlashPublish) {",
+          "new_line_content": "        SrsAutoFree(SrsPacket, pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1007,
+          "old_api": null,
+          "new_api": "srs_trace",
+          "old_text": null,
+          "new_text": "srs_trace(\"flash flash publish finished.\")",
+          "old_line_content": "        ",
+          "new_line_content": "            srs_trace(\"flash flash publish finished.\");",
+          "content_same": false
+        },
+        {
+          "line": 1008,
+          "old_api": null,
+          "new_api": "srs_error_new",
+          "old_text": null,
+          "new_text": "srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\")",
+          "old_line_content": "        // for fmle, drop others except the fmle start packet.",
+          "new_line_content": "            return srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\");",
+          "content_same": false
+        },
+        {
+          "line": 1013,
+          "old_api": null,
+          "new_api": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "old_text": null,
+          "new_text": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "old_line_content": "            }",
+          "new_line_content": "            SrsFMLEStartPacket* unpublish = dynamic_cast<SrsFMLEStartPacket*>(pkt);",
+          "content_same": false
+        },
+        {
+          "line": 1015,
+          "old_api": null,
+          "new_api": "srs_error_wrap",
+          "old_text": null,
+          "new_text": "srs_error_wrap(err, \"rtmp: republish\")",
+          "old_line_content": "        }",
+          "new_line_content": "                return srs_error_wrap(err, \"rtmp: republish\");",
+          "content_same": false
+        },
+        {
+          "line": 1020,
+          "old_api": null,
+          "new_api": "srs_trace",
+          "old_text": null,
+          "new_text": "srs_trace(\"fmle ignore AMF0/AMF3 command message.\")",
+          "old_line_content": "    ",
+          "new_line_content": "        srs_trace(\"fmle ignore AMF0/AMF3 command message.\");",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1035,
+          "old_api": "on_edge_proxy_publish",
+          "new_api": null,
+          "old_text": "source->on_edge_proxy_publish(msg)",
+          "new_text": null,
+          "old_line_content": "        if ((err = source->on_edge_proxy_publish(msg)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1036,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: proxy publish\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: proxy publish\");",
+          "new_line_content": "    // for edge, directly proxy message to origin.",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": "is_audio",
+          "new_api": null,
+          "old_text": "msg->header.is_audio()",
+          "new_text": null,
+          "old_line_content": "    if (msg->header.is_audio()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1043,
+          "old_api": "on_audio",
+          "new_api": null,
+          "old_text": "source->on_audio(msg)",
+          "new_text": null,
+          "old_line_content": "        if ((err = source->on_audio(msg)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1044,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: consume audio\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: consume audio\");",
+          "new_line_content": "    // process audio packet",
+          "content_same": false
+        },
+        {
+          "line": 1049,
+          "old_api": "is_video",
+          "new_api": null,
+          "old_text": "msg->header.is_video()",
+          "new_text": null,
+          "old_line_content": "    if (msg->header.is_video()) {",
+          "new_line_content": "        return err;",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": "on_video",
+          "new_api": null,
+          "old_text": "source->on_video(msg)",
+          "new_text": null,
+          "old_line_content": "        if ((err = source->on_video(msg)) != srs_success) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: consume video\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: consume video\");",
+          "new_line_content": "    // process video packet",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": "is_aggregate",
+          "new_api": null,
+          "old_text": "msg->header.is_aggregate()",
+          "new_text": null,
+          "old_line_content": "    if (msg->header.is_aggregate()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": "on_aggregate",
+          "new_api": null,
+          "old_text": "source->on_aggregate(msg)",
+          "new_text": null,
+          "old_line_content": "        if ((err = source->on_aggregate(msg)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1059,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: consume aggregate\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: consume aggregate\");",
+          "new_line_content": "    // process aggregate packet",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": "is_amf3_data",
+          "new_api": null,
+          "old_text": "msg->header.is_amf3_data()",
+          "new_text": null,
+          "old_line_content": "    if (msg->header.is_amf0_data() || msg->header.is_amf3_data()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1067,
+          "old_api": "decode_message",
+          "new_api": null,
+          "old_text": "rtmp->decode_message(msg, &pkt)",
+          "new_text": null,
+          "old_line_content": "        if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "new_line_content": "    // process onMetaData",
+          "content_same": false
+        },
+        {
+          "line": 1072,
+          "old_api": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsOnMetaDataPacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "        if (dynamic_cast<SrsOnMetaDataPacket*>(pkt)) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1074,
+          "old_api": "on_meta_data",
+          "new_api": null,
+          "old_text": "source->on_meta_data(msg, metadata)",
+          "new_text": null,
+          "old_line_content": "            if ((err = source->on_meta_data(msg, metadata)) != srs_success) {",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": "SrsAutoFree",
+          "new_api": null,
+          "old_text": "SrsAutoFree(SrsCommonMessage, msg)",
+          "new_text": null,
+          "old_line_content": "    SrsAutoFree(SrsCommonMessage, msg);",
+          "new_line_content": "    if (!msg) {",
+          "content_same": false
+        },
+        {
+          "line": 1094,
+          "old_api": "is_amf3_command",
+          "new_api": null,
+          "old_text": "msg->header.is_amf3_command()",
+          "new_text": null,
+          "old_line_content": "    if (!msg->header.is_amf0_command() && !msg->header.is_amf3_command()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1099,
+          "old_api": "decode_message",
+          "new_api": null,
+          "old_text": "rtmp->decode_message(msg, &pkt)",
+          "new_text": null,
+          "old_line_content": "    if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1100,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: decode message\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: decode message\");",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1106,
+          "old_api": "dynamic_cast<SrsCloseStreamPacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsCloseStreamPacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "    SrsCloseStreamPacket* close = dynamic_cast<SrsCloseStreamPacket*>(pkt);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1108,
+          "old_api": "srs_error_new",
+          "new_api": null,
+          "old_text": "srs_error_new(ERROR_CONTROL_RTMP_CLOSE, \"rtmp: close stream\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_new(ERROR_CONTROL_RTMP_CLOSE, \"rtmp: close stream\");",
+          "new_line_content": "    // @see https://github.com/ossrs/srs/issues/6",
+          "content_same": false
+        },
+        {
+          "line": 1115,
+          "old_api": "dynamic_cast<SrsCallPacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsCallPacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "    SrsCallPacket* call = dynamic_cast<SrsCallPacket*>(pkt);",
+          "new_line_content": "    // support response null first,",
+          "content_same": false
+        },
+        {
+          "line": 1121,
+          "old_api": "SrsAmf0Any::null()",
+          "new_api": null,
+          "old_text": "SrsAmf0Any::null()",
+          "new_text": null,
+          "old_line_content": "            res->command_object = SrsAmf0Any::null();",
+          "new_line_content": "        // for the zero means donot need response.",
+          "content_same": false
+        },
+        {
+          "line": 1122,
+          "old_api": "SrsAmf0Any::null()",
+          "new_api": null,
+          "old_text": "SrsAmf0Any::null()",
+          "new_text": null,
+          "old_line_content": "            res->response = SrsAmf0Any::null();",
+          "new_line_content": "        if (call->transaction_id > 0) {",
+          "content_same": false
+        },
+        {
+          "line": 1123,
+          "old_api": "send_and_free_packet",
+          "new_api": null,
+          "old_text": "rtmp->send_and_free_packet(res, 0)",
+          "new_text": null,
+          "old_line_content": "            if ((err = rtmp->send_and_free_packet(res, 0)) != srs_success) {",
+          "new_line_content": "            SrsCallResPacket* res = new SrsCallResPacket(call->transaction_id);",
+          "content_same": false
+        },
+        {
+          "line": 1131,
+          "old_api": "dynamic_cast<SrsPausePacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsPausePacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "    SrsPausePacket* pause = dynamic_cast<SrsPausePacket*>(pkt);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1133,
+          "old_api": "on_play_client_pause",
+          "new_api": null,
+          "old_text": "rtmp->on_play_client_pause(info->res->stream_id, pause->is_pause)",
+          "new_text": null,
+          "old_line_content": "        if ((err = rtmp->on_play_client_pause(info->res->stream_id, pause->is_pause)) != srs_success) {",
+          "new_line_content": "    // pause",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": "get_tcp_nodelay",
+          "new_api": null,
+          "old_text": "_srs_config->get_tcp_nodelay(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    bool nvalue = _srs_config->get_tcp_nodelay(req->vhost);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1154,
+          "old_api": "set_tcp_nodelay",
+          "new_api": null,
+          "old_text": "skt->set_tcp_nodelay(tcp_nodelay)",
+          "new_text": null,
+          "old_line_content": "        srs_error_t err = skt->set_tcp_nodelay(tcp_nodelay);",
+          "new_line_content": "    if (nvalue != tcp_nodelay) {",
+          "content_same": false
+        },
+        {
+          "line": 1156,
+          "old_api": "c_str",
+          "new_api": null,
+          "old_text": "srs_error_desc(err).c_str()",
+          "new_text": null,
+          "old_line_content": "            srs_warn(\"ignore err %s\", srs_error_desc(err).c_str());",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1167,
+          "old_api": "srs_assert",
+          "new_api": null,
+          "old_text": "srs_assert(req)",
+          "new_text": null,
+          "old_line_content": "    srs_assert(req);",
+          "new_line_content": "    srs_error_t err = srs_success;",
+          "content_same": false
+        },
+        {
+          "line": 1169,
+          "old_api": "get_vhost_edge_origin",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_edge_origin(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    vector<string> args = _srs_config->get_vhost_edge_origin(req->vhost)->args;",
+          "new_line_content": "    SrsRequest* req = info->req;",
+          "content_same": false
+        },
+        {
+          "line": 1174,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "args.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)args.size(); i++) {",
+          "new_line_content": "        return err;",
+          "content_same": false
+        },
+        {
+          "line": 1175,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "args.at(i)",
+          "new_text": null,
+          "old_line_content": "        string hostport = args.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1180,
+          "old_api": "srs_parse_hostport",
+          "new_api": null,
+          "old_text": "srs_parse_hostport(hostport, server, port)",
+          "new_text": null,
+          "old_line_content": "        srs_parse_hostport(hostport, server, port);",
+          "new_line_content": "        // select the origin.",
+          "content_same": false
+        },
+        {
+          "line": 1185,
+          "old_api": "connect",
+          "new_api": null,
+          "old_text": "transport->connect()",
+          "new_text": null,
+          "old_line_content": "        if ((err = transport->connect()) != srs_success) {",
+          "new_line_content": "        SrsTcpClient* transport = new SrsTcpClient(server, port, SRS_EDGE_TOKEN_TRAVERSE_TIMEOUT);",
+          "content_same": false
+        },
+        {
+          "line": 1187,
+          "old_api": "srs_freep",
+          "new_api": null,
+          "old_text": "srs_freep(err)",
+          "new_text": null,
+          "old_line_content": "            srs_freep(err);",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1192,
+          "old_api": "SrsAutoFree",
+          "new_api": null,
+          "old_text": "SrsAutoFree(SrsRtmpClient, client)",
+          "new_text": null,
+          "old_line_content": "        SrsAutoFree(SrsRtmpClient, client);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1193,
+          "old_api": "do_token_traverse_auth",
+          "new_api": null,
+          "old_text": "do_token_traverse_auth(client)",
+          "new_text": null,
+          "old_line_content": "        return do_token_traverse_auth(client);",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1204,
+          "old_api": "srs_assert",
+          "new_api": null,
+          "old_text": "srs_assert(client)",
+          "new_text": null,
+          "old_line_content": "    srs_assert(client);",
+          "new_line_content": "    srs_error_t err = srs_success;",
+          "content_same": false
+        },
+        {
+          "line": 1206,
+          "old_api": "set_recv_timeout",
+          "new_api": null,
+          "old_text": "client->set_recv_timeout(SRS_CONSTS_RTMP_TIMEOUT)",
+          "new_text": null,
+          "old_line_content": "    client->set_recv_timeout(SRS_CONSTS_RTMP_TIMEOUT);",
+          "new_line_content": "    SrsRequest* req = info->req;",
+          "content_same": false
+        },
+        {
+          "line": 1215,
+          "old_api": "connect_app",
+          "new_api": null,
+          "old_text": "client->connect_app(req->app, req->tcUrl, req, true, &si)",
+          "new_text": null,
+          "old_line_content": "    if ((err = client->connect_app(req->app, req->tcUrl, req, true, &si)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1216,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: connect tcUrl\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: connect tcUrl\");",
+          "new_line_content": "    // for token tranverse, always take the debug info(which carries token).",
+          "content_same": false
+        },
+        {
+          "line": 1227,
+          "old_api": "http_hooks_on_close",
+          "new_api": null,
+          "old_text": "http_hooks_on_close()",
+          "new_text": null,
+          "old_line_content": "    http_hooks_on_close();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1240,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1250,
+          "old_api": "get_vhost_on_connect",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_connect(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_connect(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 1259,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1260,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1261,
+          "old_api": "SrsHttpHooks::on_connect(url, req)",
+          "new_api": null,
+          "old_text": "SrsHttpHooks::on_connect(url, req)",
+          "new_text": null,
+          "old_line_content": "        if ((err = SrsHttpHooks::on_connect(url, req)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1273,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1283,
+          "old_api": "get_vhost_on_close",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_close(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_close(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 1292,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1293,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1294,
+          "old_api": "get_recv_bytes",
+          "new_api": null,
+          "old_text": "kbps->get_recv_bytes()",
+          "new_text": null,
+          "old_line_content": "        SrsHttpHooks::on_close(url, req, kbps->get_send_bytes(), kbps->get_recv_bytes());",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1304,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1314,
+          "old_api": "get_vhost_on_publish",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_publish(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_publish(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 1323,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1324,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1325,
+          "old_api": "SrsHttpHooks::on_publish(url, req)",
+          "new_api": null,
+          "old_text": "SrsHttpHooks::on_publish(url, req)",
+          "new_text": null,
+          "old_line_content": "        if ((err = SrsHttpHooks::on_publish(url, req)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1337,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1347,
+          "old_api": "get_vhost_on_unpublish",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_unpublish(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_unpublish(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 840,
+          "old_api": "get_refer_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_refer_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (_srs_config->get_refer_enabled(req->vhost)) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 841,
+          "old_api": "get_refer_publish",
+          "new_api": null,
+          "old_text": "_srs_config->get_refer_publish(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        if ((err = refer->check(req->pageUrl, _srs_config->get_refer_publish(req->vhost))) != srs_success) {",
+          "new_line_content": "    SrsRequest* req = info->req;",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: referer check\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: referer check\");",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1356,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1357,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": "http_hooks_on_publish",
+          "new_api": null,
+          "old_text": "http_hooks_on_publish()",
+          "new_text": null,
+          "old_line_content": "    if ((err = http_hooks_on_publish()) != srs_success) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: callback on publish\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: callback on publish\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1358,
+          "old_api": "SrsHttpHooks::on_unpublish(url, req)",
+          "new_api": null,
+          "old_text": "SrsHttpHooks::on_unpublish(url, req)",
+          "new_text": null,
+          "old_line_content": "        SrsHttpHooks::on_unpublish(url, req);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "acquire_publish",
+          "new_api": null,
+          "old_text": "acquire_publish(source)",
+          "new_text": null,
+          "old_line_content": "    if ((err = acquire_publish(source)) == srs_success) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "do_publishing",
+          "new_api": null,
+          "old_text": "do_publishing(source, &rtrd)",
+          "new_text": null,
+          "old_line_content": "        err = do_publishing(source, &rtrd);",
+          "new_line_content": "        // use isolate thread to recv,",
+          "content_same": false
+        },
+        {
+          "line": 856,
+          "old_api": "stop",
+          "new_api": null,
+          "old_text": "rtrd.stop()",
+          "new_text": null,
+          "old_line_content": "        rtrd.stop();",
+          "new_line_content": "        // @see: https://github.com/ossrs/srs/issues/237",
+          "content_same": false
+        },
+        {
+          "line": 1368,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": "srs_error_code",
+          "new_api": null,
+          "old_text": "srs_error_code(err)",
+          "new_text": null,
+          "old_line_content": "    if (srs_error_code(err) != ERROR_SYSTEM_STREAM_BUSY) {",
+          "new_line_content": "    // but failed, so we must cleanup it.",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "release_publish",
+          "new_api": null,
+          "old_text": "release_publish(source)",
+          "new_text": null,
+          "old_line_content": "        release_publish(source);",
+          "new_line_content": "    // @see https://github.com/ossrs/srs/issues/474",
+          "content_same": false
+        },
+        {
+          "line": 1378,
+          "old_api": "get_vhost_on_play",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_play(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_play(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 1387,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1388,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1389,
+          "old_api": "SrsHttpHooks::on_play(url, req)",
+          "new_api": null,
+          "old_text": "SrsHttpHooks::on_play(url, req)",
+          "new_text": null,
+          "old_line_content": "        if ((err = SrsHttpHooks::on_play(url, req)) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 878,
+          "old_api": "SrsPithyPrint::create_rtmp_publish()",
+          "new_api": null,
+          "old_text": "SrsPithyPrint::create_rtmp_publish()",
+          "new_text": null,
+          "old_line_content": "    SrsPithyPrint* pprint = SrsPithyPrint::create_rtmp_publish();",
+          "new_line_content": "    srs_error_t err = srs_success;",
+          "content_same": false
+        },
+        {
+          "line": 879,
+          "old_api": "SrsAutoFree",
+          "new_api": null,
+          "old_text": "SrsAutoFree(SrsPithyPrint, pprint)",
+          "new_text": null,
+          "old_line_content": "    SrsAutoFree(SrsPithyPrint, pprint);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 883,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: receive thread\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: receive thread\");",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "get_publish_1stpkt_timeout",
+          "new_api": null,
+          "old_text": "_srs_config->get_publish_1stpkt_timeout(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    publish_1stpkt_timeout = _srs_config->get_publish_1stpkt_timeout(req->vhost);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": "get_publish_normal_timeout",
+          "new_api": null,
+          "old_text": "_srs_config->get_publish_normal_timeout(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    publish_normal_timeout = _srs_config->get_publish_normal_timeout(req->vhost);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 1401,
+          "old_api": "get_vhost_http_hooks_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_http_hooks_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "    if (!_srs_config->get_vhost_http_hooks_enabled(req->vhost)) {",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": "get_mr_sleep",
+          "new_api": null,
+          "old_text": "_srs_config->get_mr_sleep(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        srs_utime_t mr_sleep = _srs_config->get_mr_sleep(req->vhost);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 896,
+          "old_api": "srs_trace",
+          "new_api": null,
+          "old_text": "srs_trace(\"start publish mr=%d/%d, p1stpt=%d, pnt=%d, tcp_nodelay=%d\",\n            mr, srsu2msi(mr_sleep), srsu2msi(publish_1stpkt_timeout), srsu2msi(publish_normal_timeout), tcp_nodelay)",
+          "new_text": null,
+          "old_line_content": "        srs_trace(\"start publish mr=%d/%d, p1stpt=%d, pnt=%d, tcp_nodelay=%d\",",
+          "new_line_content": "    if (true) {",
+          "content_same": false
+        },
+        {
+          "line": 1411,
+          "old_api": "get_vhost_on_stop",
+          "new_api": null,
+          "old_text": "_srs_config->get_vhost_on_stop(req->vhost)",
+          "new_text": null,
+          "old_line_content": "        SrsConfDirective* conf = _srs_config->get_vhost_on_stop(req->vhost);",
+          "new_line_content": "    vector<string> hooks;",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": "pull",
+          "new_api": null,
+          "old_text": "trd->pull()",
+          "new_text": null,
+          "old_line_content": "        if ((err = trd->pull()) != srs_success) {",
+          "new_line_content": "    int64_t nb_msgs = 0;",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: thread quit\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: thread quit\");",
+          "new_line_content": "    uint64_t nb_frames = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1420,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "hooks.size()",
+          "new_text": null,
+          "old_line_content": "    for (int i = 0; i < (int)hooks.size(); i++) {",
+          "new_line_content": "        hooks = conf->args;",
+          "content_same": false
+        },
+        {
+          "line": 1421,
+          "old_api": "at",
+          "new_api": null,
+          "old_text": "hooks.at(i)",
+          "new_text": null,
+          "old_line_content": "        std::string url = hooks.at(i);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1422,
+          "old_api": "SrsHttpHooks::on_stop(url, req)",
+          "new_api": null,
+          "old_text": "SrsHttpHooks::on_stop(url, req)",
+          "new_text": null,
+          "old_line_content": "        SrsHttpHooks::on_stop(url, req);",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": "wait",
+          "new_api": null,
+          "old_text": "rtrd->wait(publish_1stpkt_timeout)",
+          "new_text": null,
+          "old_line_content": "            rtrd->wait(publish_1stpkt_timeout);",
+          "new_line_content": "        if (nb_msgs == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 915,
+          "old_api": "wait",
+          "new_api": null,
+          "old_text": "rtrd->wait(publish_normal_timeout)",
+          "new_text": null,
+          "old_line_content": "            rtrd->wait(publish_normal_timeout);",
+          "new_line_content": "            // @see https://github.com/ossrs/srs/issues/441",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": "error_code",
+          "new_api": null,
+          "old_text": "rtrd->error_code()",
+          "new_text": null,
+          "old_line_content": "        if ((err = rtrd->error_code()) != srs_success) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: receive thread\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: receive thread\");",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1432,
+          "old_api": "initialize",
+          "new_api": null,
+          "old_text": "skt->initialize()",
+          "new_text": null,
+          "old_line_content": "    if ((err = skt->initialize()) != srs_success) {",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1433,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"init socket\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"init socket\");",
+          "new_line_content": "    srs_error_t err = srs_success;",
+          "content_same": false
+        },
+        {
+          "line": 924,
+          "old_api": "nb_msgs",
+          "new_api": null,
+          "old_text": "rtrd->nb_msgs()",
+          "new_text": null,
+          "old_line_content": "        if (rtrd->nb_msgs() <= nb_msgs) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": "srs_error_new",
+          "new_api": null,
+          "old_text": "srs_error_new(ERROR_SOCKET_TIMEOUT, \"rtmp: publish timeout %dms, nb_msgs=%d\",\n                nb_msgs? srsu2msi(publish_normal_timeout) : srsu2msi(publish_1stpkt_timeout), (int)nb_msgs)",
+          "new_text": null,
+          "old_line_content": "            return srs_error_new(ERROR_SOCKET_TIMEOUT, \"rtmp: publish timeout %dms, nb_msgs=%d\",",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": "srsu2msi",
+          "new_api": null,
+          "old_text": "srsu2msi(publish_1stpkt_timeout)",
+          "new_text": null,
+          "old_line_content": "                nb_msgs? srsu2msi(publish_normal_timeout) : srsu2msi(publish_1stpkt_timeout), (int)nb_msgs);",
+          "new_line_content": "        // when not got any messages, timeout.",
+          "content_same": false
+        },
+        {
+          "line": 1437,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"coroutine\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"coroutine\");",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": "SrsStatistic::instance()",
+          "new_api": null,
+          "old_text": "SrsStatistic::instance()",
+          "new_text": null,
+          "old_line_content": "        SrsStatistic* stat = SrsStatistic::instance();",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": "nb_video_frames",
+          "new_api": null,
+          "old_text": "rtrd->nb_video_frames()",
+          "new_text": null,
+          "old_line_content": "        if ((err = stat->on_video_frames(req, (int)(rtrd->nb_video_frames() - nb_frames))) != srs_success) {",
+          "new_line_content": "        // Update the stat for video fps.",
+          "content_same": false
+        },
+        {
+          "line": 934,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: stat video frames\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: stat video frames\");",
+          "new_line_content": "        // @remark https://github.com/ossrs/srs/issues/851",
+          "content_same": false
+        },
+        {
+          "line": 1445,
+          "old_api": "do_cycle",
+          "new_api": null,
+          "old_text": "do_cycle()",
+          "new_text": null,
+          "old_line_content": "    srs_error_t err = do_cycle();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1449,
+          "old_api": "remove",
+          "new_api": null,
+          "old_text": "manager->remove(this)",
+          "new_text": null,
+          "old_line_content": "    manager->remove(this);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 940,
+          "old_api": "sample",
+          "new_api": null,
+          "old_text": "kbps->sample()",
+          "new_text": null,
+          "old_line_content": "            kbps->sample();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": "get_mr_enabled",
+          "new_api": null,
+          "old_text": "_srs_config->get_mr_enabled(req->vhost)",
+          "new_text": null,
+          "old_line_content": "            bool mr = _srs_config->get_mr_enabled(req->vhost);",
+          "new_line_content": "        // reportable",
+          "content_same": false
+        },
+        {
+          "line": 1453,
+          "old_api": "srs_trace",
+          "new_api": null,
+          "old_text": "srs_trace(\"client finished.\")",
+          "new_text": null,
+          "old_line_content": "        srs_trace(\"client finished.\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1458,
+          "old_api": "srs_error_code",
+          "new_api": null,
+          "old_text": "srs_error_code(err)",
+          "new_text": null,
+          "old_line_content": "    if (srs_error_code(err) == ERROR_SUCCESS) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1459,
+          "old_api": "c_str",
+          "new_api": null,
+          "old_text": "srs_error_summary(err).c_str()",
+          "new_text": null,
+          "old_line_content": "        srs_trace(\"client finished%s.\", srs_error_summary(err).c_str());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1460,
+          "old_api": "srs_freep",
+          "new_api": null,
+          "old_text": "srs_freep(err)",
+          "new_text": null,
+          "old_line_content": "        srs_freep(err);",
+          "new_line_content": "    // It maybe success with message.",
+          "content_same": false
+        },
+        {
+          "line": 1466,
+          "old_api": "srs_is_client_gracefully_close",
+          "new_api": null,
+          "old_text": "srs_is_client_gracefully_close(err)",
+          "new_text": null,
+          "old_line_content": "    if (srs_is_client_gracefully_close(err)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1467,
+          "old_api": "srs_error_code",
+          "new_api": null,
+          "old_text": "srs_error_code(err)",
+          "new_text": null,
+          "old_line_content": "        srs_warn(\"client disconnect peer. ret=%d\", srs_error_code(err));",
+          "new_line_content": "    // client close peer.",
+          "content_same": false
+        },
+        {
+          "line": 1468,
+          "old_api": "srs_is_server_gracefully_close",
+          "new_api": null,
+          "old_text": "srs_is_server_gracefully_close(err)",
+          "new_text": null,
+          "old_line_content": "    } else if (srs_is_server_gracefully_close(err)) {",
+          "new_line_content": "    // TODO: FIXME: Only reset the error when client closed it.",
+          "content_same": false
+        },
+        {
+          "line": 959,
+          "old_api": "can_publish",
+          "new_api": null,
+          "old_text": "source->can_publish(info->edge)",
+          "new_text": null,
+          "old_line_content": "    if (!source->can_publish(info->edge)) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": "c_str",
+          "new_api": null,
+          "old_text": "req->get_stream_url().c_str()",
+          "new_text": null,
+          "old_line_content": "        return srs_error_new(ERROR_SYSTEM_STREAM_BUSY, \"rtmp: stream %s is busy\", req->get_stream_url().c_str());",
+          "new_line_content": "    SrsRequest* req = info->req;",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "on_edge_start_publish",
+          "new_api": null,
+          "old_text": "source->on_edge_start_publish()",
+          "new_text": null,
+          "old_line_content": "        if ((err = source->on_edge_start_publish()) != srs_success) {",
+          "new_line_content": "    ",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: edge start publish\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: edge start publish\");",
+          "new_line_content": "    // when edge, ignore the publish event, directly proxy it.",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: source publish\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_wrap(err, \"rtmp: source publish\");",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1485,
+          "old_api": "cid",
+          "new_api": null,
+          "old_text": "trd->cid()",
+          "new_text": null,
+          "old_line_content": "    return trd->cid();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1490,
+          "old_api": "interrupt",
+          "new_api": null,
+          "old_text": "trd->interrupt()",
+          "new_text": null,
+          "old_line_content": "    trd->interrupt();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 982,
+          "old_api": "on_edge_proxy_unpublish",
+          "new_api": null,
+          "old_text": "source->on_edge_proxy_unpublish()",
+          "new_text": null,
+          "old_line_content": "        source->on_edge_proxy_unpublish();",
+          "new_line_content": "    // when edge, notice edge to change state.",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": "on_unpublish",
+          "new_api": null,
+          "old_text": "source->on_unpublish()",
+          "new_text": null,
+          "old_line_content": "        source->on_unpublish();",
+          "new_line_content": "    if (info->edge) {",
+          "content_same": false
+        },
+        {
+          "line": 993,
+          "old_api": "is_amf3_command",
+          "new_api": null,
+          "old_text": "msg->header.is_amf3_command()",
+          "new_text": null,
+          "old_line_content": "    if (msg->header.is_amf0_command() || msg->header.is_amf3_command()) {",
+          "new_line_content": "    srs_error_t err = srs_success;",
+          "content_same": false
+        },
+        {
+          "line": 995,
+          "old_api": "decode_message",
+          "new_api": null,
+          "old_text": "rtmp->decode_message(msg, &pkt)",
+          "new_text": null,
+          "old_line_content": "        if ((err = rtmp->decode_message(msg, &pkt)) != srs_success) {",
+          "new_line_content": "    // process publish event.",
+          "content_same": false
+        },
+        {
+          "line": 1004,
+          "old_api": "srs_trace",
+          "new_api": null,
+          "old_text": "srs_trace(\"flash flash publish finished.\")",
+          "new_text": null,
+          "old_line_content": "            srs_trace(\"flash flash publish finished.\");",
+          "new_line_content": "        if (info->type == SrsRtmpConnFlashPublish) {",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": "srs_error_new",
+          "new_api": null,
+          "old_text": "srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\")",
+          "new_text": null,
+          "old_line_content": "            return srs_error_new(ERROR_CONTROL_REPUBLISH, \"rtmp: republish\");",
+          "new_line_content": "            // flash unpublish.",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "        if (dynamic_cast<SrsFMLEStartPacket*>(pkt)) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1010,
+          "old_api": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "new_api": null,
+          "old_text": "dynamic_cast<SrsFMLEStartPacket*>(pkt)",
+          "new_text": null,
+          "old_line_content": "            SrsFMLEStartPacket* unpublish = dynamic_cast<SrsFMLEStartPacket*>(pkt);",
+          "new_line_content": "        ",
+          "content_same": false
+        },
+        {
+          "line": 1011,
+          "old_api": "fmle_unpublish",
+          "new_api": null,
+          "old_text": "rtmp->fmle_unpublish(info->res->stream_id, unpublish->transaction_id)",
+          "new_text": null,
+          "old_line_content": "            if ((err = rtmp->fmle_unpublish(info->res->stream_id, unpublish->transaction_id)) != srs_success) {",
+          "new_line_content": "        // for fmle, drop others except the fmle start packet.",
+          "content_same": false
+        },
+        {
+          "line": 1022,
+          "old_api": "process_publish_message",
+          "new_api": null,
+          "old_text": "process_publish_message(source, msg)",
+          "new_text": null,
+          "old_line_content": "    if ((err = process_publish_message(source, msg)) != srs_success) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1023,
+          "old_api": "srs_error_wrap",
+          "new_api": null,
+          "old_text": "srs_error_wrap(err, \"rtmp: consume message\")",
+          "new_text": null,
+          "old_line_content": "        return srs_error_wrap(err, \"rtmp: consume message\");",
+          "new_line_content": "    ",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 43,
+      "total_additions": 136,
+      "total_deletions": 135,
+      "total_api_changes": 314
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 314,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          829,
+          830
+        ]
+      }
+    },
+    "api_calls_before": 521,
+    "api_calls_after": 522,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 0,
+      "total_diff_lines": 15
+    }
+  }
+}

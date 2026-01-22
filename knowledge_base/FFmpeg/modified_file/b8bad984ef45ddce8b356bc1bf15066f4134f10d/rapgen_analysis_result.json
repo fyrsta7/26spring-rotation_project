@@ -1,0 +1,1208 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/b8bad984ef45ddce8b356bc1bf15066f4134f10d",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/b8bad984ef45ddce8b356bc1bf15066f4134f10d/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/b8bad984ef45ddce8b356bc1bf15066f4134f10d/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/b8bad984ef45ddce8b356bc1bf15066f4134f10d/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 536,
+          "old_api": "dnxhd_switch_matrix",
+          "new_api": "dct_quantize",
+          "old_text": "dnxhd_switch_matrix(ctx, i)",
+          "new_text": "ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow)",
+          "old_line_content": "            int n = dnxhd_switch_matrix(ctx, i);",
+          "new_line_content": "            last_index = ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow);",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "dnxhd_calc_ac_bits",
+          "new_api": "av_log2_16bit",
+          "old_text": "dnxhd_calc_ac_bits(ctx, block, last_index)",
+          "new_text": "av_log2_16bit(-2*diff)",
+          "old_line_content": "            ac_bits += dnxhd_calc_ac_bits(ctx, block, last_index);",
+          "new_line_content": "            if (diff < 0) nbits = av_log2_16bit(-2*diff);",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "av_log2_16bit",
+          "new_api": "assert",
+          "old_text": "av_log2_16bit(-2*diff)",
+          "new_text": "assert(nbits < ctx->cid_table->bit_depth + 4)",
+          "old_line_content": "            if (diff < 0) nbits = av_log2_16bit(-2*diff);",
+          "new_line_content": "            assert(nbits < ctx->cid_table->bit_depth + 4);",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "dnxhd_switch_matrix",
+          "new_api": "dnxhd_encode_block",
+          "old_text": "dnxhd_switch_matrix(ctx, i)",
+          "new_text": "dnxhd_encode_block(ctx, block, last_index, n)",
+          "old_line_content": "            int n = dnxhd_switch_matrix(ctx, i);",
+          "new_line_content": "            dnxhd_encode_block(ctx, block, last_index, n);",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": "get_bucket",
+          "new_api": "assert",
+          "old_text": "get_bucket(v, 0)",
+          "new_text": "assert(!v)",
+          "old_line_content": "            buckets[j][get_bucket(v, 0)]++;",
+          "new_line_content": "        assert(!v);",
+          "content_same": false
+        },
+        {
+          "line": 838,
+          "old_api": "av_malloc",
+          "new_api": "radix_sort_pass",
+          "old_text": "av_malloc(sizeof(*tmp) * size)",
+          "new_text": "radix_sort_pass(data, tmp, size, buckets[1], 1)",
+          "old_line_content": "    RCCMPEntry *tmp = av_malloc(sizeof(*tmp) * size);",
+          "new_line_content": "    radix_sort_pass(data, tmp, size, buckets[1], 1);",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": "radix_sort_pass",
+          "new_api": "av_free",
+          "old_text": "radix_sort_pass(tmp, data, size, buckets[2], 2)",
+          "new_text": "av_free(tmp)",
+          "old_line_content": "        radix_sort_pass(tmp, data, size, buckets[2], 2);",
+          "new_line_content": "    av_free(tmp);",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": "dnxhd_write_header",
+          "new_api": "dnxhd_encode_rdo",
+          "old_text": "dnxhd_write_header(avctx, buf)",
+          "new_text": "dnxhd_encode_rdo(avctx, ctx)",
+          "old_line_content": "    dnxhd_write_header(avctx, buf);",
+          "new_line_content": "        ret = dnxhd_encode_rdo(avctx, ctx);",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "assert",
+          "new_api": "execute2",
+          "old_text": "assert(!(ctx->slice_size[i] & 3))",
+          "new_text": "avctx->execute2(avctx, dnxhd_encode_thread, buf, NULL, ctx->m.mb_height)",
+          "old_line_content": "        assert(!(ctx->slice_size[i] & 3));",
+          "new_line_content": "    avctx->execute2(avctx, dnxhd_encode_thread, buf, NULL, ctx->m.mb_height);",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": "execute2",
+          "new_api": "memset",
+          "old_text": "avctx->execute2(avctx, dnxhd_encode_thread, buf, NULL, ctx->m.mb_height)",
+          "new_text": "memset(buf + 640 + offset, 0, ctx->cid_table->coding_unit_size - 4 - offset - 640)",
+          "old_line_content": "    avctx->execute2(avctx, dnxhd_encode_thread, buf, NULL, ctx->m.mb_height);",
+          "new_line_content": "    memset(buf + 640 + offset, 0, ctx->cid_table->coding_unit_size - 4 - offset - 640);",
+          "content_same": false
+        },
+        {
+          "line": 949,
+          "old_api": "assert",
+          "new_api": "AV_WB32",
+          "old_text": "assert(640 + offset + 4 <= ctx->cid_table->coding_unit_size)",
+          "new_text": "AV_WB32(buf + ctx->cid_table->coding_unit_size - 4, 0x600DC0DE)",
+          "old_line_content": "    assert(640 + offset + 4 <= ctx->cid_table->coding_unit_size);",
+          "new_line_content": "    AV_WB32(buf + ctx->cid_table->coding_unit_size - 4, 0x600DC0DE); // EOF",
+          "content_same": false
+        },
+        {
+          "line": 973,
+          "old_api": "av_free",
+          "new_api": "av_freep",
+          "old_text": "av_free(ctx->vlc_codes-max_level*2)",
+          "new_text": "av_freep(&ctx->run_bits)",
+          "old_line_content": "    av_free(ctx->vlc_codes-max_level*2);",
+          "new_line_content": "    av_freep(&ctx->run_bits);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 514,
+          "old_api": null,
+          "new_api": "LOCAL_ALIGNED_16",
+          "old_text": null,
+          "new_text": "LOCAL_ALIGNED_16(DCTELEM, block, [64])",
+          "old_line_content": "    DNXHDEncContext *ctx = avctx->priv_data;",
+          "new_line_content": "    LOCAL_ALIGNED_16(DCTELEM, block, [64]);",
+          "content_same": false
+        },
+        {
+          "line": 775,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(qscale, last_higher)",
+          "old_line_content": "        } else {",
+          "new_line_content": "            last_higher = FFMAX(qscale, last_higher);",
+          "content_same": false
+        },
+        {
+          "line": 910,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small to compress picture\\n\")",
+          "old_line_content": "    int offset, i, ret;",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small to compress picture\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": null,
+          "new_api": "dnxhd_get_blocks",
+          "old_text": null,
+          "new_text": "dnxhd_get_blocks(ctx, mb_x, mb_y)",
+          "old_line_content": "        int dc_bits = 0;",
+          "new_line_content": "        dnxhd_get_blocks(ctx, mb_x, mb_y);",
+          "content_same": false
+        },
+        {
+          "line": 914,
+          "old_api": null,
+          "new_api": "dnxhd_load_picture",
+          "old_text": null,
+          "new_text": "dnxhd_load_picture(ctx, data)",
+          "old_line_content": "        return -1;",
+          "new_line_content": "    dnxhd_load_picture(ctx, data);",
+          "content_same": false
+        },
+        {
+          "line": 533,
+          "old_api": null,
+          "new_api": "dnxhd_switch_matrix",
+          "old_text": null,
+          "new_text": "dnxhd_switch_matrix(ctx, i)",
+          "old_line_content": "        for (i = 0; i < 8; i++) {",
+          "new_line_content": "            int n = dnxhd_switch_matrix(ctx, i);",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(block, src_block, 64*sizeof(*block))",
+          "old_line_content": "            int overflow, nbits, diff, last_index;",
+          "new_line_content": "            memcpy(block, src_block, 64*sizeof(*block));",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": null,
+          "new_api": "dnxhd_calc_ac_bits",
+          "old_text": null,
+          "new_text": "dnxhd_calc_ac_bits(ctx, block, last_index)",
+          "old_line_content": "",
+          "new_line_content": "            ac_bits += dnxhd_calc_ac_bits(ctx, block, last_index);",
+          "content_same": false
+        },
+        {
+          "line": 665,
+          "old_api": null,
+          "new_api": "execute2",
+          "old_text": null,
+          "new_text": "avctx->execute2(avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height)",
+          "old_line_content": "",
+          "new_line_content": "        avctx->execute2(avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height);",
+          "content_same": false
+        },
+        {
+          "line": 923,
+          "old_api": null,
+          "new_api": "dnxhd_write_header",
+          "old_text": null,
+          "new_text": "dnxhd_write_header(avctx, buf)",
+          "old_line_content": "            ctx->src[i] += ctx->frame.linesize[i];",
+          "new_line_content": "    dnxhd_write_header(avctx, buf);",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "av_log2_16bit",
+          "old_text": null,
+          "new_text": "av_log2_16bit( 2*diff)",
+          "old_line_content": "",
+          "new_line_content": "            else          nbits = av_log2_16bit( 2*diff);",
+          "content_same": false
+        },
+        {
+          "line": 928,
+          "old_api": null,
+          "new_api": "dnxhd_encode_fast",
+          "old_text": null,
+          "new_text": "dnxhd_encode_fast(avctx, ctx)",
+          "old_line_content": "    if (avctx->mb_decision == FF_MB_DECISION_RD)",
+          "new_line_content": "        ret = dnxhd_encode_fast(avctx, ctx);",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR,\n               \"picture could not fit ratecontrol constraints, increase qmax\\n\")",
+          "old_line_content": "    else",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 804,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(buckets, 0, sizeof(buckets[0][0]) * RADIX_PASSES * NBUCKETS)",
+          "old_line_content": "static void radix_count(const RCCMPEntry *data, int size, int buckets[RADIX_PASSES][NBUCKETS])",
+          "new_line_content": "    memset(buckets, 0, sizeof(buckets[0][0]) * RADIX_PASSES * NBUCKETS);",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": null,
+          "new_api": "dnxhd_unquantize_c",
+          "old_text": null,
+          "new_text": "dnxhd_unquantize_c(ctx, block, i, qscale, last_index)",
+          "old_line_content": "            ctx->m.last_dc[n] = block[0];",
+          "new_line_content": "                dnxhd_unquantize_c(ctx, block, i, qscale, last_index);",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": null,
+          "new_api": "idct",
+          "old_text": null,
+          "new_text": "ctx->m.dsp.idct(block)",
+          "old_line_content": "",
+          "new_line_content": "                ctx->m.dsp.idct(block);",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": null,
+          "new_api": "dnxhd_ssd_block",
+          "old_text": null,
+          "new_text": "dnxhd_ssd_block(block, src_block)",
+          "old_line_content": "            if (avctx->mb_decision == FF_MB_DECISION_RD || !RC_VARIANCE) {",
+          "new_line_content": "                ssd += dnxhd_ssd_block(block, src_block);",
+          "content_same": false
+        },
+        {
+          "line": 808,
+          "old_api": null,
+          "new_api": "get_bucket",
+          "old_text": null,
+          "new_text": "get_bucket(v, 0)",
+          "old_line_content": "    for (i = 0; i < size; i++) {",
+          "new_line_content": "            buckets[j][get_bucket(v, 0)]++;",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": null,
+          "new_api": "dnxhd_setup_threads_slices",
+          "old_text": null,
+          "new_text": "dnxhd_setup_threads_slices(ctx)",
+          "old_line_content": "        return -1;",
+          "new_line_content": "    dnxhd_setup_threads_slices(ctx);",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": null,
+          "new_api": "AV_WB32",
+          "old_text": null,
+          "new_text": "AV_WB32(ctx->msip + i * 4, offset)",
+          "old_line_content": "",
+          "new_line_content": "        AV_WB32(ctx->msip + i * 4, offset);",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!(ctx->slice_size[i] & 3))",
+          "old_line_content": "    for (i = 0; i < ctx->m.mb_height; i++) {",
+          "new_line_content": "        assert(!(ctx->slice_size[i] & 3));",
+          "content_same": false
+        },
+        {
+          "line": 817,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(!buckets[j][0])",
+          "old_line_content": "        int offset = size;",
+          "new_line_content": "        assert(!buckets[j][0]);",
+          "content_same": false
+        },
+        {
+          "line": 946,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(640 + offset + 4 <= ctx->cid_table->coding_unit_size)",
+          "old_line_content": "",
+          "new_line_content": "    assert(640 + offset + 4 <= ctx->cid_table->coding_unit_size);",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": null,
+          "new_api": "init_put_bits",
+          "old_text": null,
+          "new_text": "init_put_bits(&ctx->m.pb, (uint8_t *)arg + 640 + ctx->slice_offs[jobnr], ctx->slice_size[jobnr])",
+          "old_line_content": "    DNXHDEncContext *ctx = avctx->priv_data;",
+          "new_line_content": "    init_put_bits(&ctx->m.pb, (uint8_t *)arg + 640 + ctx->slice_offs[jobnr], ctx->slice_size[jobnr]);",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": null,
+          "new_api": "get_bucket",
+          "old_text": null,
+          "new_text": "get_bucket(data[i].value, shift)",
+          "old_line_content": "    int shift = pass * BUCKET_BITS;",
+          "new_line_content": "        int v = get_bucket(data[i].value, shift);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": null,
+          "new_api": "put_bits",
+          "old_text": null,
+          "new_text": "put_bits(&ctx->m.pb, 12, qscale<<1)",
+          "old_line_content": "        int qscale = ctx->mb_qscale[mb];",
+          "new_line_content": "        put_bits(&ctx->m.pb, 12, qscale<<1);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "dnxhd_get_blocks",
+          "old_text": null,
+          "new_text": "dnxhd_get_blocks(ctx, mb_x, mb_y)",
+          "old_line_content": "",
+          "new_line_content": "        dnxhd_get_blocks(ctx, mb_x, mb_y);",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(lambda, last_lower)",
+          "old_line_content": "            break;",
+          "new_line_content": "            last_lower = FFMIN(lambda, last_lower);",
+          "content_same": false
+        },
+        {
+          "line": 835,
+          "old_api": null,
+          "new_api": "av_malloc",
+          "old_text": null,
+          "new_text": "av_malloc(sizeof(*tmp) * size)",
+          "old_line_content": "static void radix_sort(RCCMPEntry *data, int size)",
+          "new_line_content": "    RCCMPEntry *tmp = av_malloc(sizeof(*tmp) * size);",
+          "content_same": false
+        },
+        {
+          "line": 836,
+          "old_api": null,
+          "new_api": "radix_count",
+          "old_text": null,
+          "new_text": "radix_count(data, size, buckets)",
+          "old_line_content": "{",
+          "new_line_content": "    radix_count(data, size, buckets);",
+          "content_same": false
+        },
+        {
+          "line": 837,
+          "old_api": null,
+          "new_api": "radix_sort_pass",
+          "old_text": null,
+          "new_text": "radix_sort_pass(tmp, data, size, buckets[0], 0)",
+          "old_line_content": "    int buckets[RADIX_PASSES][NBUCKETS];",
+          "new_line_content": "    radix_sort_pass(tmp, data, size, buckets[0], 0);",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": null,
+          "new_api": "dnxhd_switch_matrix",
+          "old_text": null,
+          "new_text": "dnxhd_switch_matrix(ctx, i)",
+          "old_line_content": "        for (i = 0; i < 8; i++) {",
+          "new_line_content": "            int n = dnxhd_switch_matrix(ctx, i);",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "dct_quantize",
+          "old_text": null,
+          "new_text": "ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow)",
+          "old_line_content": "            DCTELEM *block = ctx->blocks[i];",
+          "new_line_content": "            last_index = ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow);",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(1, lambda)",
+          "old_line_content": "                lambda -= down_step;",
+          "new_line_content": "            lambda = FFMAX(1, lambda);",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": null,
+          "new_api": "av_free",
+          "old_text": null,
+          "new_text": "av_free(ctx->vlc_codes-max_level*2)",
+          "old_line_content": "    int max_level = 1<<(ctx->cid_table->bit_depth+2);",
+          "new_line_content": "    av_free(ctx->vlc_codes-max_level*2);",
+          "content_same": false
+        },
+        {
+          "line": 971,
+          "old_api": null,
+          "new_api": "av_free",
+          "old_text": null,
+          "new_text": "av_free(ctx->vlc_bits -max_level*2)",
+          "old_line_content": "    int i;",
+          "new_line_content": "    av_free(ctx->vlc_bits -max_level*2);",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": null,
+          "new_api": "FFMAX",
+          "old_text": null,
+          "new_text": "FFMAX(lambda, last_higher)",
+          "old_line_content": "            if (lambda == last_lower)",
+          "new_line_content": "            last_higher = FFMAX(lambda, last_higher);",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "put_bits_count",
+          "old_text": null,
+          "new_text": "put_bits_count(&ctx->m.pb)",
+          "old_line_content": "            //STOP_TIMER(\"encode_block\");",
+          "new_line_content": "    if (put_bits_count(&ctx->m.pb)&31)",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": null,
+          "new_api": "put_bits_count",
+          "old_text": null,
+          "new_text": "put_bits_count(&ctx->m.pb)",
+          "old_line_content": "        }",
+          "new_line_content": "        put_bits(&ctx->m.pb, 32-(put_bits_count(&ctx->m.pb)&31), 0);",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "flush_put_bits",
+          "old_text": null,
+          "new_text": "flush_put_bits(&ctx->m.pb)",
+          "old_line_content": "    }",
+          "new_line_content": "    flush_put_bits(&ctx->m.pb);",
+          "content_same": false
+        },
+        {
+          "line": 972,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&ctx->run_codes)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&ctx->run_codes);",
+          "content_same": false
+        },
+        {
+          "line": 977,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&ctx->mb_rc)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&ctx->mb_rc);",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": null,
+          "new_api": "dnxhd_find_qscale",
+          "old_text": null,
+          "new_text": "dnxhd_find_qscale(ctx)",
+          "old_line_content": "{",
+          "new_line_content": "    if ((ret = dnxhd_find_qscale(ctx)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN((int64_t)up_step*5, INT_MAX)",
+          "old_line_content": "                return -1;",
+          "new_line_content": "            up_step = FFMIN((int64_t)up_step*5, INT_MAX);",
+          "content_same": false
+        },
+        {
+          "line": 984,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&ctx->qmatrix_c16)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&ctx->qmatrix_c16);",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "execute2",
+          "old_text": null,
+          "new_text": "avctx->execute2(avctx, dnxhd_mb_var_thread, NULL, NULL, ctx->m.mb_height)",
+          "old_line_content": "    }",
+          "new_line_content": "            avctx->execute2(avctx, dnxhd_mb_var_thread, NULL, NULL, ctx->m.mb_height);",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": null,
+          "new_api": "radix_sort",
+          "old_text": null,
+          "new_text": "radix_sort(ctx->mb_cmp, ctx->m.mb_num)",
+          "old_line_content": "    if (!ret) {",
+          "new_line_content": "        radix_sort(ctx->mb_cmp, ctx->m.mb_num);",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "execute2",
+          "old_text": null,
+          "new_text": "ctx->m.avctx->execute2(ctx->m.avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height)",
+          "old_line_content": "        bits = 0;",
+          "new_line_content": "        ctx->m.avctx->execute2(ctx->m.avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height);",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"VC3/DNxHD\")",
+          "old_line_content": "    .close          = dnxhd_encode_end,",
+          "new_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"VC3/DNxHD\"),",
+          "content_same": false
+        },
+        {
+          "line": 623,
+          "old_api": null,
+          "new_api": "pix_sum",
+          "old_text": null,
+          "new_text": "ctx->m.dsp.pix_sum(pix, ctx->m.linesize)",
+          "old_line_content": "        uint8_t *pix = ctx->thread[0]->src[0] + ((mb_y<<4) * ctx->m.linesize);",
+          "new_line_content": "            int sum = ctx->m.dsp.pix_sum(pix, ctx->m.linesize);",
+          "content_same": false
+        },
+        {
+          "line": 624,
+          "old_api": null,
+          "new_api": "pix_norm1",
+          "old_text": null,
+          "new_text": "ctx->m.dsp.pix_norm1(pix, ctx->m.linesize)",
+          "old_line_content": "        for (mb_x = 0; mb_x < ctx->m.mb_width; ++mb_x, pix += 16) {",
+          "new_line_content": "            int varc = (ctx->m.dsp.pix_norm1(pix, ctx->m.linesize) - (((unsigned)(sum*sum))>>8)+128)>>8;",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(qscale, last_lower)",
+          "old_line_content": "                qscale = last_higher;",
+          "new_line_content": "            last_lower = FFMIN(qscale, last_lower);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 517,
+          "old_api": "LOCAL_ALIGNED_16",
+          "new_api": null,
+          "old_text": "LOCAL_ALIGNED_16(DCTELEM, block, [64])",
+          "new_text": null,
+          "old_line_content": "    LOCAL_ALIGNED_16(DCTELEM, block, [64]);",
+          "new_line_content": "    ctx->m.last_dc[0] =",
+          "content_same": false
+        },
+        {
+          "line": 778,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(qscale, last_higher)",
+          "new_text": null,
+          "old_line_content": "            last_higher = FFMAX(qscale, last_higher);",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"output buffer is too small to compress picture\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"output buffer is too small to compress picture\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": "dnxhd_get_blocks",
+          "new_api": null,
+          "old_text": "dnxhd_get_blocks(ctx, mb_x, mb_y)",
+          "new_text": null,
+          "old_line_content": "        dnxhd_get_blocks(ctx, mb_x, mb_y);",
+          "new_line_content": "            DCTELEM *src_block = ctx->blocks[i];",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": "dnxhd_load_picture",
+          "new_api": null,
+          "old_text": "dnxhd_load_picture(ctx, data)",
+          "new_text": null,
+          "old_line_content": "    dnxhd_load_picture(ctx, data);",
+          "new_line_content": "    for (i = 0; i < 3; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(block, src_block, 64*sizeof(*block))",
+          "new_text": null,
+          "old_line_content": "            memcpy(block, src_block, 64*sizeof(*block));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "dct_quantize",
+          "new_api": null,
+          "old_text": "ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow)",
+          "new_text": null,
+          "old_line_content": "            last_index = ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow);",
+          "new_line_content": "            diff = block[0] - ctx->m.last_dc[n];",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": "execute2",
+          "new_api": null,
+          "old_text": "avctx->execute2(avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height)",
+          "new_text": null,
+          "old_line_content": "        avctx->execute2(avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height);",
+          "new_line_content": "    lambda = ctx->lambda;",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "av_log2_16bit",
+          "new_api": null,
+          "old_text": "av_log2_16bit( 2*diff)",
+          "new_text": null,
+          "old_line_content": "            else          nbits = av_log2_16bit( 2*diff);",
+          "new_line_content": "            dc_bits += ctx->cid_table->dc_bits[nbits] + nbits;",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": "dnxhd_encode_rdo",
+          "new_api": null,
+          "old_text": "dnxhd_encode_rdo(avctx, ctx)",
+          "new_text": null,
+          "old_line_content": "        ret = dnxhd_encode_rdo(avctx, ctx);",
+          "new_line_content": "    if (ret < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(nbits < ctx->cid_table->bit_depth + 4)",
+          "new_text": null,
+          "old_line_content": "            assert(nbits < ctx->cid_table->bit_depth + 4);",
+          "new_line_content": "            ctx->m.last_dc[n] = block[0];",
+          "content_same": false
+        },
+        {
+          "line": 931,
+          "old_api": "dnxhd_encode_fast",
+          "new_api": null,
+          "old_text": "dnxhd_encode_fast(avctx, ctx)",
+          "new_text": null,
+          "old_line_content": "        ret = dnxhd_encode_fast(avctx, ctx);",
+          "new_line_content": "               \"picture could not fit ratecontrol constraints, increase qmax\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR,\n               \"picture could not fit ratecontrol constraints, increase qmax\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR,",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 807,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(buckets, 0, sizeof(buckets[0][0]) * RADIX_PASSES * NBUCKETS)",
+          "new_text": null,
+          "old_line_content": "    memset(buckets, 0, sizeof(buckets[0][0]) * RADIX_PASSES * NBUCKETS);",
+          "new_line_content": "        for (j = 0; j < RADIX_PASSES; j++) {",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": "dnxhd_unquantize_c",
+          "new_api": null,
+          "old_text": "dnxhd_unquantize_c(ctx, block, i, qscale, last_index)",
+          "new_text": null,
+          "old_line_content": "                dnxhd_unquantize_c(ctx, block, i, qscale, last_index);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": "idct",
+          "new_api": null,
+          "old_text": "ctx->m.dsp.idct(block)",
+          "new_text": null,
+          "old_line_content": "                ctx->m.dsp.idct(block);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": "dnxhd_ssd_block",
+          "new_api": null,
+          "old_text": "dnxhd_ssd_block(block, src_block)",
+          "new_text": null,
+          "old_line_content": "                ssd += dnxhd_ssd_block(block, src_block);",
+          "new_line_content": "        ctx->mb_rc[qscale][mb].ssd = ssd;",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": "dnxhd_setup_threads_slices",
+          "new_api": null,
+          "old_text": "dnxhd_setup_threads_slices(ctx)",
+          "new_text": null,
+          "old_line_content": "    dnxhd_setup_threads_slices(ctx);",
+          "new_line_content": "    for (i = 0; i < ctx->m.mb_height; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!v)",
+          "new_text": null,
+          "old_line_content": "        assert(!v);",
+          "new_line_content": "        int offset = size;",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": "AV_WB32",
+          "new_api": null,
+          "old_text": "AV_WB32(ctx->msip + i * 4, offset)",
+          "new_text": null,
+          "old_line_content": "        AV_WB32(ctx->msip + i * 4, offset);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 820,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(!buckets[j][0])",
+          "new_text": null,
+          "old_line_content": "        assert(!buckets[j][0]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(buf + 640 + offset, 0, ctx->cid_table->coding_unit_size - 4 - offset - 640)",
+          "new_text": null,
+          "old_line_content": "    memset(buf + 640 + offset, 0, ctx->cid_table->coding_unit_size - 4 - offset - 640);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "init_put_bits",
+          "new_api": null,
+          "old_text": "init_put_bits(&ctx->m.pb, (uint8_t *)arg + 640 + ctx->slice_offs[jobnr], ctx->slice_size[jobnr])",
+          "new_text": null,
+          "old_line_content": "    init_put_bits(&ctx->m.pb, (uint8_t *)arg + 640 + ctx->slice_offs[jobnr], ctx->slice_size[jobnr]);",
+          "new_line_content": "    ctx->m.last_dc[1] =",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": "AV_WB32",
+          "new_api": null,
+          "old_text": "AV_WB32(buf + ctx->cid_table->coding_unit_size - 4, 0x600DC0DE)",
+          "new_text": null,
+          "old_line_content": "    AV_WB32(buf + ctx->cid_table->coding_unit_size - 4, 0x600DC0DE); // EOF",
+          "new_line_content": "        first_field     = 0;",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": "get_bucket",
+          "new_api": null,
+          "old_text": "get_bucket(data[i].value, shift)",
+          "new_text": null,
+          "old_line_content": "        int v = get_bucket(data[i].value, shift);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": "put_bits",
+          "new_api": null,
+          "old_text": "put_bits(&ctx->m.pb, 12, qscale<<1)",
+          "new_text": null,
+          "old_line_content": "        put_bits(&ctx->m.pb, 12, qscale<<1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "dnxhd_get_blocks",
+          "new_api": null,
+          "old_text": "dnxhd_get_blocks(ctx, mb_x, mb_y)",
+          "new_text": null,
+          "old_line_content": "        dnxhd_get_blocks(ctx, mb_x, mb_y);",
+          "new_line_content": "            DCTELEM *block = ctx->blocks[i];",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(lambda, last_lower)",
+          "new_text": null,
+          "old_line_content": "            last_lower = FFMIN(lambda, last_lower);",
+          "new_line_content": "            else",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": "radix_count",
+          "new_api": null,
+          "old_text": "radix_count(data, size, buckets)",
+          "new_text": null,
+          "old_line_content": "    radix_count(data, size, buckets);",
+          "new_line_content": "    if (buckets[2][NBUCKETS - 1] || buckets[3][NBUCKETS - 1]) {",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": "dct_quantize",
+          "new_api": null,
+          "old_text": "ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow)",
+          "new_text": null,
+          "old_line_content": "            last_index = ctx->m.dct_quantize(&ctx->m, block, 4&(2*i), qscale, &overflow);",
+          "new_line_content": "            //STOP_TIMER(\"encode_block\");",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(1, lambda)",
+          "new_text": null,
+          "old_line_content": "            lambda = FFMAX(1, lambda);",
+          "new_line_content": "        } else {",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "dnxhd_encode_block",
+          "new_api": null,
+          "old_text": "dnxhd_encode_block(ctx, block, last_index, n)",
+          "new_text": null,
+          "old_line_content": "            dnxhd_encode_block(ctx, block, last_index, n);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 844,
+          "old_api": "radix_sort_pass",
+          "new_api": null,
+          "old_text": "radix_sort_pass(data, tmp, size, buckets[3], 3)",
+          "new_text": null,
+          "old_line_content": "        radix_sort_pass(data, tmp, size, buckets[3], 3);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": "av_free",
+          "new_api": null,
+          "old_text": "av_free(tmp)",
+          "new_text": null,
+          "old_line_content": "    av_free(tmp);",
+          "new_line_content": "static int dnxhd_encode_fast(AVCodecContext *avctx, DNXHDEncContext *ctx)",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": "FFMAX",
+          "new_api": null,
+          "old_text": "FFMAX(lambda, last_higher)",
+          "new_text": null,
+          "old_line_content": "            last_higher = FFMAX(lambda, last_higher);",
+          "new_line_content": "            else if ((int64_t)lambda + up_step > INT_MAX)",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": "put_bits_count",
+          "new_api": null,
+          "old_text": "put_bits_count(&ctx->m.pb)",
+          "new_text": null,
+          "old_line_content": "    if (put_bits_count(&ctx->m.pb)&31)",
+          "new_line_content": "    return 0;",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": "put_bits_count",
+          "new_api": null,
+          "old_text": "put_bits_count(&ctx->m.pb)",
+          "new_text": null,
+          "old_line_content": "        put_bits(&ctx->m.pb, 32-(put_bits_count(&ctx->m.pb)&31), 0);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": "flush_put_bits",
+          "new_api": null,
+          "old_text": "flush_put_bits(&ctx->m.pb)",
+          "new_text": null,
+          "old_line_content": "    flush_put_bits(&ctx->m.pb);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": "av_free",
+          "new_api": null,
+          "old_text": "av_free(ctx->vlc_bits -max_level*2)",
+          "new_text": null,
+          "old_line_content": "    av_free(ctx->vlc_bits -max_level*2);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": "dnxhd_find_qscale",
+          "new_api": null,
+          "old_text": "dnxhd_find_qscale(ctx)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = dnxhd_find_qscale(ctx)) < 0)",
+          "new_line_content": "        for (x = 0; x < ctx->m.mb_width; x++) {",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN((int64_t)up_step*5, INT_MAX)",
+          "new_text": null,
+          "old_line_content": "            up_step = FFMIN((int64_t)up_step*5, INT_MAX);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 981,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&ctx->mb_cmp)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&ctx->mb_cmp);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&ctx->qmatrix_l)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&ctx->qmatrix_l);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&ctx->qmatrix_c16)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&ctx->qmatrix_c16);",
+          "new_line_content": "    for (i = 1; i < avctx->thread_count; i++)",
+          "content_same": false
+        },
+        {
+          "line": 991,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&ctx->thread[i])",
+          "new_text": null,
+          "old_line_content": "        av_freep(&ctx->thread[i]);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": "execute2",
+          "new_api": null,
+          "old_text": "avctx->execute2(avctx, dnxhd_mb_var_thread, NULL, NULL, ctx->m.mb_height)",
+          "new_text": null,
+          "old_line_content": "            avctx->execute2(avctx, dnxhd_mb_var_thread, NULL, NULL, ctx->m.mb_height);",
+          "new_line_content": "            int mb = ctx->mb_cmp[x].mb;",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": "radix_sort",
+          "new_api": null,
+          "old_text": "radix_sort(ctx->mb_cmp, ctx->m.mb_num)",
+          "new_text": null,
+          "old_line_content": "        radix_sort(ctx->mb_cmp, ctx->m.mb_num);",
+          "new_line_content": "            max_bits -= ctx->mb_rc[ctx->qscale][mb].bits - ctx->mb_rc[ctx->qscale+1][mb].bits;",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "execute2",
+          "new_api": null,
+          "old_text": "ctx->m.avctx->execute2(ctx->m.avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height)",
+          "new_text": null,
+          "old_line_content": "        ctx->m.avctx->execute2(ctx->m.avctx, dnxhd_calc_bits_thread, NULL, NULL, ctx->m.mb_height);",
+          "new_line_content": "                bits += ctx->mb_rc[qscale][y*ctx->m.mb_width+x].bits;",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"VC3/DNxHD\")",
+          "new_text": null,
+          "old_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"VC3/DNxHD\"),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "pix_sum",
+          "new_api": null,
+          "old_text": "ctx->m.dsp.pix_sum(pix, ctx->m.linesize)",
+          "new_text": null,
+          "old_line_content": "            int sum = ctx->m.dsp.pix_sum(pix, ctx->m.linesize);",
+          "new_line_content": "            ctx->mb_cmp[mb].mb = mb;",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": "pix_norm1",
+          "new_api": null,
+          "old_text": "ctx->m.dsp.pix_norm1(pix, ctx->m.linesize)",
+          "new_text": null,
+          "old_line_content": "            int varc = (ctx->m.dsp.pix_norm1(pix, ctx->m.linesize) - (((unsigned)(sum*sum))>>8)+128)>>8;",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 767,
+          "old_api": "FFMIN",
+          "new_api": null,
+          "old_text": "FFMIN(qscale, last_lower)",
+          "new_text": null,
+          "old_line_content": "            last_lower = FFMIN(qscale, last_lower);",
+          "new_line_content": "            else",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 12,
+      "total_additions": 52,
+      "total_deletions": 52,
+      "total_api_changes": 116
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 5,
+        "api_related_lines": 116,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          505,
+          506,
+          507,
+          508,
+          509
+        ]
+      }
+    },
+    "api_calls_before": 150,
+    "api_calls_after": 150,
+    "diff_info": {
+      "added_lines": 2,
+      "removed_lines": 5,
+      "total_diff_lines": 19
+    }
+  }
+}

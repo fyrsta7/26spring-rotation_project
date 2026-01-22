@@ -1,0 +1,14 @@
+diff --git a/libavcodec/qsvenc.c b/libavcodec/qsvenc.c
+index 611449cbeb..17a0559f36 100644
+--- a/libavcodec/qsvenc.c
++++ b/libavcodec/qsvenc.c
+@@ -1028,6 +1028,9 @@ static void clear_unused_frames(QSVEncContext *q)
+     QSVFrame *cur = q->work_frames;
+     while (cur) {
+         if (cur->used && !cur->surface.Data.Locked) {
++            if (cur->frame->format == AV_PIX_FMT_QSV) {
++                av_frame_unref(cur->frame);
++            }
+             cur->used = 0;
+         }
+         cur = cur->next;

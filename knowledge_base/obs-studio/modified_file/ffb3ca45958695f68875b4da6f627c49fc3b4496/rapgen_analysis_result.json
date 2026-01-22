@@ -1,0 +1,549 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/ffb3ca45958695f68875b4da6f627c49fc3b4496",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/ffb3ca45958695f68875b4da6f627c49fc3b4496/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/ffb3ca45958695f68875b4da6f627c49fc3b4496/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/obs-studio/modified_file/ffb3ca45958695f68875b4da6f627c49fc3b4496/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 505,
+          "old_api": "video_output_unlock_frame",
+          "new_api": "convert_frame",
+          "old_text": "video_output_unlock_frame(video->video)",
+          "new_text": "convert_frame(&output_frame, input_frame, info)",
+          "old_line_content": "\t\tvideo_output_unlock_frame(video->video);",
+          "new_line_content": "\t\t\tconvert_frame(&output_frame, input_frame, info);",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": "gs_flush",
+          "new_api": "memset",
+          "old_text": "gs_flush()",
+          "new_text": "memset(&frame, 0, sizeof(struct video_data))",
+          "old_line_content": "\tgs_flush();",
+          "new_line_content": "\tmemset(&frame, 0, sizeof(struct video_data));",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "circlebuf_pop_front",
+          "new_api": "gs_flush",
+          "old_text": "circlebuf_pop_front(&video->vframe_info_buffer, &vframe_info,\n\t\t\t\tsizeof(vframe_info))",
+          "new_text": "gs_flush()",
+          "old_line_content": "\t\tcirclebuf_pop_front(&video->vframe_info_buffer, &vframe_info,",
+          "new_line_content": "\tgs_flush();",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": "tick_sources",
+          "new_api": "os_gettime_ns",
+          "old_text": "tick_sources(obs->video.video_time, last_time)",
+          "new_text": "os_gettime_ns()",
+          "old_line_content": "\t\tlast_time = tick_sources(obs->video.video_time, last_time);",
+          "new_line_content": "\tobs->video.video_time = os_gettime_ns();",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "render_displays",
+          "new_api": "os_set_thread_name",
+          "old_text": "render_displays()",
+          "new_text": "os_set_thread_name(\"libobs: graphics thread\")",
+          "old_line_content": "\t\trender_displays();",
+          "new_line_content": "\tos_set_thread_name(\"libobs: graphics thread\");",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "output_frame",
+          "new_api": "video_output_stopped",
+          "old_text": "output_frame(&obs->video.video_time, interval)",
+          "new_text": "video_output_stopped(obs->video.video)",
+          "old_line_content": "\t\toutput_frame(&obs->video.video_time, interval);",
+          "new_line_content": "\twhile (!video_output_stopped(obs->video.video)) {",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": "UNUSED_PARAMETER",
+          "new_api": "render_displays",
+          "old_text": "UNUSED_PARAMETER(param)",
+          "new_text": "render_displays()",
+          "old_line_content": "\tUNUSED_PARAMETER(param);",
+          "new_line_content": "\t\trender_displays();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 522,
+          "old_api": null,
+          "new_api": "os_sleepto_ns",
+          "old_text": null,
+          "new_text": "os_sleepto_ns(t)",
+          "old_line_content": "\t\t*p_time = cur_time + interval_ns * count;",
+          "new_line_content": "\tif (os_sleepto_ns(t)) {",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "os_gettime_ns",
+          "old_text": null,
+          "new_text": "os_gettime_ns()",
+          "old_line_content": "\tvframe_info.count = count;",
+          "new_line_content": "\t\tcount = (int)((os_gettime_ns() - cur_time) / interval_ns);",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": null,
+          "new_api": "circlebuf_push_back",
+          "old_text": null,
+          "new_text": "circlebuf_push_back(&video->vframe_info_buffer, &vframe_info,\n\t\t\tsizeof(vframe_info))",
+          "old_line_content": "{",
+          "new_line_content": "\tcirclebuf_push_back(&video->vframe_info_buffer, &vframe_info,",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": null,
+          "new_api": "gs_enter_context",
+          "old_text": null,
+          "new_text": "gs_enter_context(video->graphics)",
+          "old_line_content": "",
+          "new_line_content": "\tgs_enter_context(video->graphics);",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": null,
+          "new_api": "render_video",
+          "old_text": null,
+          "new_text": "render_video(video, cur_texture, prev_texture)",
+          "old_line_content": "\tif (frame_ready) {",
+          "new_line_content": "\trender_video(video, cur_texture, prev_texture);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "download_frame",
+          "old_text": null,
+          "new_text": "download_frame(video, prev_texture, &frame)",
+          "old_line_content": "\t\tstruct obs_vframe_info vframe_info;",
+          "new_line_content": "\tframe_ready = download_frame(video, prev_texture, &frame);",
+          "content_same": false
+        },
+        {
+          "line": 550,
+          "old_api": null,
+          "new_api": "gs_leave_context",
+          "old_text": null,
+          "new_text": "gs_leave_context()",
+          "old_line_content": "\t\t\t\tsizeof(vframe_info));",
+          "new_line_content": "\tgs_leave_context();",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "circlebuf_pop_front",
+          "old_text": null,
+          "new_text": "circlebuf_pop_front(&video->vframe_info_buffer, &vframe_info,\n\t\t\t\tsizeof(vframe_info))",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tcirclebuf_pop_front(&video->vframe_info_buffer, &vframe_info,",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": null,
+          "new_api": "output_video_data",
+          "old_text": null,
+          "new_text": "output_video_data(video, &frame, vframe_info.count)",
+          "old_line_content": "",
+          "new_line_content": "\t\toutput_video_data(video, &frame, vframe_info.count);",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": null,
+          "new_api": "video_sleep",
+          "old_text": null,
+          "new_text": "video_sleep(video, cur_time, interval)",
+          "old_line_content": "\tuint64_t last_time = 0;",
+          "new_line_content": "\tvideo_sleep(video, cur_time, interval);",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": null,
+          "new_api": "video_output_get_frame_time",
+          "old_text": null,
+          "new_text": "video_output_get_frame_time(obs->video.video)",
+          "old_line_content": "",
+          "new_line_content": "\tuint64_t interval = video_output_get_frame_time(obs->video.video);",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": null,
+          "new_api": "tick_sources",
+          "old_text": null,
+          "new_text": "tick_sources(obs->video.video_time, last_time)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tlast_time = tick_sources(obs->video.video_time, last_time);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "output_frame",
+          "old_text": null,
+          "new_text": "output_frame(&obs->video.video_time, interval)",
+          "old_line_content": "}",
+          "new_line_content": "\t\toutput_frame(&obs->video.video_time, interval);",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": null,
+          "new_api": "UNUSED_PARAMETER",
+          "old_text": null,
+          "new_text": "UNUSED_PARAMETER(param)",
+          "old_line_content": "",
+          "new_line_content": "\tUNUSED_PARAMETER(param);",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(out_ptr, in_ptr, input->linesize[0] * info->height)",
+          "old_line_content": "\t\tin_ptr += input->linesize[0];",
+          "new_line_content": "\t\tmemcpy(out_ptr, in_ptr, input->linesize[0] * info->height);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(out_ptr, in_ptr, info->width * 4)",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\tmemcpy(out_ptr, in_ptr, info->width * 4);",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": null,
+          "new_api": "video_output_get_info",
+          "old_text": null,
+          "new_text": "video_output_get_info(video->video)",
+          "old_line_content": "\t\tif (video->gpu_conversion) {",
+          "new_line_content": "\tinfo = video_output_get_info(video->video);",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "video_output_lock_frame",
+          "old_text": null,
+          "new_text": "video_output_lock_frame(video->video, &output_frame, count,\n\t\t\tinput_frame->timestamp)",
+          "old_line_content": "\t\t\t\t\tinput_frame, info);",
+          "new_line_content": "\tlocked = video_output_lock_frame(video->video, &output_frame, count,",
+          "content_same": false
+        },
+        {
+          "line": 501,
+          "old_api": null,
+          "new_api": "set_gpu_converted_data",
+          "old_text": null,
+          "new_text": "set_gpu_converted_data(video, &output_frame,\n\t\t\t\t\tinput_frame, info)",
+          "old_line_content": "\t\t} else {",
+          "new_line_content": "\t\t\tset_gpu_converted_data(video, &output_frame,",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "format_is_yuv",
+          "old_text": null,
+          "new_text": "format_is_yuv(info->format)",
+          "old_line_content": "",
+          "new_line_content": "\t\t} else if (format_is_yuv(info->format)) {",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": null,
+          "new_api": "copy_rgbx_frame",
+          "old_text": null,
+          "new_text": "copy_rgbx_frame(&output_frame, input_frame, info)",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\tcopy_rgbx_frame(&output_frame, input_frame, info);",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "video_output_unlock_frame",
+          "old_text": null,
+          "new_text": "video_output_unlock_frame(video->video)",
+          "old_line_content": "\t\tuint64_t *p_time, uint64_t interval_ns)",
+          "new_line_content": "\t\tvideo_output_unlock_frame(video->video);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 517,
+          "old_api": "os_sleepto_ns",
+          "new_api": null,
+          "old_text": "os_sleepto_ns(t)",
+          "new_text": null,
+          "old_line_content": "\tif (os_sleepto_ns(t)) {",
+          "new_line_content": "\tstruct obs_vframe_info vframe_info;",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "os_gettime_ns",
+          "new_api": null,
+          "old_text": "os_gettime_ns()",
+          "new_text": null,
+          "old_line_content": "\t\tcount = (int)((os_gettime_ns() - cur_time) / interval_ns);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": "circlebuf_push_back",
+          "new_api": null,
+          "old_text": "circlebuf_push_back(&video->vframe_info_buffer, &vframe_info,\n\t\t\tsizeof(vframe_info))",
+          "new_text": null,
+          "old_line_content": "\tcirclebuf_push_back(&video->vframe_info_buffer, &vframe_info,",
+          "new_line_content": "\t\t*p_time = cur_time + interval_ns * count;",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(&frame, 0, sizeof(struct video_data))",
+          "new_text": null,
+          "old_line_content": "\tmemset(&frame, 0, sizeof(struct video_data));",
+          "new_line_content": "\tint cur_texture  = video->cur_texture;",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": "gs_enter_context",
+          "new_api": null,
+          "old_text": "gs_enter_context(video->graphics)",
+          "new_text": null,
+          "old_line_content": "\tgs_enter_context(video->graphics);",
+          "new_line_content": "\tstruct video_data frame;",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "render_video",
+          "new_api": null,
+          "old_text": "render_video(video, cur_texture, prev_texture)",
+          "new_text": null,
+          "old_line_content": "\trender_video(video, cur_texture, prev_texture);",
+          "new_line_content": "\tbool frame_ready;",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "download_frame",
+          "new_api": null,
+          "old_text": "download_frame(video, prev_texture, &frame)",
+          "new_text": null,
+          "old_line_content": "\tframe_ready = download_frame(video, prev_texture, &frame);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "gs_leave_context",
+          "new_api": null,
+          "old_text": "gs_leave_context()",
+          "new_text": null,
+          "old_line_content": "\tgs_leave_context();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": "output_video_data",
+          "new_api": null,
+          "old_text": "output_video_data(video, &frame, vframe_info.count)",
+          "new_text": null,
+          "old_line_content": "\t\toutput_video_data(video, &frame, vframe_info.count);",
+          "new_line_content": "\t\tstruct obs_vframe_info vframe_info;",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": "video_sleep",
+          "new_api": null,
+          "old_text": "video_sleep(video, cur_time, interval)",
+          "new_text": null,
+          "old_line_content": "\tvideo_sleep(video, cur_time, interval);",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": "video_output_get_frame_time",
+          "new_api": null,
+          "old_text": "video_output_get_frame_time(obs->video.video)",
+          "new_text": null,
+          "old_line_content": "\tuint64_t interval = video_output_get_frame_time(obs->video.video);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "os_gettime_ns",
+          "new_api": null,
+          "old_text": "os_gettime_ns()",
+          "new_text": null,
+          "old_line_content": "\tobs->video.video_time = os_gettime_ns();",
+          "new_line_content": "void *obs_video_thread(void *param)",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": "os_set_thread_name",
+          "new_api": null,
+          "old_text": "os_set_thread_name(\"libobs: graphics thread\")",
+          "new_text": null,
+          "old_line_content": "\tos_set_thread_name(\"libobs: graphics thread\");",
+          "new_line_content": "\tuint64_t last_time = 0;",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": "video_output_stopped",
+          "new_api": null,
+          "old_text": "video_output_stopped(obs->video.video)",
+          "new_text": null,
+          "old_line_content": "\twhile (!video_output_stopped(obs->video.video)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(out_ptr, in_ptr, info->width * 4)",
+          "new_text": null,
+          "old_line_content": "\t\tmemcpy(out_ptr, in_ptr, info->width * 4);",
+          "new_line_content": "\tif (input->linesize[0] == output->linesize[0]) {",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": "video_output_get_info",
+          "new_api": null,
+          "old_text": "video_output_get_info(video->video)",
+          "new_text": null,
+          "old_line_content": "\tinfo = video_output_get_info(video->video);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "video_output_lock_frame",
+          "new_api": null,
+          "old_text": "video_output_lock_frame(video->video, &output_frame, count,\n\t\t\tinput_frame->timestamp)",
+          "new_text": null,
+          "old_line_content": "\tlocked = video_output_lock_frame(video->video, &output_frame, count,",
+          "new_line_content": "\tstruct video_frame output_frame;",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": "set_gpu_converted_data",
+          "new_api": null,
+          "old_text": "set_gpu_converted_data(video, &output_frame,\n\t\t\t\t\tinput_frame, info)",
+          "new_text": null,
+          "old_line_content": "\t\t\tset_gpu_converted_data(video, &output_frame,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 499,
+          "old_api": "format_is_yuv",
+          "new_api": null,
+          "old_text": "format_is_yuv(info->format)",
+          "new_text": null,
+          "old_line_content": "\t\t} else if (format_is_yuv(info->format)) {",
+          "new_line_content": "\tif (locked) {",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": "convert_frame",
+          "new_api": null,
+          "old_text": "convert_frame(&output_frame, input_frame, info)",
+          "new_text": null,
+          "old_line_content": "\t\t\tconvert_frame(&output_frame, input_frame, info);",
+          "new_line_content": "\t\tif (video->gpu_conversion) {",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "copy_rgbx_frame",
+          "new_api": null,
+          "old_text": "copy_rgbx_frame(&output_frame, input_frame, info)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcopy_rgbx_frame(&output_frame, input_frame, info);",
+          "new_line_content": "\t\t\t\t\tinput_frame, info);",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 22,
+      "total_deletions": 21,
+      "total_api_changes": 50
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 9,
+        "api_related_lines": 50,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          480,
+          482,
+          483,
+          484,
+          476,
+          479
+        ]
+      }
+    },
+    "api_calls_before": 124,
+    "api_calls_after": 125,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 4,
+      "total_diff_lines": 25
+    }
+  }
+}

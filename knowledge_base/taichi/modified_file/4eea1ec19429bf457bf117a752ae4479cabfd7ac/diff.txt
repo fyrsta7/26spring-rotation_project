@@ -1,0 +1,18 @@
+diff --git a/taichi/codegen/llvm/codegen_llvm.cpp b/taichi/codegen/llvm/codegen_llvm.cpp
+index a3133e4c4..468a501df 100644
+--- a/taichi/codegen/llvm/codegen_llvm.cpp
++++ b/taichi/codegen/llvm/codegen_llvm.cpp
+@@ -2542,6 +2542,13 @@ void TaskCodeGenLLVM::initialize_context() {
+   TI_ASSERT(tlctx != nullptr);
+   llvm_context = tlctx->get_this_thread_context();
+   builder = std::make_unique<llvm::IRBuilder<>>(*llvm_context);
++  if (compile_config.fast_math) {
++    llvm::FastMathFlags fast_flags;
++    fast_flags.setNoInfs();
++    fast_flags.setNoSignedZeros();
++    fast_flags.setAllowReassoc();
++    builder->setFastMathFlags(fast_flags);
++  }
+ }
+ 
+ llvm::Value *TaskCodeGenLLVM::get_arg(int i) {

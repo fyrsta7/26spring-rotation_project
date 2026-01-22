@@ -1,0 +1,21 @@
+diff --git a/modules/gui/qt/maininterface/compositor_x11_uisurface.cpp b/modules/gui/qt/maininterface/compositor_x11_uisurface.cpp
+index 1f45d4aca9..fbf4f2febd 100644
+--- a/modules/gui/qt/maininterface/compositor_x11_uisurface.cpp
++++ b/modules/gui/qt/maininterface/compositor_x11_uisurface.cpp
+@@ -287,10 +287,12 @@ void CompositorX11UISurface::exposeEvent(QExposeEvent *)
+ {
+     if (isExposed())
+     {
+-        m_context->makeCurrent(this);
+-        m_uiRenderControl->initialize(m_context);
+-        m_context->doneCurrent();
+-
++        if (!m_uiWindow->openglContext())
++        {
++            m_context->makeCurrent(this);
++            m_uiRenderControl->initialize(m_context);
++            m_context->doneCurrent();
++        }
+         requestUpdate();
+     }
+ }

@@ -1,0 +1,203 @@
+std::pair<bool, string> get_kernel_path_info(const string kdir)
+{
+  if (is_dir(kdir + "/build") && is_dir(kdir + "/source"))
+    return std::make_pair (true, "source");
+
+  const char* suffix_from_env = ::getenv("BCC_KERNEL_MODULES_SUFFIX");
+  if (suffix_from_env)
+    return std::make_pair(false, string(suffix_from_env));
+
+  return std::make_pair(false, "build");
+}
+
+}
+
+int ClangLoader::parse(unique_ptr<llvm::Module> *mod, TableStorage &ts, const string &file,
+                       bool in_memory, const char *cflags[], int ncflags, const std::string &id) {
+  using namespace clang;
+
+  string main_path = "/virtual/main.c";
+  unique_ptr<llvm::MemoryBuffer> main_buf;
+  struct utsname un;
+  uname(&un);
+  string kdir = string(KERNEL_MODULES_DIR) + "/" + un.release;
+  auto kernel_path_info = get_kernel_path_info (kdir);
+
+  // clang needs to run inside the kernel dir
+  DirStack dstack(kdir + "/" + kernel_path_info.second);
+  if (!dstack.ok())
+    return -1;
+
+  string abs_file;
+  if (in_memory) {
+    abs_file = main_path;
+    main_buf = llvm::MemoryBuffer::getMemBuffer(file);
+  } else {
+    if (file.substr(0, 1) == "/")
+      abs_file = file;
+    else
+      abs_file = string(dstack.cwd()) + "/" + file;
+  }
+
+  // -fno-color-diagnostics: this is a workaround for a bug in llvm terminalHasColors() as of
+  // 22 Jul 2016. Also see bcc #615.
+  vector<const char *> flags_cstr({"-O0", "-emit-llvm", "-I", dstack.cwd(),
+                                   "-Wno-deprecated-declarations",
+                                   "-Wno-gnu-variable-sized-type-not-at-end",
+                                   "-Wno-pragma-once-outside-header",
+                                   "-Wno-address-of-packed-member",
+                                   "-Wno-unknown-warning-option",
+                                   "-fno-color-diagnostics",
+                                   "-fno-unwind-tables",
+                                   "-fno-asynchronous-unwind-tables",
+                                   "-x", "c", "-c", abs_file.c_str()});
+
+  KBuildHelper kbuild_helper(kdir, kernel_path_info.first);
+  vector<string> kflags;
+  if (kbuild_helper.get_flags(un.machine, &kflags))
+    return -1;
+  kflags.push_back("-include");
+  kflags.push_back("/virtual/include/bcc/bpf.h");
+  kflags.push_back("-include");
+  kflags.push_back("/virtual/include/bcc/helpers.h");
+  kflags.push_back("-isystem");
+  kflags.push_back("/virtual/include");
+  for (auto it = kflags.begin(); it != kflags.end(); ++it)
+    flags_cstr.push_back(it->c_str());
+  if (cflags) {
+    for (auto i = 0; i < ncflags; ++i)
+      flags_cstr.push_back(cflags[i]);
+  }
+#ifdef CUR_CPU_IDENTIFIER
+  string cur_cpu_flag = string("-DCUR_CPU_IDENTIFIER=") + CUR_CPU_IDENTIFIER;
+  flags_cstr.push_back(cur_cpu_flag.c_str());
+#endif
+
+  // set up the error reporting class
+  IntrusiveRefCntPtr<DiagnosticOptions> diag_opts(new DiagnosticOptions());
+  auto diag_client = new TextDiagnosticPrinter(llvm::errs(), &*diag_opts);
+
+  IntrusiveRefCntPtr<DiagnosticIDs> DiagID(new DiagnosticIDs());
+  DiagnosticsEngine diags(DiagID, &*diag_opts, diag_client);
+
+  // set up the command line argument wrapper
+#if defined(__powerpc64__)
+#if defined(_CALL_ELF) && _CALL_ELF == 2
+  driver::Driver drv("", "powerpc64le-unknown-linux-gnu", diags);
+#else
+  driver::Driver drv("", "powerpc64-unknown-linux-gnu", diags);
+#endif
+#elif defined(__s390x__)
+  driver::Driver drv("", "s390x-ibm-linux-gnu", diags);
+#elif defined(__aarch64__)
+  driver::Driver drv("", "aarch64-unknown-linux-gnu", diags);
+#else
+  driver::Driver drv("", "x86_64-unknown-linux-gnu", diags);
+#endif
+  drv.setTitle("bcc-clang-driver");
+  drv.setCheckInputsExist(false);
+
+  unique_ptr<driver::Compilation> compilation(drv.BuildCompilation(flags_cstr));
+  if (!compilation)
+    return -1;
+
+  // expect exactly 1 job, otherwise error
+  const driver::JobList &jobs = compilation->getJobs();
+  if (jobs.size() != 1 || !isa<driver::Command>(*jobs.begin())) {
+    SmallString<256> msg;
+    llvm::raw_svector_ostream os(msg);
+    jobs.Print(os, "; ", true);
+    diags.Report(diag::err_fe_expected_compiler_job) << os.str();
+    return -1;
+  }
+
+  const driver::Command &cmd = cast<driver::Command>(*jobs.begin());
+  if (llvm::StringRef(cmd.getCreator().getName()) != "clang") {
+    diags.Report(diag::err_fe_expected_clang_command);
+    return -1;
+  }
+
+  // Initialize a compiler invocation object from the clang (-cc1) arguments.
+  const driver::ArgStringList &ccargs = cmd.getArguments();
+
+  if (flags_ & DEBUG_PREPROCESSOR) {
+    llvm::errs() << "clang";
+    for (auto arg : ccargs)
+      llvm::errs() << " " << arg;
+    llvm::errs() << "\n";
+  }
+
+  // pre-compilation pass for generating tracepoint structures
+  CompilerInstance compiler0;
+  CompilerInvocation &invocation0 = compiler0.getInvocation();
+  if (!CompilerInvocation::CreateFromArgs(
+          invocation0, const_cast<const char **>(ccargs.data()),
+          const_cast<const char **>(ccargs.data()) + ccargs.size(), diags))
+    return -1;
+
+  invocation0.getPreprocessorOpts().RetainRemappedFileBuffers = true;
+  for (const auto &f : remapped_files_)
+    invocation0.getPreprocessorOpts().addRemappedFile(f.first, &*f.second);
+
+  if (in_memory) {
+    invocation0.getPreprocessorOpts().addRemappedFile(main_path, &*main_buf);
+    invocation0.getFrontendOpts().Inputs.clear();
+    invocation0.getFrontendOpts().Inputs.push_back(FrontendInputFile(
+        main_path, FrontendOptions::getInputKindForExtension("c")));
+  }
+  invocation0.getFrontendOpts().DisableFree = false;
+
+  compiler0.createDiagnostics(new IgnoringDiagConsumer());
+
+  // capture the rewritten c file
+  string out_str;
+  llvm::raw_string_ostream os(out_str);
+  TracepointFrontendAction tpact(os);
+  compiler0.ExecuteAction(tpact); // ignore errors, they will be reported later
+  unique_ptr<llvm::MemoryBuffer> out_buf = llvm::MemoryBuffer::getMemBuffer(out_str);
+
+  // first pass
+  CompilerInstance compiler1;
+  CompilerInvocation &invocation1 = compiler1.getInvocation();
+  if (!CompilerInvocation::CreateFromArgs(
+          invocation1, const_cast<const char **>(ccargs.data()),
+          const_cast<const char **>(ccargs.data()) + ccargs.size(), diags))
+    return -1;
+
+  // This option instructs clang whether or not to free the file buffers that we
+  // give to it. Since the embedded header files should be copied fewer times
+  // and reused if possible, set this flag to true.
+  invocation1.getPreprocessorOpts().RetainRemappedFileBuffers = true;
+  for (const auto &f : remapped_files_)
+    invocation1.getPreprocessorOpts().addRemappedFile(f.first, &*f.second);
+  invocation1.getPreprocessorOpts().addRemappedFile(main_path, &*out_buf);
+  invocation1.getFrontendOpts().Inputs.clear();
+  invocation1.getFrontendOpts().Inputs.push_back(FrontendInputFile(
+      main_path, FrontendOptions::getInputKindForExtension("c")));
+  invocation1.getFrontendOpts().DisableFree = false;
+
+  compiler1.createDiagnostics();
+
+  // capture the rewritten c file
+  string out_str1;
+  llvm::raw_string_ostream os1(out_str1);
+  BFrontendAction bact(os1, flags_, ts, id);
+  if (!compiler1.ExecuteAction(bact))
+    return -1;
+  unique_ptr<llvm::MemoryBuffer> out_buf1 = llvm::MemoryBuffer::getMemBuffer(out_str1);
+
+  // second pass, clear input and take rewrite buffer
+  CompilerInstance compiler2;
+  CompilerInvocation &invocation2 = compiler2.getInvocation();
+  if (!CompilerInvocation::CreateFromArgs(
+          invocation2, const_cast<const char **>(ccargs.data()),
+          const_cast<const char **>(ccargs.data()) + ccargs.size(), diags))
+    return -1;
+  invocation2.getPreprocessorOpts().RetainRemappedFileBuffers = true;
+  for (const auto &f : remapped_files_)
+    invocation2.getPreprocessorOpts().addRemappedFile(f.first, &*f.second);
+  invocation2.getPreprocessorOpts().addRemappedFile(main_path, &*out_buf1);
+  invocation2.getFrontendOpts().Inputs.clear();
+  invocation2.getFrontendOpts().Inputs.push_back(FrontendInputFile(
+      main_path, FrontendOptions::getInputKindForExtension("c")));
+  invocation2.getFrontendOpts().DisableFree = false;

@@ -1,0 +1,30 @@
+diff --git a/src/backend/storage/ipc/standby.c b/src/backend/storage/ipc/standby.c
+index b17326bc20..1496855925 100644
+--- a/src/backend/storage/ipc/standby.c
++++ b/src/backend/storage/ipc/standby.c
+@@ -986,9 +986,11 @@ StandbyAcquireAccessExclusiveLock(TransactionId xid, Oid dbOid, Oid relOid)
+ static void
+ StandbyReleaseLockList(List *locks)
+ {
+-	while (locks)
++	ListCell   *lc;
++
++	foreach(lc, locks)
+ 	{
+-		xl_standby_lock *lock = (xl_standby_lock *) linitial(locks);
++		xl_standby_lock *lock = (xl_standby_lock *) lfirst(lc);
+ 		LOCKTAG		locktag;
+ 
+ 		elog(trace_recovery(DEBUG4),
+@@ -1002,9 +1004,9 @@ StandbyReleaseLockList(List *locks)
+ 				 lock->xid, lock->dbOid, lock->relOid);
+ 			Assert(false);
+ 		}
+-		pfree(lock);
+-		locks = list_delete_first(locks);
+ 	}
++
++	list_free_deep(locks);
+ }
+ 
+ static void

@@ -1,0 +1,23 @@
+diff --git a/tensorflow/compiler/xla/service/memory_space_assignment.cc b/tensorflow/compiler/xla/service/memory_space_assignment.cc
+index 7ea6ca602a5..e3c6c84dd13 100644
+--- a/tensorflow/compiler/xla/service/memory_space_assignment.cc
++++ b/tensorflow/compiler/xla/service/memory_space_assignment.cc
+@@ -2259,10 +2259,16 @@ void AlternateMemoryBestFitHeap::AllocateCrossProgramPrefetchBuffer(
+       options_.prefetch_interval_picker->GetLogicalIntervalElapsed(
+           0, instruction_schedule.size());
+   float buffer_occupied_time =
+-      options_.prefetch_interval_picker->GetLogicalIntervalElapsed(
+-          0, last_use_time) +
+       options_.prefetch_interval_picker->GetLogicalIntervalElapsed(
+           end_of_program_prefetch_start_time, end_of_program_prefetch_end_time);
++  if (options_.cost_analysis) {
++    buffer_occupied_time = std::max(buffer_occupied_time,
++                                    options_.cost_analysis->GetAsyncCopyElapsed(
++                                        buffer->defining_position().shape()));
++  }
++  buffer_occupied_time +=
++      options_.prefetch_interval_picker->GetLogicalIntervalElapsed(
++          0, last_use_time);
+   float buffer_occupied_ratio = buffer_occupied_time / total_execution_time;
+   VLOG(2) << "Total execution time = " << total_execution_time
+           << ", buffer occupied time = " << buffer_occupied_time

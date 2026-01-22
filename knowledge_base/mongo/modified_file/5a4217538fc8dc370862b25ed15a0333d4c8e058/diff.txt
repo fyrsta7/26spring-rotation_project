@@ -1,0 +1,18 @@
+diff --git a/db/dur_commitjob.cpp b/db/dur_commitjob.cpp
+index 1f9f729c10b..2d6950b1849 100644
+--- a/db/dur_commitjob.cpp
++++ b/db/dur_commitjob.cpp
+@@ -95,8 +95,11 @@ namespace mongo {
+                 _writes.insert(wi);
+ 
+                 DEV { // ensure there are no overlaps
+-                    for (iterator it(_writes.begin()), end(boost::prior(_writes.end())); it != end; ++it) {
+-                        assert(!it->overlaps(*boost::next(it)));
++                    // this can be very slow - n^2 - so make it RARELY
++                    RARELY { 
++                        for (iterator it(_writes.begin()), end(boost::prior(_writes.end())); it != end; ++it) {
++                            assert(!it->overlaps(*boost::next(it)));
++                        }
+                     }
+                 }
+             }

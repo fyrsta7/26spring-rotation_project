@@ -1,0 +1,14 @@
+diff --git a/sql/examples/ha_tina.cc b/sql/examples/ha_tina.cc
+index bbcdfb0dafb..8a9aa91c680 100644
+--- a/sql/examples/ha_tina.cc
++++ b/sql/examples/ha_tina.cc
+@@ -609,7 +609,8 @@ int ha_tina::rnd_init(bool scan)
+   records= 0;
+   chain_ptr= chain;
+ #ifdef HAVE_MADVISE
+-  (void)madvise(share->mapped_file,share->file_stat.st_size,MADV_SEQUENTIAL);
++  if (scan)
++    (void)madvise(share->mapped_file,share->file_stat.st_size,MADV_SEQUENTIAL);
+ #endif
+ 
+   DBUG_RETURN(0);

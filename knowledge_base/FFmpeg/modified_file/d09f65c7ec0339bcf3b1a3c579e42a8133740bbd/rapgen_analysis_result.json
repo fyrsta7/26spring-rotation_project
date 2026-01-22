@@ -1,0 +1,600 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/d09f65c7ec0339bcf3b1a3c579e42a8133740bbd",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/d09f65c7ec0339bcf3b1a3c579e42a8133740bbd/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/d09f65c7ec0339bcf3b1a3c579e42a8133740bbd/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/d09f65c7ec0339bcf3b1a3c579e42a8133740bbd/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 736,
+          "old_api": "init_predictor_decoder",
+          "new_api": "init_filter",
+          "old_text": "init_predictor_decoder(ctx)",
+          "new_text": "init_filter(ctx, ctx->filters[i], ctx->filterbuf[i], ape_filter_orders[ctx->fset][i])",
+          "old_line_content": "    init_predictor_decoder(ctx);",
+          "new_line_content": "        init_filter(ctx, ctx->filters[i], ctx->filterbuf[i], ape_filter_orders[ctx->fset][i]);",
+          "content_same": false
+        },
+        {
+          "line": 754,
+          "old_api": "av_log",
+          "new_api": "ape_apply_filters",
+          "old_text": "av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence mono\\n\")",
+          "new_text": "ape_apply_filters(ctx, decoded0, NULL, count)",
+          "old_line_content": "        av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence mono\\n\");",
+          "new_line_content": "    ape_apply_filters(ctx, decoded0, NULL, count);",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": "av_log",
+          "new_api": "ape_apply_filters",
+          "old_text": "av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence stereo\\n\")",
+          "new_text": "ape_apply_filters(ctx, decoded0, decoded1, count)",
+          "old_line_content": "        av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence stereo\\n\");",
+          "new_line_content": "    ape_apply_filters(ctx, decoded0, decoded1, count);",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": "av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels)",
+          "new_api": "av_realloc",
+          "old_text": "av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels)",
+          "new_text": "av_realloc(s->data, (buf_size + 3) & ~3)",
+          "old_line_content": "        av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels);",
+          "new_line_content": "        s->data = av_realloc(s->data, (buf_size + 3) & ~3);",
+          "content_same": false
+        },
+        {
+          "line": 826,
+          "old_api": "av_realloc",
+          "new_api": "bytestream_get_be32",
+          "old_text": "av_realloc(s->data, (buf_size + 3) & ~3)",
+          "new_text": "bytestream_get_be32(&s->ptr)",
+          "old_line_content": "        s->data = av_realloc(s->data, (buf_size + 3) & ~3);",
+          "new_line_content": "        nblocks = s->samples = bytestream_get_be32(&s->ptr);",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": "bswap_buf",
+          "new_api": "bytestream_get_be32",
+          "old_text": "s->dsp.bswap_buf((uint32_t*)s->data, (const uint32_t*)buf, buf_size >> 2)",
+          "new_text": "bytestream_get_be32(&s->ptr)",
+          "old_line_content": "        s->dsp.bswap_buf((uint32_t*)s->data, (const uint32_t*)buf, buf_size >> 2);",
+          "new_line_content": "        n =  bytestream_get_be32(&s->ptr);",
+          "content_same": false
+        },
+        {
+          "line": 860,
+          "old_api": "FFMIN",
+          "new_api": "ape_unpack_mono",
+          "old_text": "FFMIN(BLOCKS_PER_LOOP, nblocks)",
+          "new_text": "ape_unpack_mono(s, blockstodecode)",
+          "old_line_content": "    blockstodecode = FFMIN(BLOCKS_PER_LOOP, nblocks);",
+          "new_line_content": "        ape_unpack_mono(s, blockstodecode);",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": "ape_unpack_stereo",
+          "new_api": "av_log",
+          "old_text": "ape_unpack_stereo(s, blockstodecode)",
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"Error decoding frame\\n\")",
+          "old_line_content": "        ape_unpack_stereo(s, blockstodecode);",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"Error decoding frame\\n\");",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 776,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence stereo\\n\")",
+          "old_line_content": "    int32_t *decoded0 = ctx->decoded0;",
+          "new_line_content": "        av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence stereo\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": null,
+          "new_api": "entropy_decode",
+          "old_text": null,
+          "new_text": "entropy_decode(ctx, count, 1)",
+          "old_line_content": "        /* We are pure silence, so we're done. */",
+          "new_line_content": "    entropy_decode(ctx, count, 1);",
+          "content_same": false
+        },
+        {
+          "line": 784,
+          "old_api": null,
+          "new_api": "predictor_decode_stereo",
+          "old_text": null,
+          "new_text": "predictor_decode_stereo(ctx, count)",
+          "old_line_content": "",
+          "new_line_content": "    predictor_decode_stereo(ctx, count);",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": null,
+          "new_api": "FFABS",
+          "old_text": null,
+          "new_text": "FFABS(res)",
+          "old_line_content": "            absres = (res < 0 ? -res : res);",
+          "new_line_content": "            absres = FFABS(res);",
+          "content_same": false
+        },
+        {
+          "line": 816,
+          "old_api": null,
+          "new_api": "av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels)",
+          "old_text": null,
+          "new_text": "av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels)",
+          "old_line_content": "        return 0;",
+          "new_line_content": "        av_log (avctx, AV_LOG_ERROR, \"Packet size is too big to be handled in lavc! (max is %d where you have %d)\\n\", *data_size, s->samples * 2 * avctx->channels);",
+          "content_same": false
+        },
+        {
+          "line": 822,
+          "old_api": null,
+          "new_api": "bswap_buf",
+          "old_text": null,
+          "new_text": "s->dsp.bswap_buf((uint32_t*)s->data, (const uint32_t*)buf, buf_size >> 2)",
+          "old_line_content": "        return -1;",
+          "new_line_content": "        s->dsp.bswap_buf((uint32_t*)s->data, (const uint32_t*)buf, buf_size >> 2);",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(f->historybuffer, f->delay - (order * 2),\n                    (order * 2) * sizeof(int16_t))",
+          "old_line_content": "",
+          "new_line_content": "            memmove(f->historybuffer, f->delay - (order * 2),",
+          "content_same": false
+        },
+        {
+          "line": 829,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"Incorrect offset passed\\n\")",
+          "old_line_content": "        s->data_end = s->data + buf_size;",
+          "new_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Incorrect offset passed\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": null,
+          "new_api": "do_apply_filter",
+          "old_text": null,
+          "new_text": "do_apply_filter(ctx, ctx->fileversion, &f[0], data0, count, order, fracbits)",
+          "old_line_content": "",
+          "new_line_content": "    do_apply_filter(ctx, ctx->fileversion, &f[0], data0, count, order, fracbits);",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "do_apply_filter",
+          "old_text": null,
+          "new_text": "do_apply_filter(ctx, ctx->fileversion, &f[1], data1, count, order, fracbits)",
+          "old_line_content": "                         int32_t * data0, int32_t * data1,",
+          "new_line_content": "        do_apply_filter(ctx, ctx->fileversion, &f[1], data1, count, order, fracbits);",
+          "content_same": false
+        },
+        {
+          "line": 842,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->decoded0,  0, sizeof(s->decoded0))",
+          "old_line_content": "        if (s->samples <= 0) {",
+          "new_line_content": "        memset(s->decoded0,  0, sizeof(s->decoded0));",
+          "content_same": false
+        },
+        {
+          "line": 843,
+          "old_api": null,
+          "new_api": "memset",
+          "old_text": null,
+          "new_text": "memset(s->decoded1,  0, sizeof(s->decoded1))",
+          "old_line_content": "            *data_size = 0;",
+          "new_line_content": "        memset(s->decoded1,  0, sizeof(s->decoded1));",
+          "content_same": false
+        },
+        {
+          "line": 846,
+          "old_api": null,
+          "new_api": "init_frame_decoder",
+          "old_text": null,
+          "new_text": "init_frame_decoder(s)",
+          "old_line_content": "",
+          "new_line_content": "        init_frame_decoder(s);",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": null,
+          "new_api": "apply_filter",
+          "old_text": null,
+          "new_text": "apply_filter(ctx, ctx->filters[i], decoded0, decoded1, count, ape_filter_orders[ctx->fset][i], ape_filter_fracbits[ctx->fset][i])",
+          "old_line_content": "    int i;",
+          "new_line_content": "        apply_filter(ctx, ctx->filters[i], decoded0, decoded1, count, ape_filter_orders[ctx->fset][i], ape_filter_fracbits[ctx->fset][i]);",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": null,
+          "new_api": "FFMIN",
+          "old_text": null,
+          "new_text": "FFMIN(BLOCKS_PER_LOOP, nblocks)",
+          "old_line_content": "        *data_size = 0;",
+          "new_line_content": "    blockstodecode = FFMIN(BLOCKS_PER_LOOP, nblocks);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "init_entropy_decoder",
+          "old_text": null,
+          "new_text": "init_entropy_decoder(ctx)",
+          "old_line_content": "}",
+          "new_line_content": "    init_entropy_decoder(ctx);",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": null,
+          "new_api": "init_predictor_decoder",
+          "old_text": null,
+          "new_text": "init_predictor_decoder(ctx)",
+          "old_line_content": "",
+          "new_line_content": "    init_predictor_decoder(ctx);",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": null,
+          "new_api": "ape_unpack_stereo",
+          "old_text": null,
+          "new_text": "ape_unpack_stereo(s, blockstodecode)",
+          "old_line_content": "    s->error=0;",
+          "new_line_content": "        ape_unpack_stereo(s, blockstodecode);",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": null,
+          "new_api": "emms_c",
+          "old_text": null,
+          "new_text": "emms_c()",
+          "old_line_content": "",
+          "new_line_content": "    emms_c();",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "entropy_decode",
+          "old_text": null,
+          "new_text": "entropy_decode(ctx, count, 0)",
+          "old_line_content": "    int32_t left;",
+          "new_line_content": "        entropy_decode(ctx, count, 0);",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence mono\\n\")",
+          "old_line_content": "    int32_t *decoded1 = ctx->decoded1;",
+          "new_line_content": "        av_log(ctx->avctx, AV_LOG_DEBUG, \"pure silence mono\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": null,
+          "new_api": "entropy_decode",
+          "old_text": null,
+          "new_text": "entropy_decode(ctx, count, 0)",
+          "old_line_content": "        /* We are pure silence, so we're done. */",
+          "new_line_content": "    entropy_decode(ctx, count, 0);",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": null,
+          "new_api": "predictor_decode_mono",
+          "old_text": null,
+          "new_text": "predictor_decode_mono(ctx, count)",
+          "old_line_content": "",
+          "new_line_content": "    predictor_decode_mono(ctx, count);",
+          "content_same": false
+        },
+        {
+          "line": 895,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"Monkey's Audio\")",
+          "old_line_content": "    ape_decode_init,",
+          "new_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"Monkey's Audio\"),",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 900,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"Monkey's Audio\")",
+          "new_text": null,
+          "old_line_content": "    .long_name = NULL_IF_CONFIG_SMALL(\"Monkey's Audio\"),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": "entropy_decode",
+          "new_api": null,
+          "old_text": "entropy_decode(ctx, count, 1)",
+          "new_text": null,
+          "old_line_content": "    entropy_decode(ctx, count, 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 786,
+          "old_api": "ape_apply_filters",
+          "new_api": null,
+          "old_text": "ape_apply_filters(ctx, decoded0, decoded1, count)",
+          "new_text": null,
+          "old_line_content": "    ape_apply_filters(ctx, decoded0, decoded1, count);",
+          "new_line_content": "    /* Decorrelate and scale to output depth */",
+          "content_same": false
+        },
+        {
+          "line": 789,
+          "old_api": "predictor_decode_stereo",
+          "new_api": null,
+          "old_text": "predictor_decode_stereo(ctx, count)",
+          "new_text": null,
+          "old_line_content": "    predictor_decode_stereo(ctx, count);",
+          "new_line_content": "        right = left + *decoded0;",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(f->historybuffer, f->delay - (order * 2),\n                    (order * 2) * sizeof(int16_t))",
+          "new_text": null,
+          "old_line_content": "            memmove(f->historybuffer, f->delay - (order * 2),",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 832,
+          "old_api": "bytestream_get_be32",
+          "new_api": null,
+          "old_text": "bytestream_get_be32(&s->ptr)",
+          "new_text": null,
+          "old_line_content": "        n =  bytestream_get_be32(&s->ptr);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 831,
+          "old_api": "bytestream_get_be32",
+          "new_api": null,
+          "old_text": "bytestream_get_be32(&s->ptr)",
+          "new_text": null,
+          "old_line_content": "        nblocks = s->samples = bytestream_get_be32(&s->ptr);",
+          "new_line_content": "            return -1;",
+          "content_same": false
+        },
+        {
+          "line": 834,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"Incorrect offset passed\\n\")",
+          "new_text": null,
+          "old_line_content": "            av_log(avctx, AV_LOG_ERROR, \"Incorrect offset passed\\n\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 715,
+          "old_api": "do_apply_filter",
+          "new_api": null,
+          "old_text": "do_apply_filter(ctx, ctx->fileversion, &f[0], data0, count, order, fracbits)",
+          "new_text": null,
+          "old_line_content": "    do_apply_filter(ctx, ctx->fileversion, &f[0], data0, count, order, fracbits);",
+          "new_line_content": "static void ape_apply_filters(APEContext * ctx, int32_t * decoded0,",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "do_apply_filter",
+          "new_api": null,
+          "old_text": "do_apply_filter(ctx, ctx->fileversion, &f[1], data1, count, order, fracbits)",
+          "new_text": null,
+          "old_line_content": "        do_apply_filter(ctx, ctx->fileversion, &f[1], data1, count, order, fracbits);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 847,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->decoded0,  0, sizeof(s->decoded0))",
+          "new_text": null,
+          "old_line_content": "        memset(s->decoded0,  0, sizeof(s->decoded0));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": "memset",
+          "new_api": null,
+          "old_text": "memset(s->decoded1,  0, sizeof(s->decoded1))",
+          "new_text": null,
+          "old_line_content": "        memset(s->decoded1,  0, sizeof(s->decoded1));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 851,
+          "old_api": "init_frame_decoder",
+          "new_api": null,
+          "old_text": "init_frame_decoder(s)",
+          "new_text": null,
+          "old_line_content": "        init_frame_decoder(s);",
+          "new_line_content": "        return buf_size;",
+          "content_same": false
+        },
+        {
+          "line": 728,
+          "old_api": "apply_filter",
+          "new_api": null,
+          "old_text": "apply_filter(ctx, ctx->filters[i], decoded0, decoded1, count, ape_filter_orders[ctx->fset][i], ape_filter_fracbits[ctx->fset][i])",
+          "new_text": null,
+          "old_line_content": "        apply_filter(ctx, ctx->filters[i], decoded0, decoded1, count, ape_filter_orders[ctx->fset][i], ape_filter_fracbits[ctx->fset][i]);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "init_entropy_decoder",
+          "new_api": null,
+          "old_text": "init_entropy_decoder(ctx)",
+          "new_text": null,
+          "old_line_content": "    init_entropy_decoder(ctx);",
+          "new_line_content": "            break;",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "ape_unpack_mono",
+          "new_api": null,
+          "old_text": "ape_unpack_mono(s, blockstodecode)",
+          "new_text": null,
+          "old_line_content": "        ape_unpack_mono(s, blockstodecode);",
+          "new_line_content": "    if(s->error || s->ptr > s->data_end){",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "emms_c",
+          "new_api": null,
+          "old_text": "emms_c()",
+          "new_text": null,
+          "old_line_content": "    emms_c();",
+          "new_line_content": "        return -1;",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": "init_filter",
+          "new_api": null,
+          "old_text": "init_filter(ctx, ctx->filters[i], ctx->filterbuf[i], ape_filter_orders[ctx->fset][i])",
+          "new_text": null,
+          "old_line_content": "        init_filter(ctx, ctx->filters[i], ctx->filterbuf[i], ape_filter_orders[ctx->fset][i]);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"Error decoding frame\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"Error decoding frame\\n\");",
+          "new_line_content": "        *samples++ = s->decoded0[i];",
+          "content_same": false
+        },
+        {
+          "line": 752,
+          "old_api": "entropy_decode",
+          "new_api": null,
+          "old_text": "entropy_decode(ctx, count, 0)",
+          "new_text": null,
+          "old_line_content": "        entropy_decode(ctx, count, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 758,
+          "old_api": "entropy_decode",
+          "new_api": null,
+          "old_text": "entropy_decode(ctx, count, 0)",
+          "new_text": null,
+          "old_line_content": "    entropy_decode(ctx, count, 0);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": "ape_apply_filters",
+          "new_api": null,
+          "old_text": "ape_apply_filters(ctx, decoded0, NULL, count)",
+          "new_text": null,
+          "old_line_content": "    ape_apply_filters(ctx, decoded0, NULL, count);",
+          "new_line_content": "    /* Pseudo-stereo - just copy left channel to right channel */",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": "predictor_decode_mono",
+          "new_api": null,
+          "old_text": "predictor_decode_mono(ctx, count)",
+          "new_text": null,
+          "old_line_content": "    predictor_decode_mono(ctx, count);",
+          "new_line_content": "            left = *decoded0;",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 8,
+      "total_additions": 24,
+      "total_deletions": 23,
+      "total_api_changes": 55
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 55,
+        "non_api_lines": 7,
+        "non_api_line_numbers": [
+          682,
+          683,
+          684,
+          685,
+          686,
+          687,
+          688
+        ]
+      }
+    },
+    "api_calls_before": 97,
+    "api_calls_after": 98,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 8,
+      "total_diff_lines": 23
+    }
+  }
+}

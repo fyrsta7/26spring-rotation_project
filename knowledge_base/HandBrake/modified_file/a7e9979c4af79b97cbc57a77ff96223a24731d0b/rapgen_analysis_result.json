@@ -1,0 +1,991 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/a7e9979c4af79b97cbc57a77ff96223a24731d0b",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/a7e9979c4af79b97cbc57a77ff96223a24731d0b/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/a7e9979c4af79b97cbc57a77ff96223a24731d0b/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/HandBrake/modified_file/a7e9979c4af79b97cbc57a77ff96223a24731d0b/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 1010,
+          "old_api": "taskset_init",
+          "new_api": "hb_log",
+          "old_text": "taskset_init(&pv->taskset, pv->threads,\n                     sizeof(nlmeans_thread_arg_t))",
+          "new_text": "hb_log(\"NLMeans using %i threads\", pv->threads)",
+          "old_line_content": "    if (taskset_init(&pv->taskset, pv->threads,",
+          "new_line_content": "    hb_log(\"NLMeans using %i threads\", pv->threads);",
+          "content_same": false
+        },
+        {
+          "line": 1022,
+          "old_api": "hb_error",
+          "new_api": "taskset_init",
+          "old_text": "hb_error(\"NLMeans could not create thread args\")",
+          "new_text": "taskset_init(&pv->taskset, pv->threads,\n                     sizeof(nlmeans_thread_arg_t))",
+          "old_line_content": "            hb_error(\"NLMeans could not create thread args\");",
+          "new_line_content": "    if (taskset_init(&pv->taskset, pv->threads,",
+          "content_same": false
+        },
+        {
+          "line": 1039,
+          "old_api": "free",
+          "new_api": "taskset_thread_spawn",
+          "old_text": "free(pv->thread_data)",
+          "new_text": "taskset_thread_spawn(&pv->taskset, ii, \"nlmeans_filter\",\n                                 nlmeans_filter_thread, HB_NORMAL_PRIORITY)",
+          "old_line_content": "    free(pv->thread_data);",
+          "new_line_content": "        if (taskset_thread_spawn(&pv->taskset, ii, \"nlmeans_filter\",",
+          "content_same": false
+        },
+        {
+          "line": 1092,
+          "old_api": "hb_log",
+          "new_api": "free",
+          "old_text": "hb_log(\"NLMeans thread started for segment %d\", segment)",
+          "new_text": "free(pv->frame)",
+          "old_line_content": "    hb_log(\"NLMeans thread started for segment %d\", segment);",
+          "new_line_content": "    free(pv->frame);",
+          "content_same": false
+        },
+        {
+          "line": 1237,
+          "old_api": "hb_frame_buffer_init",
+          "new_api": "hb_buffer_list_clear",
+          "old_text": "hb_frame_buffer_init(frame->fmt, frame->width, frame->height)",
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "        buf = hb_frame_buffer_init(frame->fmt, frame->width, frame->height);",
+          "new_line_content": "    return hb_buffer_list_clear(&list);",
+          "content_same": false
+        },
+        {
+          "line": 1265,
+          "old_api": "nlmeans_plane",
+          "new_api": "nlmeans_deborder",
+          "old_text": "nlmeans_plane(functions,\n                          frame,\n                          pv->prefilter[c],\n                          c,\n                          nframes,\n                          buf->plane[c].data,\n                          buf->plane[c].width,\n                          buf->plane[c].stride,\n                          buf->plane[c].height,\n                          pv->strength[c],\n                          pv->origin_tune[c],\n                          pv->patch_size[c],\n                          pv->range[c],\n                          pv->exptable[c],\n                          pv->weight_fact_table[c],\n                          pv->diff_max[c])",
+          "new_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "old_line_content": "            nlmeans_plane(functions,",
+          "new_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "content_same": false
+        },
+        {
+          "line": 1313,
+          "old_api": "nlmeans_filter",
+          "new_api": "nlmeans_filter_flush",
+          "old_text": "nlmeans_filter(pv)",
+          "new_text": "nlmeans_filter_flush(pv)",
+          "old_line_content": "    *buf_out = nlmeans_filter(pv);",
+          "new_line_content": "        buf = nlmeans_filter_flush(pv);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1025,
+          "old_api": null,
+          "new_api": "hb_error",
+          "old_text": null,
+          "new_text": "hb_error(\"NLMeans could not initialize taskset\")",
+          "old_line_content": "        pv->thread_data[ii]->pv = pv;",
+          "new_line_content": "        hb_error(\"NLMeans could not initialize taskset\");",
+          "content_same": false
+        },
+        {
+          "line": 1031,
+          "old_api": null,
+          "new_api": "taskset_thread_args",
+          "old_text": null,
+          "new_text": "taskset_thread_args(&pv->taskset, ii)",
+          "old_line_content": "            goto fail;",
+          "new_line_content": "        pv->thread_data[ii] = taskset_thread_args(&pv->taskset, ii);",
+          "content_same": false
+        },
+        {
+          "line": 1034,
+          "old_api": null,
+          "new_api": "hb_error",
+          "old_text": null,
+          "new_text": "hb_error(\"NLMeans could not create thread args\")",
+          "old_line_content": "",
+          "new_line_content": "            hb_error(\"NLMeans could not create thread args\");",
+          "content_same": false
+        },
+        {
+          "line": 1162,
+          "old_api": null,
+          "new_api": "taskset_thread_complete",
+          "old_text": null,
+          "new_text": "taskset_thread_complete(&pv->taskset, segment)",
+          "old_line_content": "                      buf->plane[c].width,",
+          "new_line_content": "        taskset_thread_complete(&pv->taskset, segment);",
+          "content_same": false
+        },
+        {
+          "line": 1164,
+          "old_api": null,
+          "new_api": "taskset_thread_complete",
+          "old_text": null,
+          "new_text": "taskset_thread_complete(&pv->taskset, segment)",
+          "old_line_content": "                      buf->plane[c].height,",
+          "new_line_content": "    taskset_thread_complete(&pv->taskset, segment);",
+          "content_same": false
+        },
+        {
+          "line": 1295,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&list, buf)",
+          "old_line_content": "    if (in->s.flags & HB_BUF_FLAG_EOF)",
+          "new_line_content": "        hb_buffer_list_append(&list, buf);",
+          "content_same": false
+        },
+        {
+          "line": 1297,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "        hb_buffer_list_t list;",
+          "new_line_content": "    return hb_buffer_list_clear(&list);",
+          "content_same": false
+        },
+        {
+          "line": 1042,
+          "old_api": null,
+          "new_api": "hb_error",
+          "old_text": null,
+          "new_text": "hb_error(\"NLMeans could not spawn thread\")",
+          "old_line_content": "}",
+          "new_line_content": "            hb_error(\"NLMeans could not spawn thread\");",
+          "content_same": false
+        },
+        {
+          "line": 1021,
+          "old_api": null,
+          "new_api": "malloc",
+          "old_text": null,
+          "new_text": "malloc(pv->threads * sizeof(nlmeans_thread_arg_t*))",
+          "old_line_content": "        {",
+          "new_line_content": "    pv->thread_data = malloc(pv->threads * sizeof(nlmeans_thread_arg_t*));",
+          "content_same": false
+        },
+        {
+          "line": 1173,
+          "old_api": null,
+          "new_api": "nlmeans_alloc",
+          "old_text": null,
+          "new_text": "nlmeans_alloc(buf->plane[c].data,\n                      buf->plane[c].width,\n                      buf->plane[c].stride,\n                      buf->plane[c].height,\n                      &pv->frame[pv->next_frame].plane[c],\n                      border)",
+          "old_line_content": "}",
+          "new_line_content": "        nlmeans_alloc(buf->plane[c].data,",
+          "content_same": false
+        },
+        {
+          "line": 1050,
+          "old_api": null,
+          "new_api": "taskset_fini",
+          "old_text": null,
+          "new_text": "taskset_fini(&pv->taskset)",
+          "old_line_content": "        return;",
+          "new_line_content": "    taskset_fini(&pv->taskset);",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->thread_data)",
+          "old_line_content": "    }",
+          "new_line_content": "    free(pv->thread_data);",
+          "content_same": false
+        },
+        {
+          "line": 1052,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv)",
+          "old_line_content": "",
+          "new_line_content": "    free(pv);",
+          "content_same": false
+        },
+        {
+          "line": 1314,
+          "old_api": null,
+          "new_api": "hb_buffer_list_set",
+          "old_text": null,
+          "new_text": "hb_buffer_list_set(&list, buf)",
+          "old_line_content": "",
+          "new_line_content": "        hb_buffer_list_set(&list, buf);",
+          "content_same": false
+        },
+        {
+          "line": 1317,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&list, in)",
+          "old_line_content": "",
+          "new_line_content": "        hb_buffer_list_append(&list, in);",
+          "content_same": false
+        },
+        {
+          "line": 1318,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "",
+          "new_line_content": "        *buf_out = hb_buffer_list_clear(&list);",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": null,
+          "new_api": "taskset_fini",
+          "old_text": null,
+          "new_text": "taskset_fini(&pv->taskset)",
+          "old_line_content": "            {",
+          "new_line_content": "    taskset_fini(&pv->taskset);",
+          "content_same": false
+        },
+        {
+          "line": 1194,
+          "old_api": null,
+          "new_api": "taskset_cycle",
+          "old_text": null,
+          "new_text": "taskset_cycle(&pv->taskset)",
+          "old_line_content": "                pv->frame[t].plane[c].mem_pre = NULL;",
+          "new_line_content": "    taskset_cycle(&pv->taskset);",
+          "content_same": false
+        },
+        {
+          "line": 1324,
+          "old_api": null,
+          "new_api": "nlmeans_add_frame",
+          "old_text": null,
+          "new_text": "nlmeans_add_frame(pv, in)",
+          "old_line_content": "",
+          "new_line_content": "    nlmeans_add_frame(pv, in);",
+          "content_same": false
+        },
+        {
+          "line": 1325,
+          "old_api": null,
+          "new_api": "nlmeans_filter",
+          "old_text": null,
+          "new_text": "nlmeans_filter(pv)",
+          "old_line_content": "",
+          "new_line_content": "    *buf_out = nlmeans_filter(pv);",
+          "content_same": false
+        },
+        {
+          "line": 1073,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->frame[f].plane[c].mem_pre)",
+          "old_line_content": "    {",
+          "new_line_content": "                free(pv->frame[f].plane[c].mem_pre);",
+          "content_same": false
+        },
+        {
+          "line": 1205,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->frame[t].plane[c].mem_pre)",
+          "old_line_content": "    {",
+          "new_line_content": "                free(pv->frame[t].plane[c].mem_pre);",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->frame[f].plane[c].mem)",
+          "old_line_content": "    }",
+          "new_line_content": "                free(pv->frame[f].plane[c].mem);",
+          "content_same": false
+        },
+        {
+          "line": 1210,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->frame[t].plane[c].mem)",
+          "old_line_content": "        {",
+          "new_line_content": "                free(pv->frame[t].plane[c].mem);",
+          "content_same": false
+        },
+        {
+          "line": 1088,
+          "old_api": null,
+          "new_api": "hb_lock_close",
+          "old_text": null,
+          "new_text": "hb_lock_close(&pv->frame[ii].plane[c].mutex)",
+          "old_line_content": "    nlmeans_thread_arg_t *thread_data = thread_args_v;",
+          "new_line_content": "            hb_lock_close(&pv->frame[ii].plane[c].mutex);",
+          "content_same": false
+        },
+        {
+          "line": 1093,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv->thread_data)",
+          "old_line_content": "",
+          "new_line_content": "    free(pv->thread_data);",
+          "content_same": false
+        },
+        {
+          "line": 1094,
+          "old_api": null,
+          "new_api": "free",
+          "old_text": null,
+          "new_text": "free(pv)",
+          "old_line_content": "    while (1)",
+          "new_line_content": "    free(pv);",
+          "content_same": false
+        },
+        {
+          "line": 1104,
+          "old_api": null,
+          "new_api": "hb_log",
+          "old_text": null,
+          "new_text": "hb_log(\"NLMeans thread started for segment %d\", segment)",
+          "old_line_content": "        Frame *frame = &pv->frame[segment];",
+          "new_line_content": "    hb_log(\"NLMeans thread started for segment %d\", segment);",
+          "content_same": false
+        },
+        {
+          "line": 1235,
+          "old_api": null,
+          "new_api": "hb_buffer_list_append",
+          "old_text": null,
+          "new_text": "hb_buffer_list_append(&list, pv->thread_data[t]->out)",
+          "old_line_content": "        Frame *frame = &pv->frame[f];",
+          "new_line_content": "        hb_buffer_list_append(&list, pv->thread_data[t]->out);",
+          "content_same": false
+        },
+        {
+          "line": 1109,
+          "old_api": null,
+          "new_api": "taskset_thread_wait4start",
+          "old_text": null,
+          "new_text": "taskset_thread_wait4start(&pv->taskset, segment)",
+          "old_line_content": "",
+          "new_line_content": "        taskset_thread_wait4start(&pv->taskset, segment);",
+          "content_same": false
+        },
+        {
+          "line": 1111,
+          "old_api": null,
+          "new_api": "taskset_thread_stop",
+          "old_text": null,
+          "new_text": "taskset_thread_stop(&pv->taskset, segment)",
+          "old_line_content": "        {",
+          "new_line_content": "        if (taskset_thread_stop(&pv->taskset, segment))",
+          "content_same": false
+        },
+        {
+          "line": 1244,
+          "old_api": null,
+          "new_api": "hb_buffer_list_clear",
+          "old_text": null,
+          "new_text": "hb_buffer_list_clear(&list)",
+          "old_line_content": "            {",
+          "new_line_content": "    hb_buffer_list_clear(&list);",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": null,
+          "new_api": "hb_frame_buffer_init",
+          "old_text": null,
+          "new_text": "hb_frame_buffer_init(frame->fmt, frame->width, frame->height)",
+          "old_line_content": "                continue;",
+          "new_line_content": "        buf = hb_frame_buffer_init(frame->fmt, frame->width, frame->height);",
+          "content_same": false
+        },
+        {
+          "line": 1249,
+          "old_api": null,
+          "new_api": "hb_frame_buffer_init",
+          "old_text": null,
+          "new_text": "hb_frame_buffer_init(frame->fmt, frame->width, frame->height)",
+          "old_line_content": "                continue;",
+          "new_line_content": "        buf = hb_frame_buffer_init(frame->fmt, frame->width, frame->height);",
+          "content_same": false
+        },
+        {
+          "line": 1126,
+          "old_api": null,
+          "new_api": "nlmeans_prefilter",
+          "old_text": null,
+          "new_text": "nlmeans_prefilter(&frame->plane[c], pv->prefilter[c])",
+          "old_line_content": "            }",
+          "new_line_content": "                nlmeans_prefilter(&frame->plane[c], pv->prefilter[c]);",
+          "content_same": false
+        },
+        {
+          "line": 1127,
+          "old_api": null,
+          "new_api": "nlmeans_deborder",
+          "old_text": null,
+          "new_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "old_line_content": "",
+          "new_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "content_same": false
+        },
+        {
+          "line": 999,
+          "old_api": null,
+          "new_api": "hb_get_cpu_count",
+          "old_text": null,
+          "new_text": "hb_get_cpu_count()",
+          "old_line_content": "",
+          "new_line_content": "        pv->threads = hb_get_cpu_count();",
+          "content_same": false
+        },
+        {
+          "line": 1257,
+          "old_api": null,
+          "new_api": "nlmeans_prefilter",
+          "old_text": null,
+          "new_text": "nlmeans_prefilter(&frame->plane[c], pv->prefilter[c])",
+          "old_line_content": "            }",
+          "new_line_content": "                nlmeans_prefilter(&frame->plane[c], pv->prefilter[c]);",
+          "content_same": false
+        },
+        {
+          "line": 1258,
+          "old_api": null,
+          "new_api": "nlmeans_deborder",
+          "old_text": null,
+          "new_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "old_line_content": "",
+          "new_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "content_same": false
+        },
+        {
+          "line": 1134,
+          "old_api": null,
+          "new_api": "nlmeans_deborder",
+          "old_text": null,
+          "new_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "old_line_content": "                          buf->plane[c].data,",
+          "new_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "content_same": false
+        },
+        {
+          "line": 1012,
+          "old_api": null,
+          "new_api": "calloc",
+          "old_text": null,
+          "new_text": "calloc(pv->threads + pv->max_frames, sizeof(Frame))",
+          "old_line_content": "    {",
+          "new_line_content": "    pv->frame = calloc(pv->threads + pv->max_frames, sizeof(Frame));",
+          "content_same": false
+        },
+        {
+          "line": 1141,
+          "old_api": null,
+          "new_api": "nlmeans_plane",
+          "old_text": null,
+          "new_text": "nlmeans_plane(functions,\n                          frame,\n                          pv->prefilter[c],\n                          c,\n                          pv->nframes[c],\n                          buf->plane[c].data,\n                          buf->plane[c].width,\n                          buf->plane[c].stride,\n                          buf->plane[c].height,\n                          pv->strength[c],\n                          pv->origin_tune[c],\n                          pv->patch_size[c],\n                          pv->range[c],\n                          pv->exptable[c],\n                          pv->weight_fact_table[c],\n                          pv->diff_max[c])",
+          "old_line_content": "                          pv->range[c],",
+          "new_line_content": "            nlmeans_plane(functions,",
+          "content_same": false
+        },
+        {
+          "line": 1017,
+          "old_api": null,
+          "new_api": "hb_lock_init",
+          "old_text": null,
+          "new_text": "hb_lock_init()",
+          "old_line_content": "    for (int ii = 0; ii < pv->threads; ii++)",
+          "new_line_content": "            pv->frame[ii].plane[c].mutex = hb_lock_init();",
+          "content_same": false
+        },
+        {
+          "line": 1277,
+          "old_api": null,
+          "new_api": "nlmeans_plane",
+          "old_text": null,
+          "new_text": "nlmeans_plane(functions,\n                          frame,\n                          pv->prefilter[c],\n                          c,\n                          nframes,\n                          buf->plane[c].data,\n                          buf->plane[c].width,\n                          buf->plane[c].stride,\n                          buf->plane[c].height,\n                          pv->strength[c],\n                          pv->origin_tune[c],\n                          pv->patch_size[c],\n                          pv->range[c],\n                          pv->exptable[c],\n                          pv->weight_fact_table[c],\n                          pv->diff_max[c])",
+          "old_line_content": "                          pv->range[c],",
+          "new_line_content": "            nlmeans_plane(functions,",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 1152,
+          "old_api": "taskset_thread_complete",
+          "new_api": null,
+          "old_text": "taskset_thread_complete(&pv->taskset, segment)",
+          "new_text": null,
+          "old_line_content": "    taskset_thread_complete(&pv->taskset, segment);",
+          "new_line_content": "                          pv->patch_size[c],",
+          "content_same": false
+        },
+        {
+          "line": 1027,
+          "old_api": "taskset_thread_spawn",
+          "new_api": null,
+          "old_text": "taskset_thread_spawn(&pv->taskset, ii, \"nlmeans_filter\",\n                                 nlmeans_filter_thread, HB_NORMAL_PRIORITY)",
+          "new_text": null,
+          "old_line_content": "        if (taskset_thread_spawn(&pv->taskset, ii, \"nlmeans_filter\",",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1283,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&list, buf)",
+          "new_text": null,
+          "old_line_content": "        hb_buffer_list_append(&list, buf);",
+          "new_line_content": "                          buf->plane[c].width,",
+          "content_same": false
+        },
+        {
+          "line": 1285,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "    return hb_buffer_list_clear(&list);",
+          "new_line_content": "                          buf->plane[c].height,",
+          "content_same": false
+        },
+        {
+          "line": 1030,
+          "old_api": "hb_error",
+          "new_api": null,
+          "old_text": "hb_error(\"NLMeans could not spawn thread\")",
+          "new_text": null,
+          "old_line_content": "            hb_error(\"NLMeans could not spawn thread\");",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1161,
+          "old_api": "nlmeans_alloc",
+          "new_api": null,
+          "old_text": "nlmeans_alloc(buf->plane[c].data,\n                      buf->plane[c].width,\n                      buf->plane[c].stride,\n                      buf->plane[c].height,\n                      &pv->frame[pv->next_frame].plane[c],\n                      border)",
+          "new_text": null,
+          "old_line_content": "        nlmeans_alloc(buf->plane[c].data,",
+          "new_line_content": "        // Finished this segment, notify.",
+          "content_same": false
+        },
+        {
+          "line": 1038,
+          "old_api": "taskset_fini",
+          "new_api": null,
+          "old_text": "taskset_fini(&pv->taskset)",
+          "new_text": null,
+          "old_line_content": "    taskset_fini(&pv->taskset);",
+          "new_line_content": "        pv->thread_data[ii]->segment = ii;",
+          "content_same": false
+        },
+        {
+          "line": 1040,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv)",
+          "new_text": null,
+          "old_line_content": "    free(pv);",
+          "new_line_content": "                                 nlmeans_filter_thread, HB_NORMAL_PRIORITY) == 0)",
+          "content_same": false
+        },
+        {
+          "line": 1301,
+          "old_api": "nlmeans_filter_flush",
+          "new_api": null,
+          "old_text": "nlmeans_filter_flush(pv)",
+          "new_text": null,
+          "old_line_content": "        buf = nlmeans_filter_flush(pv);",
+          "new_line_content": "                           hb_buffer_t **buf_in,",
+          "content_same": false
+        },
+        {
+          "line": 1302,
+          "old_api": "hb_buffer_list_set",
+          "new_api": null,
+          "old_text": "hb_buffer_list_set(&list, buf)",
+          "new_text": null,
+          "old_line_content": "        hb_buffer_list_set(&list, buf);",
+          "new_line_content": "                           hb_buffer_t **buf_out )",
+          "content_same": false
+        },
+        {
+          "line": 1305,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&list, in)",
+          "new_text": null,
+          "old_line_content": "        hb_buffer_list_append(&list, in);",
+          "new_line_content": "    hb_buffer_t *in = *buf_in;",
+          "content_same": false
+        },
+        {
+          "line": 1306,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "        *buf_out = hb_buffer_list_clear(&list);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1053,
+          "old_api": "taskset_fini",
+          "new_api": null,
+          "old_text": "taskset_fini(&pv->taskset)",
+          "new_text": null,
+          "old_line_content": "    taskset_fini(&pv->taskset);",
+          "new_line_content": "    return -1;",
+          "content_same": false
+        },
+        {
+          "line": 1182,
+          "old_api": "taskset_cycle",
+          "new_api": null,
+          "old_text": "taskset_cycle(&pv->taskset)",
+          "new_text": null,
+          "old_line_content": "    taskset_cycle(&pv->taskset);",
+          "new_line_content": "        pv->frame[pv->next_frame].fmt = buf->f.fmt;",
+          "content_same": false
+        },
+        {
+          "line": 1312,
+          "old_api": "nlmeans_add_frame",
+          "new_api": null,
+          "old_text": "nlmeans_add_frame(pv, in)",
+          "new_text": null,
+          "old_line_content": "    nlmeans_add_frame(pv, in);",
+          "new_line_content": "        // Flush buffered frames",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->frame[f].plane[c].mem_pre)",
+          "new_text": null,
+          "old_line_content": "                free(pv->frame[f].plane[c].mem_pre);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1193,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->frame[t].plane[c].mem_pre)",
+          "new_text": null,
+          "old_line_content": "                free(pv->frame[t].plane[c].mem_pre);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1066,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->frame[f].plane[c].mem)",
+          "new_text": null,
+          "old_line_content": "                free(pv->frame[f].plane[c].mem);",
+          "new_line_content": "    for (int c = 0; c < 3; c++)",
+          "content_same": false
+        },
+        {
+          "line": 1198,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->frame[t].plane[c].mem)",
+          "new_text": null,
+          "old_line_content": "                free(pv->frame[t].plane[c].mem);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1076,
+          "old_api": "hb_lock_close",
+          "new_api": null,
+          "old_text": "hb_lock_close(&pv->frame[ii].plane[c].mutex)",
+          "new_text": null,
+          "old_line_content": "            hb_lock_close(&pv->frame[ii].plane[c].mutex);",
+          "new_line_content": "            if (pv->frame[f].plane[c].mem != NULL)",
+          "content_same": false
+        },
+        {
+          "line": 1080,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->frame)",
+          "new_text": null,
+          "old_line_content": "    free(pv->frame);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv->thread_data)",
+          "new_text": null,
+          "old_line_content": "    free(pv->thread_data);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1082,
+          "old_api": "free",
+          "new_api": null,
+          "old_text": "free(pv)",
+          "new_text": null,
+          "old_line_content": "    free(pv);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1220,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "    hb_buffer_list_clear(&list);",
+          "new_line_content": "        pv->frame[f] = pv->frame[f+pv->threads];",
+          "content_same": false
+        },
+        {
+          "line": 1223,
+          "old_api": "hb_buffer_list_append",
+          "new_api": null,
+          "old_text": "hb_buffer_list_append(&list, pv->thread_data[t]->out)",
+          "new_text": null,
+          "old_line_content": "        hb_buffer_list_append(&list, pv->thread_data[t]->out);",
+          "new_line_content": "            pv->frame[f].plane[c].mutex = frame.plane[c].mutex;",
+          "content_same": false
+        },
+        {
+          "line": 1097,
+          "old_api": "taskset_thread_wait4start",
+          "new_api": null,
+          "old_text": "taskset_thread_wait4start(&pv->taskset, segment)",
+          "new_text": null,
+          "old_line_content": "        taskset_thread_wait4start(&pv->taskset, segment);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1225,
+          "old_api": "hb_buffer_list_clear",
+          "new_api": null,
+          "old_text": "hb_buffer_list_clear(&list)",
+          "new_text": null,
+          "old_line_content": "    return hb_buffer_list_clear(&list);",
+          "new_line_content": "            pv->frame[f+pv->threads].plane[c].mem = NULL;",
+          "content_same": false
+        },
+        {
+          "line": 1099,
+          "old_api": "taskset_thread_stop",
+          "new_api": null,
+          "old_text": "taskset_thread_stop(&pv->taskset, segment)",
+          "new_text": null,
+          "old_line_content": "        if (taskset_thread_stop(&pv->taskset, segment))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 1106,
+          "old_api": "hb_frame_buffer_init",
+          "new_api": null,
+          "old_text": "hb_frame_buffer_init(frame->fmt, frame->width, frame->height)",
+          "new_text": null,
+          "old_line_content": "        buf = hb_frame_buffer_init(frame->fmt, frame->width, frame->height);",
+          "new_line_content": "    while (1)",
+          "content_same": false
+        },
+        {
+          "line": 1114,
+          "old_api": "nlmeans_prefilter",
+          "new_api": null,
+          "old_text": "nlmeans_prefilter(&frame->plane[c], pv->prefilter[c])",
+          "new_text": null,
+          "old_line_content": "                nlmeans_prefilter(&frame->plane[c], pv->prefilter[c]);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1115,
+          "old_api": "nlmeans_deborder",
+          "new_api": null,
+          "old_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "new_text": null,
+          "old_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1245,
+          "old_api": "nlmeans_prefilter",
+          "new_api": null,
+          "old_text": "nlmeans_prefilter(&frame->plane[c], pv->prefilter[c])",
+          "new_text": null,
+          "old_line_content": "                nlmeans_prefilter(&frame->plane[c], pv->prefilter[c]);",
+          "new_line_content": "    for (int f = 0; f < pv->next_frame; f++)",
+          "content_same": false
+        },
+        {
+          "line": 1246,
+          "old_api": "nlmeans_deborder",
+          "new_api": null,
+          "old_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "new_text": null,
+          "old_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 1122,
+          "old_api": "nlmeans_deborder",
+          "new_api": null,
+          "old_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "new_text": null,
+          "old_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "new_line_content": "        for (int c = 0; c < 3; c++)",
+          "content_same": false
+        },
+        {
+          "line": 1253,
+          "old_api": "nlmeans_deborder",
+          "new_api": null,
+          "old_text": "nlmeans_deborder(&frame->plane[c], buf->plane[c].data,\n                                 buf->plane[c].width, buf->plane[c].stride,\n                                 buf->plane[c].height)",
+          "new_text": null,
+          "old_line_content": "                nlmeans_deborder(&frame->plane[c], buf->plane[c].data,",
+          "new_line_content": "        for (int c = 0; c < 3; c++)",
+          "content_same": false
+        },
+        {
+          "line": 998,
+          "old_api": "hb_get_cpu_count",
+          "new_api": null,
+          "old_text": "hb_get_cpu_count()",
+          "new_text": null,
+          "old_line_content": "    if (pv->threads < 1) { pv->threads = hb_get_cpu_count(); }",
+          "new_line_content": "    if (pv->threads < 1) {",
+          "content_same": false
+        },
+        {
+          "line": 1000,
+          "old_api": "calloc",
+          "new_api": null,
+          "old_text": "calloc(pv->threads + pv->max_frames, sizeof(Frame))",
+          "new_text": null,
+          "old_line_content": "    pv->frame = calloc(pv->threads + pv->max_frames, sizeof(Frame));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1129,
+          "old_api": "nlmeans_plane",
+          "new_api": null,
+          "old_text": "nlmeans_plane(functions,\n                          frame,\n                          pv->prefilter[c],\n                          c,\n                          pv->nframes[c],\n                          buf->plane[c].data,\n                          buf->plane[c].width,\n                          buf->plane[c].stride,\n                          buf->plane[c].height,\n                          pv->strength[c],\n                          pv->origin_tune[c],\n                          pv->patch_size[c],\n                          pv->range[c],\n                          pv->exptable[c],\n                          pv->weight_fact_table[c],\n                          pv->diff_max[c])",
+          "new_text": null,
+          "old_line_content": "            nlmeans_plane(functions,",
+          "new_line_content": "                                 buf->plane[c].height);",
+          "content_same": false
+        },
+        {
+          "line": 1005,
+          "old_api": "hb_lock_init",
+          "new_api": null,
+          "old_text": "hb_lock_init()",
+          "new_text": null,
+          "old_line_content": "            pv->frame[ii].plane[c].mutex = hb_lock_init();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 1009,
+          "old_api": "malloc",
+          "new_api": null,
+          "old_text": "malloc(pv->threads * sizeof(nlmeans_thread_arg_t*))",
+          "new_text": null,
+          "old_line_content": "    pv->thread_data = malloc(pv->threads * sizeof(nlmeans_thread_arg_t*));",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1013,
+          "old_api": "hb_error",
+          "new_api": null,
+          "old_text": "hb_error(\"NLMeans could not initialize taskset\")",
+          "new_text": null,
+          "old_line_content": "        hb_error(\"NLMeans could not initialize taskset\");",
+          "new_line_content": "    for (int ii = 0; ii < pv->threads + pv->max_frames; ii++)",
+          "content_same": false
+        },
+        {
+          "line": 1019,
+          "old_api": "taskset_thread_args",
+          "new_api": null,
+          "old_text": "taskset_thread_args(&pv->taskset, ii)",
+          "new_text": null,
+          "old_line_content": "        pv->thread_data[ii] = taskset_thread_args(&pv->taskset, ii);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 1150,
+          "old_api": "taskset_thread_complete",
+          "new_api": null,
+          "old_text": "taskset_thread_complete(&pv->taskset, segment)",
+          "new_text": null,
+          "old_line_content": "        taskset_thread_complete(&pv->taskset, segment);",
+          "new_line_content": "                          pv->strength[c],",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 44,
+      "total_deletions": 43,
+      "total_api_changes": 94
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 14,
+        "api_related_lines": 94,
+        "non_api_lines": 8,
+        "non_api_line_numbers": [
+          997,
+          1001,
+          1002,
+          1003,
+          1004,
+          1006,
+          1007,
+          1008
+        ]
+      }
+    },
+    "api_calls_before": 222,
+    "api_calls_after": 223,
+    "diff_info": {
+      "added_lines": 14,
+      "removed_lines": 2,
+      "total_diff_lines": 28
+    }
+  }
+}

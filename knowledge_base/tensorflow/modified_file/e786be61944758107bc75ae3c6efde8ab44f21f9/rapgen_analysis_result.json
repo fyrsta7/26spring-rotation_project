@@ -1,0 +1,549 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/e786be61944758107bc75ae3c6efde8ab44f21f9",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/e786be61944758107bc75ae3c6efde8ab44f21f9/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/e786be61944758107bc75ae3c6efde8ab44f21f9/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/e786be61944758107bc75ae3c6efde8ab44f21f9/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 277,
+          "old_api": "emplace",
+          "new_api": "NewNode",
+          "old_text": "graph_ids_map.emplace(instr, -1)",
+          "new_text": "graph.NewNode()",
+          "old_line_content": "    auto it_and_inserted = graph_ids_map.emplace(instr, -1);",
+          "new_line_content": "      it->second = graph.NewNode();",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": "instructions",
+          "new_api": "operands",
+          "old_text": "comp->instructions()",
+          "new_text": "instr->operands()",
+          "old_line_content": "  for (HloInstruction* instr : comp->instructions()) {",
+          "new_line_content": "    for (HloInstruction* operand : instr->operands()) {",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "graph_id",
+          "new_api": "control_predecessors",
+          "old_text": "graph_id(operand)",
+          "new_text": "instr->control_predecessors()",
+          "old_line_content": "      CHECK(graph.InsertEdge(graph_id(operand), id));",
+          "new_line_content": "    for (HloInstruction* control_pred : instr->control_predecessors()) {",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "begin",
+          "new_api": "unique_id",
+          "old_text": "kv.second.begin()",
+          "new_text": "absl::c_sort(dots, [](const HloInstruction* a, const HloInstruction* b) {\n      return a->unique_id() < b->unique_id();\n    })",
+          "old_line_content": "    absl::InlinedVector<HloInstruction*, 16> dots(kv.second.begin(),",
+          "new_line_content": "    absl::c_sort(dots, [](const HloInstruction* a, const HloInstruction* b) {",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "end",
+          "new_api": "unique_id",
+          "old_text": "kv.second.end()",
+          "new_text": "b->unique_id()",
+          "old_line_content": "                                                  kv.second.end());",
+          "new_line_content": "      return a->unique_id() < b->unique_id();",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "graph_id",
+          "new_api": "contains",
+          "old_text": "graph_id(b)",
+          "new_text": "dead_instrs.contains(b)",
+          "old_line_content": "        int32_t b_id = graph_id(b);",
+          "new_line_content": "        if (dead_instrs.contains(a) || dead_instrs.contains(b) ||",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": "contains",
+          "new_api": "IsReachableNonConst",
+          "old_text": "dead_instrs.contains(b)",
+          "new_text": "graph.IsReachableNonConst(b_id, a_id)",
+          "old_line_content": "        if (dead_instrs.contains(a) || dead_instrs.contains(b) ||",
+          "new_line_content": "            graph.IsReachableNonConst(b_id, a_id) ||",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "IsReachableNonConst",
+          "new_api": "is_merge_candidate",
+          "old_text": "graph.IsReachableNonConst(a_id, b_id)",
+          "new_text": "is_merge_candidate(b)",
+          "old_line_content": "            graph.IsReachableNonConst(a_id, b_id) ||",
+          "new_line_content": "            (!is_merge_candidate(a) && !is_merge_candidate(b))) {",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": "TryMergeSameOperand",
+          "new_api": "graph_id",
+          "old_text": "TryMergeSameOperand(a, b)",
+          "new_text": "graph_id(merged)",
+          "old_line_content": "        TF_ASSIGN_OR_RETURN(HloInstruction * merged, TryMergeSameOperand(a, b));",
+          "new_line_content": "          int32_t merged_id = graph_id(merged);",
+          "content_same": false
+        },
+        {
+          "line": 333,
+          "old_api": "graph_id",
+          "new_api": "InsertEdge",
+          "old_text": "graph_id(merged)",
+          "new_text": "graph.InsertEdge(b_id, merged_id)",
+          "old_line_content": "          int32_t merged_id = graph_id(merged);",
+          "new_line_content": "          graph.InsertEdge(b_id, merged_id);",
+          "content_same": false
+        },
+        {
+          "line": 334,
+          "old_api": "InsertEdge",
+          "new_api": "SuccessorsCopy",
+          "old_text": "graph.InsertEdge(a_id, merged_id)",
+          "new_text": "graph.SuccessorsCopy(a_id)",
+          "old_line_content": "          graph.InsertEdge(a_id, merged_id);",
+          "new_line_content": "          for (int32_t succ : graph.SuccessorsCopy(a_id)) {",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "InsertEdge",
+          "new_api": "SuccessorsCopy",
+          "old_text": "graph.InsertEdge(merged_id, succ)",
+          "new_text": "graph.SuccessorsCopy(b_id)",
+          "old_line_content": "            graph.InsertEdge(merged_id, succ);",
+          "new_line_content": "          for (int32_t succ : graph.SuccessorsCopy(b_id)) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 273,
+          "old_api": null,
+          "new_api": "emplace",
+          "old_text": null,
+          "new_text": "graph_ids_map.emplace(instr, -1)",
+          "old_line_content": "  tensorflow::GraphCycles graph;",
+          "new_line_content": "    auto it_and_inserted = graph_ids_map.emplace(instr, -1);",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": null,
+          "new_api": "MakeInstructionPostOrder",
+          "old_text": null,
+          "new_text": "comp->MakeInstructionPostOrder()",
+          "old_line_content": "  };",
+          "new_line_content": "  for (HloInstruction* instr : comp->MakeInstructionPostOrder()) {",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": null,
+          "new_api": "graph_id",
+          "old_text": null,
+          "new_text": "graph_id(instr)",
+          "old_line_content": "",
+          "new_line_content": "    int32_t id = graph_id(instr);",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": null,
+          "new_api": "graph_id",
+          "old_text": null,
+          "new_text": "graph_id(control_pred)",
+          "old_line_content": "    }",
+          "new_line_content": "      CHECK(graph.InsertEdge(graph_id(control_pred), id));",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "kv.second.begin()",
+          "old_line_content": "  for (auto& kv : equivalence_classes) {",
+          "new_line_content": "    absl::InlinedVector<HloInstruction*, 16> dots(kv.second.begin(),",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "kv.second.end()",
+          "old_line_content": "    // For determinism, iterate in order of the instructions' IDs.",
+          "new_line_content": "                                                  kv.second.end());",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "dots.size()",
+          "old_line_content": "",
+          "new_line_content": "    for (int64_t i = 0; i < dots.size(); i++) {",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "dots.size()",
+          "old_line_content": "        continue;",
+          "new_line_content": "      for (int64_t j = i + 1; j < dots.size(); j++) {",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": null,
+          "new_api": "graph_id",
+          "old_text": null,
+          "new_text": "graph_id(a)",
+          "old_line_content": "          continue;",
+          "new_line_content": "        int32_t a_id = graph_id(a);",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": null,
+          "new_api": "graph_id",
+          "old_text": null,
+          "new_text": "graph_id(b)",
+          "old_line_content": "        }",
+          "new_line_content": "        int32_t b_id = graph_id(b);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "IsReachableNonConst",
+          "old_text": null,
+          "new_text": "graph.IsReachableNonConst(a_id, b_id)",
+          "old_line_content": "",
+          "new_line_content": "            graph.IsReachableNonConst(a_id, b_id) ||",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": null,
+          "new_api": "TryMergeSameOperand",
+          "old_text": null,
+          "new_text": "TryMergeSameOperand(a, b)",
+          "old_line_content": "        }",
+          "new_line_content": "        TF_ASSIGN_OR_RETURN(HloInstruction * merged, TryMergeSameOperand(a, b));",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": null,
+          "new_api": "InsertEdge",
+          "old_text": null,
+          "new_text": "graph.InsertEdge(a_id, merged_id)",
+          "old_line_content": "        if (merged != nullptr) {",
+          "new_line_content": "          graph.InsertEdge(a_id, merged_id);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "InsertEdge",
+          "old_text": null,
+          "new_text": "graph.InsertEdge(merged_id, succ)",
+          "old_line_content": "          }",
+          "new_line_content": "            graph.InsertEdge(merged_id, succ);",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "dead_instrs.insert(a)",
+          "old_line_content": "          }",
+          "new_line_content": "          dead_instrs.insert(a);",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "dead_instrs.insert(b)",
+          "old_line_content": "",
+          "new_line_content": "          dead_instrs.insert(b);",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": null,
+          "new_api": "RemoveInstruction",
+          "old_text": null,
+          "new_text": "comp->RemoveInstruction(instr)",
+          "old_line_content": "  // Now it's finally safe to delete the old instructions from the graph.",
+          "new_line_content": "    TF_RETURN_IF_ERROR(comp->RemoveInstruction(instr));",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "dead_instrs.empty()",
+          "old_line_content": "  }",
+          "new_line_content": "  return !dead_instrs.empty();",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": null,
+          "new_api": "MakeNonfusionComputations",
+          "old_text": null,
+          "new_text": "module->MakeNonfusionComputations(execution_threads)",
+          "old_line_content": "  bool changed = false;",
+          "new_line_content": "       module->MakeNonfusionComputations(execution_threads)) {",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 281,
+          "old_api": "NewNode",
+          "new_api": null,
+          "old_text": "graph.NewNode()",
+          "new_text": null,
+          "old_line_content": "      it->second = graph.NewNode();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": "operands",
+          "new_api": null,
+          "old_text": "instr->operands()",
+          "new_text": null,
+          "old_line_content": "    for (HloInstruction* operand : instr->operands()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "control_predecessors",
+          "new_api": null,
+          "old_text": "instr->control_predecessors()",
+          "new_text": null,
+          "old_line_content": "    for (HloInstruction* control_pred : instr->control_predecessors()) {",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "graph_id",
+          "new_api": null,
+          "old_text": "graph_id(control_pred)",
+          "new_text": null,
+          "old_line_content": "      CHECK(graph.InsertEdge(graph_id(control_pred), id));",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "unique_id",
+          "new_api": null,
+          "old_text": "absl::c_sort(dots, [](const HloInstruction* a, const HloInstruction* b) {\n      return a->unique_id() < b->unique_id();\n    })",
+          "new_text": null,
+          "old_line_content": "    absl::c_sort(dots, [](const HloInstruction* a, const HloInstruction* b) {",
+          "new_line_content": "    });",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "unique_id",
+          "new_api": null,
+          "old_text": "b->unique_id()",
+          "new_text": null,
+          "old_line_content": "      return a->unique_id() < b->unique_id();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "dots.size()",
+          "new_text": null,
+          "old_line_content": "    for (int64_t i = 0; i < dots.size(); i++) {",
+          "new_line_content": "      if (a == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "dots.size()",
+          "new_text": null,
+          "old_line_content": "      for (int64_t j = i + 1; j < dots.size(); j++) {",
+          "new_line_content": "        if (b == nullptr) {",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "graph_id",
+          "new_api": null,
+          "old_text": "graph_id(a)",
+          "new_text": null,
+          "old_line_content": "        int32_t a_id = graph_id(a);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": "IsReachableNonConst",
+          "new_api": null,
+          "old_text": "graph.IsReachableNonConst(b_id, a_id)",
+          "new_text": null,
+          "old_line_content": "            graph.IsReachableNonConst(b_id, a_id) ||",
+          "new_line_content": "          continue;",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "is_merge_candidate",
+          "new_api": null,
+          "old_text": "is_merge_candidate(b)",
+          "new_text": null,
+          "old_line_content": "            (!is_merge_candidate(a) && !is_merge_candidate(b))) {",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": "SuccessorsCopy",
+          "new_api": null,
+          "old_text": "graph.SuccessorsCopy(a_id)",
+          "new_text": null,
+          "old_line_content": "          for (int32_t succ : graph.SuccessorsCopy(a_id)) {",
+          "new_line_content": "          }",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "SuccessorsCopy",
+          "new_api": null,
+          "old_text": "graph.SuccessorsCopy(b_id)",
+          "new_text": null,
+          "old_line_content": "          for (int32_t succ : graph.SuccessorsCopy(b_id)) {",
+          "new_line_content": "          }",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "InsertEdge",
+          "new_api": null,
+          "old_text": "graph.InsertEdge(merged_id, succ)",
+          "new_text": null,
+          "old_line_content": "            graph.InsertEdge(merged_id, succ);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "dead_instrs.insert(a)",
+          "new_text": null,
+          "old_line_content": "          dead_instrs.insert(a);",
+          "new_line_content": "          dots[i] = merged;",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "insert",
+          "new_api": null,
+          "old_text": "dead_instrs.insert(b)",
+          "new_text": null,
+          "old_line_content": "          dead_instrs.insert(b);",
+          "new_line_content": "          dots[j] = nullptr;",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": "RemoveInstruction",
+          "new_api": null,
+          "old_text": "comp->RemoveInstruction(instr)",
+          "new_text": null,
+          "old_line_content": "    TF_RETURN_IF_ERROR(comp->RemoveInstruction(instr));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "dead_instrs.empty()",
+          "new_text": null,
+          "old_line_content": "  return !dead_instrs.empty();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "MakeNonfusionComputations",
+          "new_api": null,
+          "old_text": "module->MakeNonfusionComputations(execution_threads)",
+          "new_text": null,
+          "old_line_content": "       module->MakeNonfusionComputations(execution_threads)) {",
+          "new_line_content": "                        MergeDots(comp, max_size_to_merge_));",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 12,
+      "total_additions": 19,
+      "total_deletions": 19,
+      "total_api_changes": 50
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 8,
+        "api_related_lines": 50,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          269,
+          270,
+          271,
+          272,
+          282,
+          283
+        ]
+      }
+    },
+    "api_calls_before": 196,
+    "api_calls_after": 196,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 5,
+      "total_diff_lines": 27
+    }
+  }
+}

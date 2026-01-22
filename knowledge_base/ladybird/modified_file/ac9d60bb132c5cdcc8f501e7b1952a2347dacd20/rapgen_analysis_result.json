@@ -1,0 +1,1535 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/ac9d60bb132c5cdcc8f501e7b1952a2347dacd20",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/ac9d60bb132c5cdcc8f501e7b1952a2347dacd20/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/ac9d60bb132c5cdcc8f501e7b1952a2347dacd20/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/ac9d60bb132c5cdcc8f501e7b1952a2347dacd20/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 75,
+          "old_api": "flush_writes_impl",
+          "new_api": "is_empty",
+          "old_text": "m_fs->flush_writes_impl()",
+          "new_text": "m_clean_list.is_empty()",
+          "old_line_content": "            m_fs->flush_writes_impl();",
+          "new_line_content": "        if (m_clean_list.is_empty()) {",
+          "content_same": false
+        },
+        {
+          "line": 79,
+          "old_api": "last",
+          "new_api": "flush_writes_impl",
+          "old_text": "m_clean_list.last()",
+          "new_text": "m_fs->flush_writes_impl()",
+          "old_line_content": "        VERIFY(m_clean_list.last());",
+          "new_line_content": "            m_fs->flush_writes_impl();",
+          "content_same": false
+        },
+        {
+          "line": 80,
+          "old_api": "last",
+          "new_api": "ensure",
+          "old_text": "m_clean_list.last()",
+          "new_text": "ensure(block_index)",
+          "old_line_content": "        auto& new_entry = *m_clean_list.last();",
+          "new_line_content": "            return ensure(block_index);",
+          "content_same": false
+        },
+        {
+          "line": 83,
+          "old_api": "remove",
+          "new_api": "last",
+          "old_text": "m_hash.remove(new_entry.block_index)",
+          "new_text": "m_clean_list.last()",
+          "old_line_content": "        m_hash.remove(new_entry.block_index);",
+          "new_line_content": "        VERIFY(m_clean_list.last());",
+          "content_same": false
+        },
+        {
+          "line": 84,
+          "old_api": "try_set",
+          "new_api": "last",
+          "old_text": "m_hash.try_set(block_index, &new_entry)",
+          "new_text": "m_clean_list.last()",
+          "old_line_content": "        TRY(m_hash.try_set(block_index, &new_entry));",
+          "new_line_content": "        auto& new_entry = *m_clean_list.last();",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": "KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry))",
+          "new_api": "is_locked",
+          "old_text": "KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry))",
+          "new_text": "m_lock.is_locked()",
+          "old_line_content": "    auto entries_data = TRY(KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry)));",
+          "new_line_content": "    VERIFY(m_lock.is_locked());",
+          "content_same": false
+        },
+        {
+          "line": 137,
+          "old_api": "move",
+          "new_api": "is_initialized_while_locked",
+          "old_text": "move(entries_data)",
+          "new_text": "is_initialized_while_locked()",
+          "old_line_content": "    auto disk_cache = TRY(adopt_nonnull_own_or_enomem(new (nothrow) DiskCache(*this, move(cached_block_data), move(entries_data))));",
+          "new_line_content": "    VERIFY(!is_initialized_while_locked());",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "with_exclusive",
+          "new_api": "block_size",
+          "old_text": "m_cache.with_exclusive([&](auto& cache) {\n        cache = move(disk_cache);\n    })",
+          "new_text": "block_size()",
+          "old_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "new_line_content": "    auto cached_block_data = TRY(KBuffer::try_create_with_size(\"BlockBasedFS: Cache blocks\"sv, DiskCache::EntryCount * block_size()));",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "move",
+          "new_api": "KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry))",
+          "old_text": "move(disk_cache)",
+          "new_text": "KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry))",
+          "old_line_content": "        cache = move(disk_cache);",
+          "new_line_content": "    auto entries_data = TRY(KBuffer::try_create_with_size(\"BlockBasedFS: Cache entries\"sv, DiskCache::EntryCount * sizeof(CacheEntry)));",
+          "content_same": false
+        },
+        {
+          "line": 158,
+          "old_api": "with_exclusive",
+          "new_api": "ByteBuffer::create_uninitialized(count)",
+          "old_text": "m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {\n        if (!allow_cache) {\n            flush_specific_block_if_needed(index);\n            u64 base_offset = index.value() * block_size() + offset;\n            auto nwritten = TRY(file_description().write(base_offset, data, count));\n            VERIFY(nwritten == count);\n            return {};\n        }\n\n        auto entry = TRY(cache->ensure(index));\n        if (count < block_size()) {\n            // Fill the cache first.\n            TRY(read_block(index, nullptr, block_size()));\n        }\n        memcpy(entry->data + offset, buffered_data.data(), count);\n\n        cache->mark_dirty(*entry);\n        entry->has_data = true;\n        return {};\n    })",
+          "new_text": "ByteBuffer::create_uninitialized(count)",
+          "old_line_content": "    return m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {",
+          "new_line_content": "    auto buffered_data = TRY(ByteBuffer::create_uninitialized(count));",
+          "content_same": false
+        },
+        {
+          "line": 160,
+          "old_api": "flush_specific_block_if_needed",
+          "new_api": "bytes",
+          "old_text": "flush_specific_block_if_needed(index)",
+          "new_text": "buffered_data.bytes()",
+          "old_line_content": "            flush_specific_block_if_needed(index);",
+          "new_line_content": "    TRY(data.read(buffered_data.bytes()));",
+          "content_same": false
+        },
+        {
+          "line": 162,
+          "old_api": "write",
+          "new_api": "with_exclusive",
+          "old_text": "file_description().write(base_offset, data, count)",
+          "new_text": "m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {\n        if (!allow_cache) {\n            flush_specific_block_if_needed(index);\n            u64 base_offset = index.value() * block_size() + offset;\n            auto nwritten = TRY(file_description().write(base_offset, data, count));\n            VERIFY(nwritten == count);\n            return {};\n        }\n\n        auto entry = TRY(cache->ensure(index));\n        if (count < block_size()) {\n            // Fill the cache first.\n            TRY(read_block(index, nullptr, block_size()));\n        }\n        memcpy(entry->data + offset, buffered_data.data(), count);\n\n        cache->mark_dirty(*entry);\n        entry->has_data = true;\n        return {};\n    })",
+          "old_line_content": "            auto nwritten = TRY(file_description().write(base_offset, data, count));",
+          "new_line_content": "    return m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {",
+          "content_same": false
+        },
+        {
+          "line": 167,
+          "old_api": "ensure",
+          "new_api": "VERIFY",
+          "old_text": "cache->ensure(index)",
+          "new_text": "VERIFY(nwritten == count)",
+          "old_line_content": "        auto entry = TRY(cache->ensure(index));",
+          "new_line_content": "            VERIFY(nwritten == count);",
+          "content_same": false
+        },
+        {
+          "line": 172,
+          "old_api": "data",
+          "new_api": "block_size",
+          "old_text": "buffered_data.data()",
+          "new_text": "block_size()",
+          "old_line_content": "        memcpy(entry->data + offset, buffered_data.data(), count);",
+          "new_line_content": "        if (count < block_size()) {",
+          "content_same": false
+        },
+        {
+          "line": 174,
+          "old_api": "mark_dirty",
+          "new_api": "block_size",
+          "old_text": "cache->mark_dirty(*entry)",
+          "new_text": "block_size()",
+          "old_line_content": "        cache->mark_dirty(*entry);",
+          "new_line_content": "            TRY(read_block(index, nullptr, block_size()));",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "with_exclusive",
+          "new_api": "VERIFY",
+          "old_text": "m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {\n        if (!allow_cache) {\n            const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index);\n            u64 base_offset = index.value() * block_size() + offset;\n            auto nread = TRY(file_description().read(*buffer, base_offset, count));\n            VERIFY(nread == count);\n            return {};\n        }\n\n        auto* entry = TRY(cache->ensure(index));\n        if (!entry->has_data) {\n            auto base_offset = index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);\n            auto nread = TRY(file_description().read(entry_data_buffer, base_offset, block_size()));\n            VERIFY(nread == block_size());\n            entry->has_data = true;\n        }\n        if (buffer)\n            TRY(buffer->write(entry->data + offset, count));\n        return {};\n    })",
+          "new_text": "VERIFY(m_logical_block_size)",
+          "old_line_content": "    return m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {",
+          "new_line_content": "    VERIFY(m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "flush_specific_block_if_needed",
+          "new_api": "dbgln_if",
+          "old_text": "const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index)",
+          "new_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::read_block {}\", index)",
+          "old_line_content": "            const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index);",
+          "new_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::read_block {}\", index);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "read",
+          "new_api": "with_exclusive",
+          "old_text": "file_description().read(*buffer, base_offset, count)",
+          "new_text": "m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {\n        if (!allow_cache) {\n            const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index);\n            u64 base_offset = index.value() * block_size() + offset;\n            auto nread = TRY(file_description().read(*buffer, base_offset, count));\n            VERIFY(nread == count);\n            return {};\n        }\n\n        auto* entry = TRY(cache->ensure(index));\n        if (!entry->has_data) {\n            auto base_offset = index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);\n            auto nread = TRY(file_description().read(entry_data_buffer, base_offset, block_size()));\n            VERIFY(nread == block_size());\n            entry->has_data = true;\n        }\n        if (buffer)\n            TRY(buffer->write(entry->data + offset, count));\n        return {};\n    })",
+          "old_line_content": "            auto nread = TRY(file_description().read(*buffer, base_offset, count));",
+          "new_line_content": "    return m_cache.with_exclusive([&](auto& cache) -> ErrorOr<void> {",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "ensure",
+          "new_api": "VERIFY",
+          "old_text": "cache->ensure(index)",
+          "new_text": "VERIFY(nread == count)",
+          "old_line_content": "        auto* entry = TRY(cache->ensure(index));",
+          "new_line_content": "            VERIFY(nread == count);",
+          "content_same": false
+        },
+        {
+          "line": 245,
+          "old_api": "block_size",
+          "new_api": "ensure",
+          "old_text": "block_size()",
+          "new_text": "cache->ensure(index)",
+          "old_line_content": "            auto nread = TRY(file_description().read(entry_data_buffer, base_offset, block_size()));",
+          "new_line_content": "        auto* entry = TRY(cache->ensure(index));",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": "write",
+          "new_api": "block_size",
+          "old_text": "buffer->write(entry->data + offset, count)",
+          "new_text": "block_size()",
+          "old_line_content": "            TRY(buffer->write(entry->data + offset, count));",
+          "new_line_content": "            VERIFY(nread == block_size());",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": "block_size",
+          "new_api": "VERIFY",
+          "old_text": "block_size()",
+          "new_text": "VERIFY(m_logical_block_size)",
+          "old_line_content": "        return read_block(index, &buffer, block_size(), 0, allow_cache);",
+          "new_line_content": "    VERIFY(m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "block_size",
+          "new_api": "entry_is_dirty",
+          "old_text": "block_size()",
+          "new_text": "cache->entry_is_dirty(*entry)",
+          "old_line_content": "        (void)file_description().write(base_offset, entry_data_buffer, block_size());",
+          "new_line_content": "        if (!cache->entry_is_dirty(*entry))",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": "block_size",
+          "new_api": "with_exclusive",
+          "old_text": "block_size()",
+          "new_text": "m_cache.with_exclusive([&](auto& cache) {\n        if (!cache->is_dirty())\n            return;\n        cache->for_each_dirty_entry([&](CacheEntry& entry) {\n            auto base_offset = entry.block_index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);\n            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());\n            ++count;\n        });\n        cache->mark_all_clean();\n        dbgln(\"{}: Flushed {} blocks to disk\", class_name(), count);\n    })",
+          "old_line_content": "            auto base_offset = entry.block_index.value() * block_size();",
+          "new_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "UserOrKernelBuffer::for_kernel_buffer(entry.data)",
+          "new_api": "is_dirty",
+          "old_text": "UserOrKernelBuffer::for_kernel_buffer(entry.data)",
+          "new_text": "cache->is_dirty()",
+          "old_line_content": "            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);",
+          "new_line_content": "        if (!cache->is_dirty())",
+          "content_same": false
+        },
+        {
+          "line": 299,
+          "old_api": "mark_all_clean",
+          "new_api": "UserOrKernelBuffer::for_kernel_buffer(entry.data)",
+          "old_text": "cache->mark_all_clean()",
+          "new_text": "UserOrKernelBuffer::for_kernel_buffer(entry.data)",
+          "old_line_content": "        cache->mark_all_clean();",
+          "new_line_content": "            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": "class_name",
+          "new_api": "block_size",
+          "old_text": "class_name()",
+          "new_text": "block_size()",
+          "old_line_content": "        dbgln(\"{}: Flushed {} blocks to disk\", class_name(), count);",
+          "new_line_content": "            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 128,
+          "old_api": null,
+          "new_api": "is_locked",
+          "old_text": null,
+          "new_text": "m_lock.is_locked()",
+          "old_line_content": "}",
+          "new_line_content": "    VERIFY(m_lock.is_locked());",
+          "content_same": false
+        },
+        {
+          "line": 129,
+          "old_api": null,
+          "new_api": "with_exclusive",
+          "old_text": null,
+          "new_text": "m_cache.with_exclusive([&](auto& cache) {\n        cache.clear();\n    })",
+          "old_line_content": "",
+          "new_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "cache.clear()",
+          "old_line_content": "ErrorOr<void> BlockBasedFileSystem::initialize_while_locked()",
+          "new_line_content": "        cache.clear();",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "",
+          "new_line_content": "    VERIFY(block_size() != 0);",
+          "content_same": false
+        },
+        {
+          "line": 268,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "    return {};",
+          "new_line_content": "        TRY(read_block(BlockIndex { index.value() + i }, &out, block_size(), 0, allow_cache));",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": null,
+          "new_api": "move",
+          "old_text": null,
+          "new_text": "move(entries_data)",
+          "old_line_content": "    });",
+          "new_line_content": "    auto disk_cache = TRY(adopt_nonnull_own_or_enomem(new (nothrow) DiskCache(*this, move(cached_block_data), move(entries_data))));",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "}",
+          "new_line_content": "        out = out.offset(block_size());",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": null,
+          "new_api": "with_exclusive",
+          "old_text": null,
+          "new_text": "m_cache.with_exclusive([&](auto& cache) {\n        cache = move(disk_cache);\n    })",
+          "old_line_content": "}",
+          "new_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": null,
+          "new_api": "move",
+          "old_text": null,
+          "new_text": "move(disk_cache)",
+          "old_line_content": "",
+          "new_line_content": "        cache = move(disk_cache);",
+          "content_same": false
+        },
+        {
+          "line": 277,
+          "old_api": null,
+          "new_api": "with_exclusive",
+          "old_text": null,
+          "new_text": "m_cache.with_exclusive([&](auto& cache) {\n        if (!cache->is_dirty())\n            return;\n        auto* entry = cache->get(index);\n        if (!entry)\n            return;\n        if (!cache->entry_is_dirty(*entry))\n            return;\n        size_t base_offset = entry->block_index.value() * block_size();\n        auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);\n        (void)file_description().write(base_offset, entry_data_buffer, block_size());\n    })",
+          "old_line_content": "        if (!entry)",
+          "new_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": null,
+          "new_api": "is_dirty",
+          "old_text": null,
+          "new_text": "cache->is_dirty()",
+          "old_line_content": "            return;",
+          "new_line_content": "        if (!cache->is_dirty())",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "VERIFY",
+          "old_text": null,
+          "new_text": "VERIFY(m_logical_block_size)",
+          "old_line_content": "    // NOTE: We copy the `data` to write into a local buffer before taking the cache lock.",
+          "new_line_content": "    VERIFY(m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "    //       This makes sure any page faults caused by accessing the data will occur before",
+          "new_line_content": "    VERIFY(offset + count <= block_size());",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": null,
+          "new_api": "dbgln_if",
+          "old_text": null,
+          "new_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_block {}, size={}\", index, count)",
+          "old_line_content": "    //       we tie down the cache.",
+          "new_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_block {}, size={}\", index, count);",
+          "content_same": false
+        },
+        {
+          "line": 280,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "cache->get(index)",
+          "old_line_content": "            return;",
+          "new_line_content": "        auto* entry = cache->get(index);",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "}",
+          "new_line_content": "        size_t base_offset = entry->block_index.value() * block_size();",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "old_text": null,
+          "new_text": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "old_line_content": "",
+          "new_line_content": "        auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "void BlockBasedFileSystem::flush_writes_impl()",
+          "new_line_content": "        (void)file_description().write(base_offset, entry_data_buffer, block_size());",
+          "content_same": false
+        },
+        {
+          "line": 164,
+          "old_api": null,
+          "new_api": "flush_specific_block_if_needed",
+          "old_text": null,
+          "new_text": "flush_specific_block_if_needed(index)",
+          "old_line_content": "            return {};",
+          "new_line_content": "            flush_specific_block_if_needed(index);",
+          "content_same": false
+        },
+        {
+          "line": 165,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "        }",
+          "new_line_content": "            u64 base_offset = index.value() * block_size() + offset;",
+          "content_same": false
+        },
+        {
+          "line": 166,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "file_description().write(base_offset, data, count)",
+          "old_line_content": "",
+          "new_line_content": "            auto nwritten = TRY(file_description().write(base_offset, data, count));",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "cache->for_each_dirty_entry([&](CacheEntry& entry) {\n            auto base_offset = entry.block_index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);\n            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());\n            ++count;\n        })",
+          "old_line_content": "            ++count;",
+          "new_line_content": "        cache->for_each_dirty_entry([&](CacheEntry& entry) {",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "        });",
+          "new_line_content": "            auto base_offset = entry.block_index.value() * block_size();",
+          "content_same": false
+        },
+        {
+          "line": 171,
+          "old_api": null,
+          "new_api": "ensure",
+          "old_text": null,
+          "new_text": "cache->ensure(index)",
+          "old_line_content": "        }",
+          "new_line_content": "        auto entry = TRY(cache->ensure(index));",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "mark_all_clean",
+          "old_text": null,
+          "new_text": "cache->mark_all_clean()",
+          "old_line_content": "",
+          "new_line_content": "        cache->mark_all_clean();",
+          "content_same": false
+        },
+        {
+          "line": 176,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "buffered_data.data()",
+          "old_line_content": "        return {};",
+          "new_line_content": "        memcpy(entry->data + offset, buffered_data.data(), count);",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "class_name",
+          "old_text": null,
+          "new_text": "class_name()",
+          "old_line_content": "void BlockBasedFileSystem::flush_writes()",
+          "new_line_content": "        dbgln(\"{}: Flushed {} blocks to disk\", class_name(), count);",
+          "content_same": false
+        },
+        {
+          "line": 178,
+          "old_api": null,
+          "new_api": "mark_dirty",
+          "old_text": null,
+          "new_text": "cache->mark_dirty(*entry)",
+          "old_line_content": "}",
+          "new_line_content": "        cache->mark_dirty(*entry);",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": null,
+          "new_api": "flush_writes_impl",
+          "old_text": null,
+          "new_text": "flush_writes_impl()",
+          "old_line_content": "",
+          "new_line_content": "    flush_writes_impl();",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "index.value()",
+          "old_line_content": "}",
+          "new_line_content": "    auto base_offset = index.value() * m_logical_block_size;",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": null,
+          "new_api": "read",
+          "old_text": null,
+          "new_text": "file_description().read(buffer, base_offset, m_logical_block_size)",
+          "old_line_content": "",
+          "new_line_content": "    auto nread = TRY(file_description().read(buffer, base_offset, m_logical_block_size));",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": null,
+          "new_api": "VERIFY",
+          "old_text": null,
+          "new_text": "VERIFY(nread == m_logical_block_size)",
+          "old_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_write(BlockIndex index, UserOrKernelBuffer const& buffer)",
+          "new_line_content": "    VERIFY(nread == m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 63,
+          "old_api": null,
+          "new_api": "first",
+          "old_text": null,
+          "new_text": "m_clean_list.first()",
+          "old_line_content": "        return &entry;",
+          "new_line_content": "        if (!entry_is_dirty(entry) && (m_clean_list.first() != &entry)) {",
+          "content_same": false
+        },
+        {
+          "line": 65,
+          "old_api": null,
+          "new_api": "prepend",
+          "old_text": null,
+          "new_text": "m_clean_list.prepend(entry)",
+          "old_line_content": "",
+          "new_line_content": "            m_clean_list.prepend(entry);",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "index.value()",
+          "old_line_content": "}",
+          "new_line_content": "    auto base_offset = index.value() * m_logical_block_size;",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "file_description().write(base_offset, buffer, m_logical_block_size)",
+          "old_line_content": "",
+          "new_line_content": "    auto nwritten = TRY(file_description().write(base_offset, buffer, m_logical_block_size));",
+          "content_same": false
+        },
+        {
+          "line": 196,
+          "old_api": null,
+          "new_api": "VERIFY",
+          "old_text": null,
+          "new_text": "VERIFY(nwritten == m_logical_block_size)",
+          "old_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_read_blocks(BlockIndex index, size_t count, UserOrKernelBuffer& buffer)",
+          "new_line_content": "    VERIFY(nwritten == m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 72,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "get(block_index)",
+          "old_line_content": "            // Not a single clean entry! Flush writes and try again.",
+          "new_line_content": "        if (auto* entry = get(block_index))",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "index.value()",
+          "old_line_content": "    return {};",
+          "new_line_content": "    for (auto block = index.value(); block < (index.value() + count); block++) {",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": null,
+          "new_api": "raw_read",
+          "old_text": null,
+          "new_text": "raw_read(BlockIndex { block }, current)",
+          "old_line_content": "}",
+          "new_line_content": "        TRY(raw_read(BlockIndex { block }, current));",
+          "content_same": false
+        },
+        {
+          "line": 205,
+          "old_api": null,
+          "new_api": "logical_block_size",
+          "old_text": null,
+          "new_text": "logical_block_size()",
+          "old_line_content": "",
+          "new_line_content": "        current = current.offset(logical_block_size());",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": null,
+          "new_api": "prepend",
+          "old_text": null,
+          "new_text": "m_clean_list.prepend(new_entry)",
+          "old_line_content": "",
+          "new_line_content": "        m_clean_list.prepend(new_entry);",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "index.value()",
+          "old_line_content": "    return {};",
+          "new_line_content": "    for (auto block = index.value(); block < (index.value() + count); block++) {",
+          "content_same": false
+        },
+        {
+          "line": 87,
+          "old_api": null,
+          "new_api": "remove",
+          "old_text": null,
+          "new_text": "m_hash.remove(new_entry.block_index)",
+          "old_line_content": "        new_entry.has_data = false;",
+          "new_line_content": "        m_hash.remove(new_entry.block_index);",
+          "content_same": false
+        },
+        {
+          "line": 88,
+          "old_api": null,
+          "new_api": "try_set",
+          "old_text": null,
+          "new_text": "m_hash.try_set(block_index, &new_entry)",
+          "old_line_content": "",
+          "new_line_content": "        TRY(m_hash.try_set(block_index, &new_entry));",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": null,
+          "new_api": "raw_write",
+          "old_text": null,
+          "new_text": "raw_write(block, current)",
+          "old_line_content": "}",
+          "new_line_content": "        TRY(raw_write(block, current));",
+          "content_same": false
+        },
+        {
+          "line": 215,
+          "old_api": null,
+          "new_api": "logical_block_size",
+          "old_text": null,
+          "new_text": "logical_block_size()",
+          "old_line_content": "",
+          "new_line_content": "        current = current.offset(logical_block_size());",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "VERIFY",
+          "old_text": null,
+          "new_text": "VERIFY(m_logical_block_size)",
+          "old_line_content": "    }",
+          "new_line_content": "    VERIFY(m_logical_block_size);",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": null,
+          "new_api": "dbgln_if",
+          "old_text": null,
+          "new_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_blocks {}, count={}\", index, count)",
+          "old_line_content": "    return {};",
+          "new_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_blocks {}, count={}\", index, count);",
+          "content_same": false
+        },
+        {
+          "line": 96,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "m_entries->data()",
+          "old_line_content": "    void for_each_dirty_entry(Callback callback)",
+          "new_line_content": "    CacheEntry const* entries() const { return (CacheEntry const*)m_entries->data(); }",
+          "content_same": false
+        },
+        {
+          "line": 97,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "m_entries->data()",
+          "old_line_content": "    {",
+          "new_line_content": "    CacheEntry* entries() { return (CacheEntry*)m_entries->data(); }",
+          "content_same": false
+        },
+        {
+          "line": 225,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "",
+          "new_line_content": "        TRY(write_block(BlockIndex { index.value() + i }, data.offset(i * block_size()), block_size(), 0, allow_cache));",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "        if (buffer)",
+          "new_line_content": "            auto nread = TRY(file_description().read(entry_data_buffer, base_offset, block_size()));",
+          "content_same": false
+        },
+        {
+          "line": 103,
+          "old_api": null,
+          "new_api": "callback",
+          "old_text": null,
+          "new_text": "callback(entry)",
+          "old_line_content": "    mutable NonnullRefPtr<BlockBasedFileSystem> m_fs;",
+          "new_line_content": "            callback(entry);",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "        if (!allow_cache) {",
+          "new_line_content": "    VERIFY(offset + count <= block_size());",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": null,
+          "new_api": "flush_specific_block_if_needed",
+          "old_text": null,
+          "new_text": "const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index)",
+          "old_line_content": "            return {};",
+          "new_line_content": "            const_cast<BlockBasedFileSystem*>(this)->flush_specific_block_if_needed(index);",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "        }",
+          "new_line_content": "            u64 base_offset = index.value() * block_size() + offset;",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": null,
+          "new_api": "read",
+          "old_text": null,
+          "new_text": "file_description().read(*buffer, base_offset, count)",
+          "old_line_content": "",
+          "new_line_content": "            auto nread = TRY(file_description().read(*buffer, base_offset, count));",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "            entry->has_data = true;",
+          "new_line_content": "            auto base_offset = index.value() * block_size();",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "old_text": null,
+          "new_text": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "old_line_content": "        }",
+          "new_line_content": "            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": null,
+          "new_api": "file",
+          "old_text": null,
+          "new_text": "file_description.file().is_seekable()",
+          "old_line_content": "",
+          "new_line_content": "    VERIFY(file_description.file().is_seekable());",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": null,
+          "new_api": "write",
+          "old_text": null,
+          "new_text": "buffer->write(entry->data + offset, count)",
+          "old_line_content": "",
+          "new_line_content": "            TRY(buffer->write(entry->data + offset, count));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 257,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_logical_block_size);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "is_locked",
+          "new_api": null,
+          "old_text": "m_lock.is_locked()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_lock.is_locked());",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "is_initialized_while_locked",
+          "new_api": null,
+          "old_text": "is_initialized_while_locked()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(!is_initialized_while_locked());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(block_size() != 0);",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::initialize_while_locked()",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    auto cached_block_data = TRY(KBuffer::try_create_with_size(\"BlockBasedFS: Cache blocks\"sv, DiskCache::EntryCount * block_size()));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        TRY(read_block(BlockIndex { index.value() + i }, &out, block_size(), 0, allow_cache));",
+          "new_line_content": "    if (count == 1)",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": "with_exclusive",
+          "new_api": null,
+          "old_text": "m_cache.with_exclusive([&](auto& cache) {\n        if (!cache->is_dirty())\n            return;\n        auto* entry = cache->get(index);\n        if (!entry)\n            return;\n        if (!cache->entry_is_dirty(*entry))\n            return;\n        size_t base_offset = entry->block_index.value() * block_size();\n        auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);\n        (void)file_description().write(base_offset, entry_data_buffer, block_size());\n    })",
+          "new_text": null,
+          "old_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "is_dirty",
+          "new_api": null,
+          "old_text": "cache->is_dirty()",
+          "new_text": null,
+          "old_line_content": "        if (!cache->is_dirty())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_logical_block_size);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(offset + count <= block_size());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": "dbgln_if",
+          "new_api": null,
+          "old_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_block {}, size={}\", index, count)",
+          "new_text": null,
+          "old_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_block {}, size={}\", index, count);",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::write_block(BlockIndex index, UserOrKernelBuffer const& data, size_t count, u64 offset, bool allow_cache)",
+          "content_same": false
+        },
+        {
+          "line": 276,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "cache->get(index)",
+          "new_text": null,
+          "old_line_content": "        auto* entry = cache->get(index);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 279,
+          "old_api": "entry_is_dirty",
+          "new_api": null,
+          "old_text": "cache->entry_is_dirty(*entry)",
+          "new_text": null,
+          "old_line_content": "        if (!cache->entry_is_dirty(*entry))",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        size_t base_offset = entry->block_index.value() * block_size();",
+          "new_line_content": "        if (!entry)",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": "ByteBuffer::create_uninitialized(count)",
+          "new_api": null,
+          "old_text": "ByteBuffer::create_uninitialized(count)",
+          "new_text": null,
+          "old_line_content": "    auto buffered_data = TRY(ByteBuffer::create_uninitialized(count));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "new_api": null,
+          "old_text": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "new_text": null,
+          "old_line_content": "        auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": "bytes",
+          "new_api": null,
+          "old_text": "buffered_data.bytes()",
+          "new_text": null,
+          "old_line_content": "    TRY(data.read(buffered_data.bytes()));",
+          "new_line_content": "    //       This makes sure any page faults caused by accessing the data will occur before",
+          "content_same": false
+        },
+        {
+          "line": 161,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            u64 base_offset = index.value() * block_size() + offset;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 290,
+          "old_api": "with_exclusive",
+          "new_api": null,
+          "old_text": "m_cache.with_exclusive([&](auto& cache) {\n        if (!cache->is_dirty())\n            return;\n        cache->for_each_dirty_entry([&](CacheEntry& entry) {\n            auto base_offset = entry.block_index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);\n            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());\n            ++count;\n        });\n        cache->mark_all_clean();\n        dbgln(\"{}: Flushed {} blocks to disk\", class_name(), count);\n    })",
+          "new_text": null,
+          "old_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 163,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(nwritten == count)",
+          "new_text": null,
+          "old_line_content": "            VERIFY(nwritten == count);",
+          "new_line_content": "        if (!allow_cache) {",
+          "content_same": false
+        },
+        {
+          "line": 291,
+          "old_api": "is_dirty",
+          "new_api": null,
+          "old_text": "cache->is_dirty()",
+          "new_text": null,
+          "old_line_content": "        if (!cache->is_dirty())",
+          "new_line_content": "void BlockBasedFileSystem::flush_writes_impl()",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "cache->for_each_dirty_entry([&](CacheEntry& entry) {\n            auto base_offset = entry.block_index.value() * block_size();\n            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry.data);\n            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());\n            ++count;\n        })",
+          "new_text": null,
+          "old_line_content": "        cache->for_each_dirty_entry([&](CacheEntry& entry) {",
+          "new_line_content": "    size_t count = 0;",
+          "content_same": false
+        },
+        {
+          "line": 168,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        if (count < block_size()) {",
+          "new_line_content": "            return {};",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            [[maybe_unused]] auto rc = file_description().write(base_offset, entry_data_buffer, block_size());",
+          "new_line_content": "            return;",
+          "content_same": false
+        },
+        {
+          "line": 170,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            TRY(read_block(index, nullptr, block_size()));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "flush_writes_impl",
+          "new_api": null,
+          "old_text": "flush_writes_impl()",
+          "new_text": null,
+          "old_line_content": "    flush_writes_impl();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 182,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "index.value()",
+          "new_text": null,
+          "old_line_content": "    auto base_offset = index.value() * m_logical_block_size;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": "read",
+          "new_api": null,
+          "old_text": "file_description().read(buffer, base_offset, m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    auto nread = TRY(file_description().read(buffer, base_offset, m_logical_block_size));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(nread == m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(nread == m_logical_block_size);",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_read(BlockIndex index, UserOrKernelBuffer& buffer)",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "index.value()",
+          "new_text": null,
+          "old_line_content": "    auto base_offset = index.value() * m_logical_block_size;",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": "write",
+          "new_api": null,
+          "old_text": "file_description().write(base_offset, buffer, m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    auto nwritten = TRY(file_description().write(base_offset, buffer, m_logical_block_size));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 192,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(nwritten == m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(nwritten == m_logical_block_size);",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_write(BlockIndex index, UserOrKernelBuffer const& buffer)",
+          "content_same": false
+        },
+        {
+          "line": 68,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "get(block_index)",
+          "new_text": null,
+          "old_line_content": "        if (auto* entry = get(block_index))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 71,
+          "old_api": "is_empty",
+          "new_api": null,
+          "old_text": "m_clean_list.is_empty()",
+          "new_text": null,
+          "old_line_content": "        if (m_clean_list.is_empty()) {",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "index.value()",
+          "new_text": null,
+          "old_line_content": "    for (auto block = index.value(); block < (index.value() + count); block++) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "raw_read",
+          "new_api": null,
+          "old_text": "raw_read(BlockIndex { block }, current)",
+          "new_text": null,
+          "old_line_content": "        TRY(raw_read(BlockIndex { block }, current));",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_read_blocks(BlockIndex index, size_t count, UserOrKernelBuffer& buffer)",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "logical_block_size",
+          "new_api": null,
+          "old_text": "logical_block_size()",
+          "new_text": null,
+          "old_line_content": "        current = current.offset(logical_block_size());",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 76,
+          "old_api": "ensure",
+          "new_api": null,
+          "old_text": "ensure(block_index)",
+          "new_text": null,
+          "old_line_content": "            return ensure(block_index);",
+          "new_line_content": "            // Not a single clean entry! Flush writes and try again.",
+          "content_same": false
+        },
+        {
+          "line": 81,
+          "old_api": "prepend",
+          "new_api": null,
+          "old_text": "m_clean_list.prepend(new_entry)",
+          "new_text": null,
+          "old_line_content": "        m_clean_list.prepend(new_entry);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "index.value()",
+          "new_text": null,
+          "old_line_content": "    for (auto block = index.value(); block < (index.value() + count); block++) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": "raw_write",
+          "new_api": null,
+          "old_text": "raw_write(block, current)",
+          "new_text": null,
+          "old_line_content": "        TRY(raw_write(block, current));",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::raw_write_blocks(BlockIndex index, size_t count, UserOrKernelBuffer const& buffer)",
+          "content_same": false
+        },
+        {
+          "line": 211,
+          "old_api": "logical_block_size",
+          "new_api": null,
+          "old_text": "logical_block_size()",
+          "new_text": null,
+          "old_line_content": "        current = current.offset(logical_block_size());",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_logical_block_size);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "dbgln_if",
+          "new_api": null,
+          "old_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_blocks {}, count={}\", index, count)",
+          "new_text": null,
+          "old_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::write_blocks {}, count={}\", index, count);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "m_entries->data()",
+          "new_text": null,
+          "old_line_content": "    CacheEntry const* entries() const { return (CacheEntry const*)m_entries->data(); }",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 93,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "m_entries->data()",
+          "new_text": null,
+          "old_line_content": "    CacheEntry* entries() { return (CacheEntry*)m_entries->data(); }",
+          "new_line_content": "        return &new_entry;",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        TRY(write_block(BlockIndex { index.value() + i }, data.offset(i * block_size()), block_size(), 0, allow_cache));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 99,
+          "old_api": "callback",
+          "new_api": null,
+          "old_text": "callback(entry)",
+          "new_text": null,
+          "old_line_content": "            callback(entry);",
+          "new_line_content": "    template<typename Callback>",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(m_logical_block_size)",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_logical_block_size);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(offset + count <= block_size());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "dbgln_if",
+          "new_api": null,
+          "old_text": "dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::read_block {}\", index)",
+          "new_text": null,
+          "old_line_content": "    dbgln_if(BBFS_DEBUG, \"BlockBasedFileSystem::read_block {}\", index);",
+          "new_line_content": "ErrorOr<void> BlockBasedFileSystem::read_block(BlockIndex index, UserOrKernelBuffer* buffer, size_t count, u64 offset, bool allow_cache) const",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            u64 base_offset = index.value() * block_size() + offset;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "VERIFY",
+          "new_api": null,
+          "old_text": "VERIFY(nread == count)",
+          "new_text": null,
+          "old_line_content": "            VERIFY(nread == count);",
+          "new_line_content": "        if (!allow_cache) {",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            auto base_offset = index.value() * block_size();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "new_api": null,
+          "old_text": "UserOrKernelBuffer::for_kernel_buffer(entry->data)",
+          "new_text": null,
+          "old_line_content": "            auto entry_data_buffer = UserOrKernelBuffer::for_kernel_buffer(entry->data);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": "file",
+          "new_api": null,
+          "old_text": "file_description.file().is_seekable()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(file_description.file().is_seekable());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "            VERIFY(nread == block_size());",
+          "new_line_content": "        if (!entry->has_data) {",
+          "content_same": false
+        },
+        {
+          "line": 124,
+          "old_api": "is_locked",
+          "new_api": null,
+          "old_text": "m_lock.is_locked()",
+          "new_text": null,
+          "old_line_content": "    VERIFY(m_lock.is_locked());",
+          "new_line_content": "BlockBasedFileSystem::~BlockBasedFileSystem() = default;",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "with_exclusive",
+          "new_api": null,
+          "old_text": "m_cache.with_exclusive([&](auto& cache) {\n        cache.clear();\n    })",
+          "new_text": null,
+          "old_line_content": "    m_cache.with_exclusive([&](auto& cache) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "cache.clear()",
+          "new_text": null,
+          "old_line_content": "        cache.clear();",
+          "new_line_content": "void BlockBasedFileSystem::remove_disk_cache_before_last_unmount()",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 27,
+      "total_additions": 62,
+      "total_deletions": 60,
+      "total_api_changes": 149
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 149,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          64,
+          66
+        ]
+      }
+    },
+    "api_calls_before": 172,
+    "api_calls_after": 175,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 0,
+      "total_diff_lines": 16
+    }
+  }
+}

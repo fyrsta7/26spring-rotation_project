@@ -1,0 +1,1805 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f2a942200a4358cb2d97fef104ea6f9f7d0545b1",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f2a942200a4358cb2d97fef104ea6f9f7d0545b1/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f2a942200a4358cb2d97fef104ea6f9f7d0545b1/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/f2a942200a4358cb2d97fef104ea6f9f7d0545b1/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 218,
+          "old_api": "read",
+          "new_api": "loadAll",
+          "old_text": "stream->read()",
+          "new_text": "source_ptr->loadAll()",
+          "old_line_content": "    while (const auto block = stream->read())",
+          "new_line_content": "    auto stream = source_ptr->loadAll();",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "blockToAttributes",
+          "new_api": "readPrefix",
+          "old_text": "blockToAttributes(block)",
+          "new_text": "stream->readPrefix()",
+          "old_line_content": "        blockToAttributes(block);",
+          "new_line_content": "    stream->readPrefix();",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "readSuffix",
+          "new_api": "read",
+          "old_text": "stream->readSuffix()",
+          "new_text": "stream->read()",
+          "old_line_content": "    stream->readSuffix();",
+          "new_line_content": "    while (const auto block = stream->read())",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": "get",
+          "new_api": "size",
+          "old_text": "key_columns[0].get()",
+          "new_text": "key_columns.size()",
+          "old_line_content": "    const auto column_x = typeid_cast<const ColumnVector<Float64>*>(key_columns[0].get());",
+          "new_line_content": "    if (key_columns.size() != DIM)",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "get",
+          "new_api": "std::to_string(DIM)",
+          "old_text": "key_columns[1].get()",
+          "new_text": "std::to_string(DIM)",
+          "old_line_content": "    const auto column_y = typeid_cast<const ColumnVector<Float64>*>(key_columns[1].get());",
+          "new_line_content": "        throw Exception{\"Expected \" + std::to_string(DIM) + \" columns of coordinates\", ErrorCodes::BAD_ARGUMENTS};",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": "reserve",
+          "new_api": "front",
+          "old_text": "result.reserve(rows)",
+          "new_text": "key_columns.front()->size()",
+          "old_line_content": "    result.reserve(rows);",
+          "new_line_content": "    const auto rows = key_columns.front()->size();",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": "getElement",
+          "new_api": "reserve",
+          "old_text": "column_y->getElement(row)",
+          "new_text": "result.reserve(rows)",
+          "old_line_content": "        result.emplace_back(column_x->getElement(row), column_y->getElement(row));",
+          "new_line_content": "    result.reserve(rows);",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "std::get<String>(null_values[ind])",
+          "new_api": "checkAttributeType",
+          "old_text": "std::get<String>(null_values[ind])",
+          "new_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "old_line_content": "    const auto & null_value = StringRef{std::get<String>(null_values[ind])};",
+          "new_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "insertData",
+          "new_api": "std::get<String>(null_values[ind])",
+          "old_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef & value) { out->insertData(value.data, value.size); },\n            [&](const size_t) { return null_value; })",
+          "new_text": "std::get<String>(null_values[ind])",
+          "old_line_content": "    getItemsImpl<String, StringRef>(",
+          "new_line_content": "    const auto & null_value = StringRef{std::get<String>(null_values[ind])};",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "insertData",
+          "new_api": "checkAttributeType",
+          "old_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },\n            [&](const size_t row) { return def->getDataAt(row); })",
+          "new_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "old_line_content": "    getItemsImpl<String, StringRef>(",
+          "new_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "insertData",
+          "new_api": "checkAttributeType",
+          "old_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },\n            [&](const size_t) { return StringRef{def}; })",
+          "new_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "old_line_content": "    getItemsImpl<String, StringRef>(",
+          "new_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "getElement",
+          "new_api": "getDataAt",
+          "old_text": "column->getElement(id)",
+          "new_text": "column->getDataAt(id)",
+          "old_line_content": "            set_value(i, static_cast<OutputType>(column->getElement(id)));",
+          "new_line_content": "            set_value(i, static_cast<OutputType>(column->getDataAt(id)));",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": "getData",
+          "new_api": "getOffsets",
+          "old_text": "ptr_polygons->getData()",
+          "new_text": "ptr_multi_polygons->getOffsets()",
+          "old_line_content": "    const auto ptr_rings = typeid_cast<const ColumnArray*>(&ptr_polygons->getData());",
+          "new_line_content": "    polygons.assign(ptr_multi_polygons->getOffsets());",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "getData",
+          "new_api": "getOffsets",
+          "old_text": "ptr_rings->getData()",
+          "new_text": "ptr_polygons->getOffsets()",
+          "old_line_content": "    const auto ptr_points = typeid_cast<const ColumnArray*>(&ptr_rings->getData());",
+          "new_line_content": "    rings.assign(ptr_polygons->getOffsets());",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "getData",
+          "new_api": "getOffsets",
+          "old_text": "ptr_points->getData()",
+          "new_text": "ptr_rings->getOffsets()",
+          "old_line_content": "    const auto ptr_coord = typeid_cast<const ColumnVector<Float64>*>(&ptr_points->getData());",
+          "new_line_content": "    points.assign(ptr_rings->getOffsets());",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "emplace_back",
+          "new_api": "makeDifferences",
+          "old_text": "dest.emplace_back()",
+          "new_text": "makeDifferences(points)",
+          "old_line_content": "    dest.emplace_back();",
+          "new_line_content": "    makeDifferences(polygons), makeDifferences(rings), makeDifferences(points);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "field.get<Array>()",
+          "new_api": "getType",
+          "old_text": "field.get<Array>()",
+          "new_text": "field.getType()",
+          "old_line_content": "        auto coordinate_array = field.get<Array>();",
+          "new_line_content": "    if (field.getType() == Field::Types::Array)",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": "std::to_string(DIM)",
+          "new_api": "field.get<Array>()",
+          "old_text": "std::to_string(DIM)",
+          "new_text": "field.get<Array>()",
+          "old_line_content": "            throw Exception{\"All points should be \" + std::to_string(DIM) + \"-dimensional\", ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "        auto coordinate_array = field.get<Array>();",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "coordinate_array[i].get<Float64>()",
+          "new_api": "getType",
+          "old_text": "coordinate_array[i].get<Float64>()",
+          "new_text": "coordinate_array[i].getType()",
+          "old_line_content": "            values[i] = coordinate_array[i].get<Float64>();",
+          "new_line_content": "            if (coordinate_array[i].getType() != Field::Types::Float64)",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": "field.get<Array>()",
+          "new_api": "getType",
+          "old_text": "field.get<Array>()",
+          "new_text": "field.getType()",
+          "old_line_content": "        const auto & ring_array = field.get<Array>();",
+          "new_line_content": "    if (field.getType() == Field::Types::Array)",
+          "content_same": false
+        },
+        {
+          "line": 542,
+          "old_api": "size",
+          "new_api": "empty",
+          "old_text": "ring_array.size()",
+          "new_text": "ring_array.empty()",
+          "old_line_content": "        result.inners().resize(ring_array.size() - 1);",
+          "new_line_content": "        if (ring_array.empty())",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": "ring_array[0].get<Array>()",
+          "new_api": "getType",
+          "old_text": "ring_array[0].get<Array>()",
+          "new_text": "ring_array[0].getType()",
+          "old_line_content": "        for (const auto & point : ring_array[0].get<Array>())",
+          "new_line_content": "        if (ring_array[0].getType() != Field::Types::Array)",
+          "content_same": false
+        },
+        {
+          "line": 547,
+          "old_api": "inners",
+          "new_api": "ring_array[0].get<Array>()",
+          "old_text": "result.inners().size()",
+          "new_text": "ring_array[0].get<Array>()",
+          "old_line_content": "        for (size_t i = 0; i < result.inners().size(); ++i)",
+          "new_line_content": "        for (const auto & point : ring_array[0].get<Array>())",
+          "content_same": false
+        },
+        {
+          "line": 549,
+          "old_api": "getType",
+          "new_api": "inners",
+          "old_text": "ring_array[i + 1].getType()",
+          "new_text": "result.inners().size()",
+          "old_line_content": "            if (ring_array[i + 1].getType() != Field::Types::Array)",
+          "new_line_content": "        for (size_t i = 0; i < result.inners().size(); ++i)",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "ring_array[i + 1].get<Array>()",
+          "new_api": "getType",
+          "old_text": "ring_array[i + 1].get<Array>()",
+          "new_text": "ring_array[i + 1].getType()",
+          "old_line_content": "            for (const auto & point : ring_array[i + 1].get<Array>())",
+          "new_line_content": "            if (ring_array[i + 1].getType() != Field::Types::Array)",
+          "content_same": false
+        },
+        {
+          "line": 567,
+          "old_api": "field.get<Array>()",
+          "new_api": "getType",
+          "old_text": "field.get<Array>()",
+          "new_text": "field.getType()",
+          "old_line_content": "        const auto& polygon_array = field.get<Array>();",
+          "new_line_content": "    if (field.getType() == Field::Types::Array)",
+          "content_same": false
+        },
+        {
+          "line": 570,
+          "old_api": "fieldToPolygon",
+          "new_api": "size",
+          "old_text": "fieldToPolygon(polygon)",
+          "new_text": "polygon_array.size()",
+          "old_line_content": "            result.push_back(fieldToPolygon(polygon));",
+          "new_line_content": "        result.reserve(polygon_array.size());",
+          "content_same": false
+        },
+        {
+          "line": 601,
+          "old_api": "bg::covered_by(point, (this->polygons)[i])",
+          "new_api": "size",
+          "old_text": "bg::covered_by(point, (this->polygons)[i])",
+          "new_text": "this->polygons).size()",
+          "old_line_content": "        if (bg::covered_by(point, (this->polygons)[i]))",
+          "new_line_content": "    for (size_t i = 0; i < (this->polygons).size(); ++i)",
+          "content_same": false
+        },
+        {
+          "line": 631,
+          "old_api": "registerLayout",
+          "new_api": "std::move(source_ptr)",
+          "old_text": "factory.registerLayout(\"polygon\", create_layout, true)",
+          "new_text": "std::move(source_ptr)",
+          "old_line_content": "    factory.registerLayout(\"polygon\", create_layout, true);",
+          "new_line_content": "        return std::make_unique<SimplePolygonDictionary>(database, name, dict_struct, std::move(source_ptr), dict_lifetime);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 512,
+          "old_api": null,
+          "new_api": "getElement",
+          "old_text": null,
+          "new_text": "ptr_coord->getElement(2 * i + 1)",
+          "old_line_content": "}",
+          "new_line_content": "        ring.emplace_back(ptr_coord->getElement(2 * i), ptr_coord->getElement(2 * i + 1));",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "fetch_add",
+          "old_text": null,
+          "new_text": "query_count.fetch_add(row, std::memory_order_relaxed)",
+          "old_line_content": "",
+          "new_line_content": "    query_count.fetch_add(row, std::memory_order_relaxed);",
+          "content_same": false
+        },
+        {
+          "line": 264,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "attribute_index_by_name.find(attribute_name)",
+          "old_line_content": "        throw Exception{\"No such attribute: \" + attribute_name, ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "    const auto it = attribute_index_by_name.find(attribute_name);",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "coordinate_array.size()",
+          "old_line_content": "        Float64 values[DIM];",
+          "new_line_content": "        if (coordinate_array.size() != DIM)",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": null,
+          "new_api": "std::to_string(DIM)",
+          "old_text": null,
+          "new_text": "std::to_string(DIM)",
+          "old_line_content": "        for (size_t i = 0; i < DIM; ++i)",
+          "new_line_content": "            throw Exception{\"All points should be \" + std::to_string(DIM) + \"-dimensional\", ErrorCodes::BAD_ARGUMENTS};",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "attribute_index_by_name.end()",
+          "old_line_content": "    return it->second;",
+          "new_line_content": "    if (it == attribute_index_by_name.end())",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal64)",
+          "old_line_content": "#undef DECLARE",
+          "new_line_content": "    DECLARE(Decimal64)",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal128)",
+          "old_line_content": "",
+          "new_line_content": "    DECLARE(Decimal128)",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "dest.back().back().inners().back()",
+          "old_line_content": "    }",
+          "new_line_content": "        auto & ring = (dest.back().back().inners().empty() ? dest.back().back().outer() : dest.back().back().inners().back());",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": null,
+          "new_api": "coordinate_array[i].get<Float64>()",
+          "old_text": null,
+          "new_text": "coordinate_array[i].get<Float64>()",
+          "old_line_content": "        return {values[0], values[1]};",
+          "new_line_content": "            values[i] = coordinate_array[i].get<Float64>();",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": null,
+          "new_api": "getAttributeIndex",
+          "old_text": null,
+          "new_text": "getAttributeIndex(attribute_name)",
+          "old_line_content": "",
+          "new_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },\n            [&](const size_t) { return StringRef{def}; })",
+          "old_line_content": "            key_columns,",
+          "new_line_content": "    getItemsImpl<String, StringRef>(",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "out->insertData(value.data, value.size)",
+          "old_line_content": "}",
+          "new_line_content": "            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },",
+          "content_same": false
+        },
+        {
+          "line": 541,
+          "old_api": null,
+          "new_api": "field.get<Array>()",
+          "old_text": null,
+          "new_text": "field.get<Array>()",
+          "old_line_content": "            throw Exception{\"Empty polygons are not allowed\", ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "        const auto & ring_array = field.get<Array>();",
+          "content_same": false
+        },
+        {
+          "line": 544,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "ring_array.size()",
+          "old_line_content": "            throw Exception{\"Outer polygon ring is not represented by an array\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "        result.inners().resize(ring_array.size() - 1);",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "extractPoints",
+          "old_text": null,
+          "new_text": "extractPoints(key_columns)",
+          "old_line_content": "    using ColVecType = std::conditional_t<IsDecimalNumber<AttributeType>, ColumnDecimal<AttributeType>, ColumnVector<AttributeType>>;",
+          "new_line_content": "    const auto points = extractPoints(key_columns);",
+          "content_same": false
+        },
+        {
+          "line": 548,
+          "old_api": null,
+          "new_api": "fieldToPoint",
+          "old_text": null,
+          "new_text": "fieldToPoint(point)",
+          "old_line_content": "        {",
+          "new_line_content": "            bg::append(result.outer(), fieldToPoint(point));",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "attributes[attribute_ind].get()",
+          "old_line_content": "        throw Exception{\"An attribute should be a column of its type\", ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "    const auto column = typeid_cast<const ColType *>(attributes[attribute_ind].get());",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "points.size()",
+          "old_line_content": "        size_t id = 0;",
+          "new_line_content": "    for (const auto i : ext::range(0, points.size()))",
+          "content_same": false
+        },
+        {
+          "line": 553,
+          "old_api": null,
+          "new_api": "ring_array[i + 1].get<Array>()",
+          "old_text": null,
+          "new_text": "ring_array[i + 1].get<Array>()",
+          "old_line_content": "        }",
+          "new_line_content": "            for (const auto & point : ring_array[i + 1].get<Array>())",
+          "content_same": false
+        },
+        {
+          "line": 554,
+          "old_api": null,
+          "new_api": "fieldToPoint",
+          "old_text": null,
+          "new_text": "fieldToPoint(point)",
+          "old_line_content": "    }",
+          "new_line_content": "                bg::append(result.inners()[i], fieldToPoint(point));",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal64)",
+          "old_line_content": "#undef DECLARE",
+          "new_line_content": "    DECLARE(Decimal64)",
+          "content_same": false
+        },
+        {
+          "line": 298,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal128)",
+          "old_line_content": "",
+          "new_line_content": "    DECLARE(Decimal128)",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "find(points[i], id)",
+          "old_line_content": "        {",
+          "new_line_content": "        const auto found = find(points[i], id);",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": null,
+          "new_api": "get_default",
+          "old_text": null,
+          "new_text": "get_default(i)",
+          "old_line_content": "        }",
+          "new_line_content": "            set_value(i, static_cast<OutputType>(get_default(i)));",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "bg::correct(result)",
+          "old_text": null,
+          "new_text": "bg::correct(result)",
+          "old_line_content": "}",
+          "new_line_content": "    bg::correct(result);",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "getAttributeIndex",
+          "old_text": null,
+          "new_text": "getAttributeIndex(attribute_name)",
+          "old_line_content": "",
+          "new_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": null,
+          "new_api": "getElement",
+          "old_text": null,
+          "new_text": "column->getElement(id)",
+          "old_line_content": "",
+          "new_line_content": "            set_value(i, static_cast<OutputType>(column->getElement(id)));",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef & value) { out->insertData(value.data, value.size); },\n            [&](const size_t) { return null_value; })",
+          "old_line_content": "            key_columns,",
+          "new_line_content": "    getItemsImpl<String, StringRef>(",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "points.size()",
+          "old_line_content": "",
+          "new_line_content": "    query_count.fetch_add(points.size(), std::memory_order_relaxed);",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "out->insertData(value.data, value.size)",
+          "old_line_content": "}",
+          "new_line_content": "            [&](const size_t, const StringRef & value) { out->insertData(value.data, value.size); },",
+          "content_same": false
+        },
+        {
+          "line": 569,
+          "old_api": null,
+          "new_api": "field.get<Array>()",
+          "old_text": null,
+          "new_text": "field.get<Array>()",
+          "old_line_content": "        for (const auto & polygon : polygon_array)",
+          "new_line_content": "        const auto& polygon_array = field.get<Array>();",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": null,
+          "new_api": "fieldToPolygon",
+          "old_text": null,
+          "new_text": "fieldToPolygon(polygon)",
+          "old_line_content": "    else",
+          "new_line_content": "            result.push_back(fieldToPolygon(polygon));",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "values.size()",
+          "old_line_content": "}",
+          "new_line_content": "    for (size_t i = 1; i < values.size(); ++i)",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "column.get()",
+          "old_line_content": "        throw Exception{\"Expected a column containing arrays of polygons\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto ptr_multi_polygons = typeid_cast<const ColumnArray*>(column.get());",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": null,
+          "new_api": "std::move(source_ptr_)",
+          "old_text": null,
+          "new_text": "std::move(source_ptr_)",
+          "old_line_content": "}",
+          "new_line_content": "    : IPolygonDictionary(database_, name_, dict_struct_, std::move(source_ptr_), dict_lifetime_)",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "getData",
+          "old_text": null,
+          "new_text": "ptr_multi_polygons->getData()",
+          "old_line_content": "        throw Exception{\"Expected a column containing arrays of rings when reading polygons\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto ptr_polygons = typeid_cast<const ColumnArray*>(&ptr_multi_polygons->getData());",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "clone",
+          "old_text": null,
+          "new_text": "std::make_shared<SimplePolygonDictionary>(\n            this->database,\n            this->name,\n            this->dict_struct,\n            this->source_ptr->clone(),\n            this->dict_lifetime)",
+          "old_line_content": "            this->name,",
+          "new_line_content": "    return std::make_shared<SimplePolygonDictionary>(",
+          "content_same": false
+        },
+        {
+          "line": 464,
+          "old_api": null,
+          "new_api": "getData",
+          "old_text": null,
+          "new_text": "ptr_polygons->getData()",
+          "old_line_content": "        throw Exception{\"Expected a column containing arrays of points when reading rings\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto ptr_rings = typeid_cast<const ColumnArray*>(&ptr_polygons->getData());",
+          "content_same": false
+        },
+        {
+          "line": 595,
+          "old_api": null,
+          "new_api": "clone",
+          "old_text": null,
+          "new_text": "this->source_ptr->clone()",
+          "old_line_content": "}",
+          "new_line_content": "            this->source_ptr->clone(),",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "extractMultiPolygons",
+          "old_text": null,
+          "new_text": "extractMultiPolygons(key, polygons)",
+          "old_line_content": "",
+          "new_line_content": "    extractMultiPolygons(key, polygons);",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": null,
+          "new_api": "getData",
+          "old_text": null,
+          "new_text": "ptr_rings->getData()",
+          "old_line_content": "        throw Exception{\"Expected a column containing arrays of Float64s when reading points\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto ptr_points = typeid_cast<const ColumnArray*>(&ptr_rings->getData());",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal64)",
+          "old_line_content": "#undef DECLARE",
+          "new_line_content": "    DECLARE(Decimal64)",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": null,
+          "new_api": "DECLARE",
+          "old_text": null,
+          "new_text": "DECLARE(Decimal128)",
+          "old_line_content": "",
+          "new_line_content": "    DECLARE(Decimal128)",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": null,
+          "new_api": "bg::covered_by(point, (this->polygons)[i])",
+          "old_text": null,
+          "new_text": "bg::covered_by(point, (this->polygons)[i])",
+          "old_line_content": "            id = i;",
+          "new_line_content": "        if (bg::covered_by(point, (this->polygons)[i]))",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "getData",
+          "old_text": null,
+          "new_text": "ptr_points->getData()",
+          "old_line_content": "        throw Exception{\"Expected a column containing Float64s when reading coordinates\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto ptr_coord = typeid_cast<const ColumnVector<Float64>*>(&ptr_points->getData());",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "blockToAttributes",
+          "old_text": null,
+          "new_text": "blockToAttributes(block)",
+          "old_line_content": "}",
+          "new_line_content": "        blockToAttributes(block);",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": null,
+          "new_api": "readSuffix",
+          "old_text": null,
+          "new_text": "stream->readSuffix()",
+          "old_line_content": "",
+          "new_line_content": "    stream->readSuffix();",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "getOffsets",
+          "old_text": null,
+          "new_text": "ptr_points->getOffsets()",
+          "old_line_content": "    IColumn::Offset point_offset = 0, ring_offset = 0, polygon_offset = 0;",
+          "new_line_content": "    const auto & coordinates = ptr_points->getOffsets();",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "dest.emplace_back()",
+          "old_line_content": "    {",
+          "new_line_content": "    dest.emplace_back();",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "coordinates.size()",
+          "old_line_content": "",
+          "new_line_content": "    for (size_t i = 0; i < coordinates.size(); ++i)",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "getAttributeIndex",
+          "old_text": null,
+          "new_text": "getAttributeIndex(attribute_name)",
+          "old_line_content": "",
+          "new_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "allocatedBytes",
+          "old_text": null,
+          "new_text": "column->allocatedBytes()",
+          "old_line_content": "",
+          "new_line_content": "        bytes_allocated += column->allocatedBytes();",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": null,
+          "new_api": "std::to_string(DIM)",
+          "old_text": null,
+          "new_text": "std::to_string(DIM)",
+          "old_line_content": "        {",
+          "new_line_content": "            throw Exception{\"All points should be \" + std::to_string(DIM) + \"-dimensional\", ErrorCodes::BAD_ARGUMENTS};",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "getItemsImpl<String, StringRef>(\n            ind,\n            key_columns,\n            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },\n            [&](const size_t row) { return def->getDataAt(row); })",
+          "old_line_content": "            key_columns,",
+          "new_line_content": "    getItemsImpl<String, StringRef>(",
+          "content_same": false
+        },
+        {
+          "line": 489,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "dest.back().back().outer().empty()",
+          "old_line_content": "            if (rings[ring_offset] == 0)",
+          "new_line_content": "            if (!dest.back().back().outer().empty())",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "insertData",
+          "old_text": null,
+          "new_text": "out->insertData(value.data, value.size)",
+          "old_line_content": "}",
+          "new_line_content": "            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "getDataAt",
+          "old_text": null,
+          "new_text": "def->getDataAt(row)",
+          "old_line_content": "",
+          "new_line_content": "            [&](const size_t row) { return def->getDataAt(row); });",
+          "content_same": false
+        },
+        {
+          "line": 620,
+          "old_api": null,
+          "new_api": "getString",
+          "old_text": null,
+          "new_text": "config.getString(config_prefix + \".database\", \"\")",
+          "old_line_content": "",
+          "new_line_content": "        const String database = config.getString(config_prefix + \".database\", \"\");",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": null,
+          "new_api": "getString",
+          "old_text": null,
+          "new_text": "config.getString(config_prefix + \".name\")",
+          "old_line_content": "        // TODO: Check that there is only one key and it is of the correct type.",
+          "new_line_content": "        const String name = config.getString(config_prefix + \".name\");",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "key_columns[0].get()",
+          "old_line_content": "    if (!column_x || !column_y)",
+          "new_line_content": "    const auto column_x = typeid_cast<const ColumnVector<Float64>*>(key_columns[0].get());",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "key_columns[1].get()",
+          "old_line_content": "        throw Exception{\"Expected columns of Float64\", ErrorCodes::TYPE_MISMATCH};",
+          "new_line_content": "    const auto column_y = typeid_cast<const ColumnVector<Float64>*>(key_columns[1].get());",
+          "content_same": false
+        },
+        {
+          "line": 490,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "dest.back().back().inners().emplace_back()",
+          "old_line_content": "            {",
+          "new_line_content": "                dest.back().back().inners().emplace_back();",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "back",
+          "old_text": null,
+          "new_text": "dest.back().emplace_back()",
+          "old_line_content": "                {",
+          "new_line_content": "                dest.back().emplace_back();",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "dest.emplace_back()",
+          "old_line_content": "                }",
+          "new_line_content": "                    dest.emplace_back();",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": null,
+          "new_api": "ext::range(0, rows)",
+          "old_text": null,
+          "new_text": "ext::range(0, rows)",
+          "old_line_content": "    return result;",
+          "new_line_content": "    for (const auto row : ext::range(0, rows))",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": null,
+          "new_api": "getElement",
+          "old_text": null,
+          "new_text": "column_y->getElement(row)",
+          "old_line_content": "}",
+          "new_line_content": "        result.emplace_back(column_x->getElement(row), column_y->getElement(row));",
+          "content_same": false
+        },
+        {
+          "line": 500,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "polygons.size()",
+          "old_line_content": "                --polygons[polygon_offset];",
+          "new_line_content": "                if (polygon_offset == polygons.size())",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "rings.size()",
+          "old_line_content": "            --rings[ring_offset];",
+          "new_line_content": "            if (ring_offset == rings.size())",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": null,
+          "new_api": "registerLayout",
+          "old_text": null,
+          "new_text": "factory.registerLayout(\"polygon\", create_layout, true)",
+          "old_line_content": "",
+          "new_line_content": "    factory.registerLayout(\"polygon\", create_layout, true);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": null,
+          "new_api": "extractPoints",
+          "old_text": null,
+          "new_text": "extractPoints(key_columns)",
+          "old_line_content": "        // TODO: Check whether this will be optimized by the compiler.",
+          "new_line_content": "    for (const auto & pt : extractPoints(key_columns))",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "points.size()",
+          "old_line_content": "        --points[point_offset];",
+          "new_line_content": "        if (point_offset == points.size())",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "find",
+          "old_text": null,
+          "new_text": "find(pt, trash)",
+          "old_line_content": "    }",
+          "new_line_content": "        out[row] = find(pt, trash);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 257,
+          "old_api": "fetch_add",
+          "new_api": null,
+          "old_text": "query_count.fetch_add(row, std::memory_order_relaxed)",
+          "new_text": null,
+          "old_line_content": "    query_count.fetch_add(row, std::memory_order_relaxed);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "dest.back().back().inners().back()",
+          "new_text": null,
+          "old_line_content": "        auto & ring = (dest.back().back().inners().empty() ? dest.back().back().outer() : dest.back().back().inners().back());",
+          "new_line_content": "            throw Exception{\"Incorrect polygon formatting\", ErrorCodes::BAD_ARGUMENTS};",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "field.getType()",
+          "new_text": null,
+          "old_line_content": "    if (field.getType() == Field::Types::Array)",
+          "new_line_content": "IPolygonDictionary::Point IPolygonDictionary::fieldToPoint(const Field &field)",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": "find",
+          "new_api": null,
+          "old_text": "attribute_index_by_name.find(attribute_name)",
+          "new_text": null,
+          "old_line_content": "    const auto it = attribute_index_by_name.find(attribute_name);",
+          "new_line_content": "size_t IPolygonDictionary::getAttributeIndex(const std::string & attribute_name) const",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "coordinate_array.size()",
+          "new_text": null,
+          "old_line_content": "        if (coordinate_array.size() != DIM)",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "attribute_index_by_name.end()",
+          "new_text": null,
+          "old_line_content": "    if (it == attribute_index_by_name.end())",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 524,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "coordinate_array[i].getType()",
+          "new_text": null,
+          "old_line_content": "            if (coordinate_array[i].getType() != Field::Types::Float64)",
+          "new_line_content": "        for (size_t i = 0; i < DIM; ++i)",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "getAttributeIndex",
+          "new_api": null,
+          "old_text": "getAttributeIndex(attribute_name)",
+          "new_text": null,
+          "old_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "new_line_content": "        ColumnString * const out) const",
+          "content_same": false
+        },
+        {
+          "line": 402,
+          "old_api": "checkAttributeType",
+          "new_api": null,
+          "old_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "new_text": null,
+          "old_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "insertData",
+          "new_api": null,
+          "old_text": "out->insertData(value.data, value.size)",
+          "new_text": null,
+          "old_line_content": "            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },",
+          "new_line_content": "            ind,",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "field.getType()",
+          "new_text": null,
+          "old_line_content": "    if (field.getType() == Field::Types::Array)",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt8)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt8)",
+          "new_line_content": "            [&](const size_t) { return null_value; }); \\",
+          "content_same": false
+        },
+        {
+          "line": 540,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "ring_array.empty()",
+          "new_text": null,
+          "old_line_content": "        if (ring_array.empty())",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt16)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt16)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 543,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "ring_array[0].getType()",
+          "new_text": null,
+          "old_line_content": "        if (ring_array[0].getType() != Field::Types::Array)",
+          "new_line_content": "            throw Exception{\"Empty polygons are not allowed\", ErrorCodes::BAD_ARGUMENTS};",
+          "content_same": false
+        },
+        {
+          "line": 415,
+          "old_api": "extractPoints",
+          "new_api": null,
+          "old_text": "extractPoints(key_columns)",
+          "new_text": null,
+          "old_line_content": "    const auto points = extractPoints(key_columns);",
+          "new_line_content": "        size_t attribute_ind, const Columns & key_columns, ValueSetter && set_value, DefaultGetter && get_default) const",
+          "content_same": false
+        },
+        {
+          "line": 546,
+          "old_api": "fieldToPoint",
+          "new_api": null,
+          "old_text": "fieldToPoint(point)",
+          "new_text": null,
+          "old_line_content": "            bg::append(result.outer(), fieldToPoint(point));",
+          "new_line_content": "            throw Exception{\"Outer polygon ring is not represented by an array\", ErrorCodes::TYPE_MISMATCH};",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "attributes[attribute_ind].get()",
+          "new_text": null,
+          "old_line_content": "    const auto column = typeid_cast<const ColType *>(attributes[attribute_ind].get());",
+          "new_line_content": "    using ColVecType = std::conditional_t<IsDecimalNumber<AttributeType>, ColumnDecimal<AttributeType>, ColumnVector<AttributeType>>;",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "points.size()",
+          "new_text": null,
+          "old_line_content": "    for (const auto i : ext::range(0, points.size()))",
+          "new_line_content": "    if (!column)",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": "fieldToPoint",
+          "new_api": null,
+          "old_text": "fieldToPoint(point)",
+          "new_text": null,
+          "old_line_content": "                bg::append(result.inners()[i], fieldToPoint(point));",
+          "new_line_content": "                throw Exception{\"Inner polygon ring is not represented by an array\", ErrorCodes::TYPE_MISMATCH};",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "find",
+          "new_api": null,
+          "old_text": "find(points[i], id)",
+          "new_text": null,
+          "old_line_content": "        const auto found = find(points[i], id);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": "get_default",
+          "new_api": null,
+          "old_text": "get_default(i)",
+          "new_text": null,
+          "old_line_content": "            set_value(i, static_cast<OutputType>(get_default(i)));",
+          "new_line_content": "        if (!found)",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "bg::correct(result)",
+          "new_api": null,
+          "old_text": "bg::correct(result)",
+          "new_text": null,
+          "old_line_content": "    bg::correct(result);",
+          "new_line_content": "    else",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "getAttributeIndex",
+          "new_api": null,
+          "old_text": "getAttributeIndex(attribute_name)",
+          "new_text": null,
+          "old_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "new_line_content": "        const std::string & attribute_name, const Columns & key_columns, const DataTypes &, ColumnString * out) const",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "checkAttributeType",
+          "new_api": null,
+          "old_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "new_text": null,
+          "old_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "getDataAt",
+          "new_api": null,
+          "old_text": "column->getDataAt(id)",
+          "new_text": null,
+          "old_line_content": "            set_value(i, static_cast<OutputType>(column->getDataAt(id)));",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "field.getType()",
+          "new_text": null,
+          "old_line_content": "    if (field.getType() == Field::Types::Array)",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "insertData",
+          "new_api": null,
+          "old_text": "out->insertData(value.data, value.size)",
+          "new_text": null,
+          "old_line_content": "            [&](const size_t, const StringRef & value) { out->insertData(value.data, value.size); },",
+          "new_line_content": "            ind,",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "points.size()",
+          "new_text": null,
+          "old_line_content": "    query_count.fetch_add(points.size(), std::memory_order_relaxed);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "polygon_array.size()",
+          "new_text": null,
+          "old_line_content": "        result.reserve(polygon_array.size());",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "values.size()",
+          "new_text": null,
+          "old_line_content": "    for (size_t i = 1; i < values.size(); ++i)",
+          "new_line_content": "inline void makeDifferences(IColumn::Offsets & values)",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "column.get()",
+          "new_text": null,
+          "old_line_content": "    const auto ptr_multi_polygons = typeid_cast<const ColumnArray*>(column.get());",
+          "new_line_content": "void IPolygonDictionary::extractMultiPolygons(const ColumnPtr &column, std::vector<MultiPolygon> &dest) {",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": "std::move(source_ptr_)",
+          "new_api": null,
+          "old_text": "std::move(source_ptr_)",
+          "new_text": null,
+          "old_line_content": "    : IPolygonDictionary(database_, name_, dict_struct_, std::move(source_ptr_), dict_lifetime_)",
+          "new_line_content": "    DictionarySourcePtr source_ptr_,",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "getData",
+          "new_api": null,
+          "old_text": "ptr_multi_polygons->getData()",
+          "new_text": null,
+          "old_line_content": "    const auto ptr_polygons = typeid_cast<const ColumnArray*>(&ptr_multi_polygons->getData());",
+          "new_line_content": "        throw Exception{\"Expected a column containing arrays of polygons\", ErrorCodes::TYPE_MISMATCH};",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt8)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt8)",
+          "new_line_content": "            [&](const size_t row) { return def[row]; }); \\",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt16)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt16)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": "clone",
+          "new_api": null,
+          "old_text": "std::make_shared<SimplePolygonDictionary>(\n            this->database,\n            this->name,\n            this->dict_struct,\n            this->source_ptr->clone(),\n            this->dict_lifetime)",
+          "new_text": null,
+          "old_line_content": "    return std::make_shared<SimplePolygonDictionary>(",
+          "new_line_content": "std::shared_ptr<const IExternalLoadable> SimplePolygonDictionary::clone() const",
+          "content_same": false
+        },
+        {
+          "line": 206,
+          "old_api": "ext::range(0, rows)",
+          "new_api": null,
+          "old_text": "ext::range(0, rows)",
+          "new_text": null,
+          "old_line_content": "    for (const auto row : ext::range(0, rows))",
+          "new_line_content": "    /*for (const auto row : ext::range(0, rows))",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "getOffsets",
+          "new_api": null,
+          "old_text": "ptr_multi_polygons->getOffsets()",
+          "new_text": null,
+          "old_line_content": "    polygons.assign(ptr_multi_polygons->getOffsets());",
+          "new_line_content": "    if (!ptr_polygons)",
+          "content_same": false
+        },
+        {
+          "line": 593,
+          "old_api": "clone",
+          "new_api": null,
+          "old_text": "this->source_ptr->clone()",
+          "new_text": null,
+          "old_line_content": "            this->source_ptr->clone(),",
+          "new_line_content": "            this->name,",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": "fieldToMultiPolygon",
+          "new_api": null,
+          "old_text": "fieldToMultiPolygon(field)",
+          "new_text": null,
+          "old_line_content": null,
+          "new_line_content": "        polygons.push_back(fieldToMultiPolygon(field));",
+          "content_same": true
+        },
+        {
+          "line": 465,
+          "old_api": "getOffsets",
+          "new_api": null,
+          "old_text": "ptr_polygons->getOffsets()",
+          "new_text": null,
+          "old_line_content": "    rings.assign(ptr_polygons->getOffsets());",
+          "new_line_content": "    if (!ptr_rings)",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "getOffsets",
+          "new_api": null,
+          "old_text": "ptr_rings->getOffsets()",
+          "new_text": null,
+          "old_line_content": "    points.assign(ptr_rings->getOffsets());",
+          "new_line_content": "    if (!ptr_points)",
+          "content_same": false
+        },
+        {
+          "line": 599,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "this->polygons).size()",
+          "new_text": null,
+          "old_line_content": "    for (size_t i = 0; i < (this->polygons).size(); ++i)",
+          "new_line_content": "bool SimplePolygonDictionary::find(const Point &point, size_t & id) const",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": "loadAll",
+          "new_api": null,
+          "old_text": "source_ptr->loadAll()",
+          "new_text": null,
+          "old_line_content": "    auto stream = source_ptr->loadAll();",
+          "new_line_content": "void IPolygonDictionary::loadData()",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "readPrefix",
+          "new_api": null,
+          "old_text": "stream->readPrefix()",
+          "new_text": null,
+          "old_line_content": "    stream->readPrefix();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": "getOffsets",
+          "new_api": null,
+          "old_text": "ptr_points->getOffsets()",
+          "new_text": null,
+          "old_line_content": "    const auto & coordinates = ptr_points->getOffsets();",
+          "new_line_content": "    if (!ptr_coord)",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "makeDifferences",
+          "new_api": null,
+          "old_text": "makeDifferences(points)",
+          "new_text": null,
+          "old_line_content": "    makeDifferences(polygons), makeDifferences(rings), makeDifferences(points);",
+          "new_line_content": "        throw Exception{\"Expected a column containing Float64s when reading coordinates\", ErrorCodes::TYPE_MISMATCH};",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "coordinates.size()",
+          "new_text": null,
+          "old_line_content": "    for (size_t i = 0; i < coordinates.size(); ++i)",
+          "new_line_content": "    IColumn::Offset point_offset = 0, ring_offset = 0, polygon_offset = 0;",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": "getAttributeIndex",
+          "new_api": null,
+          "old_text": "getAttributeIndex(attribute_name)",
+          "new_text": null,
+          "old_line_content": "    const auto ind = getAttributeIndex(attribute_name);",
+          "new_line_content": "        ColumnString * const out) const",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": "allocatedBytes",
+          "new_api": null,
+          "old_text": "column->allocatedBytes()",
+          "new_text": null,
+          "old_line_content": "        bytes_allocated += column->allocatedBytes();",
+          "new_line_content": "    // TODO:: Account for key.",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "checkAttributeType",
+          "new_api": null,
+          "old_text": "checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString)",
+          "new_text": null,
+          "old_line_content": "    checkAttributeType(name, attribute_name, dict_struct.attributes[ind].underlying_type, AttributeUnderlyingType::utString);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": "std::to_string(DIM)",
+          "new_api": null,
+          "old_text": "std::to_string(DIM)",
+          "new_text": null,
+          "old_line_content": "            throw Exception{\"All points should be \" + std::to_string(DIM) + \"-dimensional\", ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "dest.back().back().outer().empty()",
+          "new_text": null,
+          "old_line_content": "            if (!dest.back().back().outer().empty())",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "key_columns.size()",
+          "new_text": null,
+          "old_line_content": "    if (key_columns.size() != DIM)",
+          "new_line_content": "std::vector<IPolygonDictionary::Point> IPolygonDictionary::extractPoints(const Columns &key_columns)",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": "std::to_string(DIM)",
+          "new_api": null,
+          "old_text": "std::to_string(DIM)",
+          "new_text": null,
+          "old_line_content": "        throw Exception{\"Expected \" + std::to_string(DIM) + \" columns of coordinates\", ErrorCodes::BAD_ARGUMENTS};",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "getString",
+          "new_api": null,
+          "old_text": "config.getString(config_prefix + \".database\", \"\")",
+          "new_text": null,
+          "old_line_content": "        const String database = config.getString(config_prefix + \".database\", \"\");",
+          "new_line_content": "                             DictionarySourcePtr source_ptr) -> DictionaryPtr",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": "getString",
+          "new_api": null,
+          "old_text": "config.getString(config_prefix + \".name\")",
+          "new_text": null,
+          "old_line_content": "        const String name = config.getString(config_prefix + \".name\");",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": "insertData",
+          "new_api": null,
+          "old_text": "out->insertData(value.data, value.size)",
+          "new_text": null,
+          "old_line_content": "            [&](const size_t, const StringRef value) { out->insertData(value.data, value.size); },",
+          "new_line_content": "            ind,",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "getDataAt",
+          "new_api": null,
+          "old_text": "def->getDataAt(row)",
+          "new_text": null,
+          "old_line_content": "            [&](const size_t row) { return def->getDataAt(row); });",
+          "new_line_content": "            key_columns,",
+          "content_same": false
+        },
+        {
+          "line": 238,
+          "old_api": "front",
+          "new_api": null,
+          "old_text": "key_columns.front()->size()",
+          "new_text": null,
+          "old_line_content": "    const auto rows = key_columns.front()->size();",
+          "new_line_content": "    if (!column_x || !column_y)",
+          "content_same": false
+        },
+        {
+          "line": 488,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "dest.back().back().inners().emplace_back()",
+          "new_text": null,
+          "old_line_content": "                dest.back().back().inners().emplace_back();",
+          "new_line_content": "            ++point_offset;",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "dest.back().emplace_back()",
+          "new_text": null,
+          "old_line_content": "                dest.back().emplace_back();",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": "ext::range(0, rows)",
+          "new_api": null,
+          "old_text": "ext::range(0, rows)",
+          "new_text": null,
+          "old_line_content": "    for (const auto row : ext::range(0, rows))",
+          "new_line_content": "    std::vector<Point> result;",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "dest.emplace_back()",
+          "new_text": null,
+          "old_line_content": "                    dest.emplace_back();",
+          "new_line_content": "                if (polygons[polygon_offset] == 0)",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "polygons.size()",
+          "new_text": null,
+          "old_line_content": "                if (polygon_offset == polygons.size())",
+          "new_line_content": "                    ++polygon_offset;",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "points.size()",
+          "new_text": null,
+          "old_line_content": "        if (point_offset == points.size())",
+          "new_line_content": "            --rings[ring_offset];",
+          "content_same": false
+        },
+        {
+          "line": 629,
+          "old_api": "std::move(source_ptr)",
+          "new_api": null,
+          "old_text": "std::move(source_ptr)",
+          "new_text": null,
+          "old_line_content": "        return std::make_unique<SimplePolygonDictionary>(database, name, dict_struct, std::move(source_ptr), dict_lifetime);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "rings.size()",
+          "new_text": null,
+          "old_line_content": "            if (ring_offset == rings.size())",
+          "new_line_content": "                --polygons[polygon_offset];",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": "extractPoints",
+          "new_api": null,
+          "old_text": "extractPoints(key_columns)",
+          "new_text": null,
+          "old_line_content": "    for (const auto & pt : extractPoints(key_columns))",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt8)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt8)",
+          "new_line_content": "            ind, key_columns, [&](const size_t row, const auto value) { out[row] = value; }, [&](const size_t) { return def; }); \\",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": "DECLARE",
+          "new_api": null,
+          "old_text": "DECLARE(UInt16)",
+          "new_text": null,
+          "old_line_content": "    DECLARE(UInt16)",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "find",
+          "new_api": null,
+          "old_text": "find(pt, trash)",
+          "new_text": null,
+          "old_line_content": "        out[row] = find(pt, trash);",
+          "new_line_content": "        // TODO: Check whether this will be optimized by the compiler.",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": "getElement",
+          "new_api": null,
+          "old_text": "ptr_coord->getElement(2 * i + 1)",
+          "new_text": null,
+          "old_line_content": "        ring.emplace_back(ptr_coord->getElement(2 * i), ptr_coord->getElement(2 * i + 1));",
+          "new_line_content": "        --points[point_offset];",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 29,
+      "total_additions": 73,
+      "total_deletions": 74,
+      "total_api_changes": 176
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 176,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          211,
+          212
+        ]
+      }
+    },
+    "api_calls_before": 235,
+    "api_calls_after": 233,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 2,
+      "total_diff_lines": 22
+    }
+  }
+}

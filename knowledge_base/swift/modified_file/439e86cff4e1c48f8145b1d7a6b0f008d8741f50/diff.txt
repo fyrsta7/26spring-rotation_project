@@ -1,0 +1,15 @@
+diff --git a/lib/Sema/TypeCheckConstraints.cpp b/lib/Sema/TypeCheckConstraints.cpp
+index d0e3adab8dc..16bd1fbe854 100644
+--- a/lib/Sema/TypeCheckConstraints.cpp
++++ b/lib/Sema/TypeCheckConstraints.cpp
+@@ -3074,6 +3074,10 @@ ConstraintSystem::matchTypes(Type type1, Type type2, TypeMatchKind kind,
+     }
+   }
+ 
++  // If the types are obviously equivalent, we're done.
++  if (desugar1 == desugar2)
++    return SolutionKind::TriviallySolved;
++
+   // If either (or both) types are type variables, unify the type variables.
+   if (typeVar1 || typeVar2) {
+     switch (kind) {

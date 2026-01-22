@@ -1,0 +1,35 @@
+diff --git a/src/mark-compact.cc b/src/mark-compact.cc
+index c37e54dd6cf..e828f9c7ce8 100644
+--- a/src/mark-compact.cc
++++ b/src/mark-compact.cc
+@@ -3854,22 +3854,21 @@ void MarkCompactCollector::SweepSpaces() {
+   SweepSpace(heap()->old_pointer_space(), how_to_sweep);
+   SweepSpace(heap()->old_data_space(), how_to_sweep);
+ 
+-  RemoveDeadInvalidatedCode();
+-  SweepSpace(heap()->code_space(), PRECISE);
+-
+-  SweepSpace(heap()->cell_space(), PRECISE);
+-
+-  EvacuateNewSpaceAndCandidates();
+-
+   if (how_to_sweep == PARALLEL_CONSERVATIVE) {
+-    // TODO(hpayer): The starting of the sweeper threads should be after
+-    // SweepSpace old data space.
++    // TODO(hpayer): fix race with concurrent sweeper
+     StartSweeperThreads();
+     if (FLAG_parallel_sweeping && !FLAG_concurrent_sweeping) {
+       WaitUntilSweepingCompleted();
+     }
+   }
+ 
++  RemoveDeadInvalidatedCode();
++  SweepSpace(heap()->code_space(), PRECISE);
++
++  SweepSpace(heap()->cell_space(), PRECISE);
++
++  EvacuateNewSpaceAndCandidates();
++
+   // ClearNonLiveTransitions depends on precise sweeping of map space to
+   // detect whether unmarked map became dead in this collection or in one
+   // of the previous ones.

@@ -1,0 +1,14 @@
+diff --git a/src/Common/memcpySmall.h b/src/Common/memcpySmall.h
+index f3d26c60380..f5e9f31fc46 100644
+--- a/src/Common/memcpySmall.h
++++ b/src/Common/memcpySmall.h
+@@ -49,6 +49,9 @@ namespace detail
+             dst += 16;
+             src += 16;
+             n -= 16;
++
++            /// Avoid clang loop-idion optimization, which transforms _mm_storeu_si128 to built-in memcpy
++            __asm__ __volatile__("" : : : "memory");
+         }
+     }
+ }

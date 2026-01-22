@@ -1,0 +1,1753 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/fd5b23730ec9c0ef060e59be853b699aa6c675cc",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/fd5b23730ec9c0ef060e59be853b699aa6c675cc/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/fd5b23730ec9c0ef060e59be853b699aa6c675cc/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ClickHouse/modified_file/fd5b23730ec9c0ef060e59be853b699aa6c675cc/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 215,
+          "old_api": "std::min(current_need_streams, remaining_streams)",
+          "new_api": "end",
+          "old_text": "std::min(current_need_streams, remaining_streams)",
+          "new_text": "selected_tables.end()",
+          "old_line_content": "        size_t current_streams = std::min(current_need_streams, remaining_streams);",
+          "new_line_content": "        for (auto it = selected_tables.begin(); it != selected_tables.end(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 217,
+          "old_api": "std::max(size_t(1), current_streams)",
+          "new_api": "analyze",
+          "old_text": "std::max(size_t(1), current_streams)",
+          "new_text": "query_info.order_by_optimizer->analyze(it->first)",
+          "old_line_content": "        current_streams = std::max(size_t(1), current_streams);",
+          "new_line_content": "            auto current_info = query_info.order_by_optimizer->analyze(it->first);",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "empty",
+          "new_api": "std::max(size_t(1), current_streams)",
+          "old_text": "std::make_shared<LazyBlockInputStream>(\n                header, [=]() mutable -> BlockInputStreamPtr\n                {\n                    BlockInputStreams streams = createSourceStreams(query_info, processed_stage, max_block_size,\n                                                                    header, storage, struct_lock, real_column_names,\n                                                                    modified_context, current_streams, has_table_virtual_column, true);\n\n                    if (!streams.empty() && streams.size() != 1)\n                        throw Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR);\n\n                    return streams.empty() ? std::make_shared<NullBlockInputStream>(header) : streams[0];\n                })",
+          "new_text": "std::max(size_t(1), current_streams)",
+          "old_line_content": "            source_streams.emplace_back(std::make_shared<LazyBlockInputStream>(",
+          "new_line_content": "        current_streams = std::max(size_t(1), current_streams);",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "size",
+          "new_api": "Exception",
+          "old_text": "streams.size()",
+          "new_text": "Exception(\"Illegal SAMPLE: table doesn't support sampling\", ErrorCodes::SAMPLING_NOT_SUPPORTED)",
+          "old_line_content": "                    if (!streams.empty() && streams.size() != 1)",
+          "new_line_content": "            throw Exception(\"Illegal SAMPLE: table doesn't support sampling\", ErrorCodes::SAMPLING_NOT_SUPPORTED);",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "getTableName",
+          "new_api": "end",
+          "old_text": "storage->getTableName()",
+          "new_text": "source_streams.end()",
+          "old_line_content": "    VirtualColumnUtils::rewriteEntityInAst(modified_query_info.query, \"_table\", storage ? storage->getTableName() : \"\");",
+          "new_line_content": "        res.insert(res.end(), source_streams.begin(), source_streams.end());",
+          "content_same": false
+        },
+        {
+          "line": 292,
+          "old_api": "UInt64",
+          "new_api": "std::make_shared<OneBlockInputStream>(header)",
+          "old_text": "UInt64(streams_num)",
+          "new_text": "std::make_shared<OneBlockInputStream>(header)",
+          "old_line_content": "        modified_context.getSettingsRef().max_threads = UInt64(streams_num);",
+          "new_line_content": "            InterpreterSelectQuery(modified_query_info.query, modified_context, std::make_shared<OneBlockInputStream>(header),",
+          "content_same": false
+        },
+        {
+          "line": 293,
+          "old_api": "getSettingsRef",
+          "new_api": "analyze",
+          "old_text": "modified_context.getSettingsRef()",
+          "new_text": "SelectQueryOptions(processed_stage).analyze()",
+          "old_line_content": "        modified_context.getSettingsRef().max_streams_to_max_threads_ratio = 1;",
+          "new_line_content": "                                   SelectQueryOptions(processed_stage).analyze()).execute().in};",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "resize",
+          "new_api": "getSettingsRef",
+          "old_text": "source_streams.resize(1)",
+          "new_text": "modified_context.getSettingsRef()",
+          "old_line_content": "            source_streams.resize(1);",
+          "new_line_content": "        modified_context.getSettingsRef().max_streams_to_max_threads_ratio = 1;",
+          "content_same": false
+        },
+        {
+          "line": 324,
+          "old_api": "convertingSourceStream",
+          "new_api": "empty",
+          "old_text": "convertingSourceStream(header, modified_context, modified_query_info.query, source_stream, processed_stage)",
+          "new_text": "source_streams.empty()",
+          "old_line_content": "            convertingSourceStream(header, modified_context, modified_query_info.query, source_stream, processed_stage);",
+          "new_line_content": "    if (!source_streams.empty())",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": "isValid",
+          "new_api": "getTableName",
+          "old_text": "iterator->isValid()",
+          "new_text": "storage->getTableName()",
+          "old_line_content": "    while (iterator->isValid())",
+          "new_line_content": "                    source_stream, std::make_shared<DataTypeString>(), storage->getTableName(), \"_table\");",
+          "content_same": false
+        },
+        {
+          "line": 343,
+          "old_api": "lockStructureForShare",
+          "new_api": "convertingSourceStream",
+          "old_text": "table->lockStructureForShare(false, query_id)",
+          "new_text": "convertingSourceStream(header, modified_context, modified_query_info.query, source_stream, processed_stage)",
+          "old_line_content": "            selected_tables.emplace_back(table, table->lockStructureForShare(false, query_id));",
+          "new_line_content": "            convertingSourceStream(header, modified_context, modified_query_info.query, source_stream, processed_stage);",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "next",
+          "new_api": "addTableLock",
+          "old_text": "iterator->next()",
+          "new_text": "source_stream->addTableLock(struct_lock)",
+          "old_line_content": "        iterator->next();",
+          "new_line_content": "            source_stream->addTableLock(struct_lock);",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "table",
+          "new_api": "get",
+          "old_text": "iterator->table()",
+          "new_text": "table.get()",
+          "old_line_content": "        StoragePtr storage = iterator->table();",
+          "new_line_content": "        if (table.get() != this)",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": "getName",
+          "new_api": "next",
+          "old_text": "storage->getName()",
+          "new_text": "iterator->next()",
+          "old_line_content": "            throw Exception(\"Storage \" + storage->getName() + \" doesn't support PREWHERE.\", ErrorCodes::ILLEGAL_PREWHERE);",
+          "new_line_content": "        iterator->next();",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context)",
+          "new_api": "isValid",
+          "old_text": "VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context)",
+          "new_text": "iterator->isValid()",
+          "old_line_content": "        VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context);",
+          "new_line_content": "    while (iterator->isValid())",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": "end",
+          "new_api": "supportsPrewhere",
+          "old_text": "values.end()",
+          "new_text": "storage->supportsPrewhere()",
+          "old_line_content": "        selected_tables.remove_if([&] (const auto & elem) { return values.find(elem.first->getTableName()) == values.end(); });",
+          "new_line_content": "        if (query && query->as<ASTSelectQuery>()->prewhere() && !storage->supportsPrewhere())",
+          "content_same": false
+        },
+        {
+          "line": 391,
+          "old_api": "checkStackSize",
+          "new_api": "next",
+          "old_text": "checkStackSize()",
+          "new_text": "iterator->next()",
+          "old_line_content": "    checkStackSize();",
+          "new_line_content": "        iterator->next();",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": "getCurrentQueryId",
+          "new_api": "end",
+          "old_text": "context.getCurrentQueryId()",
+          "new_text": "values.end()",
+          "old_line_content": "    lockStructureExclusively(table_lock_holder, context.getCurrentQueryId());",
+          "new_line_content": "        selected_tables.remove_if([&] (const auto & elem) { return values.find(elem.first->getTableName()) == values.end(); });",
+          "content_same": false
+        },
+        {
+          "line": 422,
+          "old_api": "materializeBlock",
+          "new_api": "getColumns",
+          "old_text": "materializeBlock(header)",
+          "new_text": "getColumns()",
+          "old_line_content": "                header = materializeBlock(header);",
+          "new_line_content": "    auto new_columns = getColumns();",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "erase",
+          "new_api": "getConstraints",
+          "old_text": "header.erase(query_info.prewhere_info->prewhere_column_name)",
+          "new_text": "getConstraints()",
+          "old_line_content": "                    header.erase(query_info.prewhere_info->prewhere_column_name);",
+          "new_line_content": "    auto new_constraints = getConstraints();",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "getHeader",
+          "new_api": "execute",
+          "old_text": "source_stream->getHeader()",
+          "new_text": "query_info.prewhere_info->prewhere_actions->execute(header)",
+          "old_line_content": "    Block before_block_header = source_stream->getHeader();",
+          "new_line_content": "                query_info.prewhere_info->prewhere_actions->execute(header);",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": "std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name)",
+          "new_api": "materializeBlock",
+          "old_text": "std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name)",
+          "new_text": "materializeBlock(header)",
+          "old_line_content": "    source_stream = std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name);",
+          "new_line_content": "                header = materializeBlock(header);",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "where",
+          "new_api": "erase",
+          "old_text": "query->as<ASTSelectQuery>()->where()",
+          "new_text": "header.erase(query_info.prewhere_info->prewhere_column_name)",
+          "old_line_content": "    auto where_expression = query->as<ASTSelectQuery>()->where();",
+          "new_line_content": "                    header.erase(query_info.prewhere_info->prewhere_column_name);",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "getByPosition",
+          "new_api": "getSampleBlockForColumns",
+          "old_text": "header.getByPosition(column_index)",
+          "new_text": "getSampleBlockForColumns(column_names)",
+          "old_line_content": "        ColumnWithTypeAndName header_column = header.getByPosition(column_index);",
+          "new_line_content": "                query_info.query, context, std::make_shared<OneBlockInputStream>(getSampleBlockForColumns(column_names)),",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": "getByName",
+          "new_api": "analyze",
+          "old_text": "before_block_header.getByName(header_column.name)",
+          "new_text": "SelectQueryOptions(processed_stage).analyze()",
+          "old_line_content": "        ColumnWithTypeAndName before_column = before_block_header.getByName(header_column.name);",
+          "new_line_content": "                SelectQueryOptions(processed_stage).analyze()).getSampleBlock());",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": "end",
+          "new_api": "getHeader",
+          "old_text": "source_columns.end()",
+          "new_text": "source_stream->getHeader()",
+          "old_line_content": "            source_columns.insert(source_columns.end(), virtual_column);",
+          "new_line_content": "    Block before_block_header = source_stream->getHeader();",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": "analyze",
+          "new_api": "std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name)",
+          "old_text": "SyntaxAnalyzer(context).analyze(where_expression, source_columns)",
+          "new_text": "std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name)",
+          "old_line_content": "            auto syntax_result = SyntaxAnalyzer(context).analyze(where_expression, source_columns);",
+          "new_line_content": "    source_stream = std::make_shared<ConvertingBlockInputStream>(context, source_stream, header, ConvertingBlockInputStream::MatchColumnsMode::Name);",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": "getRequiredColumns",
+          "new_api": "where",
+          "old_text": "actions->getRequiredColumns()",
+          "new_text": "query->as<ASTSelectQuery>()->where()",
+          "old_line_content": "            Names required_columns = actions->getRequiredColumns();",
+          "new_line_content": "    auto where_expression = query->as<ASTSelectQuery>()->where();",
+          "content_same": false
+        },
+        {
+          "line": 467,
+          "old_api": "dumpStructure",
+          "new_api": "columns",
+          "old_text": "before_block_header.dumpStructure()",
+          "new_text": "header.columns()",
+          "old_line_content": "                    throw Exception(\"Block structure mismatch in Merge Storage: different types:\\n\" + before_block_header.dumpStructure()",
+          "new_line_content": "    for (size_t column_index : ext::range(0, header.columns()))",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": "registerStorage",
+          "new_api": "end",
+          "old_text": "factory.registerStorage(\"Merge\", [](const StorageFactory::Arguments & args)\n    {\n        /** In query, the name of database is specified as table engine argument which contains source tables,\n          *  as well as regex for source-table names.\n          */\n\n        ASTs & engine_args = args.engine_args;\n\n        if (engine_args.size() != 2)\n            throw Exception(\"Storage Merge requires exactly 2 parameters\"\n                \" - name of source database and regexp for table names.\",\n                ErrorCodes::NUMBER_OF_ARGUMENTS_DOESNT_MATCH);\n\n        engine_args[0] = evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context);\n        engine_args[1] = evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context);\n\n        String source_database = engine_args[0]->as<ASTLiteral &>().value.safeGet<String>();\n        String table_name_regexp = engine_args[1]->as<ASTLiteral &>().value.safeGet<String>();\n\n        return StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context);\n    })",
+          "new_text": "source_columns.end()",
+          "old_line_content": "    factory.registerStorage(\"Merge\", [](const StorageFactory::Arguments & args)",
+          "new_line_content": "            source_columns.insert(source_columns.end(), virtual_column);",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "size",
+          "new_api": "dumpStructure",
+          "old_text": "engine_args.size()",
+          "new_text": "before_block_header.dumpStructure()",
+          "old_line_content": "        if (engine_args.size() != 2)",
+          "new_line_content": "                    throw Exception(\"Block structure mismatch in Merge Storage: different types:\\n\" + before_block_header.dumpStructure()",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "Exception",
+          "new_api": "dumpStructure",
+          "old_text": "Exception(\"Storage Merge requires exactly 2 parameters\"\n                \" - name of source database and regexp for table names.\",\n                ErrorCodes::NUMBER_OF_ARGUMENTS_DOESNT_MATCH)",
+          "new_text": "header.dumpStructure()",
+          "old_line_content": "            throw Exception(\"Storage Merge requires exactly 2 parameters\"",
+          "new_line_content": "                                    + \"\\n\" + header.dumpStructure(), ErrorCodes::BLOCKS_HAVE_DIFFERENT_STRUCTURE);",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": "StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context)",
+          "new_api": "registerStorage",
+          "old_text": "StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context)",
+          "new_text": "factory.registerStorage(\"Merge\", [](const StorageFactory::Arguments & args)\n    {\n        /** In query, the name of database is specified as table engine argument which contains source tables,\n          *  as well as regex for source-table names.\n          */\n\n        ASTs & engine_args = args.engine_args;\n\n        if (engine_args.size() != 2)\n            throw Exception(\"Storage Merge requires exactly 2 parameters\"\n                \" - name of source database and regexp for table names.\",\n                ErrorCodes::NUMBER_OF_ARGUMENTS_DOESNT_MATCH);\n\n        engine_args[0] = evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context);\n        engine_args[1] = evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context);\n\n        String source_database = engine_args[0]->as<ASTLiteral &>().value.safeGet<String>();\n        String table_name_regexp = engine_args[1]->as<ASTLiteral &>().value.safeGet<String>();\n\n        return StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context);\n    })",
+          "old_line_content": "        return StorageMerge::create(",
+          "new_line_content": "    factory.registerStorage(\"Merge\", [](const StorageFactory::Arguments & args)",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 513,
+          "old_api": null,
+          "new_api": "engine_args[0]->as<ASTLiteral &>().value.safeGet<String>()",
+          "old_text": null,
+          "new_text": "engine_args[0]->as<ASTLiteral &>().value.safeGet<String>()",
+          "old_line_content": "",
+          "new_line_content": "        String source_database = engine_args[0]->as<ASTLiteral &>().value.safeGet<String>();",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": null,
+          "new_api": "engine_args[1]->as<ASTLiteral &>().value.safeGet<String>()",
+          "old_text": null,
+          "new_text": "engine_args[1]->as<ASTLiteral &>().value.safeGet<String>()",
+          "old_line_content": "",
+          "new_line_content": "        String table_name_regexp = engine_args[1]->as<ASTLiteral &>().value.safeGet<String>();",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": null,
+          "new_api": "createSourceStreams",
+          "old_text": null,
+          "new_text": "createSourceStreams(query_info, processed_stage, max_block_size,\n                                                                    header, storage, struct_lock, real_column_names,\n                                                                    modified_context, current_streams, has_table_virtual_column, true)",
+          "old_line_content": "}",
+          "new_line_content": "                    BlockInputStreams streams = createSourceStreams(query_info, processed_stage, max_block_size,",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": null,
+          "new_api": "StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context)",
+          "old_text": null,
+          "new_text": "StorageMerge::create(\n            args.database_name, args.table_name, args.columns,\n            source_database, table_name_regexp, args.context)",
+          "old_line_content": "",
+          "new_line_content": "        return StorageMerge::create(",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "storage.get()",
+          "old_line_content": "    return selected_tables;",
+          "new_line_content": "        if (storage.get() != this)",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "streams.size()",
+          "old_line_content": "                                                    const TableStructureReadLockHolder & struct_lock, Names & real_column_names,",
+          "new_line_content": "                    if (!streams.empty() && streams.size() != 1)",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "                                                    Context & modified_context, size_t streams_num, bool has_table_virtual_column,",
+          "new_line_content": "                        throw Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": null,
+          "new_api": "getName",
+          "old_text": null,
+          "new_text": "storage->getName()",
+          "old_line_content": "    }",
+          "new_line_content": "            throw Exception(\"Storage \" + storage->getName() + \" doesn't support PREWHERE.\", ErrorCodes::ILLEGAL_PREWHERE);",
+          "content_same": false
+        },
+        {
+          "line": 265,
+          "old_api": null,
+          "new_api": "std::make_shared<NullBlockInputStream>(header)",
+          "old_text": null,
+          "new_text": "std::make_shared<NullBlockInputStream>(header)",
+          "old_line_content": "{",
+          "new_line_content": "                    return streams.empty() ? std::make_shared<NullBlockInputStream>(header) : streams[0];",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "lockStructureForShare",
+          "old_text": null,
+          "new_text": "storage->lockStructureForShare(false, query_id)",
+          "old_line_content": "",
+          "new_line_content": "            selected_tables.emplace_back(storage, get_lock ? storage->lockStructureForShare(false, query_id) : TableStructureReadLockHolder{});",
+          "content_same": false
+        },
+        {
+          "line": 388,
+          "old_api": null,
+          "new_api": "getTableName",
+          "old_text": null,
+          "new_text": "storage->getTableName()",
+          "old_line_content": "",
+          "new_line_content": "            virtual_column->insert(storage->getTableName());",
+          "content_same": false
+        },
+        {
+          "line": 396,
+          "old_api": null,
+          "new_api": "std::make_shared<DataTypeString>()",
+          "old_text": null,
+          "new_text": "std::make_shared<DataTypeString>()",
+          "old_line_content": "",
+          "new_line_content": "        Block virtual_columns_block = Block{ColumnWithTypeAndName(std::move(virtual_column), std::make_shared<DataTypeString>(), \"_table\")};",
+          "content_same": false
+        },
+        {
+          "line": 397,
+          "old_api": null,
+          "new_api": "VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context)",
+          "old_text": null,
+          "new_text": "VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context)",
+          "old_line_content": "",
+          "new_line_content": "        VirtualColumnUtils::filterBlockWithQuery(query, virtual_columns_block, global_context);",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\")",
+          "old_text": null,
+          "new_text": "VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\")",
+          "old_line_content": "void StorageMerge::alter(",
+          "new_line_content": "        auto values = VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\");",
+          "content_same": false
+        },
+        {
+          "line": 511,
+          "old_api": null,
+          "new_api": "evaluateConstantExpressionAsLiteral",
+          "old_text": null,
+          "new_text": "evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context)",
+          "old_line_content": "",
+          "new_line_content": "        engine_args[1] = evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context);",
+          "content_same": false
+        },
+        {
+          "line": 272,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "res.empty()",
+          "old_line_content": "        return BlockInputStreams{",
+          "new_line_content": "    if (res.empty())",
+          "content_same": false
+        },
+        {
+          "line": 275,
+          "old_api": null,
+          "new_api": "narrowBlockInputStreams",
+          "old_text": null,
+          "new_text": "narrowBlockInputStreams(res, num_streams)",
+          "old_line_content": "",
+          "new_line_content": "    res = narrowBlockInputStreams(res, num_streams);",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "checkStackSize",
+          "old_text": null,
+          "new_text": "checkStackSize()",
+          "old_line_content": "",
+          "new_line_content": "    checkStackSize();",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": null,
+          "new_api": "getDatabase",
+          "old_text": null,
+          "new_text": "context.getDatabase(source_database)",
+          "old_line_content": "Block StorageMerge::getQueryHeader(",
+          "new_line_content": "    auto database = context.getDatabase(source_database);",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": null,
+          "new_api": "match",
+          "old_text": null,
+          "new_text": "table_name_regexp.match(table_name_)",
+          "old_line_content": "    const Names & column_names, const SelectQueryInfo & query_info, const Context & context, QueryProcessingStage::Enum processed_stage)",
+          "new_line_content": "    auto table_name_match = [this](const String & table_name_) { return table_name_regexp.match(table_name_); };",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "getTablesIterator",
+          "old_text": null,
+          "new_text": "database->getTablesIterator(global_context, table_name_match)",
+          "old_line_content": "{",
+          "new_line_content": "    return database->getTablesIterator(global_context, table_name_match);",
+          "content_same": false
+        },
+        {
+          "line": 286,
+          "old_api": null,
+          "new_api": "clone",
+          "old_text": null,
+          "new_text": "query_info.query->clone()",
+          "old_line_content": "    }",
+          "new_line_content": "    modified_query_info.query = query_info.query->clone();",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "getTableName",
+          "old_text": null,
+          "new_text": "storage->getTableName()",
+          "old_line_content": "    {",
+          "new_line_content": "    VirtualColumnUtils::rewriteEntityInAst(modified_query_info.query, \"_table\", storage ? storage->getTableName() : \"\");",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": null,
+          "new_api": "getCurrentQueryId",
+          "old_text": null,
+          "new_text": "context.getCurrentQueryId()",
+          "old_line_content": "            {",
+          "new_line_content": "    lockStructureExclusively(table_lock_holder, context.getCurrentQueryId());",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "getIndices",
+          "old_text": null,
+          "new_text": "getIndices()",
+          "old_line_content": "                if (query_info.prewhere_info->remove_prewhere_column)",
+          "new_line_content": "    auto new_indices = getIndices();",
+          "content_same": false
+        },
+        {
+          "line": 297,
+          "old_api": null,
+          "new_api": "getQueryProcessingStage",
+          "old_text": null,
+          "new_text": "storage->getQueryProcessingStage(modified_context)",
+          "old_line_content": "",
+          "new_line_content": "    if (processed_stage <= storage->getQueryProcessingStage(modified_context))",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": null,
+          "new_api": "applyForColumnsOnly",
+          "old_text": null,
+          "new_text": "params.applyForColumnsOnly(new_columns)",
+          "old_line_content": "            }",
+          "new_line_content": "    params.applyForColumnsOnly(new_columns);",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": null,
+          "new_api": "getDatabase",
+          "old_text": null,
+          "new_text": "context.getDatabase(database_name)->alterTable(context, table_name, new_columns, new_indices, new_constraints, {})",
+          "old_line_content": "            return header;",
+          "new_line_content": "    context.getDatabase(database_name)->alterTable(context, table_name, new_columns, new_indices, new_constraints, {});",
+          "content_same": false
+        },
+        {
+          "line": 300,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "real_column_names.size()",
+          "old_line_content": "          * And this is not allowed, since all code is based on the assumption that in the block stream all types are the same.",
+          "new_line_content": "        if (real_column_names.size() ==0)",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": null,
+          "new_api": "getAllPhysical",
+          "old_text": null,
+          "new_text": "storage->getColumns().getAllPhysical()",
+          "old_line_content": "          */",
+          "new_line_content": "            real_column_names.push_back(ExpressionActions::getSmallestColumn(storage->getColumns().getAllPhysical()));",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": null,
+          "new_api": "setColumns",
+          "old_text": null,
+          "new_text": "setColumns(new_columns)",
+          "old_line_content": "        }",
+          "new_line_content": "    setColumns(new_columns);",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "read",
+          "old_text": null,
+          "new_text": "storage->read(real_column_names, modified_query_info, modified_context, processed_stage, max_block_size,\n                                       UInt32(streams_num))",
+          "old_line_content": "    }",
+          "new_line_content": "        source_streams = storage->read(real_column_names, modified_query_info, modified_context, processed_stage, max_block_size,",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "UInt32",
+          "old_text": null,
+          "new_text": "UInt32(streams_num)",
+          "old_line_content": "",
+          "new_line_content": "                                       UInt32(streams_num));",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": null,
+          "new_api": "getQueryProcessingStage",
+          "old_text": null,
+          "new_text": "storage->getQueryProcessingStage(modified_context)",
+          "old_line_content": "    {",
+          "new_line_content": "    else if (processed_stage > storage->getQueryProcessingStage(modified_context))",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": null,
+          "new_api": "getTableName",
+          "old_text": null,
+          "new_text": "storage->getTableName()",
+          "old_line_content": "        {",
+          "new_line_content": "        modified_query_info.query->as<ASTSelectQuery>()->replaceDatabaseAndTable(source_database, storage->getTableName());",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": null,
+          "new_api": "getSampleBlockForColumns",
+          "old_text": null,
+          "new_text": "getSampleBlockForColumns(column_names)",
+          "old_line_content": "void StorageMerge::convertingSourceStream(const Block & header, const Context & context, ASTPtr & query,",
+          "new_line_content": "            Block header = getSampleBlockForColumns(column_names);",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": null,
+          "new_api": "UInt64",
+          "old_text": null,
+          "new_text": "UInt64(streams_num)",
+          "old_line_content": "",
+          "new_line_content": "        modified_context.getSettingsRef().max_threads = UInt64(streams_num);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "SelectQueryOptions",
+          "old_text": null,
+          "new_text": "SelectQueryOptions(processed_stage)",
+          "old_line_content": "        }",
+          "new_line_content": "        InterpreterSelectQuery interpreter{modified_query_info.query, modified_context, SelectQueryOptions(processed_stage)};",
+          "content_same": false
+        },
+        {
+          "line": 315,
+          "old_api": null,
+          "new_api": "execute",
+          "old_text": null,
+          "new_text": "interpreter.execute()",
+          "old_line_content": "",
+          "new_line_content": "        BlockInputStreamPtr interpreter_stream = interpreter.execute().in;",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": null,
+          "new_api": "std::make_shared<MaterializingBlockInputStream>(interpreter_stream)",
+          "old_text": null,
+          "new_text": "std::make_shared<MaterializingBlockInputStream>(interpreter_stream)",
+          "old_line_content": "",
+          "new_line_content": "        source_streams.emplace_back(std::make_shared<MaterializingBlockInputStream>(interpreter_stream));",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "analyze",
+          "old_text": null,
+          "new_text": "InterpreterSelectQuery(\n                query_info.query, context, std::make_shared<OneBlockInputStream>(getSampleBlockForColumns(column_names)),\n                SelectQueryOptions(processed_stage).analyze()).getSampleBlock()",
+          "old_line_content": "    {",
+          "new_line_content": "            return materializeBlock(InterpreterSelectQuery(",
+          "content_same": false
+        },
+        {
+          "line": 453,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Logical Error: unknown processed stage.\", ErrorCodes::LOGICAL_ERROR)",
+          "old_line_content": "        /// the where expression maybe invalid because of convertingBlockInputStream.",
+          "new_line_content": "    throw Exception(\"Logical Error: unknown processed stage.\", ErrorCodes::LOGICAL_ERROR);",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": null,
+          "new_api": "std::make_shared<ConcatBlockInputStream>(source_streams)",
+          "old_text": null,
+          "new_text": "std::make_shared<ConcatBlockInputStream>(source_streams)",
+          "old_line_content": "",
+          "new_line_content": "                source_streams.size() > 1 ? std::make_shared<ConcatBlockInputStream>(source_streams) : source_streams[0];",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "resize",
+          "old_text": null,
+          "new_text": "source_streams.resize(1)",
+          "old_line_content": "}",
+          "new_line_content": "            source_streams.resize(1);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "getTableName",
+          "old_text": null,
+          "new_text": "std::make_shared<AddingConstColumnBlockInputStream<String>>(\n                    source_stream, std::make_shared<DataTypeString>(), storage->getTableName(), \"_table\")",
+          "old_line_content": "",
+          "new_line_content": "                source_stream = std::make_shared<AddingConstColumnBlockInputStream<String>>(",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": null,
+          "new_api": "getByPosition",
+          "old_text": null,
+          "new_text": "header.getByPosition(column_index)",
+          "old_line_content": "            }",
+          "new_line_content": "        ColumnWithTypeAndName header_column = header.getByPosition(column_index);",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": null,
+          "new_api": "getByName",
+          "old_text": null,
+          "new_text": "before_block_header.getByName(header_column.name)",
+          "old_line_content": "        }",
+          "new_line_content": "        ColumnWithTypeAndName before_column = before_block_header.getByName(header_column.name);",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": null,
+          "new_api": "begin",
+          "old_text": null,
+          "new_text": "selected_tables.begin()",
+          "old_line_content": "",
+          "new_line_content": "            if (it == selected_tables.begin())",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "before_column.type.get()",
+          "old_line_content": "",
+          "new_line_content": "        if (!header_column.type->equals(*before_column.type.get()) && processed_stage > QueryProcessingStage::FetchColumns)",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": null,
+          "new_api": "getNamesAndTypesList",
+          "old_text": null,
+          "new_text": "getSampleBlock().getNamesAndTypesList()",
+          "old_line_content": "void registerStorageMerge(StorageFactory & factory)",
+          "new_line_content": "            NamesAndTypesList source_columns = getSampleBlock().getNamesAndTypesList();",
+          "content_same": false
+        },
+        {
+          "line": 221,
+          "old_api": null,
+          "new_api": "reset",
+          "old_text": null,
+          "new_text": "input_sorting_info.reset()",
+          "old_line_content": "",
+          "new_line_content": "                input_sorting_info.reset();",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": null,
+          "new_api": "getColumn",
+          "old_text": null,
+          "new_text": "getColumn(\"_table\")",
+          "old_line_content": "{",
+          "new_line_content": "            NameAndTypePair virtual_column = getColumn(\"_table\");",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "analyze",
+          "old_text": null,
+          "new_text": "SyntaxAnalyzer(context).analyze(where_expression, source_columns)",
+          "old_line_content": "    {",
+          "new_line_content": "            auto syntax_result = SyntaxAnalyzer(context).analyze(where_expression, source_columns);",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "getActions",
+          "old_text": null,
+          "new_text": "ExpressionAnalyzer{where_expression, syntax_result, context}.getActions(false, false)",
+          "old_line_content": "        /** In query, the name of database is specified as table engine argument which contains source tables,",
+          "new_line_content": "            ExpressionActionsPtr actions = ExpressionAnalyzer{where_expression, syntax_result, context}.getActions(false, false);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "getRequiredColumns",
+          "old_text": null,
+          "new_text": "actions->getRequiredColumns()",
+          "old_line_content": "          *  as well as regex for source-table names.",
+          "new_line_content": "            Names required_columns = actions->getRequiredColumns();",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": null,
+          "new_api": "const_cast<SelectQueryInfo &>(query_info)",
+          "old_text": null,
+          "new_text": "const_cast<SelectQueryInfo &>(query_info)",
+          "old_line_content": "        if (current_streams)",
+          "new_line_content": "        const_cast<SelectQueryInfo &>(query_info).input_sorting_info = input_sorting_info;",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": null,
+          "new_api": "getDatabaseIterator",
+          "old_text": null,
+          "new_text": "getDatabaseIterator(global_context)",
+          "old_line_content": "",
+          "new_line_content": "    auto iterator = getDatabaseIterator(global_context);",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": null,
+          "new_api": "isValid",
+          "old_text": null,
+          "new_text": "iterator->isValid()",
+          "old_line_content": "",
+          "new_line_content": "    while (iterator->isValid())",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "selected_tables.end()",
+          "old_line_content": "                query_info, processed_stage, max_block_size, header, storage,",
+          "new_line_content": "    for (auto it = selected_tables.begin(); it != selected_tables.end(); ++it)",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "table",
+          "old_text": null,
+          "new_text": "iterator->table()",
+          "old_line_content": "    {",
+          "new_line_content": "        auto & table = iterator->table();",
+          "content_same": false
+        },
+        {
+          "line": 234,
+          "old_api": null,
+          "new_api": "std::min(current_need_streams, remaining_streams)",
+          "old_text": null,
+          "new_text": "std::min(current_need_streams, remaining_streams)",
+          "old_line_content": "        else",
+          "new_line_content": "        size_t current_streams = std::min(current_need_streams, remaining_streams);",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "lockStructureForShare",
+          "old_text": null,
+          "new_text": "table->lockStructureForShare(false, query_id)",
+          "old_line_content": "",
+          "new_line_content": "            selected_tables.emplace_back(table, table->lockStructureForShare(false, query_id));",
+          "content_same": false
+        },
+        {
+          "line": 505,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "engine_args.size()",
+          "old_line_content": "",
+          "new_line_content": "        if (engine_args.size() != 2)",
+          "content_same": false
+        },
+        {
+          "line": 242,
+          "old_api": null,
+          "new_api": "supportsSampling",
+          "old_text": null,
+          "new_text": "storage->supportsSampling()",
+          "old_line_content": "",
+          "new_line_content": "        if (query_info.query->as<ASTSelectQuery>()->sample_size() && !storage->supportsSampling())",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": null,
+          "new_api": "getDatabaseIterator",
+          "old_text": null,
+          "new_text": "getDatabaseIterator(global_context)",
+          "old_line_content": "",
+          "new_line_content": "    DatabaseTablesIteratorPtr iterator = getDatabaseIterator(global_context);",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "ColumnString::create()",
+          "old_text": null,
+          "new_text": "ColumnString::create()",
+          "old_line_content": "    {",
+          "new_line_content": "    auto virtual_column = ColumnString::create();",
+          "content_same": false
+        },
+        {
+          "line": 249,
+          "old_api": null,
+          "new_api": "createSourceStreams",
+          "old_text": null,
+          "new_text": "createSourceStreams(\n                query_info, processed_stage, max_block_size, header, storage,\n                struct_lock, real_column_names, modified_context, current_streams, has_table_virtual_column)",
+          "old_line_content": "",
+          "new_line_content": "            source_streams = createSourceStreams(",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "Exception",
+          "old_text": null,
+          "new_text": "Exception(\"Storage Merge requires exactly 2 parameters\"\n                \" - name of source database and regexp for table names.\",\n                ErrorCodes::NUMBER_OF_ARGUMENTS_DOESNT_MATCH)",
+          "old_line_content": "",
+          "new_line_content": "            throw Exception(\"Storage Merge requires exactly 2 parameters\"",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": null,
+          "new_api": "table",
+          "old_text": null,
+          "new_text": "iterator->table()",
+          "old_line_content": "",
+          "new_line_content": "        StoragePtr storage = iterator->table();",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "evaluateConstantExpressionOrIdentifierAsLiteral",
+          "old_text": null,
+          "new_text": "evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context)",
+          "old_line_content": "",
+          "new_line_content": "        engine_args[0] = evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context);",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": null,
+          "new_api": "empty",
+          "old_text": null,
+          "new_text": "std::make_shared<LazyBlockInputStream>(\n                header, [=]() mutable -> BlockInputStreamPtr\n                {\n                    BlockInputStreams streams = createSourceStreams(query_info, processed_stage, max_block_size,\n                                                                    header, storage, struct_lock, real_column_names,\n                                                                    modified_context, current_streams, has_table_virtual_column, true);\n\n                    if (!streams.empty() && streams.size() != 1)\n                        throw Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR);\n\n                    return streams.empty() ? std::make_shared<NullBlockInputStream>(header) : streams[0];\n                })",
+          "old_line_content": "",
+          "new_line_content": "            source_streams.emplace_back(std::make_shared<LazyBlockInputStream>(",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 256,
+          "old_api": "narrowBlockInputStreams",
+          "new_api": null,
+          "old_text": "narrowBlockInputStreams(res, num_streams)",
+          "new_text": null,
+          "old_line_content": "    res = narrowBlockInputStreams(res, num_streams);",
+          "new_line_content": "                header, [=]() mutable -> BlockInputStreamPtr",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": "getDatabase",
+          "new_api": null,
+          "old_text": "context.getDatabase(source_database)",
+          "new_text": null,
+          "old_line_content": "    auto database = context.getDatabase(source_database);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": "match",
+          "new_api": null,
+          "old_text": "table_name_regexp.match(table_name_)",
+          "new_text": null,
+          "old_line_content": "    auto table_name_match = [this](const String & table_name_) { return table_name_regexp.match(table_name_); };",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": "getTablesIterator",
+          "new_api": null,
+          "old_text": "database->getTablesIterator(global_context, table_name_match)",
+          "new_text": null,
+          "old_line_content": "    return database->getTablesIterator(global_context, table_name_match);",
+          "new_line_content": "    if (has_virtual_column)",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": "clone",
+          "new_api": null,
+          "old_text": "query_info.query->clone()",
+          "new_text": null,
+          "old_line_content": "    modified_query_info.query = query_info.query->clone();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 273,
+          "old_api": "std::make_shared<OneBlockInputStream>(header)",
+          "new_api": null,
+          "old_text": "std::make_shared<OneBlockInputStream>(header)",
+          "new_text": null,
+          "old_line_content": "            InterpreterSelectQuery(modified_query_info.query, modified_context, std::make_shared<OneBlockInputStream>(header),",
+          "new_line_content": "        return res;",
+          "content_same": false
+        },
+        {
+          "line": 274,
+          "old_api": "analyze",
+          "new_api": null,
+          "old_text": "SelectQueryOptions(processed_stage).analyze()",
+          "new_text": null,
+          "old_line_content": "                                   SelectQueryOptions(processed_stage).analyze()).execute().in};",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": "getColumns",
+          "new_api": null,
+          "old_text": "getColumns()",
+          "new_text": null,
+          "old_line_content": "    auto new_columns = getColumns();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 404,
+          "old_api": "getIndices",
+          "new_api": null,
+          "old_text": "getIndices()",
+          "new_text": null,
+          "old_line_content": "    auto new_indices = getIndices();",
+          "new_line_content": "    return selected_tables;",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "getConstraints",
+          "new_api": null,
+          "old_text": "getConstraints()",
+          "new_text": null,
+          "old_line_content": "    auto new_constraints = getConstraints();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 278,
+          "old_api": "getQueryProcessingStage",
+          "new_api": null,
+          "old_text": "storage->getQueryProcessingStage(modified_context)",
+          "new_text": null,
+          "old_line_content": "    if (processed_stage <= storage->getQueryProcessingStage(modified_context))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "applyForColumnsOnly",
+          "new_api": null,
+          "old_text": "params.applyForColumnsOnly(new_columns)",
+          "new_text": null,
+          "old_line_content": "    params.applyForColumnsOnly(new_columns);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "getDatabase",
+          "new_api": null,
+          "old_text": "context.getDatabase(database_name)->alterTable(context, table_name, new_columns, new_indices, new_constraints, {})",
+          "new_text": null,
+          "old_line_content": "    context.getDatabase(database_name)->alterTable(context, table_name, new_columns, new_indices, new_constraints, {});",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 281,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "real_column_names.size()",
+          "new_text": null,
+          "old_line_content": "        if (real_column_names.size() ==0)",
+          "new_line_content": "                                                    const TableStructureReadLockHolder & struct_lock, Names & real_column_names,",
+          "content_same": false
+        },
+        {
+          "line": 282,
+          "old_api": "getAllPhysical",
+          "new_api": null,
+          "old_text": "storage->getColumns().getAllPhysical()",
+          "new_text": null,
+          "old_line_content": "            real_column_names.push_back(ExpressionActions::getSmallestColumn(storage->getColumns().getAllPhysical()));",
+          "new_line_content": "                                                    Context & modified_context, size_t streams_num, bool has_table_virtual_column,",
+          "content_same": false
+        },
+        {
+          "line": 408,
+          "old_api": "setColumns",
+          "new_api": null,
+          "old_text": "setColumns(new_columns)",
+          "new_text": null,
+          "old_line_content": "    setColumns(new_columns);",
+          "new_line_content": "DatabaseTablesIteratorPtr StorageMerge::getDatabaseIterator(const Context & context) const",
+          "content_same": false
+        },
+        {
+          "line": 284,
+          "old_api": "read",
+          "new_api": null,
+          "old_text": "storage->read(real_column_names, modified_query_info, modified_context, processed_stage, max_block_size,\n                                       UInt32(streams_num))",
+          "new_text": null,
+          "old_line_content": "        source_streams = storage->read(real_column_names, modified_query_info, modified_context, processed_stage, max_block_size,",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 285,
+          "old_api": "UInt32",
+          "new_api": null,
+          "old_text": "UInt32(streams_num)",
+          "new_text": null,
+          "old_line_content": "                                       UInt32(streams_num));",
+          "new_line_content": "    SelectQueryInfo modified_query_info = query_info;",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "getQueryProcessingStage",
+          "new_api": null,
+          "old_text": "storage->getQueryProcessingStage(modified_context)",
+          "new_text": null,
+          "old_line_content": "    else if (processed_stage > storage->getQueryProcessingStage(modified_context))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 289,
+          "old_api": "getTableName",
+          "new_api": null,
+          "old_text": "storage->getTableName()",
+          "new_text": null,
+          "old_line_content": "        modified_query_info.query->as<ASTSelectQuery>()->replaceDatabaseAndTable(source_database, storage->getTableName());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": "getSampleBlockForColumns",
+          "new_api": null,
+          "old_text": "getSampleBlockForColumns(column_names)",
+          "new_text": null,
+          "old_line_content": "            Block header = getSampleBlockForColumns(column_names);",
+          "new_line_content": "    const AlterCommands & params, const Context & context, TableStructureWriteLockHolder & table_lock_holder)",
+          "content_same": false
+        },
+        {
+          "line": 421,
+          "old_api": "execute",
+          "new_api": null,
+          "old_text": "query_info.prewhere_info->prewhere_actions->execute(header)",
+          "new_text": null,
+          "old_line_content": "                query_info.prewhere_info->prewhere_actions->execute(header);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 295,
+          "old_api": "SelectQueryOptions",
+          "new_api": null,
+          "old_text": "SelectQueryOptions(processed_stage)",
+          "new_text": null,
+          "old_line_content": "        InterpreterSelectQuery interpreter{modified_query_info.query, modified_context, SelectQueryOptions(processed_stage)};",
+          "new_line_content": "    BlockInputStreams source_streams;",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": "execute",
+          "new_api": null,
+          "old_text": "interpreter.execute()",
+          "new_text": null,
+          "old_line_content": "        BlockInputStreamPtr interpreter_stream = interpreter.execute().in;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 302,
+          "old_api": "std::make_shared<MaterializingBlockInputStream>(interpreter_stream)",
+          "new_api": null,
+          "old_text": "std::make_shared<MaterializingBlockInputStream>(interpreter_stream)",
+          "new_text": null,
+          "old_line_content": "        source_streams.emplace_back(std::make_shared<MaterializingBlockInputStream>(interpreter_stream));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "analyze",
+          "new_api": null,
+          "old_text": "InterpreterSelectQuery(\n                query_info.query, context, std::make_shared<OneBlockInputStream>(getSampleBlockForColumns(column_names)),\n                SelectQueryOptions(processed_stage).analyze()).getSampleBlock()",
+          "new_text": null,
+          "old_line_content": "            return materializeBlock(InterpreterSelectQuery(",
+          "new_line_content": "Block StorageMerge::getQueryHeader(",
+          "content_same": false
+        },
+        {
+          "line": 431,
+          "old_api": "getSampleBlockForColumns",
+          "new_api": null,
+          "old_text": "getSampleBlockForColumns(column_names)",
+          "new_text": null,
+          "old_line_content": "                query_info.query, context, std::make_shared<OneBlockInputStream>(getSampleBlockForColumns(column_names)),",
+          "new_line_content": "    const Names & column_names, const SelectQueryInfo & query_info, const Context & context, QueryProcessingStage::Enum processed_stage)",
+          "content_same": false
+        },
+        {
+          "line": 305,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "source_streams.empty()",
+          "new_text": null,
+          "old_line_content": "    if (!source_streams.empty())",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "analyze",
+          "new_api": null,
+          "old_text": "SelectQueryOptions(processed_stage).analyze()",
+          "new_text": null,
+          "old_line_content": "                SelectQueryOptions(processed_stage).analyze()).getSampleBlock());",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Logical Error: unknown processed stage.\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "    throw Exception(\"Logical Error: unknown processed stage.\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 310,
+          "old_api": "std::make_shared<ConcatBlockInputStream>(source_streams)",
+          "new_api": null,
+          "old_text": "std::make_shared<ConcatBlockInputStream>(source_streams)",
+          "new_text": null,
+          "old_line_content": "                source_streams.size() > 1 ? std::make_shared<ConcatBlockInputStream>(source_streams) : source_streams[0];",
+          "new_line_content": "        /// Maximum permissible parallelism is streams_num",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "getTableName",
+          "new_api": null,
+          "old_text": "std::make_shared<AddingConstColumnBlockInputStream<String>>(\n                    source_stream, std::make_shared<DataTypeString>(), storage->getTableName(), \"_table\")",
+          "new_text": null,
+          "old_line_content": "                source_stream = std::make_shared<AddingConstColumnBlockInputStream<String>>(",
+          "new_line_content": "          * And this is not allowed, since all code is based on the assumption that in the block stream all types are the same.",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": "getTableName",
+          "new_api": null,
+          "old_text": "storage->getTableName()",
+          "new_text": null,
+          "old_line_content": "                    source_stream, std::make_shared<DataTypeString>(), storage->getTableName(), \"_table\");",
+          "new_line_content": "          */",
+          "content_same": false
+        },
+        {
+          "line": 448,
+          "old_api": "columns",
+          "new_api": null,
+          "old_text": "header.columns()",
+          "new_text": null,
+          "old_line_content": "    for (size_t column_index : ext::range(0, header.columns()))",
+          "new_line_content": "        case QueryProcessingStage::Complete:",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": "addTableLock",
+          "new_api": null,
+          "old_text": "source_stream->addTableLock(struct_lock)",
+          "new_text": null,
+          "old_line_content": "            source_stream->addTableLock(struct_lock);",
+          "new_line_content": "        if (concat_streams)",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "before_column.type.get()",
+          "new_text": null,
+          "old_line_content": "        if (!header_column.type->equals(*before_column.type.get()) && processed_stage > QueryProcessingStage::FetchColumns)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 457,
+          "old_api": "getNamesAndTypesList",
+          "new_api": null,
+          "old_text": "getSampleBlock().getNamesAndTypesList()",
+          "new_text": null,
+          "old_line_content": "            NamesAndTypesList source_columns = getSampleBlock().getNamesAndTypesList();",
+          "new_line_content": "                                          BlockInputStreamPtr & source_stream, QueryProcessingStage::Enum processed_stage)",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": "getColumn",
+          "new_api": null,
+          "old_text": "getColumn(\"_table\")",
+          "new_text": null,
+          "old_line_content": "            NameAndTypePair virtual_column = getColumn(\"_table\");",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "getActions",
+          "new_api": null,
+          "old_text": "ExpressionAnalyzer{where_expression, syntax_result, context}.getActions(false, false)",
+          "new_text": null,
+          "old_line_content": "            ExpressionActionsPtr actions = ExpressionAnalyzer{where_expression, syntax_result, context}.getActions(false, false);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 337,
+          "old_api": "getDatabaseIterator",
+          "new_api": null,
+          "old_text": "getDatabaseIterator(global_context)",
+          "new_text": null,
+          "old_line_content": "    auto iterator = getDatabaseIterator(global_context);",
+          "new_line_content": "            if (has_table_virtual_column)",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "selected_tables.end()",
+          "new_text": null,
+          "old_line_content": "    for (auto it = selected_tables.begin(); it != selected_tables.end(); ++it)",
+          "new_line_content": "    InputSortingInfoPtr input_sorting_info;",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": "table",
+          "new_api": null,
+          "old_text": "iterator->table()",
+          "new_text": null,
+          "old_line_content": "        auto & table = iterator->table();",
+          "new_line_content": "            /// Subordinary tables could have different but convertible types, like numeric types of different width.",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "table.get()",
+          "new_text": null,
+          "old_line_content": "        if (table.get() != this)",
+          "new_line_content": "            /// We must return streams with structure equals to structure of Merge table.",
+          "content_same": false
+        },
+        {
+          "line": 468,
+          "old_api": "dumpStructure",
+          "new_api": null,
+          "old_text": "header.dumpStructure()",
+          "new_text": null,
+          "old_line_content": "                                    + \"\\n\" + header.dumpStructure(), ErrorCodes::BLOCKS_HAVE_DIFFERENT_STRUCTURE);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "supportsSampling",
+          "new_api": null,
+          "old_text": "storage->supportsSampling()",
+          "new_text": null,
+          "old_line_content": "        if (query_info.query->as<ASTSelectQuery>()->sample_size() && !storage->supportsSampling())",
+          "new_line_content": "            if (!input_sorting_info)",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"Illegal SAMPLE: table doesn't support sampling\", ErrorCodes::SAMPLING_NOT_SUPPORTED)",
+          "new_text": null,
+          "old_line_content": "            throw Exception(\"Illegal SAMPLE: table doesn't support sampling\", ErrorCodes::SAMPLING_NOT_SUPPORTED);",
+          "new_line_content": "                break;",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "getDatabaseIterator",
+          "new_api": null,
+          "old_text": "getDatabaseIterator(global_context)",
+          "new_text": null,
+          "old_line_content": "    DatabaseTablesIteratorPtr iterator = getDatabaseIterator(global_context);",
+          "new_line_content": "    StorageListWithLocks selected_tables;",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "ColumnString::create()",
+          "new_api": null,
+          "old_text": "ColumnString::create()",
+          "new_text": null,
+          "old_line_content": "    auto virtual_column = ColumnString::create();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "createSourceStreams",
+          "new_api": null,
+          "old_text": "createSourceStreams(\n                query_info, processed_stage, max_block_size, header, storage,\n                struct_lock, real_column_names, modified_context, current_streams, has_table_virtual_column)",
+          "new_text": null,
+          "old_line_content": "            source_streams = createSourceStreams(",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "isValid",
+          "new_api": null,
+          "old_text": "iterator->isValid()",
+          "new_text": null,
+          "old_line_content": "    while (iterator->isValid())",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": "supportsPrewhere",
+          "new_api": null,
+          "old_text": "storage->supportsPrewhere()",
+          "new_text": null,
+          "old_line_content": "        if (query && query->as<ASTSelectQuery>()->prewhere() && !storage->supportsPrewhere())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": "evaluateConstantExpressionOrIdentifierAsLiteral",
+          "new_api": null,
+          "old_text": "evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context)",
+          "new_text": null,
+          "old_line_content": "        engine_args[0] = evaluateConstantExpressionOrIdentifierAsLiteral(engine_args[0], args.local_context);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 492,
+          "old_api": "evaluateConstantExpressionAsLiteral",
+          "new_api": null,
+          "old_text": "evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context)",
+          "new_text": null,
+          "old_line_content": "        engine_args[1] = evaluateConstantExpressionAsLiteral(engine_args[1], args.local_context);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 366,
+          "old_api": "get",
+          "new_api": null,
+          "old_text": "storage.get()",
+          "new_text": null,
+          "old_line_content": "        if (storage.get() != this)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 239,
+          "old_api": "createSourceStreams",
+          "new_api": null,
+          "old_text": "createSourceStreams(query_info, processed_stage, max_block_size,\n                                                                    header, storage, struct_lock, real_column_names,\n                                                                    modified_context, current_streams, has_table_virtual_column, true)",
+          "new_text": null,
+          "old_line_content": "                    BlockInputStreams streams = createSourceStreams(query_info, processed_stage, max_block_size,",
+          "new_line_content": "        TableStructureReadLockHolder struct_lock = it->second;",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "lockStructureForShare",
+          "new_api": null,
+          "old_text": "storage->lockStructureForShare(false, query_id)",
+          "new_text": null,
+          "old_line_content": "            selected_tables.emplace_back(storage, get_lock ? storage->lockStructureForShare(false, query_id) : TableStructureReadLockHolder{});",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "getTableName",
+          "new_api": null,
+          "old_text": "storage->getTableName()",
+          "new_text": null,
+          "old_line_content": "            virtual_column->insert(storage->getTableName());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "engine_args[0]->as<ASTLiteral &>().value.safeGet<String>()",
+          "new_api": null,
+          "old_text": "engine_args[0]->as<ASTLiteral &>().value.safeGet<String>()",
+          "new_text": null,
+          "old_line_content": "        String source_database = engine_args[0]->as<ASTLiteral &>().value.safeGet<String>();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": "engine_args[1]->as<ASTLiteral &>().value.safeGet<String>()",
+          "new_api": null,
+          "old_text": "engine_args[1]->as<ASTLiteral &>().value.safeGet<String>()",
+          "new_text": null,
+          "old_line_content": "        String table_name_regexp = engine_args[1]->as<ASTLiteral &>().value.safeGet<String>();",
+          "new_line_content": "void registerStorageMerge(StorageFactory & factory)",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "Exception",
+          "new_api": null,
+          "old_text": "Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR)",
+          "new_text": null,
+          "old_line_content": "                        throw Exception(\"LogicalError: the lazy stream size must to be one or empty.\", ErrorCodes::LOGICAL_ERROR);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": "next",
+          "new_api": null,
+          "old_text": "iterator->next()",
+          "new_text": null,
+          "old_line_content": "        iterator->next();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "std::make_shared<NullBlockInputStream>(header)",
+          "new_api": null,
+          "old_text": "std::make_shared<NullBlockInputStream>(header)",
+          "new_text": null,
+          "old_line_content": "                    return streams.empty() ? std::make_shared<NullBlockInputStream>(header) : streams[0];",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": "std::make_shared<DataTypeString>()",
+          "new_api": null,
+          "old_text": "std::make_shared<DataTypeString>()",
+          "new_text": null,
+          "old_line_content": "        Block virtual_columns_block = Block{ColumnWithTypeAndName(std::move(virtual_column), std::make_shared<DataTypeString>(), \"_table\")};",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "source_streams.end()",
+          "new_text": null,
+          "old_line_content": "        res.insert(res.end(), source_streams.begin(), source_streams.end());",
+          "new_line_content": "                query_info, processed_stage, max_block_size, header, storage,",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": "VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\")",
+          "new_api": null,
+          "old_text": "VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\")",
+          "new_text": null,
+          "old_line_content": "        auto values = VirtualColumnUtils::extractSingleValueFromBlock<String>(virtual_columns_block, \"_table\");",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "empty",
+          "new_api": null,
+          "old_text": "res.empty()",
+          "new_text": null,
+          "old_line_content": "    if (res.empty())",
+          "new_line_content": "        else",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 33,
+      "total_additions": 71,
+      "total_deletions": 66,
+      "total_api_changes": 170
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 19,
+        "api_related_lines": 170,
+        "non_api_lines": 10,
+        "non_api_line_numbers": [
+          225,
+          226,
+          227,
+          229,
+          213,
+          214,
+          216,
+          219,
+          220,
+          222
+        ]
+      }
+    },
+    "api_calls_before": 192,
+    "api_calls_after": 198,
+    "diff_info": {
+      "added_lines": 19,
+      "removed_lines": 0,
+      "total_diff_lines": 31
+    }
+  }
+}

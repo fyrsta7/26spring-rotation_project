@@ -1,0 +1,14 @@
+diff --git a/src/compiler/register-allocator.cc b/src/compiler/register-allocator.cc
+index ff163cbc7e5..f9c076d9510 100644
+--- a/src/compiler/register-allocator.cc
++++ b/src/compiler/register-allocator.cc
+@@ -3152,6 +3152,9 @@ bool LinearScanAllocator::TryAllocateFreeReg(
+     // the range end. Split current at position where it becomes blocked.
+     LiveRange* tail = SplitRangeAt(current, pos);
+     AddToUnhandledSorted(tail);
++
++    // Try to allocate preferred register once more.
++    if (TryAllocatePreferredReg(current, free_until_pos)) return true;
+   }
+ 
+   // Register reg is available at the range start and is free until the range

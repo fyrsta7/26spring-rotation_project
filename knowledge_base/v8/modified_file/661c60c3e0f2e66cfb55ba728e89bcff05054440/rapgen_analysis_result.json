@@ -1,0 +1,308 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/661c60c3e0f2e66cfb55ba728e89bcff05054440",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/661c60c3e0f2e66cfb55ba728e89bcff05054440/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/661c60c3e0f2e66cfb55ba728e89bcff05054440/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/v8/modified_file/661c60c3e0f2e66cfb55ba728e89bcff05054440/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 98,
+          "old_api": "set_markbit",
+          "new_api": "ptr",
+          "old_text": "set_markbit()",
+          "new_text": "reinterpret_cast<std::atomic<Address>*>(&object_)->store(\n      object.ptr(), std::memory_order_release)",
+          "old_line_content": "    set_markbit();",
+          "new_line_content": "  reinterpret_cast<std::atomic<Address>*>(&object_)->store(",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": "ptr",
+          "new_api": "AllocateNode",
+          "old_text": "reinterpret_cast<std::atomic<Address>*>(&object_)->store(\n      object.ptr(), std::memory_order_release)",
+          "new_text": "AllocateNode()",
+          "old_line_content": "  reinterpret_cast<std::atomic<Address>*>(&object_)->store(",
+          "new_line_content": "  auto [block, node] = AllocateNode();",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": "ptr",
+          "new_api": "NeedsTrackingInYoungNodes",
+          "old_text": "object.ptr()",
+          "new_text": "NeedsTrackingInYoungNodes(object, node)",
+          "old_line_content": "      object.ptr(), std::memory_order_release);",
+          "new_line_content": "  const bool needs_young_bit_update = NeedsTrackingInYoungNodes(object, node);",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": "FullObjectSlot",
+          "new_api": "NeedsToBeRemembered",
+          "old_text": "FullObjectSlot(&object_)",
+          "new_text": "NeedsToBeRemembered(object, node, slot, store_mode)",
+          "old_line_content": "  return FullObjectSlot(&object_);",
+          "new_line_content": "  const bool has_old_host = NeedsToBeRemembered(object, node, slot, store_mode);",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": "DCHECK_NOT_NULL",
+          "new_api": "Publish",
+          "old_text": "DCHECK_NOT_NULL(slot)",
+          "new_text": "node->Publish(object, needs_young_bit_update, needs_black_allocation,\n                    has_old_host, is_droppable)",
+          "old_line_content": "  DCHECK_NOT_NULL(slot);",
+          "new_line_content": "      node->Publish(object, needs_young_bit_update, needs_black_allocation,",
+          "content_same": false
+        },
+        {
+          "line": 120,
+          "old_api": "NeedsToBeRemembered",
+          "new_api": "InYoungList",
+          "old_text": "NeedsToBeRemembered(object, node, slot, store_mode)",
+          "new_text": "block->InYoungList()",
+          "old_line_content": "  const bool has_old_host = NeedsToBeRemembered(object, node, slot, store_mode);",
+          "new_line_content": "  if (needs_young_bit_update && !block->InYoungList()) {",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": "Publish",
+          "new_api": "WriteBarrier::MarkingFromGlobalHandle(object)",
+          "old_text": "node->Publish(object, needs_young_bit_update, needs_black_allocation,\n                    has_old_host, is_droppable)",
+          "new_text": "WriteBarrier::MarkingFromGlobalHandle(object)",
+          "old_line_content": "      node->Publish(object, needs_young_bit_update, needs_black_allocation,",
+          "new_line_content": "    WriteBarrier::MarkingFromGlobalHandle(object);",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": "InYoungList",
+          "new_api": "Object::ObjectVerify(*result_slot, isolate_)",
+          "old_text": "block->InYoungList()",
+          "new_text": "Object::ObjectVerify(*result_slot, isolate_)",
+          "old_line_content": "  if (needs_young_bit_update && !block->InYoungList()) {",
+          "new_line_content": "    Object::ObjectVerify(*result_slot, isolate_);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 99,
+          "old_api": null,
+          "new_api": "ptr",
+          "old_text": null,
+          "new_text": "object.ptr()",
+          "old_line_content": "  }",
+          "new_line_content": "      object.ptr(), std::memory_order_release);",
+          "content_same": false
+        },
+        {
+          "line": 100,
+          "old_api": null,
+          "new_api": "FullObjectSlot",
+          "old_text": null,
+          "new_text": "FullObjectSlot(&object_)",
+          "old_line_content": "  if (has_old_host) {",
+          "new_line_content": "  return FullObjectSlot(&object_);",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": null,
+          "new_api": "DCHECK_NOT_NULL",
+          "old_text": null,
+          "new_text": "DCHECK_NOT_NULL(slot)",
+          "old_line_content": "  }",
+          "new_line_content": "  DCHECK_NOT_NULL(slot);",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": null,
+          "new_api": "PushFront",
+          "old_text": null,
+          "new_text": "young_blocks_.PushFront(block)",
+          "old_line_content": "  const bool needs_black_allocation =",
+          "new_line_content": "    young_blocks_.PushFront(block);",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": null,
+          "new_api": "SetInYoungList",
+          "old_text": null,
+          "new_text": "block->SetInYoungList(true)",
+          "old_line_content": "      is_marking_ && store_mode != TracedReferenceStoreMode::kInitializingStore;",
+          "new_line_content": "    block->SetInYoungList(true);",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": null,
+          "new_api": "InYoungList",
+          "old_text": null,
+          "new_text": "block->InYoungList()",
+          "old_line_content": "  const bool is_droppable =",
+          "new_line_content": "    DCHECK(block->InYoungList());",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 131,
+          "old_api": "PushFront",
+          "new_api": null,
+          "old_text": "young_blocks_.PushFront(block)",
+          "new_text": null,
+          "old_line_content": "    young_blocks_.PushFront(block);",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "SetInYoungList",
+          "new_api": null,
+          "old_text": "block->SetInYoungList(true)",
+          "new_text": null,
+          "old_line_content": "    block->SetInYoungList(true);",
+          "new_line_content": "#endif  // VERIFY_HEAP",
+          "content_same": false
+        },
+        {
+          "line": 133,
+          "old_api": "InYoungList",
+          "new_api": null,
+          "old_text": "block->InYoungList()",
+          "new_text": null,
+          "old_line_content": "    DCHECK(block->InYoungList());",
+          "new_line_content": "  return result_slot;",
+          "content_same": false
+        },
+        {
+          "line": 101,
+          "old_api": "is_in_young_list",
+          "new_api": null,
+          "old_text": "is_in_young_list()",
+          "new_text": null,
+          "old_line_content": "    DCHECK(is_in_young_list());",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": "set_has_old_host",
+          "new_api": null,
+          "old_text": "set_has_old_host(true)",
+          "new_text": null,
+          "old_line_content": "    set_has_old_host(true);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": "WriteBarrier::MarkingFromGlobalHandle(object)",
+          "new_api": null,
+          "old_text": "WriteBarrier::MarkingFromGlobalHandle(object)",
+          "new_text": null,
+          "old_line_content": "    WriteBarrier::MarkingFromGlobalHandle(object);",
+          "new_line_content": "}  // namespace v8::internal",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": "set_droppable",
+          "new_api": null,
+          "old_text": "set_droppable(true)",
+          "new_text": null,
+          "old_line_content": "    set_droppable(true);",
+          "new_line_content": "    TracedReferenceHandling reference_handling) {",
+          "content_same": false
+        },
+        {
+          "line": 107,
+          "old_api": "set_is_in_use",
+          "new_api": null,
+          "old_text": "set_is_in_use(true)",
+          "new_text": null,
+          "old_line_content": "  set_is_in_use(true);",
+          "new_line_content": "  Tagged<Object> object(value);",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": "Object::ObjectVerify(*result_slot, isolate_)",
+          "new_api": null,
+          "old_text": "Object::ObjectVerify(*result_slot, isolate_)",
+          "new_text": null,
+          "old_line_content": "    Object::ObjectVerify(*result_slot, isolate_);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": "AllocateNode",
+          "new_api": null,
+          "old_text": "AllocateNode()",
+          "new_text": null,
+          "old_line_content": "  auto [block, node] = AllocateNode();",
+          "new_line_content": "  // Write barrier and young node tracking may be reordered, so move them below",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": "NeedsTrackingInYoungNodes",
+          "new_api": null,
+          "old_text": "NeedsTrackingInYoungNodes(object, node)",
+          "new_text": null,
+          "old_line_content": "  const bool needs_young_bit_update = NeedsTrackingInYoungNodes(object, node);",
+          "new_line_content": "  // `Publish()`.",
+          "content_same": false
+        },
+        {
+          "line": 95,
+          "old_api": "set_is_in_young_list",
+          "new_api": null,
+          "old_text": "set_is_in_young_list(true)",
+          "new_text": null,
+          "old_line_content": "    set_is_in_young_list(true);",
+          "new_line_content": "           needs_black_allocation << Markbit::kShift |",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 8,
+      "total_additions": 6,
+      "total_deletions": 12,
+      "total_api_changes": 26
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 14,
+        "api_related_lines": 26,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          96,
+          97,
+          103,
+          104,
+          94
+        ]
+      }
+    },
+    "api_calls_before": 62,
+    "api_calls_after": 55,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 14,
+      "total_diff_lines": 30
+    }
+  }
+}

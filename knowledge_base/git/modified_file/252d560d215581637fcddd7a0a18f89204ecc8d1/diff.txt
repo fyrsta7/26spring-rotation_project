@@ -1,0 +1,21 @@
+diff --git a/grep.c b/grep.c
+index 062b2b6f28..db341b6797 100644
+--- a/grep.c
++++ b/grep.c
+@@ -394,13 +394,9 @@ static int match_expr_eval(struct grep_opt *o,
+ 		h = !match_expr_eval(o, x->u.unary, bol, eol, ctx, 0);
+ 		break;
+ 	case GREP_NODE_AND:
+-		if (!collect_hits)
+-			return (match_expr_eval(o, x->u.binary.left,
+-						bol, eol, ctx, 0) &&
+-				match_expr_eval(o, x->u.binary.right,
+-						bol, eol, ctx, 0));
+-		h = match_expr_eval(o, x->u.binary.left, bol, eol, ctx, 0);
+-		h &= match_expr_eval(o, x->u.binary.right, bol, eol, ctx, 0);
++		if (!match_expr_eval(o, x->u.binary.left, bol, eol, ctx, 0))
++			return 0;
++		h = match_expr_eval(o, x->u.binary.right, bol, eol, ctx, 0);
+ 		break;
+ 	case GREP_NODE_OR:
+ 		if (!collect_hits)

@@ -1,0 +1,465 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/52139a2392a662bff23ee951579dea2d06fb18b8",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/52139a2392a662bff23ee951579dea2d06fb18b8/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/52139a2392a662bff23ee951579dea2d06fb18b8/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/ladybird/modified_file/52139a2392a662bff23ee951579dea2d06fb18b8/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 92,
+          "old_api": "LOCKER",
+          "new_api": "kprintf",
+          "old_text": "LOCKER(m_lock)",
+          "new_text": "kprintf(\"DiskBackedFileSystem::read_block %u\\n\", index)",
+          "old_line_content": "        LOCKER(m_lock);",
+          "new_line_content": "    kprintf(\"DiskBackedFileSystem::read_block %u\\n\", index);",
+          "content_same": false
+        },
+        {
+          "line": 103,
+          "old_api": "block_size",
+          "new_api": "fsid",
+          "old_text": "block_size()",
+          "new_text": "fsid()",
+          "old_line_content": "    auto buffer = ByteBuffer::create_uninitialized(block_size());",
+          "new_line_content": "        if (auto* cached_block = block_cache().resource().get({ fsid(), index }))",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": "lock",
+          "new_api": "ASSERT",
+          "old_text": "block_cache().lock()",
+          "new_text": "ASSERT(success)",
+          "old_line_content": "        LOCKER(block_cache().lock());",
+          "new_line_content": "    ASSERT(success);",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": "fsid",
+          "new_api": "block_size",
+          "old_text": "fsid()",
+          "new_text": "block_size()",
+          "old_line_content": "        block_cache().resource().put({ fsid(), index }, CachedBlock({ fsid(), index }, buffer));",
+          "new_line_content": "    ASSERT(buffer.size() == block_size());",
+          "content_same": false
+        },
+        {
+          "line": 128,
+          "old_api": "read_block",
+          "new_api": "block_size",
+          "old_text": "read_block(index + i)",
+          "new_text": "block_size()",
+          "old_line_content": "        auto block = read_block(index + i);",
+          "new_line_content": "    auto blocks = ByteBuffer::create_uninitialized(count * block_size());",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": "block_size",
+          "new_api": "read_block",
+          "old_text": "block_size()",
+          "new_text": "read_block(index + i)",
+          "old_line_content": "        out += block_size();",
+          "new_line_content": "        auto block = read_block(index + i);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 129,
+          "old_api": null,
+          "new_api": "pointer",
+          "old_text": null,
+          "new_text": "blocks.pointer()",
+          "old_line_content": "        if (!block)",
+          "new_line_content": "    byte* out = blocks.pointer();",
+          "content_same": false
+        },
+        {
+          "line": 135,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "block.size()",
+          "old_line_content": "    return blocks;",
+          "new_line_content": "        memcpy(out, block.pointer(), block.size());",
+          "content_same": false
+        },
+        {
+          "line": 136,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "}",
+          "new_line_content": "        out += block_size();",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "LOCKER",
+          "old_text": null,
+          "new_text": "LOCKER(m_lock)",
+          "old_line_content": "    }",
+          "new_line_content": "    LOCKER(m_lock);",
+          "content_same": false
+        },
+        {
+          "line": 153,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "}",
+          "new_line_content": "        DiskOffset base_offset = static_cast<DiskOffset>(it.key) * static_cast<DiskOffset>(block_size());",
+          "content_same": false
+        },
+        {
+          "line": 154,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "it.value.data()",
+          "old_line_content": "",
+          "new_line_content": "        device().write(base_offset, block_size(), it.value.data());",
+          "content_same": false
+        },
+        {
+          "line": 156,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "m_write_cache.clear()",
+          "old_line_content": "",
+          "new_line_content": "    m_write_cache.clear();",
+          "content_same": false
+        },
+        {
+          "line": 73,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "m_write_cache.size()",
+          "old_line_content": "}",
+          "new_line_content": "    if (m_write_cache.size() >= 32)",
+          "content_same": false
+        },
+        {
+          "line": 74,
+          "old_api": null,
+          "new_api": "flush_writes",
+          "old_text": null,
+          "new_text": "flush_writes()",
+          "old_line_content": "",
+          "new_line_content": "        flush_writes();",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": null,
+          "new_api": "kprintf",
+          "old_text": null,
+          "new_text": "kprintf(\"DiskBackedFileSystem::write_blocks %u x%u\\n\", index, count)",
+          "old_line_content": "    return true;",
+          "new_line_content": "    kprintf(\"DiskBackedFileSystem::write_blocks %u x%u\\n\", index, count);",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "ByteBuffer DiskBackedFS::read_block(unsigned index) const",
+          "new_line_content": "        write_block(index + i, data.slice(i * block_size(), block_size()));",
+          "content_same": false
+        },
+        {
+          "line": 96,
+          "old_api": null,
+          "new_api": "LOCKER",
+          "old_text": null,
+          "new_text": "LOCKER(m_lock)",
+          "old_line_content": "",
+          "new_line_content": "        LOCKER(m_lock);",
+          "content_same": false
+        },
+        {
+          "line": 97,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "m_write_cache.end()",
+          "old_line_content": "    {",
+          "new_line_content": "        if (auto it = m_write_cache.find(index); it != m_write_cache.end())",
+          "content_same": false
+        },
+        {
+          "line": 102,
+          "old_api": null,
+          "new_api": "lock",
+          "old_text": null,
+          "new_text": "block_cache().lock()",
+          "old_line_content": "",
+          "new_line_content": "        LOCKER(block_cache().lock());",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": null,
+          "new_api": "pointer",
+          "old_text": null,
+          "new_text": "buffer.pointer()",
+          "old_line_content": "",
+          "new_line_content": "    auto* buffer_pointer = buffer.pointer();",
+          "content_same": false
+        },
+        {
+          "line": 111,
+          "old_api": null,
+          "new_api": "block_size",
+          "old_text": null,
+          "new_text": "block_size()",
+          "old_line_content": "    {",
+          "new_line_content": "    bool success = device().read(base_offset, block_size(), buffer_pointer);",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": null,
+          "new_api": "lock",
+          "old_text": null,
+          "new_text": "block_cache().lock()",
+          "old_line_content": "}",
+          "new_line_content": "        LOCKER(block_cache().lock());",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": null,
+          "new_api": "fsid",
+          "old_text": null,
+          "new_text": "fsid()",
+          "old_line_content": "",
+          "new_line_content": "        block_cache().resource().put({ fsid(), index }, CachedBlock({ fsid(), index }, buffer));",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": null,
+          "new_api": "read_block",
+          "old_text": null,
+          "new_text": "read_block(index)",
+          "old_line_content": "    for (unsigned i = 0; i < count; ++i) {",
+          "new_line_content": "        return read_block(index);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 98,
+          "old_api": "lock",
+          "new_api": null,
+          "old_text": "block_cache().lock()",
+          "new_text": null,
+          "old_line_content": "        LOCKER(block_cache().lock());",
+          "new_line_content": "            return it->value;",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "block.size()",
+          "new_text": null,
+          "old_line_content": "        memcpy(out, block.pointer(), block.size());",
+          "new_line_content": "    for (unsigned i = 0; i < count; ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 99,
+          "old_api": "fsid",
+          "new_api": null,
+          "old_text": "fsid()",
+          "new_text": null,
+          "old_line_content": "        if (auto* cached_block = block_cache().resource().get({ fsid(), index }))",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 105,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    DiskOffset base_offset = static_cast<DiskOffset>(index) * static_cast<DiskOffset>(block_size());",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "pointer",
+          "new_api": null,
+          "old_text": "buffer.pointer()",
+          "new_text": null,
+          "old_line_content": "    auto* buffer_pointer = buffer.pointer();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "read_block",
+          "new_api": null,
+          "old_text": "read_block(index)",
+          "new_text": null,
+          "old_line_content": "        return read_block(index);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": "ASSERT",
+          "new_api": null,
+          "old_text": "ASSERT(success)",
+          "new_text": null,
+          "old_line_content": "    ASSERT(success);",
+          "new_line_content": "    //kprintf(\"created block buffer with size %u\\n\", block_size());",
+          "content_same": false
+        },
+        {
+          "line": 78,
+          "old_api": "kprintf",
+          "new_api": null,
+          "old_text": "kprintf(\"DiskBackedFileSystem::write_blocks %u x%u\\n\", index, count)",
+          "new_text": null,
+          "old_line_content": "    kprintf(\"DiskBackedFileSystem::write_blocks %u x%u\\n\", index, count);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 81,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        write_block(index + i, data.slice(i * block_size(), block_size()));",
+          "new_line_content": "#ifdef DBFS_DEBUG",
+          "content_same": false
+        },
+        {
+          "line": 147,
+          "old_api": "LOCKER",
+          "new_api": null,
+          "old_text": "LOCKER(m_lock)",
+          "new_text": null,
+          "old_line_content": "    LOCKER(m_lock);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "        DiskOffset base_offset = static_cast<DiskOffset>(it.key) * static_cast<DiskOffset>(block_size());",
+          "new_line_content": "void DiskBackedFS::flush_writes()",
+          "content_same": false
+        },
+        {
+          "line": 150,
+          "old_api": "data",
+          "new_api": null,
+          "old_text": "it.value.data()",
+          "new_text": null,
+          "old_line_content": "        device().write(base_offset, block_size(), it.value.data());",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "pointer",
+          "new_api": null,
+          "old_text": "blocks.pointer()",
+          "new_text": null,
+          "old_line_content": "    byte* out = blocks.pointer();",
+          "new_line_content": "        return nullptr;",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "m_write_cache.clear()",
+          "new_text": null,
+          "old_line_content": "    m_write_cache.clear();",
+          "new_line_content": "    for (auto& it : m_write_cache) {",
+          "content_same": false
+        },
+        {
+          "line": 88,
+          "old_api": "kprintf",
+          "new_api": null,
+          "old_text": "kprintf(\"DiskBackedFileSystem::read_block %u\\n\", index)",
+          "new_text": null,
+          "old_line_content": "    kprintf(\"DiskBackedFileSystem::read_block %u\\n\", index);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 124,
+          "old_api": "block_size",
+          "new_api": null,
+          "old_text": "block_size()",
+          "new_text": null,
+          "old_line_content": "    auto blocks = ByteBuffer::create_uninitialized(count * block_size());",
+          "new_line_content": "    if (!count)",
+          "content_same": false
+        },
+        {
+          "line": 93,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "m_write_cache.end()",
+          "new_text": null,
+          "old_line_content": "        if (auto it = m_write_cache.find(index); it != m_write_cache.end())",
+          "new_line_content": "#endif",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 6,
+      "total_additions": 19,
+      "total_deletions": 17,
+      "total_api_changes": 42
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 42,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          72,
+          75
+        ]
+      }
+    },
+    "api_calls_before": 74,
+    "api_calls_after": 76,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 0,
+      "total_diff_lines": 16
+    }
+  }
+}

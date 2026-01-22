@@ -1,0 +1,14 @@
+diff --git a/src/mongo/scripting/mozjs/implscope.cpp b/src/mongo/scripting/mozjs/implscope.cpp
+index 4d9a85eb13a..903b46529ef 100644
+--- a/src/mongo/scripting/mozjs/implscope.cpp
++++ b/src/mongo/scripting/mozjs/implscope.cpp
+@@ -260,6 +260,9 @@ MozJSImplScope::MozRuntime::MozRuntime(const MozJSScriptEngine* engine) {
+             // large pages, like 4MB?
+             JS_SetNativeStackQuota(_runtime, available.get() - (64 * 1024));
+         }
++
++        // The memory limit is in megabytes
++        JS_SetGCParametersBasedOnAvailableMemory(_runtime, kMallocMemoryLimit / (1024 * 1024));
+     }
+ 
+     _context = JS_NewContext(_runtime, kStackChunkSize);

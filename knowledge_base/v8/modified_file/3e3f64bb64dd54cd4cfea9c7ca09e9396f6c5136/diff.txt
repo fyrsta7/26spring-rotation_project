@@ -1,0 +1,26 @@
+diff --git a/src/maglev/maglev-graph-builder.cc b/src/maglev/maglev-graph-builder.cc
+index 2f6af688cf1..7d18d797d52 100644
+--- a/src/maglev/maglev-graph-builder.cc
++++ b/src/maglev/maglev-graph-builder.cc
+@@ -5814,7 +5814,20 @@ void MaglevGraphBuilder::VisitLogicalNot() {
+ 
+ void MaglevGraphBuilder::VisitTypeOf() {
+   ValueNode* value = GetAccumulatorTagged();
+-  SetAccumulator(BuildCallBuiltin<Builtin::kTypeof>({value}));
++  // TODO(victorgomes): Add a JSFunction type to Maglev.
++  if (CheckType(value, NodeType::kBoolean)) {
++    SetAccumulator(GetRootConstant(RootIndex::kboolean_string));
++  } else if (CheckType(value, NodeType::kNumber)) {
++    SetAccumulator(GetRootConstant(RootIndex::knumber_string));
++  } else if (CheckType(value, NodeType::kString)) {
++    SetAccumulator(GetRootConstant(RootIndex::kstring_string));
++  } else if (CheckType(value, NodeType::kSymbol)) {
++    SetAccumulator(GetRootConstant(RootIndex::ksymbol_string));
++  } else if (IsUndefinedValue(value)) {
++    SetAccumulator(GetRootConstant(RootIndex::kundefined_string));
++  } else {
++    SetAccumulator(BuildCallBuiltin<Builtin::kTypeof>({value}));
++  }
+ }
+ 
+ void MaglevGraphBuilder::VisitDeletePropertyStrict() {

@@ -1,0 +1,16 @@
+diff --git a/libavcodec/ffv1dec_template.c b/libavcodec/ffv1dec_template.c
+index 25032feda0..1b7f6c4bf5 100644
+--- a/libavcodec/ffv1dec_template.c
++++ b/libavcodec/ffv1dec_template.c
+@@ -86,6 +86,11 @@ static av_always_inline int RENAME(decode_line)(FFV1Context *s, int w,
+                         run_mode = 2;
+                     }
+                 }
++                while (run_count > 1 && w-x > 1) {
++                    sample[1][x] = RENAME(predict)(sample[1] + x, sample[0] + x);
++                    x++;
++                    run_count--;
++                }
+                 run_count--;
+                 if (run_count < 0) {
+                     run_mode  = 0;

@@ -1,0 +1,22 @@
+diff --git a/builtin/cat-file.c b/builtin/cat-file.c
+index 144ae18127..8f114add38 100644
+--- a/builtin/cat-file.c
++++ b/builtin/cat-file.c
+@@ -504,6 +504,7 @@ int cmd_cat_file(int argc, const char **argv, const char *prefix)
+ 
+ 	git_config(git_cat_file_config, NULL);
+ 
++	batch.buffer_output = -1;
+ 	argc = parse_options(argc, argv, prefix, options, cat_file_usage, 0);
+ 
+ 	if (opt) {
+@@ -527,6 +528,9 @@ int cmd_cat_file(int argc, const char **argv, const char *prefix)
+ 		usage_with_options(cat_file_usage, options);
+ 	}
+ 
++	if (batch.buffer_output < 0)
++		batch.buffer_output = batch.all_objects;
++
+ 	if (batch.enabled)
+ 		return batch_objects(&batch);
+ 

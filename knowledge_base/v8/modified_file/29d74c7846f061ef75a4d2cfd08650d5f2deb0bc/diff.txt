@@ -1,0 +1,17 @@
+diff --git a/src/compiler/mips64/instruction-selector-mips64.cc b/src/compiler/mips64/instruction-selector-mips64.cc
+index ee02d30244e..c5315232378 100644
+--- a/src/compiler/mips64/instruction-selector-mips64.cc
++++ b/src/compiler/mips64/instruction-selector-mips64.cc
+@@ -1927,10 +1927,8 @@ void VisitWordCompare(InstructionSelector* selector, Node* node,
+ bool IsNodeUnsigned(Node* n) {
+   NodeMatcher m(n);
+ 
+-  if (m.IsLoad()) {
+-    LoadRepresentation load_rep = LoadRepresentationOf(n->op());
+-    return load_rep.IsUnsigned();
+-  } else if (m.IsUnalignedLoad()) {
++  if (m.IsLoad() || m.IsUnalignedLoad() || m.IsPoisonedLoad() ||
++      m.IsProtectedLoad() || m.IsWord32AtomicLoad() || m.IsWord64AtomicLoad()) {
+     LoadRepresentation load_rep = LoadRepresentationOf(n->op());
+     return load_rep.IsUnsigned();
+   } else {

@@ -1,0 +1,35 @@
+diff --git a/db/json.cpp b/db/json.cpp
+index a5e0bd41ce0..77983c39c36 100644
+--- a/db/json.cpp
++++ b/db/json.cpp
+@@ -558,18 +558,14 @@ public:
+     };
+ 
+     BSONObj fromjson( const char *str ) {
+-        if ( ! strlen(str) )
++        if ( str[0] == '\0' )
+             return BSONObj();
+         ObjectBuilder b;
+         JsonGrammar parser( b );
+         parse_info<> result = parse( str, parser, space_p );
+         if ( !result.full ) {
+-            int len = strlen( result.stop );
+-            if ( len > 10 )
+-                len = 10;
+-            stringstream ss;
+-            ss << "Failure parsing JSON string near: " << string( result.stop, len );
+-            massert( 10340 ,  ss.str(), false );
++            int len = strnlen(result.stop , 10);
++            massert( 10340 , "Failure parsing JSON string near: " + string( result.stop, len ) , false );
+         }
+         BSONObj ret = b.pop();
+         assert( b.empty() );
+@@ -580,4 +576,8 @@ public:
+         return fromjson( str.c_str() );
+     }
+ 
++    BSONObj fromjson( istream &str ) {
++        return BSONObj();
++    }
++
+ } // namespace mongo

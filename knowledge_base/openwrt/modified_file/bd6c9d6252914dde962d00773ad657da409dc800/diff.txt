@@ -1,0 +1,26 @@
+diff --git a/target/linux/cns3xxx/files/drivers/net/ethernet/cavium/cns3xxx_eth.c b/target/linux/cns3xxx/files/drivers/net/ethernet/cavium/cns3xxx_eth.c
+index 9c3618fd9b..db15a2e2e5 100644
+--- a/target/linux/cns3xxx/files/drivers/net/ethernet/cavium/cns3xxx_eth.c
++++ b/target/linux/cns3xxx/files/drivers/net/ethernet/cavium/cns3xxx_eth.c
+@@ -718,6 +718,10 @@ static int eth_poll(struct napi_struct *napi, int budget)
+ 		enable_irq(IRQ_CNS3XXX_SW_R0RXC);
+ 	}
+ 
++	spin_lock_bh(&tx_lock);
++	eth_complete_tx(sw);
++	spin_unlock_bh(&tx_lock);
++
+ 	cns3xxx_alloc_rx_buf(sw, received);
+ 
+ 	rx_ring->cur_index = i;
+@@ -725,10 +729,6 @@ static int eth_poll(struct napi_struct *napi, int budget)
+ 	wmb();
+ 	enable_rx_dma(sw);
+ 
+-	spin_lock_bh(&tx_lock);
+-	eth_complete_tx(sw);
+-	spin_unlock_bh(&tx_lock);
+-
+ 	return received;
+ }
+ 

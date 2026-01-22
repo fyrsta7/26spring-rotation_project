@@ -1,0 +1,548 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/c3fb48da8b76ee143d1c380ccf9899752607c5d5",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/c3fb48da8b76ee143d1c380ccf9899752607c5d5/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/c3fb48da8b76ee143d1c380ccf9899752607c5d5/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/redis/modified_file/c3fb48da8b76ee143d1c380ccf9899752607c5d5/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 657,
+          "old_api": "decrRefCount",
+          "new_api": "rewriteClientCommandArgument",
+          "old_text": "decrRefCount(when_obj)",
+          "new_text": "rewriteClientCommandArgument(c,0,shared.pexpireat)",
+          "old_line_content": "        decrRefCount(when_obj);",
+          "new_line_content": "            rewriteClientCommandArgument(c,0,shared.pexpireat);",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": "commandTimeSnapshot",
+          "new_api": "signalModifiedKey",
+          "old_text": "commandTimeSnapshot()",
+          "new_text": "signalModifiedKey(c,c->db,key)",
+          "old_line_content": "    expireGenericCommand(c,commandTimeSnapshot(),UNIT_SECONDS);",
+          "new_line_content": "        signalModifiedKey(c,c->db,key);",
+          "content_same": false
+        },
+        {
+          "line": 691,
+          "old_api": "addReplyLongLong",
+          "new_api": "expireGenericCommand",
+          "old_text": "addReplyLongLong(c,-2)",
+          "new_text": "expireGenericCommand(c,0,UNIT_MILLISECONDS)",
+          "old_line_content": "        addReplyLongLong(c,-2);",
+          "new_line_content": "    expireGenericCommand(c,0,UNIT_MILLISECONDS);",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "commandTimeSnapshot",
+          "new_api": "lookupKeyReadWithFlags",
+          "old_text": "commandTimeSnapshot()",
+          "new_text": "lookupKeyReadWithFlags(c->db,c->argv[1],LOOKUP_NOTOUCH)",
+          "old_line_content": "        ttl = output_abs ? expire : expire-commandTimeSnapshot();",
+          "new_line_content": "    if (lookupKeyReadWithFlags(c->db,c->argv[1],LOOKUP_NOTOUCH) == NULL) {",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "addReply",
+          "new_api": "ttlGenericCommand",
+          "old_text": "addReply(c,shared.cone)",
+          "new_text": "ttlGenericCommand(c, 1, 1)",
+          "old_line_content": "            addReply(c,shared.cone);",
+          "new_line_content": "    ttlGenericCommand(c, 1, 1);",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": "addReply",
+          "new_api": "removeExpire",
+          "old_text": "addReply(c,shared.czero)",
+          "new_text": "removeExpire(c->db,c->argv[1])",
+          "old_line_content": "        addReply(c,shared.czero);",
+          "new_line_content": "        if (removeExpire(c->db,c->argv[1])) {",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "addReplyLongLong",
+          "new_api": "addReply",
+          "old_text": "addReplyLongLong(c,touched)",
+          "new_text": "addReply(c,shared.czero)",
+          "old_line_content": "    addReplyLongLong(c,touched);",
+          "new_line_content": "        addReply(c,shared.czero);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 662,
+          "old_api": null,
+          "new_api": "createStringObjectFromLongLong",
+          "old_text": null,
+          "new_text": "createStringObjectFromLongLong(when)",
+          "old_line_content": "    }",
+          "new_line_content": "            robj *when_obj = createStringObjectFromLongLong(when);",
+          "content_same": false
+        },
+        {
+          "line": 663,
+          "old_api": null,
+          "new_api": "rewriteClientCommandArgument",
+          "old_text": null,
+          "new_text": "rewriteClientCommandArgument(c,2,when_obj)",
+          "old_line_content": "}",
+          "new_line_content": "            rewriteClientCommandArgument(c,2,when_obj);",
+          "content_same": false
+        },
+        {
+          "line": 664,
+          "old_api": null,
+          "new_api": "decrRefCount",
+          "old_text": null,
+          "new_text": "decrRefCount(when_obj)",
+          "old_line_content": "",
+          "new_line_content": "            decrRefCount(when_obj);",
+          "content_same": false
+        },
+        {
+          "line": 668,
+          "old_api": null,
+          "new_api": "notifyKeyspaceEvent",
+          "old_text": null,
+          "new_text": "notifyKeyspaceEvent(NOTIFY_GENERIC,\"expire\",key,c->db->id)",
+          "old_line_content": "}",
+          "new_line_content": "        notifyKeyspaceEvent(NOTIFY_GENERIC,\"expire\",key,c->db->id);",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "commandTimeSnapshot",
+          "old_text": null,
+          "new_text": "commandTimeSnapshot()",
+          "old_line_content": "void pexpireCommand(client *c) {",
+          "new_line_content": "    expireGenericCommand(c,commandTimeSnapshot(),UNIT_SECONDS);",
+          "content_same": false
+        },
+        {
+          "line": 681,
+          "old_api": null,
+          "new_api": "expireGenericCommand",
+          "old_text": null,
+          "new_text": "expireGenericCommand(c,0,UNIT_SECONDS)",
+          "old_line_content": "void pexpireatCommand(client *c) {",
+          "new_line_content": "    expireGenericCommand(c,0,UNIT_SECONDS);",
+          "content_same": false
+        },
+        {
+          "line": 686,
+          "old_api": null,
+          "new_api": "commandTimeSnapshot",
+          "old_text": null,
+          "new_text": "commandTimeSnapshot()",
+          "old_line_content": "void ttlGenericCommand(client *c, int output_ms, int output_abs) {",
+          "new_line_content": "    expireGenericCommand(c,commandTimeSnapshot(),UNIT_MILLISECONDS);",
+          "content_same": false
+        },
+        {
+          "line": 700,
+          "old_api": null,
+          "new_api": "addReplyLongLong",
+          "old_text": null,
+          "new_text": "addReplyLongLong(c,-2)",
+          "old_line_content": "        if (ttl < 0) ttl = 0;",
+          "new_line_content": "        addReplyLongLong(c,-2);",
+          "content_same": false
+        },
+        {
+          "line": 706,
+          "old_api": null,
+          "new_api": "getExpire",
+          "old_text": null,
+          "new_text": "getExpire(c->db,c->argv[1])",
+          "old_line_content": "    }",
+          "new_line_content": "    expire = getExpire(c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "commandTimeSnapshot",
+          "old_text": null,
+          "new_text": "commandTimeSnapshot()",
+          "old_line_content": "",
+          "new_line_content": "        ttl = output_abs ? expire : expire-commandTimeSnapshot();",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": null,
+          "new_api": "addReplyLongLong",
+          "old_text": null,
+          "new_text": "addReplyLongLong(c,-1)",
+          "old_line_content": "}",
+          "new_line_content": "        addReplyLongLong(c,-1);",
+          "content_same": false
+        },
+        {
+          "line": 714,
+          "old_api": null,
+          "new_api": "addReplyLongLong",
+          "old_text": null,
+          "new_text": "addReplyLongLong(c,output_ms ? ttl : ((ttl+500)/1000))",
+          "old_line_content": "/* PTTL key */",
+          "new_line_content": "        addReplyLongLong(c,output_ms ? ttl : ((ttl+500)/1000));",
+          "content_same": false
+        },
+        {
+          "line": 720,
+          "old_api": null,
+          "new_api": "ttlGenericCommand",
+          "old_text": null,
+          "new_text": "ttlGenericCommand(c, 0, 0)",
+          "old_line_content": "void expiretimeCommand(client *c) {",
+          "new_line_content": "    ttlGenericCommand(c, 0, 0);",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "ttlGenericCommand",
+          "old_text": null,
+          "new_text": "ttlGenericCommand(c, 1, 0)",
+          "old_line_content": "void pexpiretimeCommand(client *c) {",
+          "new_line_content": "    ttlGenericCommand(c, 1, 0);",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": null,
+          "new_api": "ttlGenericCommand",
+          "old_text": null,
+          "new_text": "ttlGenericCommand(c, 0, 1)",
+          "old_line_content": "void persistCommand(client *c) {",
+          "new_line_content": "    ttlGenericCommand(c, 0, 1);",
+          "content_same": false
+        },
+        {
+          "line": 740,
+          "old_api": null,
+          "new_api": "lookupKeyWrite",
+          "old_text": null,
+          "new_text": "lookupKeyWrite(c->db,c->argv[1])",
+          "old_line_content": "    } else {",
+          "new_line_content": "    if (lookupKeyWrite(c->db,c->argv[1])) {",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": null,
+          "new_api": "signalModifiedKey",
+          "old_text": null,
+          "new_text": "signalModifiedKey(c,c->db,c->argv[1])",
+          "old_line_content": "    }",
+          "new_line_content": "            signalModifiedKey(c,c->db,c->argv[1]);",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": null,
+          "new_api": "notifyKeyspaceEvent",
+          "old_text": null,
+          "new_text": "notifyKeyspaceEvent(NOTIFY_GENERIC,\"persist\",c->argv[1],c->db->id)",
+          "old_line_content": "}",
+          "new_line_content": "            notifyKeyspaceEvent(NOTIFY_GENERIC,\"persist\",c->argv[1],c->db->id);",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": null,
+          "new_api": "addReply",
+          "old_text": null,
+          "new_text": "addReply(c,shared.cone)",
+          "old_line_content": "",
+          "new_line_content": "            addReply(c,shared.cone);",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": null,
+          "new_api": "addReply",
+          "old_text": null,
+          "new_text": "addReply(c,shared.czero)",
+          "old_line_content": "    int touched = 0;",
+          "new_line_content": "            addReply(c,shared.czero);",
+          "content_same": false
+        },
+        {
+          "line": 758,
+          "old_api": null,
+          "new_api": "lookupKeyRead",
+          "old_text": null,
+          "new_text": "lookupKeyRead(c->db,c->argv[j])",
+          "old_line_content": "",
+          "new_line_content": "        if (lookupKeyRead(c->db,c->argv[j]) != NULL) touched++;",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": null,
+          "new_api": "addReplyLongLong",
+          "old_text": null,
+          "new_text": "addReplyLongLong(c,touched)",
+          "old_line_content": "",
+          "new_line_content": "    addReplyLongLong(c,touched);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 655,
+          "old_api": "createStringObjectFromLongLong",
+          "new_api": null,
+          "old_text": "createStringObjectFromLongLong(when)",
+          "new_text": null,
+          "old_line_content": "        robj *when_obj = createStringObjectFromLongLong(when);",
+          "new_line_content": "         * Only rewrite the command arg if not already PEXPIREAT */",
+          "content_same": false
+        },
+        {
+          "line": 656,
+          "old_api": "rewriteClientCommandVector",
+          "new_api": null,
+          "old_text": "rewriteClientCommandVector(c, 3, shared.pexpireat, key, when_obj)",
+          "new_text": null,
+          "old_line_content": "        rewriteClientCommandVector(c, 3, shared.pexpireat, key, when_obj);",
+          "new_line_content": "        if (c->cmd->proc != pexpireatCommand) {",
+          "content_same": false
+        },
+        {
+          "line": 658,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c,c->db,key)",
+          "new_text": null,
+          "old_line_content": "        signalModifiedKey(c,c->db,key);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 659,
+          "old_api": "notifyKeyspaceEvent",
+          "new_api": null,
+          "old_text": "notifyKeyspaceEvent(NOTIFY_GENERIC,\"expire\",key,c->db->id)",
+          "new_text": null,
+          "old_line_content": "        notifyKeyspaceEvent(NOTIFY_GENERIC,\"expire\",key,c->db->id);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": "expireGenericCommand",
+          "new_api": null,
+          "old_text": "expireGenericCommand(c,0,UNIT_SECONDS)",
+          "new_text": null,
+          "old_line_content": "    expireGenericCommand(c,0,UNIT_SECONDS);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 677,
+          "old_api": "commandTimeSnapshot",
+          "new_api": null,
+          "old_text": "commandTimeSnapshot()",
+          "new_text": null,
+          "old_line_content": "    expireGenericCommand(c,commandTimeSnapshot(),UNIT_MILLISECONDS);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "expireGenericCommand",
+          "new_api": null,
+          "old_text": "expireGenericCommand(c,0,UNIT_MILLISECONDS)",
+          "new_text": null,
+          "old_line_content": "    expireGenericCommand(c,0,UNIT_MILLISECONDS);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 690,
+          "old_api": "lookupKeyReadWithFlags",
+          "new_api": null,
+          "old_text": "lookupKeyReadWithFlags(c->db,c->argv[1],LOOKUP_NOTOUCH)",
+          "new_text": null,
+          "old_line_content": "    if (lookupKeyReadWithFlags(c->db,c->argv[1],LOOKUP_NOTOUCH) == NULL) {",
+          "new_line_content": "void pexpireatCommand(client *c) {",
+          "content_same": false
+        },
+        {
+          "line": 697,
+          "old_api": "getExpire",
+          "new_api": null,
+          "old_text": "getExpire(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    expire = getExpire(c->db,c->argv[1]);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "addReplyLongLong",
+          "new_api": null,
+          "old_text": "addReplyLongLong(c,-1)",
+          "new_text": null,
+          "old_line_content": "        addReplyLongLong(c,-1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": "addReplyLongLong",
+          "new_api": null,
+          "old_text": "addReplyLongLong(c,output_ms ? ttl : ((ttl+500)/1000))",
+          "new_text": null,
+          "old_line_content": "        addReplyLongLong(c,output_ms ? ttl : ((ttl+500)/1000));",
+          "new_line_content": "     * TTL value otherwise. */",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": "ttlGenericCommand",
+          "new_api": null,
+          "old_text": "ttlGenericCommand(c, 0, 0)",
+          "new_text": null,
+          "old_line_content": "    ttlGenericCommand(c, 0, 0);",
+          "new_line_content": "    if (ttl == -1) {",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "ttlGenericCommand",
+          "new_api": null,
+          "old_text": "ttlGenericCommand(c, 1, 0)",
+          "new_text": null,
+          "old_line_content": "    ttlGenericCommand(c, 1, 0);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "ttlGenericCommand",
+          "new_api": null,
+          "old_text": "ttlGenericCommand(c, 0, 1)",
+          "new_text": null,
+          "old_line_content": "    ttlGenericCommand(c, 0, 1);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": "ttlGenericCommand",
+          "new_api": null,
+          "old_text": "ttlGenericCommand(c, 1, 1)",
+          "new_text": null,
+          "old_line_content": "    ttlGenericCommand(c, 1, 1);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": "lookupKeyWrite",
+          "new_api": null,
+          "old_text": "lookupKeyWrite(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "    if (lookupKeyWrite(c->db,c->argv[1])) {",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": "removeExpire",
+          "new_api": null,
+          "old_text": "removeExpire(c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "        if (removeExpire(c->db,c->argv[1])) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 733,
+          "old_api": "signalModifiedKey",
+          "new_api": null,
+          "old_text": "signalModifiedKey(c,c->db,c->argv[1])",
+          "new_text": null,
+          "old_line_content": "            signalModifiedKey(c,c->db,c->argv[1]);",
+          "new_line_content": "/* PEXPIRETIME key */",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "notifyKeyspaceEvent",
+          "new_api": null,
+          "old_text": "notifyKeyspaceEvent(NOTIFY_GENERIC,\"persist\",c->argv[1],c->db->id)",
+          "new_text": null,
+          "old_line_content": "            notifyKeyspaceEvent(NOTIFY_GENERIC,\"persist\",c->argv[1],c->db->id);",
+          "new_line_content": "void pexpiretimeCommand(client *c) {",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": "addReply",
+          "new_api": null,
+          "old_text": "addReply(c,shared.czero)",
+          "new_text": null,
+          "old_line_content": "            addReply(c,shared.czero);",
+          "new_line_content": "/* PERSIST key */",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": "lookupKeyRead",
+          "new_api": null,
+          "old_text": "lookupKeyRead(c->db,c->argv[j])",
+          "new_text": null,
+          "old_line_content": "        if (lookupKeyRead(c->db,c->argv[j]) != NULL) touched++;",
+          "new_line_content": "    } else {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 7,
+      "total_additions": 22,
+      "total_deletions": 21,
+      "total_api_changes": 50
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 13,
+        "api_related_lines": 50,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          654,
+          660,
+          661,
+          665,
+          666
+        ]
+      }
+    },
+    "api_calls_before": 98,
+    "api_calls_after": 99,
+    "diff_info": {
+      "added_lines": 13,
+      "removed_lines": 4,
+      "total_diff_lines": 29
+    }
+  }
+}

@@ -1,0 +1,2245 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/3454876314f0711894599f56e42ac99082b4e38f",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/3454876314f0711894599f56e42ac99082b4e38f/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/3454876314f0711894599f56e42ac99082b4e38f/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/3454876314f0711894599f56e42ac99082b4e38f/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 2896,
+          "old_api": "pathkeys_contained_in",
+          "new_api": "list_length",
+          "old_text": "pathkeys_contained_in(needed_pathkeys, current_pathkeys)",
+          "new_text": "list_length(root->sort_pathkeys)",
+          "old_line_content": "\tif (!pathkeys_contained_in(needed_pathkeys, current_pathkeys))",
+          "new_line_content": "\t\tlist_length(root->sort_pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 2903,
+          "old_api": "cost_sort",
+          "new_api": "list_length",
+          "old_text": "cost_sort(&sorted_p, root, current_pathkeys, sorted_p.total_cost,\n\t\t\t\t  path_rows, path_width,\n\t\t\t\t  0.0, work_mem, -1.0)",
+          "new_text": "list_length(root->sort_pathkeys)",
+          "old_line_content": "\t\tcost_sort(&sorted_p, root, current_pathkeys, sorted_p.total_cost,",
+          "new_line_content": "\t\t\tlist_length(root->sort_pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 2907,
+          "old_api": "cost_group",
+          "new_api": "cost_sort",
+          "old_text": "cost_group(&sorted_p, root, numDistinctCols, dNumDistinctRows,\n\t\t\t   sorted_p.startup_cost, sorted_p.total_cost,\n\t\t\t   path_rows)",
+          "new_text": "cost_sort(&sorted_p, root, current_pathkeys, sorted_p.total_cost,\n\t\t\t\t  path_rows, path_width,\n\t\t\t\t  0.0, work_mem, -1.0)",
+          "old_line_content": "\tcost_group(&sorted_p, root, numDistinctCols, dNumDistinctRows,",
+          "new_line_content": "\t\tcost_sort(&sorted_p, root, current_pathkeys, sorted_p.total_cost,",
+          "content_same": false
+        },
+        {
+          "line": 2911,
+          "old_api": "pathkeys_contained_in",
+          "new_api": "cost_group",
+          "old_text": "pathkeys_contained_in(root->sort_pathkeys, current_pathkeys)",
+          "new_text": "cost_group(&sorted_p, root, numDistinctCols, dNumDistinctRows,\n\t\t\t   sorted_p.startup_cost, sorted_p.total_cost,\n\t\t\t   path_rows)",
+          "old_line_content": "\t\t!pathkeys_contained_in(root->sort_pathkeys, current_pathkeys))",
+          "new_line_content": "\tcost_group(&sorted_p, root, numDistinctCols, dNumDistinctRows,",
+          "content_same": false
+        },
+        {
+          "line": 3034,
+          "old_api": "lappend",
+          "new_api": "makeTargetEntry",
+          "old_text": "lappend(sub_tlist, newtle)",
+          "new_text": "makeTargetEntry(tle->expr,\n\t\t\t\t\t\t\t\t\t\t list_length(sub_tlist) + 1,\n\t\t\t\t\t\t\t\t\t\t NULL,\n\t\t\t\t\t\t\t\t\t\t false)",
+          "old_line_content": "\t\t\t\tsub_tlist = lappend(sub_tlist, newtle);",
+          "new_line_content": "\t\t\t\tnewtle = makeTargetEntry(tle->expr,",
+          "content_same": false
+        },
+        {
+          "line": 3083,
+          "old_api": "list_free",
+          "new_api": "add_to_flat_tlist",
+          "old_text": "list_free(non_group_cols)",
+          "new_text": "add_to_flat_tlist(sub_tlist, non_group_vars)",
+          "old_line_content": "\tlist_free(non_group_cols);",
+          "new_line_content": "\tsub_tlist = add_to_flat_tlist(sub_tlist, non_group_vars);",
+          "content_same": false
+        },
+        {
+          "line": 3148,
+          "old_api": "lfirst",
+          "new_api": "Assert",
+          "old_text": "lfirst(gl)",
+          "new_text": "Assert(groupColIdx != NULL)",
+          "old_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(gl);",
+          "new_line_content": "\tAssert(groupColIdx != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3150,
+          "old_api": "tlist_member",
+          "new_api": "foreach",
+          "old_text": "tlist_member(groupexpr, sub_tlist)",
+          "new_text": "foreach(gl, root->parse->groupClause)",
+          "old_line_content": "\t\tTargetEntry *te = tlist_member(groupexpr, sub_tlist);",
+          "new_line_content": "\tforeach(gl, root->parse->groupClause)",
+          "content_same": false
+        },
+        {
+          "line": 3153,
+          "old_api": "elog",
+          "new_api": "get_sortgroupclause_expr",
+          "old_text": "elog(ERROR, \"failed to locate grouping columns\")",
+          "new_text": "get_sortgroupclause_expr(grpcl, tlist)",
+          "old_line_content": "\t\t\telog(ERROR, \"failed to locate grouping columns\");",
+          "new_line_content": "\t\tNode\t   *groupexpr = get_sortgroupclause_expr(grpcl, tlist);",
+          "content_same": false
+        },
+        {
+          "line": 3176,
+          "old_api": "lfirst",
+          "new_api": "list_head",
+          "old_text": "lfirst(l)",
+          "new_text": "list_head(orig_tlist)",
+          "old_line_content": "\t\tTargetEntry *new_tle = (TargetEntry *) lfirst(l);",
+          "new_line_content": "\tListCell   *orig_tlist_item = list_head(orig_tlist);",
+          "content_same": false
+        },
+        {
+          "line": 3187,
+          "old_api": "elog",
+          "new_api": "Assert",
+          "old_text": "elog(ERROR, \"resjunk output columns are not implemented\")",
+          "new_text": "Assert(orig_tlist_item != NULL)",
+          "old_line_content": "\t\t\telog(ERROR, \"resjunk output columns are not implemented\");",
+          "new_line_content": "\t\tAssert(orig_tlist_item != NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3188,
+          "old_api": "Assert",
+          "new_api": "lfirst",
+          "old_text": "Assert(new_tle->resno == orig_tle->resno)",
+          "new_text": "lfirst(orig_tlist_item)",
+          "old_line_content": "\t\tAssert(new_tle->resno == orig_tle->resno);",
+          "new_line_content": "\t\torig_tle = (TargetEntry *) lfirst(orig_tlist_item);",
+          "content_same": false
+        },
+        {
+          "line": 3192,
+          "old_api": "elog",
+          "new_api": "Assert",
+          "old_text": "elog(ERROR, \"resjunk output columns are not implemented\")",
+          "new_text": "Assert(new_tle->resno == orig_tle->resno)",
+          "old_line_content": "\t\telog(ERROR, \"resjunk output columns are not implemented\");",
+          "new_line_content": "\t\tAssert(new_tle->resno == orig_tle->resno);",
+          "content_same": false
+        },
+        {
+          "line": 3245,
+          "old_api": "list_head",
+          "new_api": "lappend",
+          "old_text": "list_head(actives)",
+          "new_text": "lappend(result, wc)",
+          "old_line_content": "\t\tfor (lc = list_head(actives); lc; lc = next)",
+          "new_line_content": "\t\tresult = lappend(result, wc);",
+          "content_same": false
+        },
+        {
+          "line": 3249,
+          "old_api": "lnext",
+          "new_api": "list_head",
+          "old_text": "lnext(lc)",
+          "new_text": "list_head(actives)",
+          "old_line_content": "\t\t\tnext = lnext(lc);",
+          "new_line_content": "\t\tfor (lc = list_head(actives); lc; lc = next)",
+          "content_same": false
+        },
+        {
+          "line": 3251,
+          "old_api": "equal",
+          "new_api": "lfirst",
+          "old_text": "equal(wc->partitionClause, wc2->partitionClause)",
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t\tif (equal(wc->partitionClause, wc2->partitionClause) &&",
+          "new_line_content": "\t\t\tWindowClause *wc2 = (WindowClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3255,
+          "old_api": "lappend",
+          "new_api": "equal",
+          "old_text": "lappend(result, wc2)",
+          "new_text": "equal(wc->partitionClause, wc2->partitionClause)",
+          "old_line_content": "\t\t\t\tresult = lappend(result, wc2);",
+          "new_line_content": "\t\t\tif (equal(wc->partitionClause, wc2->partitionClause) &&",
+          "content_same": false
+        },
+        {
+          "line": 3326,
+          "old_api": "bms_add_member",
+          "new_api": "foreach",
+          "old_text": "bms_add_member(sgrefs, sortcl->tleSortGroupRef)",
+          "new_text": "foreach(lc2, wc->partitionClause)",
+          "old_line_content": "\t\t\tsgrefs = bms_add_member(sgrefs, sortcl->tleSortGroupRef);",
+          "new_line_content": "\t\tforeach(lc2, wc->partitionClause)",
+          "content_same": false
+        },
+        {
+          "line": 3328,
+          "old_api": "foreach",
+          "new_api": "lfirst",
+          "old_text": "foreach(lc2, wc->orderClause)",
+          "new_text": "lfirst(lc2)",
+          "old_line_content": "\t\tforeach(lc2, wc->orderClause)",
+          "new_line_content": "\t\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(lc2);",
+          "content_same": false
+        },
+        {
+          "line": 3330,
+          "old_api": "lfirst",
+          "new_api": "bms_add_member",
+          "old_text": "lfirst(lc2)",
+          "new_text": "bms_add_member(sgrefs, sortcl->tleSortGroupRef)",
+          "old_line_content": "\t\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(lc2);",
+          "new_line_content": "\t\t\tsgrefs = bms_add_member(sgrefs, sortcl->tleSortGroupRef);",
+          "content_same": false
+        },
+        {
+          "line": 3332,
+          "old_api": "bms_add_member",
+          "new_api": "foreach",
+          "old_text": "bms_add_member(sgrefs, sortcl->tleSortGroupRef)",
+          "new_text": "foreach(lc2, wc->orderClause)",
+          "old_line_content": "\t\t\tsgrefs = bms_add_member(sgrefs, sortcl->tleSortGroupRef);",
+          "new_line_content": "\t\tforeach(lc2, wc->orderClause)",
+          "content_same": false
+        },
+        {
+          "line": 3341,
+          "old_api": "bms_add_member",
+          "new_api": "foreach",
+          "old_text": "bms_add_member(sgrefs, grpcl->tleSortGroupRef)",
+          "new_text": "foreach(lc, parse->groupClause)",
+          "old_line_content": "\t\tsgrefs = bms_add_member(sgrefs, grpcl->tleSortGroupRef);",
+          "new_line_content": "\tforeach(lc, parse->groupClause)",
+          "content_same": false
+        },
+        {
+          "line": 3401,
+          "old_api": "list_free",
+          "new_api": "add_to_flat_tlist",
+          "old_text": "list_free(flattenable_cols)",
+          "new_text": "add_to_flat_tlist(new_tlist, flattenable_vars)",
+          "old_line_content": "\tlist_free(flattenable_cols);",
+          "new_line_content": "\tnew_tlist = add_to_flat_tlist(new_tlist, flattenable_vars);",
+          "content_same": false
+        },
+        {
+          "line": 3427,
+          "old_api": "errdetail",
+          "new_api": "grouping_is_sortable",
+          "old_text": "errdetail(\"Window partitioning columns must be of sortable datatypes.\")",
+          "new_text": "grouping_is_sortable(wc->partitionClause)",
+          "old_line_content": "\t\t\t\t errdetail(\"Window partitioning columns must be of sortable datatypes.\")));",
+          "new_line_content": "\tif (!grouping_is_sortable(wc->partitionClause))",
+          "content_same": false
+        },
+        {
+          "line": 3428,
+          "old_api": "grouping_is_sortable",
+          "new_api": "ereport",
+          "old_text": "grouping_is_sortable(wc->orderClause)",
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),\n\t\t\t\t errmsg(\"could not implement window PARTITION BY\"),\n\t\t\t\t errdetail(\"Window partitioning columns must be of sortable datatypes.\")))",
+          "old_line_content": "\tif (!grouping_is_sortable(wc->orderClause))",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 3429,
+          "old_api": "ereport",
+          "new_api": "errcode",
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),\n\t\t\t\t errmsg(\"could not implement window ORDER BY\"),\n\t\terrdetail(\"Window ordering columns must be of sortable datatypes.\")))",
+          "new_text": "errcode(ERRCODE_FEATURE_NOT_SUPPORTED)",
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),",
+          "content_same": false
+        },
+        {
+          "line": 3430,
+          "old_api": "errcode",
+          "new_api": "errmsg",
+          "old_text": "errcode(ERRCODE_FEATURE_NOT_SUPPORTED)",
+          "new_text": "errmsg(\"could not implement window PARTITION BY\")",
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),",
+          "new_line_content": "\t\t\t\t errmsg(\"could not implement window PARTITION BY\"),",
+          "content_same": false
+        },
+        {
+          "line": 3431,
+          "old_api": "errmsg",
+          "new_api": "errdetail",
+          "old_text": "errmsg(\"could not implement window ORDER BY\")",
+          "new_text": "errdetail(\"Window partitioning columns must be of sortable datatypes.\")",
+          "old_line_content": "\t\t\t\t errmsg(\"could not implement window ORDER BY\"),",
+          "new_line_content": "\t\t\t\t errdetail(\"Window partitioning columns must be of sortable datatypes.\")));",
+          "content_same": false
+        },
+        {
+          "line": 3432,
+          "old_api": "errdetail",
+          "new_api": "grouping_is_sortable",
+          "old_text": "errdetail(\"Window ordering columns must be of sortable datatypes.\")",
+          "new_text": "grouping_is_sortable(wc->orderClause)",
+          "old_line_content": "\t\terrdetail(\"Window ordering columns must be of sortable datatypes.\")));",
+          "new_line_content": "\tif (!grouping_is_sortable(wc->orderClause))",
+          "content_same": false
+        },
+        {
+          "line": 3435,
+          "old_api": "list_copy",
+          "new_api": "errmsg",
+          "old_text": "list_copy(wc->partitionClause)",
+          "new_text": "errmsg(\"could not implement window ORDER BY\")",
+          "old_line_content": "\twindow_sortclauses = list_concat(list_copy(wc->partitionClause),",
+          "new_line_content": "\t\t\t\t errmsg(\"could not implement window ORDER BY\"),",
+          "content_same": false
+        },
+        {
+          "line": 3436,
+          "old_api": "list_copy",
+          "new_api": "errdetail",
+          "old_text": "list_copy(wc->orderClause)",
+          "new_text": "errdetail(\"Window ordering columns must be of sortable datatypes.\")",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t list_copy(wc->orderClause));",
+          "new_line_content": "\t\terrdetail(\"Window ordering columns must be of sortable datatypes.\")));",
+          "content_same": false
+        },
+        {
+          "line": 3440,
+          "old_api": "list_free",
+          "new_api": "list_copy",
+          "old_text": "list_free(window_sortclauses)",
+          "new_text": "list_copy(wc->orderClause)",
+          "old_line_content": "\tlist_free(window_sortclauses);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t list_copy(wc->orderClause));",
+          "content_same": false
+        },
+        {
+          "line": 3509,
+          "old_api": "foreach",
+          "new_api": "palloc",
+          "old_text": "foreach(lc, wc->partitionClause)",
+          "new_text": "palloc(numOrder * sizeof(Oid))",
+          "old_line_content": "\t\tforeach(lc, wc->partitionClause)",
+          "new_line_content": "\t\t*ordOperators = (Oid *) palloc(numOrder * sizeof(Oid));",
+          "content_same": false
+        },
+        {
+          "line": 3515,
+          "old_api": "make_pathkeys_for_sortclauses",
+          "new_api": "lfirst",
+          "old_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t tlist)",
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t\tnew_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "new_line_content": "\t\t\tSortGroupClause *sgc = (SortGroupClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3518,
+          "old_api": "list_length",
+          "new_api": "lappend",
+          "old_text": "list_length(pathkeys)",
+          "new_text": "lappend(sortclauses, sgc)",
+          "old_line_content": "\t\t\tif (list_length(new_pathkeys) > list_length(pathkeys))",
+          "new_line_content": "\t\t\tsortclauses = lappend(sortclauses, sgc);",
+          "content_same": false
+        },
+        {
+          "line": 3533,
+          "old_api": "make_pathkeys_for_sortclauses",
+          "new_api": "lfirst",
+          "old_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t tlist)",
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t\tnew_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "new_line_content": "\t\t\tSortGroupClause *sgc = (SortGroupClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3536,
+          "old_api": "list_length",
+          "new_api": "lappend",
+          "old_text": "list_length(pathkeys)",
+          "new_text": "lappend(sortclauses, sgc)",
+          "old_line_content": "\t\t\tif (list_length(new_pathkeys) > list_length(pathkeys))",
+          "new_line_content": "\t\t\tsortclauses = lappend(sortclauses, sgc);",
+          "content_same": false
+        },
+        {
+          "line": 3650,
+          "old_api": "foreach",
+          "new_api": "build_simple_rel",
+          "old_text": "foreach(lc, rel->indexlist)",
+          "new_text": "build_simple_rel(root, 1, RELOPT_BASEREL)",
+          "old_line_content": "\tforeach(lc, rel->indexlist)",
+          "new_line_content": "\trel = build_simple_rel(root, 1, RELOPT_BASEREL);",
+          "content_same": false
+        },
+        {
+          "line": 3686,
+          "old_api": "create_seqscan_path",
+          "new_api": "cost_qual_eval",
+          "old_text": "create_seqscan_path(root, rel, NULL)",
+          "new_text": "cost_qual_eval(&indexExprCost, indexInfo->indexprs, root)",
+          "old_line_content": "\tseqScanPath = create_seqscan_path(root, rel, NULL);",
+          "new_line_content": "\tcost_qual_eval(&indexExprCost, indexInfo->indexprs, root);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 3587,
+          "old_api": null,
+          "new_api": "eval_const_expressions",
+          "old_text": null,
+          "new_text": "eval_const_expressions(NULL, (Node *) expr)",
+          "old_line_content": "",
+          "new_line_content": "\tresult = eval_const_expressions(NULL, (Node *) expr);",
+          "content_same": false
+        },
+        {
+          "line": 3590,
+          "old_api": null,
+          "new_api": "fix_opfuncids",
+          "old_text": null,
+          "new_text": "fix_opfuncids(result)",
+          "old_line_content": "",
+          "new_line_content": "\tfix_opfuncids(result);",
+          "content_same": false
+        },
+        {
+          "line": 3080,
+          "old_api": null,
+          "new_api": "pull_var_clause",
+          "old_text": null,
+          "new_text": "pull_var_clause((Node *) non_group_cols,\n\t\t\t\t\t\t\t\t\t PVC_RECURSE_AGGREGATES,\n\t\t\t\t\t\t\t\t\t PVC_INCLUDE_PLACEHOLDERS)",
+          "old_line_content": "",
+          "new_line_content": "\tnon_group_vars = pull_var_clause((Node *) non_group_cols,",
+          "content_same": false
+        },
+        {
+          "line": 3086,
+          "old_api": null,
+          "new_api": "list_free",
+          "old_text": null,
+          "new_text": "list_free(non_group_vars)",
+          "old_line_content": "}",
+          "new_line_content": "\tlist_free(non_group_vars);",
+          "content_same": false
+        },
+        {
+          "line": 3087,
+          "old_api": null,
+          "new_api": "list_free",
+          "old_text": null,
+          "new_text": "list_free(non_group_cols)",
+          "old_line_content": "",
+          "new_line_content": "\tlist_free(non_group_cols);",
+          "content_same": false
+        },
+        {
+          "line": 3111,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(gl, parse->groupClause)",
+          "old_line_content": "\t\tif (grpcl->tleSortGroupRef == ressortgroupref)",
+          "new_line_content": "\tforeach(gl, parse->groupClause)",
+          "content_same": false
+        },
+        {
+          "line": 3624,
+          "old_api": null,
+          "new_api": "makeNode",
+          "old_text": null,
+          "new_text": "makeNode(Query)",
+          "old_line_content": "",
+          "new_line_content": "\tquery = makeNode(Query);",
+          "content_same": false
+        },
+        {
+          "line": 3113,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(gl)",
+          "old_line_content": "\t\tcolno++;",
+          "new_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(gl);",
+          "content_same": false
+        },
+        {
+          "line": 3627,
+          "old_api": null,
+          "new_api": "makeNode",
+          "old_text": null,
+          "new_text": "makeNode(PlannerGlobal)",
+          "old_line_content": "\troot->glob = glob;",
+          "new_line_content": "\tglob = makeNode(PlannerGlobal);",
+          "content_same": false
+        },
+        {
+          "line": 3629,
+          "old_api": null,
+          "new_api": "makeNode",
+          "old_text": null,
+          "new_text": "makeNode(PlannerInfo)",
+          "old_line_content": "\troot->planner_cxt = CurrentMemoryContext;",
+          "new_line_content": "\troot = makeNode(PlannerInfo);",
+          "content_same": false
+        },
+        {
+          "line": 3637,
+          "old_api": null,
+          "new_api": "makeNode",
+          "old_text": null,
+          "new_text": "makeNode(RangeTblEntry)",
+          "old_line_content": "\trte->lateral = false;",
+          "new_line_content": "\trte = makeNode(RangeTblEntry);",
+          "content_same": false
+        },
+        {
+          "line": 3644,
+          "old_api": null,
+          "new_api": "list_make1",
+          "old_text": null,
+          "new_text": "list_make1(rte)",
+          "old_line_content": "",
+          "new_line_content": "\tquery->rtable = list_make1(rte);",
+          "content_same": false
+        },
+        {
+          "line": 3647,
+          "old_api": null,
+          "new_api": "setup_simple_rel_arrays",
+          "old_text": null,
+          "new_text": "setup_simple_rel_arrays(root)",
+          "old_line_content": "",
+          "new_line_content": "\tsetup_simple_rel_arrays(root);",
+          "content_same": false
+        },
+        {
+          "line": 3654,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, rel->indexlist)",
+          "old_line_content": "\t\t\tbreak;",
+          "new_line_content": "\tforeach(lc, rel->indexlist)",
+          "content_same": false
+        },
+        {
+          "line": 3656,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "",
+          "new_line_content": "\t\tindexInfo = (IndexOptInfo *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3145,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(groupColIdx == NULL)",
+          "old_line_content": "",
+          "new_line_content": "\t\tAssert(groupColIdx == NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3152,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(gl)",
+          "old_line_content": "\t\tif (!te)",
+          "new_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(gl);",
+          "content_same": false
+        },
+        {
+          "line": 3154,
+          "old_api": null,
+          "new_api": "tlist_member",
+          "old_text": null,
+          "new_text": "tlist_member(groupexpr, sub_tlist)",
+          "old_line_content": "\t\tgroupColIdx[keyno++] = te->resno;",
+          "new_line_content": "\t\tTargetEntry *te = tlist_member(groupexpr, sub_tlist);",
+          "content_same": false
+        },
+        {
+          "line": 3157,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"failed to locate grouping columns\")",
+          "old_line_content": "",
+          "new_line_content": "\t\t\telog(ERROR, \"failed to locate grouping columns\");",
+          "content_same": false
+        },
+        {
+          "line": 3676,
+          "old_api": null,
+          "new_api": "get_relation_data_width",
+          "old_text": null,
+          "new_text": "get_relation_data_width(tableOid, NULL)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\trel->width = get_relation_data_width(tableOid, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3690,
+          "old_api": null,
+          "new_api": "create_seqscan_path",
+          "old_text": null,
+          "new_text": "create_seqscan_path(root, rel, NULL)",
+          "old_line_content": "",
+          "new_line_content": "\tseqScanPath = create_seqscan_path(root, rel, NULL);",
+          "content_same": false
+        },
+        {
+          "line": 3691,
+          "old_api": null,
+          "new_api": "cost_sort",
+          "old_text": null,
+          "new_text": "cost_sort(&seqScanAndSortPath, root, NIL,\n\t\t\t  seqScanPath->total_cost, rel->tuples, rel->width,\n\t\t\t  comparisonCost, maintenance_work_mem, -1.0)",
+          "old_line_content": "\t/* Estimate the cost of index scan */",
+          "new_line_content": "\tcost_sort(&seqScanAndSortPath, root, NIL,",
+          "content_same": false
+        },
+        {
+          "line": 3180,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(l)",
+          "old_line_content": "\t\tif (new_tle->resjunk)",
+          "new_line_content": "\t\tTargetEntry *new_tle = (TargetEntry *) lfirst(l);",
+          "content_same": false
+        },
+        {
+          "line": 3696,
+          "old_api": null,
+          "new_api": "create_index_path",
+          "old_text": null,
+          "new_text": "create_index_path(root, indexInfo,\n\t\t\t\t\t\t\t\t\t  NIL, NIL, NIL, NIL, NIL,\n\t\t\t\t\t\t\t\t\t  ForwardScanDirection, false,\n\t\t\t\t\t\t\t\t\t  NULL, 1.0)",
+          "old_line_content": "",
+          "new_line_content": "\tindexScanPath = create_index_path(root, indexInfo,",
+          "content_same": false
+        },
+        {
+          "line": 3189,
+          "old_api": null,
+          "new_api": "lnext",
+          "old_text": null,
+          "new_text": "lnext(orig_tlist_item)",
+          "old_line_content": "\t\tnew_tle->ressortgroupref = orig_tle->ressortgroupref;",
+          "new_line_content": "\t\torig_tlist_item = lnext(orig_tlist_item);",
+          "content_same": false
+        },
+        {
+          "line": 3191,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"resjunk output columns are not implemented\")",
+          "old_line_content": "\tif (orig_tlist_item != NULL)",
+          "new_line_content": "\t\t\telog(ERROR, \"resjunk output columns are not implemented\");",
+          "content_same": false
+        },
+        {
+          "line": 3196,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"resjunk output columns are not implemented\")",
+          "old_line_content": "/*",
+          "new_line_content": "\t\telog(ERROR, \"resjunk output columns are not implemented\");",
+          "content_same": false
+        },
+        {
+          "line": 3214,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, root->parse->windowClause)",
+          "old_line_content": "\t\t/* It's only active if wflists shows some related WindowFuncs */",
+          "new_line_content": "\tforeach(lc, root->parse->windowClause)",
+          "content_same": false
+        },
+        {
+          "line": 3216,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\tif (wflists->windowFuncs[wc->winref] != NIL)",
+          "new_line_content": "\t\tWindowClause *wc = (WindowClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3219,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(wc->winref <= wflists->maxWinRef)",
+          "old_line_content": "",
+          "new_line_content": "\t\tAssert(wc->winref <= wflists->maxWinRef);",
+          "content_same": false
+        },
+        {
+          "line": 3221,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(actives, wc)",
+          "old_line_content": "\t * Now, ensure that windows with identical partitioning/ordering clauses",
+          "new_line_content": "\t\t\tactives = lappend(actives, wc);",
+          "content_same": false
+        },
+        {
+          "line": 3239,
+          "old_api": null,
+          "new_api": "linitial",
+          "old_text": null,
+          "new_text": "linitial(actives)",
+          "old_line_content": "\t\t/* Move wc from actives to result */",
+          "new_line_content": "\t\tWindowClause *wc = (WindowClause *) linitial(actives);",
+          "content_same": false
+        },
+        {
+          "line": 3244,
+          "old_api": null,
+          "new_api": "list_delete_first",
+          "old_text": null,
+          "new_text": "list_delete_first(actives)",
+          "old_line_content": "\t\tprev = NULL;",
+          "new_line_content": "\t\tactives = list_delete_first(actives);",
+          "content_same": false
+        },
+        {
+          "line": 3253,
+          "old_api": null,
+          "new_api": "lnext",
+          "old_text": null,
+          "new_text": "lnext(lc)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\tnext = lnext(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3256,
+          "old_api": null,
+          "new_api": "equal",
+          "old_text": null,
+          "new_text": "equal(wc->orderClause, wc2->orderClause)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tequal(wc->orderClause, wc2->orderClause))",
+          "content_same": false
+        },
+        {
+          "line": 3258,
+          "old_api": null,
+          "new_api": "list_delete_cell",
+          "old_text": null,
+          "new_text": "list_delete_cell(actives, lc, prev)",
+          "old_line_content": "\t\t\t\tprev = lc;",
+          "new_line_content": "\t\t\t\tactives = list_delete_cell(actives, lc, prev);",
+          "content_same": false
+        },
+        {
+          "line": 3259,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(result, wc2)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\tresult = lappend(result, wc2);",
+          "content_same": false
+        },
+        {
+          "line": 3314,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(parse->hasWindowFuncs)",
+          "old_line_content": "\t * into a bitmapset for convenient reference below.",
+          "new_line_content": "\tAssert(parse->hasWindowFuncs);",
+          "content_same": false
+        },
+        {
+          "line": 3323,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tWindowClause *wc = (WindowClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3334,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc2)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(lc2);",
+          "content_same": false
+        },
+        {
+          "line": 3336,
+          "old_api": null,
+          "new_api": "bms_add_member",
+          "old_text": null,
+          "new_text": "bms_add_member(sgrefs, sortcl->tleSortGroupRef)",
+          "old_line_content": "\t/* Add in sortgroupref numbers of GROUP BY clauses, too */",
+          "new_line_content": "\t\t\tsgrefs = bms_add_member(sgrefs, sortcl->tleSortGroupRef);",
+          "content_same": false
+        },
+        {
+          "line": 3343,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "",
+          "new_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 3345,
+          "old_api": null,
+          "new_api": "bms_add_member",
+          "old_text": null,
+          "new_text": "bms_add_member(sgrefs, grpcl->tleSortGroupRef)",
+          "old_line_content": "\t * Construct a tlist containing all the non-flattenable tlist items, and",
+          "new_line_content": "\t\tsgrefs = bms_add_member(sgrefs, grpcl->tleSortGroupRef);",
+          "content_same": false
+        },
+        {
+          "line": 3357,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(lc)",
+          "old_line_content": "\t\t * that such items can't contain window functions, so it's okay to",
+          "new_line_content": "\t\tTargetEntry *tle = (TargetEntry *) lfirst(lc);",
+          "content_same": false
+        },
+        {
+          "line": 2853,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(sizeof(MinimalTupleData))",
+          "old_line_content": "\tif (hashentrysize * dNumDistinctRows > work_mem * 1024L)",
+          "new_line_content": "\thashentrysize = MAXALIGN(path_width) + MAXALIGN(sizeof(MinimalTupleData));",
+          "content_same": false
+        },
+        {
+          "line": 3365,
+          "old_api": null,
+          "new_api": "bms_is_member",
+          "old_text": null,
+          "new_text": "bms_is_member(tle->ressortgroupref, sgrefs)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tbms_is_member(tle->ressortgroupref, sgrefs))",
+          "content_same": false
+        },
+        {
+          "line": 2855,
+          "old_api": null,
+          "new_api": "hash_agg_entry_size",
+          "old_text": null,
+          "new_text": "hash_agg_entry_size(0)",
+          "old_line_content": "",
+          "new_line_content": "\thashentrysize += hash_agg_entry_size(0);",
+          "content_same": false
+        },
+        {
+          "line": 3370,
+          "old_api": null,
+          "new_api": "makeTargetEntry",
+          "old_text": null,
+          "new_text": "makeTargetEntry(tle->expr,\n\t\t\t\t\t\t\t\t\t list_length(new_tlist) + 1,\n\t\t\t\t\t\t\t\t\t NULL,\n\t\t\t\t\t\t\t\t\t false)",
+          "old_line_content": "\t\t\t/* Preserve its sortgroupref marking, in case it's volatile */",
+          "new_line_content": "\t\t\tnewtle = makeTargetEntry(tle->expr,",
+          "content_same": false
+        },
+        {
+          "line": 3371,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(new_tlist)",
+          "old_line_content": "\t\t\tnewtle->ressortgroupref = tle->ressortgroupref;",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t list_length(new_tlist) + 1,",
+          "content_same": false
+        },
+        {
+          "line": 3376,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(new_tlist, newtle)",
+          "old_line_content": "\t\t\t/*",
+          "new_line_content": "\t\t\tnew_tlist = lappend(new_tlist, newtle);",
+          "content_same": false
+        },
+        {
+          "line": 2873,
+          "old_api": null,
+          "new_api": "cost_agg",
+          "old_text": null,
+          "new_text": "cost_agg(&hashed_p, root, AGG_HASHED, NULL,\n\t\t\t numDistinctCols, dNumDistinctRows,\n\t\t\t cheapest_startup_cost, cheapest_total_cost,\n\t\t\t path_rows)",
+          "old_line_content": "",
+          "new_line_content": "\tcost_agg(&hashed_p, root, AGG_HASHED, NULL,",
+          "content_same": false
+        },
+        {
+          "line": 3385,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(flattenable_cols, tle->expr)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\t\t\tflattenable_cols = lappend(flattenable_cols, tle->expr);",
+          "content_same": false
+        },
+        {
+          "line": 2883,
+          "old_api": null,
+          "new_api": "cost_sort",
+          "old_text": null,
+          "new_text": "cost_sort(&hashed_p, root, root->sort_pathkeys, hashed_p.total_cost,\n\t\t\t\t  dNumDistinctRows, path_width,\n\t\t\t\t  0.0, work_mem, limit_tuples)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\t\tcost_sort(&hashed_p, root, root->sort_pathkeys, hashed_p.total_cost,",
+          "content_same": false
+        },
+        {
+          "line": 3398,
+          "old_api": null,
+          "new_api": "pull_var_clause",
+          "old_text": null,
+          "new_text": "pull_var_clause((Node *) flattenable_cols,\n\t\t\t\t\t\t\t\t\t   PVC_INCLUDE_AGGREGATES,\n\t\t\t\t\t\t\t\t\t   PVC_INCLUDE_PLACEHOLDERS)",
+          "old_line_content": "",
+          "new_line_content": "\tflattenable_vars = pull_var_clause((Node *) flattenable_cols,",
+          "content_same": false
+        },
+        {
+          "line": 3404,
+          "old_api": null,
+          "new_api": "list_free",
+          "old_text": null,
+          "new_text": "list_free(flattenable_vars)",
+          "old_line_content": "}",
+          "new_line_content": "\tlist_free(flattenable_vars);",
+          "content_same": false
+        },
+        {
+          "line": 3405,
+          "old_api": null,
+          "new_api": "list_free",
+          "old_text": null,
+          "new_text": "list_free(flattenable_cols)",
+          "old_line_content": "",
+          "new_line_content": "\tlist_free(flattenable_cols);",
+          "content_same": false
+        },
+        {
+          "line": 2895,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(root->distinct_pathkeys)",
+          "old_line_content": "\t\tneeded_pathkeys = root->distinct_pathkeys;",
+          "new_line_content": "\t\tlist_length(root->distinct_pathkeys) <",
+          "content_same": false
+        },
+        {
+          "line": 2900,
+          "old_api": null,
+          "new_api": "pathkeys_contained_in",
+          "old_text": null,
+          "new_text": "pathkeys_contained_in(needed_pathkeys, current_pathkeys)",
+          "old_line_content": "\t\t\tcurrent_pathkeys = root->distinct_pathkeys;",
+          "new_line_content": "\tif (!pathkeys_contained_in(needed_pathkeys, current_pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 2902,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(root->distinct_pathkeys)",
+          "old_line_content": "\t\t\tcurrent_pathkeys = root->sort_pathkeys;",
+          "new_line_content": "\t\tif (list_length(root->distinct_pathkeys) >=",
+          "content_same": false
+        },
+        {
+          "line": 2915,
+          "old_api": null,
+          "new_api": "pathkeys_contained_in",
+          "old_text": null,
+          "new_text": "pathkeys_contained_in(root->sort_pathkeys, current_pathkeys)",
+          "old_line_content": "",
+          "new_line_content": "\t\t!pathkeys_contained_in(root->sort_pathkeys, current_pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 2916,
+          "old_api": null,
+          "new_api": "cost_sort",
+          "old_text": null,
+          "new_text": "cost_sort(&sorted_p, root, root->sort_pathkeys, sorted_p.total_cost,\n\t\t\t\t  dNumDistinctRows, path_width,\n\t\t\t\t  0.0, work_mem, limit_tuples)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\t\tcost_sort(&sorted_p, root, root->sort_pathkeys, sorted_p.total_cost,",
+          "content_same": false
+        },
+        {
+          "line": 3433,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),\n\t\t\t\t errmsg(\"could not implement window ORDER BY\"),\n\t\terrdetail(\"Window ordering columns must be of sortable datatypes.\")))",
+          "old_line_content": "",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 3434,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_FEATURE_NOT_SUPPORTED)",
+          "old_line_content": "\t/* Okay, make the combined pathkeys */",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),",
+          "content_same": false
+        },
+        {
+          "line": 2923,
+          "old_api": null,
+          "new_api": "compare_fractional_path_costs",
+          "old_text": null,
+          "new_text": "compare_fractional_path_costs(&hashed_p, &sorted_p,\n\t\t\t\t\t\t\t\t\t  tuple_fraction)",
+          "old_line_content": "\t\treturn true;",
+          "new_line_content": "\tif (compare_fractional_path_costs(&hashed_p, &sorted_p,",
+          "content_same": false
+        },
+        {
+          "line": 3439,
+          "old_api": null,
+          "new_api": "list_copy",
+          "old_text": null,
+          "new_text": "list_copy(wc->partitionClause)",
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t\t\t\ttlist);",
+          "new_line_content": "\twindow_sortclauses = list_concat(list_copy(wc->partitionClause),",
+          "content_same": false
+        },
+        {
+          "line": 3441,
+          "old_api": null,
+          "new_api": "make_pathkeys_for_sortclauses",
+          "old_text": null,
+          "new_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\twindow_sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\ttlist)",
+          "old_line_content": "\treturn window_pathkeys;",
+          "new_line_content": "\twindow_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "content_same": false
+        },
+        {
+          "line": 3444,
+          "old_api": null,
+          "new_api": "list_free",
+          "old_text": null,
+          "new_text": "list_free(window_sortclauses)",
+          "old_line_content": "/*----------",
+          "new_line_content": "\tlist_free(window_sortclauses);",
+          "content_same": false
+        },
+        {
+          "line": 3483,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(wc->partitionClause)",
+          "old_line_content": "\t{",
+          "new_line_content": "\tint\t\t\tnumPart = list_length(wc->partitionClause);",
+          "content_same": false
+        },
+        {
+          "line": 3484,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(wc->orderClause)",
+          "old_line_content": "\t\t/* easy case */",
+          "new_line_content": "\tint\t\t\tnumOrder = list_length(wc->orderClause);",
+          "content_same": false
+        },
+        {
+          "line": 3491,
+          "old_api": null,
+          "new_api": "extract_grouping_ops",
+          "old_text": null,
+          "new_text": "extract_grouping_ops(wc->partitionClause)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\t*partOperators = extract_grouping_ops(wc->partitionClause);",
+          "content_same": false
+        },
+        {
+          "line": 3494,
+          "old_api": null,
+          "new_api": "extract_grouping_ops",
+          "old_text": null,
+          "new_text": "extract_grouping_ops(wc->orderClause)",
+          "old_line_content": "\t\tList\t   *sortclauses;",
+          "new_line_content": "\t\t*ordOperators = extract_grouping_ops(wc->orderClause);",
+          "content_same": false
+        },
+        {
+          "line": 3506,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(numPart * sizeof(Oid))",
+          "old_line_content": "\t\tsortclauses = NIL;",
+          "new_line_content": "\t\t*partOperators = (Oid *) palloc(numPart * sizeof(Oid));",
+          "content_same": false
+        },
+        {
+          "line": 3508,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(numOrder * sizeof(AttrNumber))",
+          "old_line_content": "\t\tscidx = 0;",
+          "new_line_content": "\t\t*ordColIdx = (AttrNumber *) palloc(numOrder * sizeof(AttrNumber));",
+          "content_same": false
+        },
+        {
+          "line": 3513,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, wc->partitionClause)",
+          "old_line_content": "",
+          "new_line_content": "\t\tforeach(lc, wc->partitionClause)",
+          "content_same": false
+        },
+        {
+          "line": 3004,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(parse->groupClause)",
+          "old_line_content": "\t\t * If grouping, create sub_tlist entries for all GROUP BY columns, and",
+          "new_line_content": "\tnumCols = list_length(parse->groupClause);",
+          "content_same": false
+        },
+        {
+          "line": 3519,
+          "old_api": null,
+          "new_api": "make_pathkeys_for_sortclauses",
+          "old_text": null,
+          "new_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t tlist)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\tnew_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "content_same": false
+        },
+        {
+          "line": 3522,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(pathkeys)",
+          "old_line_content": "\t\t\t\t(*partOperators)[*partNumCols] = sgc->eqop;",
+          "new_line_content": "\t\t\tif (list_length(new_pathkeys) > list_length(pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 3017,
+          "old_api": null,
+          "new_api": "palloc0",
+          "old_text": null,
+          "new_text": "palloc0(sizeof(AttrNumber) * numCols)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tgrpColIdx = (AttrNumber *) palloc0(sizeof(AttrNumber) * numCols);",
+          "content_same": false
+        },
+        {
+          "line": 3531,
+          "old_api": null,
+          "new_api": "foreach",
+          "old_text": null,
+          "new_text": "foreach(lc, wc->orderClause)",
+          "old_line_content": "",
+          "new_line_content": "\t\tforeach(lc, wc->orderClause)",
+          "content_same": false
+        },
+        {
+          "line": 3022,
+          "old_api": null,
+          "new_api": "lfirst",
+          "old_text": null,
+          "new_text": "lfirst(tl)",
+          "old_line_content": "\t\t\tif (colno >= 0)",
+          "new_line_content": "\t\t\tTargetEntry *tle = (TargetEntry *) lfirst(tl);",
+          "content_same": false
+        },
+        {
+          "line": 3025,
+          "old_api": null,
+          "new_api": "get_grouping_column_index",
+          "old_text": null,
+          "new_text": "get_grouping_column_index(parse, tle)",
+          "old_line_content": "\t\t\t\t * It's a grouping column, so add it to the result tlist and",
+          "new_line_content": "\t\t\tcolno = get_grouping_column_index(parse, tle);",
+          "content_same": false
+        },
+        {
+          "line": 3537,
+          "old_api": null,
+          "new_api": "make_pathkeys_for_sortclauses",
+          "old_text": null,
+          "new_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t tlist)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\tnew_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "content_same": false
+        },
+        {
+          "line": 3540,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(pathkeys)",
+          "old_line_content": "\t\t\t\t(*ordOperators)[*ordNumCols] = sgc->eqop;",
+          "new_line_content": "\t\t\tif (list_length(new_pathkeys) > list_length(pathkeys))",
+          "content_same": false
+        },
+        {
+          "line": 3035,
+          "old_api": null,
+          "new_api": "list_length",
+          "old_text": null,
+          "new_text": "list_length(sub_tlist)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t list_length(sub_tlist) + 1,",
+          "content_same": false
+        },
+        {
+          "line": 3038,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(sub_tlist, newtle)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tsub_tlist = lappend(sub_tlist, newtle);",
+          "content_same": false
+        },
+        {
+          "line": 3551,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"failed to deconstruct sort operators into partitioning/ordering operators\")",
+          "old_line_content": "",
+          "new_line_content": "\t\t\telog(ERROR, \"failed to deconstruct sort operators into partitioning/ordering operators\");",
+          "content_same": false
+        },
+        {
+          "line": 3040,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(grpColIdx[colno] == 0)",
+          "old_line_content": "\t\t\t\t\t*need_tlist_eval = true;\t/* tlist contains non Vars */",
+          "new_line_content": "\t\t\t\tAssert(grpColIdx[colno] == 0);\t/* no dups expected */",
+          "content_same": false
+        },
+        {
+          "line": 3043,
+          "old_api": null,
+          "new_api": "IsA",
+          "old_text": null,
+          "new_text": "IsA(newtle->expr, Var)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\t\tif (!(newtle->expr && IsA(newtle->expr, Var)))",
+          "content_same": false
+        },
+        {
+          "line": 3053,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(non_group_cols, tle->expr)",
+          "old_line_content": "\telse",
+          "new_line_content": "\t\t\t\tnon_group_cols = lappend(non_group_cols, tle->expr);",
+          "content_same": false
+        },
+        {
+          "line": 3063,
+          "old_api": null,
+          "new_api": "list_copy",
+          "old_text": null,
+          "new_text": "list_copy(tlist)",
+          "old_line_content": "\t * If there's a HAVING clause, we'll need the Vars it uses, too.",
+          "new_line_content": "\t\tnon_group_cols = list_copy(tlist);",
+          "content_same": false
+        },
+        {
+          "line": 3070,
+          "old_api": null,
+          "new_api": "lappend",
+          "old_text": null,
+          "new_text": "lappend(non_group_cols, parse->havingQual)",
+          "old_line_content": "\t * add them to the result tlist if not already present.  (A Var used",
+          "new_line_content": "\t\tnon_group_cols = lappend(non_group_cols, parse->havingQual);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 3586,
+          "old_api": "fix_opfuncids",
+          "new_api": null,
+          "old_text": "fix_opfuncids(result)",
+          "new_text": null,
+          "old_line_content": "\tfix_opfuncids(result);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3076,
+          "old_api": "pull_var_clause",
+          "new_api": null,
+          "old_text": "pull_var_clause((Node *) non_group_cols,\n\t\t\t\t\t\t\t\t\t PVC_RECURSE_AGGREGATES,\n\t\t\t\t\t\t\t\t\t PVC_INCLUDE_PLACEHOLDERS)",
+          "new_text": null,
+          "old_line_content": "\tnon_group_vars = pull_var_clause((Node *) non_group_cols,",
+          "new_line_content": "\t * includes Vars used in resjunk items, so we are covering the needs of",
+          "content_same": false
+        },
+        {
+          "line": 3079,
+          "old_api": "add_to_flat_tlist",
+          "new_api": null,
+          "old_text": "add_to_flat_tlist(sub_tlist, non_group_vars)",
+          "new_text": null,
+          "old_line_content": "\tsub_tlist = add_to_flat_tlist(sub_tlist, non_group_vars);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3082,
+          "old_api": "list_free",
+          "new_api": null,
+          "old_text": "list_free(non_group_vars)",
+          "new_text": null,
+          "old_line_content": "\tlist_free(non_group_vars);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t PVC_INCLUDE_PLACEHOLDERS);",
+          "content_same": false
+        },
+        {
+          "line": 3107,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(gl, parse->groupClause)",
+          "new_text": null,
+          "old_line_content": "\tforeach(gl, parse->groupClause)",
+          "new_line_content": "\t/* No need to search groupClause if TLE hasn't got a sortgroupref */",
+          "content_same": false
+        },
+        {
+          "line": 3620,
+          "old_api": "makeNode",
+          "new_api": null,
+          "old_text": "makeNode(Query)",
+          "new_text": null,
+          "old_line_content": "\tquery = makeNode(Query);",
+          "new_line_content": "\tIndexPath  *indexScanPath;",
+          "content_same": false
+        },
+        {
+          "line": 3109,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(gl)",
+          "new_text": null,
+          "old_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(gl);",
+          "new_line_content": "\t\treturn -1;",
+          "content_same": false
+        },
+        {
+          "line": 3623,
+          "old_api": "makeNode",
+          "new_api": null,
+          "old_text": "makeNode(PlannerGlobal)",
+          "new_text": null,
+          "old_line_content": "\tglob = makeNode(PlannerGlobal);",
+          "new_line_content": "\t/* Set up mostly-dummy planner state */",
+          "content_same": false
+        },
+        {
+          "line": 3625,
+          "old_api": "makeNode",
+          "new_api": null,
+          "old_text": "makeNode(PlannerInfo)",
+          "new_text": null,
+          "old_line_content": "\troot = makeNode(PlannerInfo);",
+          "new_line_content": "\tquery->commandType = CMD_SELECT;",
+          "content_same": false
+        },
+        {
+          "line": 3633,
+          "old_api": "makeNode",
+          "new_api": null,
+          "old_text": "makeNode(RangeTblEntry)",
+          "new_text": null,
+          "old_line_content": "\trte = makeNode(RangeTblEntry);",
+          "new_line_content": "\troot->planner_cxt = CurrentMemoryContext;",
+          "content_same": false
+        },
+        {
+          "line": 3640,
+          "old_api": "list_make1",
+          "new_api": null,
+          "old_text": "list_make1(rte)",
+          "new_text": null,
+          "old_line_content": "\tquery->rtable = list_make1(rte);",
+          "new_line_content": "\trte->relkind = RELKIND_RELATION;\t/* Don't be too picky. */",
+          "content_same": false
+        },
+        {
+          "line": 3643,
+          "old_api": "setup_simple_rel_arrays",
+          "new_api": null,
+          "old_text": "setup_simple_rel_arrays(root)",
+          "new_text": null,
+          "old_line_content": "\tsetup_simple_rel_arrays(root);",
+          "new_line_content": "\trte->inFromCl = true;",
+          "content_same": false
+        },
+        {
+          "line": 3646,
+          "old_api": "build_simple_rel",
+          "new_api": null,
+          "old_text": "build_simple_rel(root, 1, RELOPT_BASEREL)",
+          "new_text": null,
+          "old_line_content": "\trel = build_simple_rel(root, 1, RELOPT_BASEREL);",
+          "new_line_content": "\t/* Set up RTE/RelOptInfo arrays */",
+          "content_same": false
+        },
+        {
+          "line": 3652,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tindexInfo = (IndexOptInfo *) lfirst(lc);",
+          "new_line_content": "\t/* Locate IndexOptInfo for the target index */",
+          "content_same": false
+        },
+        {
+          "line": 3141,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(groupColIdx == NULL)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(groupColIdx == NULL);",
+          "new_line_content": "\t * No work unless grouping.",
+          "content_same": false
+        },
+        {
+          "line": 3144,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(groupColIdx != NULL)",
+          "new_text": null,
+          "old_line_content": "\tAssert(groupColIdx != NULL);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 3146,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(gl, root->parse->groupClause)",
+          "new_text": null,
+          "old_line_content": "\tforeach(gl, root->parse->groupClause)",
+          "new_line_content": "\t\treturn;",
+          "content_same": false
+        },
+        {
+          "line": 3149,
+          "old_api": "get_sortgroupclause_expr",
+          "new_api": null,
+          "old_text": "get_sortgroupclause_expr(grpcl, tlist)",
+          "new_text": null,
+          "old_line_content": "\t\tNode\t   *groupexpr = get_sortgroupclause_expr(grpcl, tlist);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3672,
+          "old_api": "get_relation_data_width",
+          "new_api": null,
+          "old_text": "get_relation_data_width(tableOid, NULL)",
+          "new_text": null,
+          "old_line_content": "\trel->width = get_relation_data_width(tableOid, NULL);",
+          "new_line_content": "\t * Rather than doing all the pushups that would be needed to use",
+          "content_same": false
+        },
+        {
+          "line": 3682,
+          "old_api": "cost_qual_eval",
+          "new_api": null,
+          "old_text": "cost_qual_eval(&indexExprCost, indexInfo->indexprs, root)",
+          "new_text": null,
+          "old_line_content": "\tcost_qual_eval(&indexExprCost, indexInfo->indexprs, root);",
+          "new_line_content": "\t * charge twice that amount for each tuple comparison that happens during",
+          "content_same": false
+        },
+        {
+          "line": 3172,
+          "old_api": "list_head",
+          "new_api": null,
+          "old_text": "list_head(orig_tlist)",
+          "new_text": null,
+          "old_line_content": "\tListCell   *orig_tlist_item = list_head(orig_tlist);",
+          "new_line_content": "static List *",
+          "content_same": false
+        },
+        {
+          "line": 3687,
+          "old_api": "cost_sort",
+          "new_api": null,
+          "old_text": "cost_sort(&seqScanAndSortPath, root, NIL,\n\t\t\t  seqScanPath->total_cost, rel->tuples, rel->width,\n\t\t\t  comparisonCost, maintenance_work_mem, -1.0)",
+          "new_text": null,
+          "old_line_content": "\tcost_sort(&seqScanAndSortPath, root, NIL,",
+          "new_line_content": "\tcomparisonCost = 2.0 * (indexExprCost.startup + indexExprCost.per_tuple);",
+          "content_same": false
+        },
+        {
+          "line": 3692,
+          "old_api": "create_index_path",
+          "new_api": null,
+          "old_text": "create_index_path(root, indexInfo,\n\t\t\t\t\t\t\t\t\t  NIL, NIL, NIL, NIL, NIL,\n\t\t\t\t\t\t\t\t\t  ForwardScanDirection, false,\n\t\t\t\t\t\t\t\t\t  NULL, 1.0)",
+          "new_text": null,
+          "old_line_content": "\tindexScanPath = create_index_path(root, indexInfo,",
+          "new_line_content": "\t\t\t  seqScanPath->total_cost, rel->tuples, rel->width,",
+          "content_same": false
+        },
+        {
+          "line": 3183,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(orig_tlist_item != NULL)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(orig_tlist_item != NULL);",
+          "new_line_content": "\t\t/* ignore resjunk columns in setop result */",
+          "content_same": false
+        },
+        {
+          "line": 3184,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(orig_tlist_item)",
+          "new_text": null,
+          "old_line_content": "\t\torig_tle = (TargetEntry *) lfirst(orig_tlist_item);",
+          "new_line_content": "\t\tif (new_tle->resjunk)",
+          "content_same": false
+        },
+        {
+          "line": 3185,
+          "old_api": "lnext",
+          "new_api": null,
+          "old_text": "lnext(orig_tlist_item)",
+          "new_text": null,
+          "old_line_content": "\t\torig_tlist_item = lnext(orig_tlist_item);",
+          "new_line_content": "\t\t\tcontinue;",
+          "content_same": false
+        },
+        {
+          "line": 3210,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc, root->parse->windowClause)",
+          "new_text": null,
+          "old_line_content": "\tforeach(lc, root->parse->windowClause)",
+          "new_line_content": "\tListCell   *lc;",
+          "content_same": false
+        },
+        {
+          "line": 3212,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tWindowClause *wc = (WindowClause *) lfirst(lc);",
+          "new_line_content": "\t/* First, make a list of the active windows */",
+          "content_same": false
+        },
+        {
+          "line": 3215,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(wc->winref <= wflists->maxWinRef)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(wc->winref <= wflists->maxWinRef);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 3217,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(actives, wc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tactives = lappend(actives, wc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3235,
+          "old_api": "linitial",
+          "new_api": null,
+          "old_text": "linitial(actives)",
+          "new_text": null,
+          "old_line_content": "\t\tWindowClause *wc = (WindowClause *) linitial(actives);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3240,
+          "old_api": "list_delete_first",
+          "new_api": null,
+          "old_text": "list_delete_first(actives)",
+          "new_text": null,
+          "old_line_content": "\t\tactives = list_delete_first(actives);",
+          "new_line_content": "\t\tListCell   *prev;",
+          "content_same": false
+        },
+        {
+          "line": 3241,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(result, wc)",
+          "new_text": null,
+          "old_line_content": "\t\tresult = lappend(result, wc);",
+          "new_line_content": "\t\tListCell   *next;",
+          "content_same": false
+        },
+        {
+          "line": 3247,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tWindowClause *wc2 = (WindowClause *) lfirst(lc);",
+          "new_line_content": "\t\t/* Now move any matching windows from actives to result */",
+          "content_same": false
+        },
+        {
+          "line": 3252,
+          "old_api": "equal",
+          "new_api": null,
+          "old_text": "equal(wc->orderClause, wc2->orderClause)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tequal(wc->orderClause, wc2->orderClause))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3254,
+          "old_api": "list_delete_cell",
+          "new_api": null,
+          "old_text": "list_delete_cell(actives, lc, prev)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tactives = list_delete_cell(actives, lc, prev);",
+          "new_line_content": "\t\t\t/* framing options are NOT to be compared here! */",
+          "content_same": false
+        },
+        {
+          "line": 3310,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(parse->hasWindowFuncs)",
+          "new_text": null,
+          "old_line_content": "\tAssert(parse->hasWindowFuncs);",
+          "new_line_content": "\tList\t   *flattenable_cols;",
+          "content_same": false
+        },
+        {
+          "line": 3319,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tWindowClause *wc = (WindowClause *) lfirst(lc);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3322,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc2, wc->partitionClause)",
+          "new_text": null,
+          "old_line_content": "\t\tforeach(lc2, wc->partitionClause)",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 3324,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc2)",
+          "new_text": null,
+          "old_line_content": "\t\t\tSortGroupClause *sortcl = (SortGroupClause *) lfirst(lc2);",
+          "new_line_content": "\t\tListCell   *lc2;",
+          "content_same": false
+        },
+        {
+          "line": 3337,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc, parse->groupClause)",
+          "new_text": null,
+          "old_line_content": "\tforeach(lc, parse->groupClause)",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3339,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tSortGroupClause *grpcl = (SortGroupClause *) lfirst(lc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3353,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\tTargetEntry *tle = (TargetEntry *) lfirst(lc);",
+          "new_line_content": "\tflattenable_cols = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 3361,
+          "old_api": "bms_is_member",
+          "new_api": null,
+          "old_text": "bms_is_member(tle->ressortgroupref, sgrefs)",
+          "new_text": null,
+          "old_line_content": "\t\t\tbms_is_member(tle->ressortgroupref, sgrefs))",
+          "new_line_content": "\t\t * that such items can't contain window functions, so it's okay to",
+          "content_same": false
+        },
+        {
+          "line": 2851,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(sizeof(MinimalTupleData))",
+          "new_text": null,
+          "old_line_content": "\thashentrysize = MAXALIGN(path_width) + MAXALIGN(sizeof(MinimalTupleData));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3366,
+          "old_api": "makeTargetEntry",
+          "new_api": null,
+          "old_text": "makeTargetEntry(tle->expr,\n\t\t\t\t\t\t\t\t\t list_length(new_tlist) + 1,\n\t\t\t\t\t\t\t\t\t NULL,\n\t\t\t\t\t\t\t\t\t false)",
+          "new_text": null,
+          "old_line_content": "\t\t\tnewtle = makeTargetEntry(tle->expr,",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3367,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(new_tlist)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t list_length(new_tlist) + 1,",
+          "new_line_content": "\t\t\t/* Don't want to deconstruct this value, so add to new_tlist */",
+          "content_same": false
+        },
+        {
+          "line": 3372,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(new_tlist, newtle)",
+          "new_text": null,
+          "old_line_content": "\t\t\tnew_tlist = lappend(new_tlist, newtle);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t NULL,",
+          "content_same": false
+        },
+        {
+          "line": 2869,
+          "old_api": "cost_agg",
+          "new_api": null,
+          "old_text": "cost_agg(&hashed_p, root, AGG_HASHED, NULL,\n\t\t\t numDistinctCols, dNumDistinctRows,\n\t\t\t cheapest_startup_cost, cheapest_total_cost,\n\t\t\t path_rows)",
+          "new_text": null,
+          "old_line_content": "\tcost_agg(&hashed_p, root, AGG_HASHED, NULL,",
+          "new_line_content": "\t *",
+          "content_same": false
+        },
+        {
+          "line": 3381,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(flattenable_cols, tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\tflattenable_cols = lappend(flattenable_cols, tle->expr);",
+          "new_line_content": "\t\t\t * Column is to be flattened, so just remember the expression for",
+          "content_same": false
+        },
+        {
+          "line": 2879,
+          "old_api": "cost_sort",
+          "new_api": null,
+          "old_text": "cost_sort(&hashed_p, root, root->sort_pathkeys, hashed_p.total_cost,\n\t\t\t\t  dNumDistinctRows, path_width,\n\t\t\t\t  0.0, work_mem, limit_tuples)",
+          "new_text": null,
+          "old_line_content": "\t\tcost_sort(&hashed_p, root, root->sort_pathkeys, hashed_p.total_cost,",
+          "new_line_content": "\t * Result of hashed agg is always unsorted, so if ORDER BY is present we",
+          "content_same": false
+        },
+        {
+          "line": 3394,
+          "old_api": "pull_var_clause",
+          "new_api": null,
+          "old_text": "pull_var_clause((Node *) flattenable_cols,\n\t\t\t\t\t\t\t\t\t   PVC_INCLUDE_AGGREGATES,\n\t\t\t\t\t\t\t\t\t   PVC_INCLUDE_PLACEHOLDERS)",
+          "new_text": null,
+          "old_line_content": "\tflattenable_vars = pull_var_clause((Node *) flattenable_cols,",
+          "new_line_content": "\t * Note: it's essential to use PVC_INCLUDE_AGGREGATES here, so that the",
+          "content_same": false
+        },
+        {
+          "line": 3397,
+          "old_api": "add_to_flat_tlist",
+          "new_api": null,
+          "old_text": "add_to_flat_tlist(new_tlist, flattenable_vars)",
+          "new_text": null,
+          "old_line_content": "\tnew_tlist = add_to_flat_tlist(new_tlist, flattenable_vars);",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 3400,
+          "old_api": "list_free",
+          "new_api": null,
+          "old_text": "list_free(flattenable_vars)",
+          "new_text": null,
+          "old_line_content": "\tlist_free(flattenable_vars);",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t   PVC_INCLUDE_PLACEHOLDERS);",
+          "content_same": false
+        },
+        {
+          "line": 2891,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->distinct_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tlist_length(root->distinct_pathkeys) <",
+          "new_line_content": "\tsorted_p.startup_cost = sorted_startup_cost;",
+          "content_same": false
+        },
+        {
+          "line": 2892,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->sort_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tlist_length(root->sort_pathkeys))",
+          "new_line_content": "\tsorted_p.total_cost = sorted_total_cost;",
+          "content_same": false
+        },
+        {
+          "line": 2898,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->distinct_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\tif (list_length(root->distinct_pathkeys) >=",
+          "new_line_content": "\telse",
+          "content_same": false
+        },
+        {
+          "line": 2899,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(root->sort_pathkeys)",
+          "new_text": null,
+          "old_line_content": "\t\t\tlist_length(root->sort_pathkeys))",
+          "new_line_content": "\t\tneeded_pathkeys = root->distinct_pathkeys;",
+          "content_same": false
+        },
+        {
+          "line": 3423,
+          "old_api": "grouping_is_sortable",
+          "new_api": null,
+          "old_text": "grouping_is_sortable(wc->partitionClause)",
+          "new_text": null,
+          "old_line_content": "\tif (!grouping_is_sortable(wc->partitionClause))",
+          "new_line_content": "\tList\t   *window_pathkeys;",
+          "content_same": false
+        },
+        {
+          "line": 2912,
+          "old_api": "cost_sort",
+          "new_api": null,
+          "old_text": "cost_sort(&sorted_p, root, root->sort_pathkeys, sorted_p.total_cost,\n\t\t\t\t  dNumDistinctRows, path_width,\n\t\t\t\t  0.0, work_mem, limit_tuples)",
+          "new_text": null,
+          "old_line_content": "\t\tcost_sort(&sorted_p, root, root->sort_pathkeys, sorted_p.total_cost,",
+          "new_line_content": "\t\t\t   sorted_p.startup_cost, sorted_p.total_cost,",
+          "content_same": false
+        },
+        {
+          "line": 3424,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),\n\t\t\t\t errmsg(\"could not implement window PARTITION BY\"),\n\t\t\t\t errdetail(\"Window partitioning columns must be of sortable datatypes.\")))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\tList\t   *window_sortclauses;",
+          "content_same": false
+        },
+        {
+          "line": 3425,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_FEATURE_NOT_SUPPORTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3426,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"could not implement window PARTITION BY\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"could not implement window PARTITION BY\"),",
+          "new_line_content": "\t/* Throw error if can't sort */",
+          "content_same": false
+        },
+        {
+          "line": 2919,
+          "old_api": "compare_fractional_path_costs",
+          "new_api": null,
+          "old_text": "compare_fractional_path_costs(&hashed_p, &sorted_p,\n\t\t\t\t\t\t\t\t\t  tuple_fraction)",
+          "new_text": null,
+          "old_line_content": "\tif (compare_fractional_path_costs(&hashed_p, &sorted_p,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3437,
+          "old_api": "make_pathkeys_for_sortclauses",
+          "new_api": null,
+          "old_text": "make_pathkeys_for_sortclauses(root,\n\t\t\t\t\t\t\t\t\t\t\t\t\twindow_sortclauses,\n\t\t\t\t\t\t\t\t\t\t\t\t\ttlist)",
+          "new_text": null,
+          "old_line_content": "\twindow_pathkeys = make_pathkeys_for_sortclauses(root,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3479,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(wc->partitionClause)",
+          "new_text": null,
+          "old_line_content": "\tint\t\t\tnumPart = list_length(wc->partitionClause);",
+          "new_line_content": "\t\t\t\t\t\t   int *ordNumCols,",
+          "content_same": false
+        },
+        {
+          "line": 3480,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(wc->orderClause)",
+          "new_text": null,
+          "old_line_content": "\tint\t\t\tnumOrder = list_length(wc->orderClause);",
+          "new_line_content": "\t\t\t\t\t\t   AttrNumber **ordColIdx,",
+          "content_same": false
+        },
+        {
+          "line": 3487,
+          "old_api": "extract_grouping_ops",
+          "new_api": null,
+          "old_text": "extract_grouping_ops(wc->partitionClause)",
+          "new_text": null,
+          "old_line_content": "\t\t*partOperators = extract_grouping_ops(wc->partitionClause);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 3490,
+          "old_api": "extract_grouping_ops",
+          "new_api": null,
+          "old_text": "extract_grouping_ops(wc->orderClause)",
+          "new_text": null,
+          "old_line_content": "\t\t*ordOperators = extract_grouping_ops(wc->orderClause);",
+          "new_line_content": "\t\t*partColIdx = sortColIdx;",
+          "content_same": false
+        },
+        {
+          "line": 3501,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(numPart * sizeof(AttrNumber))",
+          "new_text": null,
+          "old_line_content": "\t\t*partColIdx = (AttrNumber *) palloc(numPart * sizeof(AttrNumber));",
+          "new_line_content": "\t\tListCell   *lc;",
+          "content_same": false
+        },
+        {
+          "line": 3502,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(numPart * sizeof(Oid))",
+          "new_text": null,
+          "old_line_content": "\t\t*partOperators = (Oid *) palloc(numPart * sizeof(Oid));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3504,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(numOrder * sizeof(AttrNumber))",
+          "new_text": null,
+          "old_line_content": "\t\t*ordColIdx = (AttrNumber *) palloc(numOrder * sizeof(AttrNumber));",
+          "new_line_content": "\t\t*partNumCols = 0;",
+          "content_same": false
+        },
+        {
+          "line": 3511,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tSortGroupClause *sgc = (SortGroupClause *) lfirst(lc);",
+          "new_line_content": "\t\tpathkeys = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 3000,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(parse->groupClause)",
+          "new_text": null,
+          "old_line_content": "\tnumCols = list_length(parse->groupClause);",
+          "new_line_content": "\tsub_tlist = NIL;",
+          "content_same": false
+        },
+        {
+          "line": 3514,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(sortclauses, sgc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tsortclauses = lappend(sortclauses, sgc);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3013,
+          "old_api": "palloc0",
+          "new_api": null,
+          "old_text": "palloc0(sizeof(AttrNumber) * numCols)",
+          "new_text": null,
+          "old_line_content": "\t\tgrpColIdx = (AttrNumber *) palloc0(sizeof(AttrNumber) * numCols);",
+          "new_line_content": "\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 3527,
+          "old_api": "foreach",
+          "new_api": null,
+          "old_text": "foreach(lc, wc->orderClause)",
+          "new_text": null,
+          "old_line_content": "\t\tforeach(lc, wc->orderClause)",
+          "new_line_content": "\t\t\t\t(*partNumCols)++;",
+          "content_same": false
+        },
+        {
+          "line": 3529,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(lc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tSortGroupClause *sgc = (SortGroupClause *) lfirst(lc);",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3018,
+          "old_api": "lfirst",
+          "new_api": null,
+          "old_text": "lfirst(tl)",
+          "new_text": null,
+          "old_line_content": "\t\t\tTargetEntry *tle = (TargetEntry *) lfirst(tl);",
+          "new_line_content": "\t\t*groupColIdx = grpColIdx;",
+          "content_same": false
+        },
+        {
+          "line": 3532,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(sortclauses, sgc)",
+          "new_text": null,
+          "old_line_content": "\t\t\tsortclauses = lappend(sortclauses, sgc);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3021,
+          "old_api": "get_grouping_column_index",
+          "new_api": null,
+          "old_text": "get_grouping_column_index(parse, tle)",
+          "new_text": null,
+          "old_line_content": "\t\t\tcolno = get_grouping_column_index(parse, tle);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 3030,
+          "old_api": "makeTargetEntry",
+          "new_api": null,
+          "old_text": "makeTargetEntry(tle->expr,\n\t\t\t\t\t\t\t\t\t\t list_length(sub_tlist) + 1,\n\t\t\t\t\t\t\t\t\t\t NULL,\n\t\t\t\t\t\t\t\t\t\t false)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tnewtle = makeTargetEntry(tle->expr,",
+          "new_line_content": "\t\t\t\t * remember its resno in grpColIdx[].",
+          "content_same": false
+        },
+        {
+          "line": 3031,
+          "old_api": "list_length",
+          "new_api": null,
+          "old_text": "list_length(sub_tlist)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t\t\t\t list_length(sub_tlist) + 1,",
+          "new_line_content": "\t\t\t\t */",
+          "content_same": false
+        },
+        {
+          "line": 3547,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"failed to deconstruct sort operators into partitioning/ordering operators\")",
+          "new_text": null,
+          "old_line_content": "\t\t\telog(ERROR, \"failed to deconstruct sort operators into partitioning/ordering operators\");",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 3036,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(grpColIdx[colno] == 0)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tAssert(grpColIdx[colno] == 0);\t/* no dups expected */",
+          "new_line_content": "\t\t\t\t\t\t\t\t\t\t NULL,",
+          "content_same": false
+        },
+        {
+          "line": 3039,
+          "old_api": "IsA",
+          "new_api": null,
+          "old_text": "IsA(newtle->expr, Var)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tif (!(newtle->expr && IsA(newtle->expr, Var)))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 3049,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(non_group_cols, tle->expr)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tnon_group_cols = lappend(non_group_cols, tle->expr);",
+          "new_line_content": "\t\t\t\t * Non-grouping column, so just remember the expression for",
+          "content_same": false
+        },
+        {
+          "line": 3059,
+          "old_api": "list_copy",
+          "new_api": null,
+          "old_text": "list_copy(tlist)",
+          "new_text": null,
+          "old_line_content": "\t\tnon_group_cols = list_copy(tlist);",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 3066,
+          "old_api": "lappend",
+          "new_api": null,
+          "old_text": "lappend(non_group_cols, parse->havingQual)",
+          "new_text": null,
+          "old_line_content": "\t\tnon_group_cols = lappend(non_group_cols, parse->havingQual);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 3583,
+          "old_api": "eval_const_expressions",
+          "new_api": null,
+          "old_text": "eval_const_expressions(NULL, (Node *) expr)",
+          "new_text": null,
+          "old_line_content": "\tresult = eval_const_expressions(NULL, (Node *) expr);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 39,
+      "total_additions": 91,
+      "total_deletions": 90,
+      "total_api_changes": 220
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 4,
+        "api_related_lines": 220,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          2852,
+          2854
+        ]
+      }
+    },
+    "api_calls_before": 455,
+    "api_calls_after": 456,
+    "diff_info": {
+      "added_lines": 4,
+      "removed_lines": 0,
+      "total_diff_lines": 17
+    }
+  }
+}

@@ -1,0 +1,29 @@
+diff --git a/revision.c b/revision.c
+index 3228db9af6..3356ede9a2 100644
+--- a/revision.c
++++ b/revision.c
+@@ -2790,6 +2790,12 @@ int setup_revisions(int argc, const char **argv, struct rev_info *revs, struct s
+ 	if (revs->diffopt.objfind)
+ 		revs->simplify_history = 0;
+ 
++	if (revs->line_level_traverse) {
++		if (want_ancestry(revs))
++			revs->limited = 1;
++		revs->topo_order = 1;
++	}
++
+ 	if (revs->topo_order && !generation_numbers_enabled(the_repository))
+ 		revs->limited = 1;
+ 
+@@ -2809,11 +2815,6 @@ int setup_revisions(int argc, const char **argv, struct rev_info *revs, struct s
+ 
+ 	revs->diffopt.abbrev = revs->abbrev;
+ 
+-	if (revs->line_level_traverse) {
+-		revs->limited = 1;
+-		revs->topo_order = 1;
+-	}
+-
+ 	diff_setup_done(&revs->diffopt);
+ 
+ 	grep_commit_pattern_type(GREP_PATTERN_TYPE_UNSPECIFIED,

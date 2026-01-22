@@ -1,0 +1,23 @@
+diff --git a/lib/IRGen/IRGenModule.cpp b/lib/IRGen/IRGenModule.cpp
+index e634651faca..4886159d439 100644
+--- a/lib/IRGen/IRGenModule.cpp
++++ b/lib/IRGen/IRGenModule.cpp
+@@ -216,8 +216,17 @@ static llvm::Constant *getRuntimeFn(IRGenModule &IGM,
+   if (auto fn = dyn_cast<llvm::Function>(cache)) {
+     fn->setCallingConv(cc);
+ 
++    llvm::AttrBuilder b;
++
+     for (auto Attr : attrs)
+-      fn->addFnAttr(Attr);
++      b.addAttribute(Attr);
++
++    fn->getAttributes().
++      addAttributes(IGM.LLVMContext,
++                    llvm::AttributeSet::FunctionIndex,
++                    llvm::AttributeSet::get(IGM.LLVMContext,
++                                            llvm::AttributeSet::FunctionIndex,
++                                            b));
+   }
+ 
+   return cache;

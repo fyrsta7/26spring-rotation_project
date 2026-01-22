@@ -1,0 +1,15 @@
+diff --git a/src/wasm/module-compiler.cc b/src/wasm/module-compiler.cc
+index 3dbf618d2e5..65385594bd1 100644
+--- a/src/wasm/module-compiler.cc
++++ b/src/wasm/module-compiler.cc
+@@ -3447,7 +3447,9 @@ void CompilationStateImpl::InitializeCompilationProgressAfterDeserialization(
+   }
+   auto builder = std::make_unique<CompilationUnitBuilder>(native_module_);
+   InitializeCompilationUnits(std::move(builder));
+-  WaitForCompilationEvent(CompilationEvent::kFinishedBaselineCompilation);
++  if (!v8_flags.wasm_lazy_compilation) {
++    WaitForCompilationEvent(CompilationEvent::kFinishedBaselineCompilation);
++  }
+ }
+ 
+ void CompilationStateImpl::AddCallback(

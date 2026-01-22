@@ -1,0 +1,36 @@
+diff --git a/source/libs/function/src/builtinsimpl.c b/source/libs/function/src/builtinsimpl.c
+index 1501bb6d67..d24393a766 100644
+--- a/source/libs/function/src/builtinsimpl.c
++++ b/source/libs/function/src/builtinsimpl.c
+@@ -1555,6 +1555,7 @@ int32_t doMinMaxHelper(SqlFunctionCtx* pCtx, int32_t isMinFunc) {
+         pBuf->assign = true;
+       } else {
+         // ignore the equivalent data value
++#if 0
+         if ((*val) == pData[i]) {
+           continue;
+         }
+@@ -1565,6 +1566,23 @@ int32_t doMinMaxHelper(SqlFunctionCtx* pCtx, int32_t isMinFunc) {
+             updateTupleData(pCtx, i, pCtx->pSrcBlock, &pBuf->tuplePos);
+           }
+         }
++#endif
++        // NOTE: An faster version to avoid one additional comparison with FPU.
++        if (isMinFunc) {  // min
++          if (*val < pData[i]) {
++            *val = pData[i];
++            if (pCtx->subsidiaries.num > 0) {
++              updateTupleData(pCtx, i, pCtx->pSrcBlock, &pBuf->tuplePos);
++            }
++          }
++        } else {  // max
++          if (*val > pData[i]) {
++            *val = pData[i];
++            if (pCtx->subsidiaries.num > 0) {
++              updateTupleData(pCtx, i, pCtx->pSrcBlock, &pBuf->tuplePos);
++            }
++          }
++        }
+       }
+ 
+       numOfElems += 1;

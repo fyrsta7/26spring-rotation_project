@@ -1,0 +1,52 @@
+diff --git a/modified_file.cc b/modified_file.cc
+index 0000000..1111111 100644
+--- a/modified_file.cc
++++ b/modified_file.cc
+--- a/modified_file.cc
++++ b/modified_file.cc
+@@ -158,10 +158,19 @@
+ 
+
+ Status SerializeProto(const grpc::protobuf::Message& msg,
+
+                       grpc_byte_buffer** bp) {
+
+-  GrpcBufferWriter writer(bp);
+
+-  return msg.SerializeToZeroCopyStream(&writer)
+
+-             ? Status::OK
+
+-             : Status(StatusCode::INTERNAL, "Failed to serialize message");
+
++  int byte_size = msg.ByteSize();
+
++  if (byte_size <= kMaxBufferLength) {
+
++    gpr_slice slice = gpr_slice_malloc(byte_size);
+
++    GPR_ASSERT(GPR_SLICE_END_PTR(slice) == msg.SerializeWithCachedSizesToArray(GPR_SLICE_START_PTR(slice)));
+
++    *bp = grpc_raw_byte_buffer_create(&slice, 1);
+
++    gpr_slice_unref(slice);
+
++    return Status::OK;
+
++  } else {
+
++    GrpcBufferWriter writer(bp);
+
++    return msg.SerializeToZeroCopyStream(&writer)
+
++               ? Status::OK
+
++               : Status(StatusCode::INTERNAL, "Failed to serialize message");
+
++  }
+
+ }
+
+ 
+
+ Status DeserializeProto(grpc_byte_buffer* buffer, grpc::protobuf::Message* msg,

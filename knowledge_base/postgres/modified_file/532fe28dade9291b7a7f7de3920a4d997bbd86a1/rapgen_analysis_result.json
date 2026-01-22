@@ -1,0 +1,671 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/532fe28dade9291b7a7f7de3920a4d997bbd86a1",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/532fe28dade9291b7a7f7de3920a4d997bbd86a1/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/532fe28dade9291b7a7f7de3920a4d997bbd86a1/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/532fe28dade9291b7a7f7de3920a4d997bbd86a1/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 367,
+          "old_api": "Assert",
+          "new_api": "LockBuffer",
+          "old_text": "Assert(tup == &scan->rs_ctup)",
+          "new_text": "LockBuffer(scan->xs_cbuf, BUFFER_LOCK_SHARE)",
+          "old_line_content": "\t\tAssert(tup == &scan->rs_ctup);",
+          "new_line_content": "\t\tLockBuffer(scan->xs_cbuf, BUFFER_LOCK_SHARE);",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "BufferIsValid",
+          "new_api": "HeapTupleSatisfiesVisibility",
+          "old_text": "BufferIsValid(scan->rs_cbuf)",
+          "new_text": "HeapTupleSatisfiesVisibility(tup, scan->xs_snapshot,\n\t\t\t\t\t\t\t\t\t\t\t  scan->xs_cbuf)",
+          "old_line_content": "\t\tAssert(BufferIsValid(scan->rs_cbuf));",
+          "new_line_content": "\t\tresult = HeapTupleSatisfiesVisibility(tup, scan->xs_snapshot,",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 397,
+          "old_api": null,
+          "new_api": "index_endscan",
+          "old_text": null,
+          "new_text": "index_endscan(sysscan->iscan)",
+          "old_line_content": "",
+          "new_line_content": "\t\tindex_endscan(sysscan->iscan);",
+          "content_same": false
+        },
+        {
+          "line": 398,
+          "old_api": null,
+          "new_api": "index_close",
+          "old_text": null,
+          "new_text": "index_close(sysscan->irel, AccessShareLock)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\tindex_close(sysscan->irel, AccessShareLock);",
+          "content_same": false
+        },
+        {
+          "line": 401,
+          "old_api": null,
+          "new_api": "heap_endscan",
+          "old_text": null,
+          "new_text": "heap_endscan(sysscan->scan)",
+          "old_line_content": " * These routines have essentially the same API as systable_beginscan etc,",
+          "new_line_content": "\t\theap_endscan(sysscan->scan);",
+          "content_same": false
+        },
+        {
+          "line": 403,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(sysscan)",
+          "old_line_content": " * index order.  Also, for largely historical reasons, the index to use",
+          "new_line_content": "\tpfree(sysscan);",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": null,
+          "new_api": "heap_beginscan_strat",
+          "old_text": null,
+          "new_text": "heap_beginscan_strat(heapRelation, snapshot,\n\t\t\t\t\t\t\t\t\t\t\t nkeys, key,\n\t\t\t\t\t\t\t\t\t\t\t true, false)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\tsysscan->scan = heap_beginscan_strat(heapRelation, snapshot,",
+          "content_same": false
+        },
+        {
+          "line": 433,
+          "old_api": null,
+          "new_api": "RelationGetRelid",
+          "old_text": null,
+          "new_text": "RelationGetRelid(indexRelation)",
+          "old_line_content": "",
+          "new_line_content": "\tif (ReindexIsProcessingIndex(RelationGetRelid(indexRelation)))",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"cannot do ordered scan on index \\\"%s\\\", because it is being reindexed\",\n\t\t\t RelationGetRelationName(indexRelation))",
+          "old_line_content": "\tsysscan->heap_rel = heapRelation;",
+          "new_line_content": "\t\telog(ERROR, \"cannot do ordered scan on index \\\"%s\\\", because it is being reindexed\",",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "RelationGetRelationName",
+          "old_text": null,
+          "new_text": "RelationGetRelationName(indexRelation)",
+          "old_line_content": "\tsysscan->irel = indexRelation;",
+          "new_line_content": "\t\t\t RelationGetRelationName(indexRelation));",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(WARNING, \"using index \\\"%s\\\" despite IgnoreSystemIndexes\",\n\t\t\t RelationGetRelationName(indexRelation))",
+          "old_line_content": "\tfor (i = 0; i < nkeys; i++)",
+          "new_line_content": "\t\telog(WARNING, \"using index \\\"%s\\\" despite IgnoreSystemIndexes\",",
+          "content_same": false
+        },
+        {
+          "line": 439,
+          "old_api": null,
+          "new_api": "RelationGetRelationName",
+          "old_text": null,
+          "new_text": "RelationGetRelationName(indexRelation)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t\t\t RelationGetRelationName(indexRelation));",
+          "content_same": false
+        },
+        {
+          "line": 441,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(sizeof(SysScanDescData))",
+          "old_line_content": "",
+          "new_line_content": "\tsysscan = (SysScanDesc) palloc(sizeof(SysScanDescData));",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": null,
+          "new_api": "index_getnext",
+          "old_text": null,
+          "new_text": "index_getnext(sysscan->iscan, ForwardScanDirection)",
+          "old_line_content": "\t\tif (htup && sysscan->iscan->xs_recheck)",
+          "new_line_content": "\t\thtup = index_getnext(sysscan->iscan, ForwardScanDirection);",
+          "content_same": false
+        },
+        {
+          "line": 460,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"column is not in index\")",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\telog(ERROR, \"column is not in index\");",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": null,
+          "new_api": "index_beginscan",
+          "old_text": null,
+          "new_text": "index_beginscan(heapRelation, indexRelation,\n\t\t\t\t\t\t\t\t\t snapshot, nkeys, 0)",
+          "old_line_content": " * systable_getnext_ordered --- get next tuple in an ordered catalog scan",
+          "new_line_content": "\tsysscan->iscan = index_beginscan(heapRelation, indexRelation,",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": null,
+          "new_api": "index_rescan",
+          "old_text": null,
+          "new_text": "index_rescan(sysscan->iscan, key, nkeys, NULL, 0)",
+          "old_line_content": "HeapTuple",
+          "new_line_content": "\tindex_rescan(sysscan->iscan, key, nkeys, NULL, 0);",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"system catalog scans with lossy index conditions are not implemented\")",
+          "old_line_content": " * systable_recheck_tuple --- recheck visibility of most-recently-fetched tuple",
+          "new_line_content": "\t\t\telog(ERROR, \"system catalog scans with lossy index conditions are not implemented\");",
+          "content_same": false
+        },
+        {
+          "line": 341,
+          "old_api": null,
+          "new_api": "heap_getnext",
+          "old_text": null,
+          "new_text": "heap_getnext(sysscan->scan, ForwardScanDirection)",
+          "old_line_content": " * acquire lock on it.",
+          "new_line_content": "\t\thtup = heap_getnext(sysscan->scan, ForwardScanDirection);",
+          "content_same": false
+        },
+        {
+          "line": 479,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(sysscan->irel)",
+          "old_line_content": "/*",
+          "new_line_content": "\tAssert(sysscan->irel);",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "index_getnext",
+          "old_text": null,
+          "new_text": "index_getnext(sysscan->iscan, direction)",
+          "old_line_content": " * systable_endscan_ordered --- close scan, release resources",
+          "new_line_content": "\thtup = index_getnext(sysscan->iscan, direction);",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"system catalog scans with lossy index conditions are not implemented\")",
+          "old_line_content": "systable_endscan_ordered(SysScanDesc sysscan)",
+          "new_line_content": "\t\telog(ERROR, \"system catalog scans with lossy index conditions are not implemented\");",
+          "content_same": false
+        },
+        {
+          "line": 364,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(tup == &scan->xs_ctup)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t\tAssert(tup == &scan->xs_ctup);",
+          "content_same": false
+        },
+        {
+          "line": 365,
+          "old_api": null,
+          "new_api": "BufferIsValid",
+          "old_text": null,
+          "new_text": "BufferIsValid(scan->xs_cbuf)",
+          "old_line_content": "\t\tHeapScanDesc scan = sysscan->scan;",
+          "new_line_content": "\t\tAssert(BufferIsValid(scan->xs_cbuf));",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(sysscan->irel)",
+          "old_line_content": "",
+          "new_line_content": "\tAssert(sysscan->irel);",
+          "content_same": false
+        },
+        {
+          "line": 495,
+          "old_api": null,
+          "new_api": "index_endscan",
+          "old_text": null,
+          "new_text": "index_endscan(sysscan->iscan)",
+          "old_line_content": "",
+          "new_line_content": "\tindex_endscan(sysscan->iscan);",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(sysscan)",
+          "old_line_content": "",
+          "new_line_content": "\tpfree(sysscan);",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(tup == &scan->rs_ctup)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tAssert(tup == &scan->rs_ctup);",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": null,
+          "new_api": "BufferIsValid",
+          "old_text": null,
+          "new_text": "BufferIsValid(scan->rs_cbuf)",
+          "old_line_content": "",
+          "new_line_content": "\t\tAssert(BufferIsValid(scan->rs_cbuf));",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "LockBuffer",
+          "old_text": null,
+          "new_text": "LockBuffer(scan->rs_cbuf, BUFFER_LOCK_SHARE)",
+          "old_line_content": " * systable_endscan --- close scan, release resources",
+          "new_line_content": "\t\tLockBuffer(scan->rs_cbuf, BUFFER_LOCK_SHARE);",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": null,
+          "new_api": "HeapTupleSatisfiesVisibility",
+          "old_text": null,
+          "new_text": "HeapTupleSatisfiesVisibility(tup, scan->rs_snapshot,\n\t\t\t\t\t\t\t\t\t\t\t  scan->rs_cbuf)",
+          "old_line_content": " *",
+          "new_line_content": "\t\tresult = HeapTupleSatisfiesVisibility(tup, scan->rs_snapshot,",
+          "content_same": false
+        },
+        {
+          "line": 382,
+          "old_api": null,
+          "new_api": "LockBuffer",
+          "old_text": null,
+          "new_text": "LockBuffer(scan->rs_cbuf, BUFFER_LOCK_UNLOCK)",
+          "old_line_content": " */",
+          "new_line_content": "\t\tLockBuffer(scan->rs_cbuf, BUFFER_LOCK_UNLOCK);",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 388,
+          "old_api": "index_endscan",
+          "new_api": null,
+          "old_text": "index_endscan(sysscan->iscan)",
+          "new_text": null,
+          "old_line_content": "\t\tindex_endscan(sysscan->iscan);",
+          "new_line_content": " * systable_endscan --- close scan, release resources",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": "index_close",
+          "new_api": null,
+          "old_text": "index_close(sysscan->irel, AccessShareLock)",
+          "new_text": null,
+          "old_line_content": "\t\tindex_close(sysscan->irel, AccessShareLock);",
+          "new_line_content": " *",
+          "content_same": false
+        },
+        {
+          "line": 392,
+          "old_api": "heap_endscan",
+          "new_api": null,
+          "old_text": "heap_endscan(sysscan->scan)",
+          "new_text": null,
+          "old_line_content": "\t\theap_endscan(sysscan->scan);",
+          "new_line_content": "void",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(sysscan)",
+          "new_text": null,
+          "old_line_content": "\tpfree(sysscan);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 296,
+          "old_api": "heap_beginscan",
+          "new_api": null,
+          "old_text": "heap_beginscan(heapRelation, snapshot, nkeys, key)",
+          "new_text": null,
+          "old_line_content": "\t\tsysscan->scan = heap_beginscan(heapRelation, snapshot, nkeys, key);",
+          "new_line_content": "\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": "RelationGetRelid",
+          "new_api": null,
+          "old_text": "RelationGetRelid(indexRelation)",
+          "new_text": null,
+          "old_line_content": "\tif (ReindexIsProcessingIndex(RelationGetRelid(indexRelation)))",
+          "new_line_content": "systable_beginscan_ordered(Relation heapRelation,",
+          "content_same": false
+        },
+        {
+          "line": 425,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"cannot do ordered scan on index \\\"%s\\\", because it is being reindexed\",\n\t\t\t RelationGetRelationName(indexRelation))",
+          "new_text": null,
+          "old_line_content": "\t\telog(ERROR, \"cannot do ordered scan on index \\\"%s\\\", because it is being reindexed\",",
+          "new_line_content": "\t\t\t\t\t\t   Relation indexRelation,",
+          "content_same": false
+        },
+        {
+          "line": 426,
+          "old_api": "RelationGetRelationName",
+          "new_api": null,
+          "old_text": "RelationGetRelationName(indexRelation)",
+          "new_text": null,
+          "old_line_content": "\t\t\t RelationGetRelationName(indexRelation));",
+          "new_line_content": "\t\t\t\t\t\t   Snapshot snapshot,",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(WARNING, \"using index \\\"%s\\\" despite IgnoreSystemIndexes\",\n\t\t\t RelationGetRelationName(indexRelation))",
+          "new_text": null,
+          "old_line_content": "\t\telog(WARNING, \"using index \\\"%s\\\" despite IgnoreSystemIndexes\",",
+          "new_line_content": "\tSysScanDesc sysscan;",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "RelationGetRelationName",
+          "new_api": null,
+          "old_text": "RelationGetRelationName(indexRelation)",
+          "new_text": null,
+          "old_line_content": "\t\t\t RelationGetRelationName(indexRelation));",
+          "new_line_content": "\tint\t\t\ti;",
+          "content_same": false
+        },
+        {
+          "line": 432,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(sizeof(SysScanDescData))",
+          "new_text": null,
+          "old_line_content": "\tsysscan = (SysScanDesc) palloc(sizeof(SysScanDescData));",
+          "new_line_content": "\t/* REINDEX can probably be a hard error here ... */",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "index_getnext",
+          "new_api": null,
+          "old_text": "index_getnext(sysscan->iscan, ForwardScanDirection)",
+          "new_text": null,
+          "old_line_content": "\t\thtup = index_getnext(sysscan->iscan, ForwardScanDirection);",
+          "new_line_content": " * next getnext() or endscan() call.",
+          "content_same": false
+        },
+        {
+          "line": 451,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"column is not in index\")",
+          "new_text": null,
+          "old_line_content": "\t\t\telog(ERROR, \"column is not in index\");",
+          "new_line_content": "\t\tfor (j = 0; j < indexRelation->rd_index->indnatts; j++)",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": "index_beginscan",
+          "new_api": null,
+          "old_text": "index_beginscan(heapRelation, indexRelation,\n\t\t\t\t\t\t\t\t\t snapshot, nkeys, 0)",
+          "new_text": null,
+          "old_line_content": "\tsysscan->iscan = index_beginscan(heapRelation, indexRelation,",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 456,
+          "old_api": "index_rescan",
+          "new_api": null,
+          "old_text": "index_rescan(sysscan->iscan, key, nkeys, NULL, 0)",
+          "new_text": null,
+          "old_line_content": "\tindex_rescan(sysscan->iscan, key, nkeys, NULL, 0);",
+          "new_line_content": "\t\t\t\tbreak;",
+          "content_same": false
+        },
+        {
+          "line": 329,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"system catalog scans with lossy index conditions are not implemented\")",
+          "new_text": null,
+          "old_line_content": "\t\t\telog(ERROR, \"system catalog scans with lossy index conditions are not implemented\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "heap_getnext",
+          "new_api": null,
+          "old_text": "heap_getnext(sysscan->scan, ForwardScanDirection)",
+          "new_text": null,
+          "old_line_content": "\t\thtup = heap_getnext(sysscan->scan, ForwardScanDirection);",
+          "new_line_content": "\t\t * system catalog scan.  It could be done here, using the scan keys to",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(sysscan->irel)",
+          "new_text": null,
+          "old_line_content": "\tAssert(sysscan->irel);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": "index_getnext",
+          "new_api": null,
+          "old_text": "index_getnext(sysscan->iscan, direction)",
+          "new_text": null,
+          "old_line_content": "\thtup = index_getnext(sysscan->iscan, direction);",
+          "new_line_content": "/*",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"system catalog scans with lossy index conditions are not implemented\")",
+          "new_text": null,
+          "old_line_content": "\t\telog(ERROR, \"system catalog scans with lossy index conditions are not implemented\");",
+          "new_line_content": "HeapTuple",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(tup == &scan->xs_ctup)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(tup == &scan->xs_ctup);",
+          "new_line_content": "bool",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": "BufferIsValid",
+          "new_api": null,
+          "old_text": "BufferIsValid(scan->xs_cbuf)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(BufferIsValid(scan->xs_cbuf));",
+          "new_line_content": "systable_recheck_tuple(SysScanDesc sysscan, HeapTuple tup)",
+          "content_same": false
+        },
+        {
+          "line": 485,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(sysscan->irel)",
+          "new_text": null,
+          "old_line_content": "\tAssert(sysscan->irel);",
+          "new_line_content": "\treturn htup;",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "LockBuffer",
+          "new_api": null,
+          "old_text": "LockBuffer(scan->xs_cbuf, BUFFER_LOCK_SHARE)",
+          "new_text": null,
+          "old_line_content": "\t\tLockBuffer(scan->xs_cbuf, BUFFER_LOCK_SHARE);",
+          "new_line_content": "\tbool\t\tresult;",
+          "content_same": false
+        },
+        {
+          "line": 359,
+          "old_api": "HeapTupleSatisfiesVisibility",
+          "new_api": null,
+          "old_text": "HeapTupleSatisfiesVisibility(tup, scan->xs_snapshot,\n\t\t\t\t\t\t\t\t\t\t\t  scan->xs_cbuf)",
+          "new_text": null,
+          "old_line_content": "\t\tresult = HeapTupleSatisfiesVisibility(tup, scan->xs_snapshot,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 486,
+          "old_api": "index_endscan",
+          "new_api": null,
+          "old_text": "index_endscan(sysscan->iscan)",
+          "new_text": null,
+          "old_line_content": "\tindex_endscan(sysscan->iscan);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 361,
+          "old_api": "LockBuffer",
+          "new_api": null,
+          "old_text": "LockBuffer(scan->xs_cbuf, BUFFER_LOCK_UNLOCK)",
+          "new_text": null,
+          "old_line_content": "\t\tLockBuffer(scan->xs_cbuf, BUFFER_LOCK_UNLOCK);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(sysscan)",
+          "new_text": null,
+          "old_line_content": "\tpfree(sysscan);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 371,
+          "old_api": "HeapTupleSatisfiesVisibility",
+          "new_api": null,
+          "old_text": "HeapTupleSatisfiesVisibility(tup, scan->rs_snapshot,\n\t\t\t\t\t\t\t\t\t\t\t  scan->rs_cbuf)",
+          "new_text": null,
+          "old_line_content": "\t\tresult = HeapTupleSatisfiesVisibility(tup, scan->rs_snapshot,",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": "LockBuffer",
+          "new_api": null,
+          "old_text": "LockBuffer(scan->rs_cbuf, BUFFER_LOCK_UNLOCK)",
+          "new_text": null,
+          "old_line_content": "\t\tLockBuffer(scan->rs_cbuf, BUFFER_LOCK_UNLOCK);",
+          "new_line_content": "\t{",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 2,
+      "total_additions": 30,
+      "total_deletions": 30,
+      "total_api_changes": 62
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 10,
+        "api_related_lines": 62,
+        "non_api_lines": 8,
+        "non_api_line_numbers": [
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          304,
+          305
+        ]
+      }
+    },
+    "api_calls_before": 59,
+    "api_calls_after": 59,
+    "diff_info": {
+      "added_lines": 10,
+      "removed_lines": 1,
+      "total_diff_lines": 23
+    }
+  }
+}

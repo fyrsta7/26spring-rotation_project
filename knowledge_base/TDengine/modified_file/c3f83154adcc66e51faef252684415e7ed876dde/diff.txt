@@ -1,0 +1,32 @@
+diff --git a/src/util/src/tref.c b/src/util/src/tref.c
+index b32680efc4..5c7bdec01e 100644
+--- a/src/util/src/tref.c
++++ b/src/util/src/tref.c
+@@ -313,6 +313,11 @@ void *taosIterateRef(int rsetId, int64_t rid) {
+ 
+       // rid is there
+       pNode = pNode->next;
++      // check first place
++      while (pNode) {
++        if (!pNode->removed) break;
++        pNode = pNode->next;
++      }
+       if (pNode == NULL) {
+         taosUnlockList(pSet->lockedBy+hash);
+         hash++;
+@@ -323,7 +328,14 @@ void *taosIterateRef(int rsetId, int64_t rid) {
+       for (; hash < pSet->max; ++hash) {
+         taosLockList(pSet->lockedBy+hash);
+         pNode = pSet->nodeList[hash];
+-        if (pNode) break;
++        if (pNode) {
++          // check first place
++          while (pNode) {
++            if (!pNode->removed) break;
++            pNode = pNode->next;
++          }
++          if (pNode) break;
++        }
+         taosUnlockList(pSet->lockedBy+hash);
+       }
+     }

@@ -1,0 +1,1939 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/340052a06da93c32a78d36bcede0ca9f3cf43553",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/340052a06da93c32a78d36bcede0ca9f3cf43553/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/340052a06da93c32a78d36bcede0ca9f3cf43553/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/340052a06da93c32a78d36bcede0ca9f3cf43553/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 679,
+          "old_api": "data",
+          "new_api": "reserve",
+          "old_text": "tasks.data()",
+          "new_text": "data.reserve(thread_count)",
+          "old_line_content": "  cpu_backend_threadpool::Execute(tasks.size(), tasks.data(),",
+          "new_line_content": "  data.reserve(thread_count);",
+          "content_same": false
+        },
+        {
+          "line": 684,
+          "old_api": "reducer",
+          "new_api": "back",
+          "old_text": "reducer(output_data[0], data[i].output)",
+          "new_text": "data.back()",
+          "old_line_content": "    output_data[0] = reducer(output_data[0], data[i].output);",
+          "new_line_content": "    tasks.emplace_back(ReduceWorkerTask<T>(&data.back(), start, end));",
+          "content_same": false
+        },
+        {
+          "line": 693,
+          "old_api": "NumElements",
+          "new_api": "reducer",
+          "old_text": "NumElements(op_context->axis)",
+          "new_text": "reducer(output_data[0], data[i].output)",
+          "old_line_content": "  int64_t num_axis = NumElements(op_context->axis);",
+          "new_line_content": "    output_data[0] = reducer(output_data[0], data[i].output);",
+          "content_same": false
+        },
+        {
+          "line": 702,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": "NumElements",
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                      ResizeTempAxis(context, op_context, resolved_axis))",
+          "new_text": "NumElements(op_context->axis)",
+          "old_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "  int64_t num_axis = NumElements(op_context->axis);",
+          "content_same": false
+        },
+        {
+          "line": 704,
+          "old_api": "ResizeOutputTensor",
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": "ResizeOutputTensor(context, op_context)",
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "old_line_content": "    TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, op_context));",
+          "new_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 710,
+          "old_api": "TF_LITE_ENSURE_EQ",
+          "new_api": "IsDynamicTensor",
+          "old_text": "TF_LITE_ENSURE_EQ(context, input->params.scale,\n                      op_context->output->params.scale)",
+          "new_text": "IsDynamicTensor(op_context->output)",
+          "old_line_content": "    TF_LITE_ENSURE_EQ(context, input->params.scale,",
+          "new_line_content": "  if (IsDynamicTensor(op_context->output)) {",
+          "content_same": false
+        },
+        {
+          "line": 712,
+          "old_api": "TF_LITE_ENSURE_EQ",
+          "new_api": "ResizeTempAxis",
+          "old_text": "TF_LITE_ENSURE_EQ(context, input->params.zero_point,\n                      op_context->output->params.zero_point)",
+          "new_text": "ResizeTempAxis(context, op_context, resolved_axis)",
+          "old_line_content": "    TF_LITE_ENSURE_EQ(context, input->params.zero_point,",
+          "new_line_content": "                      ResizeTempAxis(context, op_context, resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 721,
+          "old_api": "IsReduceAllDims",
+          "new_api": "TF_LITE_ENSURE_EQ",
+          "old_text": "IsReduceAllDims(resolved_axis, num_resolved_axis, input->dims->size)",
+          "new_text": "TF_LITE_ENSURE_EQ(context, input->params.zero_point,\n                      op_context->output->params.zero_point)",
+          "old_line_content": "  if (IsReduceAllDims(resolved_axis, num_resolved_axis, input->dims->size)) {",
+          "new_line_content": "    TF_LITE_ENSURE_EQ(context, input->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 727,
+          "old_api": "TF_LITE_ENSURE",
+          "new_api": "GetTensorData<int>(resolved_axis)",
+          "old_text": "TF_LITE_ENSURE(\n      context,\n      reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer))",
+          "new_text": "GetTensorData<int>(resolved_axis)",
+          "old_line_content": "  TF_LITE_ENSURE(",
+          "new_line_content": "          GetTensorData<int>(resolved_axis), &num_resolved_axis)) {",
+          "content_same": false
+        },
+        {
+          "line": 730,
+          "old_api": "GetTensorData<T>(input)",
+          "new_api": "IsReduceAllDims",
+          "old_text": "GetTensorData<T>(input)",
+          "new_text": "IsReduceAllDims(resolved_axis, num_resolved_axis, input->dims->size)",
+          "old_line_content": "          GetTensorData<T>(input), input->dims->data, input->dims->size,",
+          "new_line_content": "  if (IsReduceAllDims(resolved_axis, num_resolved_axis, input->dims->size)) {",
+          "content_same": false
+        },
+        {
+          "line": 731,
+          "old_api": "GetTensorData<T>(op_context->output)",
+          "new_api": "GetTensorData<T>(input)",
+          "old_text": "GetTensorData<T>(op_context->output)",
+          "new_text": "GetTensorData<T>(input)",
+          "old_line_content": "          GetTensorData<T>(op_context->output), op_context->output->dims->data,",
+          "new_line_content": "    ReduceAllDims(GetTensorData<T>(input), input->dims->data, input->dims->size,",
+          "content_same": false
+        },
+        {
+          "line": 732,
+          "old_api": "GetTensorData<int>(op_context->axis)",
+          "new_api": "GetTensorData<T>(op_context->output)",
+          "old_text": "GetTensorData<int>(op_context->axis)",
+          "new_text": "GetTensorData<T>(op_context->output)",
+          "old_line_content": "          op_context->output->dims->size, GetTensorData<int>(op_context->axis),",
+          "new_line_content": "                  GetTensorData<T>(op_context->output), init_value, reducer,",
+          "content_same": false
+        },
+        {
+          "line": 764,
+          "old_api": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::lowest(),\n                          [](const T current, const T in) -> T {\n                            return (in > current) ? in : current;\n                          })",
+          "new_api": "static_cast<T>(0)",
+          "old_text": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::lowest(),\n                          [](const T current, const T in) -> T {\n                            return (in > current) ? in : current;\n                          })",
+          "new_text": "static_cast<T>(0)",
+          "old_line_content": "      return EvalLogic<T>(context, node, op_context,",
+          "new_line_content": "          context, node, op_context, static_cast<T>(0),",
+          "content_same": false
+        },
+        {
+          "line": 821,
+          "old_api": "EvalType<uint8_t>(context, node, &op_context, reduce_type)",
+          "new_api": "EvalType<float>(context, node, &op_context, reduce_type)",
+          "old_text": "EvalType<uint8_t>(context, node, &op_context, reduce_type)",
+          "new_text": "EvalType<float>(context, node, &op_context, reduce_type)",
+          "old_line_content": "      return EvalType<uint8_t>(context, node, &op_context, reduce_type);",
+          "new_line_content": "      return EvalType<float>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 824,
+          "old_api": "EvalType<int8_t>(context, node, &op_context, reduce_type)",
+          "new_api": "EvalType<int>(context, node, &op_context, reduce_type)",
+          "old_text": "EvalType<int8_t>(context, node, &op_context, reduce_type)",
+          "new_text": "EvalType<int>(context, node, &op_context, reduce_type)",
+          "old_line_content": "      return EvalType<int8_t>(context, node, &op_context, reduce_type);",
+          "new_line_content": "      return EvalType<int>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 827,
+          "old_api": "EvalType<int16_t>(context, node, &op_context, reduce_type)",
+          "new_api": "EvalType<int64_t>(context, node, &op_context, reduce_type)",
+          "old_text": "EvalType<int16_t>(context, node, &op_context, reduce_type)",
+          "new_text": "EvalType<int64_t>(context, node, &op_context, reduce_type)",
+          "old_line_content": "      return EvalType<int16_t>(context, node, &op_context, reduce_type);",
+          "new_line_content": "      return EvalType<int64_t>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 830,
+          "old_api": "EvalType<bool>(context, node, &op_context, reduce_type)",
+          "new_api": "EvalType<uint8_t>(context, node, &op_context, reduce_type)",
+          "old_text": "EvalType<bool>(context, node, &op_context, reduce_type)",
+          "new_text": "EvalType<uint8_t>(context, node, &op_context, reduce_type)",
+          "old_line_content": "      return EvalType<bool>(context, node, &op_context, reduce_type);",
+          "new_line_content": "      return EvalType<uint8_t>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 859,
+          "old_api": "GetTemporarySafe",
+          "new_api": "NumElements",
+          "old_text": "GetTemporarySafe(context, node, /*index=*/2, &temp_sum)",
+          "new_text": "NumElements(op_context.axis)",
+          "old_line_content": "                      GetTemporarySafe(context, node, /*index=*/2, &temp_sum));",
+          "new_line_content": "    int num_axis = static_cast<int>(NumElements(op_context.axis));",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": "IsDynamicTensor",
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": "IsDynamicTensor(op_context.output)",
+          "new_text": "TF_LITE_ENSURE_OK(\n        context, GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "old_line_content": "    if (IsDynamicTensor(op_context.output)) {",
+          "new_line_content": "    TF_LITE_ENSURE_OK(",
+          "content_same": false
+        },
+        {
+          "line": 862,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": "GetTemporarySafe",
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                        ResizeTempAxis(context, &op_context, resolved_axis))",
+          "new_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "old_line_content": "      TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "        context, GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "content_same": false
+        },
+        {
+          "line": 864,
+          "old_api": "ResizeOutputTensor",
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": "ResizeOutputTensor(context, &op_context)",
+          "new_text": "TF_LITE_ENSURE_OK(\n        context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "old_line_content": "      TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, &op_context));",
+          "new_line_content": "    TF_LITE_ENSURE_OK(",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": "GetTemporarySafe",
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                        ResizeTempAccum(context, &op_context, temp_sum))",
+          "new_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "old_line_content": "      TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "        context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 870,
+          "old_api": "TF_LITE_ENSURE",
+          "new_api": "IsDynamicTensor",
+          "old_text": "TF_LITE_ENSURE(\n          context,\n          reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true))",
+          "new_text": "IsDynamicTensor(op_context.output)",
+          "old_line_content": "      TF_LITE_ENSURE(",
+          "new_line_content": "    if (IsDynamicTensor(op_context.output)) {",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "new_api": "ResizeTempAxis",
+          "old_text": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "new_text": "ResizeTempAxis(context, &op_context, resolved_axis)",
+          "old_line_content": "          reference_ops::QuantizedMeanOrSum<>(",
+          "new_line_content": "                        ResizeTempAxis(context, &op_context, resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": "GetTensorData<uint8_t>(op_context.input)",
+          "new_api": "ResizeOutputTensor",
+          "old_text": "GetTensorData<uint8_t>(op_context.input)",
+          "new_text": "ResizeOutputTensor(context, &op_context)",
+          "old_line_content": "              GetTensorData<uint8_t>(op_context.input),",
+          "new_line_content": "      TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, &op_context));",
+          "content_same": false
+        },
+        {
+          "line": 881,
+          "old_api": "GetTensorData<int>(op_context.axis)",
+          "new_api": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "old_text": "GetTensorData<int>(op_context.axis)",
+          "new_text": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "old_line_content": "              GetTensorData<int>(op_context.axis), num_axis,",
+          "new_line_content": "          reference_ops::QuantizedMeanOrSum<>(",
+          "content_same": false
+        },
+        {
+          "line": 882,
+          "old_api": "GetTensorData<int>(temp_index)",
+          "new_api": "GetTensorData<uint8_t>(op_context.input)",
+          "old_text": "GetTensorData<int>(temp_index)",
+          "new_text": "GetTensorData<uint8_t>(op_context.input)",
+          "old_line_content": "              op_context.params->keep_dims, GetTensorData<int>(temp_index),",
+          "new_line_content": "              GetTensorData<uint8_t>(op_context.input),",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": "GetTensorData<int8_t>(op_context.input)",
+          "new_api": "GetTensorData<int>(op_context.axis)",
+          "old_text": "GetTensorData<int8_t>(op_context.input)",
+          "new_text": "GetTensorData<int>(op_context.axis)",
+          "old_line_content": "              GetTensorData<int8_t>(op_context.input),",
+          "new_line_content": "              GetTensorData<int>(op_context.axis), num_axis,",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": "GetTensorData<int>(op_context.axis)",
+          "new_api": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "old_text": "GetTensorData<int>(op_context.axis)",
+          "new_text": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "old_line_content": "              GetTensorData<int>(op_context.axis), num_axis,",
+          "new_line_content": "          reference_ops::QuantizedMeanOrSum<>(",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": "GetTensorData<int>(temp_index)",
+          "new_api": "GetTensorData<int8_t>(op_context.input)",
+          "old_text": "GetTensorData<int>(temp_index)",
+          "new_text": "GetTensorData<int8_t>(op_context.input)",
+          "old_line_content": "              op_context.params->keep_dims, GetTensorData<int>(temp_index),",
+          "new_line_content": "              GetTensorData<int8_t>(op_context.input),",
+          "content_same": false
+        },
+        {
+          "line": 913,
+          "old_api": "reinterpret_cast<OpData*>(node->user_data)",
+          "new_api": "EvalGeneric<kReference, kSum>(context, node)",
+          "old_text": "reinterpret_cast<OpData*>(node->user_data)",
+          "new_text": "EvalGeneric<kReference, kSum>(context, node)",
+          "old_line_content": "  OpData* data = reinterpret_cast<OpData*>(node->user_data);",
+          "new_line_content": "    return EvalGeneric<kReference, kSum>(context, node);",
+          "content_same": false
+        },
+        {
+          "line": 924,
+          "old_api": "GetTemporarySafe",
+          "new_api": "NumElements",
+          "old_text": "GetTemporarySafe(context, node, /*index=*/2, &temp_prod)",
+          "new_text": "NumElements(op_context->axis)",
+          "old_line_content": "                    GetTemporarySafe(context, node, /*index=*/2, &temp_prod));",
+          "new_line_content": "  const int64_t num_axis = NumElements(op_context->axis);",
+          "content_same": false
+        },
+        {
+          "line": 944,
+          "old_api": "TF_LITE_ENSURE",
+          "new_api": "IsDynamicTensor",
+          "old_text": "TF_LITE_ENSURE(context, output_size != 0)",
+          "new_text": "IsDynamicTensor(output)",
+          "old_line_content": "    TF_LITE_ENSURE(context, output_size != 0);",
+          "new_line_content": "  if (IsDynamicTensor(output)) {",
+          "content_same": false
+        },
+        {
+          "line": 947,
+          "old_api": "GetQuantProdScaling",
+          "new_api": "ResizeOutputTensor",
+          "old_text": "GetQuantProdScaling(\n        static_cast<double>(input->params.scale),\n        static_cast<double>(output->params.scale), reduced_axis_size)",
+          "new_text": "ResizeOutputTensor(context, op_context)",
+          "old_line_content": "    const double scaling = GetQuantProdScaling(",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, op_context));",
+          "content_same": false
+        },
+        {
+          "line": 948,
+          "old_api": "static_cast<double>(input->params.scale)",
+          "new_api": "ResizeTempAccum",
+          "old_text": "static_cast<double>(input->params.scale)",
+          "new_text": "ResizeTempAccum(context, op_context, temp_prod)",
+          "old_line_content": "        static_cast<double>(input->params.scale),",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context, ResizeTempAccum(context, op_context, temp_prod));",
+          "content_same": false
+        },
+        {
+          "line": 950,
+          "old_api": "QuantizeMultiplier",
+          "new_api": "FlatSize",
+          "old_text": "QuantizeMultiplier(scaling, &data->multiplier, &data->shift)",
+          "new_text": "GetTensorShape(input).FlatSize()",
+          "old_line_content": "    QuantizeMultiplier(scaling, &data->multiplier, &data->shift);",
+          "new_line_content": "    const int input_size = GetTensorShape(input).FlatSize();",
+          "content_same": false
+        },
+        {
+          "line": 956,
+          "old_api": "GetTensorData<T>(input)",
+          "new_api": "GetQuantProdScaling",
+          "old_text": "GetTensorData<T>(input)",
+          "new_text": "GetQuantProdScaling(\n        static_cast<double>(input->params.scale),\n        static_cast<double>(output->params.scale), reduced_axis_size)",
+          "old_line_content": "          GetTensorData<T>(input), input->params.zero_point,",
+          "new_line_content": "    const double scaling = GetQuantProdScaling(",
+          "content_same": false
+        },
+        {
+          "line": 957,
+          "old_api": "GetTensorData<T>(output)",
+          "new_api": "static_cast<double>(input->params.scale)",
+          "old_text": "GetTensorData<T>(output)",
+          "new_text": "static_cast<double>(input->params.scale)",
+          "old_line_content": "          GetTensorShape(input), GetTensorData<T>(output),",
+          "new_line_content": "        static_cast<double>(input->params.scale),",
+          "content_same": false
+        },
+        {
+          "line": 958,
+          "old_api": "GetTensorShape",
+          "new_api": "static_cast<double>(output->params.scale)",
+          "old_text": "GetTensorShape(output)",
+          "new_text": "static_cast<double>(output->params.scale)",
+          "old_line_content": "          output->params.zero_point, GetTensorShape(output),",
+          "new_line_content": "        static_cast<double>(output->params.scale), reduced_axis_size);",
+          "content_same": false
+        },
+        {
+          "line": 959,
+          "old_api": "GetTensorData<int>(op_context->axis)",
+          "new_api": "QuantizeMultiplier",
+          "old_text": "GetTensorData<int>(op_context->axis)",
+          "new_text": "QuantizeMultiplier(scaling, &data->multiplier, &data->shift)",
+          "old_line_content": "          GetTensorData<int>(op_context->axis), num_axis,",
+          "new_line_content": "    QuantizeMultiplier(scaling, &data->multiplier, &data->shift);",
+          "content_same": false
+        },
+        {
+          "line": 983,
+          "old_api": "EvalGeneric<reduce::kReference, reduce::kProd>(context, node)",
+          "new_api": "EvalQuantizedProd<int8_t>(context, node, &op_context)",
+          "old_text": "EvalGeneric<reduce::kReference, reduce::kProd>(context, node)",
+          "new_text": "EvalQuantizedProd<int8_t>(context, node, &op_context)",
+          "old_line_content": "    return EvalGeneric<reduce::kReference, reduce::kProd>(context, node);",
+          "new_line_content": "      return EvalQuantizedProd<int8_t>(context, node, &op_context);",
+          "content_same": false
+        },
+        {
+          "line": 1056,
+          "old_api": "Register_REDUCE_MIN_REF",
+          "new_api": "Register_MEAN_REF",
+          "old_text": "Register_REDUCE_MIN_REF()",
+          "new_text": "Register_MEAN_REF()",
+          "old_line_content": "TfLiteRegistration* Register_REDUCE_MIN() { return Register_REDUCE_MIN_REF(); }",
+          "new_line_content": "  return Register_MEAN_REF();",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 768,
+          "old_api": null,
+          "new_api": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(1),\n          [](const T current, const T in) -> T { return in * current; })",
+          "old_text": null,
+          "new_text": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(1),\n          [](const T current, const T in) -> T { return in * current; })",
+          "old_line_content": "                          });",
+          "new_line_content": "      return EvalLogic<T>(",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": null,
+          "new_api": "static_cast<T>(1)",
+          "old_text": null,
+          "new_text": "static_cast<T>(1)",
+          "old_line_content": "      break;",
+          "new_line_content": "          context, node, op_context, static_cast<T>(1),",
+          "content_same": false
+        },
+        {
+          "line": 896,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE(\n          context,\n          reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true))",
+          "old_line_content": "              op_context.output->params.scale, op_context.output->dims->data,",
+          "new_line_content": "      TF_LITE_ENSURE(",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(temp_index)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(temp_index)",
+          "old_line_content": "              op_context.input->params.zero_point,",
+          "new_line_content": "              op_context.params->keep_dims, GetTensorData<int>(temp_index),",
+          "content_same": false
+        },
+        {
+          "line": 773,
+          "old_api": null,
+          "new_api": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::lowest(),\n                          [](const T current, const T in) -> T {\n                            return (in > current) ? in : current;\n                          })",
+          "old_text": null,
+          "new_text": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::lowest(),\n                          [](const T current, const T in) -> T {\n                            return (in > current) ? in : current;\n                          })",
+          "old_line_content": "                          [](const T current, const T in) -> T {",
+          "new_line_content": "      return EvalLogic<T>(context, node, op_context,",
+          "content_same": false
+        },
+        {
+          "line": 774,
+          "old_api": null,
+          "new_api": "std::numeric_limits<T>::lowest()",
+          "old_text": null,
+          "new_text": "std::numeric_limits<T>::lowest()",
+          "old_line_content": "                            return (in < current) ? in : current;",
+          "new_line_content": "                          std::numeric_limits<T>::lowest(),",
+          "content_same": false
+        },
+        {
+          "line": 903,
+          "old_api": null,
+          "new_api": "GetTensorData<int8_t>(op_context.output)",
+          "old_text": null,
+          "new_text": "GetTensorData<int8_t>(op_context.output)",
+          "old_line_content": "  } else {",
+          "new_line_content": "              GetTensorData<int8_t>(op_context.output),",
+          "content_same": false
+        },
+        {
+          "line": 907,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(op_context.axis)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(op_context.axis)",
+          "old_line_content": "  return kTfLiteOk;",
+          "new_line_content": "              GetTensorData<int>(op_context.axis), num_axis,",
+          "content_same": false
+        },
+        {
+          "line": 780,
+          "old_api": null,
+          "new_api": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::max(),\n                          [](const T current, const T in) -> T {\n                            return (in < current) ? in : current;\n                          })",
+          "old_text": null,
+          "new_text": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::max(),\n                          [](const T current, const T in) -> T {\n                            return (in < current) ? in : current;\n                          })",
+          "old_line_content": "}",
+          "new_line_content": "      return EvalLogic<T>(context, node, op_context,",
+          "content_same": false
+        },
+        {
+          "line": 781,
+          "old_api": null,
+          "new_api": "std::numeric_limits<T>::max()",
+          "old_text": null,
+          "new_text": "std::numeric_limits<T>::max()",
+          "old_line_content": "",
+          "new_line_content": "                          std::numeric_limits<T>::max(),",
+          "content_same": false
+        },
+        {
+          "line": 908,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(temp_index)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(temp_index)",
+          "old_line_content": "}",
+          "new_line_content": "              op_context.params->keep_dims, GetTensorData<int>(temp_index),",
+          "content_same": false
+        },
+        {
+          "line": 909,
+          "old_api": null,
+          "new_api": "GetTensorData<int32>(temp_sum)",
+          "old_text": null,
+          "new_text": "GetTensorData<int32>(temp_sum)",
+          "old_line_content": "",
+          "new_line_content": "              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),",
+          "content_same": false
+        },
+        {
+          "line": 922,
+          "old_api": null,
+          "new_api": "reinterpret_cast<OpData*>(node->user_data)",
+          "old_text": null,
+          "new_text": "reinterpret_cast<OpData*>(node->user_data)",
+          "old_line_content": "  TfLiteTensor* temp_prod;",
+          "new_line_content": "  OpData* data = reinterpret_cast<OpData*>(node->user_data);",
+          "content_same": false
+        },
+        {
+          "line": 797,
+          "old_api": null,
+          "new_api": "EvalLogic<bool>(context, node, op_context, false,\n                             [](const bool current, const bool in) -> bool {\n                               return in || current;\n                             })",
+          "old_text": null,
+          "new_text": "EvalLogic<bool>(context, node, op_context, false,\n                             [](const bool current, const bool in) -> bool {\n                               return in || current;\n                             })",
+          "old_line_content": "    default:",
+          "new_line_content": "      return EvalLogic<bool>(context, node, op_context, false,",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": null,
+          "new_api": "Register_MEAN_OPT",
+          "old_text": null,
+          "new_text": "Register_MEAN_OPT()",
+          "old_line_content": "}",
+          "new_line_content": "  return Register_MEAN_OPT();",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "old_line_content": "  const TfLiteTensor* input = op_context->input;",
+          "new_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": null,
+          "new_api": "reducer",
+          "old_text": null,
+          "new_text": "reducer(output_data[0], input_data[i])",
+          "old_line_content": "  for (int i = 0; i < thread_count; ++i) {",
+          "new_line_content": "      output_data[0] = reducer(output_data[0], input_data[i]);",
+          "content_same": false
+        },
+        {
+          "line": 927,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "old_line_content": "  TfLiteTensor* output = op_context->output;",
+          "new_line_content": "                    GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "content_same": false
+        },
+        {
+          "line": 802,
+          "old_api": null,
+          "new_api": "EvalLogic<bool>(context, node, op_context, true,\n                             [](const bool current, const bool in) -> bool {\n                               return in && current;\n                             })",
+          "old_text": null,
+          "new_text": "EvalLogic<bool>(context, node, op_context, true,\n                             [](const bool current, const bool in) -> bool {\n                               return in && current;\n                             })",
+          "old_line_content": "// The entry point that handles input types and then calls template functions to",
+          "new_line_content": "      return EvalLogic<bool>(context, node, op_context, true,",
+          "content_same": false
+        },
+        {
+          "line": 929,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(\n      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "old_line_content": "  // Return early when input shape has zero dim.",
+          "new_line_content": "  TF_LITE_ENSURE_OK(",
+          "content_same": false
+        },
+        {
+          "line": 1060,
+          "old_api": null,
+          "new_api": "Register_SUM_REF",
+          "old_text": null,
+          "new_text": "Register_SUM_REF()",
+          "old_line_content": "}  // namespace builtin",
+          "new_line_content": "TfLiteRegistration* Register_SUM() { return Register_SUM_REF(); }",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "old_line_content": "  for (int i = 0; i < input->dims->size; ++i) {",
+          "new_line_content": "      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "Register_REDUCE_PROD_REF",
+          "old_text": null,
+          "new_text": "Register_REDUCE_PROD_REF()",
+          "old_line_content": "}  // namespace tflite",
+          "new_line_content": "  return Register_REDUCE_PROD_REF();",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": null,
+          "new_api": "reserve",
+          "old_text": null,
+          "new_text": "tasks.reserve(thread_count)",
+          "old_line_content": "  // Run all tasks on the thread pool.",
+          "new_line_content": "  tasks.reserve(thread_count);",
+          "content_same": false
+        },
+        {
+          "line": 1064,
+          "old_api": null,
+          "new_api": "Register_REDUCE_MAX_REF",
+          "old_text": null,
+          "new_text": "Register_REDUCE_MAX_REF()",
+          "old_line_content": "",
+          "new_line_content": "TfLiteRegistration* Register_REDUCE_MAX() { return Register_REDUCE_MAX_REF(); }",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": null,
+          "new_api": "Register_REDUCE_MIN_REF",
+          "old_text": null,
+          "new_text": "Register_REDUCE_MIN_REF()",
+          "old_line_content": "",
+          "new_line_content": "TfLiteRegistration* Register_REDUCE_MIN() { return Register_REDUCE_MIN_REF(); }",
+          "content_same": false
+        },
+        {
+          "line": 1066,
+          "old_api": null,
+          "new_api": "Register_REDUCE_ANY_REF",
+          "old_text": null,
+          "new_text": "Register_REDUCE_ANY_REF()",
+          "old_line_content": "",
+          "new_line_content": "TfLiteRegistration* Register_REDUCE_ANY() { return Register_REDUCE_ANY_REF(); }",
+          "content_same": false
+        },
+        {
+          "line": 1067,
+          "old_api": null,
+          "new_api": "Register_REDUCE_ALL_REF",
+          "old_text": null,
+          "new_text": "Register_REDUCE_ALL_REF()",
+          "old_line_content": "",
+          "new_line_content": "TfLiteRegistration* Register_REDUCE_ALL() { return Register_REDUCE_ALL_REF(); }",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "data.push_back(eval_data)",
+          "old_line_content": "  output_data[0] = data[0].output;",
+          "new_line_content": "    data.push_back(eval_data);",
+          "content_same": false
+        },
+        {
+          "line": 932,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/2, &temp_prod))",
+          "old_line_content": "  }",
+          "new_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/2, &temp_prod)",
+          "old_line_content": "",
+          "new_line_content": "                    GetTemporarySafe(context, node, /*index=*/2, &temp_prod));",
+          "content_same": false
+        },
+        {
+          "line": 688,
+          "old_api": null,
+          "new_api": "data",
+          "old_text": null,
+          "new_text": "tasks.data()",
+          "old_line_content": "// The underlying logic for Reduce Sum/Prod/Max/Min/Any",
+          "new_line_content": "  cpu_backend_threadpool::Execute(tasks.size(), tasks.data(),",
+          "content_same": false
+        },
+        {
+          "line": 945,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                      ResizeTempAxis(context, op_context, resolved_axis))",
+          "old_line_content": "",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 946,
+          "old_api": null,
+          "new_api": "ResizeTempAxis",
+          "old_text": null,
+          "new_text": "ResizeTempAxis(context, op_context, resolved_axis)",
+          "old_line_content": "    const int reduced_axis_size = input_size / output_size;",
+          "new_line_content": "                      ResizeTempAxis(context, op_context, resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 692,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "data.size()",
+          "old_line_content": "                       T reducer(const T current, const T in)) {",
+          "new_line_content": "  for (int i = 1; i < data.size(); ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 951,
+          "old_api": null,
+          "new_api": "FlatSize",
+          "old_text": null,
+          "new_text": "GetTensorShape(output).FlatSize()",
+          "old_line_content": "  }",
+          "new_line_content": "    const int output_size = GetTensorShape(output).FlatSize();",
+          "content_same": false
+        },
+        {
+          "line": 952,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE(context, input_size != 0)",
+          "old_line_content": "",
+          "new_line_content": "    TF_LITE_ENSURE(context, input_size != 0);",
+          "content_same": false
+        },
+        {
+          "line": 705,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "old_line_content": "  }",
+          "new_line_content": "                    GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "content_same": false
+        },
+        {
+          "line": 833,
+          "old_api": null,
+          "new_api": "EvalType<int8_t>(context, node, &op_context, reduce_type)",
+          "old_text": null,
+          "new_text": "EvalType<int8_t>(context, node, &op_context, reduce_type)",
+          "old_line_content": "      return kTfLiteError;",
+          "new_line_content": "      return EvalType<int8_t>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 707,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(\n      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "old_line_content": "  const TfLiteTensor* input = op_context->input;",
+          "new_line_content": "  TF_LITE_ENSURE_OK(",
+          "content_same": false
+        },
+        {
+          "line": 708,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "old_line_content": "  if (input->type == kTfLiteUInt8 || input->type == kTfLiteInt8 ||",
+          "new_line_content": "      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "content_same": false
+        },
+        {
+          "line": 836,
+          "old_api": null,
+          "new_api": "EvalType<int16_t>(context, node, &op_context, reduce_type)",
+          "old_text": null,
+          "new_text": "EvalType<int16_t>(context, node, &op_context, reduce_type)",
+          "old_line_content": "",
+          "new_line_content": "      return EvalType<int16_t>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 962,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE(\n      context,\n      reference_ops::QuantizedReduceProd<T>(\n          GetTensorData<T>(input), input->params.zero_point,\n          GetTensorShape(input), GetTensorData<T>(output),\n          output->params.zero_point, GetTensorShape(output),\n          GetTensorData<int>(op_context->axis), num_axis,\n          op_context->params->keep_dims, GetTensorData<int>(temp_index),\n          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),\n          data->multiplier, data->shift))",
+          "old_line_content": "          data->multiplier, data->shift));",
+          "new_line_content": "  TF_LITE_ENSURE(",
+          "content_same": false
+        },
+        {
+          "line": 711,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                      ResizeTempAxis(context, op_context, resolved_axis))",
+          "old_line_content": "                      op_context->output->params.scale);",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 839,
+          "old_api": null,
+          "new_api": "EvalType<bool>(context, node, &op_context, reduce_type)",
+          "old_text": null,
+          "new_text": "EvalType<bool>(context, node, &op_context, reduce_type)",
+          "old_line_content": "  ruy::profiler::ScopeLabel label(\"Sum\");",
+          "new_line_content": "      return EvalType<bool>(context, node, &op_context, reduce_type);",
+          "content_same": false
+        },
+        {
+          "line": 713,
+          "old_api": null,
+          "new_api": "ResizeOutputTensor",
+          "old_text": null,
+          "new_text": "ResizeOutputTensor(context, op_context)",
+          "old_line_content": "                      op_context->output->params.zero_point);",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, op_context));",
+          "content_same": false
+        },
+        {
+          "line": 970,
+          "old_api": null,
+          "new_api": "GetTensorData<int32>(temp_prod)",
+          "old_text": null,
+          "new_text": "GetTensorData<int32>(temp_prod)",
+          "old_line_content": "  // int8/int16 inputs and EvalGeneric for non-quantized int8/int16 (and",
+          "new_line_content": "          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),",
+          "content_same": false
+        },
+        {
+          "line": 964,
+          "old_api": null,
+          "new_api": "reference_ops::QuantizedReduceProd<T>(\n          GetTensorData<T>(input), input->params.zero_point,\n          GetTensorShape(input), GetTensorData<T>(output),\n          output->params.zero_point, GetTensorShape(output),\n          GetTensorData<int>(op_context->axis), num_axis,\n          op_context->params->keep_dims, GetTensorData<int>(temp_index),\n          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),\n          data->multiplier, data->shift)",
+          "old_text": null,
+          "new_text": "reference_ops::QuantizedReduceProd<T>(\n          GetTensorData<T>(input), input->params.zero_point,\n          GetTensorShape(input), GetTensorData<T>(output),\n          output->params.zero_point, GetTensorShape(output),\n          GetTensorData<int>(op_context->axis), num_axis,\n          op_context->params->keep_dims, GetTensorData<int>(temp_index),\n          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),\n          data->multiplier, data->shift)",
+          "old_line_content": "}",
+          "new_line_content": "      reference_ops::QuantizedReduceProd<T>(",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": null,
+          "new_api": "GetTensorData<T>(input)",
+          "old_text": null,
+          "new_text": "GetTensorData<T>(input)",
+          "old_line_content": "",
+          "new_line_content": "          GetTensorData<T>(input), input->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": null,
+          "new_api": "GetTensorData<T>(output)",
+          "old_text": null,
+          "new_text": "GetTensorData<T>(output)",
+          "old_line_content": "TfLiteStatus EvalProd(TfLiteContext* context, TfLiteNode* node) {",
+          "new_line_content": "          GetTensorShape(input), GetTensorData<T>(output),",
+          "content_same": false
+        },
+        {
+          "line": 967,
+          "old_api": null,
+          "new_api": "GetTensorShape",
+          "old_text": null,
+          "new_text": "GetTensorShape(output)",
+          "old_line_content": "  OpContext op_context(context, node);",
+          "new_line_content": "          output->params.zero_point, GetTensorShape(output),",
+          "content_same": false
+        },
+        {
+          "line": 719,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_EQ",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_EQ(context, input->params.scale,\n                      op_context->output->params.scale)",
+          "old_line_content": "    return kTfLiteError;",
+          "new_line_content": "    TF_LITE_ENSURE_EQ(context, input->params.scale,",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(op_context->axis)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(op_context->axis)",
+          "old_line_content": "  // As we need to support both quantized and non-quantized int8/int16 inputs,",
+          "new_line_content": "          GetTensorData<int>(op_context->axis), num_axis,",
+          "content_same": false
+        },
+        {
+          "line": 969,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(temp_index)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(temp_index)",
+          "old_line_content": "  // we separate the evaluation between EvalQuantizedProd for quantized",
+          "new_line_content": "          op_context->params->keep_dims, GetTensorData<int>(temp_index),",
+          "content_same": false
+        },
+        {
+          "line": 725,
+          "old_api": null,
+          "new_api": "tflite::reference_ops::ResolveAxis(\n          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,\n          GetTensorData<int>(resolved_axis), &num_resolved_axis)",
+          "old_text": null,
+          "new_text": "tflite::reference_ops::ResolveAxis(\n          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,\n          GetTensorData<int>(resolved_axis), &num_resolved_axis)",
+          "old_line_content": "    return kTfLiteOk;",
+          "new_line_content": "  if (!tflite::reference_ops::ResolveAxis(",
+          "content_same": false
+        },
+        {
+          "line": 726,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(op_context->axis)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(op_context->axis)",
+          "old_line_content": "  }",
+          "new_line_content": "          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": null,
+          "new_api": "EvalQuantizedProd<int16_t>(context, node, &op_context)",
+          "old_text": null,
+          "new_text": "EvalQuantizedProd<int16_t>(context, node, &op_context)",
+          "old_line_content": "}",
+          "new_line_content": "      return EvalQuantizedProd<int16_t>(context, node, &op_context);",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": null,
+          "new_api": "TF_LITE_KERNEL_LOG",
+          "old_text": null,
+          "new_text": "TF_LITE_KERNEL_LOG(context, \"Unsupported quantized data type: %d\",\n                         op_context.input->type)",
+          "old_line_content": "}  // namespace reduce",
+          "new_line_content": "      TF_LITE_KERNEL_LOG(context, \"Unsupported quantized data type: %d\",",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE(\n      context,\n      reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer))",
+          "old_line_content": "  return kTfLiteOk;",
+          "new_line_content": "  TF_LITE_ENSURE(",
+          "content_same": false
+        },
+        {
+          "line": 992,
+          "old_api": null,
+          "new_api": "EvalGeneric<reduce::kReference, reduce::kProd>(context, node)",
+          "old_text": null,
+          "new_text": "EvalGeneric<reduce::kReference, reduce::kProd>(context, node)",
+          "old_line_content": "                                 reduce::EvalMean<reduce::kGenericOptimized>};",
+          "new_line_content": "    return EvalGeneric<reduce::kReference, reduce::kProd>(context, node);",
+          "content_same": false
+        },
+        {
+          "line": 738,
+          "old_api": null,
+          "new_api": "reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer)",
+          "old_text": null,
+          "new_text": "reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer)",
+          "old_line_content": "",
+          "new_line_content": "      reference_ops::ReduceGeneric<T>(",
+          "content_same": false
+        },
+        {
+          "line": 739,
+          "old_api": null,
+          "new_api": "GetTensorData<T>(input)",
+          "old_text": null,
+          "new_text": "GetTensorData<T>(input)",
+          "old_line_content": "enum ReduceType {",
+          "new_line_content": "          GetTensorData<T>(input), input->dims->data, input->dims->size,",
+          "content_same": false
+        },
+        {
+          "line": 740,
+          "old_api": null,
+          "new_api": "GetTensorData<T>(op_context->output)",
+          "old_text": null,
+          "new_text": "GetTensorData<T>(op_context->output)",
+          "old_line_content": "  kSum,",
+          "new_line_content": "          GetTensorData<T>(op_context->output), op_context->output->dims->data,",
+          "content_same": false
+        },
+        {
+          "line": 741,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(op_context->axis)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(op_context->axis)",
+          "old_line_content": "  kProd,",
+          "new_line_content": "          op_context->output->dims->size, GetTensorData<int>(op_context->axis),",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                      GetTemporarySafe(context, node, /*index=*/2, &temp_sum))",
+          "old_line_content": "    }",
+          "new_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": null,
+          "new_api": "GetTensorData<int>(resolved_axis)",
+          "old_text": null,
+          "new_text": "GetTensorData<int>(resolved_axis)",
+          "old_line_content": "  kMin,",
+          "new_line_content": "          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": null,
+          "new_api": "GetTemporarySafe",
+          "old_text": null,
+          "new_text": "GetTemporarySafe(context, node, /*index=*/2, &temp_sum)",
+          "old_line_content": "",
+          "new_line_content": "                      GetTemporarySafe(context, node, /*index=*/2, &temp_sum));",
+          "content_same": false
+        },
+        {
+          "line": 871,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                        ResizeTempAxis(context, &op_context, resolved_axis))",
+          "old_line_content": "          context,",
+          "new_line_content": "      TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE_OK",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE_OK(context,\n                        ResizeTempAccum(context, &op_context, temp_sum))",
+          "old_line_content": "              op_context.input->params.zero_point,",
+          "new_line_content": "      TF_LITE_ENSURE_OK(context,",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": null,
+          "new_api": "ResizeTempAccum",
+          "old_text": null,
+          "new_text": "ResizeTempAccum(context, &op_context, temp_sum)",
+          "old_line_content": "              op_context.input->params.scale, op_context.input->dims->data,",
+          "new_line_content": "                        ResizeTempAccum(context, &op_context, temp_sum));",
+          "content_same": false
+        },
+        {
+          "line": 879,
+          "old_api": null,
+          "new_api": "TF_LITE_ENSURE",
+          "old_text": null,
+          "new_text": "TF_LITE_ENSURE(\n          context,\n          reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<uint8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<uint8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true))",
+          "old_line_content": "              op_context.output->params.scale, op_context.output->dims->data,",
+          "new_line_content": "      TF_LITE_ENSURE(",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": null,
+          "new_api": "GetTensorData<uint8_t>(op_context.output)",
+          "old_text": null,
+          "new_text": "GetTensorData<uint8_t>(op_context.output)",
+          "old_line_content": "    if (input->type == kTfLiteInt8) {",
+          "new_line_content": "              GetTensorData<uint8_t>(op_context.output),",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": null,
+          "new_api": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(0),\n          [](const T current, const T in) -> T { return in + current; })",
+          "old_text": null,
+          "new_text": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(0),\n          [](const T current, const T in) -> T { return in + current; })",
+          "old_line_content": "    case kMax:",
+          "new_line_content": "      return EvalLogic<T>(",
+          "content_same": false
+        },
+        {
+          "line": 892,
+          "old_api": null,
+          "new_api": "GetTensorData<int32>(temp_sum)",
+          "old_text": null,
+          "new_text": "GetTensorData<int32>(temp_sum)",
+          "old_line_content": "              op_context.input->params.scale, op_context.input->dims->data,",
+          "new_line_content": "              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 771,
+          "old_api": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::max(),\n                          [](const T current, const T in) -> T {\n                            return (in < current) ? in : current;\n                          })",
+          "new_api": null,
+          "old_text": "EvalLogic<T>(context, node, op_context,\n                          std::numeric_limits<T>::max(),\n                          [](const T current, const T in) -> T {\n                            return (in < current) ? in : current;\n                          })",
+          "new_text": null,
+          "old_line_content": "      return EvalLogic<T>(context, node, op_context,",
+          "new_line_content": "      break;",
+          "content_same": false
+        },
+        {
+          "line": 772,
+          "old_api": "std::numeric_limits<T>::max()",
+          "new_api": null,
+          "old_text": "std::numeric_limits<T>::max()",
+          "new_text": null,
+          "old_line_content": "                          std::numeric_limits<T>::max(),",
+          "new_line_content": "    case kMax:",
+          "content_same": false
+        },
+        {
+          "line": 900,
+          "old_api": "GetTensorData<int32>(temp_sum)",
+          "new_api": null,
+          "old_text": "GetTensorData<int32>(temp_sum)",
+          "new_text": null,
+          "old_line_content": "              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),",
+          "new_line_content": "              op_context.input->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": "EvalGeneric<kReference, kSum>(context, node)",
+          "new_api": null,
+          "old_text": "EvalGeneric<kReference, kSum>(context, node)",
+          "new_text": null,
+          "old_line_content": "    return EvalGeneric<kReference, kSum>(context, node);",
+          "new_line_content": "              op_context.output->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 915,
+          "old_api": "NumElements",
+          "new_api": null,
+          "old_text": "NumElements(op_context->axis)",
+          "new_text": null,
+          "old_line_content": "  const int64_t num_axis = NumElements(op_context->axis);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 788,
+          "old_api": "EvalLogic<bool>(context, node, op_context, false,\n                             [](const bool current, const bool in) -> bool {\n                               return in || current;\n                             })",
+          "new_api": null,
+          "old_text": "EvalLogic<bool>(context, node, op_context, false,\n                             [](const bool current, const bool in) -> bool {\n                               return in || current;\n                             })",
+          "new_text": null,
+          "old_line_content": "      return EvalLogic<bool>(context, node, op_context, false,",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 1045,
+          "old_api": "Register_MEAN_OPT",
+          "new_api": null,
+          "old_text": "Register_MEAN_OPT()",
+          "new_text": null,
+          "old_line_content": "  return Register_MEAN_OPT();",
+          "new_line_content": "TfLiteRegistration* Register_REDUCE_ALL_REF() {",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "new_text": null,
+          "old_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 1047,
+          "old_api": "Register_MEAN_REF",
+          "new_api": null,
+          "old_text": "Register_MEAN_REF()",
+          "new_text": null,
+          "old_line_content": "  return Register_MEAN_REF();",
+          "new_line_content": "      reduce::Init, reduce::Free, reduce::PrepareAllOrAny,",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "new_text": null,
+          "old_line_content": "                    GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 793,
+          "old_api": "EvalLogic<bool>(context, node, op_context, true,\n                             [](const bool current, const bool in) -> bool {\n                               return in && current;\n                             })",
+          "new_api": null,
+          "old_text": "EvalLogic<bool>(context, node, op_context, true,\n                             [](const bool current, const bool in) -> bool {\n                               return in && current;\n                             })",
+          "new_text": null,
+          "old_line_content": "      return EvalLogic<bool>(context, node, op_context, true,",
+          "new_line_content": "TfLiteStatus EvalType<bool>(TfLiteContext* context, TfLiteNode* node,",
+          "content_same": false
+        },
+        {
+          "line": 920,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(\n      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "new_text": null,
+          "old_line_content": "  TF_LITE_ENSURE_OK(",
+          "new_line_content": "TfLiteStatus EvalQuantizedProd(TfLiteContext* context, TfLiteNode* node,",
+          "content_same": false
+        },
+        {
+          "line": 1051,
+          "old_api": "Register_SUM_REF",
+          "new_api": null,
+          "old_text": "Register_SUM_REF()",
+          "new_text": null,
+          "old_line_content": "TfLiteRegistration* Register_SUM() { return Register_SUM_REF(); }",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 921,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "new_text": null,
+          "old_line_content": "      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "new_line_content": "                               OpContext* op_context) {",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "reserve",
+          "new_api": null,
+          "old_text": "tasks.reserve(thread_count)",
+          "new_text": null,
+          "old_line_content": "  tasks.reserve(thread_count);",
+          "new_line_content": "  if (thread_count == 1) {",
+          "content_same": false
+        },
+        {
+          "line": 1053,
+          "old_api": "Register_REDUCE_PROD_REF",
+          "new_api": null,
+          "old_text": "Register_REDUCE_PROD_REF()",
+          "new_text": null,
+          "old_line_content": "  return Register_REDUCE_PROD_REF();",
+          "new_line_content": "#ifdef USE_NEON",
+          "content_same": false
+        },
+        {
+          "line": 670,
+          "old_api": "reserve",
+          "new_api": null,
+          "old_text": "data.reserve(thread_count)",
+          "new_text": null,
+          "old_line_content": "  data.reserve(thread_count);",
+          "new_line_content": "    output_data[0] = num_elems > 0 ? input_data[0] : init_value;",
+          "content_same": false
+        },
+        {
+          "line": 1055,
+          "old_api": "Register_REDUCE_MAX_REF",
+          "new_api": null,
+          "old_text": "Register_REDUCE_MAX_REF()",
+          "new_text": null,
+          "old_line_content": "TfLiteRegistration* Register_REDUCE_MAX() { return Register_REDUCE_MAX_REF(); }",
+          "new_line_content": "#else",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": "Register_REDUCE_ANY_REF",
+          "new_api": null,
+          "old_text": "Register_REDUCE_ANY_REF()",
+          "new_text": null,
+          "old_line_content": "TfLiteRegistration* Register_REDUCE_ANY() { return Register_REDUCE_ANY_REF(); }",
+          "new_line_content": "#endif",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": "Register_REDUCE_ALL_REF",
+          "new_api": null,
+          "old_text": "Register_REDUCE_ALL_REF()",
+          "new_text": null,
+          "old_line_content": "TfLiteRegistration* Register_REDUCE_ALL() { return Register_REDUCE_ALL_REF(); }",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 673,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "data.push_back(eval_data)",
+          "new_text": null,
+          "old_line_content": "    data.push_back(eval_data);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 675,
+          "old_api": "back",
+          "new_api": null,
+          "old_text": "data.back()",
+          "new_text": null,
+          "old_line_content": "    tasks.emplace_back(ReduceWorkerTask<T>(&data.back(), start, end));",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 923,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/2, &temp_prod))",
+          "new_text": null,
+          "old_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 935,
+          "old_api": "IsDynamicTensor",
+          "new_api": null,
+          "old_text": "IsDynamicTensor(output)",
+          "new_text": null,
+          "old_line_content": "  if (IsDynamicTensor(output)) {",
+          "new_line_content": "  const TfLiteTensor* input = op_context->input;",
+          "content_same": false
+        },
+        {
+          "line": 936,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                      ResizeTempAxis(context, op_context, resolved_axis))",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "  TfLiteTensor* output = op_context->output;",
+          "content_same": false
+        },
+        {
+          "line": 937,
+          "old_api": "ResizeTempAxis",
+          "new_api": null,
+          "old_text": "ResizeTempAxis(context, op_context, resolved_axis)",
+          "new_text": null,
+          "old_line_content": "                      ResizeTempAxis(context, op_context, resolved_axis));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 938,
+          "old_api": "ResizeOutputTensor",
+          "new_api": null,
+          "old_text": "ResizeOutputTensor(context, op_context)",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(context, ResizeOutputTensor(context, op_context));",
+          "new_line_content": "  // Return early when input shape has zero dim.",
+          "content_same": false
+        },
+        {
+          "line": 683,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "data.size()",
+          "new_text": null,
+          "old_line_content": "  for (int i = 1; i < data.size(); ++i) {",
+          "new_line_content": "    int end = start + (num_elems - start) / (thread_count - i);",
+          "content_same": false
+        },
+        {
+          "line": 812,
+          "old_api": "EvalType<float>(context, node, &op_context, reduce_type)",
+          "new_api": null,
+          "old_text": "EvalType<float>(context, node, &op_context, reduce_type)",
+          "new_text": null,
+          "old_line_content": "      return EvalType<float>(context, node, &op_context, reduce_type);",
+          "new_line_content": "// handle ReduceType.",
+          "content_same": false
+        },
+        {
+          "line": 939,
+          "old_api": "ResizeTempAccum",
+          "new_api": null,
+          "old_text": "ResizeTempAccum(context, op_context, temp_prod)",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(context, ResizeTempAccum(context, op_context, temp_prod));",
+          "new_line_content": "  for (int i = 0; i < input->dims->size; ++i) {",
+          "content_same": false
+        },
+        {
+          "line": 941,
+          "old_api": "FlatSize",
+          "new_api": null,
+          "old_text": "GetTensorShape(input).FlatSize()",
+          "new_text": null,
+          "old_line_content": "    const int input_size = GetTensorShape(input).FlatSize();",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 815,
+          "old_api": "EvalType<int>(context, node, &op_context, reduce_type)",
+          "new_api": null,
+          "old_text": "EvalType<int>(context, node, &op_context, reduce_type)",
+          "new_text": null,
+          "old_line_content": "      return EvalType<int>(context, node, &op_context, reduce_type);",
+          "new_line_content": "  if (kernel_type != kReference) {",
+          "content_same": false
+        },
+        {
+          "line": 942,
+          "old_api": "FlatSize",
+          "new_api": null,
+          "old_text": "GetTensorShape(output).FlatSize()",
+          "new_text": null,
+          "old_line_content": "    const int output_size = GetTensorShape(output).FlatSize();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 943,
+          "old_api": "TF_LITE_ENSURE",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE(context, input_size != 0)",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE(context, input_size != 0);",
+          "new_line_content": "  // Resize the output tensor if the output tensor is dynamic.",
+          "content_same": false
+        },
+        {
+          "line": 818,
+          "old_api": "EvalType<int64_t>(context, node, &op_context, reduce_type)",
+          "new_api": null,
+          "old_text": "EvalType<int64_t>(context, node, &op_context, reduce_type)",
+          "new_text": null,
+          "old_line_content": "      return EvalType<int64_t>(context, node, &op_context, reduce_type);",
+          "new_line_content": "  OpContext op_context(context, node);",
+          "content_same": false
+        },
+        {
+          "line": 949,
+          "old_api": "static_cast<double>(output->params.scale)",
+          "new_api": null,
+          "old_text": "static_cast<double>(output->params.scale)",
+          "new_text": null,
+          "old_line_content": "        static_cast<double>(output->params.scale), reduced_axis_size);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 695,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                    GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "new_text": null,
+          "old_line_content": "  TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 696,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "new_text": null,
+          "old_line_content": "                    GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 698,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(\n      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "new_text": null,
+          "old_line_content": "  TF_LITE_ENSURE_OK(",
+          "new_line_content": "template <typename T>",
+          "content_same": false
+        },
+        {
+          "line": 699,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "new_text": null,
+          "old_line_content": "      context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "new_line_content": "TfLiteStatus EvalLogic(TfLiteContext* context, TfLiteNode* node,",
+          "content_same": false
+        },
+        {
+          "line": 955,
+          "old_api": "reference_ops::QuantizedReduceProd<T>(\n          GetTensorData<T>(input), input->params.zero_point,\n          GetTensorShape(input), GetTensorData<T>(output),\n          output->params.zero_point, GetTensorShape(output),\n          GetTensorData<int>(op_context->axis), num_axis,\n          op_context->params->keep_dims, GetTensorData<int>(temp_index),\n          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),\n          data->multiplier, data->shift)",
+          "new_api": null,
+          "old_text": "reference_ops::QuantizedReduceProd<T>(\n          GetTensorData<T>(input), input->params.zero_point,\n          GetTensorShape(input), GetTensorData<T>(output),\n          output->params.zero_point, GetTensorShape(output),\n          GetTensorData<int>(op_context->axis), num_axis,\n          op_context->params->keep_dims, GetTensorData<int>(temp_index),\n          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),\n          data->multiplier, data->shift)",
+          "new_text": null,
+          "old_line_content": "      reference_ops::QuantizedReduceProd<T>(",
+          "new_line_content": "    const int reduced_axis_size = input_size / output_size;",
+          "content_same": false
+        },
+        {
+          "line": 701,
+          "old_api": "IsDynamicTensor",
+          "new_api": null,
+          "old_text": "IsDynamicTensor(op_context->output)",
+          "new_text": null,
+          "old_line_content": "  if (IsDynamicTensor(op_context->output)) {",
+          "new_line_content": "                       T reducer(const T current, const T in)) {",
+          "content_same": false
+        },
+        {
+          "line": 703,
+          "old_api": "ResizeTempAxis",
+          "new_api": null,
+          "old_text": "ResizeTempAxis(context, op_context, resolved_axis)",
+          "new_text": null,
+          "old_line_content": "                      ResizeTempAxis(context, op_context, resolved_axis));",
+          "new_line_content": "  TfLiteTensor* temp_index;",
+          "content_same": false
+        },
+        {
+          "line": 960,
+          "old_api": "GetTensorData<int>(temp_index)",
+          "new_api": null,
+          "old_text": "GetTensorData<int>(temp_index)",
+          "new_text": null,
+          "old_line_content": "          op_context->params->keep_dims, GetTensorData<int>(temp_index),",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 961,
+          "old_api": "GetTensorData<int32>(temp_prod)",
+          "new_api": null,
+          "old_text": "GetTensorData<int32>(temp_prod)",
+          "new_text": null,
+          "old_line_content": "          GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_prod),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 716,
+          "old_api": "tflite::reference_ops::ResolveAxis(\n          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,\n          GetTensorData<int>(resolved_axis), &num_resolved_axis)",
+          "new_api": null,
+          "old_text": "tflite::reference_ops::ResolveAxis(\n          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,\n          GetTensorData<int>(resolved_axis), &num_resolved_axis)",
+          "new_text": null,
+          "old_line_content": "  if (!tflite::reference_ops::ResolveAxis(",
+          "new_line_content": "  const TfLiteTensor* input = op_context->input;",
+          "content_same": false
+        },
+        {
+          "line": 717,
+          "old_api": "GetTensorData<int>(op_context->axis)",
+          "new_api": null,
+          "old_text": "GetTensorData<int>(op_context->axis)",
+          "new_text": null,
+          "old_line_content": "          input->dims->size, GetTensorData<int>(op_context->axis), num_axis,",
+          "new_line_content": "  if (input->type == kTfLiteUInt8 || input->type == kTfLiteInt8 ||",
+          "content_same": false
+        },
+        {
+          "line": 718,
+          "old_api": "GetTensorData<int>(resolved_axis)",
+          "new_api": null,
+          "old_text": "GetTensorData<int>(resolved_axis)",
+          "new_text": null,
+          "old_line_content": "          GetTensorData<int>(resolved_axis), &num_resolved_axis)) {",
+          "new_line_content": "      input->type == kTfLiteInt16) {",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": "EvalQuantizedProd<int8_t>(context, node, &op_context)",
+          "new_api": null,
+          "old_text": "EvalQuantizedProd<int8_t>(context, node, &op_context)",
+          "new_text": null,
+          "old_line_content": "      return EvalQuantizedProd<int8_t>(context, node, &op_context);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 976,
+          "old_api": "EvalQuantizedProd<int16_t>(context, node, &op_context)",
+          "new_api": null,
+          "old_text": "EvalQuantizedProd<int16_t>(context, node, &op_context)",
+          "new_text": null,
+          "old_line_content": "      return EvalQuantizedProd<int16_t>(context, node, &op_context);",
+          "new_line_content": "  OpContext op_context(context, node);",
+          "content_same": false
+        },
+        {
+          "line": 722,
+          "old_api": "GetTensorData<T>(input)",
+          "new_api": null,
+          "old_text": "GetTensorData<T>(input)",
+          "new_text": null,
+          "old_line_content": "    ReduceAllDims(GetTensorData<T>(input), input->dims->data, input->dims->size,",
+          "new_line_content": "                      op_context->output->params.zero_point);",
+          "content_same": false
+        },
+        {
+          "line": 723,
+          "old_api": "GetTensorData<T>(op_context->output)",
+          "new_api": null,
+          "old_text": "GetTensorData<T>(op_context->output)",
+          "new_text": null,
+          "old_line_content": "                  GetTensorData<T>(op_context->output), init_value, reducer,",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 850,
+          "old_api": "NumElements",
+          "new_api": null,
+          "old_text": "NumElements(op_context.axis)",
+          "new_text": null,
+          "old_line_content": "    int num_axis = static_cast<int>(NumElements(op_context.axis));",
+          "new_line_content": "  const auto& output = op_context.output;",
+          "content_same": false
+        },
+        {
+          "line": 852,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(\n        context, GetTemporarySafe(context, node, /*index=*/0, &temp_index))",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(",
+          "new_line_content": "      (input->params.scale == output->params.scale &&",
+          "content_same": false
+        },
+        {
+          "line": 853,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/0, &temp_index)",
+          "new_text": null,
+          "old_line_content": "        context, GetTemporarySafe(context, node, /*index=*/0, &temp_index));",
+          "new_line_content": "       input->params.zero_point == output->params.zero_point);",
+          "content_same": false
+        },
+        {
+          "line": 855,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(\n        context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis))",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(",
+          "new_line_content": "      input->type == kTfLiteUInt8 || input->type == kTfLiteInt8;",
+          "content_same": false
+        },
+        {
+          "line": 856,
+          "old_api": "GetTemporarySafe",
+          "new_api": null,
+          "old_text": "GetTemporarySafe(context, node, /*index=*/1, &resolved_axis)",
+          "new_text": null,
+          "old_line_content": "        context, GetTemporarySafe(context, node, /*index=*/1, &resolved_axis));",
+          "new_line_content": "  const bool need_rescale = (eight_bit_quantized && !same_scale);",
+          "content_same": false
+        },
+        {
+          "line": 729,
+          "old_api": "reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer)",
+          "new_api": null,
+          "old_text": "reference_ops::ReduceGeneric<T>(\n          GetTensorData<T>(input), input->dims->data, input->dims->size,\n          GetTensorData<T>(op_context->output), op_context->output->dims->data,\n          op_context->output->dims->size, GetTensorData<int>(op_context->axis),\n          num_axis, op_context->params->keep_dims,\n          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),\n          init_value, reducer)",
+          "new_text": null,
+          "old_line_content": "      reference_ops::ReduceGeneric<T>(",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 858,
+          "old_api": "TF_LITE_ENSURE_OK",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE_OK(context,\n                      GetTemporarySafe(context, node, /*index=*/2, &temp_sum))",
+          "new_text": null,
+          "old_line_content": "    TF_LITE_ENSURE_OK(context,",
+          "new_line_content": "    // Rescaling 8bit reduce sum.",
+          "content_same": false
+        },
+        {
+          "line": 978,
+          "old_api": "TF_LITE_KERNEL_LOG",
+          "new_api": null,
+          "old_text": "TF_LITE_KERNEL_LOG(context, \"Unsupported quantized data type: %d\",\n                         op_context.input->type)",
+          "new_text": null,
+          "old_line_content": "      TF_LITE_KERNEL_LOG(context, \"Unsupported quantized data type: %d\",",
+          "new_line_content": "  // we separate the evaluation between EvalQuantizedProd for quantized",
+          "content_same": false
+        },
+        {
+          "line": 734,
+          "old_api": "GetTensorData<int>(resolved_axis)",
+          "new_api": null,
+          "old_text": "GetTensorData<int>(resolved_axis)",
+          "new_text": null,
+          "old_line_content": "          GetTensorData<int>(temp_index), GetTensorData<int>(resolved_axis),",
+          "new_line_content": "    return kTfLiteOk;",
+          "content_same": false
+        },
+        {
+          "line": 863,
+          "old_api": "ResizeTempAxis",
+          "new_api": null,
+          "old_text": "ResizeTempAxis(context, &op_context, resolved_axis)",
+          "new_text": null,
+          "old_line_content": "                        ResizeTempAxis(context, &op_context, resolved_axis));",
+          "new_line_content": "    TfLiteTensor* resolved_axis;",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": "ResizeTempAccum",
+          "new_api": null,
+          "old_text": "ResizeTempAccum(context, &op_context, temp_sum)",
+          "new_text": null,
+          "old_line_content": "                        ResizeTempAccum(context, &op_context, temp_sum));",
+          "new_line_content": "    TfLiteTensor* temp_sum;",
+          "content_same": false
+        },
+        {
+          "line": 877,
+          "old_api": "GetTensorData<uint8_t>(op_context.output)",
+          "new_api": null,
+          "old_text": "GetTensorData<uint8_t>(op_context.output)",
+          "new_text": null,
+          "old_line_content": "              GetTensorData<uint8_t>(op_context.output),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 887,
+          "old_api": "TF_LITE_ENSURE",
+          "new_api": null,
+          "old_text": "TF_LITE_ENSURE(\n          context,\n          reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true))",
+          "new_text": null,
+          "old_line_content": "      TF_LITE_ENSURE(",
+          "new_line_content": "              op_context.output->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 754,
+          "old_api": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(0),\n          [](const T current, const T in) -> T { return in + current; })",
+          "new_api": null,
+          "old_text": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(0),\n          [](const T current, const T in) -> T { return in + current; })",
+          "new_text": null,
+          "old_line_content": "      return EvalLogic<T>(",
+          "new_line_content": "  kAll,",
+          "content_same": false
+        },
+        {
+          "line": 755,
+          "old_api": "static_cast<T>(0)",
+          "new_api": null,
+          "old_text": "static_cast<T>(0)",
+          "new_text": null,
+          "old_line_content": "          context, node, op_context, static_cast<T>(0),",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 883,
+          "old_api": "GetTensorData<int32>(temp_sum)",
+          "new_api": null,
+          "old_text": "GetTensorData<int32>(temp_sum)",
+          "new_text": null,
+          "old_line_content": "              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),",
+          "new_line_content": "              op_context.input->params.zero_point,",
+          "content_same": false
+        },
+        {
+          "line": 759,
+          "old_api": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(1),\n          [](const T current, const T in) -> T { return in * current; })",
+          "new_api": null,
+          "old_text": "EvalLogic<T>(\n          context, node, op_context, static_cast<T>(1),\n          [](const T current, const T in) -> T { return in * current; })",
+          "new_text": null,
+          "old_line_content": "      return EvalLogic<T>(",
+          "new_line_content": "TfLiteStatus EvalType(TfLiteContext* context, TfLiteNode* node,",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": "static_cast<T>(1)",
+          "new_api": null,
+          "old_text": "static_cast<T>(1)",
+          "new_text": null,
+          "old_line_content": "          context, node, op_context, static_cast<T>(1),",
+          "new_line_content": "                      OpContext* op_context, ReduceType reduce_type) {",
+          "content_same": false
+        },
+        {
+          "line": 889,
+          "old_api": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "new_api": null,
+          "old_text": "reference_ops::QuantizedMeanOrSum<>(\n              GetTensorData<int8_t>(op_context.input),\n              op_context.input->params.zero_point,\n              op_context.input->params.scale, op_context.input->dims->data,\n              op_context.input->dims->size,\n              GetTensorData<int8_t>(op_context.output),\n              op_context.output->params.zero_point,\n              op_context.output->params.scale, op_context.output->dims->data,\n              op_context.output->dims->size,\n              GetTensorData<int>(op_context.axis), num_axis,\n              op_context.params->keep_dims, GetTensorData<int>(temp_index),\n              GetTensorData<int>(resolved_axis), GetTensorData<int32>(temp_sum),\n              /*compute_sum=*/true)",
+          "new_text": null,
+          "old_line_content": "          reference_ops::QuantizedMeanOrSum<>(",
+          "new_line_content": "              op_context.output->dims->size,",
+          "content_same": false
+        },
+        {
+          "line": 765,
+          "old_api": "std::numeric_limits<T>::lowest()",
+          "new_api": null,
+          "old_text": "std::numeric_limits<T>::lowest()",
+          "new_text": null,
+          "old_line_content": "                          std::numeric_limits<T>::lowest(),",
+          "new_line_content": "          [](const T current, const T in) -> T { return in + current; });",
+          "content_same": false
+        },
+        {
+          "line": 894,
+          "old_api": "GetTensorData<int8_t>(op_context.output)",
+          "new_api": null,
+          "old_text": "GetTensorData<int8_t>(op_context.output)",
+          "new_text": null,
+          "old_line_content": "              GetTensorData<int8_t>(op_context.output),",
+          "new_line_content": "    }",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 42,
+      "total_additions": 74,
+      "total_deletions": 73,
+      "total_api_changes": 189
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 189,
+        "non_api_lines": 6,
+        "non_api_line_numbers": [
+          674,
+          665,
+          666,
+          667,
+          668,
+          671
+        ]
+      }
+    },
+    "api_calls_before": 342,
+    "api_calls_after": 343,
+    "diff_info": {
+      "added_lines": 11,
+      "removed_lines": 2,
+      "total_diff_lines": 25
+    }
+  }
+}

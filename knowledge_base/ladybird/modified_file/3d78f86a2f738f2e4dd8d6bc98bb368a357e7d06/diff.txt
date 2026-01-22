@@ -1,0 +1,14 @@
+diff --git a/Userland/Libraries/LibWeb/Loader/ResourceLoader.cpp b/Userland/Libraries/LibWeb/Loader/ResourceLoader.cpp
+index 52b75e7a1c..e0bacedbaf 100644
+--- a/Userland/Libraries/LibWeb/Loader/ResourceLoader.cpp
++++ b/Userland/Libraries/LibWeb/Loader/ResourceLoader.cpp
+@@ -68,6 +68,9 @@ ResourceLoader::ResourceLoader(NonnullRefPtr<ResourceLoaderConnector> connector)
+ 
+ void ResourceLoader::prefetch_dns(URL::URL const& url)
+ {
++    if (url.scheme().is_one_of("file"sv, "data"sv))
++        return;
++
+     if (ContentFilter::the().is_filtered(url)) {
+         dbgln("ResourceLoader: Refusing to prefetch DNS for '{}': \033[31;1mURL was filtered\033[0m", url);
+         return;

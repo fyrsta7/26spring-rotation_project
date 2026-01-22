@@ -1,0 +1,16 @@
+diff --git a/sql/sql_select.cc b/sql/sql_select.cc
+index 9ec053a3e7b..e1d31d3e8a6 100644
+--- a/sql/sql_select.cc
++++ b/sql/sql_select.cc
+@@ -3009,6 +3009,11 @@ void JOIN_TAB::cleanup()
+       (Tested in part_of_refkey)
+     */
+     table->reginfo.join_tab= NULL;
++    if (table->pos_in_table_list)
++    {
++      table->pos_in_table_list->derived_keys_ready= false;
++      table->pos_in_table_list->derived_key_list.empty();
++    }
+   }
+   end_read_record(&read_record);
+ }

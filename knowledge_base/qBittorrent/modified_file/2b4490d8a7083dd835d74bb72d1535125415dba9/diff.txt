@@ -1,0 +1,14 @@
+diff --git a/src/base/bittorrent/infohash.cpp b/src/base/bittorrent/infohash.cpp
+index 122d4e88f..e050efbb8 100644
+--- a/src/base/bittorrent/infohash.cpp
++++ b/src/base/bittorrent/infohash.cpp
+@@ -89,5 +89,9 @@ bool BitTorrent::operator!=(const InfoHash &left, const InfoHash &right)
+ 
+ uint BitTorrent::qHash(const InfoHash &key, const uint seed)
+ {
++#if (LIBTORRENT_VERSION_NUM < 10200)
+     return ::qHash(static_cast<QString>(key), seed);
++#else
++    return ::qHash((std::hash<lt::sha1_hash> {})(key), seed);
++#endif
+ }

@@ -1,0 +1,26 @@
+    98,      99,      100,     101,     102,     103,     104,     105,
+    106,     107,     108,     109,     110,     111,     112,     113,
+    114,     115,     116,     117,     118,     119,     120,     121,
+    122,     123,     124,     125,     124,     125,     126,     127,
+    // last_coeff_flag_offset_8x8
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+    5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8
+};
+
+/**
+ *
+ * @param buf_size size of buf in bits
+ */
+void ff_init_cabac_encoder(CABACContext *c, uint8_t *buf, int buf_size){
+    init_put_bits(&c->pb, buf, buf_size);
+
+    c->low= 0;
+    c->range= 0x1FE;
+    c->outstanding_count= 0;
+    c->pb.bit_left++; //avoids firstBitFlag
+}
+
+/**
+ *

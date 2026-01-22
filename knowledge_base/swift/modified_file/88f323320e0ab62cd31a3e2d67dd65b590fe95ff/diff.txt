@@ -1,0 +1,14 @@
+diff --git a/lib/SILPasses/PerformanceInliner.cpp b/lib/SILPasses/PerformanceInliner.cpp
+index af3bd23b2e6..c406d4e3f0c 100644
+--- a/lib/SILPasses/PerformanceInliner.cpp
++++ b/lib/SILPasses/PerformanceInliner.cpp
+@@ -169,6 +169,9 @@ static unsigned instructionInlineCost(SILInstruction &I) {
+ ///
+ /// TODO: Memoize.
+ static unsigned functionInlineCost(SILFunction *F) {
++  if (F->isTransparent() == IsTransparent_t::IsTransparent)
++    return 0;
++
+   unsigned i = 0;
+   for (auto &BB : *F) {
+     for (auto &I : BB) {

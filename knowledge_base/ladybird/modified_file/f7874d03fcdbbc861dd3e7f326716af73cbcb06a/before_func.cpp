@@ -1,0 +1,4 @@
+    : m_painter(painter)
+{
+}
+

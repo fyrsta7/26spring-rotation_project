@@ -1,0 +1,16 @@
+diff --git a/src/mongo/db/repl/sync_tail.cpp b/src/mongo/db/repl/sync_tail.cpp
+index 81beeda9775..d35061065ec 100644
+--- a/src/mongo/db/repl/sync_tail.cpp
++++ b/src/mongo/db/repl/sync_tail.cpp
+@@ -395,9 +395,8 @@ namespace repl {
+                     break;
+                 }
+ 
+-                size_t idHash = hashBSONElement( id );
+-                boost::hash_combine(idHash, hash);
+-                hash = idHash;
++                const size_t idHash = hashBSONElement( id );
++                MurmurHash3_x86_32(&idHash, sizeof(idHash), hash, &hash);
+             }
+ 
+             (*writerVectors)[hash % writerVectors->size()].push_back(*it);

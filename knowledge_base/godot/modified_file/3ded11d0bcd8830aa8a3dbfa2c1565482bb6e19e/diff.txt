@@ -1,0 +1,89 @@
+diff --cc servers/rendering/renderer_canvas_cull.cpp
+index d01976acf2,39d26c5893..22a9a4632d
+--- a/servers/rendering/renderer_canvas_cull.cpp
++++ b/servers/rendering/renderer_canvas_cull.cpp
+@@@ -286,79 -260,15 +299,66 @@@ void RendererCanvasCull::_cull_canvas_i
+  		}
+  	}
+  
+ -	Transform2D xform = ci->xform;
+ -	if (snapping_2d_transforms_to_pixel) {
+ -		xform.columns[2] = xform.columns[2].floor();
+ +	Transform2D self_xform;
+ +	Transform2D final_xform;
+ +	if (p_is_already_y_sorted) {
+ +		// Y-sorted item's final transform is calculated before y-sorting,
+ +		// and is passed as `p_parent_xform` afterwards. No need to recalculate.
+ +		final_xform = p_parent_xform;
+ +	} else {
+ +		if (!_interpolation_data.interpolation_enabled || !ci->interpolated) {
+ +			self_xform = ci->xform_curr;
+ +		} else {
+ +			real_t f = Engine::get_singleton()->get_physics_interpolation_fraction();
+ +			TransformInterpolator::interpolate_transform_2d(ci->xform_prev, ci->xform_curr, self_xform, f);
+ +		}
+ +
+ +		Transform2D parent_xform = p_parent_xform;
+ +
+ +		if (snapping_2d_transforms_to_pixel) {
+ +			self_xform.columns[2] = (self_xform.columns[2] + Point2(0.5, 0.5)).floor();
+ +			parent_xform.columns[2] = (parent_xform.columns[2] + Point2(0.5, 0.5)).floor();
+ +		}
+ +
+ +		final_xform = parent_xform * self_xform;
+  	}
+ -	xform = p_transform * xform;
+  
+ -	Rect2 global_rect = xform.xform(rect);
+ +	Point2 repeat_size = p_repeat_size;
+ +	int repeat_times = p_repeat_times;
+ +	RendererCanvasRender::Item *repeat_source_item = p_repeat_source_item;
+ +
+ +	if (ci->repeat_source) {
+ +		repeat_size = ci->repeat_size;
+ +		repeat_times = ci->repeat_times;
+ +		repeat_source_item = ci;
+ +	} else {
+ +		ci->repeat_size = repeat_size;
+ +		ci->repeat_times = repeat_times;
+ +		ci->repeat_source_item = repeat_source_item;
+ +	}
+ +
+ +	Rect2 global_rect = final_xform.xform(rect);
+ +	if (repeat_source_item && (repeat_size.x || repeat_size.y)) {
+ +		// Top-left repeated rect.
+ +		Rect2 corner_rect = global_rect;
+ +		corner_rect.position -= repeat_source_item->final_transform.basis_xform((repeat_times / 2) * repeat_size);
+ +		global_rect = corner_rect;
+ +
+ +		// Plus top-right repeated rect.
+ +		Size2 size_x_offset = repeat_source_item->final_transform.basis_xform(repeat_times * Size2(repeat_size.x, 0));
+ +		corner_rect.position += size_x_offset;
+ +		global_rect = global_rect.merge(corner_rect);
+ +
+ +		// Plus bottom-right repeated rect.
+ +		corner_rect.position += repeat_source_item->final_transform.basis_xform(repeat_times * Size2(0, repeat_size.y));
+ +		global_rect = global_rect.merge(corner_rect);
+ +
+ +		// Plus bottom-left repeated rect.
+ +		corner_rect.position -= size_x_offset;
+ +		global_rect = global_rect.merge(corner_rect);
+ +	}
+  	global_rect.position += p_clip_rect.position;
+  
+- 	if (ci->use_parent_material && p_material_owner) {
+- 		ci->material_owner = p_material_owner;
+- 	} else {
+- 		p_material_owner = ci;
+- 		ci->material_owner = nullptr;
+- 	}
+- 
+- 	Color modulate(ci->modulate.r * p_modulate.r, ci->modulate.g * p_modulate.g, ci->modulate.b * p_modulate.b, ci->modulate.a * p_modulate.a);
+- 
+- 	if (modulate.a < 0.007) {
+- 		return;
+- 	}
+- 
+  	int child_item_count = ci->child_items.size();
+  	Item **child_items = ci->child_items.ptrw();
+  

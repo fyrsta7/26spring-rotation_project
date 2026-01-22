@@ -1,0 +1,20 @@
+diff --git a/src/mongo/db/commands/collection_to_capped.cpp b/src/mongo/db/commands/collection_to_capped.cpp
+index 969326141db..7fb73bead4c 100644
+--- a/src/mongo/db/commands/collection_to_capped.cpp
++++ b/src/mongo/db/commands/collection_to_capped.cpp
+@@ -79,9 +79,12 @@ namespace mongo {
+ 
+         // how much data to ignore because it won't fit anyway
+         // datasize and extentSize can't be compared exactly, so add some padding to 'size'
+-        long long excessSize =
+-            static_cast<long long>( fromCollection->dataSize() -
+-                                    ( toCollection->getRecordStore()->storageSize( txn ) * 2 ) );
++
++        long long allocatedSpaceGuess =
++            std::max( static_cast<long long>(size * 2),
++                      static_cast<long long>(toCollection->getRecordStore()->storageSize(txn) * 2));
++
++        long long excessSize = fromCollection->dataSize() - allocatedSpaceGuess;
+ 
+         scoped_ptr<PlanExecutor> exec( InternalPlanner::collectionScan(txn,
+                                                                        fromNs,

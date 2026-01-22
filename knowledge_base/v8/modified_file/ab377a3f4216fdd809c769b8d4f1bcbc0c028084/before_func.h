@@ -1,0 +1,3 @@
+void String::TryFlatten() {
+  Flatten();
+}

@@ -1,0 +1,4 @@
+        .amplitude = amplitude,
+        .thickness = thickness });
+}
+

@@ -1,0 +1,1768 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/1fdf9c9f7c7643b6b87084b170c1b68390ec27bd",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/1fdf9c9f7c7643b6b87084b170c1b68390ec27bd/before.cpp",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/1fdf9c9f7c7643b6b87084b170c1b68390ec27bd/after.cpp",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/vlc/modified_file/1fdf9c9f7c7643b6b87084b170c1b68390ec27bd/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 84,
+          "old_api": "size",
+          "new_api": "std::make_unique<MLPlaylistMedia>(ml_media)",
+          "old_text": "mediaIdList.size()",
+          "new_text": "std::make_unique<MLPlaylistMedia>(ml_media)",
+          "old_line_content": "        if (mediaIdList.size() == 0)",
+          "new_line_content": "            ctx.medias.emplace_back(std::make_unique<MLPlaylistMedia>(ml_media));",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "vlc_ml_playlist_move",
+          "new_api": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.highTo](vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);\n            ctx.newTo = to + nbElement;\n        },\n        //UI thread\n        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.highTo);\n            r.highTo = ctx.newTo;\n            ++r.highRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "old_text": "vlc_ml_playlist_move(ml, playlistId, low, to, nbElement)",
+          "new_text": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.highTo](vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);\n            ctx.newTo = to + nbElement;\n        },\n        //UI thread\n        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.highTo);\n            r.highTo = ctx.newTo;\n            ++r.highRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "old_line_content": "            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);",
+          "new_line_content": "        m_mediaLib->runOnMLThread<Ctx>(this,",
+          "content_same": false
+        },
+        {
+          "line": 184,
+          "old_api": "assert",
+          "new_api": "unlikely",
+          "old_text": "assert(id)",
+          "new_text": "unlikely(m_transactionPending)",
+          "old_line_content": "    assert(id);",
+          "new_line_content": "    if (unlikely(m_transactionPending))",
+          "content_same": false
+        },
+        {
+          "line": 187,
+          "old_api": "size",
+          "new_api": "parentId",
+          "old_text": "rangeList.size()",
+          "new_text": "parentId()",
+          "old_line_content": "    assert(rangeList.size() > 0);",
+          "new_line_content": "    int64_t id = parentId().id;",
+          "content_same": false
+        },
+        {
+          "line": 198,
+          "old_api": "push_back",
+          "new_api": "cbegin",
+          "old_text": "highLowRanges.lowRanges.push_back(*it)",
+          "new_text": "rangeList.cbegin()",
+          "old_line_content": "            highLowRanges.lowRanges.push_back(*it);",
+          "new_line_content": "    auto it = rangeList.cbegin();",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": "deleteRangeInCache",
+          "new_api": "vlc_ml_playlist_remove",
+          "old_text": "deleteRangeInCache(range.first, range.second)",
+          "new_text": "vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1)",
+          "old_line_content": "        deleteRangeInCache(range.first, range.second);",
+          "new_line_content": "        vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1);",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "unlikely",
+          "new_api": "assert",
+          "old_text": "unlikely(m_transactionPending)",
+          "new_text": "assert(m_mediaLib)",
+          "old_line_content": "    if (unlikely(m_transactionPending))",
+          "new_line_content": "    assert(m_mediaLib);",
+          "content_same": false
+        },
+        {
+          "line": 251,
+          "old_api": "assert",
+          "new_api": "unlikely",
+          "old_text": "assert(id)",
+          "new_text": "unlikely(m_transactionPending)",
+          "old_line_content": "    assert(id);",
+          "new_line_content": "    if (unlikely(m_transactionPending))",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": "getSortedRowsRanges",
+          "new_api": "parentId",
+          "old_text": "getSortedRowsRanges(indexes, false)",
+          "new_text": "parentId()",
+          "old_line_content": "    auto rangeList = getSortedRowsRanges(indexes, false);",
+          "new_line_content": "    int64_t id = parentId().id;",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "size",
+          "new_api": "assert",
+          "old_text": "rangeList.size()",
+          "new_text": "assert(id)",
+          "old_line_content": "    assert(rangeList.size() > 0);",
+          "new_line_content": "    assert(id);",
+          "content_same": false
+        },
+        {
+          "line": 258,
+          "old_api": "std::move(rangeList)",
+          "new_api": "getSortedRowsRanges",
+          "old_text": "std::move(rangeList)",
+          "new_text": "getSortedRowsRanges(indexes, false)",
+          "old_line_content": "    removeImpl(id, std::move(rangeList), 0);",
+          "new_line_content": "    auto rangeList = getSortedRowsRanges(indexes, false);",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": "title",
+          "new_api": "getId",
+          "old_text": "media->title()",
+          "new_text": "media->getId()",
+          "old_line_content": "            return QVariant::fromValue(media->title());",
+          "new_line_content": "            return QVariant::fromValue(media->getId());",
+          "content_same": false
+        },
+        {
+          "line": 327,
+          "old_api": "smallCover",
+          "new_api": "title",
+          "old_text": "media->smallCover(&status)",
+          "new_text": "media->title()",
+          "old_line_content": "            QString thumbnail = media->smallCover(&status);",
+          "new_line_content": "            return QVariant::fromValue(media->title());",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": "getId",
+          "new_api": "getType",
+          "old_text": "item->getId()",
+          "new_text": "media->getType()",
+          "old_line_content": "                generateThumbnail(item->getId());",
+          "new_line_content": "            if ((media->getType() == VLC_ML_MEDIA_TYPE_VIDEO)",
+          "content_same": false
+        },
+        {
+          "line": 342,
+          "old_api": "playCount",
+          "new_api": "duration",
+          "old_text": "media->playCount()",
+          "new_text": "media->duration()",
+          "old_line_content": "            return QVariant::fromValue(media->playCount());",
+          "new_line_content": "            return QVariant::fromValue(media->duration());",
+          "content_same": false
+        },
+        {
+          "line": 344,
+          "old_api": "getResolutionName",
+          "new_api": "progress",
+          "old_text": "media->getResolutionName()",
+          "new_text": "media->progress()",
+          "old_line_content": "            return QVariant::fromValue(media->getResolutionName());",
+          "new_line_content": "            return QVariant::fromValue(media->progress());",
+          "content_same": false
+        },
+        {
+          "line": 346,
+          "old_api": "getChannel",
+          "new_api": "playCount",
+          "old_text": "media->getChannel()",
+          "new_text": "media->playCount()",
+          "old_line_content": "            return QVariant::fromValue(media->getChannel());",
+          "new_line_content": "            return QVariant::fromValue(media->playCount());",
+          "content_same": false
+        },
+        {
+          "line": 348,
+          "old_api": "getMRL",
+          "new_api": "getResolutionName",
+          "old_text": "media->getMRL()",
+          "new_text": "media->getResolutionName()",
+          "old_line_content": "            return QVariant::fromValue(media->getMRL());",
+          "new_line_content": "            return QVariant::fromValue(media->getResolutionName());",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": "getMRLDisplay",
+          "new_api": "getChannel",
+          "old_text": "media->getMRLDisplay()",
+          "new_text": "media->getChannel()",
+          "old_line_content": "            return QVariant::fromValue(media->getMRLDisplay());",
+          "new_line_content": "            return QVariant::fromValue(media->getChannel());",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "getVideo",
+          "new_api": "getMRL",
+          "old_text": "media->getVideo()",
+          "new_text": "media->getMRL()",
+          "old_line_content": "            return QVariant::fromValue(media->getVideo());",
+          "new_line_content": "            return QVariant::fromValue(media->getMRL());",
+          "content_same": false
+        },
+        {
+          "line": 354,
+          "old_api": "getAudio",
+          "new_api": "getMRLDisplay",
+          "old_text": "media->getAudio()",
+          "new_text": "media->getMRLDisplay()",
+          "old_line_content": "            return QVariant::fromValue(media->getAudio());",
+          "new_line_content": "            return QVariant::fromValue(media->getMRLDisplay());",
+          "content_same": false
+        },
+        {
+          "line": 356,
+          "old_api": "title",
+          "new_api": "getVideo",
+          "old_text": "media->title()",
+          "new_text": "media->getVideo()",
+          "old_line_content": "            return QVariant::fromValue(getFirstSymbol(media->title()));",
+          "new_line_content": "            return QVariant::fromValue(media->getVideo());",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": "QVariant",
+          "new_api": "getAudio",
+          "old_text": "QVariant()",
+          "new_text": "media->getAudio()",
+          "old_line_content": "            return QVariant();",
+          "new_line_content": "            return QVariant::fromValue(media->getAudio());",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": "row",
+          "new_api": "size",
+          "old_text": "index.row()",
+          "new_text": "indexes.size()",
+          "old_line_content": "        rows.append(index.row());",
+          "new_line_content": "    assert (indexes.size() > 0);",
+          "content_same": false
+        },
+        {
+          "line": 440,
+          "old_api": "cbegin",
+          "new_api": "end",
+          "old_text": "rows.cbegin()",
+          "new_text": "rows.end()",
+          "old_line_content": "    auto it = rows.cbegin();",
+          "new_line_content": "    std::sort(rows.begin(), rows.end());",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": "end",
+          "new_api": "emplace_back",
+          "old_text": "rangeList.end()",
+          "new_text": "rangeList.emplace_back(low, high)",
+          "old_line_content": "        std::reverse(rangeList.begin(), rangeList.end());",
+          "new_line_content": "        rangeList.emplace_back(low, high);",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "vlc_ml_media_generate_thumbnail",
+          "new_api": "runOnMLThread",
+          "old_text": "vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,\n                                        512, 320, 0.15)",
+          "new_text": "m_mediaLib->runOnMLThread(this,\n    //ML thread\n    [id = itemid.id](vlc_medialibrary_t* ml)\n    {\n        vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,\n                                        512, 320, 0.15);\n    })",
+          "old_line_content": "        vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,",
+          "new_line_content": "    m_mediaLib->runOnMLThread(this,",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": "get",
+          "new_api": "assert",
+          "old_text": "media.get()",
+          "new_text": "assert(itemId.type == VLC_ML_PARENT_UNKNOWN)",
+          "old_line_content": "    return std::make_unique<MLPlaylistMedia>(media.get());",
+          "new_line_content": "    assert(itemId.type == VLC_ML_PARENT_UNKNOWN);",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 129,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "ranges.highRanges.size()",
+          "old_line_content": "",
+          "new_line_content": "    else if (ranges.highRangeIt < ranges.highRanges.size())",
+          "content_same": false
+        },
+        {
+          "line": 385,
+          "old_api": null,
+          "new_api": "std::make_shared<MLPlaylistModel::Loader>(*this)",
+          "old_text": null,
+          "new_text": "std::make_shared<MLPlaylistModel::Loader>(*this)",
+          "old_line_content": "// Protected MLBaseModel reimplementation",
+          "new_line_content": "    return std::make_unique<MLListCacheLoader>(m_mediaLib, std::make_shared<MLPlaylistModel::Loader>(*this));",
+          "content_same": false
+        },
+        {
+          "line": 131,
+          "old_api": null,
+          "new_api": "std::tie(low, high)",
+          "old_text": null,
+          "new_text": "std::tie(low, high)",
+          "old_line_content": "        //ML thread",
+          "new_line_content": "        std::tie(low, high) = ranges.highRanges[ranges.highRangeIt];",
+          "content_same": false
+        },
+        {
+          "line": 132,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(low <= high)",
+          "old_line_content": "        [playlistId, high, low, to = ranges.highTo](vlc_medialibrary_t* ml, Ctx& ctx) {",
+          "new_line_content": "        assert(low <= high);",
+          "content_same": false
+        },
+        {
+          "line": 259,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "rangeList.size()",
+          "old_line_content": "}",
+          "new_line_content": "    assert(rangeList.size() > 0);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": null,
+          "new_api": "vlc_ml_get_media",
+          "old_text": null,
+          "new_text": "vlc_ml_get_media(ml, itemId.id)",
+          "old_line_content": "}",
+          "new_line_content": "    ml_unique_ptr<vlc_ml_media_t> media(vlc_ml_get_media(ml, itemId.id));",
+          "content_same": false
+        },
+        {
+          "line": 261,
+          "old_api": null,
+          "new_api": "setTransactionPending",
+          "old_text": null,
+          "new_text": "setTransactionPending(true)",
+          "old_line_content": "void MLPlaylistModel::endTransaction()",
+          "new_line_content": "    setTransactionPending(true);",
+          "content_same": false
+        },
+        {
+          "line": 262,
+          "old_api": null,
+          "new_api": "std::move(rangeList)",
+          "old_text": null,
+          "new_text": "std::move(rangeList)",
+          "old_line_content": "{",
+          "new_line_content": "    removeImpl(id, std::move(rangeList), 0);",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": null,
+          "new_api": "get",
+          "old_text": null,
+          "new_text": "media.get()",
+          "old_line_content": "",
+          "new_line_content": "    return std::make_unique<MLPlaylistMedia>(media.get());",
+          "content_same": false
+        },
+        {
+          "line": 138,
+          "old_api": null,
+          "new_api": "vlc_ml_playlist_move",
+          "old_text": null,
+          "new_text": "vlc_ml_playlist_move(ml, playlistId, low, to, nbElement)",
+          "old_line_content": "        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {",
+          "new_line_content": "            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);",
+          "content_same": false
+        },
+        {
+          "line": 267,
+          "old_api": null,
+          "new_api": "setTransactionPending",
+          "old_text": null,
+          "new_text": "setTransactionPending(false)",
+          "old_line_content": "{",
+          "new_line_content": "    setTransactionPending(false);",
+          "content_same": false
+        },
+        {
+          "line": 143,
+          "old_api": null,
+          "new_api": "moveRangeInCache",
+          "old_text": null,
+          "new_text": "moveRangeInCache(low, high, r.highTo)",
+          "old_line_content": "        });",
+          "new_line_content": "            moveRangeInCache(low, high, r.highTo);",
+          "content_same": false
+        },
+        {
+          "line": 399,
+          "old_api": null,
+          "new_api": "updateItemInCache",
+          "old_text": null,
+          "new_text": "updateItemInCache(itemId)",
+          "old_line_content": "    {",
+          "new_line_content": "        updateItemInCache(itemId);",
+          "content_same": false
+        },
+        {
+          "line": 146,
+          "old_api": null,
+          "new_api": "std::move(r)",
+          "old_text": null,
+          "new_text": "std::move(r)",
+          "old_line_content": "    {",
+          "new_line_content": "            moveImpl(playlistId, std::move(r));",
+          "content_same": false
+        },
+        {
+          "line": 152,
+          "old_api": null,
+          "new_api": "endTransaction",
+          "old_text": null,
+          "new_text": "endTransaction()",
+          "old_line_content": "",
+          "new_line_content": "        endTransaction();",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": null,
+          "new_api": "resetRequested",
+          "old_text": null,
+          "new_text": "resetRequested()",
+          "old_line_content": "    default:",
+          "new_line_content": "                emit resetRequested();",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "MLBaseModel::onVlcMlEvent(event)",
+          "old_text": null,
+          "new_text": "MLBaseModel::onVlcMlEvent(event)",
+          "old_line_content": "{",
+          "new_line_content": "    MLBaseModel::onVlcMlEvent(event);",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": null,
+          "new_api": "static_cast<MLPlaylistMedia*>(mlitem)",
+          "old_text": null,
+          "new_text": "static_cast<MLPlaylistMedia*>(mlitem)",
+          "old_line_content": "",
+          "new_line_content": "    auto playlistItem = static_cast<MLPlaylistMedia*>(mlitem);",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "setSmallCover",
+          "old_text": null,
+          "new_text": "playlistItem->setSmallCover(mrl, status)",
+          "old_line_content": "//-------------------------------------------------------------------------------------------------",
+          "new_line_content": "    playlistItem->setSmallCover(mrl, status);",
+          "content_same": false
+        },
+        {
+          "line": 179,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(m_mediaLib)",
+          "old_line_content": "",
+          "new_line_content": "    assert(m_mediaLib);",
+          "content_same": false
+        },
+        {
+          "line": 181,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "indexes.size()",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (indexes.size() == 0)",
+          "content_same": false
+        },
+        {
+          "line": 438,
+          "old_api": null,
+          "new_api": "row",
+          "old_text": null,
+          "new_text": "index.row()",
+          "old_line_content": "    //build continuous ranges",
+          "new_line_content": "        rows.append(index.row());",
+          "content_same": false
+        },
+        {
+          "line": 188,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(id)",
+          "old_line_content": "",
+          "new_line_content": "    assert(id);",
+          "content_same": false
+        },
+        {
+          "line": 316,
+          "old_api": null,
+          "new_api": "static_cast<MLPlaylistMedia *>(item)",
+          "old_text": null,
+          "new_text": "static_cast<MLPlaylistMedia *>(item)",
+          "old_line_content": "    switch (role)",
+          "new_line_content": "    MLPlaylistMedia * media = static_cast<MLPlaylistMedia *>(item);",
+          "content_same": false
+        },
+        {
+          "line": 190,
+          "old_api": null,
+          "new_api": "getSortedRowsRanges",
+          "old_text": null,
+          "new_text": "getSortedRowsRanges(indexes, true)",
+          "old_line_content": "    HighLowRanges highLowRanges;",
+          "new_line_content": "    auto rangeList = getSortedRowsRanges(indexes, true);",
+          "content_same": false
+        },
+        {
+          "line": 191,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "rangeList.size()",
+          "old_line_content": "    highLowRanges.lowTo = to;",
+          "new_line_content": "    assert(rangeList.size() > 0);",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": null,
+          "new_api": "QVariant",
+          "old_text": null,
+          "new_text": "QVariant()",
+          "old_line_content": "        case MEDIA_ID:",
+          "new_line_content": "        return QVariant();",
+          "content_same": false
+        },
+        {
+          "line": 65,
+          "old_api": null,
+          "new_api": "raw",
+          "old_text": null,
+          "new_text": "m_mediaLib->runOnMLThread<Ctx>(this,\n    //ML thread\n    [medias, id, at](vlc_medialibrary_t* ml, Ctx& ctx) {\n        std::vector<int64_t> mediaIdList;\n        for (const auto& media : medias)\n        {\n            assert(media.raw());\n\n            const char * const uri = media.raw()->psz_uri;\n\n            vlc_ml_media_t * ml_media = vlc_ml_get_media_by_mrl(ml, uri);\n\n            if (ml_media == nullptr)\n            {\n                ml_media = vlc_ml_new_external_media(ml, uri);\n                if (ml_media == nullptr)\n                    continue;\n            }\n            mediaIdList.push_back(ml_media->i_id);\n            ctx.medias.emplace_back(std::make_unique<MLPlaylistMedia>(ml_media));\n            vlc_ml_media_release(ml_media);\n        }\n        if (mediaIdList.size() == 0)\n            return;\n\n        vlc_ml_playlist_insert(ml, id, mediaIdList.data(), mediaIdList.size(), at);\n    },\n    //UI thread\n    [this, at](quint64, Ctx& ctx) {\n        insertItemListInCache(std::move(ctx.medias), at);\n        m_need_reset = true;\n        endTransaction();\n    })",
+          "old_line_content": "        std::vector<int64_t> mediaIdList;",
+          "new_line_content": "    m_mediaLib->runOnMLThread<Ctx>(this,",
+          "content_same": false
+        },
+        {
+          "line": 444,
+          "old_api": null,
+          "new_api": "cbegin",
+          "old_text": null,
+          "new_text": "rows.cbegin()",
+          "old_line_content": "    {",
+          "new_line_content": "    auto it = rows.cbegin();",
+          "content_same": false
+        },
+        {
+          "line": 447,
+          "old_api": null,
+          "new_api": "count",
+          "old_text": null,
+          "new_text": "rows.count()",
+          "old_line_content": "    else",
+          "new_line_content": "    if (rows.count() == 1)",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "rangeList.emplace_back(low, high)",
+          "old_line_content": "        ++it;",
+          "new_line_content": "        rangeList.emplace_back(low, high);",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": null,
+          "new_api": "isNew",
+          "old_text": null,
+          "new_text": "media->isNew()",
+          "old_line_content": "        {",
+          "new_line_content": "            return QVariant::fromValue(media->isNew());",
+          "content_same": false
+        },
+        {
+          "line": 454,
+          "old_api": null,
+          "new_api": "cend",
+          "old_text": null,
+          "new_text": "rows.cend()",
+          "old_line_content": "            {",
+          "new_line_content": "        while (it != rows.cend())",
+          "content_same": false
+        },
+        {
+          "line": 71,
+          "old_api": null,
+          "new_api": "raw",
+          "old_text": null,
+          "new_text": "media.raw()",
+          "old_line_content": "",
+          "new_line_content": "            assert(media.raw());",
+          "content_same": false
+        },
+        {
+          "line": 199,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "rangeList.end()",
+          "old_line_content": "        else if (it->first > to)",
+          "new_line_content": "    while (it != rangeList.end())",
+          "content_same": false
+        },
+        {
+          "line": 73,
+          "old_api": null,
+          "new_api": "raw",
+          "old_text": null,
+          "new_text": "media.raw()",
+          "old_line_content": "",
+          "new_line_content": "            const char * const uri = media.raw()->psz_uri;",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "highLowRanges.lowRanges.push_back(*it)",
+          "old_line_content": "        {",
+          "new_line_content": "            highLowRanges.lowRanges.push_back(*it);",
+          "content_same": false
+        },
+        {
+          "line": 75,
+          "old_api": null,
+          "new_api": "vlc_ml_get_media_by_mrl",
+          "old_text": null,
+          "new_text": "vlc_ml_get_media_by_mrl(ml, uri)",
+          "old_line_content": "            {",
+          "new_line_content": "            vlc_ml_media_t * ml_media = vlc_ml_get_media_by_mrl(ml, uri);",
+          "content_same": false
+        },
+        {
+          "line": 204,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "highLowRanges.highRanges.push_back(*it)",
+          "old_line_content": "            highLowRanges.lowTo = it->first;",
+          "new_line_content": "            highLowRanges.highRanges.push_back(*it);",
+          "content_same": false
+        },
+        {
+          "line": 331,
+          "old_api": null,
+          "new_api": "smallCover",
+          "old_text": null,
+          "new_text": "media->smallCover(&status)",
+          "old_line_content": "            {",
+          "new_line_content": "            QString thumbnail = media->smallCover(&status);",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "emplace_back",
+          "old_text": null,
+          "new_text": "rangeList.emplace_back(low, high)",
+          "old_line_content": "            ++it;",
+          "new_line_content": "                rangeList.emplace_back(low, high);",
+          "content_same": false
+        },
+        {
+          "line": 79,
+          "old_api": null,
+          "new_api": "vlc_ml_new_external_media",
+          "old_text": null,
+          "new_text": "vlc_ml_new_external_media(ml, uri)",
+          "old_line_content": "            }",
+          "new_line_content": "                ml_media = vlc_ml_new_external_media(ml, uri);",
+          "content_same": false
+        },
+        {
+          "line": 336,
+          "old_api": null,
+          "new_api": "getId",
+          "old_text": null,
+          "new_text": "item->getId()",
+          "old_line_content": "        }",
+          "new_line_content": "                generateThumbnail(item->getId());",
+          "content_same": false
+        },
+        {
+          "line": 83,
+          "old_api": null,
+          "new_api": "push_back",
+          "old_text": null,
+          "new_text": "mediaIdList.push_back(ml_media->i_id)",
+          "old_line_content": "        }",
+          "new_line_content": "            mediaIdList.push_back(ml_media->i_id);",
+          "content_same": false
+        },
+        {
+          "line": 339,
+          "old_api": null,
+          "new_api": "QVariant::fromValue(thumbnail)",
+          "old_text": null,
+          "new_text": "QVariant::fromValue(thumbnail)",
+          "old_line_content": "        case MEDIA_PROGRESS:",
+          "new_line_content": "            return QVariant::fromValue(thumbnail);",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": null,
+          "new_api": "vlc_ml_media_release",
+          "old_text": null,
+          "new_text": "vlc_ml_media_release(ml_media)",
+          "old_line_content": "            return;",
+          "new_line_content": "            vlc_ml_media_release(ml_media);",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "highLowRanges.lowRanges.size()",
+          "old_line_content": "",
+          "new_line_content": "    highLowRanges.lowRangeIt = highLowRanges.lowRanges.size();",
+          "content_same": false
+        },
+        {
+          "line": 469,
+          "old_api": null,
+          "new_api": "end",
+          "old_text": null,
+          "new_text": "rangeList.end()",
+          "old_line_content": "",
+          "new_line_content": "        std::reverse(rangeList.begin(), rangeList.end());",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": null,
+          "new_api": "setTransactionPending",
+          "old_text": null,
+          "new_text": "setTransactionPending(true)",
+          "old_line_content": "",
+          "new_line_content": "    setTransactionPending(true);",
+          "content_same": false
+        },
+        {
+          "line": 90,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "mediaIdList.size()",
+          "old_line_content": "    [this]() {",
+          "new_line_content": "        vlc_ml_playlist_insert(ml, id, mediaIdList.data(), mediaIdList.size(), at);",
+          "content_same": false
+        },
+        {
+          "line": 218,
+          "old_api": null,
+          "new_api": "std::move(highLowRanges)",
+          "old_text": null,
+          "new_text": "std::move(highLowRanges)",
+          "old_line_content": "void MLPlaylistModel::removeImpl(int64_t playlistId, const std::vector<std::pair<int, int> >&& rangeList, size_t index)",
+          "new_line_content": "    moveImpl(id, std::move(highLowRanges));",
+          "content_same": false
+        },
+        {
+          "line": 94,
+          "old_api": null,
+          "new_api": "std::move(ctx.medias)",
+          "old_text": null,
+          "new_text": "std::move(ctx.medias)",
+          "old_line_content": "}",
+          "new_line_content": "        insertItemListInCache(std::move(ctx.medias), at);",
+          "content_same": false
+        },
+        {
+          "line": 96,
+          "old_api": null,
+          "new_api": "endTransaction",
+          "old_text": null,
+          "new_text": "endTransaction()",
+          "old_line_content": "",
+          "new_line_content": "        endTransaction();",
+          "content_same": false
+        },
+        {
+          "line": 224,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "rangeList.size()",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (index >= rangeList.size())",
+          "content_same": false
+        },
+        {
+          "line": 480,
+          "old_api": null,
+          "new_api": "vlc_ml_media_generate_thumbnail",
+          "old_text": null,
+          "new_text": "vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,\n                                        512, 320, 0.15)",
+          "old_line_content": "",
+          "new_line_content": "        vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "endTransaction",
+          "old_text": null,
+          "new_text": "endTransaction()",
+          "old_line_content": "    std::pair<int, int> range = rangeList[index];",
+          "new_line_content": "        endTransaction();",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "title",
+          "old_text": null,
+          "new_text": "media->title()",
+          "old_line_content": "}",
+          "new_line_content": "            return QVariant::fromValue(getFirstSymbol(media->title()));",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "runOnMLThread",
+          "old_text": null,
+          "new_text": "m_mediaLib->runOnMLThread(this,\n    //ML thread\n    [playlistId, range](vlc_medialibrary_t* ml) {\n        vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1);\n    },\n    //UI thread\n    [this, playlistId, range, rows = std::move(rangeList), index]() {\n        deleteRangeInCache(range.first, range.second);\n        removeImpl(playlistId, std::move(rows), index+1);\n    })",
+          "old_line_content": "    },",
+          "new_line_content": "    m_mediaLib->runOnMLThread(this,",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": null,
+          "new_api": "QVariant",
+          "old_text": null,
+          "new_text": "QVariant()",
+          "old_line_content": "//-------------------------------------------------------------------------------------------------",
+          "new_line_content": "            return QVariant();",
+          "content_same": false
+        },
+        {
+          "line": 491,
+          "old_api": null,
+          "new_api": "vlc_ml_count_playlist_media",
+          "old_text": null,
+          "new_text": "vlc_ml_count_playlist_media(ml, queryParams, m_parent.id)",
+          "old_line_content": "MLPlaylistModel::Loader::load(vlc_medialibrary_t* ml, const vlc_ml_query_params_t* queryParams) const /* override */",
+          "new_line_content": "    return vlc_ml_count_playlist_media(ml, queryParams, m_parent.id);",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": null,
+          "new_api": "std::tie(low, high)",
+          "old_text": null,
+          "new_text": "std::tie(low, high)",
+          "old_line_content": "        //ML thread",
+          "new_line_content": "        std::tie(low, high) = ranges.lowRanges[ranges.lowRangeIt - 1];",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(low <= high)",
+          "old_line_content": "        (vlc_medialibrary_t* ml, Ctx& ctx) {",
+          "new_line_content": "        assert(low <= high);",
+          "content_same": false
+        },
+        {
+          "line": 113,
+          "old_api": null,
+          "new_api": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.lowTo]\n        (vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);\n            ctx.newTo = to - nbElement;\n        },\n        //UI thread\n        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.lowTo);\n            r.lowTo = ctx.newTo;\n            --r.lowRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "old_text": null,
+          "new_text": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.lowTo]\n        (vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);\n            ctx.newTo = to - nbElement;\n        },\n        //UI thread\n        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.lowTo);\n            r.lowTo = ctx.newTo;\n            --r.lowRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "old_line_content": "            int nbElement = high - low + 1;",
+          "new_line_content": "        m_mediaLib->runOnMLThread<Ctx>(this,",
+          "content_same": false
+        },
+        {
+          "line": 240,
+          "old_api": null,
+          "new_api": "deleteRangeInCache",
+          "old_text": null,
+          "new_text": "deleteRangeInCache(range.first, range.second)",
+          "old_line_content": "",
+          "new_line_content": "        deleteRangeInCache(range.first, range.second);",
+          "content_same": false
+        },
+        {
+          "line": 241,
+          "old_api": null,
+          "new_api": "std::move(rows)",
+          "old_text": null,
+          "new_text": "std::move(rows)",
+          "old_line_content": "/* Q_INVOKABLE */ void MLPlaylistModel::remove(const QModelIndexList & indexes)",
+          "new_line_content": "        removeImpl(playlistId, std::move(rows), index+1);",
+          "content_same": false
+        },
+        {
+          "line": 372,
+          "old_api": null,
+          "new_api": "value",
+          "old_text": null,
+          "new_text": "QHash<QByteArray, vlc_ml_sorting_criteria_t> {\n        {\"id\",             VLC_ML_SORTING_DEFAULT},\n        {\"title\",          VLC_ML_SORTING_ALPHA},\n        {\"duration\",       VLC_ML_SORTING_DURATION},\n        {\"playcount\",      VLC_ML_SORTING_PLAYCOUNT},\n    }.value(name, VLC_ML_SORTING_DEFAULT)",
+          "old_line_content": "        {\"playcount\",      VLC_ML_SORTING_PLAYCOUNT},",
+          "new_line_content": "    return QHash<QByteArray, vlc_ml_sorting_criteria_t> {",
+          "content_same": false
+        },
+        {
+          "line": 498,
+          "old_api": null,
+          "new_api": "vlc_ml_list_playlist_media",
+          "old_text": null,
+          "new_text": "vlc_ml_list_playlist_media(ml, queryParams, m_parent.id)",
+          "old_line_content": "        return {};",
+          "new_line_content": "        vlc_ml_list_playlist_media(ml, queryParams, m_parent.id)",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "vlc_ml_playlist_move",
+          "old_text": null,
+          "new_text": "vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement)",
+          "old_line_content": "        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {",
+          "new_line_content": "            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);",
+          "content_same": false
+        },
+        {
+          "line": 248,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "indexes.size()",
+          "old_line_content": "        return;",
+          "new_line_content": "    if (indexes.size() == 0)",
+          "content_same": false
+        },
+        {
+          "line": 506,
+          "old_api": null,
+          "new_api": "ml_range_iterate<vlc_ml_media_t> (list)",
+          "old_text": null,
+          "new_text": "ml_range_iterate<vlc_ml_media_t> (list)",
+          "old_line_content": "",
+          "new_line_content": "    for (const vlc_ml_media_t & media : ml_range_iterate<vlc_ml_media_t> (list))",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": null,
+          "new_api": "moveRangeInCache",
+          "old_text": null,
+          "new_text": "moveRangeInCache(low, high, r.lowTo)",
+          "old_line_content": "        });",
+          "new_line_content": "            moveRangeInCache(low, high, r.lowTo);",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": null,
+          "new_api": "std::make_unique<MLPlaylistMedia>(&media)",
+          "old_text": null,
+          "new_text": "std::make_unique<MLPlaylistMedia>(&media)",
+          "old_line_content": "}",
+          "new_line_content": "        result.emplace_back(std::make_unique<MLPlaylistMedia>(&media));",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "std::move(r)",
+          "old_text": null,
+          "new_text": "std::move(r)",
+          "old_line_content": "    {",
+          "new_line_content": "            moveImpl(playlistId, std::move(r));",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 128,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(low <= high)",
+          "new_text": null,
+          "old_line_content": "        assert(low <= high);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 513,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(itemId.type == VLC_ML_PARENT_UNKNOWN)",
+          "new_text": null,
+          "old_line_content": "    assert(itemId.type == VLC_ML_PARENT_UNKNOWN);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 514,
+          "old_api": "vlc_ml_get_media",
+          "new_api": null,
+          "old_text": "vlc_ml_get_media(ml, itemId.id)",
+          "new_text": null,
+          "old_line_content": "    ml_unique_ptr<vlc_ml_media_t> media(vlc_ml_get_media(ml, itemId.id));",
+          "new_line_content": "std::unique_ptr<MLItem>",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.highTo](vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);\n            ctx.newTo = to + nbElement;\n        },\n        //UI thread\n        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.highTo);\n            r.highTo = ctx.newTo;\n            ++r.highRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "new_api": null,
+          "old_text": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.highTo](vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to, nbElement);\n            ctx.newTo = to + nbElement;\n        },\n        //UI thread\n        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.highTo);\n            r.highTo = ctx.newTo;\n            ++r.highRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "new_text": null,
+          "old_line_content": "        m_mediaLib->runOnMLThread<Ctx>(this,",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 257,
+          "old_api": "setTransactionPending",
+          "new_api": null,
+          "old_text": "setTransactionPending(true)",
+          "new_text": null,
+          "old_line_content": "    setTransactionPending(true);",
+          "new_line_content": "    //get range in decreasing order to avoid having to update the index",
+          "content_same": false
+        },
+        {
+          "line": 263,
+          "old_api": "setTransactionPending",
+          "new_api": null,
+          "old_text": "setTransactionPending(false)",
+          "new_text": null,
+          "old_line_content": "    setTransactionPending(false);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 139,
+          "old_api": "moveRangeInCache",
+          "new_api": null,
+          "old_text": "moveRangeInCache(low, high, r.highTo)",
+          "new_text": null,
+          "old_line_content": "            moveRangeInCache(low, high, r.highTo);",
+          "new_line_content": "            ctx.newTo = to + nbElement;",
+          "content_same": false
+        },
+        {
+          "line": 395,
+          "old_api": "updateItemInCache",
+          "new_api": null,
+          "old_text": "updateItemInCache(itemId)",
+          "new_text": null,
+          "old_line_content": "        updateItemInCache(itemId);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "std::move(r)",
+          "new_api": null,
+          "old_text": "std::move(r)",
+          "new_text": null,
+          "old_line_content": "            moveImpl(playlistId, std::move(r));",
+          "new_line_content": "        [this, playlistId, low, high, r = std::move(ranges)](quint64, Ctx& ctx) mutable {",
+          "content_same": false
+        },
+        {
+          "line": 148,
+          "old_api": "endTransaction",
+          "new_api": null,
+          "old_text": "endTransaction()",
+          "new_text": null,
+          "old_line_content": "        endTransaction();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "resetRequested",
+          "new_api": null,
+          "old_text": "resetRequested()",
+          "new_text": null,
+          "old_line_content": "                emit resetRequested();",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": "MLBaseModel::onVlcMlEvent(event)",
+          "new_api": null,
+          "old_text": "MLBaseModel::onVlcMlEvent(event)",
+          "new_text": null,
+          "old_line_content": "    MLBaseModel::onVlcMlEvent(event);",
+          "new_line_content": "    default:",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "static_cast<MLPlaylistMedia*>(mlitem)",
+          "new_api": null,
+          "old_text": "static_cast<MLPlaylistMedia*>(mlitem)",
+          "new_text": null,
+          "old_line_content": "    auto playlistItem = static_cast<MLPlaylistMedia*>(mlitem);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": "setSmallCover",
+          "new_api": null,
+          "old_text": "playlistItem->setSmallCover(mrl, status)",
+          "new_text": null,
+          "old_line_content": "    playlistItem->setSmallCover(mrl, status);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "indexes.size()",
+          "new_text": null,
+          "old_line_content": "    assert (indexes.size() > 0);",
+          "new_line_content": "//-------------------------------------------------------------------------------------------------",
+          "content_same": false
+        },
+        {
+          "line": 175,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(m_mediaLib)",
+          "new_text": null,
+          "old_line_content": "    assert(m_mediaLib);",
+          "new_line_content": " *    do it sequentially without having to guess what is the next segment to move",
+          "content_same": false
+        },
+        {
+          "line": 177,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "indexes.size()",
+          "new_text": null,
+          "old_line_content": "    if (indexes.size() == 0)",
+          "new_line_content": "/* Q_INVOKABLE */ void MLPlaylistModel::move(const QModelIndexList & indexes, int to)",
+          "content_same": false
+        },
+        {
+          "line": 180,
+          "old_api": "unlikely",
+          "new_api": null,
+          "old_text": "unlikely(m_transactionPending)",
+          "new_text": null,
+          "old_line_content": "    if (unlikely(m_transactionPending))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "rows.end()",
+          "new_text": null,
+          "old_line_content": "    std::sort(rows.begin(), rows.end());",
+          "new_line_content": "    QList<int> rows;",
+          "content_same": false
+        },
+        {
+          "line": 183,
+          "old_api": "parentId",
+          "new_api": null,
+          "old_text": "parentId()",
+          "new_text": null,
+          "old_line_content": "    int64_t id = parentId().id;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": "static_cast<MLPlaylistMedia *>(item)",
+          "new_api": null,
+          "old_text": "static_cast<MLPlaylistMedia *>(item)",
+          "new_text": null,
+          "old_line_content": "    MLPlaylistMedia * media = static_cast<MLPlaylistMedia *>(item);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 186,
+          "old_api": "getSortedRowsRanges",
+          "new_api": null,
+          "old_text": "getSortedRowsRanges(indexes, true)",
+          "new_text": null,
+          "old_line_content": "    auto rangeList = getSortedRowsRanges(indexes, true);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": "QVariant",
+          "new_api": null,
+          "old_text": "QVariant()",
+          "new_text": null,
+          "old_line_content": "        return QVariant();",
+          "new_line_content": "QVariant MLPlaylistModel::itemRoleData(MLItem *item, int role) const /* override */",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": "count",
+          "new_api": null,
+          "old_text": "rows.count()",
+          "new_text": null,
+          "old_line_content": "    if (rows.count() == 1)",
+          "new_line_content": "    std::vector<std::pair<int, int>> rangeList;",
+          "content_same": false
+        },
+        {
+          "line": 445,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "rangeList.emplace_back(low, high)",
+          "new_text": null,
+          "old_line_content": "        rangeList.emplace_back(low, high);",
+          "new_line_content": "    int high = *it;",
+          "content_same": false
+        },
+        {
+          "line": 62,
+          "old_api": "raw",
+          "new_api": null,
+          "old_text": "m_mediaLib->runOnMLThread(this,\n    //ML thread\n    [medias, id, at](vlc_medialibrary_t* ml) {\n        std::vector<int64_t> mediaIdList;\n        for (const auto& media : medias)\n        {\n            assert(media.raw());\n\n            const char * const uri = media.raw()->psz_uri;\n\n            vlc_ml_media_t * ml_media = vlc_ml_get_media_by_mrl(ml, uri);\n\n            if (ml_media == nullptr)\n            {\n                ml_media = vlc_ml_new_external_media(ml, uri);\n                if (ml_media == nullptr)\n                    continue;\n            }\n\n            mediaIdList.push_back(ml_media->i_id);\n            vlc_ml_media_release(ml_media);\n        }\n        if (mediaIdList.size() == 0)\n            return;\n\n        vlc_ml_playlist_insert(ml, id, mediaIdList.data(), mediaIdList.size(), at);\n    },\n    //UI thread\n    [this]() {\n        m_need_reset = true;\n        endTransaction();\n    })",
+          "new_text": null,
+          "old_line_content": "    m_mediaLib->runOnMLThread(this,",
+          "new_line_content": "    struct Ctx {",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "getId",
+          "new_api": null,
+          "old_text": "media->getId()",
+          "new_text": null,
+          "old_line_content": "            return QVariant::fromValue(media->getId());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 321,
+          "old_api": "isNew",
+          "new_api": null,
+          "old_text": "media->isNew()",
+          "new_text": null,
+          "old_line_content": "            return QVariant::fromValue(media->isNew());",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 194,
+          "old_api": "cbegin",
+          "new_api": null,
+          "old_text": "rangeList.cbegin()",
+          "new_text": null,
+          "old_line_content": "    auto it = rangeList.cbegin();",
+          "new_line_content": "    HighLowRanges highLowRanges;",
+          "content_same": false
+        },
+        {
+          "line": 195,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "rangeList.end()",
+          "new_text": null,
+          "old_line_content": "    while (it != rangeList.end())",
+          "new_line_content": "    highLowRanges.lowTo = to;",
+          "content_same": false
+        },
+        {
+          "line": 68,
+          "old_api": "raw",
+          "new_api": null,
+          "old_text": "media.raw()",
+          "new_text": null,
+          "old_line_content": "            assert(media.raw());",
+          "new_line_content": "        std::vector<int64_t> mediaIdList;",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": "cend",
+          "new_api": null,
+          "old_text": "rows.cend()",
+          "new_text": null,
+          "old_line_content": "        while (it != rows.cend())",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 70,
+          "old_api": "raw",
+          "new_api": null,
+          "old_text": "media.raw()",
+          "new_text": null,
+          "old_line_content": "            const char * const uri = media.raw()->psz_uri;",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 455,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "rangeList.emplace_back(low, high)",
+          "new_text": null,
+          "old_line_content": "                rangeList.emplace_back(low, high);",
+          "new_line_content": "        {",
+          "content_same": false
+        },
+        {
+          "line": 72,
+          "old_api": "vlc_ml_get_media_by_mrl",
+          "new_api": null,
+          "old_text": "vlc_ml_get_media_by_mrl(ml, uri)",
+          "new_text": null,
+          "old_line_content": "            vlc_ml_media_t * ml_media = vlc_ml_get_media_by_mrl(ml, uri);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 200,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "highLowRanges.highRanges.push_back(*it)",
+          "new_text": null,
+          "old_line_content": "            highLowRanges.highRanges.push_back(*it);",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": "getType",
+          "new_api": null,
+          "old_text": "media->getType()",
+          "new_text": null,
+          "old_line_content": "            if ((media->getType() == VLC_ML_MEDIA_TYPE_VIDEO)",
+          "new_line_content": "        case MEDIA_THUMBNAIL:",
+          "content_same": false
+        },
+        {
+          "line": 76,
+          "old_api": "vlc_ml_new_external_media",
+          "new_api": null,
+          "old_text": "vlc_ml_new_external_media(ml, uri)",
+          "new_text": null,
+          "old_line_content": "                ml_media = vlc_ml_new_external_media(ml, uri);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "emplace_back",
+          "new_api": null,
+          "old_text": "rangeList.emplace_back(low, high)",
+          "new_text": null,
+          "old_line_content": "        rangeList.emplace_back(low, high);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": "QVariant::fromValue(thumbnail)",
+          "new_api": null,
+          "old_text": "QVariant::fromValue(thumbnail)",
+          "new_text": null,
+          "old_line_content": "            return QVariant::fromValue(thumbnail);",
+          "new_line_content": "            {",
+          "content_same": false
+        },
+        {
+          "line": 81,
+          "old_api": "push_back",
+          "new_api": null,
+          "old_text": "mediaIdList.push_back(ml_media->i_id)",
+          "new_text": null,
+          "old_line_content": "            mediaIdList.push_back(ml_media->i_id);",
+          "new_line_content": "                    continue;",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": "vlc_ml_media_release",
+          "new_api": null,
+          "old_text": "vlc_ml_media_release(ml_media)",
+          "new_text": null,
+          "old_line_content": "            vlc_ml_media_release(ml_media);",
+          "new_line_content": "            }",
+          "content_same": false
+        },
+        {
+          "line": 209,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "highLowRanges.lowRanges.size()",
+          "new_text": null,
+          "old_line_content": "    highLowRanges.lowRangeIt = highLowRanges.lowRanges.size();",
+          "new_line_content": "            highLowRanges.highTo = it->second;",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "setTransactionPending",
+          "new_api": null,
+          "old_text": "setTransactionPending(true)",
+          "new_text": null,
+          "old_line_content": "    setTransactionPending(true);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 338,
+          "old_api": "duration",
+          "new_api": null,
+          "old_text": "media->duration()",
+          "new_text": null,
+          "old_line_content": "            return QVariant::fromValue(media->duration());",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 214,
+          "old_api": "std::move(highLowRanges)",
+          "new_api": null,
+          "old_text": "std::move(highLowRanges)",
+          "new_text": null,
+          "old_line_content": "    moveImpl(id, std::move(highLowRanges));",
+          "new_line_content": "    highLowRanges.highRangeIt = 0;",
+          "content_same": false
+        },
+        {
+          "line": 340,
+          "old_api": "progress",
+          "new_api": null,
+          "old_text": "media->progress()",
+          "new_text": null,
+          "old_line_content": "            return QVariant::fromValue(media->progress());",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": "runOnMLThread",
+          "new_api": null,
+          "old_text": "m_mediaLib->runOnMLThread(this,\n    //ML thread\n    [id = itemid.id](vlc_medialibrary_t* ml)\n    {\n        vlc_ml_media_generate_thumbnail(ml, id, VLC_ML_THUMBNAIL_SMALL,\n                                        512, 320, 0.15);\n    })",
+          "new_text": null,
+          "old_line_content": "    m_mediaLib->runOnMLThread(this,",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": "endTransaction",
+          "new_api": null,
+          "old_text": "endTransaction()",
+          "new_text": null,
+          "old_line_content": "        endTransaction();",
+          "new_line_content": "    //UI thread",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "rangeList.size()",
+          "new_text": null,
+          "old_line_content": "    if (index >= rangeList.size())",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": "endTransaction",
+          "new_api": null,
+          "old_text": "endTransaction()",
+          "new_text": null,
+          "old_line_content": "        endTransaction();",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": "runOnMLThread",
+          "new_api": null,
+          "old_text": "m_mediaLib->runOnMLThread(this,\n    //ML thread\n    [playlistId, range](vlc_medialibrary_t* ml) {\n        vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1);\n    },\n    //UI thread\n    [this, playlistId, range, rows = std::move(rangeList), index]() {\n        deleteRangeInCache(range.first, range.second);\n        removeImpl(playlistId, std::move(rows), index+1);\n    })",
+          "new_text": null,
+          "old_line_content": "    m_mediaLib->runOnMLThread(this,",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 487,
+          "old_api": "vlc_ml_count_playlist_media",
+          "new_api": null,
+          "old_text": "vlc_ml_count_playlist_media(ml, queryParams, m_parent.id)",
+          "new_text": null,
+          "old_line_content": "    return vlc_ml_count_playlist_media(ml, queryParams, m_parent.id);",
+          "new_line_content": "//=================================================================================================",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "vlc_ml_playlist_remove",
+          "new_api": null,
+          "old_text": "vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1)",
+          "new_text": null,
+          "old_line_content": "        vlc_ml_playlist_remove(ml, playlistId, range.first, range.second - range.first + 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": "std::tie(low, high)",
+          "new_api": null,
+          "old_text": "std::tie(low, high)",
+          "new_text": null,
+          "old_line_content": "        std::tie(low, high) = ranges.lowRanges[ranges.lowRangeIt - 1];",
+          "new_line_content": "    int low;",
+          "content_same": false
+        },
+        {
+          "line": 250,
+          "old_api": "parentId",
+          "new_api": null,
+          "old_text": "parentId()",
+          "new_text": null,
+          "old_line_content": "    int64_t id = parentId().id;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 108,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(low <= high)",
+          "new_text": null,
+          "old_line_content": "        assert(low <= high);",
+          "new_line_content": "    if (ranges.lowRangeIt > 0)",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.lowTo]\n        (vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);\n            ctx.newTo = to - nbElement;\n        },\n        //UI thread\n        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.lowTo);\n            r.lowTo = ctx.newTo;\n            --r.lowRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "new_api": null,
+          "old_text": "m_mediaLib->runOnMLThread<Ctx>(this,\n        //ML thread\n        [playlistId, high, low, to = ranges.lowTo]\n        (vlc_medialibrary_t* ml, Ctx& ctx) {\n            int nbElement = high - low + 1;\n            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);\n            ctx.newTo = to - nbElement;\n        },\n        //UI thread\n        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {\n            moveRangeInCache(low, high, r.lowTo);\n            r.lowTo = ctx.newTo;\n            --r.lowRangeIt;\n            moveImpl(playlistId, std::move(r));\n        })",
+          "new_text": null,
+          "old_line_content": "        m_mediaLib->runOnMLThread<Ctx>(this,",
+          "new_line_content": "    {",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "std::move(rows)",
+          "new_api": null,
+          "old_text": "std::move(rows)",
+          "new_text": null,
+          "old_line_content": "        removeImpl(playlistId, std::move(rows), index+1);",
+          "new_line_content": "    },",
+          "content_same": false
+        },
+        {
+          "line": 494,
+          "old_api": "vlc_ml_list_playlist_media",
+          "new_api": null,
+          "old_text": "vlc_ml_list_playlist_media(ml, queryParams, m_parent.id)",
+          "new_text": null,
+          "old_line_content": "        vlc_ml_list_playlist_media(ml, queryParams, m_parent.id)",
+          "new_line_content": "std::vector<std::unique_ptr<MLItem>>",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": "value",
+          "new_api": null,
+          "old_text": "QHash<QByteArray, vlc_ml_sorting_criteria_t> {\n        {\"id\",             VLC_ML_SORTING_DEFAULT},\n        {\"title\",          VLC_ML_SORTING_ALPHA},\n        {\"duration\",       VLC_ML_SORTING_DURATION},\n        {\"playcount\",      VLC_ML_SORTING_PLAYCOUNT},\n    }.value(name, VLC_ML_SORTING_DEFAULT)",
+          "new_text": null,
+          "old_line_content": "    return QHash<QByteArray, vlc_ml_sorting_criteria_t> {",
+          "new_line_content": "//-------------------------------------------------------------------------------------------------",
+          "content_same": false
+        },
+        {
+          "line": 114,
+          "old_api": "vlc_ml_playlist_move",
+          "new_api": null,
+          "old_text": "vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement)",
+          "new_text": null,
+          "old_line_content": "            vlc_ml_playlist_move(ml, playlistId, low, to - 1, nbElement);",
+          "new_line_content": "        //ML thread",
+          "content_same": false
+        },
+        {
+          "line": 243,
+          "old_api": "assert",
+          "new_api": null,
+          "old_text": "assert(m_mediaLib)",
+          "new_text": null,
+          "old_line_content": "    assert(m_mediaLib);",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "indexes.size()",
+          "new_text": null,
+          "old_line_content": "    if (indexes.size() == 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": "std::make_shared<MLPlaylistModel::Loader>(*this)",
+          "new_api": null,
+          "old_text": "std::make_shared<MLPlaylistModel::Loader>(*this)",
+          "new_text": null,
+          "old_line_content": "    return std::make_unique<MLListCacheLoader>(m_mediaLib, std::make_shared<MLPlaylistModel::Loader>(*this));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 502,
+          "old_api": "ml_range_iterate<vlc_ml_media_t> (list)",
+          "new_api": null,
+          "old_text": "ml_range_iterate<vlc_ml_media_t> (list)",
+          "new_text": null,
+          "old_line_content": "    for (const vlc_ml_media_t & media : ml_range_iterate<vlc_ml_media_t> (list))",
+          "new_line_content": "        return {};",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": "moveRangeInCache",
+          "new_api": null,
+          "old_text": "moveRangeInCache(low, high, r.lowTo)",
+          "new_text": null,
+          "old_line_content": "            moveRangeInCache(low, high, r.lowTo);",
+          "new_line_content": "            ctx.newTo = to - nbElement;",
+          "content_same": false
+        },
+        {
+          "line": 504,
+          "old_api": "std::make_unique<MLPlaylistMedia>(&media)",
+          "new_api": null,
+          "old_text": "std::make_unique<MLPlaylistMedia>(&media)",
+          "new_text": null,
+          "old_line_content": "        result.emplace_back(std::make_unique<MLPlaylistMedia>(&media));",
+          "new_line_content": "    std::vector<std::unique_ptr<MLItem>> result;",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": "std::move(r)",
+          "new_api": null,
+          "old_text": "std::move(r)",
+          "new_text": null,
+          "old_line_content": "            moveImpl(playlistId, std::move(r));",
+          "new_line_content": "        [this, playlistId, high, low, r = std::move(ranges)](quint64, Ctx& ctx) mutable {",
+          "content_same": false
+        },
+        {
+          "line": 125,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "ranges.highRanges.size()",
+          "new_text": null,
+          "old_line_content": "    else if (ranges.highRangeIt < ranges.highRanges.size())",
+          "new_line_content": "            --r.lowRangeIt;",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": "std::tie(low, high)",
+          "new_api": null,
+          "old_text": "std::tie(low, high)",
+          "new_text": null,
+          "old_line_content": "        std::tie(low, high) = ranges.highRanges[ranges.highRangeIt];",
+          "new_line_content": "        });",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 28,
+      "total_additions": 73,
+      "total_deletions": 71,
+      "total_api_changes": 172
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 10,
+        "api_related_lines": 172,
+        "non_api_lines": 5,
+        "non_api_line_numbers": [
+          64,
+          67,
+          80,
+          93,
+          63
+        ]
+      }
+    },
+    "api_calls_before": 140,
+    "api_calls_after": 144,
+    "diff_info": {
+      "added_lines": 8,
+      "removed_lines": 4,
+      "total_diff_lines": 40
+    }
+  }
+}

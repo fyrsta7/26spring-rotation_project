@@ -1,0 +1,32 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -168,8 +168,11 @@
+ 
+
+ PeerAddress PeerInfo::address() const
+
+ {
+
+-    return {QHostAddress(QString::fromStdString(m_nativeInfo.ip.address().to_string()))
+
+-                , m_nativeInfo.ip.port()};
+
++    // fast path for platforms which boost.asio internal struct maps to `sockaddr`
+
++    return {QHostAddress(m_nativeInfo.ip.data()), m_nativeInfo.ip.port()};
+
++    // slow path for the others
+
++    //return {QHostAddress(QString::fromStdString(m_nativeInfo.ip.address().to_string()))
+
++    //    , m_nativeInfo.ip.port()};
+
+ }
+
+ 
+
+ QString PeerInfo::client() const

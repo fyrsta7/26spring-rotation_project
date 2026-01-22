@@ -1,0 +1,2673 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/postgres/modified_file/417fefaf089fc0b73607cbbe8bcd0bc9e89d08ef/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 209,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": "errcode",
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\tlimit = OffsetNumberNext(PageGetMaxOffsetNumber(page));",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 219,
+          "old_api": "PageGetItemId",
+          "new_api": "OffsetNumberIsValid",
+          "old_text": "PageGetItemId(phdr, offsetNumber)",
+          "new_text": "OffsetNumberIsValid(offsetNumber)",
+          "old_line_content": "\t\t\t\titemId = PageGetItemId(phdr, offsetNumber);",
+          "new_line_content": "\tif (OffsetNumberIsValid(offsetNumber))",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": "PageClearHasFreeLinePointers",
+          "new_api": "PageGetItemId",
+          "old_text": "PageClearHasFreeLinePointers(phdr)",
+          "new_text": "PageGetItemId(phdr, offsetNumber)",
+          "old_line_content": "\t\t\t\tPageClearHasFreeLinePointers(phdr);",
+          "new_line_content": "\t\t\t\titemId = PageGetItemId(phdr, offsetNumber);",
+          "content_same": false
+        },
+        {
+          "line": 294,
+          "old_api": "MAXALIGN",
+          "new_api": "Max",
+          "old_text": "MAXALIGN(size)",
+          "new_text": "Max(phdr->pd_lower,\n\t\t\t\t\tSizeOfPageHeaderData + sizeof(ItemIdData) * offsetNumber)",
+          "old_line_content": "\talignedSize = MAXALIGN(size);",
+          "new_line_content": "\t\tlower = Max(phdr->pd_lower,",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "ItemIdSetNormal",
+          "new_api": "PageGetItemId",
+          "old_text": "ItemIdSetNormal(itemId, upper, size)",
+          "new_text": "PageGetItemId(phdr, offsetNumber)",
+          "old_line_content": "\tItemIdSetNormal(itemId, upper, size);",
+          "new_line_content": "\titemId = PageGetItemId(phdr, offsetNumber);",
+          "content_same": false
+        },
+        {
+          "line": 529,
+          "old_api": "PageGetItemId",
+          "new_api": "errmsg",
+          "old_text": "PageGetItemId(page, i)",
+          "new_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "old_line_content": "\t\tlp = PageGetItemId(page, i);",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 532,
+          "old_api": "ItemIdHasStorage",
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": "ItemIdHasStorage(lp)",
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "new_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "content_same": false
+        },
+        {
+          "line": 564,
+          "old_api": "ereport",
+          "new_api": "PageGetItemId",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t\t\t\t errmsg(\"corrupted item pointer: %u\",\n\t\t\t\t\t\t\t\t\titemidptr->itemoff)))",
+          "new_text": "PageGetItemId(page, i + 1)",
+          "old_line_content": "\t\t\t\t\tereport(ERROR,",
+          "new_line_content": "\t\t\tlp = PageGetItemId(page, i + 1);",
+          "content_same": false
+        },
+        {
+          "line": 565,
+          "old_api": "errcode",
+          "new_api": "ItemIdHasStorage",
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": "ItemIdHasStorage(lp)",
+          "old_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "content_same": false
+        },
+        {
+          "line": 568,
+          "old_api": "ItemIdGetLength",
+          "new_api": "ItemIdGetOffset",
+          "old_text": "ItemIdGetLength(lp)",
+          "new_text": "ItemIdGetOffset(lp)",
+          "old_line_content": "\t\t\t\titemidptr->alignedlen = MAXALIGN(ItemIdGetLength(lp));",
+          "new_line_content": "\t\t\t\titemidptr->itemoff = ItemIdGetOffset(lp);",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "ereport",
+          "new_api": "ItemIdGetLength",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "new_text": "ItemIdGetLength(lp)",
+          "old_line_content": "\t\t\tereport(ERROR,",
+          "new_line_content": "\t\t\t\titemidptr->alignedlen = MAXALIGN(ItemIdGetLength(lp));",
+          "content_same": false
+        },
+        {
+          "line": 587,
+          "old_api": "PageClearHasFreeLinePointers",
+          "new_api": "compactify_tuples",
+          "old_text": "PageClearHasFreeLinePointers(page)",
+          "new_text": "compactify_tuples(itemidbase, nstorage, page)",
+          "old_line_content": "\t\tPageClearHasFreeLinePointers(page);",
+          "new_line_content": "\t\tcompactify_tuples(itemidbase, nstorage, page);",
+          "content_same": false
+        },
+        {
+          "line": 742,
+          "old_api": "elog",
+          "new_api": "ereport",
+          "old_text": "elog(ERROR, \"invalid index offnum: %u\", offnum)",
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)))",
+          "old_line_content": "\t\telog(ERROR, \"invalid index offnum: %u\", offnum);",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 747,
+          "old_api": "PageGetItemId",
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": "PageGetItemId(page, offnum)",
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\ttup = PageGetItemId(page, offnum);",
+          "new_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "content_same": false
+        },
+        {
+          "line": 749,
+          "old_api": "ItemIdGetLength",
+          "new_api": "elog",
+          "old_text": "ItemIdGetLength(tup)",
+          "new_text": "elog(ERROR, \"invalid index offnum: %u\", offnum)",
+          "old_line_content": "\tsize = ItemIdGetLength(tup);",
+          "new_line_content": "\t\telog(ERROR, \"invalid index offnum: %u\", offnum);",
+          "content_same": false
+        },
+        {
+          "line": 754,
+          "old_api": "ereport",
+          "new_api": "PageGetItemId",
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\toffset, (unsigned int) size)))",
+          "new_text": "PageGetItemId(page, offnum)",
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\ttup = PageGetItemId(page, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 755,
+          "old_api": "errcode",
+          "new_api": "ItemIdHasStorage",
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": "ItemIdHasStorage(tup)",
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\tAssert(ItemIdHasStorage(tup));",
+          "content_same": false
+        },
+        {
+          "line": 756,
+          "old_api": "errmsg",
+          "new_api": "ItemIdGetLength",
+          "old_text": "errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\toffset, (unsigned int) size)",
+          "new_text": "ItemIdGetLength(tup)",
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",",
+          "new_line_content": "\tsize = ItemIdGetLength(tup);",
+          "content_same": false
+        },
+        {
+          "line": 804,
+          "old_api": "PageGetItemId",
+          "new_api": "PageIsEmpty",
+          "old_text": "PageGetItemId(phdr, i)",
+          "new_text": "PageIsEmpty(page)",
+          "old_line_content": "\t\t\tItemId\t\tii = PageGetItemId(phdr, i);",
+          "new_line_content": "\tif (!PageIsEmpty(page))",
+          "content_same": false
+        },
+        {
+          "line": 883,
+          "old_api": "PageGetItemId",
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": "PageGetItemId(page, offnum)",
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\t\tlp = PageGetItemId(page, offnum);",
+          "new_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "content_same": false
+        },
+        {
+          "line": 890,
+          "old_api": "ereport",
+          "new_api": "PageGetItemId",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\t\toffset, (unsigned int) size)))",
+          "new_text": "PageGetItemId(page, offnum)",
+          "old_line_content": "\t\t\tereport(ERROR,",
+          "new_line_content": "\t\tlp = PageGetItemId(page, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 891,
+          "old_api": "errcode",
+          "new_api": "ItemIdHasStorage",
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": "ItemIdHasStorage(lp)",
+          "old_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t\tAssert(ItemIdHasStorage(lp));",
+          "content_same": false
+        },
+        {
+          "line": 892,
+          "old_api": "errmsg",
+          "new_api": "ItemIdGetLength",
+          "old_text": "errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\t\toffset, (unsigned int) size)",
+          "new_text": "ItemIdGetLength(lp)",
+          "old_line_content": "\t\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",",
+          "new_line_content": "\t\tsize = ItemIdGetLength(lp);",
+          "content_same": false
+        },
+        {
+          "line": 926,
+          "old_api": "memcpy",
+          "new_api": "errmsg",
+          "old_text": "memcpy(phdr->pd_linp, newitemids, nused * sizeof(ItemIdData))",
+          "new_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "old_line_content": "\tmemcpy(phdr->pd_linp, newitemids, nused * sizeof(ItemIdData));",
+          "new_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "content_same": false
+        },
+        {
+          "line": 994,
+          "old_api": "MAXALIGN",
+          "new_api": "ItemIdGetLength",
+          "old_text": "MAXALIGN(offset)",
+          "new_text": "ItemIdGetLength(lp)",
+          "old_line_content": "\t\t\t\toffset != MAXALIGN(offset))",
+          "new_line_content": "\t\titemlen = ItemIdGetLength(lp);",
+          "content_same": false
+        },
+        {
+          "line": 995,
+          "old_api": "ereport",
+          "new_api": "ItemIdGetOffset",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t   errmsg(\"corrupted item pointer: offset = %u, length = %u\",\n\t\t\t\t\t\t  offset, (unsigned int) itemlen)))",
+          "new_text": "ItemIdGetOffset(lp)",
+          "old_line_content": "\t\t\t\tereport(ERROR,",
+          "new_line_content": "\t\toffset = ItemIdGetOffset(lp);",
+          "content_same": false
+        },
+        {
+          "line": 997,
+          "old_api": "errmsg",
+          "new_api": "ItemIdIsUsed",
+          "old_text": "errmsg(\"corrupted item pointer: offset = %u, length = %u\",\n\t\t\t\t\t\t  offset, (unsigned int) itemlen)",
+          "new_text": "ItemIdIsUsed(lp)",
+          "old_line_content": "\t\t\t\t   errmsg(\"corrupted item pointer: offset = %u, length = %u\",",
+          "new_line_content": "\t\tif (ItemIdIsUsed(lp))",
+          "content_same": false
+        },
+        {
+          "line": 1003,
+          "old_api": "ItemIdSetUnused",
+          "new_api": "errcode",
+          "old_text": "ItemIdSetUnused(lp)",
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "new_line_content": "\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 1021,
+          "old_api": "elog",
+          "new_api": "ItemIdSetUnused",
+          "old_text": "elog(ERROR, \"incorrect index offsets supplied\")",
+          "new_text": "ItemIdSetUnused(lp)",
+          "old_line_content": "\t\telog(ERROR, \"incorrect index offsets supplied\");",
+          "new_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "content_same": false
+        },
+        {
+          "line": 1054,
+          "old_api": "PageGetItemId",
+          "new_api": "PageClearHasFreeLinePointers",
+          "old_text": "PageGetItemId(page, i + 1)",
+          "new_text": "PageClearHasFreeLinePointers(page)",
+          "old_line_content": "\t\t\tlp = PageGetItemId(page, i + 1);",
+          "new_line_content": "\t\tPageClearHasFreeLinePointers(page);",
+          "content_same": false
+        },
+        {
+          "line": 1064,
+          "old_api": "PageSetHasFreeLinePointers",
+          "new_api": "ItemIdGetOffset",
+          "old_text": "PageSetHasFreeLinePointers(page)",
+          "new_text": "ItemIdGetOffset(lp)",
+          "old_line_content": "\t\t\t\tPageSetHasFreeLinePointers(page);",
+          "new_line_content": "\t\t\t\titemidptr->itemoff = ItemIdGetOffset(lp);",
+          "content_same": false
+        },
+        {
+          "line": 1065,
+          "old_api": "ItemIdSetUnused",
+          "new_api": "ItemIdGetLength",
+          "old_text": "ItemIdSetUnused(lp)",
+          "new_text": "ItemIdGetLength(lp)",
+          "old_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "new_line_content": "\t\t\t\titemidptr->alignedlen = MAXALIGN(ItemIdGetLength(lp));",
+          "content_same": false
+        },
+        {
+          "line": 1071,
+          "old_api": "Size) (pd_special - pd_lower)",
+          "new_api": "PageSetHasFreeLinePointers",
+          "old_text": "Size) (pd_special - pd_lower)",
+          "new_text": "PageSetHasFreeLinePointers(page)",
+          "old_line_content": "\t\tif (totallen > (Size) (pd_special - pd_lower))",
+          "new_line_content": "\t\t\t\tPageSetHasFreeLinePointers(page);",
+          "content_same": false
+        },
+        {
+          "line": 1072,
+          "old_api": "ereport",
+          "new_api": "ItemIdSetUnused",
+          "old_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "new_text": "ItemIdSetUnused(lp)",
+          "old_line_content": "\t\t\tereport(ERROR,",
+          "new_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "content_same": false
+        },
+        {
+          "line": 1081,
+          "old_api": "compactify_tuples",
+          "new_api": "errmsg",
+          "old_text": "compactify_tuples(itemidbase, nline, page)",
+          "new_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "old_line_content": "\t\tcompactify_tuples(itemidbase, nline, page);",
+          "new_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 1028,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"incorrect index offsets supplied\")",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\telog(ERROR, \"incorrect index offsets supplied\");",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(pd_special)",
+          "old_line_content": "\tnunused = nstorage = 0;",
+          "new_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "old_line_content": "\tfor (i = FirstOffsetNumber; i <= nline; i++)",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 528,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t{",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 536,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(page, i)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\tlp = PageGetItemId(page, i);",
+          "content_same": false
+        },
+        {
+          "line": 537,
+          "old_api": null,
+          "new_api": "ItemIdIsUsed",
+          "old_text": null,
+          "new_text": "ItemIdIsUsed(lp)",
+          "old_line_content": "\t\t\t/* Unused entries should have lp_len = 0, but make sure */",
+          "new_line_content": "\t\tif (ItemIdIsUsed(lp))",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(lp)",
+          "old_line_content": "\t\t\tnunused++;",
+          "new_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "content_same": false
+        },
+        {
+          "line": 545,
+          "old_api": null,
+          "new_api": "ItemIdSetUnused",
+          "old_text": null,
+          "new_text": "ItemIdSetUnused(lp)",
+          "old_line_content": "\t\t/* Page is completely empty, so just reset it quickly */",
+          "new_line_content": "\t\t\tItemIdSetUnused(lp);",
+          "content_same": false
+        },
+        {
+          "line": 1061,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(page, i + 1)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\tlp = PageGetItemId(page, i + 1);",
+          "content_same": false
+        },
+        {
+          "line": 1062,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(lp)",
+          "old_line_content": "\t\t\telse",
+          "new_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "content_same": false
+        },
+        {
+          "line": 1078,
+          "old_api": null,
+          "new_api": "Size) (pd_special - pd_lower)",
+          "old_text": null,
+          "new_text": "Size) (pd_special - pd_lower)",
+          "old_line_content": "\t\t * Defragment the data areas of each tuple, being careful to preserve",
+          "new_line_content": "\t\tif (totallen > (Size) (pd_special - pd_lower))",
+          "content_same": false
+        },
+        {
+          "line": 1079,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "old_line_content": "\t\t * each item's position in the linp array.",
+          "new_line_content": "\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 1080,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t\t */",
+          "new_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 571,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t\t\t\t errmsg(\"corrupted item pointer: %u\",\n\t\t\t\t\t\t\t\t\titemidptr->itemoff)))",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 572,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 573,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted item pointer: %u\",\n\t\t\t\t\t\t\t\t\titemidptr->itemoff)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t\t\t\t errmsg(\"corrupted item pointer: %u\",",
+          "content_same": false
+        },
+        {
+          "line": 1088,
+          "old_api": null,
+          "new_api": "compactify_tuples",
+          "old_text": null,
+          "new_text": "compactify_tuples(itemidbase, nline, page)",
+          "old_line_content": " * If checksums are disabled, or if the page is not initialized, just return",
+          "new_line_content": "\t\tcompactify_tuples(itemidbase, nline, page);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": null,
+          "new_api": "Size) (pd_special - pd_lower)",
+          "old_text": null,
+          "new_text": "Size) (pd_special - pd_lower)",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tif (totallen > (Size) (pd_special - pd_lower))",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 583,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t/* Set hint bit for PageAddItem */",
+          "new_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 584,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "old_line_content": "\tif (nunused > 0)",
+          "new_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "content_same": false
+        },
+        {
+          "line": 592,
+          "old_api": null,
+          "new_api": "PageSetHasFreeLinePointers",
+          "old_text": null,
+          "new_text": "PageSetHasFreeLinePointers(page)",
+          "old_line_content": " *\t\tReturns the size of the free (allocatable) space on a page,",
+          "new_line_content": "\t\tPageSetHasFreeLinePointers(page);",
+          "content_same": false
+        },
+        {
+          "line": 594,
+          "old_api": null,
+          "new_api": "PageClearHasFreeLinePointers",
+          "old_text": null,
+          "new_text": "PageClearHasFreeLinePointers(page)",
+          "old_line_content": " *",
+          "new_line_content": "\t\tPageClearHasFreeLinePointers(page);",
+          "content_same": false
+        },
+        {
+          "line": 1112,
+          "old_api": null,
+          "new_api": "DataChecksumsEnabled",
+          "old_text": null,
+          "new_text": "DataChecksumsEnabled()",
+          "old_line_content": "\t * and second to avoid wasting space in processes that never call this.",
+          "new_line_content": "\tif (PageIsNew(page) || !DataChecksumsEnabled())",
+          "content_same": false
+        },
+        {
+          "line": 1122,
+          "old_api": null,
+          "new_api": "MemoryContextAlloc",
+          "old_text": null,
+          "new_text": "MemoryContextAlloc(TopMemoryContext, BLCKSZ)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\tpageCopy = MemoryContextAlloc(TopMemoryContext, BLCKSZ);",
+          "content_same": false
+        },
+        {
+          "line": 1124,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(pageCopy, (char *) page, BLCKSZ)",
+          "old_line_content": " *",
+          "new_line_content": "\tmemcpy(pageCopy, (char *) page, BLCKSZ);",
+          "content_same": false
+        },
+        {
+          "line": 1125,
+          "old_api": null,
+          "new_api": "pg_checksum_page",
+          "old_text": null,
+          "new_text": "pg_checksum_page(pageCopy, blkno)",
+          "old_line_content": " * This must only be used when we know that no other process can be modifying",
+          "new_line_content": "\t((PageHeader) pageCopy)->pd_checksum = pg_checksum_page(pageCopy, blkno);",
+          "content_same": false
+        },
+        {
+          "line": 1139,
+          "old_api": null,
+          "new_api": "DataChecksumsEnabled",
+          "old_text": null,
+          "new_text": "DataChecksumsEnabled()",
+          "old_line_content": "",
+          "new_line_content": "\tif (PageIsNew(page) || !DataChecksumsEnabled())",
+          "content_same": false
+        },
+        {
+          "line": 1142,
+          "old_api": null,
+          "new_api": "pg_checksum_page",
+          "old_text": null,
+          "new_text": "pg_checksum_page((char *) page, blkno)",
+          "old_line_content": "",
+          "new_line_content": "\t((PageHeader) page)->pd_checksum = pg_checksum_page((char *) page, blkno);",
+          "content_same": false
+        },
+        {
+          "line": 126,
+          "old_api": null,
+          "new_api": "StaticAssertStmt",
+          "old_text": null,
+          "new_text": "StaticAssertStmt(BLCKSZ == (BLCKSZ / sizeof(size_t)) * sizeof(size_t),\n\t\t\t\t\t \"BLCKSZ has to be a multiple of sizeof(size_t)\")",
+          "old_line_content": "\t\tif (pagebytes[i] != 0)",
+          "new_line_content": "\tStaticAssertStmt(BLCKSZ == (BLCKSZ / sizeof(size_t)) * sizeof(size_t),",
+          "content_same": false
+        },
+        {
+          "line": 149,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(WARNING,\n\t\t\t\t(ERRCODE_DATA_CORRUPTED,\n\t\t\t\t errmsg(\"page verification failed, calculated checksum %u but expected %u\",\n\t\t\t\t\t\tchecksum, p->pd_checksum)))",
+          "old_line_content": "\t}",
+          "new_line_content": "\t\tereport(WARNING,",
+          "content_same": false
+        },
+        {
+          "line": 151,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"page verification failed, calculated checksum %u but expected %u\",\n\t\t\t\t\t\tchecksum, p->pd_checksum)",
+          "old_line_content": "\treturn false;",
+          "new_line_content": "\t\t\t\t errmsg(\"page verification failed, calculated checksum %u but expected %u\",",
+          "content_same": false
+        },
+        {
+          "line": 667,
+          "old_api": null,
+          "new_api": "PageGetFreeSpace",
+          "old_text": null,
+          "new_text": "PageGetFreeSpace(page)",
+          "old_line_content": "\t\t * Are there already MaxHeapTuplesPerPage line pointers in the page?",
+          "new_line_content": "\tspace = PageGetFreeSpace(page);",
+          "content_same": false
+        },
+        {
+          "line": 676,
+          "old_api": null,
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": null,
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\t\t\t\t * indeed a free line pointer",
+          "new_line_content": "\t\tnline = PageGetMaxOffsetNumber(page);",
+          "content_same": false
+        },
+        {
+          "line": 679,
+          "old_api": null,
+          "new_api": "PageHasFreeLinePointers",
+          "old_text": null,
+          "new_text": "PageHasFreeLinePointers((PageHeader) page)",
+          "old_line_content": "\t\t\t\t{",
+          "new_line_content": "\t\t\tif (PageHasFreeLinePointers((PageHeader) page))",
+          "content_same": false
+        },
+        {
+          "line": 685,
+          "old_api": null,
+          "new_api": "OffsetNumberNext",
+          "old_text": null,
+          "new_text": "OffsetNumberNext(offnum)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "content_same": false
+        },
+        {
+          "line": 687,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(page, offnum)",
+          "old_line_content": "\t\t\t\t{",
+          "new_line_content": "\t\t\t\t\tItemId\t\tlp = PageGetItemId(page, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 689,
+          "old_api": null,
+          "new_api": "ItemIdIsUsed",
+          "old_text": null,
+          "new_text": "ItemIdIsUsed(lp)",
+          "old_line_content": "\t\t\t\t\t * The hint is wrong, but we can't clear it here since we",
+          "new_line_content": "\t\t\t\t\tif (!ItemIdIsUsed(lp))",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(PANIC,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)))",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\tereport(PANIC,",
+          "content_same": false
+        },
+        {
+          "line": 210,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 216,
+          "old_api": null,
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": null,
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\tlimit = OffsetNumberNext(PageGetMaxOffsetNumber(page));",
+          "content_same": false
+        },
+        {
+          "line": 226,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(phdr, offsetNumber)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\titemId = PageGetItemId(phdr, offsetNumber);",
+          "content_same": false
+        },
+        {
+          "line": 227,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(itemId)",
+          "old_line_content": "\t\telse",
+          "new_line_content": "\t\t\t\tif (ItemIdIsUsed(itemId) || ItemIdHasStorage(itemId))",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(WARNING, \"will not overwrite a used ItemId\")",
+          "old_line_content": "\t\t\tif (offsetNumber < limit)",
+          "new_line_content": "\t\t\t\t\telog(WARNING, \"will not overwrite a used ItemId\");",
+          "content_same": false
+        },
+        {
+          "line": 743,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 744,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)",
+          "old_line_content": "\t/* change offset number to offset index */",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 244,
+          "old_api": null,
+          "new_api": "PageHasFreeLinePointers",
+          "old_text": null,
+          "new_text": "PageHasFreeLinePointers(phdr)",
+          "old_line_content": "\t\t\tfor (offsetNumber = 1; offsetNumber < limit; offsetNumber++)",
+          "new_line_content": "\t\tif (PageHasFreeLinePointers(phdr))",
+          "content_same": false
+        },
+        {
+          "line": 757,
+          "old_api": null,
+          "new_api": "ItemIdGetOffset",
+          "old_text": null,
+          "new_text": "ItemIdGetOffset(tup)",
+          "old_line_content": "\t\t\t\t\t\toffset, (unsigned int) size)));",
+          "new_line_content": "\toffset = ItemIdGetOffset(tup);",
+          "content_same": false
+        },
+        {
+          "line": 760,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(size)",
+          "old_line_content": "\t * First, we want to get rid of the pd_linp entry for the index tuple. We",
+          "new_line_content": "\t\toffset != MAXALIGN(offset) || size != MAXALIGN(size))",
+          "content_same": false
+        },
+        {
+          "line": 761,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\toffset, (unsigned int) size)))",
+          "old_line_content": "\t * copy all subsequent linp's back one slot in the array. We don't use",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 762,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t * PageGetItemId, because we are manipulating the _array_, not individual",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 763,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\toffset, (unsigned int) size)",
+          "old_line_content": "\t * linp's.",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 254,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(itemId)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tif (!ItemIdIsUsed(itemId) && !ItemIdHasStorage(itemId))",
+          "content_same": false
+        },
+        {
+          "line": 260,
+          "old_api": null,
+          "new_api": "PageClearHasFreeLinePointers",
+          "old_text": null,
+          "new_text": "PageClearHasFreeLinePointers(phdr)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\tPageClearHasFreeLinePointers(phdr);",
+          "content_same": false
+        },
+        {
+          "line": 776,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove((char *) &(phdr->pd_linp[offidx]),\n\t\t\t\t(char *) &(phdr->pd_linp[offidx + 1]),\n\t\t\t\tnbytes)",
+          "old_line_content": "\t * the middle of the page is left free.  If we've just deleted the tuple",
+          "new_line_content": "\t\tmemmove((char *) &(phdr->pd_linp[offidx]),",
+          "content_same": false
+        },
+        {
+          "line": 792,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(addr + size, addr, (int) (offset - phdr->pd_upper))",
+          "old_line_content": "\t * Finally, we need to adjust the linp entries that remain.",
+          "new_line_content": "\t\tmemmove(addr + size, addr, (int) (offset - phdr->pd_upper));",
+          "content_same": false
+        },
+        {
+          "line": 283,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(WARNING, \"can't put more than MaxHeapTuplesPerPage items in a heap page\")",
+          "old_line_content": "\t * Note: do arithmetic as signed ints, to avoid mistakes if, say,",
+          "new_line_content": "\t\telog(WARNING, \"can't put more than MaxHeapTuplesPerPage items in a heap page\");",
+          "content_same": false
+        },
+        {
+          "line": 811,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(phdr, i)",
+          "old_line_content": "}",
+          "new_line_content": "\t\t\tItemId\t\tii = PageGetItemId(phdr, i);",
+          "content_same": false
+        },
+        {
+          "line": 301,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(size)",
+          "old_line_content": "\t/*",
+          "new_line_content": "\talignedSize = MAXALIGN(size);",
+          "content_same": false
+        },
+        {
+          "line": 813,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(ii)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\tAssert(ItemIdHasStorage(ii));",
+          "content_same": false
+        },
+        {
+          "line": 814,
+          "old_api": null,
+          "new_api": "ItemIdGetOffset",
+          "old_text": null,
+          "new_text": "ItemIdGetOffset(ii)",
+          "old_line_content": "/*",
+          "new_line_content": "\t\t\tif (ItemIdGetOffset(ii) <= offset)",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove(itemId + 1, itemId,\n\t\t\t\t(limit - offsetNumber) * sizeof(ItemIdData))",
+          "old_line_content": "\t * Items normally contain no uninitialized bytes.  Core bufpage consumers",
+          "new_line_content": "\t\tmemmove(itemId + 1, itemId,",
+          "content_same": false
+        },
+        {
+          "line": 318,
+          "old_api": null,
+          "new_api": "ItemIdSetNormal",
+          "old_text": null,
+          "new_text": "ItemIdSetNormal(itemId, upper, size)",
+          "old_line_content": "\t * bytes; datumIsEqual() relies on this.  Testing here, along with the",
+          "new_line_content": "\tItemIdSetNormal(itemId, upper, size);",
+          "content_same": false
+        },
+        {
+          "line": 332,
+          "old_api": null,
+          "new_api": "VALGRIND_CHECK_MEM_IS_DEFINED",
+          "old_text": null,
+          "new_text": "VALGRIND_CHECK_MEM_IS_DEFINED(item, size)",
+          "old_line_content": "\tphdr->pd_upper = (LocationIndex) upper;",
+          "new_line_content": "\tVALGRIND_CHECK_MEM_IS_DEFINED(item, size);",
+          "content_same": false
+        },
+        {
+          "line": 335,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy((char *) page + upper, item, size)",
+          "old_line_content": "}",
+          "new_line_content": "\tmemcpy((char *) page + upper, item, size);",
+          "content_same": false
+        },
+        {
+          "line": 848,
+          "old_api": null,
+          "new_api": "Assert",
+          "old_text": null,
+          "new_text": "Assert(nitems <= MaxIndexTuplesPerPage)",
+          "old_line_content": "\t *",
+          "new_line_content": "\tAssert(nitems <= MaxIndexTuplesPerPage);",
+          "content_same": false
+        },
+        {
+          "line": 861,
+          "old_api": null,
+          "new_api": "PageIndexTupleDelete",
+          "old_text": null,
+          "new_text": "PageIndexTupleDelete(page, itemnos[nitems])",
+          "old_line_content": "\tif (pd_lower < SizeOfPageHeaderData ||",
+          "new_line_content": "\t\t\tPageIndexTupleDelete(page, itemnos[nitems]);",
+          "content_same": false
+        },
+        {
+          "line": 360,
+          "old_api": null,
+          "new_api": "PageAddItemExtended",
+          "old_text": null,
+          "new_text": "PageAddItemExtended(page, item, size, offsetNumber,\n\t\t\t\t\t\t\t   overwrite ? PAI_OVERWRITE : 0 |\n\t\t\t\t\t\t\t   is_heap ? PAI_IS_HEAP : 0)",
+          "old_line_content": " *\t\tGet a temporary page in local memory for special processing.",
+          "new_line_content": "\treturn PageAddItemExtended(page, item, size, offsetNumber,",
+          "content_same": false
+        },
+        {
+          "line": 872,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(pd_special)",
+          "old_line_content": "\t * Scan the item pointer array and build a list of just the ones we are",
+          "new_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "content_same": false
+        },
+        {
+          "line": 873,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "old_line_content": "\t * going to keep.  Notice we do not modify the page yet, since we are",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 874,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t * still validity-checking.",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 875,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 376,
+          "old_api": null,
+          "new_api": "PageGetPageSize",
+          "old_text": null,
+          "new_text": "PageGetPageSize(page)",
+          "old_line_content": " * PageGetTempPageCopy",
+          "new_line_content": "\tpageSize = PageGetPageSize(page);",
+          "content_same": false
+        },
+        {
+          "line": 377,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(pageSize)",
+          "old_line_content": " *\t\tGet a temporary page in local memory for special processing.",
+          "new_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "content_same": false
+        },
+        {
+          "line": 888,
+          "old_api": null,
+          "new_api": "OffsetNumberNext",
+          "old_text": null,
+          "new_text": "OffsetNumberNext(offnum)",
+          "old_line_content": "\t\t\t(offset + size) > pd_special ||",
+          "new_line_content": "\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "content_same": false
+        },
+        {
+          "line": 893,
+          "old_api": null,
+          "new_api": "ItemIdGetOffset",
+          "old_text": null,
+          "new_text": "ItemIdGetOffset(lp)",
+          "old_line_content": "\t\t\t\t\t\t\toffset, (unsigned int) size)));",
+          "new_line_content": "\t\toffset = ItemIdGetOffset(lp);",
+          "content_same": false
+        },
+        {
+          "line": 896,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(offset)",
+          "old_line_content": "\t\t{",
+          "new_line_content": "\t\t\toffset != MAXALIGN(offset))",
+          "content_same": false
+        },
+        {
+          "line": 897,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\t\toffset, (unsigned int) size)))",
+          "old_line_content": "\t\t\t/* skip item to be deleted */",
+          "new_line_content": "\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 898,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t\t\tnextitm++;",
+          "new_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 899,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted item pointer: offset = %u, size = %u\",\n\t\t\t\t\t\t\toffset, (unsigned int) size)",
+          "old_line_content": "\t\t}",
+          "new_line_content": "\t\t\t\t\t errmsg(\"corrupted item pointer: offset = %u, size = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 393,
+          "old_api": null,
+          "new_api": "PageGetPageSize",
+          "old_text": null,
+          "new_text": "PageGetPageSize(page)",
+          "old_line_content": "",
+          "new_line_content": "\tpageSize = PageGetPageSize(page);",
+          "content_same": false
+        },
+        {
+          "line": 394,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(pageSize)",
+          "old_line_content": "/*",
+          "new_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "content_same": false
+        },
+        {
+          "line": 396,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(temp, page, pageSize)",
+          "old_line_content": " *\t\tGet a temporary page in local memory for special processing.",
+          "new_line_content": "\tmemcpy(temp, page, pageSize);",
+          "content_same": false
+        },
+        {
+          "line": 911,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(size)",
+          "old_line_content": "",
+          "new_line_content": "\t\t\titemidptr->alignedlen = MAXALIGN(size);",
+          "content_same": false
+        },
+        {
+          "line": 921,
+          "old_api": null,
+          "new_api": "elog",
+          "old_text": null,
+          "new_text": "elog(ERROR, \"incorrect index offsets supplied\")",
+          "old_line_content": "",
+          "new_line_content": "\t\telog(ERROR, \"incorrect index offsets supplied\");",
+          "content_same": false
+        },
+        {
+          "line": 923,
+          "old_api": null,
+          "new_api": "Size) (pd_special - pd_lower)",
+          "old_text": null,
+          "new_text": "Size) (pd_special - pd_lower)",
+          "old_line_content": "\t * Looks good. Overwrite the line pointers with the copy, from which we've",
+          "new_line_content": "\tif (totallen > (Size) (pd_special - pd_lower))",
+          "content_same": false
+        },
+        {
+          "line": 924,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "old_line_content": "\t * removed all the unused items.",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": null,
+          "new_api": "PageGetPageSize",
+          "old_text": null,
+          "new_text": "PageGetPageSize(page)",
+          "old_line_content": "",
+          "new_line_content": "\tpageSize = PageGetPageSize(page);",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "palloc",
+          "old_text": null,
+          "new_text": "palloc(pageSize)",
+          "old_line_content": "\treturn temp;",
+          "new_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "content_same": false
+        },
+        {
+          "line": 925,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 416,
+          "old_api": null,
+          "new_api": "PageGetSpecialSize",
+          "old_text": null,
+          "new_text": "PageGetSpecialSize(page)",
+          "old_line_content": "",
+          "new_line_content": "\tPageInit(temp, pageSize, PageGetSpecialSize(page));",
+          "content_same": false
+        },
+        {
+          "line": 417,
+          "old_api": null,
+          "new_api": "PageGetSpecialPointer",
+          "old_text": null,
+          "new_text": "PageGetSpecialPointer(temp)",
+          "old_line_content": "/*",
+          "new_line_content": "\tmemcpy(PageGetSpecialPointer(temp),",
+          "content_same": false
+        },
+        {
+          "line": 418,
+          "old_api": null,
+          "new_api": "PageGetSpecialPointer",
+          "old_text": null,
+          "new_text": "PageGetSpecialPointer(page)",
+          "old_line_content": " * PageRestoreTempPage",
+          "new_line_content": "\t\t   PageGetSpecialPointer(page),",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": null,
+          "new_api": "PageGetSpecialSize",
+          "old_text": null,
+          "new_text": "PageGetSpecialSize(page)",
+          "old_line_content": " *\t\tCopy temporary page back to permanent page after special processing",
+          "new_line_content": "\t\t   PageGetSpecialSize(page));",
+          "content_same": false
+        },
+        {
+          "line": 933,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy(phdr->pd_linp, newitemids, nused * sizeof(ItemIdData))",
+          "old_line_content": "/*",
+          "new_line_content": "\tmemcpy(phdr->pd_linp, newitemids, nused * sizeof(ItemIdData));",
+          "content_same": false
+        },
+        {
+          "line": 937,
+          "old_api": null,
+          "new_api": "compactify_tuples",
+          "old_text": null,
+          "new_text": "compactify_tuples(itemidbase, nused, page)",
+          "old_line_content": " *",
+          "new_line_content": "\tcompactify_tuples(itemidbase, nused, page);",
+          "content_same": false
+        },
+        {
+          "line": 434,
+          "old_api": null,
+          "new_api": "PageGetPageSize",
+          "old_text": null,
+          "new_text": "PageGetPageSize(tempPage)",
+          "old_line_content": " * sorting support for PageRepairFragmentation, PageIndexMultiDelete,",
+          "new_line_content": "\tpageSize = PageGetPageSize(tempPage);",
+          "content_same": false
+        },
+        {
+          "line": 435,
+          "old_api": null,
+          "new_api": "memcpy",
+          "old_text": null,
+          "new_text": "memcpy((char *) oldPage, (char *) tempPage, pageSize)",
+          "old_line_content": " * PageIndexDeleteNoCompact",
+          "new_line_content": "\tmemcpy((char *) oldPage, (char *) tempPage, pageSize);",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": null,
+          "new_api": "pfree",
+          "old_text": null,
+          "new_text": "pfree(tempPage)",
+          "old_line_content": "typedef struct itemIdSortData",
+          "new_line_content": "\tpfree(tempPage);",
+          "content_same": false
+        },
+        {
+          "line": 972,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(pd_special)",
+          "old_line_content": "\t * Scan the existing item pointer array and mark as unused those that are",
+          "new_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "content_same": false
+        },
+        {
+          "line": 973,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "old_line_content": "\t * in our kill-list; make sure any non-interesting ones are marked unused",
+          "new_line_content": "\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 974,
+          "old_api": null,
+          "new_api": "errcode",
+          "old_text": null,
+          "new_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "old_line_content": "\t * as well.",
+          "new_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "content_same": false
+        },
+        {
+          "line": 975,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "old_line_content": "\t */",
+          "new_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 983,
+          "old_api": null,
+          "new_api": "PageGetMaxOffsetNumber",
+          "old_text": null,
+          "new_text": "PageGetMaxOffsetNumber(page)",
+          "old_line_content": "\t\tItemOffset\toffset;",
+          "new_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "content_same": false
+        },
+        {
+          "line": 472,
+          "old_api": null,
+          "new_api": "qsort",
+          "old_text": null,
+          "new_text": "qsort((char *) itemidbase, nitems, sizeof(itemIdSortData),\n\t\t  itemoffcompare)",
+          "old_line_content": "\t\tItemId\t\tlp;",
+          "new_line_content": "\tqsort((char *) itemidbase, nitems, sizeof(itemIdSortData),",
+          "content_same": false
+        },
+        {
+          "line": 986,
+          "old_api": null,
+          "new_api": "OffsetNumberNext",
+          "old_text": null,
+          "new_text": "OffsetNumberNext(offnum)",
+          "old_line_content": "",
+          "new_line_content": "\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "content_same": false
+        },
+        {
+          "line": 992,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(page, offnum)",
+          "old_line_content": "\t\t\tif (offset < pd_upper ||",
+          "new_line_content": "\t\tlp = PageGetItemId(page, offnum);",
+          "content_same": false
+        },
+        {
+          "line": 481,
+          "old_api": null,
+          "new_api": "PageGetItemId",
+          "old_text": null,
+          "new_text": "PageGetItemId(page, itemidptr->offsetindex + 1)",
+          "old_line_content": "",
+          "new_line_content": "\t\tlp = PageGetItemId(page, itemidptr->offsetindex + 1);",
+          "content_same": false
+        },
+        {
+          "line": 483,
+          "old_api": null,
+          "new_api": "memmove",
+          "old_text": null,
+          "new_text": "memmove((char *) page + upper,\n\t\t\t\t(char *) page + itemidptr->itemoff,\n\t\t\t\titemidptr->alignedlen)",
+          "old_line_content": "}",
+          "new_line_content": "\t\tmemmove((char *) page + upper,",
+          "content_same": false
+        },
+        {
+          "line": 1001,
+          "old_api": null,
+          "new_api": "MAXALIGN",
+          "old_text": null,
+          "new_text": "MAXALIGN(offset)",
+          "old_line_content": "\t\t\t{",
+          "new_line_content": "\t\t\t\toffset != MAXALIGN(offset))",
+          "content_same": false
+        },
+        {
+          "line": 1002,
+          "old_api": null,
+          "new_api": "ereport",
+          "old_text": null,
+          "new_text": "ereport(ERROR,\n\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t   errmsg(\"corrupted item pointer: offset = %u, length = %u\",\n\t\t\t\t\t\t  offset, (unsigned int) itemlen)))",
+          "old_line_content": "\t\t\t\t/* this one is on our list to delete, so mark it unused */",
+          "new_line_content": "\t\t\t\tereport(ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 1004,
+          "old_api": null,
+          "new_api": "errmsg",
+          "old_text": null,
+          "new_text": "errmsg(\"corrupted item pointer: offset = %u, length = %u\",\n\t\t\t\t\t\t  offset, (unsigned int) itemlen)",
+          "old_line_content": "\t\t\t\tnextitm++;",
+          "new_line_content": "\t\t\t\t   errmsg(\"corrupted item pointer: offset = %u, length = %u\",",
+          "content_same": false
+        },
+        {
+          "line": 1010,
+          "old_api": null,
+          "new_api": "ItemIdSetUnused",
+          "old_text": null,
+          "new_text": "ItemIdSetUnused(lp)",
+          "old_line_content": "\t\t\t}",
+          "new_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "content_same": false
+        },
+        {
+          "line": 1013,
+          "old_api": null,
+          "new_api": "ItemIdHasStorage",
+          "old_text": null,
+          "new_text": "ItemIdHasStorage(lp)",
+          "old_line_content": "\t\t\t\t/* get rid of this one too */",
+          "new_line_content": "\t\t\telse if (ItemIdHasStorage(lp))",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 519,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "new_line_content": "\t * etc could cause us to clobber adjacent disk buffers, spreading the data",
+          "content_same": false
+        },
+        {
+          "line": 520,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t * loss further.  So, check everything.",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "new_line_content": "\tif (pd_lower < SizeOfPageHeaderData ||",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": null,
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": null,
+          "old_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "new_line_content": "\t\tpd_special > BLCKSZ ||",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "ItemIdIsUsed",
+          "new_api": null,
+          "old_text": "ItemIdIsUsed(lp)",
+          "new_text": null,
+          "old_line_content": "\t\tif (ItemIdIsUsed(lp))",
+          "new_line_content": "\t\t\t\t\t\tpd_lower, pd_upper, pd_special)));",
+          "content_same": false
+        },
+        {
+          "line": 1047,
+          "old_api": "PageClearHasFreeLinePointers",
+          "new_api": null,
+          "old_text": "PageClearHasFreeLinePointers(page)",
+          "new_text": null,
+          "old_line_content": "\t\tPageClearHasFreeLinePointers(page);",
+          "new_line_content": "\t\t * interspersed unused ones.  It's critical to preserve these unused",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "ItemIdSetUnused",
+          "new_api": null,
+          "old_text": "ItemIdSetUnused(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\tItemIdSetUnused(lp);",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 1055,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "new_line_content": "\t\tfor (i = 0; i < nline; i++)",
+          "content_same": false
+        },
+        {
+          "line": 1057,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\titemidptr->itemoff = ItemIdGetOffset(lp);",
+          "new_line_content": "\t\t\tItemId\t\tlp;",
+          "content_same": false
+        },
+        {
+          "line": 1058,
+          "old_api": "ItemIdGetLength",
+          "new_api": null,
+          "old_text": "ItemIdGetLength(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\titemidptr->alignedlen = MAXALIGN(ItemIdGetLength(lp));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 557,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(page, i + 1)",
+          "new_text": null,
+          "old_line_content": "\t\t\tlp = PageGetItemId(page, i + 1);",
+          "new_line_content": "\t\t/* Need to compact the page the hard way */",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (ItemIdHasStorage(lp))",
+          "new_line_content": "\t\titemIdSortData itemidbase[MaxHeapTuplesPerPage];",
+          "content_same": false
+        },
+        {
+          "line": 561,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\titemidptr->itemoff = ItemIdGetOffset(lp);",
+          "new_line_content": "\t\ttotallen = 0;",
+          "content_same": false
+        },
+        {
+          "line": 1073,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 1074,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "new_text": null,
+          "old_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 566,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted item pointer: %u\",\n\t\t\t\t\t\t\t\t\titemidptr->itemoff)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t\t errmsg(\"corrupted item pointer: %u\",",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 574,
+          "old_api": "Size) (pd_special - pd_lower)",
+          "new_api": null,
+          "old_text": "Size) (pd_special - pd_lower)",
+          "new_text": null,
+          "old_line_content": "\t\tif (totallen > (Size) (pd_special - pd_lower))",
+          "new_line_content": "\t\t\t\t\t\t\t\t\titemidptr->itemoff)));",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t\t\t\ttotallen += itemidptr->alignedlen;",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "new_text": null,
+          "old_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "new_line_content": "\t\t\t\titemidptr++;",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "compactify_tuples",
+          "new_api": null,
+          "old_text": "compactify_tuples(itemidbase, nstorage, page)",
+          "new_text": null,
+          "old_line_content": "\t\tcompactify_tuples(itemidbase, nstorage, page);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "PageSetHasFreeLinePointers",
+          "new_api": null,
+          "old_text": "PageSetHasFreeLinePointers(page)",
+          "new_text": null,
+          "old_line_content": "\t\tPageSetHasFreeLinePointers(page);",
+          "new_line_content": "\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)));",
+          "content_same": false
+        },
+        {
+          "line": 1105,
+          "old_api": "DataChecksumsEnabled",
+          "new_api": null,
+          "old_text": "DataChecksumsEnabled()",
+          "new_text": null,
+          "old_line_content": "\tif (PageIsNew(page) || !DataChecksumsEnabled())",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 1115,
+          "old_api": "MemoryContextAlloc",
+          "new_api": null,
+          "old_text": "MemoryContextAlloc(TopMemoryContext, BLCKSZ)",
+          "new_text": null,
+          "old_line_content": "\t\tpageCopy = MemoryContextAlloc(TopMemoryContext, BLCKSZ);",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 1117,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(pageCopy, (char *) page, BLCKSZ)",
+          "new_text": null,
+          "old_line_content": "\tmemcpy(pageCopy, (char *) page, BLCKSZ);",
+          "new_line_content": "\t * call.  The point of palloc'ing here, rather than having a static char",
+          "content_same": false
+        },
+        {
+          "line": 1118,
+          "old_api": "pg_checksum_page",
+          "new_api": null,
+          "old_text": "pg_checksum_page(pageCopy, blkno)",
+          "new_text": null,
+          "old_line_content": "\t((PageHeader) pageCopy)->pd_checksum = pg_checksum_page(pageCopy, blkno);",
+          "new_line_content": "\t * array, is first to ensure adequate alignment for the checksumming code",
+          "content_same": false
+        },
+        {
+          "line": 1132,
+          "old_api": "DataChecksumsEnabled",
+          "new_api": null,
+          "old_text": "DataChecksumsEnabled()",
+          "new_text": null,
+          "old_line_content": "\tif (PageIsNew(page) || !DataChecksumsEnabled())",
+          "new_line_content": " * This must only be used when we know that no other process can be modifying",
+          "content_same": false
+        },
+        {
+          "line": 1135,
+          "old_api": "pg_checksum_page",
+          "new_api": null,
+          "old_text": "pg_checksum_page((char *) page, blkno)",
+          "new_text": null,
+          "old_line_content": "\t((PageHeader) page)->pd_checksum = pg_checksum_page((char *) page, blkno);",
+          "new_line_content": "void",
+          "content_same": false
+        },
+        {
+          "line": 142,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(WARNING,\n\t\t\t\t(ERRCODE_DATA_CORRUPTED,\n\t\t\t\t errmsg(\"page verification failed, calculated checksum %u but expected %u\",\n\t\t\t\t\t\tchecksum, p->pd_checksum)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(WARNING,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 144,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"page verification failed, calculated checksum %u but expected %u\",\n\t\t\t\t\t\tchecksum, p->pd_checksum)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"page verification failed, calculated checksum %u but expected %u\",",
+          "new_line_content": "\t * Throw a WARNING if the checksum fails, but only after we've checked for",
+          "content_same": false
+        },
+        {
+          "line": 660,
+          "old_api": "PageGetFreeSpace",
+          "new_api": null,
+          "old_text": "PageGetFreeSpace(page)",
+          "new_text": null,
+          "old_line_content": "\tspace = PageGetFreeSpace(page);",
+          "new_line_content": " * on the number of line pointers, we make this extra check.)",
+          "content_same": false
+        },
+        {
+          "line": 669,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": null,
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": null,
+          "old_line_content": "\t\tnline = PageGetMaxOffsetNumber(page);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 672,
+          "old_api": "PageHasFreeLinePointers",
+          "new_api": null,
+          "old_text": "PageHasFreeLinePointers((PageHeader) page)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (PageHasFreeLinePointers((PageHeader) page))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 678,
+          "old_api": "OffsetNumberNext",
+          "new_api": null,
+          "old_text": "OffsetNumberNext(offnum)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "new_line_content": "\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 680,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(page, offnum)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tItemId\t\tlp = PageGetItemId(page, offnum);",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        },
+        {
+          "line": 682,
+          "old_api": "ItemIdIsUsed",
+          "new_api": null,
+          "old_text": "ItemIdIsUsed(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\tif (!ItemIdIsUsed(lp))",
+          "new_line_content": "\t\t\t\t * Since this is just a hint, we must confirm that there is",
+          "content_same": false
+        },
+        {
+          "line": 201,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(PANIC,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(PANIC,",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 202,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t * Be wary about corrupted page pointers",
+          "content_same": false
+        },
+        {
+          "line": 203,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 212,
+          "old_api": "OffsetNumberIsValid",
+          "new_api": null,
+          "old_text": "OffsetNumberIsValid(offsetNumber)",
+          "new_text": null,
+          "old_line_content": "\tif (OffsetNumberIsValid(offsetNumber))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 220,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(itemId)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tif (ItemIdIsUsed(itemId) || ItemIdHasStorage(itemId))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 222,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(WARNING, \"will not overwrite a used ItemId\")",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\telog(WARNING, \"will not overwrite a used ItemId\");",
+          "new_line_content": "\t\tif ((flags & PAI_OVERWRITE) != 0)",
+          "content_same": false
+        },
+        {
+          "line": 735,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 736,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t * As with PageRepairFragmentation, paranoia seems justified.",
+          "content_same": false
+        },
+        {
+          "line": 737,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tphdr->pd_lower, phdr->pd_upper, phdr->pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 740,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": null,
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": null,
+          "old_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "new_line_content": "\t\tphdr->pd_upper > phdr->pd_special ||",
+          "content_same": false
+        },
+        {
+          "line": 748,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(tup)",
+          "new_text": null,
+          "old_line_content": "\tAssert(ItemIdHasStorage(tup));",
+          "new_line_content": "\tif ((int) offnum <= 0 || (int) offnum > nline)",
+          "content_same": false
+        },
+        {
+          "line": 237,
+          "old_api": "PageHasFreeLinePointers",
+          "new_api": null,
+          "old_text": "PageHasFreeLinePointers(phdr)",
+          "new_text": null,
+          "old_line_content": "\t\tif (PageHasFreeLinePointers(phdr))",
+          "new_line_content": "\t\t\t\tneedshuffle = true;\t\t/* need to move existing linp's */",
+          "content_same": false
+        },
+        {
+          "line": 750,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(tup)",
+          "new_text": null,
+          "old_line_content": "\toffset = ItemIdGetOffset(tup);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 753,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(size)",
+          "new_text": null,
+          "old_line_content": "\t\toffset != MAXALIGN(offset) || size != MAXALIGN(size))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 246,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(phdr, offsetNumber)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\titemId = PageGetItemId(phdr, offsetNumber);",
+          "new_line_content": "\t\t\t/*",
+          "content_same": false
+        },
+        {
+          "line": 247,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(itemId)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tif (!ItemIdIsUsed(itemId) && !ItemIdHasStorage(itemId))",
+          "new_line_content": "\t\t\t * Look for \"recyclable\" (unused) ItemId.  We check for no storage",
+          "content_same": false
+        },
+        {
+          "line": 769,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove((char *) &(phdr->pd_linp[offidx]),\n\t\t\t\t(char *) &(phdr->pd_linp[offidx + 1]),\n\t\t\t\tnbytes)",
+          "new_text": null,
+          "old_line_content": "\t\tmemmove((char *) &(phdr->pd_linp[offidx]),",
+          "new_line_content": "\t * PageGetItemId, because we are manipulating the _array_, not individual",
+          "content_same": false
+        },
+        {
+          "line": 269,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(WARNING, \"specified item offset is too large\")",
+          "new_text": null,
+          "old_line_content": "\t\telog(WARNING, \"specified item offset is too large\");",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 785,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(addr + size, addr, (int) (offset - phdr->pd_upper))",
+          "new_text": null,
+          "old_line_content": "\t\tmemmove(addr + size, addr, (int) (offset - phdr->pd_upper));",
+          "new_line_content": "\t * (and bcopy on some architectures SEGV's if asked to move zero bytes).",
+          "content_same": false
+        },
+        {
+          "line": 797,
+          "old_api": "PageIsEmpty",
+          "new_api": null,
+          "old_text": "PageIsEmpty(page)",
+          "new_text": null,
+          "old_line_content": "\tif (!PageIsEmpty(page))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "Max",
+          "new_api": null,
+          "old_text": "Max(phdr->pd_lower,\n\t\t\t\t\tSizeOfPageHeaderData + sizeof(ItemIdData) * offsetNumber)",
+          "new_text": null,
+          "old_line_content": "\t\tlower = Max(phdr->pd_lower,",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 806,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(ii)",
+          "new_text": null,
+          "old_line_content": "\t\t\tAssert(ItemIdHasStorage(ii));",
+          "new_line_content": "\t\tint\t\t\ti;",
+          "content_same": false
+        },
+        {
+          "line": 807,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(ii)",
+          "new_text": null,
+          "old_line_content": "\t\t\tif (ItemIdGetOffset(ii) <= offset)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(phdr, offsetNumber)",
+          "new_text": null,
+          "old_line_content": "\titemId = PageGetItemId(phdr, offsetNumber);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove(itemId + 1, itemId,\n\t\t\t\t(limit - offsetNumber) * sizeof(ItemIdData))",
+          "new_text": null,
+          "old_line_content": "\t\tmemmove(itemId + 1, itemId,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "VALGRIND_CHECK_MEM_IS_DEFINED",
+          "new_api": null,
+          "old_text": "VALGRIND_CHECK_MEM_IS_DEFINED(item, size)",
+          "new_text": null,
+          "old_line_content": "\tVALGRIND_CHECK_MEM_IS_DEFINED(item, size);",
+          "new_line_content": "\t * bytes; datumIsEqual() relies on this.  Testing here, along with the",
+          "content_same": false
+        },
+        {
+          "line": 328,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy((char *) page + upper, item, size)",
+          "new_text": null,
+          "old_line_content": "\tmemcpy((char *) page + upper, item, size);",
+          "new_line_content": "\t * Values of the \"name\" type retrieved via index-only scans may contain",
+          "content_same": false
+        },
+        {
+          "line": 841,
+          "old_api": "Assert",
+          "new_api": null,
+          "old_text": "Assert(nitems <= MaxIndexTuplesPerPage)",
+          "new_text": null,
+          "old_line_content": "\tAssert(nitems <= MaxIndexTuplesPerPage);",
+          "new_line_content": "\t\t\t\tnused;",
+          "content_same": false
+        },
+        {
+          "line": 854,
+          "old_api": "PageIndexTupleDelete",
+          "new_api": null,
+          "old_text": "PageIndexTupleDelete(page, itemnos[nitems])",
+          "new_text": null,
+          "old_line_content": "\t\t\tPageIndexTupleDelete(page, itemnos[nitems]);",
+          "new_line_content": "\t * previous deletions.",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": "PageAddItemExtended",
+          "new_api": null,
+          "old_text": "PageAddItemExtended(page, item, size, offsetNumber,\n\t\t\t\t\t\t\t   overwrite ? PAI_OVERWRITE : 0 |\n\t\t\t\t\t\t\t   is_heap ? PAI_IS_HEAP : 0)",
+          "new_text": null,
+          "old_line_content": "\treturn PageAddItemExtended(page, item, size, offsetNumber,",
+          "new_line_content": " *",
+          "content_same": false
+        },
+        {
+          "line": 865,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 866,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t * As with PageRepairFragmentation, paranoia seems justified.",
+          "content_same": false
+        },
+        {
+          "line": 867,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 868,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "new_line_content": "\tif (pd_lower < SizeOfPageHeaderData ||",
+          "content_same": false
+        },
+        {
+          "line": 876,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": null,
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": null,
+          "old_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "new_line_content": "\t\t\t\t\t\tpd_lower, pd_upper, pd_special)));",
+          "content_same": false
+        },
+        {
+          "line": 369,
+          "old_api": "PageGetPageSize",
+          "new_api": null,
+          "old_text": "PageGetPageSize(page)",
+          "new_text": null,
+          "old_line_content": "\tpageSize = PageGetPageSize(page);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 370,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(pageSize)",
+          "new_text": null,
+          "old_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "new_line_content": "Page",
+          "content_same": false
+        },
+        {
+          "line": 881,
+          "old_api": "OffsetNumberNext",
+          "new_api": null,
+          "old_text": "OffsetNumberNext(offnum)",
+          "new_text": null,
+          "old_line_content": "\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "new_line_content": "\t * still validity-checking.",
+          "content_same": false
+        },
+        {
+          "line": 884,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(lp)",
+          "new_text": null,
+          "old_line_content": "\t\tAssert(ItemIdHasStorage(lp));",
+          "new_line_content": "\titemidptr = itemidbase;",
+          "content_same": false
+        },
+        {
+          "line": 885,
+          "old_api": "ItemIdGetLength",
+          "new_api": null,
+          "old_text": "ItemIdGetLength(lp)",
+          "new_text": null,
+          "old_line_content": "\t\tsize = ItemIdGetLength(lp);",
+          "new_line_content": "\ttotallen = 0;",
+          "content_same": false
+        },
+        {
+          "line": 886,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(lp)",
+          "new_text": null,
+          "old_line_content": "\t\toffset = ItemIdGetOffset(lp);",
+          "new_line_content": "\tnused = 0;",
+          "content_same": false
+        },
+        {
+          "line": 889,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(offset)",
+          "new_text": null,
+          "old_line_content": "\t\t\toffset != MAXALIGN(offset))",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "PageGetPageSize",
+          "new_api": null,
+          "old_text": "PageGetPageSize(page)",
+          "new_text": null,
+          "old_line_content": "\tpageSize = PageGetPageSize(page);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(pageSize)",
+          "new_text": null,
+          "old_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "new_line_content": "Page",
+          "content_same": false
+        },
+        {
+          "line": 389,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy(temp, page, pageSize)",
+          "new_text": null,
+          "old_line_content": "\tmemcpy(temp, page, pageSize);",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 904,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(size)",
+          "new_text": null,
+          "old_line_content": "\t\t\titemidptr->alignedlen = MAXALIGN(size);",
+          "new_line_content": "\t\t\t/* skip item to be deleted */",
+          "content_same": false
+        },
+        {
+          "line": 914,
+          "old_api": "elog",
+          "new_api": null,
+          "old_text": "elog(ERROR, \"incorrect index offsets supplied\")",
+          "new_text": null,
+          "old_line_content": "\t\telog(ERROR, \"incorrect index offsets supplied\");",
+          "new_line_content": "\t\t\titemidptr++;",
+          "content_same": false
+        },
+        {
+          "line": 916,
+          "old_api": "Size) (pd_special - pd_lower)",
+          "new_api": null,
+          "old_text": "Size) (pd_special - pd_lower)",
+          "new_text": null,
+          "old_line_content": "\tif (totallen > (Size) (pd_special - pd_lower))",
+          "new_line_content": "\t\t}",
+          "content_same": false
+        },
+        {
+          "line": 917,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t}",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "PageGetPageSize",
+          "new_api": null,
+          "old_text": "PageGetPageSize(page)",
+          "new_text": null,
+          "old_line_content": "\tpageSize = PageGetPageSize(page);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": "palloc",
+          "new_api": null,
+          "old_text": "palloc(pageSize)",
+          "new_text": null,
+          "old_line_content": "\ttemp = (Page) palloc(pageSize);",
+          "new_line_content": "Page",
+          "content_same": false
+        },
+        {
+          "line": 918,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 409,
+          "old_api": "PageGetSpecialSize",
+          "new_api": null,
+          "old_text": "PageGetSpecialSize(page)",
+          "new_text": null,
+          "old_line_content": "\tPageInit(temp, pageSize, PageGetSpecialSize(page));",
+          "new_line_content": "{",
+          "content_same": false
+        },
+        {
+          "line": 410,
+          "old_api": "PageGetSpecialPointer",
+          "new_api": null,
+          "old_text": "PageGetSpecialPointer(temp)",
+          "new_text": null,
+          "old_line_content": "\tmemcpy(PageGetSpecialPointer(temp),",
+          "new_line_content": "\tSize\t\tpageSize;",
+          "content_same": false
+        },
+        {
+          "line": 411,
+          "old_api": "PageGetSpecialPointer",
+          "new_api": null,
+          "old_text": "PageGetSpecialPointer(page)",
+          "new_text": null,
+          "old_line_content": "\t\t   PageGetSpecialPointer(page),",
+          "new_line_content": "\tPage\t\ttemp;",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "PageGetSpecialSize",
+          "new_api": null,
+          "old_text": "PageGetSpecialSize(page)",
+          "new_text": null,
+          "old_line_content": "\t\t   PageGetSpecialSize(page));",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 919,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted item lengths: total %u, available space %u\",\n\t\t\t\t\t  (unsigned int) totallen, pd_special - pd_lower)",
+          "new_text": null,
+          "old_line_content": "\t\t\t   errmsg(\"corrupted item lengths: total %u, available space %u\",",
+          "new_line_content": "\t/* this will catch invalid or out-of-order itemnos[] */",
+          "content_same": false
+        },
+        {
+          "line": 930,
+          "old_api": "compactify_tuples",
+          "new_api": null,
+          "old_text": "compactify_tuples(itemidbase, nused, page)",
+          "new_text": null,
+          "old_line_content": "\tcompactify_tuples(itemidbase, nused, page);",
+          "new_line_content": "\t * Looks good. Overwrite the line pointers with the copy, from which we've",
+          "content_same": false
+        },
+        {
+          "line": 427,
+          "old_api": "PageGetPageSize",
+          "new_api": null,
+          "old_text": "PageGetPageSize(tempPage)",
+          "new_text": null,
+          "old_line_content": "\tpageSize = PageGetPageSize(tempPage);",
+          "new_line_content": " *\t\tand release the temporary page.",
+          "content_same": false
+        },
+        {
+          "line": 428,
+          "old_api": "memcpy",
+          "new_api": null,
+          "old_text": "memcpy((char *) oldPage, (char *) tempPage, pageSize)",
+          "new_text": null,
+          "old_line_content": "\tmemcpy((char *) oldPage, (char *) tempPage, pageSize);",
+          "new_line_content": " */",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": "pfree",
+          "new_api": null,
+          "old_text": "pfree(tempPage)",
+          "new_text": null,
+          "old_line_content": "\tpfree(tempPage);",
+          "new_line_content": "PageRestoreTempPage(Page tempPage, Page oldPage)",
+          "content_same": false
+        },
+        {
+          "line": 965,
+          "old_api": "MAXALIGN",
+          "new_api": null,
+          "old_text": "MAXALIGN(pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\tpd_special != MAXALIGN(pd_special))",
+          "new_line_content": "\t/*",
+          "content_same": false
+        },
+        {
+          "line": 966,
+          "old_api": "ereport",
+          "new_api": null,
+          "old_text": "ereport(ERROR,\n\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),\n\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)))",
+          "new_text": null,
+          "old_line_content": "\t\tereport(ERROR,",
+          "new_line_content": "\t * As with PageRepairFragmentation, paranoia seems justified.",
+          "content_same": false
+        },
+        {
+          "line": 967,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "\t */",
+          "content_same": false
+        },
+        {
+          "line": 968,
+          "old_api": "errmsg",
+          "new_api": null,
+          "old_text": "errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",\n\t\t\t\t\t\tpd_lower, pd_upper, pd_special)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t errmsg(\"corrupted page pointers: lower = %u, upper = %u, special = %u\",",
+          "new_line_content": "\tif (pd_lower < SizeOfPageHeaderData ||",
+          "content_same": false
+        },
+        {
+          "line": 976,
+          "old_api": "PageGetMaxOffsetNumber",
+          "new_api": null,
+          "old_text": "PageGetMaxOffsetNumber(page)",
+          "new_text": null,
+          "old_line_content": "\tnline = PageGetMaxOffsetNumber(page);",
+          "new_line_content": "\t\t\t\t\t\tpd_lower, pd_upper, pd_special)));",
+          "content_same": false
+        },
+        {
+          "line": 465,
+          "old_api": "qsort",
+          "new_api": null,
+          "old_text": "qsort((char *) itemidbase, nitems, sizeof(itemIdSortData),\n\t\t  itemoffcompare)",
+          "new_text": null,
+          "old_line_content": "\tqsort((char *) itemidbase, nitems, sizeof(itemIdSortData),",
+          "new_line_content": "compactify_tuples(itemIdSort itemidbase, int nitems, Page page)",
+          "content_same": false
+        },
+        {
+          "line": 979,
+          "old_api": "OffsetNumberNext",
+          "new_api": null,
+          "old_text": "OffsetNumberNext(offnum)",
+          "new_text": null,
+          "old_line_content": "\tfor (offnum = FirstOffsetNumber; offnum <= nline; offnum = OffsetNumberNext(offnum))",
+          "new_line_content": "\t * Scan the existing item pointer array and mark as unused those that are",
+          "content_same": false
+        },
+        {
+          "line": 985,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(page, offnum)",
+          "new_text": null,
+          "old_line_content": "\t\tlp = PageGetItemId(page, offnum);",
+          "new_line_content": "\tnextitm = 0;",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "PageGetItemId",
+          "new_api": null,
+          "old_text": "PageGetItemId(page, itemidptr->offsetindex + 1)",
+          "new_text": null,
+          "old_line_content": "\t\tlp = PageGetItemId(page, itemidptr->offsetindex + 1);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 987,
+          "old_api": "ItemIdGetLength",
+          "new_api": null,
+          "old_text": "ItemIdGetLength(lp)",
+          "new_text": null,
+          "old_line_content": "\t\titemlen = ItemIdGetLength(lp);",
+          "new_line_content": "\t{",
+          "content_same": false
+        },
+        {
+          "line": 476,
+          "old_api": "memmove",
+          "new_api": null,
+          "old_text": "memmove((char *) page + upper,\n\t\t\t\t(char *) page + itemidptr->itemoff,\n\t\t\t\titemidptr->alignedlen)",
+          "new_text": null,
+          "old_line_content": "\t\tmemmove((char *) page + upper,",
+          "new_line_content": "\tfor (i = 0; i < nitems; i++)",
+          "content_same": false
+        },
+        {
+          "line": 988,
+          "old_api": "ItemIdGetOffset",
+          "new_api": null,
+          "old_text": "ItemIdGetOffset(lp)",
+          "new_text": null,
+          "old_line_content": "\t\toffset = ItemIdGetOffset(lp);",
+          "new_line_content": "\t\tItemId\t\tlp;",
+          "content_same": false
+        },
+        {
+          "line": 990,
+          "old_api": "ItemIdIsUsed",
+          "new_api": null,
+          "old_text": "ItemIdIsUsed(lp)",
+          "new_text": null,
+          "old_line_content": "\t\tif (ItemIdIsUsed(lp))",
+          "new_line_content": "\t\tItemOffset\toffset;",
+          "content_same": false
+        },
+        {
+          "line": 996,
+          "old_api": "errcode",
+          "new_api": null,
+          "old_text": "errcode(ERRCODE_DATA_CORRUPTED)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\t\t\t(errcode(ERRCODE_DATA_CORRUPTED),",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1006,
+          "old_api": "ItemIdHasStorage",
+          "new_api": null,
+          "old_text": "ItemIdHasStorage(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\telse if (ItemIdHasStorage(lp))",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 1014,
+          "old_api": "ItemIdSetUnused",
+          "new_api": null,
+          "old_text": "ItemIdSetUnused(lp)",
+          "new_text": null,
+          "old_line_content": "\t\t\t\tItemIdSetUnused(lp);",
+          "new_line_content": "\t\t\t{",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 35,
+      "total_additions": 114,
+      "total_deletions": 113,
+      "total_api_changes": 262
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 11,
+        "api_related_lines": 262,
+        "non_api_lines": 10,
+        "non_api_line_numbers": [
+          128,
+          130,
+          131,
+          84,
+          121,
+          122,
+          123,
+          124,
+          125,
+          127
+        ]
+      }
+    },
+    "api_calls_before": 171,
+    "api_calls_after": 172,
+    "diff_info": {
+      "added_lines": 11,
+      "removed_lines": 4,
+      "total_diff_lines": 35
+    }
+  }
+}

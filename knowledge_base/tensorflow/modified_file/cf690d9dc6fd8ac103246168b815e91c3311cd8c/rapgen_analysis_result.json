@@ -1,0 +1,412 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/cf690d9dc6fd8ac103246168b815e91c3311cd8c",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/cf690d9dc6fd8ac103246168b815e91c3311cd8c/before.cc",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/cf690d9dc6fd8ac103246168b815e91c3311cd8c/after.cc",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/tensorflow/modified_file/cf690d9dc6fd8ac103246168b815e91c3311cd8c/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": true,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 81,
+          "old_api": "getTypes",
+          "new_api": "size",
+          "old_text": "tuple_type.getTypes()",
+          "new_text": "types.size()",
+          "old_line_content": "      auto types = tuple_type.getTypes();",
+          "new_line_content": "      llvm::SmallVector<mlir::Attribute, types.size()> v;",
+          "content_same": false
+        },
+        {
+          "line": 84,
+          "old_api": "GetLayout",
+          "new_api": "failure",
+          "old_text": "GetLayout(t, rewriter)",
+          "new_text": "failure()",
+          "old_line_content": "        auto layout = GetLayout(t, rewriter);",
+          "new_line_content": "        if (failed(layout)) return failure();",
+          "content_same": false
+        },
+        {
+          "line": 85,
+          "old_api": "failure",
+          "new_api": "getValue",
+          "old_text": "failure()",
+          "new_text": "layout.getValue()",
+          "old_line_content": "        if (failed(layout)) return failure();",
+          "new_line_content": "        v.push_back(layout.getValue());",
+          "content_same": false
+        },
+        {
+          "line": 89,
+          "old_api": "getArrayAttr",
+          "new_api": "type.dyn_cast<RankedTensorType>()",
+          "old_text": "rewriter.getArrayAttr(shape)",
+          "new_text": "type.dyn_cast<RankedTensorType>()",
+          "old_line_content": "      return rewriter.getArrayAttr(shape);",
+          "new_line_content": "    } else if (auto t = type.dyn_cast<RankedTensorType>()) {",
+          "content_same": false
+        },
+        {
+          "line": 90,
+          "old_api": "type.dyn_cast<RankedTensorType>()",
+          "new_api": "failure",
+          "old_text": "type.dyn_cast<RankedTensorType>()",
+          "new_text": "failure()",
+          "old_line_content": "    } else if (auto t = type.dyn_cast<RankedTensorType>()) {",
+          "new_line_content": "      if (!t.hasStaticShape()) return failure();",
+          "content_same": false
+        },
+        {
+          "line": 91,
+          "old_api": "failure",
+          "new_api": "GetTPUInfeedLayoutFromAPI",
+          "old_text": "failure()",
+          "new_text": "GetTPUInfeedLayoutFromAPI(t)",
+          "old_line_content": "      if (!t.hasStaticShape()) return failure();",
+          "new_line_content": "      auto layout = GetTPUInfeedLayoutFromAPI(t);",
+          "content_same": false
+        },
+        {
+          "line": 94,
+          "old_api": "succeeded",
+          "new_api": "getValue",
+          "old_text": "succeeded(layout)",
+          "new_text": "layout.getValue()",
+          "old_line_content": "      if (succeeded(layout)) {",
+          "new_line_content": "        minor_to_major = layout.getValue();",
+          "content_same": false
+        },
+        {
+          "line": 107,
+          "old_api": "getRank",
+          "new_api": "end",
+          "old_text": "t.getRank()",
+          "new_text": "minor_to_major.end()",
+          "old_line_content": "        minor_to_major.resize(t.getRank());",
+          "new_line_content": "        std::iota(minor_to_major.begin(), minor_to_major.end(), 0);",
+          "content_same": false
+        },
+        {
+          "line": 128,
+          "old_api": "getContext",
+          "new_api": "getType",
+          "old_text": "op.getContext()",
+          "new_text": "op.getType()",
+          "old_line_content": "    OpBuilder builder(op.getContext());",
+          "new_line_content": "    auto layout = GetLayout(op.getType(), builder);",
+          "content_same": false
+        },
+        {
+          "line": 129,
+          "old_api": "getType",
+          "new_api": "failed",
+          "old_text": "op.getType()",
+          "new_text": "failed(layout)",
+          "old_line_content": "    auto layout = GetLayout(op.getType(), builder);",
+          "new_line_content": "    if (failed(layout)) return;",
+          "content_same": false
+        },
+        {
+          "line": 130,
+          "old_api": "failed",
+          "new_api": "getValue",
+          "old_text": "failed(layout)",
+          "new_text": "layout.getValue()",
+          "old_line_content": "    if (failed(layout)) return;",
+          "new_line_content": "    op->setAttr(\"layout\", layout.getValue());",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 133,
+          "old_api": null,
+          "new_api": "walk",
+          "old_text": null,
+          "new_text": "getFunction().walk(runOnInfeedOp)",
+          "old_line_content": "",
+          "new_line_content": "  void runOnFunction() override { getFunction().walk(runOnInfeedOp); }",
+          "content_same": false
+        },
+        {
+          "line": 106,
+          "old_api": null,
+          "new_api": "getRank",
+          "old_text": null,
+          "new_text": "t.getRank()",
+          "old_line_content": "         */",
+          "new_line_content": "        minor_to_major.resize(t.getRank());",
+          "content_same": false
+        },
+        {
+          "line": 140,
+          "old_api": null,
+          "new_api": "std::make_unique<AdjustLayout>()",
+          "old_text": null,
+          "new_text": "std::make_unique<AdjustLayout>()",
+          "old_line_content": "std::unique_ptr<Pass> CreateAdjustLayoutPass() {",
+          "new_line_content": "  return std::make_unique<AdjustLayout>();",
+          "content_same": false
+        },
+        {
+          "line": 110,
+          "old_api": null,
+          "new_api": "getDimSize",
+          "old_text": null,
+          "new_text": "t.getDimSize(a)",
+          "old_line_content": "                  [=](int64_t a, int64_t b) {",
+          "new_line_content": "                    int64_t da = t.getDimSize(a);",
+          "content_same": false
+        },
+        {
+          "line": 80,
+          "old_api": null,
+          "new_api": "getTypes",
+          "old_text": null,
+          "new_text": "tuple_type.getTypes()",
+          "old_line_content": "      std::vector<mlir::Attribute> v;",
+          "new_line_content": "      auto types = tuple_type.getTypes();",
+          "content_same": false
+        },
+        {
+          "line": 83,
+          "old_api": null,
+          "new_api": "GetLayout",
+          "old_text": null,
+          "new_text": "GetLayout(t, rewriter)",
+          "old_line_content": "      for (const mlir::Type &t : types) {",
+          "new_line_content": "        auto layout = GetLayout(t, rewriter);",
+          "content_same": false
+        },
+        {
+          "line": 116,
+          "old_api": null,
+          "new_api": "size",
+          "old_text": null,
+          "new_text": "minor_to_major.size()",
+          "old_line_content": "      std::vector<Attribute> elements;",
+          "new_line_content": "      elements.reserve(minor_to_major.size());",
+          "content_same": false
+        },
+        {
+          "line": 118,
+          "old_api": null,
+          "new_api": "getIntegerAttr",
+          "old_text": null,
+          "new_text": "rewriter.getIntegerAttr(i64_type, e)",
+          "old_line_content": "      for (auto e : minor_to_major) {",
+          "new_line_content": "        elements.push_back(rewriter.getIntegerAttr(i64_type, e));",
+          "content_same": false
+        },
+        {
+          "line": 88,
+          "old_api": null,
+          "new_api": "getArrayAttr",
+          "old_text": null,
+          "new_text": "rewriter.getArrayAttr(shape)",
+          "old_line_content": "      ArrayRef<Attribute> shape(v);",
+          "new_line_content": "      return rewriter.getArrayAttr(shape);",
+          "content_same": false
+        },
+        {
+          "line": 122,
+          "old_api": null,
+          "new_api": "getUnitAttr",
+          "old_text": null,
+          "new_text": "rewriter.getUnitAttr()",
+          "old_line_content": "    } else {",
+          "new_line_content": "      return rewriter.getUnitAttr();  // e.g. tokens",
+          "content_same": false
+        },
+        {
+          "line": 120,
+          "old_api": null,
+          "new_api": "getArrayAttr",
+          "old_text": null,
+          "new_text": "rewriter.getArrayAttr(elements)",
+          "old_line_content": "      }",
+          "new_line_content": "      return rewriter.getArrayAttr(elements);",
+          "content_same": false
+        },
+        {
+          "line": 93,
+          "old_api": null,
+          "new_api": "succeeded",
+          "old_text": null,
+          "new_text": "succeeded(layout)",
+          "old_line_content": "      std::vector<int64_t> minor_to_major;",
+          "new_line_content": "      if (succeeded(layout)) {",
+          "content_same": false
+        },
+        {
+          "line": 127,
+          "old_api": null,
+          "new_api": "getContext",
+          "old_text": null,
+          "new_text": "op.getContext()",
+          "old_line_content": "  static void runOnInfeedOp(::mlir::mhlo::InfeedOp op) {",
+          "new_line_content": "    OpBuilder builder(op.getContext());",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 131,
+          "old_api": "getValue",
+          "new_api": null,
+          "old_text": "layout.getValue()",
+          "new_text": null,
+          "old_line_content": "    op->setAttr(\"layout\", layout.getValue());",
+          "new_line_content": "  }",
+          "content_same": false
+        },
+        {
+          "line": 134,
+          "old_api": "walk",
+          "new_api": null,
+          "old_text": "getFunction().walk(runOnInfeedOp)",
+          "new_text": null,
+          "old_line_content": "  void runOnFunction() override { getFunction().walk(runOnInfeedOp); }",
+          "new_line_content": "};",
+          "content_same": false
+        },
+        {
+          "line": 141,
+          "old_api": "std::make_unique<AdjustLayout>()",
+          "new_api": null,
+          "old_text": "std::make_unique<AdjustLayout>()",
+          "new_text": null,
+          "old_line_content": "  return std::make_unique<AdjustLayout>();",
+          "new_line_content": "}",
+          "content_same": false
+        },
+        {
+          "line": 109,
+          "old_api": "end",
+          "new_api": null,
+          "old_text": "minor_to_major.end()",
+          "new_text": null,
+          "old_line_content": "        std::sort(minor_to_major.begin(), minor_to_major.end(),",
+          "new_line_content": "                  [=](int64_t a, int64_t b) {",
+          "content_same": false
+        },
+        {
+          "line": 112,
+          "old_api": "getDimSize",
+          "new_api": null,
+          "old_text": "t.getDimSize(b)",
+          "new_text": null,
+          "old_line_content": "                    int64_t db = t.getDimSize(b);",
+          "new_line_content": "                    return da > db || (da == db && a > b);",
+          "content_same": false
+        },
+        {
+          "line": 82,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "types.size()",
+          "new_text": null,
+          "old_line_content": "      v.reserve(types.size());",
+          "new_line_content": "      for (const mlir::Type &t : types) {",
+          "content_same": false
+        },
+        {
+          "line": 117,
+          "old_api": "size",
+          "new_api": null,
+          "old_text": "minor_to_major.size()",
+          "new_text": null,
+          "old_line_content": "      elements.reserve(minor_to_major.size());",
+          "new_line_content": "      for (auto e : minor_to_major) {",
+          "content_same": false
+        },
+        {
+          "line": 86,
+          "old_api": "getValue",
+          "new_api": null,
+          "old_text": "layout.getValue()",
+          "new_text": null,
+          "old_line_content": "        v.push_back(layout.getValue());",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 119,
+          "old_api": "getIntegerAttr",
+          "new_api": null,
+          "old_text": "rewriter.getIntegerAttr(i64_type, e)",
+          "new_text": null,
+          "old_line_content": "        elements.push_back(rewriter.getIntegerAttr(i64_type, e));",
+          "new_line_content": "      }",
+          "content_same": false
+        },
+        {
+          "line": 121,
+          "old_api": "getArrayAttr",
+          "new_api": null,
+          "old_text": "rewriter.getArrayAttr(elements)",
+          "new_text": null,
+          "old_line_content": "      return rewriter.getArrayAttr(elements);",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 123,
+          "old_api": "getUnitAttr",
+          "new_api": null,
+          "old_text": "rewriter.getUnitAttr()",
+          "new_text": null,
+          "old_line_content": "      return rewriter.getUnitAttr();  // e.g. tokens",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 92,
+          "old_api": "GetTPUInfeedLayoutFromAPI",
+          "new_api": null,
+          "old_text": "GetTPUInfeedLayoutFromAPI(t)",
+          "new_text": null,
+          "old_line_content": "      auto layout = GetTPUInfeedLayoutFromAPI(t);",
+          "new_line_content": "      std::vector<int64_t> minor_to_major;",
+          "content_same": false
+        },
+        {
+          "line": 95,
+          "old_api": "getValue",
+          "new_api": null,
+          "old_text": "layout.getValue()",
+          "new_text": null,
+          "old_line_content": "        minor_to_major = layout.getValue();",
+          "new_line_content": "      } else {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 11,
+      "total_additions": 13,
+      "total_deletions": 13,
+      "total_api_changes": 37
+    },
+    "non_api_changes": {
+      "has_non_api_changes": false,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 37,
+        "non_api_lines": 0,
+        "non_api_line_numbers": []
+      }
+    },
+    "api_calls_before": 58,
+    "api_calls_after": 57,
+    "diff_info": {
+      "added_lines": 1,
+      "removed_lines": 2,
+      "total_diff_lines": 16
+    }
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/17054c85c2dee0e84cbee7ef28d7bae7d0b1630e",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/17054c85c2dee0e84cbee7ef28d7bae7d0b1630e/before.h",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/17054c85c2dee0e84cbee7ef28d7bae7d0b1630e/after.h",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/folly/modified_file/17054c85c2dee0e84cbee7ef28d7bae7d0b1630e/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 574,
+          "old_api": "instance",
+          "new_api": "getOrInvalid",
+          "old_text": "instance()",
+          "new_text": "ent->getOrInvalid()",
+          "old_line_content": "    auto& inst = instance();",
+          "new_line_content": "    auto id = ent->getOrInvalid();",
+          "content_same": false
+        },
+        {
+          "line": 575,
+          "old_api": "threadEntry_",
+          "new_api": "instance",
+          "old_text": "inst.threadEntry_()",
+          "new_text": "instance()",
+          "old_line_content": "    threadEntry = inst.threadEntry_();",
+          "new_line_content": "    auto& inst = instance();",
+          "content_same": false
+        },
+        {
+          "line": 576,
+          "old_api": "getElementsCapacity",
+          "new_api": "threadEntry_",
+          "old_text": "threadEntry->getElementsCapacity()",
+          "new_text": "inst.threadEntry_()",
+          "old_line_content": "    if (FOLLY_UNLIKELY(threadEntry->getElementsCapacity() <= id)) {",
+          "new_line_content": "    threadEntry = inst.threadEntry_();",
+          "content_same": false
+        },
+        {
+          "line": 577,
+          "old_api": "reserve",
+          "new_api": "getElementsCapacity",
+          "old_text": "inst.reserve(ent)",
+          "new_text": "threadEntry->getElementsCapacity()",
+          "old_line_content": "      inst.reserve(ent);",
+          "new_line_content": "    if (FOLLY_UNLIKELY(threadEntry->getElementsCapacity() <= id)) {",
+          "content_same": false
+        },
+        {
+          "line": 578,
+          "old_api": "getOrInvalid",
+          "new_api": "reserve",
+          "old_text": "ent->getOrInvalid()",
+          "new_text": "inst.reserve(ent)",
+          "old_line_content": "      id = ent->getOrInvalid();",
+          "new_line_content": "      inst.reserve(ent);",
+          "content_same": false
+        },
+        {
+          "line": 581,
+          "old_api": "assert",
+          "new_api": "getElementsCapacity",
+          "old_text": "assert(capacity > id)",
+          "new_text": "threadEntry->getElementsCapacity()",
+          "old_line_content": "    assert(capacity > id);",
+          "new_line_content": "    capacity = threadEntry->getElementsCapacity();",
+          "content_same": false
+        },
+        {
+          "line": 603,
+          "old_api": "folly::getOSThreadID()",
+          "new_api": "std::this_thread::get_id()",
+          "old_text": "folly::getOSThreadID()",
+          "new_text": "std::this_thread::get_id()",
+          "old_line_content": "      threadEntry->tid_os = folly::getOSThreadID();",
+          "new_line_content": "      threadEntry->tid() = std::this_thread::get_id();",
+          "content_same": false
+        },
+        {
+          "line": 612,
+          "old_api": "checkPosixError",
+          "new_api": "pthread_setspecific",
+          "old_text": "checkPosixError(ret, \"pthread_setspecific failed\")",
+          "new_text": "pthread_setspecific(key, threadEntry)",
+          "old_line_content": "      checkPosixError(ret, \"pthread_setspecific failed\");",
+          "new_line_content": "      int ret = pthread_setspecific(key, threadEntry);",
+          "content_same": false
+        },
+        {
+          "line": 626,
+          "old_api": "threadEntry_",
+          "new_api": "instance",
+          "old_text": "meta.threadEntry_()",
+          "new_text": "instance()",
+          "old_line_content": "    auto threadEntry = meta.threadEntry_();",
+          "new_line_content": "    auto& meta = instance();",
+          "content_same": false
+        },
+        {
+          "line": 636,
+          "old_api": "contains",
+          "new_api": "wlock",
+          "old_text": "wlockedSet->contains(threadEntry)",
+          "new_text": "meta.allId2ThreadEntrySets_[id].wlock()",
+          "old_line_content": "      if (wlockedSet->contains(threadEntry)) {",
+          "new_line_content": "      auto wlockedSet = meta.allId2ThreadEntrySets_[id].wlock();",
+          "content_same": false
+        },
+        {
+          "line": 637,
+          "old_api": "DCHECK",
+          "new_api": "contains",
+          "old_text": "DCHECK(threadEntry->elements[id].isLinked)",
+          "new_text": "wlockedSet->contains(threadEntry)",
+          "old_line_content": "        DCHECK(threadEntry->elements[id].isLinked);",
+          "new_line_content": "      if (wlockedSet->contains(threadEntry)) {",
+          "content_same": false
+        },
+        {
+          "line": 638,
+          "old_api": "clear",
+          "new_api": "DCHECK",
+          "old_text": "wlockedSet->clear()",
+          "new_text": "DCHECK(threadEntry->elements[id].isLinked)",
+          "old_line_content": "        wlockedSet->clear();",
+          "new_line_content": "        DCHECK(threadEntry->elements[id].isLinked);",
+          "content_same": false
+        },
+        {
+          "line": 639,
+          "old_api": "insert",
+          "new_api": "clear",
+          "old_text": "wlockedSet->insert(threadEntry)",
+          "new_text": "wlockedSet->clear()",
+          "old_line_content": "        wlockedSet->insert(threadEntry);",
+          "new_line_content": "        wlockedSet->clear();",
+          "content_same": false
+        },
+        {
+          "line": 645,
+          "old_api": "DCHECK",
+          "new_api": "getElementsCapacity",
+          "old_text": "DCHECK(!threadEntry->elements[id].isLinked)",
+          "new_text": "threadEntry->getElementsCapacity()",
+          "old_line_content": "          DCHECK(!threadEntry->elements[id].isLinked);",
+          "new_line_content": "        if (id < threadEntry->getElementsCapacity()) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 640,
+          "old_api": null,
+          "new_api": "insert",
+          "old_text": null,
+          "new_text": "wlockedSet->insert(threadEntry)",
+          "old_line_content": "      } else {",
+          "new_line_content": "        wlockedSet->insert(threadEntry);",
+          "content_same": false
+        },
+        {
+          "line": 579,
+          "old_api": null,
+          "new_api": "getOrInvalid",
+          "old_text": null,
+          "new_text": "ent->getOrInvalid()",
+          "old_line_content": "    }",
+          "new_line_content": "      id = ent->getOrInvalid();",
+          "content_same": false
+        },
+        {
+          "line": 613,
+          "old_api": null,
+          "new_api": "checkPosixError",
+          "old_text": null,
+          "new_text": "checkPosixError(ret, \"pthread_setspecific failed\")",
+          "old_line_content": "    }",
+          "new_line_content": "      checkPosixError(ret, \"pthread_setspecific failed\");",
+          "content_same": false
+        },
+        {
+          "line": 582,
+          "old_api": null,
+          "new_api": "assert",
+          "old_text": null,
+          "new_text": "assert(capacity > id)",
+          "old_line_content": "  }",
+          "new_line_content": "    assert(capacity > id);",
+          "content_same": false
+        },
+        {
+          "line": 646,
+          "old_api": null,
+          "new_api": "DCHECK",
+          "old_text": null,
+          "new_text": "DCHECK(!threadEntry->elements[id].isLinked)",
+          "old_line_content": "        }",
+          "new_line_content": "          DCHECK(!threadEntry->elements[id].isLinked);",
+          "content_same": false
+        },
+        {
+          "line": 648,
+          "old_api": null,
+          "new_api": "clear",
+          "old_text": null,
+          "new_text": "wlockedSet->clear()",
+          "old_line_content": "      }",
+          "new_line_content": "        wlockedSet->clear();",
+          "content_same": false
+        },
+        {
+          "line": 586,
+          "old_api": null,
+          "new_api": "instance",
+          "old_text": null,
+          "new_text": "instance()",
+          "old_line_content": "    auto key = meta.pthreadKey_;",
+          "new_line_content": "    auto& meta = instance();",
+          "content_same": false
+        },
+        {
+          "line": 619,
+          "old_api": null,
+          "new_api": "try_lock",
+          "old_text": null,
+          "new_text": "instance().lock_.try_lock()",
+          "old_line_content": "  }",
+          "new_line_content": "    return instance().lock_.try_lock(); // Make sure it's created",
+          "content_same": false
+        },
+        {
+          "line": 651,
+          "old_api": null,
+          "new_api": "unlock",
+          "old_text": null,
+          "new_text": "instance().lock_.unlock()",
+          "old_line_content": "  }",
+          "new_line_content": "    instance().lock_.unlock();",
+          "content_same": false
+        },
+        {
+          "line": 589,
+          "old_api": null,
+          "new_api": "pthread_getspecific",
+          "old_text": null,
+          "new_text": "pthread_getspecific(key)",
+          "old_line_content": "    if (!threadEntry) {",
+          "new_line_content": "        static_cast<ThreadEntry*>(pthread_getspecific(key));",
+          "content_same": false
+        },
+        {
+          "line": 622,
+          "old_api": null,
+          "new_api": "unlock",
+          "old_text": null,
+          "new_text": "instance().lock_.unlock()",
+          "old_line_content": "",
+          "new_line_content": "  static void onForkParent() { instance().lock_.unlock(); }",
+          "content_same": false
+        },
+        {
+          "line": 591,
+          "old_api": null,
+          "new_api": "StaticMeta::getThreadEntryList()",
+          "old_text": null,
+          "new_text": "StaticMeta::getThreadEntryList()",
+          "old_line_content": "      threadEntry = new ThreadEntry();",
+          "new_line_content": "      ThreadEntryList* threadEntryList = StaticMeta::getThreadEntryList();",
+          "content_same": false
+        },
+        {
+          "line": 627,
+          "old_api": null,
+          "new_api": "threadEntry_",
+          "old_text": null,
+          "new_text": "meta.threadEntry_()",
+          "old_line_content": "    // Loop through allId2ThreadEntrySets_; Only keep ThreadEntry* in the map",
+          "new_line_content": "    auto threadEntry = meta.threadEntry_();",
+          "content_same": false
+        },
+        {
+          "line": 634,
+          "old_api": null,
+          "new_api": "load",
+          "old_text": null,
+          "new_text": "meta.nextId_.load()",
+          "old_line_content": "    for (uint32_t id = 0; id < maxId; ++id) {",
+          "new_line_content": "    uint32_t maxId = meta.nextId_.load();",
+          "content_same": false
+        },
+        {
+          "line": 604,
+          "old_api": null,
+          "new_api": "folly::getOSThreadID()",
+          "old_text": null,
+          "new_text": "folly::getOSThreadID()",
+          "old_line_content": "",
+          "new_line_content": "      threadEntry->tid_os = folly::getOSThreadID();",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 611,
+          "old_api": "pthread_setspecific",
+          "new_api": null,
+          "old_text": "pthread_setspecific(key, threadEntry)",
+          "new_text": null,
+          "old_line_content": "      int ret = pthread_setspecific(key, threadEntry);",
+          "new_line_content": "      threadEntry->meta = &meta;",
+          "content_same": false
+        },
+        {
+          "line": 580,
+          "old_api": "getElementsCapacity",
+          "new_api": null,
+          "old_text": "threadEntry->getElementsCapacity()",
+          "new_text": null,
+          "old_line_content": "    capacity = threadEntry->getElementsCapacity();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 644,
+          "old_api": "getElementsCapacity",
+          "new_api": null,
+          "old_text": "threadEntry->getElementsCapacity()",
+          "new_text": null,
+          "old_line_content": "        if (id < threadEntry->getElementsCapacity()) {",
+          "new_line_content": "        // The rest can be cleared regardless.",
+          "content_same": false
+        },
+        {
+          "line": 647,
+          "old_api": "clear",
+          "new_api": null,
+          "old_text": "wlockedSet->clear()",
+          "new_text": null,
+          "old_line_content": "        wlockedSet->clear();",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 585,
+          "old_api": "instance",
+          "new_api": null,
+          "old_text": "instance()",
+          "new_text": null,
+          "old_line_content": "    auto& meta = instance();",
+          "new_line_content": "  FOLLY_EXPORT FOLLY_NOINLINE static ThreadEntry* getThreadEntrySlow() {",
+          "content_same": false
+        },
+        {
+          "line": 618,
+          "old_api": "try_lock",
+          "new_api": null,
+          "old_text": "instance().lock_.try_lock()",
+          "new_text": null,
+          "old_line_content": "    return instance().lock_.try_lock(); // Make sure it's created",
+          "new_line_content": "  static bool preFork() {",
+          "content_same": false
+        },
+        {
+          "line": 650,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "instance().lock_.unlock()",
+          "new_text": null,
+          "old_line_content": "    instance().lock_.unlock();",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 588,
+          "old_api": "pthread_getspecific",
+          "new_api": null,
+          "old_text": "pthread_getspecific(key)",
+          "new_text": null,
+          "old_line_content": "        static_cast<ThreadEntry*>(pthread_getspecific(key));",
+          "new_line_content": "    ThreadEntry* threadEntry =",
+          "content_same": false
+        },
+        {
+          "line": 621,
+          "old_api": "unlock",
+          "new_api": null,
+          "old_text": "instance().lock_.unlock()",
+          "new_text": null,
+          "old_line_content": "  static void onForkParent() { instance().lock_.unlock(); }",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 590,
+          "old_api": "StaticMeta::getThreadEntryList()",
+          "new_api": null,
+          "old_text": "StaticMeta::getThreadEntryList()",
+          "new_text": null,
+          "old_line_content": "      ThreadEntryList* threadEntryList = StaticMeta::getThreadEntryList();",
+          "new_line_content": "    if (!threadEntry) {",
+          "content_same": false
+        },
+        {
+          "line": 625,
+          "old_api": "instance",
+          "new_api": null,
+          "old_text": "instance()",
+          "new_text": null,
+          "old_line_content": "    auto& meta = instance();",
+          "new_line_content": "    // only the current thread survives",
+          "content_same": false
+        },
+        {
+          "line": 633,
+          "old_api": "load",
+          "new_api": null,
+          "old_text": "meta.nextId_.load()",
+          "new_text": null,
+          "old_line_content": "    uint32_t maxId = meta.nextId_.load();",
+          "new_line_content": "    // can be acquired on the threadEntrySet.",
+          "content_same": false
+        },
+        {
+          "line": 602,
+          "old_api": "std::this_thread::get_id()",
+          "new_api": null,
+          "old_text": "std::this_thread::get_id()",
+          "new_text": null,
+          "old_line_content": "      threadEntry->tid() = std::this_thread::get_id();",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 635,
+          "old_api": "wlock",
+          "new_api": null,
+          "old_text": "meta.allId2ThreadEntrySets_[id].wlock()",
+          "new_text": null,
+          "old_line_content": "      auto wlockedSet = meta.allId2ThreadEntrySets_[id].wlock();",
+          "new_line_content": "    for (uint32_t id = 0; id < maxId; ++id) {",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 14,
+      "total_additions": 15,
+      "total_deletions": 14,
+      "total_api_changes": 43
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 3,
+        "api_related_lines": 43,
+        "non_api_lines": 2,
+        "non_api_line_numbers": [
+          573,
+          567
+        ]
+      }
+    },
+    "api_calls_before": 119,
+    "api_calls_after": 120,
+    "diff_info": {
+      "added_lines": 3,
+      "removed_lines": 2,
+      "total_diff_lines": 22
+    }
+  }
+}

@@ -1,0 +1,1213 @@
+{
+  "status": "completed",
+  "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/15f1cc09a406cf6296818d475a256902235eefc4",
+  "file_info": {
+    "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/15f1cc09a406cf6296818d475a256902235eefc4/before.c",
+    "after_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/15f1cc09a406cf6296818d475a256902235eefc4/after.c",
+    "diff_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/FFmpeg/modified_file/15f1cc09a406cf6296818d475a256902235eefc4/diff.txt"
+  },
+  "semgrep_analysis": {
+    "is_api_change": false,
+    "api_changes": {
+      "replacements": [
+        {
+          "line": 346,
+          "old_api": "av_log",
+          "new_api": "bitstream_read_bit",
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid subframe padding\\n\")",
+          "new_text": "bitstream_read_bit(&s->bc)",
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid subframe padding\\n\");",
+          "new_line_content": "    if (bitstream_read_bit(&s->bc)) {",
+          "content_same": false
+        },
+        {
+          "line": 352,
+          "old_api": "bitstream_bits_left",
+          "new_api": "bitstream_read_bit",
+          "old_text": "bitstream_bits_left(&s->bc)",
+          "new_text": "bitstream_read_bit(&s->bc)",
+          "old_line_content": "        int left = bitstream_bits_left(&s->bc);",
+          "new_line_content": "    if (bitstream_read_bit(&s->bc)) {",
+          "content_same": false
+        },
+        {
+          "line": 357,
+          "old_api": "av_log",
+          "new_api": "bitstream_peek",
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR,\n                   \"Invalid number of wasted bits > available bits (%d) - left=%d\\n\",\n                   bps, left)",
+          "new_text": "bitstream_peek(&s->bc, bps)",
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR,",
+          "new_line_content": "                           !bitstream_peek(&s->bc, bps)) {",
+          "content_same": false
+        },
+        {
+          "line": 406,
+          "old_api": "av_log",
+          "new_api": "ff_flac_decode_frame_header",
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid frame header\\n\")",
+          "new_text": "ff_flac_decode_frame_header(s->avctx, bc, &fi, 0)",
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid frame header\\n\");",
+          "new_line_content": "    if ((ret = ff_flac_decode_frame_header(s->avctx, bc, &fi, 0)) < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 413,
+          "old_api": "allocate_buffers",
+          "new_api": "ff_flac_set_channel_layout",
+          "old_text": "allocate_buffers(s)",
+          "new_text": "ff_flac_set_channel_layout(s->avctx)",
+          "old_line_content": "        ret = allocate_buffers(s);",
+          "new_line_content": "        ff_flac_set_channel_layout(s->avctx);",
+          "content_same": false
+        },
+        {
+          "line": 508,
+          "old_api": "parse_streaminfo",
+          "new_api": "MKBETAG",
+          "old_text": "parse_streaminfo(s, buf, buf_size)",
+          "new_text": "MKBETAG('f','L','a','C')",
+          "old_line_content": "        if (!s->got_streaminfo && (ret = parse_streaminfo(s, buf, buf_size))) {",
+          "new_line_content": "    if (AV_RB32(buf) == MKBETAG('f','L','a','C')) {",
+          "content_same": false
+        },
+        {
+          "line": 509,
+          "old_api": "av_log",
+          "new_api": "parse_streaminfo",
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid header\\n\")",
+          "new_text": "parse_streaminfo(s, buf, buf_size)",
+          "old_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"invalid header\\n\");",
+          "new_line_content": "        if (!s->got_streaminfo && (ret = parse_streaminfo(s, buf, buf_size))) {",
+          "content_same": false
+        },
+        {
+          "line": 517,
+          "old_api": "decode_frame",
+          "new_api": "bitstream_init8",
+          "old_text": "decode_frame(s)",
+          "new_text": "bitstream_init8(&s->bc, buf, buf_size)",
+          "old_line_content": "    if ((ret = decode_frame(s)) < 0) {",
+          "new_line_content": "    bitstream_init8(&s->bc, buf, buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 518,
+          "old_api": "av_log",
+          "new_api": "decode_frame",
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"decode_frame() failed\\n\")",
+          "new_text": "decode_frame(s)",
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"decode_frame() failed\\n\");",
+          "new_line_content": "    if ((ret = decode_frame(s)) < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 526,
+          "old_api": "av_log",
+          "new_api": "ff_get_buffer",
+          "old_text": "av_log(avctx, AV_LOG_ERROR, \"get_buffer() failed\\n\")",
+          "new_text": "ff_get_buffer(avctx, frame, 0)",
+          "old_line_content": "        av_log(avctx, AV_LOG_ERROR, \"get_buffer() failed\\n\");",
+          "new_line_content": "    if ((ret = ff_get_buffer(avctx, frame, 0)) < 0) {",
+          "content_same": false
+        }
+      ],
+      "additions": [
+        {
+          "line": 256,
+          "old_api": null,
+          "new_api": "decode_residuals",
+          "old_text": null,
+          "new_text": "decode_residuals(s, decoded, pred_order)",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    if ((ret = decode_residuals(s, decoded, pred_order)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 513,
+          "old_api": null,
+          "new_api": "get_metadata_size",
+          "old_text": null,
+          "new_text": "get_metadata_size(buf, buf_size)",
+          "old_line_content": "    }",
+          "new_line_content": "        return get_metadata_size(buf, buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 384,
+          "old_api": null,
+          "new_api": "decode_subframe_lpc",
+          "old_text": null,
+          "new_text": "decode_subframe_lpc(s, decoded, (type & ~0x20)+1, bps)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        if ((ret = decode_subframe_lpc(s, decoded, (type & ~0x20)+1, bps)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 387,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coding type\\n\")",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid coding type\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 519,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"decode_frame() failed\\n\")",
+          "old_line_content": "        return ret;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"decode_frame() failed\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 522,
+          "old_api": null,
+          "new_api": "bitstream_tell",
+          "old_text": null,
+          "new_text": "bitstream_tell(&s->bc)",
+          "old_line_content": "",
+          "new_line_content": "    bytes_read = (bitstream_tell(&s->bc) + 7) / 8;",
+          "content_same": false
+        },
+        {
+          "line": 527,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(avctx, AV_LOG_ERROR, \"get_buffer() failed\\n\")",
+          "old_line_content": "        return ret;",
+          "new_line_content": "        av_log(avctx, AV_LOG_ERROR, \"get_buffer() failed\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 531,
+          "old_api": null,
+          "new_api": "s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,\n                                   s->blocksize, s->sample_shift)",
+          "old_text": null,
+          "new_text": "s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,\n                                   s->blocksize, s->sample_shift)",
+          "old_line_content": "                                   s->blocksize, s->sample_shift);",
+          "new_line_content": "    s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,",
+          "content_same": false
+        },
+        {
+          "line": 535,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"overread: %d\\n\", bytes_read - buf_size)",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"overread: %d\\n\", bytes_read - buf_size);",
+          "content_same": false
+        },
+        {
+          "line": 407,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid frame header\\n\")",
+          "old_line_content": "        return ret;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid frame header\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 539,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_DEBUG, \"underread: %d orig size: %d\\n\",\n               buf_size - bytes_read, buf_size)",
+          "old_line_content": "               buf_size - bytes_read, buf_size);",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_DEBUG, \"underread: %d orig size: %d\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 414,
+          "old_api": null,
+          "new_api": "allocate_buffers",
+          "old_text": null,
+          "new_text": "allocate_buffers(s)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "        ret = allocate_buffers(s);",
+          "content_same": false
+        },
+        {
+          "line": 288,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"illegal pred order %d\\n\", pred_order)",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"illegal pred order %d\\n\", pred_order);",
+          "content_same": false
+        },
+        {
+          "line": 420,
+          "old_api": null,
+          "new_api": "ff_flac_set_channel_layout",
+          "old_text": null,
+          "new_text": "ff_flac_set_channel_layout(s->avctx)",
+          "old_line_content": "    s->ch_mode = fi.ch_mode;",
+          "new_line_content": "        ff_flac_set_channel_layout(s->avctx);",
+          "content_same": false
+        },
+        {
+          "line": 552,
+          "old_api": null,
+          "new_api": "av_freep",
+          "old_text": null,
+          "new_text": "av_freep(&s->decoded_buffer)",
+          "old_line_content": "",
+          "new_line_content": "    av_freep(&s->decoded_buffer);",
+          "content_same": false
+        },
+        {
+          "line": 424,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"bps not found in STREAMINFO or frame header\\n\")",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"bps not found in STREAMINFO or frame header\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 430,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"switching bps mid-stream is not \"\n                                       \"supported\\n\")",
+          "old_line_content": "                                       \"supported\\n\");",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"switching bps mid-stream is not \"",
+          "content_same": false
+        },
+        {
+          "line": 559,
+          "old_api": null,
+          "new_api": "NULL_IF_CONFIG_SMALL",
+          "old_text": null,
+          "new_text": "NULL_IF_CONFIG_SMALL(\"FLAC (Free Lossless Audio Codec)\")",
+          "old_line_content": "    .type           = AVMEDIA_TYPE_AUDIO,",
+          "new_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"FLAC (Free Lossless Audio Codec)\"),",
+          "content_same": false
+        },
+        {
+          "line": 304,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, bps)",
+          "old_line_content": "    }",
+          "new_line_content": "        decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "content_same": false
+        },
+        {
+          "line": 307,
+          "old_api": null,
+          "new_api": "bitstream_read",
+          "old_text": null,
+          "new_text": "bitstream_read(&s->bc, 4)",
+          "old_line_content": "    if (coeff_prec == 16) {",
+          "new_line_content": "    coeff_prec = bitstream_read(&s->bc, 4) + 1;",
+          "content_same": false
+        },
+        {
+          "line": 309,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coeff precision\\n\")",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid coeff precision\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 437,
+          "old_api": null,
+          "new_api": "flac_set_bps",
+          "old_text": null,
+          "new_text": "flac_set_bps(s)",
+          "old_line_content": "    }",
+          "new_line_content": "        flac_set_bps(s);",
+          "content_same": false
+        },
+        {
+          "line": 312,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, 5)",
+          "old_line_content": "    if (qlevel < 0) {",
+          "new_line_content": "    qlevel = bitstream_read_signed(&s->bc, 5);",
+          "content_same": false
+        },
+        {
+          "line": 314,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"qlevel %d not supported, maybe buggy stream\\n\",\n               qlevel)",
+          "old_line_content": "               qlevel);",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"qlevel %d not supported, maybe buggy stream\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 443,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"blocksize %d > %d\\n\", fi.blocksize,\n               s->max_blocksize)",
+          "old_line_content": "               s->max_blocksize);",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"blocksize %d > %d\\n\", fi.blocksize,",
+          "content_same": false
+        },
+        {
+          "line": 320,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, coeff_prec)",
+          "old_line_content": "    }",
+          "new_line_content": "        coeffs[pred_order - i - 1] = bitstream_read_signed(&s->bc, coeff_prec);",
+          "content_same": false
+        },
+        {
+          "line": 450,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"sample rate not found in STREAMINFO\"\n                                        \" or frame header\\n\")",
+          "old_line_content": "                                        \" or frame header\\n\");",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"sample rate not found in STREAMINFO\"",
+          "content_same": false
+        },
+        {
+          "line": 323,
+          "old_api": null,
+          "new_api": "decode_residuals",
+          "old_text": null,
+          "new_text": "decode_residuals(s, decoded, pred_order)",
+          "old_line_content": "        return ret;",
+          "new_line_content": "    if ((ret = decode_residuals(s, decoded, pred_order)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 326,
+          "old_api": null,
+          "new_api": "lpc",
+          "old_text": null,
+          "new_text": "s->dsp.lpc(decoded, coeffs, pred_order, qlevel, s->blocksize)",
+          "old_line_content": "",
+          "new_line_content": "    s->dsp.lpc(decoded, coeffs, pred_order, qlevel, s->blocksize);",
+          "content_same": false
+        },
+        {
+          "line": 459,
+          "old_api": null,
+          "new_api": "allocate_buffers",
+          "old_text": null,
+          "new_text": "allocate_buffers(s)",
+          "old_line_content": "        if (ret < 0)",
+          "new_line_content": "        ret = allocate_buffers(s);",
+          "content_same": false
+        },
+        {
+          "line": 462,
+          "old_api": null,
+          "new_api": "ff_flacdsp_init",
+          "old_text": null,
+          "new_text": "ff_flacdsp_init(&s->dsp, s->avctx->sample_fmt, s->bps)",
+          "old_line_content": "        s->got_streaminfo = 1;",
+          "new_line_content": "        ff_flacdsp_init(&s->dsp, s->avctx->sample_fmt, s->bps);",
+          "content_same": false
+        },
+        {
+          "line": 207,
+          "old_api": null,
+          "new_api": "bitstream_read",
+          "old_text": null,
+          "new_text": "bitstream_read(&s->bc, 4)",
+          "old_line_content": "    if (method_type > 1) {",
+          "new_line_content": "    rice_order  = bitstream_read(&s->bc, 4);",
+          "content_same": false
+        },
+        {
+          "line": 464,
+          "old_api": null,
+          "new_api": "dump_headers",
+          "old_text": null,
+          "new_text": "dump_headers(s->avctx, (FLACStreaminfo *)s)",
+          "old_line_content": "    }",
+          "new_line_content": "        dump_headers(s->avctx, (FLACStreaminfo *)s);",
+          "content_same": false
+        },
+        {
+          "line": 471,
+          "old_api": null,
+          "new_api": "decode_subframe",
+          "old_text": null,
+          "new_text": "decode_subframe(s, i)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        if ((ret = decode_subframe(s, i)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 347,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid subframe padding\\n\")",
+          "old_line_content": "        return AVERROR_INVALIDDATA;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid subframe padding\\n\");",
+          "content_same": false
+        },
+        {
+          "line": 475,
+          "old_api": null,
+          "new_api": "bitstream_align",
+          "old_text": null,
+          "new_text": "bitstream_align(bc)",
+          "old_line_content": "",
+          "new_line_content": "    bitstream_align(bc);",
+          "content_same": false
+        },
+        {
+          "line": 350,
+          "old_api": null,
+          "new_api": "bitstream_read",
+          "old_text": null,
+          "new_text": "bitstream_read(&s->bc, 6)",
+          "old_line_content": "",
+          "new_line_content": "    type = bitstream_read(&s->bc, 6);",
+          "content_same": false
+        },
+        {
+          "line": 223,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid predictor order: %i > %i\\n\",\n               pred_order, samples)",
+          "old_line_content": "    rice_esc  = (1 << rice_bits) - 1;",
+          "new_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid predictor order: %i > %i\\n\",",
+          "content_same": false
+        },
+        {
+          "line": 478,
+          "old_api": null,
+          "new_api": "bitstream_skip",
+          "old_text": null,
+          "new_text": "bitstream_skip(bc, 16)",
+          "old_line_content": "",
+          "new_line_content": "    bitstream_skip(bc, 16); /* data crc */",
+          "content_same": false
+        },
+        {
+          "line": 353,
+          "old_api": null,
+          "new_api": "bitstream_bits_left",
+          "old_text": null,
+          "new_text": "bitstream_bits_left(&s->bc)",
+          "old_line_content": "        wasted = 1;",
+          "new_line_content": "        int left = bitstream_bits_left(&s->bc);",
+          "content_same": false
+        },
+        {
+          "line": 229,
+          "old_api": null,
+          "new_api": "bitstream_read",
+          "old_text": null,
+          "new_text": "bitstream_read(&s->bc, rice_bits)",
+          "old_line_content": "        if (tmp == rice_esc) {",
+          "new_line_content": "        tmp = bitstream_read(&s->bc, rice_bits);",
+          "content_same": false
+        },
+        {
+          "line": 358,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR,\n                   \"Invalid number of wasted bits > available bits (%d) - left=%d\\n\",\n                   bps, left)",
+          "old_line_content": "                   \"Invalid number of wasted bits > available bits (%d) - left=%d\\n\",",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR,",
+          "content_same": false
+        },
+        {
+          "line": 231,
+          "old_api": null,
+          "new_api": "bitstream_read",
+          "old_text": null,
+          "new_text": "bitstream_read(&s->bc, 5)",
+          "old_line_content": "            for (; i < samples; i++)",
+          "new_line_content": "            tmp = bitstream_read(&s->bc, 5);",
+          "content_same": false
+        },
+        {
+          "line": 233,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, tmp)",
+          "old_line_content": "        } else {",
+          "new_line_content": "                *decoded++ = bitstream_read_signed(&s->bc, tmp);",
+          "content_same": false
+        },
+        {
+          "line": 363,
+          "old_api": null,
+          "new_api": "bitstream_read_bit",
+          "old_text": null,
+          "new_text": "bitstream_read_bit(&s->bc)",
+          "old_line_content": "            wasted++;",
+          "new_line_content": "        while (!bitstream_read_bit(&s->bc))",
+          "content_same": false
+        },
+        {
+          "line": 236,
+          "old_api": null,
+          "new_api": "get_sr_golomb_flac",
+          "old_text": null,
+          "new_text": "get_sr_golomb_flac(&s->bc, tmp, INT_MAX, 0)",
+          "old_line_content": "            }",
+          "new_line_content": "                *decoded++ = get_sr_golomb_flac(&s->bc, tmp, INT_MAX, 0);",
+          "content_same": false
+        },
+        {
+          "line": 368,
+          "old_api": null,
+          "new_api": "avpriv_report_missing_feature",
+          "old_text": null,
+          "new_text": "avpriv_report_missing_feature(s->avctx, \"Decorrelated bit depth > 32\")",
+          "old_line_content": "        return AVERROR_PATCHWELCOME;",
+          "new_line_content": "        avpriv_report_missing_feature(s->avctx, \"Decorrelated bit depth > 32\");",
+          "content_same": false
+        },
+        {
+          "line": 497,
+          "old_api": null,
+          "new_api": "ff_flac_get_max_frame_size",
+          "old_text": null,
+          "new_text": "ff_flac_get_max_frame_size(s->max_blocksize ? s->max_blocksize : FLAC_MAX_BLOCKSIZE,\n                                       FLAC_MAX_CHANNELS, 32)",
+          "old_line_content": "                                       FLAC_MAX_CHANNELS, 32);",
+          "new_line_content": "            ff_flac_get_max_frame_size(s->max_blocksize ? s->max_blocksize : FLAC_MAX_BLOCKSIZE,",
+          "content_same": false
+        },
+        {
+          "line": 381,
+          "old_api": null,
+          "new_api": "decode_subframe_fixed",
+          "old_text": null,
+          "new_text": "decode_subframe_fixed(s, decoded, type & ~0x8, bps)",
+          "old_line_content": "            return ret;",
+          "new_line_content": "        if ((ret = decode_subframe_fixed(s, decoded, type & ~0x8, bps)) < 0)",
+          "content_same": false
+        },
+        {
+          "line": 374,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, bps)",
+          "old_line_content": "        for (i = 0; i < s->blocksize; i++)",
+          "new_line_content": "        tmp = bitstream_read_signed(&s->bc, bps);",
+          "content_same": false
+        },
+        {
+          "line": 379,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, bps)",
+          "old_line_content": "    } else if ((type >= 8) && (type <= 12)) {",
+          "new_line_content": "            decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "content_same": false
+        },
+        {
+          "line": 253,
+          "old_api": null,
+          "new_api": "bitstream_read_signed",
+          "old_text": null,
+          "new_text": "bitstream_read_signed(&s->bc, bps)",
+          "old_line_content": "    }",
+          "new_line_content": "        decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "content_same": false
+        },
+        {
+          "line": 510,
+          "old_api": null,
+          "new_api": "av_log",
+          "old_text": null,
+          "new_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid header\\n\")",
+          "old_line_content": "            return ret;",
+          "new_line_content": "            av_log(s->avctx, AV_LOG_ERROR, \"invalid header\\n\");",
+          "content_same": false
+        }
+      ],
+      "deletions": [
+        {
+          "line": 512,
+          "old_api": "get_metadata_size",
+          "new_api": null,
+          "old_text": "get_metadata_size(buf, buf_size)",
+          "new_text": null,
+          "old_line_content": "        return get_metadata_size(buf, buf_size);",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 386,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coding type\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid coding type\\n\");",
+          "new_line_content": "    } else {",
+          "content_same": false
+        },
+        {
+          "line": 516,
+          "old_api": "bitstream_init8",
+          "new_api": null,
+          "old_text": "bitstream_init8(&s->bc, buf, buf_size)",
+          "new_text": null,
+          "old_line_content": "    bitstream_init8(&s->bc, buf, buf_size);",
+          "new_line_content": "    /* decode frame */",
+          "content_same": false
+        },
+        {
+          "line": 383,
+          "old_api": "decode_subframe_lpc",
+          "new_api": null,
+          "old_text": "decode_subframe_lpc(s, decoded, (type & ~0x20)+1, bps)",
+          "new_text": null,
+          "old_line_content": "        if ((ret = decode_subframe_lpc(s, decoded, (type & ~0x20)+1, bps)) < 0)",
+          "new_line_content": "    } else if (type >= 32) {",
+          "content_same": false
+        },
+        {
+          "line": 521,
+          "old_api": "bitstream_tell",
+          "new_api": null,
+          "old_text": "bitstream_tell(&s->bc)",
+          "new_text": null,
+          "old_line_content": "    bytes_read = (bitstream_tell(&s->bc) + 7) / 8;",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 525,
+          "old_api": "ff_get_buffer",
+          "new_api": null,
+          "old_text": "ff_get_buffer(avctx, frame, 0)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = ff_get_buffer(avctx, frame, 0)) < 0) {",
+          "new_line_content": "    frame->nb_samples = s->blocksize;",
+          "content_same": false
+        },
+        {
+          "line": 530,
+          "old_api": "s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,\n                                   s->blocksize, s->sample_shift)",
+          "new_api": null,
+          "old_text": "s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,\n                                   s->blocksize, s->sample_shift)",
+          "new_text": null,
+          "old_line_content": "    s->dsp.decorrelate[s->ch_mode](frame->data, s->decoded, s->channels,",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 405,
+          "old_api": "ff_flac_decode_frame_header",
+          "new_api": null,
+          "old_text": "ff_flac_decode_frame_header(s->avctx, bc, &fi, 0)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = ff_flac_decode_frame_header(s->avctx, bc, &fi, 0)) < 0) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 534,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"overread: %d\\n\", bytes_read - buf_size)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"overread: %d\\n\", bytes_read - buf_size);",
+          "new_line_content": "    if (bytes_read > buf_size) {",
+          "content_same": false
+        },
+        {
+          "line": 538,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_DEBUG, \"underread: %d orig size: %d\\n\",\n               buf_size - bytes_read, buf_size)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_DEBUG, \"underread: %d orig size: %d\\n\",",
+          "new_line_content": "    if (bytes_read < buf_size) {",
+          "content_same": false
+        },
+        {
+          "line": 412,
+          "old_api": "ff_flac_set_channel_layout",
+          "new_api": null,
+          "old_text": "ff_flac_set_channel_layout(s->avctx)",
+          "new_text": null,
+          "old_line_content": "        ff_flac_set_channel_layout(s->avctx);",
+          "new_line_content": "        s->channels = s->avctx->channels = fi.channels;",
+          "content_same": false
+        },
+        {
+          "line": 287,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"illegal pred order %d\\n\", pred_order)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"illegal pred order %d\\n\", pred_order);",
+          "new_line_content": "    default:",
+          "content_same": false
+        },
+        {
+          "line": 419,
+          "old_api": "ff_flac_set_channel_layout",
+          "new_api": null,
+          "old_text": "ff_flac_set_channel_layout(s->avctx)",
+          "new_text": null,
+          "old_line_content": "        ff_flac_set_channel_layout(s->avctx);",
+          "new_line_content": "    if (!s->avctx->channel_layout)",
+          "content_same": false
+        },
+        {
+          "line": 551,
+          "old_api": "av_freep",
+          "new_api": null,
+          "old_text": "av_freep(&s->decoded_buffer)",
+          "new_text": null,
+          "old_line_content": "    av_freep(&s->decoded_buffer);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 423,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"bps not found in STREAMINFO or frame header\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"bps not found in STREAMINFO or frame header\\n\");",
+          "new_line_content": "    if (!s->bps && !fi.bps) {",
+          "content_same": false
+        },
+        {
+          "line": 429,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"switching bps mid-stream is not \"\n                                       \"supported\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"switching bps mid-stream is not \"",
+          "new_line_content": "    } else if (s->bps && fi.bps != s->bps) {",
+          "content_same": false
+        },
+        {
+          "line": 558,
+          "old_api": "NULL_IF_CONFIG_SMALL",
+          "new_api": null,
+          "old_text": "NULL_IF_CONFIG_SMALL(\"FLAC (Free Lossless Audio Codec)\")",
+          "new_text": null,
+          "old_line_content": "    .long_name      = NULL_IF_CONFIG_SMALL(\"FLAC (Free Lossless Audio Codec)\"),",
+          "new_line_content": "    .name           = \"flac\",",
+          "content_same": false
+        },
+        {
+          "line": 303,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, bps)",
+          "new_text": null,
+          "old_line_content": "        decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "new_line_content": "    for (i = 0; i < pred_order; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 306,
+          "old_api": "bitstream_read",
+          "new_api": null,
+          "old_text": "bitstream_read(&s->bc, 4)",
+          "new_text": null,
+          "old_line_content": "    coeff_prec = bitstream_read(&s->bc, 4) + 1;",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 308,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"invalid coeff precision\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"invalid coeff precision\\n\");",
+          "new_line_content": "    if (coeff_prec == 16) {",
+          "content_same": false
+        },
+        {
+          "line": 436,
+          "old_api": "flac_set_bps",
+          "new_api": null,
+          "old_text": "flac_set_bps(s)",
+          "new_text": null,
+          "old_line_content": "        flac_set_bps(s);",
+          "new_line_content": "        s->bps = s->avctx->bits_per_raw_sample = fi.bps;",
+          "content_same": false
+        },
+        {
+          "line": 311,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, 5)",
+          "new_text": null,
+          "old_line_content": "    qlevel = bitstream_read_signed(&s->bc, 5);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 313,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"qlevel %d not supported, maybe buggy stream\\n\",\n               qlevel)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"qlevel %d not supported, maybe buggy stream\\n\",",
+          "new_line_content": "    if (qlevel < 0) {",
+          "content_same": false
+        },
+        {
+          "line": 442,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"blocksize %d > %d\\n\", fi.blocksize,\n               s->max_blocksize)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"blocksize %d > %d\\n\", fi.blocksize,",
+          "new_line_content": "    if (fi.blocksize > s->max_blocksize) {",
+          "content_same": false
+        },
+        {
+          "line": 319,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, coeff_prec)",
+          "new_text": null,
+          "old_line_content": "        coeffs[pred_order - i - 1] = bitstream_read_signed(&s->bc, coeff_prec);",
+          "new_line_content": "    for (i = 0; i < pred_order; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 449,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"sample rate not found in STREAMINFO\"\n                                        \" or frame header\\n\")",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"sample rate not found in STREAMINFO\"",
+          "new_line_content": "    if (!s->samplerate && !fi.samplerate) {",
+          "content_same": false
+        },
+        {
+          "line": 322,
+          "old_api": "decode_residuals",
+          "new_api": null,
+          "old_text": "decode_residuals(s, decoded, pred_order)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = decode_residuals(s, decoded, pred_order)) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 325,
+          "old_api": "lpc",
+          "new_api": null,
+          "old_text": "s->dsp.lpc(decoded, coeffs, pred_order, qlevel, s->blocksize)",
+          "new_text": null,
+          "old_line_content": "    s->dsp.lpc(decoded, coeffs, pred_order, qlevel, s->blocksize);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 458,
+          "old_api": "allocate_buffers",
+          "new_api": null,
+          "old_text": "allocate_buffers(s)",
+          "new_text": null,
+          "old_line_content": "        ret = allocate_buffers(s);",
+          "new_line_content": "    if (!s->got_streaminfo) {",
+          "content_same": false
+        },
+        {
+          "line": 461,
+          "old_api": "ff_flacdsp_init",
+          "new_api": null,
+          "old_text": "ff_flacdsp_init(&s->dsp, s->avctx->sample_fmt, s->bps)",
+          "new_text": null,
+          "old_line_content": "        ff_flacdsp_init(&s->dsp, s->avctx->sample_fmt, s->bps);",
+          "new_line_content": "            return ret;",
+          "content_same": false
+        },
+        {
+          "line": 463,
+          "old_api": "dump_headers",
+          "new_api": null,
+          "old_text": "dump_headers(s->avctx, (FLACStreaminfo *)s)",
+          "new_text": null,
+          "old_line_content": "        dump_headers(s->avctx, (FLACStreaminfo *)s);",
+          "new_line_content": "        s->got_streaminfo = 1;",
+          "content_same": false
+        },
+        {
+          "line": 208,
+          "old_api": "av_log",
+          "new_api": null,
+          "old_text": "av_log(s->avctx, AV_LOG_ERROR, \"illegal residual coding method %d\\n\",\n               method_type)",
+          "new_text": null,
+          "old_line_content": "        av_log(s->avctx, AV_LOG_ERROR, \"illegal residual coding method %d\\n\",",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 213,
+          "old_api": "bitstream_read",
+          "new_api": null,
+          "old_text": "bitstream_read(&s->bc, 4)",
+          "new_text": null,
+          "old_line_content": "    rice_order = bitstream_read(&s->bc, 4);",
+          "new_line_content": "    decoded += pred_order;",
+          "content_same": false
+        },
+        {
+          "line": 470,
+          "old_api": "decode_subframe",
+          "new_api": null,
+          "old_text": "decode_subframe(s, i)",
+          "new_text": null,
+          "old_line_content": "        if ((ret = decode_subframe(s, i)) < 0)",
+          "new_line_content": "    for (i = 0; i < s->channels; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 345,
+          "old_api": "bitstream_read_bit",
+          "new_api": null,
+          "old_text": "bitstream_read_bit(&s->bc)",
+          "new_text": null,
+          "old_line_content": "    if (bitstream_read_bit(&s->bc)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 474,
+          "old_api": "bitstream_align",
+          "new_api": null,
+          "old_text": "bitstream_align(bc)",
+          "new_text": null,
+          "old_line_content": "    bitstream_align(bc);",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 349,
+          "old_api": "bitstream_read",
+          "new_api": null,
+          "old_text": "bitstream_read(&s->bc, 6)",
+          "new_text": null,
+          "old_line_content": "    type = bitstream_read(&s->bc, 6);",
+          "new_line_content": "    }",
+          "content_same": false
+        },
+        {
+          "line": 477,
+          "old_api": "bitstream_skip",
+          "new_api": null,
+          "old_text": "bitstream_skip(bc, 16)",
+          "new_text": null,
+          "old_line_content": "    bitstream_skip(bc, 16); /* data crc */",
+          "new_line_content": "    /* frame footer */",
+          "content_same": false
+        },
+        {
+          "line": 351,
+          "old_api": "bitstream_read_bit",
+          "new_api": null,
+          "old_text": "bitstream_read_bit(&s->bc)",
+          "new_text": null,
+          "old_line_content": "    if (bitstream_read_bit(&s->bc)) {",
+          "new_line_content": "",
+          "content_same": false
+        },
+        {
+          "line": 355,
+          "old_api": "bitstream_peek",
+          "new_api": null,
+          "old_text": "bitstream_peek(&s->bc, left)",
+          "new_text": null,
+          "old_line_content": "            (left < bps && !bitstream_peek(&s->bc, left)) ||",
+          "new_line_content": "        if ( left < 0 ||",
+          "content_same": false
+        },
+        {
+          "line": 228,
+          "old_api": "bitstream_read",
+          "new_api": null,
+          "old_text": "bitstream_read(&s->bc, rice_bits)",
+          "new_text": null,
+          "old_line_content": "        tmp = bitstream_read(&s->bc, rice_bits);",
+          "new_line_content": "    for (partition = 0; partition < (1 << rice_order); partition++) {",
+          "content_same": false
+        },
+        {
+          "line": 230,
+          "old_api": "bitstream_read",
+          "new_api": null,
+          "old_text": "bitstream_read(&s->bc, 5)",
+          "new_text": null,
+          "old_line_content": "            tmp = bitstream_read(&s->bc, 5);",
+          "new_line_content": "        if (tmp == rice_esc) {",
+          "content_same": false
+        },
+        {
+          "line": 232,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, tmp)",
+          "new_text": null,
+          "old_line_content": "                *decoded++ = bitstream_read_signed(&s->bc, tmp);",
+          "new_line_content": "            for (; i < samples; i++)",
+          "content_same": false
+        },
+        {
+          "line": 362,
+          "old_api": "bitstream_read_bit",
+          "new_api": null,
+          "old_text": "bitstream_read_bit(&s->bc)",
+          "new_text": null,
+          "old_line_content": "        while (!bitstream_read_bit(&s->bc))",
+          "new_line_content": "        }",
+          "content_same": false
+        },
+        {
+          "line": 235,
+          "old_api": "get_sr_golomb_flac",
+          "new_api": null,
+          "old_text": "get_sr_golomb_flac(&s->bc, tmp, INT_MAX, 0)",
+          "new_text": null,
+          "old_line_content": "                *decoded++ = get_sr_golomb_flac(&s->bc, tmp, INT_MAX, 0);",
+          "new_line_content": "            for (; i < samples; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 367,
+          "old_api": "avpriv_report_missing_feature",
+          "new_api": null,
+          "old_text": "avpriv_report_missing_feature(s->avctx, \"Decorrelated bit depth > 32\")",
+          "new_text": null,
+          "old_line_content": "        avpriv_report_missing_feature(s->avctx, \"Decorrelated bit depth > 32\");",
+          "new_line_content": "    if (bps > 32) {",
+          "content_same": false
+        },
+        {
+          "line": 496,
+          "old_api": "ff_flac_get_max_frame_size",
+          "new_api": null,
+          "old_text": "ff_flac_get_max_frame_size(s->max_blocksize ? s->max_blocksize : FLAC_MAX_BLOCKSIZE,\n                                       FLAC_MAX_CHANNELS, 32)",
+          "new_text": null,
+          "old_line_content": "            ff_flac_get_max_frame_size(s->max_blocksize ? s->max_blocksize : FLAC_MAX_BLOCKSIZE,",
+          "new_line_content": "        s->max_framesize =",
+          "content_same": false
+        },
+        {
+          "line": 373,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, bps)",
+          "new_text": null,
+          "old_line_content": "        tmp = bitstream_read_signed(&s->bc, bps);",
+          "new_line_content": "    if (type == 0) {",
+          "content_same": false
+        },
+        {
+          "line": 380,
+          "old_api": "decode_subframe_fixed",
+          "new_api": null,
+          "old_text": "decode_subframe_fixed(s, decoded, type & ~0x8, bps)",
+          "new_text": null,
+          "old_line_content": "        if ((ret = decode_subframe_fixed(s, decoded, type & ~0x8, bps)) < 0)",
+          "new_line_content": "    } else if ((type >= 8) && (type <= 12)) {",
+          "content_same": false
+        },
+        {
+          "line": 378,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, bps)",
+          "new_text": null,
+          "old_line_content": "            decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "new_line_content": "        for (i = 0; i < s->blocksize; i++)",
+          "content_same": false
+        },
+        {
+          "line": 507,
+          "old_api": "MKBETAG",
+          "new_api": null,
+          "old_text": "MKBETAG('f','L','a','C')",
+          "new_text": null,
+          "old_line_content": "    if (AV_RB32(buf) == MKBETAG('f','L','a','C')) {",
+          "new_line_content": "    /* check for inline header */",
+          "content_same": false
+        },
+        {
+          "line": 252,
+          "old_api": "bitstream_read_signed",
+          "new_api": null,
+          "old_text": "bitstream_read_signed(&s->bc, bps)",
+          "new_text": null,
+          "old_line_content": "        decoded[i] = bitstream_read_signed(&s->bc, bps);",
+          "new_line_content": "    for (i = 0; i < pred_order; i++) {",
+          "content_same": false
+        },
+        {
+          "line": 255,
+          "old_api": "decode_residuals",
+          "new_api": null,
+          "old_text": "decode_residuals(s, decoded, pred_order)",
+          "new_text": null,
+          "old_line_content": "    if ((ret = decode_residuals(s, decoded, pred_order)) < 0)",
+          "new_line_content": "",
+          "content_same": false
+        }
+      ]
+    },
+    "api_summary": {
+      "total_replacements": 10,
+      "total_additions": 53,
+      "total_deletions": 53,
+      "total_api_changes": 116
+    },
+    "non_api_changes": {
+      "has_non_api_changes": true,
+      "evidence": {
+        "total_diff_lines": 14,
+        "api_related_lines": 116,
+        "non_api_lines": 10,
+        "non_api_line_numbers": [
+          224,
+          225,
+          226,
+          209,
+          210,
+          211,
+          212,
+          214,
+          215,
+          222
+        ]
+      }
+    },
+    "api_calls_before": 89,
+    "api_calls_after": 89,
+    "diff_info": {
+      "added_lines": 9,
+      "removed_lines": 8,
+      "total_diff_lines": 41
+    }
+  }
+}

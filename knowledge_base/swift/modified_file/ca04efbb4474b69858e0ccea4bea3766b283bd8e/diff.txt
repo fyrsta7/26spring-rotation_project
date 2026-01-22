@@ -1,0 +1,17 @@
+diff --git a/lib/SILOptimizer/PassManager/PassPipeline.cpp b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+index 3e6a28032a2..e71a5935796 100644
+--- a/lib/SILOptimizer/PassManager/PassPipeline.cpp
++++ b/lib/SILOptimizer/PassManager/PassPipeline.cpp
+@@ -383,6 +383,12 @@ static void addClosureSpecializePassPipeline(SILPassPipelinePlan &P) {
+   P.addDeadFunctionElimination();
+   P.addDeadObjectElimination();
+ 
++  // These few passes are needed to cleanup between loop unrolling and GlobalOpt.
++  P.addSimplifyCFG();
++  P.addSILCombine();
++  P.addPerformanceConstantPropagation();
++  P.addSimplifyCFG();
++
+   // Hoist globals out of loops.
+   // Global-init functions should not be inlined GlobalOpt is done.
+   P.addGlobalOpt();

@@ -1,0 +1,40 @@
+diff --git a/modified_file.cpp b/modified_file.cpp
+index 0000000..1111111 100644
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+--- a/modified_file.cpp
++++ b/modified_file.cpp
+@@ -27,12 +27,12 @@
+ 			return validity_mask;
+
+ 		}
+
+ 	}
+
++
+
+ 	if ((count % ValidityMask::BITS_PER_VALUE) != 0) {
+
+-		auto entry = validity_mask[(count / ValidityMask::BITS_PER_VALUE)];
+
+-		for (idx_t i = 0; i < (count % ValidityMask::BITS_PER_VALUE); i++) {
+
+-			if (!ValidityMask::RowIsValid(entry, i)) {
+
+-				return validity_mask;
+
+-			}
+
++		// Create a mask with the lower `bits_to_check` bits set to 1
+
++		validity_t mask = (1ULL << (count % ValidityMask::BITS_PER_VALUE)) - 1;
+
++		if ((validity_mask[(count / ValidityMask::BITS_PER_VALUE)] & mask) != mask) {
+
++			return validity_mask;
+
+ 		}
+
+ 	}
+
+ 	// All entries are valid, no need to initialize the validity mask

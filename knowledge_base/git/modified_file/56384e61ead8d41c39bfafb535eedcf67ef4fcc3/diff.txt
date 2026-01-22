@@ -1,0 +1,24 @@
+diff --git a/compat/memmem.c b/compat/memmem.c
+index cd0d877364..56bcb4277f 100644
+--- a/compat/memmem.c
++++ b/compat/memmem.c
+@@ -5,6 +5,8 @@ void *gitmemmem(const void *haystack, size_t haystack_len,
+ {
+ 	const char *begin = haystack;
+ 	const char *last_possible = begin + haystack_len - needle_len;
++	const char *tail = needle;
++	char point;
+ 
+ 	/*
+ 	 * The first occurrence of the empty string is deemed to occur at
+@@ -20,8 +22,9 @@ void *gitmemmem(const void *haystack, size_t haystack_len,
+ 	if (haystack_len < needle_len)
+ 		return NULL;
+ 
++	point = *tail++;
+ 	for (; begin <= last_possible; begin++) {
+-		if (!memcmp(begin, needle, needle_len))
++		if (*begin == point && !memcmp(begin + 1, tail, needle_len - 1))
+ 			return (void *)begin;
+ 	}
+ 

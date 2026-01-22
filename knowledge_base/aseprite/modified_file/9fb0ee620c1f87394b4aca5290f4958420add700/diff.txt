@@ -1,0 +1,18 @@
+diff --git a/src/ui/window.cpp b/src/ui/window.cpp
+index 70bf2c616..b063fe9bc 100644
+--- a/src/ui/window.cpp
++++ b/src/ui/window.cpp
+@@ -848,7 +848,12 @@ void Window::moveWindow(const gfx::Rect& rect, bool use_blit)
+   // If the GPU acceleration is enabled on this window we avoid
+   // copying regions of pixels as it's super slow to read GPU
+   // surfaces.
+-  if (display()->nativeWindow()->gpuAcceleration()) {
++  if (display()->nativeWindow()->gpuAcceleration()
++#if LAF_LINUX
++      // On X11 it's better to avoid copying screen areas
++      || true
++#endif
++      ) {
+     use_blit = false;
+   }
+ 
