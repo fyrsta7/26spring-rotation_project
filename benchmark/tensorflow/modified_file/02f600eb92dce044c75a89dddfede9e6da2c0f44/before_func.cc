@@ -1,0 +1,15 @@
+// Returns shape of a ranked tensor.
+// Precondition: output_val's is ranked tensor.
+DenseElementsAttr GetShape(Value output_val) {
+  auto output_type = output_val.getType().cast<RankedTensorType>();
+  auto shape_vector = output_type.getShape();
+  std::vector<int32_t> shape;
+  for (auto shape_object : shape_vector) {
+    shape.push_back(shape_object);
+  }
+  return mlir::DenseElementsAttr::get(
+      RankedTensorType::get(
+          {static_cast<int>(shape.size())},
+          mlir::IntegerType::get(32, output_val.getContext())),
+      llvm::makeArrayRef(shape));
+}

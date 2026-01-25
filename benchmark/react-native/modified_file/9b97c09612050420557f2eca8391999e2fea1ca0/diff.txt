@@ -1,0 +1,20 @@
+diff --git a/ReactCommon/react/renderer/components/view/ViewShadowNode.cpp b/ReactCommon/react/renderer/components/view/ViewShadowNode.cpp
+index cba3969fe31..75fa7f4c73a 100644
+--- a/ReactCommon/react/renderer/components/view/ViewShadowNode.cpp
++++ b/ReactCommon/react/renderer/components/view/ViewShadowNode.cpp
+@@ -46,13 +46,12 @@ void ViewShadowNode::initialize() noexcept {
+       viewProps.importantForAccessibility != ImportantForAccessibility::Auto ||
+       viewProps.removeClippedSubviews;
+ 
+-  bool formsView = isColorMeaningful(viewProps.backgroundColor) ||
++  bool formsView = formsStackingContext ||
++      isColorMeaningful(viewProps.backgroundColor) ||
+       isColorMeaningful(viewProps.foregroundColor) ||
+       !(viewProps.yogaStyle.border() == YGStyle::Edges{}) ||
+       !viewProps.testId.empty();
+ 
+-  formsView = formsView || formsStackingContext;
+-
+   if (formsView) {
+     traits_.set(ShadowNodeTraits::Trait::FormsView);
+   } else {
